@@ -12,8 +12,15 @@ namespace bft{
     typedef Map<Vector6> mVector6;
     typedef Map<const Vector6> mConstVector6;
 
-    template <std::size_t size> 
-        using YieldSurfFlagArr = Array<bool, 1, size>;
-    template <std::size_t size>
-        using YieldSurfResArr = Array<double, 1, size>;
+    template <int size> 
+		struct YieldSurfFlagArr
+		{
+			typedef Array<bool, 1, size> nSurfs;
+		};
+		
+    template <int size>
+		struct YieldSurfResArr
+		{
+			typedef Array<double, 1, size> nSurfs;
+		};
 };
