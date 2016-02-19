@@ -7,12 +7,14 @@ namespace bft{
     {
             const int idxUsedFlag;
             Array<bool, (2 << (nYieldSurfaces-1)), (nYieldSurfaces+1)> yieldSurfaceCombinations;
-
     public:
+            typedef Array<bool, 1, nYieldSurfaces>    YieldSurfFlagArr;
+            typedef Array<double, 1, nYieldSurfaces>  YieldSurfResArr;
+
             YieldSurfaceCombinationManager();
             void initYieldFlagCombinations();
-            bool getAnotherYieldFlagCombination(YieldSurfFlagArr<nYieldSurfaces>& activeSurfaces);
-            void markYieldFlagCombinationAsUsed(const YieldSurfFlagArr<nYieldSurfaces>& activeSurfaces );
+            bool getAnotherYieldFlagCombination(YieldSurfFlagArr& activeSurfaces);
+            void markYieldFlagCombinationAsUsed(const YieldSurfFlagArr& activeSurfaces );
             void resetUsedYieldFlagCombinations();
     };
 }
@@ -37,13 +39,13 @@ namespace bft{
     }
 
     template <int n>
-    bool YieldSurfaceCombinationManager<n>::getAnotherYieldFlagCombination(YieldSurfFlagArr<n>& activeSurfaces)
+    bool YieldSurfaceCombinationManager<n>::getAnotherYieldFlagCombination(YieldSurfFlagArr& activeSurfaces)
     {
         for(int i = 0; i < yieldSurfaceCombinations.rows(); i++)
         {
 
             bool alreadyUsed = yieldSurfaceCombinations.row(i)(idxUsedFlag);
-            YieldSurfFlagArr<n> combinationCandidate = yieldSurfaceCombinations.row(i).head(n);
+            YieldSurfFlagArr combinationCandidate = yieldSurfaceCombinations.row(i).head(n);
             if(!alreadyUsed && !(combinationCandidate == activeSurfaces).all() )
             {
                     activeSurfaces = combinationCandidate;
@@ -60,7 +62,7 @@ namespace bft{
     }
 
     template <int n>
-    void YieldSurfaceCombinationManager<n>::markYieldFlagCombinationAsUsed(const YieldSurfFlagArr<n>& activeSurfaces )
+    void YieldSurfaceCombinationManager<n>::markYieldFlagCombinationAsUsed(const YieldSurfFlagArr& activeSurfaces )
     {
             for(int i = 0; i < yieldSurfaceCombinations.rows(); i++)
                     if( (yieldSurfaceCombinations.row(i).head(n) == activeSurfaces).all())

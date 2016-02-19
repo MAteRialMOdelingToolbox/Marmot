@@ -8,7 +8,7 @@ namespace bft{
     class PerezFougetSubstepper{
 
         public:
-            using TangentSizedMatrix = Matrix<double, nSizeMatTangent, nSizeMatTangent> ;
+            typedef Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
             PerezFougetSubstepper(  double initialStepSize, 
                                      double minimumStepSize, 
                                      double scaleUpFactor, 
