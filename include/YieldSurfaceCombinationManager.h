@@ -7,12 +7,14 @@ namespace bft{
     {
             const int idxUsedFlag;
             Array<bool, (2 << (nYieldSurfaces-1)), (nYieldSurfaces+1)> yieldSurfaceCombinations;
-
     public:
+            typedef Array<bool, 1, nYieldSurfaces>    YieldSurfFlagArr;
+            typedef Array<double, 1, nYieldSurfaces>  YieldSurfResArr;
+
             YieldSurfaceCombinationManager();
             void initYieldFlagCombinations();
-            bool getAnotherYieldFlagCombination(typename YieldSurfFlagArr<nYieldSurfaces>::nSurfs& activeSurfaces);
-            void markYieldFlagCombinationAsUsed(const typename YieldSurfFlagArr<nYieldSurfaces>::nSurfs& activeSurfaces );
+            bool getAnotherYieldFlagCombination(YieldSurfFlagArr& activeSurfaces);
+            void markYieldFlagCombinationAsUsed(const YieldSurfFlagArr& activeSurfaces );
             void resetUsedYieldFlagCombinations();
     };
 }
@@ -30,20 +32,20 @@ namespace bft{
 
         for(int row = 0; row < numRows; row++)
             for(int col = 0; col < numCols-1; col++)
-                yieldSurfaceCombinations(row,col) = (row+1) & static_cast<bool>(std::pow(2.0,col));
+                yieldSurfaceCombinations(row,col) = (row+1)& static_cast<int>(std::pow(2.0,col));
 
         yieldSurfaceCombinations.col(numCols-1).setConstant(false);
         return;
     }
 
     template <int n>
-    bool YieldSurfaceCombinationManager<n>::getAnotherYieldFlagCombination(typename YieldSurfFlagArr<n>::nSurfs& activeSurfaces)
+    bool YieldSurfaceCombinationManager<n>::getAnotherYieldFlagCombination(YieldSurfFlagArr& activeSurfaces)
     {
         for(int i = 0; i < yieldSurfaceCombinations.rows(); i++)
         {
 
             bool alreadyUsed = yieldSurfaceCombinations.row(i)(idxUsedFlag);
-            YieldSurfFlagArr<n>::nSurfs combinationCandidate = yieldSurfaceCombinations.row(i).head(n);
+            YieldSurfFlagArr combinationCandidate = yieldSurfaceCombinations.row(i).head(n);
             if(!alreadyUsed && !(combinationCandidate == activeSurfaces).all() )
             {
                     activeSurfaces = combinationCandidate;
@@ -60,7 +62,7 @@ namespace bft{
     }
 
     template <int n>
-    void YieldSurfaceCombinationManager<n>::markYieldFlagCombinationAsUsed(const typename YieldSurfFlagArr<n>::nSurfs& activeSurfaces )
+    void YieldSurfaceCombinationManager<n>::markYieldFlagCombinationAsUsed(const YieldSurfFlagArr& activeSurfaces )
     {
             for(int i = 0; i < yieldSurfaceCombinations.rows(); i++)
                     if( (yieldSurfaceCombinations.row(i).head(n) == activeSurfaces).all())
