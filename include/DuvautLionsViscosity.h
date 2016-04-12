@@ -11,6 +11,7 @@ namespace bft{
         public:
 
             typedef  Matrix<double, nMatTangentSize, nMatTangentSize> TangentSizedMatrix;
+
             DuvautLionsViscosity(double viscosity);
             double applyViscosityOnStateVar(double stateVarTrial, double StateVarInf, double dT);
             Vector6 applyViscosityOnStress(const Vector6& trialStress, const Vector6& stressInf, double dT);
