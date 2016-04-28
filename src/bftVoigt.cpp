@@ -291,14 +291,15 @@ namespace bft{
 		{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double theta = hw(2);
+            const double cos3Theta = std::cos(3*theta);
 		
-			if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
+			if (fabs(std::pow(cos3Theta,2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
 			{
 				return 0.0;
 			}
 			else
 			{
-				return 3.*std::sqrt(3.)/4.*J3strain(strain)/( std::pow(J2strain(strain),5./2) *std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
+				return 3.*sqrt3/4.*J3strain(strain)/( std::pow(J2strain(strain),5./2) *std::sqrt(1.-std::pow(cos3Theta,2.)));
 			}
 		}
 
@@ -306,14 +307,15 @@ namespace bft{
 		{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double& theta = hw(2);
+            const double cos3Theta = std::cos(3*theta);
 
-			if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)// || J2strain(strain)==0)
+			if (fabs(std::pow(cos3Theta,2.)-1.)<=1e-16)// || J2strain(strain)==0)
 			{
 				return 0.0;
 			}
 			else
 			{
-				return -std::sqrt(3.)/2.*1./(std::pow(J2strain(strain),3./2)*std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
+				return -sqrt3_2*1./(std::pow(J2strain(strain),3./2)*std::sqrt(1.-std::pow(cos3Theta,2.)));
 			}
 		}
 		
@@ -360,7 +362,6 @@ namespace bft{
 				Vector3d dEpPrinc_dEprho = Vector3d::Zero();
 				Vector3d dEPprinc_dEptheta = Vector3d::Zero();
 									
-				const double sqrt2_3 =		std::sqrt(2./3.);
 				const Vector3d hw =			haighWestergaardStrain(dEp);				
 				const double& epsM =		hw(0);
 				const double& rhoE =		hw(1);
