@@ -13,4 +13,4 @@ namespace bft{
 	typedef Matrix<double,1,6> RowVector6d;
     typedef Map<Vector6> mVector6;
     typedef Map<const Vector6> mConstVector6;
-};
+}

@@ -112,6 +112,6 @@ namespace bft
 		RowVector6d dDeltaEpv_dE(const Matrix6& CelInv, const Matrix6& Cep);
 		Matrix36 dDeltaEpPrincipals_dDeltaEp(const Vector6& dEp);
 		RowVector6d dDeltaEpvneg_dE(const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep);
-    };
+    }
 
 }
