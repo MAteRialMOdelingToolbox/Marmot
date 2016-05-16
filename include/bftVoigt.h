@@ -14,6 +14,7 @@ namespace bft
             }
 
         Matrix6 Cel(double E, double nu);
+        Matrix6 CelInverse(double E, double nu);
         double macauly(double scalar);
         int heaviside(double scalar);
     }
@@ -112,6 +113,6 @@ namespace bft
 		RowVector6d dDeltaEpv_dE(const Matrix6& CelInv, const Matrix6& Cep);
 		Matrix36 dDeltaEpPrincipals_dDeltaEp(const Vector6& dEp);
 		RowVector6d dDeltaEpvneg_dE(const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep);
-    };
+    }
 
 }

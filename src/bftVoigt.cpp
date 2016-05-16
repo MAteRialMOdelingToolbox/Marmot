@@ -18,6 +18,18 @@ namespace bft{
             Cel *= E/((1+nu)*(1-2*nu));
             return Cel;
         }
+        Matrix6 CelInverse(double E, double nu)
+        {
+            const double G = E / (2*(1+nu));
+            Matrix6 CelInv;
+            CelInv <<   1./E,   -nu/E,  -nu/E,  0,      0,      0,
+                        -nu/E,  1./E,   -nu/E,  0,      0,      0,
+                        -nu/E,  -nu/E,  1./E,   0,      0,      0,
+                        0,      0,      0,      1./G,   0,      0,
+                        0,      0,      0,      0,      1./G,   0,
+                        0,      0,      0,      0,      0,      1./G;
+            return CelInv;
+        }
 
         double macauly(double scalar)
         {
@@ -257,7 +269,7 @@ namespace bft{
         Vector6 dRhodSigma(double rho, const Vector6& stress)
         {
 
-            if(rho <= 1e-10)
+            if(rho <= 1e-14)
                 return Vector6::Zero();
 
             Vector6 s = Idev() * stress;
