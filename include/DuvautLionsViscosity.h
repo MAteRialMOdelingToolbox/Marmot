@@ -6,10 +6,8 @@ namespace bft{
     class DuvautLionsViscosity
     {
         private:
-
             const double viscosity;
         public:
-
             typedef  Matrix<double, nMatTangentSize, nMatTangentSize> TangentSizedMatrix;
 
             DuvautLionsViscosity(double viscosity);
