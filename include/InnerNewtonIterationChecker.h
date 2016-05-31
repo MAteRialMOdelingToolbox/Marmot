@@ -25,6 +25,5 @@ namespace bft{
             double residualNorm(const VectorXd& Residual);
             bool iterationFinished(const VectorXd& residual, const VectorXd& X, const VectorXd& dX, int numberOfIterations);
             bool isConverged(const VectorXd& residual, const VectorXd& X, const VectorXd& dX, int numberOfIterations);
-
     };
 }
