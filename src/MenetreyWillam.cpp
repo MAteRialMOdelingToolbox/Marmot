@@ -6,7 +6,6 @@ namespace bft{
     namespace MW
     {
         using namespace Constants;
-
         double r(double theta, double e, double& numerator, double &denominator)
         {
             // computes the deviatoric shape roundness for a given eccentricity (e) at a certain position (theta)
@@ -38,14 +37,17 @@ namespace bft{
             const double cos2Theta =        cosTheta * cosTheta;
             const double sinTheta =         std::sin(theta);
             const double e2 = e*e;
-
+            const double a = rNumerator;
+            const double b = 1./rDenominator;
+            const double aux = 4*(1-e2)*cos2Theta+ 5*e2 -4*e;
+            const double dAuxdTheta = 4 * (1-e2)*2*cosTheta*-sinTheta;
             const double dadTheta =         2 * cosTheta * (-sinTheta) * 4 * (1-e2);
-            const double dbdTheta =         - pow(rDenominator,-2)  * (2*(1-e2)*(-sinTheta) +(2*e-1)/
-                                            (2 * std::sqrt(4*(1-e2)*cos2Theta+5*e2 -4*e)) * (4*(1-e2)*2*cosTheta*(-sinTheta)));
-
-            return 1./rDenominator * dadTheta + rNumerator * dbdTheta;
+            const double dbdTheta = - pow(rDenominator,-2) * ( 2*(1-e2)*-sinTheta    + (2*e-1)*1./2 * pow(aux, -1./2) * dAuxdTheta);
+             
+            // r = a * b 
+            // = num * den^-1
+            return b * dadTheta + a * dbdTheta;
         }
-
         double e(double fc, double ft)
         {
             return (fc+2*ft)/(2*fc + ft);
@@ -80,7 +82,6 @@ namespace bft{
             return (Af * rho)*(Af*rho) + m * (Bf * rho * r(theta, e, num, den) + Cf * xi) - 1; 
         }
 
-
         void dFdHaighWestergaard(double&dFdXi, double&dFdRho, double&dFdTheta, double Af, double Bf, 
                 double Cf, double m, double e, double xi, double rho, double theta)
         {
@@ -89,8 +90,8 @@ namespace bft{
             const double dRdTheta_ = dRdTheta(theta, e, rNum, rDen);
 
             dFdXi =         m * Cf;
-            dFdRho =        2*Af*rho +  m*Bf*r_;
-            dFdTheta =       m*Bf*rho*dRdTheta_;
+            dFdRho =        2*Af*rho*Af +  m*Bf*r_;
+            dFdTheta =      m*Bf*rho*dRdTheta_;
         }
 
         double fRounded(double Af, double Bf, double Cf, double m, double e, double xi, double rho, double theta, double varEps)
@@ -140,7 +141,6 @@ namespace bft{
             m =     1;
             e =     1;
         }
-
         void MohrCoulombParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc)
         {
             Af =    0;
@@ -149,6 +149,5 @@ namespace bft{
             m =     1;
             e =     (fc+2*ft)/(2*fc +ft);
         }
-
-    };
+    }
 }
