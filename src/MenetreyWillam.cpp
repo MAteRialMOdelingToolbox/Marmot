@@ -100,6 +100,10 @@ namespace bft{
             const double r_ = r(theta, e, rNum, rDen);
             return Af*Af*rho*rho + m* (std::sqrt( Bf*rho*r_*Bf*rho*r_ + varEps*varEps) + Cf*xi) -1;
         }
+        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam(double varEps, double psi)
+         {
+             return varEps * 2 * std::sin(psi);
+         }
 
         void dFRoundeddHaighWestergaard(double&dFdXi, double&dFdRho, double&dFdTheta, double Af, double Bf, 
                 double Cf, double m, double e, double xi, double rho, double theta, double varEps)
@@ -111,7 +115,7 @@ namespace bft{
             const double auxTerm1 = m * 1./2 * std::pow( Bf*Bf*rho*rho*r_*r_ + varEps*varEps, -1./2) * 2*Bf*rho*r_ * Bf;
 
             dFdXi =         m * Cf;
-            dFdRho =        Af*Af*rho*rho + auxTerm1 * r_;
+            dFdRho =        Af*Af*2*rho + auxTerm1 * r_;
             dFdTheta =      auxTerm1 * rho * dRdTheta_;
         }
 
