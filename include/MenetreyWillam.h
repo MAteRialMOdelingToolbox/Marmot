@@ -43,6 +43,7 @@ namespace bft{
                 double rho,
                 double theta,
                 double varEps);
+        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam(double varEps, double psi);
 
         void    RankineParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc = 0);
         void    MisesParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc = 0);
