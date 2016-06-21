@@ -6,6 +6,7 @@ using namespace Eigen;
 
 namespace bft{
     typedef Matrix<double,6,6> Matrix6;
+    typedef Matrix<double,7,7> Matrix7;
 	typedef Matrix<double,3,6> Matrix36;
     typedef Map<Matrix6> mMatrix6;
 
