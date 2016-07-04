@@ -6,8 +6,8 @@ namespace bft{
     class YieldSurfaceCombinationManager
     {
             const int idxUsedFlag;
-            Array<bool, (2 << (nYieldSurfaces-1)), (nYieldSurfaces+1)> yieldSurfaceCombinations;
     public:
+            Array<bool, (1 << nYieldSurfaces ) -1, (nYieldSurfaces+1)> yieldSurfaceCombinations;
             typedef Array<bool, 1, nYieldSurfaces>    YieldSurfFlagArr;
             typedef Array<double, 1, nYieldSurfaces>  YieldSurfResArr;
 
@@ -19,22 +19,18 @@ namespace bft{
     };
 }
 
-#include <cmath>
-
 namespace bft{
     template <int n>
     YieldSurfaceCombinationManager<n>::YieldSurfaceCombinationManager():
             idxUsedFlag(n)
     {
         yieldSurfaceCombinations.setZero();
-        const int numRows = 2<<(n-1);
-        const int numCols = n+1;
+        const int numRows = (1 << n) -1;
+        const int numCols = n;
 
         for(int row = 0; row < numRows; row++)
-            for(int col = 0; col < numCols-1; col++)
-                yieldSurfaceCombinations(row,col) = (row+1)& static_cast<int>(std::pow(2.0,col));
-
-        yieldSurfaceCombinations.col(numCols-1).setConstant(false);
+            for(int col = 0; col < numCols; col++)
+                yieldSurfaceCombinations(row,col) = (row+1) & 1<<(col);
         return;
     }
 
@@ -43,10 +39,9 @@ namespace bft{
     {
         for(int i = 0; i < yieldSurfaceCombinations.rows(); i++)
         {
-
             bool alreadyUsed = yieldSurfaceCombinations.row(i)(idxUsedFlag);
             YieldSurfFlagArr combinationCandidate = yieldSurfaceCombinations.row(i).head(n);
-            if(!alreadyUsed && !(combinationCandidate == activeSurfaces).all() )
+            if(!alreadyUsed &&  (combinationCandidate==true).any() )
             {
                     activeSurfaces = combinationCandidate;
                     return true;

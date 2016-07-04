@@ -139,13 +139,13 @@ namespace bft{
                 Vector3d hw;
                 const double J2_ = J2strain(strain);
 
-                hw(0) = I1(strain)/ sqrt(3.0);		//will be changed to eM if used
+                hw(0) = I1(strain)/ sqrt3;		//will be changed to eM if used
                 hw(1) = sqrt(2 * J2_);
 
 				if (hw(1)!=0)
 				{
 					const double J3_ = J3strain(strain);
-					const double x =  3.*(sqrt(3.0)/2.) * J3_ / (pow(J2_, 3./2));
+					const double x =  3.*(sqrt3/2.) * J3_ / (pow(J2_, 3./2));
 					if(x<= -1)
 							hw(2) = 1./3 * Constants::Pi;
 					else if(x>= 1)
@@ -172,9 +172,9 @@ namespace bft{
 				//if you wanna sort your eigenvalues after size
 				Vector3d hw = haighWestergaardStrain(voigtStrain);
 				Vector3d strainPrinc;
-				strainPrinc <<	hw(0)/std::sqrt(3.)+std::sqrt(2./3)*hw(1)*std::cos(hw(2)),
-								hw(0)/std::sqrt(3.)+std::sqrt(2./3)*hw(1)*(-std::sin(Constants::Pi/6.-hw(2))),
-								hw(0)/std::sqrt(3.)+std::sqrt(2./3)*hw(1)*(-std::sin(Constants::Pi/6.+hw(2)));
+				strainPrinc <<	hw(0)/sqrt3+sqrt2_3*hw(1)*std::cos(hw(2)),
+								hw(0)/sqrt3+sqrt2_3*hw(1)*(-std::sin(Constants::Pi/6.-hw(2))),
+								hw(0)/sqrt3+sqrt2_3*hw(1)*(-std::sin(Constants::Pi/6.+hw(2)));
 				return strainPrinc;
         }
 
