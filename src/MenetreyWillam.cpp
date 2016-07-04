@@ -1,6 +1,8 @@
 #include "MenetreyWillam.h"
 #include <cmath>
 #include "bftConstants.h"
+#include "bftFunctions.h"
+#include <sstream>
 
 namespace bft{
     namespace MW
@@ -29,7 +31,7 @@ namespace bft{
 
         double dRdTheta(double theta, double e,  double rNumerator, double rDenominator)
         {
-                // computes the derivate for a given r (defined by its numerator, denominator, calculated by r()), 
+            // computes the derivate for a given r (defined by its numerator, denominator, calculated by r()), 
 
             if(e>=1.0)
                     return 0;
@@ -38,12 +40,18 @@ namespace bft{
             const double cos2Theta =        cosTheta * cosTheta;
             const double sinTheta =         std::sin(theta);
             const double e2 = e*e;
+			const double a = rNumerator;
+			const double b = 1./rDenominator;
+			const double aux = 4*(1-e2)*cos2Theta+ 5*e2 -4*e;
+			const double dAuxdTheta = 4 * (1-e2)*2*cosTheta*-sinTheta;
 
             const double dadTheta =         2 * cosTheta * (-sinTheta) * 4 * (1-e2);
-            const double dbdTheta =         - pow(rDenominator,-2)  * (2*(1-e2)*(-sinTheta) +(2*e-1)/
-                                            (2 * std::sqrt(4*(1-e2)*cos2Theta+5*e2 -4*e)) * (4*(1-e2)*2*cosTheta*(-sinTheta)));
-
-            return 1./rDenominator * dadTheta + rNumerator * dbdTheta;
+            //const double dbdTheta =         - pow(rDenominator,-2)  * (2*(1-e2)*(-sinTheta) +(2*e-1)/ (2 * std::sqrt(aux)) * (4*(1-e2)*2*cosTheta*(-sinTheta)));
+			const double dbdTheta =			- pow(rDenominator,-2) * ( 2*(1-e2)*-sinTheta    + (2*e-1)*1./2 * pow(aux, -1./2) * dAuxdTheta);
+			 
+				// r = a * b 
+				//	 = num * den^-1
+            return b * dadTheta + a * dbdTheta;
         }
 
         double e(double fc, double ft)
@@ -89,7 +97,8 @@ namespace bft{
             const double dRdTheta_ = dRdTheta(theta, e, rNum, rDen);
 
             dFdXi =         m * Cf;
-            dFdRho =        2*Af*rho +  m*Bf*r_;
+			//BUGFIX AF*AF
+            dFdRho =        2*Af*Af*rho +  m*Bf*r_;
             dFdTheta =       m*Bf*rho*dRdTheta_;
         }
 
@@ -110,7 +119,8 @@ namespace bft{
             const double auxTerm1 = m * 1./2 * std::pow( Bf*Bf*rho*rho*r_*r_ + varEps*varEps, -1./2) * 2*Bf*rho*r_ * Bf;
 
             dFdXi =         m * Cf;
-            dFdRho =        Af*Af*rho*rho + auxTerm1 * r_;
+			//BUGFIX 2*Af*Af*rho 
+            dFdRho =        2*Af*Af*rho + auxTerm1 * r_;
             dFdTheta =      auxTerm1 * rho * dRdTheta_;
         }
 
@@ -143,10 +153,10 @@ namespace bft{
 
         void MohrCoulombParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc)
         {
-            Af =    0;
-            Bf =    1./sqrt6 * (fc +2*ft)/(fc*ft);
-            Cf =    1./sqrt3 * (fc-ft)/(fc*ft);
-            m =     1;
+            Af =    0.;
+            Bf =    1./sqrt6 * (fc +2.*ft)/(fc*ft);
+            Cf =    1./sqrt3 * (fc - ft)/(fc*ft);
+            m =     1.;
             e =     (fc+2*ft)/(2*fc +ft);
         }
 
