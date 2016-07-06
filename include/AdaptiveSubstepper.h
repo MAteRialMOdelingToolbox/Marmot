@@ -129,6 +129,8 @@ namespace bft{
             case SecondHalfStep:{
                 return 0.5 * currentSubstepSize;
                 break;}
+            default:
+                                return -1.0;
         }
     }
     template<size_t n, size_t nState>
@@ -261,6 +263,8 @@ namespace bft{
 
                     return true;}
              }
+            else
+                return false;
     }
 
     template<size_t n, size_t nState>
@@ -314,11 +318,11 @@ namespace bft{
     template<size_t n, size_t nState>
     bool AdaptiveSubstepper<n, nState>::splitCurrentSubstep()
     {
-        if(currentSubstepSize < 2 * minimumStepSize)
+        if(currentSubstepSize < 2 * minimumStepSize){
             if( ignoreErrorToleranceOnMinimumStepSize)
                 return acceptSubstepWithFullStepOnly();
             else 
-                return false;
+                return false;}
 
        consistentTangentProgressFullTemp = consistentTangentProgressHalfTemp;
        stressProgressFullTemp = stressProgressHalfTemp;
