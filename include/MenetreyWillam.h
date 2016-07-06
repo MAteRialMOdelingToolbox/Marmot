@@ -51,5 +51,5 @@ namespace bft{
         void    DruckerPragerParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc);
         void    MohrCoulombParameters(double& Af, double&Bf, double& Cf, double&m, double& e, double ft, double fc);
 
-    };
+    }
 }
