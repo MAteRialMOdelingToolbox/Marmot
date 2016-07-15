@@ -303,15 +303,15 @@ namespace bft{
 		{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double theta = hw(2);
-            const double cos3Theta = std::cos(3*theta);
 		
-			if (fabs(std::pow(cos3Theta,2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
+            if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
+			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
 			{
-				return 0.0;
+				return 1e16;
 			}
 			else
 			{
-				return 3.*sqrt3/4.*J3strain(strain)/( std::pow(J2strain(strain),5./2) *std::sqrt(1.-std::pow(cos3Theta,2.)));
+				return 3.*std::sqrt(3.)/4.*J3strain(strain)/( std::pow(J2strain(strain),5./2) *std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
 			}
 		}
 
@@ -319,15 +319,15 @@ namespace bft{
 		{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double& theta = hw(2);
-            const double cos3Theta = std::cos(3*theta);
 
-			if (fabs(std::pow(cos3Theta,2.)-1.)<=1e-16)// || J2strain(strain)==0)
+			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)// || J2strain(strain)==0)
+            if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
 			{
-				return 0.0;
+				return -1e16;
 			}
 			else
 			{
-				return -sqrt3_2*1./(std::pow(J2strain(strain),3./2)*std::sqrt(1.-std::pow(cos3Theta,2.)));
+				return -std::sqrt(3.)/2.*1./   (std::pow(J2strain(strain),3./2)*std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
 			}
 		}
 		
@@ -343,7 +343,8 @@ namespace bft{
 		}
 
 		Vector6 dThetaE_dE(const Vector6& strain)
-		{
+        
+        {
 			return dThetaE_dJ2E(strain)*dJ2E_dE(strain) + dThetaE_dJ3E(strain)*dJ3E_dE(strain);
 		}
 
@@ -374,6 +375,7 @@ namespace bft{
 				Vector3d dEpPrinc_dEprho = Vector3d::Zero();
 				Vector3d dEPprinc_dEptheta = Vector3d::Zero();
 									
+				const double sqrt2_3 =		std::sqrt(2./3.);
 				const Vector3d hw =			haighWestergaardStrain(dEp);				
 				const double& epsM =		hw(0);
 				const double& rhoE =		hw(1);
@@ -414,6 +416,6 @@ namespace bft{
 		{
 			return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
-
     }
+
 }
