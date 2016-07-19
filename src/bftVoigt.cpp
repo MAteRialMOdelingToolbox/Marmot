@@ -1,4 +1,5 @@
 #include "bftVoigt.h"
+#include "bftFunctions.h"
 #include "bftConstants.h"
 
 namespace bft{
@@ -413,9 +414,7 @@ namespace bft{
 		}
 		
 		RowVector6d dDeltaEpvneg_dE(const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep)
-		{
-			return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
+		{	
+				return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
-    }
-
 }
