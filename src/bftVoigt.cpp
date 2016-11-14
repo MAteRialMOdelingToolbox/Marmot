@@ -40,6 +40,34 @@ namespace bft{
         {
             return scalar >= 0 ? 1 : 0;
         }
+
+        Matrix3d getPlaneStressTangent(const Matrix6& C)
+        {
+
+            Matrix6 CInv = C.inverse();
+            Matrix3d CPlaneStressInv = Matrix3d::Zero();
+
+            CPlaneStressInv.topLeftCorner(2,2) = CInv.topLeftCorner(2,2);	
+            CPlaneStressInv(2,2) = CInv(3,3);
+	        CPlaneStressInv.block<1,2>(2,0) = CInv.block<1,2>(3,0);
+	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
+
+            Matrix3d CPlaneStress = CPlaneStressInv.inverse();
+            return CPlaneStress;
+
+        } 
+
+        Matrix3d getPlaneStrainTangent(const Matrix6& C)
+        {
+		    Matrix3d CPlaneStrain = Matrix3d::Zero();
+		    CPlaneStrain.topLeftCorner(2,2) = C.topLeftCorner(2,2);	
+            CPlaneStrain(2,2) = C(3,3);
+		    CPlaneStrain.block<1,2>(2,0) = C.block<1,2>(3,0);
+		    CPlaneStrain.block<2,1>(0,2) = C.block<2,1>(0,3);
+
+            return CPlaneStrain;
+        }
+
     }
 	//****************************************************
     namespace Vgt{
@@ -245,7 +273,8 @@ namespace bft{
 
 		double J2strain(const Vector6& strain)
 		{
-				return 1./3.*std::pow(I1(strain),2.) - I2strain(strain);
+				double res = 1./3.*std::pow(I1(strain),2.) - I2strain(strain);
+				return res >= 0 ? res : 0.0;
         }
 
         double J3(const Vector6& stress)
@@ -417,4 +446,5 @@ namespace bft{
 		{	
 				return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
+	}
 }
