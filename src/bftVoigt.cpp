@@ -447,9 +447,8 @@ namespace bft{
 		{	
 				return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
-<<<<<<< HEAD
+
 	}
 }
-=======
-}}
->>>>>>> 1b57103b9771eee8d43c5541b04aee651a698272
+
+
