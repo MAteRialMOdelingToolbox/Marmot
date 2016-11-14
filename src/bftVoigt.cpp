@@ -273,8 +273,9 @@ namespace bft{
 
 		double J2strain(const Vector6& strain)
 		{
-				double res = 1./3.*std::pow(I1(strain),2.) - I2strain(strain);
-				return res >= 0 ? res : 0.0;
+				const double res = 1./3.*std::pow(I1(strain),2.) - I2strain(strain);
+                return res > 0 ? res : 0;
+
         }
 
         double J3(const Vector6& stress)
@@ -335,9 +336,9 @@ namespace bft{
 			const double theta = hw(2);
 		
             if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
-			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
+			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-14)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
 			{
-				return 1e16;
+				return 1e14;
 			}
 			else
 			{
@@ -350,10 +351,10 @@ namespace bft{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double& theta = hw(2);
 
-			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)// || J2strain(strain)==0)
+			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-14)// || J2strain(strain)==0)
             if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
 			{
-				return -1e16;
+				return -1e14;
 			}
 			else
 			{
@@ -425,14 +426,14 @@ namespace bft{
 				RowVector6d dEprho_dEp = RowVector6d::Zero();
 				RowVector6d dEptheta_dEp = RowVector6d::Zero();
 
-				if (rhoE!=0)
+				if (std::abs(rhoE) > 1e-14)
 				{
 					dEprho_dEp = 1./rhoE * dJ2E_dE(dEp).transpose();
 					dEptheta_dEp = (dThetaE_dJ2E(dEp)*dJ2E_dE(dEp).transpose()) + (dThetaE_dJ3E(dEp) *dJ3E_dE(dEp).transpose());
 				}
 				else
 				{
-					dEprho_dEp << 1.e16,1.e16,1.e16,1.e16,1.e16,1.e16;//1e16 from Code David (Line 67, D_2_Umatsub_damage3_derivatives)
+					dEprho_dEp << 1.e14,1.e14,1.e14,1.e14,1.e14,1.e14;//1e14 from Code David (Line 67, D_2_Umatsub_damage3_derivatives)
 					dEptheta_dEp << 0.,0.,0.,0.,0.,0.;
 				}
 
@@ -446,5 +447,9 @@ namespace bft{
 		{	
 				return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
+<<<<<<< HEAD
 	}
 }
+=======
+}}
+>>>>>>> 1b57103b9771eee8d43c5541b04aee651a698272
