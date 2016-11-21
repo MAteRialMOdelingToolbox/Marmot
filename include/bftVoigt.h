@@ -66,6 +66,8 @@ namespace bft
         Matrix3d voigtToStress(const Vector6& stressVector);
         Vector6 strainToVoigt(const Matrix3d& strainTensor);
         Vector6 stressToVoigt(const Matrix3d& stressTensor);
+        Vector3d voigtToPlaneVoigt(const Vector6& voigt);
+        Vector6 planeVoigtToVoigt(const Vector3d& voigtPlane);
 		Vector3d haighWestergaard(const Vector6& stress);
 		Vector3d haighWestergaardStrain(const Vector6& strain);
 

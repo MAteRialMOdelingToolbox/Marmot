@@ -1,6 +1,7 @@
 #include "bftVoigt.h"
 #include "bftFunctions.h"
 #include "bftConstants.h"
+#include <iostream>
 
 namespace bft{
 
@@ -53,6 +54,15 @@ namespace bft{
 	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
 
             Matrix3d CPlaneStress = CPlaneStressInv.inverse();
+
+            for (int i=0; i<3; i++)
+            {
+             for (int j=0; j<3; j++)
+                {
+                    if (std::isnan(CPlaneStress(i,j)))
+                        std::cout << "Entry" << i << j << " of reduced material tangent plane stress is NAN" << std::endl;
+                }
+            }
             return CPlaneStress;
 
         } 
@@ -64,6 +74,15 @@ namespace bft{
             CPlaneStrain(2,2) = C(3,3);
 		    CPlaneStrain.block<1,2>(2,0) = C.block<1,2>(3,0);
 		    CPlaneStrain.block<2,1>(0,2) = C.block<2,1>(0,3);
+        
+        for (int i=0; i<3; i++)
+        {
+         for (int j=0; j<3; j++)
+            {
+                if (std::isnan(CPlaneStrain(i,j)))
+                    std::cout << "Entry" << i << j << " of reduced material tangent plane strain is NAN" << std::endl;
+            }
+        }
 
             return CPlaneStrain;
         }
@@ -141,6 +160,27 @@ namespace bft{
                     stressTensor(0,0), stressTensor(1,1), stressTensor(2,2), 
                     stressTensor(0,1), stressTensor(0,2), stressTensor(1,2);
             return stress;
+        }
+
+        Vector3d voigtToPlaneVoigt(const Vector6& voigt)
+        {
+            /* converts a 6d voigt Vector with Abaqus notation 
+             S11, S22, S33, S12, S13, S23 
+             to a 3d Vector S11, S22, S12 */
+            Vector3d voigtPlane;
+            voigtPlane << voigt[0], voigt[1], voigt[3];
+            return voigtPlane;
+        }
+
+        Vector6 planeVoigtToVoigt(const Vector3d& voigtPlane)
+        {
+            /* converts a 3d voigt Vector with notation 
+             S11, S22, S12 to a Vector6 with
+             S11, S22, S33, S12, S13, S23 
+             !!! Don't use if 3rd component is NOT ZERO !!!*/
+            Vector6 voigt;
+            voigt << voigtPlane[0], voigtPlane[1], 0, voigtPlane[2], 0, 0;
+            return voigt;
         }
 
 		Vector3d haighWestergaard(const Vector6& stress)
