@@ -7,5 +7,7 @@
 
 namespace bft{
     void backToAbaqus(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian, const Vector6& stress, Map<VectorXd>& ABQStress, int nTensor);
+    void backToAbaqusPlaneStress(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian, const Vector6& stress, Map<VectorXd>& ABQStress);
     void discardIncrementAndBackToAbaqus(double& pNewDT, double value, const std::string& message);
+
 }

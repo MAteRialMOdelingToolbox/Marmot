@@ -45,7 +45,8 @@ namespace bft{
         Matrix3d getPlaneStressTangent(const Matrix6& C)
         {
 
-            Matrix6 CInv = C.inverse();
+            Matrix6 CInv = C.householderQr().solve(Matrix6::Identity());
+                       // dX = J(X,Cel,activeSurfaces).householderQr().solve(residual); 
             Matrix3d CPlaneStressInv = Matrix3d::Zero();
 
             CPlaneStressInv.topLeftCorner(2,2) = CInv.topLeftCorner(2,2);	
@@ -55,6 +56,7 @@ namespace bft{
 
             Matrix3d CPlaneStress = CPlaneStressInv.inverse();
 
+            /*
             for (int i=0; i<3; i++)
             {
              for (int j=0; j<3; j++)
@@ -62,7 +64,7 @@ namespace bft{
                     if (std::isnan(CPlaneStress(i,j)))
                         std::cout << "Entry" << i << j << " of reduced material tangent plane stress is NAN" << std::endl;
                 }
-            }
+            }*/
             return CPlaneStress;
 
         } 
