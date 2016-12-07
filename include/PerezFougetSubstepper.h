@@ -2,6 +2,9 @@
 #include "bftTypedefs.h"
 #include "bftFunctions.h"
 
+/* Deprecated, do not use anymore (!)
+ * */
+
 namespace bft{
 
     template <int nSizeMatTangent>
