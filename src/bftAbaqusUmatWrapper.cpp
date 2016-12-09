@@ -60,7 +60,7 @@ namespace bft{
 
     void umatPlaneStress(	Ref<Matrix6> Cep,
 	                        Ref<Vector6> stress,
-                            Ref<VectorXd> stateVarLocal,
+                            Ref<VectorXd> stateVars,
 	                        const Ref<const Vector6>& strain,
 	                        Ref<Vector6> dStrain,
                             const Ref<const VectorXd>& matProps,
@@ -73,60 +73,42 @@ namespace bft{
                             const int materialID,
                             pUmatType umatPointer)
     {
-        if (isNaN(stress))
-            std::cout << "PLANE STRESS WRAPPER RECEIVED NAN STRESS" << std::endl;
+        bool planeStressConvergence =   false;
+        int planeStressCount =          1;
 
-        bool planeStressConvergence = false;
-        int planeStressCount = 1;
-        bool flagDebug = true;
+        const int nDirect =             3;
+        const int nShear =              3;
+        const int nTensor =             6;
 
-        const int nDirect = 3;
-        const int nShear = 3;
-        const int nTensor = 6;
+        Vector6 stressTemp ;
+        VectorXd stateVarsTemp;
+        Vector6 dStrainTemp = dStrain;
 
-        Vector6d stressTemp ;
-        VectorXd stateVarTemp ;
-        Vector6d dStrainTemp = dStrain;
-
-        while (planeStressConvergence == false)
+        while (true)
             {
-                stressTemp      = stress;
-                stateVarTemp    = stateVarLocal;
+                stressTemp =        stress;
+                stateVarsTemp =     stateVars;
 
-	            simpleUmat(Cep, stressTemp, stateVarTemp, strain, dStrainTemp, 
+	            simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
                             matProps, nProps, pNewdT, charElemlen, time, 
                             dT, nDirect, nShear, nTensor, noEl, materialID, umatPointer);
 
-                if (stressTemp.array().abs()[2]<1.e-8)
-                {
-                    planeStressConvergence = true;
-                    break;
-                }
+                if (stressTemp.array().abs()[2]<1.e-8) {
+                    break;}
 
-                if (Cep(2,2) < 1.e-10)
-                {   
-                    std::cout << "division by 0 Cep: " << Cep(2,2) << std::endl;
-                    Cep(2,2) = 1.e-10;
-                } 
-                if (isNaN(dStrainTemp))
-                    std::cout <<  planeStressCount << "    PlaneStressLoop dStrain\n" << dStrain << std::endl;
-                               
-                dStrainTemp[2] -= 1./Cep(2,2) * ( stressTemp[2] );
+                if (Cep(2,2) < 1.e-12) 
+                    Cep(2,2) = 1.e-12; 
+
+                dStrainTemp[2] -= 1./Cep(2,2) *  stressTemp[2];
                  
                 planeStressCount += 1;
-
-                if (planeStressCount > 30)
-                {
-                    std::cout << "PlaneStressWrapper: too many iterations; R[i] was "<< stressTemp.array().abs()[2] <<"ELEMENT " << noEl <<  "time" << time[2] << std::endl;
+                if (planeStressCount > 10) {
                     pNewdT = 0.25;
-                    std::cout << "dT was " << dT << " pNewDt is " << pNewdT << std::endl;
-                    return; 
-                }
+                    return; }
             }
 
-        dStrain = dStrainTemp;
-        stress = stressTemp;
-        stateVarLocal = stateVarTemp;
+        dStrain =   dStrainTemp;
+        stress =    stressTemp;
+        stateVars = stateVarsTemp;
     }
-
-}//end of namespace bft
+}

@@ -1,8 +1,4 @@
 #pragma once 
-
-
-#include "Eigen/Core"
-#include "Eigen/Dense"
 #include "bftTypedefs.h"
 
 namespace bft{
@@ -24,18 +20,18 @@ namespace bft{
                         const int materialID,
                         pUmatType umatPointer);
 
-    void umatPlaneStress(	 Ref<Matrix6> Cep,
-			         Ref<Vector6d> stress,
-                     Ref<VectorXd> stateVarLocal,
-			         const Ref<const Vector6d>& strain,
-			         Ref<Vector6d> dStrain,
-                    const  Ref<const Eigen::VectorXd>& matProps,
-	                const int nProps,
-                    double& pNewdT,
-                    const double charElemlen,
-                    const double time[2],
-                    const double dT,
-	                const int noEl,
-                    const int materialID,
-                    pUmatType umatPointer);
+    void umatPlaneStress(	Ref<Matrix6> Cep,
+	                        Ref<Vector6> stress,
+                            Ref<VectorXd> stateVars,
+	                        const Ref<const Vector6>& strain,
+	                        Ref<Vector6> dStrain,
+                            const Ref<const VectorXd>& matProps,
+	                        const int nProps,
+                            double& pNewdT,
+                            const double charElemlen,
+                            const double time[2],
+                            const double dT,
+	                        const int noEl,
+                            const int materialID,
+                            pUmatType umatPointer);
 }//end of namespace bft
