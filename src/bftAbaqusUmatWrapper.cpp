@@ -1,3 +1,4 @@
+#include "bftAbaqusUmatWrapper.h"
 #include "bftVoigt.h"
 #include "bftTypedefs.h"
 #include <iostream>
@@ -73,39 +74,116 @@ namespace bft{
                             const int materialID,
                             pUmatType umatPointer)
     {
-        bool planeStressConvergence =   false;
         int planeStressCount =          1;
-
-        const int nDirect =             3;
-        const int nShear =              3;
-        const int nTensor =             6;
 
         Vector6 stressTemp ;
         VectorXd stateVarsTemp;
         Vector6 dStrainTemp = dStrain;
+        
+        //assumption of isochoric deformation for initial guess
+        dStrainTemp(2) = (- dStrain(0) - dStrain(1));
 
         while (true)
             {
                 stressTemp =        stress;
                 stateVarsTemp =     stateVars;
 
-	            simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
+                simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
                             matProps, nProps, pNewdT, charElemlen, time, 
-                            dT, nDirect, nShear, nTensor, noEl, materialID, umatPointer);
+                            dT, 3, 3, 6, noEl, materialID, umatPointer);
 
-                if (stressTemp.array().abs()[2]<1.e-8) {
+                if(pNewdT < 1.0){
+                    pNewdT = 1e36;
+                    return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
+                            dStrain, matProps, nProps, pNewdT, charElemlen, 
+                            time, dT, noEl, materialID, umatPointer);
+                    //{pNewDt = 0.25; return;}
+                }
+
+                double residual = stressTemp.array().abs()[2];
+
+                if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-5) ) {
                     break;}
 
-                if (Cep(2,2) < 1.e-12) 
-                    Cep(2,2) = 1.e-12; 
+                double tangentCompliance = 1./Cep(2,2);
+                if(isNaN(tangentCompliance) || std::abs(tangentCompliance) > 1e10)
+                    tangentCompliance=1e10;
 
-                dStrainTemp[2] -= 1./Cep(2,2) *  stressTemp[2];
+                dStrainTemp[2] -= tangentCompliance *  stressTemp[2];
                  
                 planeStressCount += 1;
-                if (planeStressCount > 10) {
-                    pNewdT = 0.25;
-                    return; }
+                if (planeStressCount > 10)
+                    return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
+                            dStrain, matProps, nProps, pNewdT, charElemlen, 
+                            time, dT, noEl, materialID, umatPointer);
+                    // {pNewDt = 0.25; return;}
             }
+
+        dStrain =   dStrainTemp;
+        stress =    stressTemp;
+        stateVars = stateVarsTemp;
+    }
+
+    void umatPlaneStressBisectionMethod(	Ref<Matrix6> Cep,
+	                        Ref<Vector6> stress,
+                            Ref<VectorXd> stateVars,
+	                        const Ref<const Vector6>& strain,
+	                        Ref<Vector6> dStrain,
+                            const Ref<const VectorXd>& matProps,
+	                        const int nProps,
+                            double& pNewdT,
+                            const double charElemlen,
+                            const double time[2],
+                            const double dT,
+	                        const int noEl,
+                            const int materialID,
+                            pUmatType umatPointer)
+    {
+        int planeStressCount = 1;
+
+        Vector6 stressTemp ;
+        VectorXd stateVarsTemp;
+        Vector6 dStrainTemp = dStrain;
+
+
+        // factor 2 is arbitrary, maybe it can be improved
+        double dStrainOutside = 2 * std::abs(dStrain(0)) > std::abs(dStrain(1)) ? -dStrain(0) : -dStrain(1);
+        double dStrainInside = -dStrainOutside;
+        double sgn = dStrainOutside > 0 ? 1 : -1;
+
+        double dStrainCenter;
+        double s33;
+
+        std::ostringstream str;
+
+        while (true){
+            planeStressCount +=1;
+            stressTemp =        stress;
+            stateVarsTemp =     stateVars;
+
+            dStrainCenter  = (dStrainInside + dStrainOutside) / 2;
+            dStrainTemp(2) = dStrainCenter;
+            simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
+                        matProps, nProps, pNewdT, charElemlen, time, 
+                        dT, 3, 3, 6, noEl, materialID, umatPointer);
+
+            if (pNewdT < 1.0)
+                return ;
+
+            if(planeStressCount > 20) {
+                pNewdT = 0.25;
+                return; }
+
+            s33 = stressTemp(2);
+
+            if (std::abs(s33)<1.e-10 || (planeStressCount > 15 && std::abs(s33)<1.e-2 ) ) 
+                break;
+
+            if( (s33 < 0  && sgn > 0) || (s33 >= 0 && sgn < 0) )
+                dStrainInside = dStrainCenter;
+            else
+                dStrainOutside = dStrainCenter;
+        }
 
         dStrain =   dStrainTemp;
         stress =    stressTemp;

@@ -34,4 +34,19 @@ namespace bft{
 	                        const int noEl,
                             const int materialID,
                             pUmatType umatPointer);
+
+    void umatPlaneStressBisectionMethod (Ref<Matrix6> Cep,
+	                        Ref<Vector6> stress,
+                            Ref<VectorXd> stateVars,
+	                        const Ref<const Vector6>& strain,
+	                        Ref<Vector6> dStrain,
+                            const Ref<const VectorXd>& matProps,
+	                        const int nProps,
+                            double& pNewdT,
+                            const double charElemlen,
+                            const double time[2],
+                            const double dT,
+	                        const int noEl,
+                            const int materialID,
+                            pUmatType umatPointer);
 }//end of namespace bft
