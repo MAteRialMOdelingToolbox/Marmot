@@ -2,6 +2,10 @@
 #include "bftTypedefs.h"
 #include "bftFunctions.h"
 
+/* Adaptive Substepper, employing an error estimation and 
+ * Richardson Extrapolation for an Implicit Return Mapping algorithm
+ * */
+
 namespace bft{
 
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
