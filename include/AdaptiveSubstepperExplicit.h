@@ -22,6 +22,8 @@ namespace bft{
                 void setConvergedProgress(const Vector6& stressOld, const IntegrationStateVector& stateVarsOld);
                 bool isFinished();
                 double getNextSubstep();
+                int getNumberOfSubsteps();
+                int getNumberDiscardedSubstepsDueToError();
                 bool finishSubstep(const Vector6& resultStress, 
                         const TangentSizedMatrix& dXdY, 
                         const TangentSizedMatrix& dYdXOld, 
@@ -51,6 +53,7 @@ namespace bft{
                 double currentSubstepSize;
                 int passedSubsteps;
                 int substepIndex;
+                int discardedDueToError;
                 
                 // internal storages for the progress of the total increment
                 Vector6                 stressProgress;
@@ -95,7 +98,8 @@ namespace bft{
                                                     currentProgress(0.0),
                                                     currentSubstepSize(initialStepSize),
                                                     passedSubsteps(0),
-                                                    substepIndex(-1)
+                                                    substepIndex(-1),
+                                                    discardedDueToError(0)
     {
             consistentTangentProgress = MatrixStateStrain::Zero();
             consistentTangentProgressFullTemp = MatrixStateStrain::Zero();
@@ -267,11 +271,13 @@ namespace bft{
 
                 //Error large than tolerance?
                 if( error > integrationErrorTolerance){
+                    discardedDueToError++;
                     passedSubsteps = 0;
                     if (errorRatio < 2) {
                         return splitCurrentSubstep(); }
                     else{
-                        return splitCurrentSubstep(); }
+                        return repeatSubstep(scaleFactor); }
+                        //return splitCurrentSubstep(); }
                 }
                 else{
 
@@ -359,5 +365,15 @@ namespace bft{
        currentState = FirstHalfStep;
 
        return true;
+    }
+    template<size_t n, size_t nState>
+    int AdaptiveSubstepper<n, nState>::getNumberOfSubsteps()
+    {
+        return substepIndex;
+    }
+    template<size_t n, size_t nState>
+    int AdaptiveSubstepper<n, nState>::getNumberDiscardedSubstepsDueToError()
+    {
+        return discardedDueToError;
     }
 }

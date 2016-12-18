@@ -13,5 +13,9 @@ namespace bft{
     typedef Matrix<double,6,1> Vector6;
 	typedef Matrix<double,1,6> RowVector6d;
     typedef Map<Vector6> mVector6;
+	typedef Eigen::Map<Eigen::VectorXd> mVectorXd;
     typedef Map<const Vector6> mConstVector6;
+
+    typedef void (*pUmatType)( double[],double[],double[],double&,double&,double&,double&,double[],double[],double&,const double[],const double[],const double[2],const double&,const double&,const double&,const double[],const double[],const char[80],const int&,const int&,const int&,const int&,const double[],const int&,const double[3],const double[9],double&,const double&,const double[9],const double[9],const int&,const int&,const int&,const int&,const int[4],const int&,const int);
+
 }

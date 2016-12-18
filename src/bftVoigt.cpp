@@ -1,6 +1,7 @@
 #include "bftVoigt.h"
 #include "bftFunctions.h"
 #include "bftConstants.h"
+#include <iostream>
 
 namespace bft{
 
@@ -40,6 +41,32 @@ namespace bft{
         {
             return scalar >= 0 ? 1 : 0;
         }
+
+        Matrix3d getPlaneStressTangent(const Matrix6& C)
+        {
+            Matrix6 CInv = C.inverse(); //.householderQr().solve(Matrix6::Identity());
+            Matrix3d CPlaneStressInv = Matrix3d::Zero();
+
+            CPlaneStressInv.topLeftCorner(2,2) = CInv.topLeftCorner(2,2);	
+            CPlaneStressInv(2,2) = CInv(3,3);
+	        CPlaneStressInv.block<1,2>(2,0) = CInv.block<1,2>(3,0);
+	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
+
+            Matrix3d CPlaneStress = CPlaneStressInv.inverse();
+            return CPlaneStress;
+        } 
+
+        Matrix3d getPlaneStrainTangent(const Matrix6& C)
+        {
+		    Matrix3d CPlaneStrain = Matrix3d::Zero();
+		    CPlaneStrain.topLeftCorner(2,2) = C.topLeftCorner(2,2);	
+            CPlaneStrain(2,2) = C(3,3);
+		    CPlaneStrain.block<1,2>(2,0) = C.block<1,2>(3,0);
+		    CPlaneStrain.block<2,1>(0,2) = C.block<2,1>(0,3);
+        
+            return CPlaneStrain;
+        }
+
     }
 	//****************************************************
     namespace Vgt{
@@ -113,6 +140,27 @@ namespace bft{
                     stressTensor(0,0), stressTensor(1,1), stressTensor(2,2), 
                     stressTensor(0,1), stressTensor(0,2), stressTensor(1,2);
             return stress;
+        }
+
+        Vector3d voigtToPlaneVoigt(const Vector6& voigt)
+        {
+            /* converts a 6d voigt Vector with Abaqus notation 
+             S11, S22, S33, S12, S13, S23 
+             to a 3d Vector S11, S22, S12 */
+            Vector3d voigtPlane;
+            voigtPlane << voigt[0], voigt[1], voigt[3];
+            return voigtPlane;
+        }
+
+        Vector6 planeVoigtToVoigt(const Vector3d& voigtPlane)
+        {
+            /* converts a 3d voigt Vector with notation 
+             S11, S22, S12 to a Vector6 with
+             S11, S22, S33, S12, S13, S23 
+             !!! Don't use if 3rd component is NOT ZERO !!!*/
+            Vector6 voigt;
+            voigt << voigtPlane[0], voigtPlane[1], 0, voigtPlane[2], 0, 0;
+            return voigt;
         }
 
 		Vector3d haighWestergaard(const Vector6& stress)
@@ -247,6 +295,7 @@ namespace bft{
 		{
 				const double res = 1./3.*std::pow(I1(strain),2.) - I2strain(strain);
                 return res > 0 ? res : 0;
+
         }
 
         double J3(const Vector6& stress)
@@ -418,4 +467,8 @@ namespace bft{
 		{	
 				return dDeltaEpvneg_dDeltaEpPrincipals(dEp).transpose()*dDeltaEpPrincipals_dDeltaEp(dEp)*dEp_dE(CelInv, Cep);
 		}
-}}
+
+	}
+}
+
+
