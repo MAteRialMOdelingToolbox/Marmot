@@ -21,6 +21,7 @@ namespace bft{
                 void setConvergedProgress(const Vector6& stressOld, const IntegrationStateVector& stateVarsOld);
                 bool isFinished();
                 double getNextSubstep();
+                int getNumberOfSubsteps();
                 bool finishSubstep(const Vector6& resultStress, const TangentSizedMatrix& dXdY, const IntegrationStateVector& stateVars); 
                 void finishElasticSubstep(const Vector6& resultStress); 
                 bool discardSubstep();
@@ -335,5 +336,10 @@ namespace bft{
        currentState = FirstHalfStep;
 
        return true;
+    }
+    template<size_t n, size_t nState>
+    int AdaptiveSubstepper<n, nState>::getNumberOfSubsteps()
+    {
+        return substepIndex;
     }
 }
