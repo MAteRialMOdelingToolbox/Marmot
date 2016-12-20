@@ -58,7 +58,6 @@ namespace bft{
                             const int materialID,
                             pUmatType umatPointer);
 
-
 	void simpleUmatPlaneStressNonLocal(
                             Ref<MatrixXd>                       dStressdStrain,
                             Ref<VectorXd>                       stress,
@@ -68,7 +67,7 @@ namespace bft{
                             double&                             nonLocalRadius,
                             Ref<VectorXd>                       stateVars,
                             const  Ref<const VectorXd>&         strainOld,
-                            const  Ref<const VectorXd>&         dStrain,
+                            Ref<VectorXd>                       dStrain,
                             double                              intParamNonLocalOld,
                             double                              dIntParamNonLocal,
                             const  Ref<const VectorXd>&         matProps,
