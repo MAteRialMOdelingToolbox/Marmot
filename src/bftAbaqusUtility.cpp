@@ -25,6 +25,22 @@ namespace bft{
         return;
     }
 
+    void backToAbaqusNonLocal(  const Matrix6& dStressdStrain,              Ref<MatrixXd>&  ABQdStressDStrain, 
+                                const Vector6& stress,                      Ref<VectorXd>&  ABQStress,
+                                double intParameterLocal,                   double&         ABQParameterLocal,
+                                const Vector6& dStressDIntParamNonLocal,    Ref<VectorXd>   ABQDStressDIntParamNonLocal,
+                                const Vector6& dIntParamLocalDStrain,       Ref<VectorXd>   ABQDIntParameterLocalDStrain,
+                                double nonLocalRadius,                      double&         ABQNonLocalRadius,
+                                int nTensor)
+    {
+        ABQdStressDStrain =             dStressdStrain.topLeftCorner(nTensor, nTensor);
+        ABQStress =                     stress.head(nTensor);
+        ABQParameterLocal =             intParameterLocal;
+        ABQDStressDIntParamNonLocal =   dStressDIntParamNonLocal.head(nTensor);
+        ABQDIntParameterLocalDStrain =  dIntParamLocalDStrain.head(nTensor);
+        ABQNonLocalRadius =             nonLocalRadius;
+    }
+
     void discardIncrementAndBackToAbaqus(double& pNewDT, double value, const std::string& message)
     {
         pNewDT = value;
