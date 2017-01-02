@@ -163,6 +163,30 @@ namespace bft{
             return voigt;
         }
 
+        Vector6 planeStressCompensationStrain(const Vector6& strain, double nu)
+        {
+            /*compute E33 for a given strain, to compute the compensation for 
+             * planeStress = Cel : (strain + compensationStrain) */
+            const Vector6& e = strain;
+            const double strainCorrComp33 = -nu/(1-nu)* (e(0)+e(1)) - e(2);
+            Vector6 result;
+            result << 0,0, strainCorrComp33, 0, 0, 0;
+            return result;
+        }
+
+        Matrix6 planeStressTangentTransformationMatrix(const Matrix6& tangent)
+        {
+            /* Returns the transformation Matrix T which fullfills
+             * planeStressIncrement = C : T * strainIncrement
+             * for isotropic material behavior only!
+             * */
+            Matrix6 T = Matrix6::Identity();
+            const double t31 = -tangent(2,0) / tangent(2,2);
+            const double t32 = -tangent(2,1) / tangent(2,2);
+            T.row(2).head(3) << t31, t32, 0.0;
+            return T;
+        }
+
 		Vector3d haighWestergaard(const Vector6& stress)
         {
             Vector3d hw;
