@@ -61,13 +61,23 @@ namespace bft
                 0,          0,      0,      0,  0,  1};
         const Matrix6& Idev();
 
+
+        // Plane Stress handling
+        Vector3d voigtToPlaneVoigt(const Vector6& voigt);
+        Vector6 planeVoigtToVoigt(const Vector3d& voigtPlane);
+
+        /*compute E33 for a given elastic strain, to compute the compensation for 
+         * planeStress = Cel : (elasticStrain + compensationStrain) */
+        Vector6 planeStressCompensationStrain(const Vector6& elasticStrain, double nu);
+        /* Returns the transformation Matrix T which fullfills
+         * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
+        Matrix6 planeStressTangentTransformationMatrix(const Matrix6& tangent);
+
         // function prototypes for Vector6 handling
         Matrix3d voigtToStrain(const Vector6& strainVector);
         Matrix3d voigtToStress(const Vector6& stressVector);
         Vector6 strainToVoigt(const Matrix3d& strainTensor);
         Vector6 stressToVoigt(const Matrix3d& stressTensor);
-        Vector3d voigtToPlaneVoigt(const Vector6& voigt);
-        Vector6 planeVoigtToVoigt(const Vector3d& voigtPlane);
 		Vector3d haighWestergaard(const Vector6& stress);
 		Vector3d haighWestergaardStrain(const Vector6& strain);
 
