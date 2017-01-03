@@ -72,7 +72,8 @@ namespace bft
         /* Returns the transformation Matrix T which fullfills
          * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
         Matrix6 planeStressTangentTransformationMatrix(const Matrix6& tangent);
-
+        Matrix<double, 6, 3> dStrainDStrainPlaneStress(const Matrix6& tangent);
+        Matrix<double, 3, 6> dStressPlaneStressDStress();
         // function prototypes for Vector6 handling
         Matrix3d voigtToStrain(const Vector6& strainVector);
         Matrix3d voigtToStress(const Vector6& stressVector);

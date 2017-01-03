@@ -44,7 +44,7 @@ namespace bft{
 
         Matrix3d getPlaneStressTangent(const Matrix6& C)
         {
-            Matrix6 CInv = C.inverse(); //.householderQr().solve(Matrix6::Identity());
+            /*Matrix6 CInv = C.inverse(); //.householderQr().solve(Matrix6::Identity());
             Matrix3d CPlaneStressInv = Matrix3d::Zero();
 
             CPlaneStressInv.topLeftCorner(2,2) = CInv.topLeftCorner(2,2);	
@@ -53,19 +53,10 @@ namespace bft{
 	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
 
             Matrix3d CPlaneStress = CPlaneStressInv.inverse();
-            
-            Matrix3d CPlaneStressDirect = Matrix3d::Zero();
-
-            for (int i=0; i<2; i++){
-               for (int j=0; j<2; i++){
-                   CPlaneStressDirect(i,j) = C(i,j) - C(i,2) / C(2,2) * C(2, j);
-                   if ( std::abs(CPlaneStressDirect(i,j) - CPlaneStress(i,j) ) )
-                        std::cout << "ERROR IN PLANE STRESS TANGENT CALCULATION" << std::endl;
-               }
-            }
-            CPlaneStressDirect(2,2) = C(3,3);
-
-            return CPlaneStressDirect;
+            */
+            Matrix3d CPlaneStress = Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress(C);
+          
+            return CPlaneStress;
         } 
 
         Matrix3d getPlaneStrainTangent(const Matrix6& C)
@@ -196,6 +187,26 @@ namespace bft{
             const double t31 = -tangent(2,0) / tangent(2,2);
             const double t32 = -tangent(2,1) / tangent(2,2);
             T.row(2).head(3) << t31, t32, 0.0;
+            return T;
+        }
+
+        Matrix<double, 6, 3> dStrainDStrainPlaneStress(const Matrix6& tangent)
+        {
+            Matrix<double, 6, 3> T = Matrix<double, 6, 3>::Zero();
+            T(0,0) = 1;
+            T(1,1) = 1;
+            T(3,2) = 1;
+            T(2,0) = -tangent(2,0) / tangent(2,2);
+            T(2,1) = -tangent(2,1) / tangent(2,2);
+            return T;
+        }
+        
+        Matrix<double, 3, 6> dStressPlaneStressDStress()
+        {
+            Matrix<double, 3, 6> T = Matrix<double, 3, 6>::Zero();
+            T(0,0) = 1;
+            T(1,1) = 1;
+            T(2,3) = 1;
             return T;
         }
 
