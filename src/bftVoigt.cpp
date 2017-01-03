@@ -53,7 +53,19 @@ namespace bft{
 	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
 
             Matrix3d CPlaneStress = CPlaneStressInv.inverse();
-            return CPlaneStress;
+            
+            Matrix3d CPlaneStressDirect = Matrix3d::Zero();
+
+            for (int i=0; i<2; i++){
+               for (int j=0; j<2; i++){
+                   CPlaneStressDirect(i,j) = C(i,j) - C(i,2) / C(2,2) * C(2, j);
+                   if ( std::abs(CPlaneStressDirect(i,j) - CPlaneStress(i,j) ) )
+                        std::cout << "ERROR IN PLANE STRESS TANGENT CALCULATION" << std::endl;
+               }
+            }
+            CPlaneStressDirect(2,2) = C(3,3);
+
+            return CPlaneStressDirect;
         } 
 
         Matrix3d getPlaneStrainTangent(const Matrix6& C)
