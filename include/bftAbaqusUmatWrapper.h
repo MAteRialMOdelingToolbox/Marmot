@@ -95,4 +95,27 @@ namespace bft{
 	                        const int noEl,
                             const int materialID,
                             pUmatType umatPointer);
+
+    void umatPlaneStressBisectionMethodNonLocal(
+                                Ref<MatrixXd>                       dStressdStrain,
+                                Ref<VectorXd>                       stress,
+                                double&                             intParamLocal,
+                                Ref<Vector6>                        dStressDIntParamNonlocal,
+                                Ref<Vector6>                        dIntParamLocalDStrain,
+                                double&                             nonLocalRadius,
+                                Ref<VectorXd>                       stateVars,
+                                const  Ref<const VectorXd>&         strainOld,
+                                Ref<VectorXd>                       dStrain,
+                                double                              intParamNonLocalOld,
+                                double                              dIntParamNonLocal,
+                                const  Ref<const VectorXd>&         matProps,
+                                double&                             pNewdT,
+                                double                              time[2],
+                                double                              dT,
+                                int                                 nDirect,
+                                int                                 nShear,
+                                int                                 nTensor,
+                                int                                 noEl,
+                                int                                 noGaussPt, 
+                                pUmatType                           umatPointer) ;
 }

@@ -2,6 +2,7 @@
 #include "bftVoigt.h"
 #include "bftTypedefs.h"
 #include <iostream>
+#include "bftFunctions.h"
 
 namespace bft{
 
@@ -104,7 +105,8 @@ namespace bft{
 					            matName, nDirect, nShear, nTensor, stateVars.size(), matProps.data(), matProps.size(), 
 					            &coords[0], &dRot[0], pNewdT, 0.0 , &dfGrd0[0], &dfGrd1[0],
                 				noEl, noPt, layer, kSecPt, &jStep[0], kInc, matNameLength);
-                        }
+       // std::cout << "SIMPLE UMAT STRESS : " << stress << std::endl; 
+    }
 
 
     void umatPlaneStress(	Ref<Matrix6> Cep,
@@ -141,11 +143,11 @@ namespace bft{
                             dT, 3, 3, 6, noEl, materialID, umatPointer);
 
                 if(pNewdT < 1.0){
-                    pNewdT = 1e36;
-                    return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
-                            dStrain, matProps, nProps, pNewdT, charElemlen, 
-                            time, dT, noEl, materialID, umatPointer);
-                    //{pNewDt = 0.25; return;}
+                 //   pNewdT = 1e36;
+                    //return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
+                    //        dStrain, matProps, nProps, pNewdT, charElemlen, 
+                    //        time, dT, noEl, materialID, umatPointer);
+                    {pNewdT = 0.25; return;}
                 }
 
                 double residual = stressTemp.array().abs()[2];
@@ -161,10 +163,10 @@ namespace bft{
                  
                 planeStressCount += 1;
                 if (planeStressCount > 10)
-                    return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
-                            dStrain, matProps, nProps, pNewdT, charElemlen, 
-                            time, dT, noEl, materialID, umatPointer);
-                    // {pNewDt = 0.25; return;}
+                  //  return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
+                   //         dStrain, matProps, nProps, pNewdT, charElemlen, 
+                    //        time, dT, noEl, materialID, umatPointer);
+                     {pNewdT = 0.25; warningToMSG("PlaneStressWrapper requires cutback"); return;}
             }
 
         dStrain =   dStrainTemp;
@@ -200,7 +202,6 @@ namespace bft{
         Vector6 stressTemp ;
         VectorXd stateVarsTemp;
         Vector6 dStrainTemp = dStrain;
-        double intParamLocalTemp;
         //assumption of isochoric deformation for initial guess
         dStrainTemp(2) = (- dStrain(0) - dStrain(1));
 
@@ -208,17 +209,26 @@ namespace bft{
             {
                 stressTemp =        stress;
                 stateVarsTemp =     stateVars;
-                intParamLocalTemp = intParamLocal;
+                
 
-                simpleUmatNonLocal( dStressdStrain, stress, intParamLocalTemp, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
-                        nonLocalRadius, stateVars, strainOld, dStrain, intParamNonLocalOld, dIntParamNonLocal, 
-                        matProps, pNewdT, &time[2], dT, 3, 3, 3, noEl, noGaussPt, umatPointer);
+                simpleUmatNonLocal( dStressdStrain, stressTemp, intParamLocal, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
+                        nonLocalRadius, stateVarsTemp, strainOld, dStrainTemp, intParamNonLocalOld, dIntParamNonLocal, 
+                        matProps, pNewdT, &time[2], dT, 3, 3, 6, noEl, noGaussPt, umatPointer);
 
-                if(pNewdT < 1.0)
-                {return;}
+                //std::cout << "PLANE STRESS WRAPPER STRESS \n" << stress << std::endl;
+
+                if(pNewdT < 1.0){
+                   // pNewdT = 1e36;
+                   // return umatPlaneStressBisectionMethodNonLocal( dStressdStrain, stressTemp, intParamLocal, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
+                   //     nonLocalRadius, stateVarsTemp, strainOld, dStrainTemp, intParamNonLocalOld, dIntParamNonLocal, 
+                   //     matProps, pNewdT, &time[2], dT, 3, 3, 6, noEl, noGaussPt, umatPointer);
+                    {pNewdT = 0.25; return;}
+                }
 
                 double residual = stressTemp.array().abs()[2];
+                
 
+               // std::cout << "Element: " << noEl << "Residual " << residual << std::endl;
                 if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-5) ) {
                     break;}
 
@@ -230,13 +240,16 @@ namespace bft{
                  
                 planeStressCount += 1;
                 if (planeStressCount > 10)
-                     {pNewdT = 0.25; return;}
+                 //   return umatPlaneStressBisectionMethodNonLocal( dStressdStrain, stressTemp, intParamLocal, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
+                  //      nonLocalRadius, stateVarsTemp, strainOld, dStrainTemp, intParamNonLocalOld, dIntParamNonLocal, 
+                   //     matProps, pNewdT, &time[2], dT, 3, 3, 6, noEl, noGaussPt, umatPointer);
+                     {  warningToMSG("PlaneStressWrapper requires cutback");// std::cout << "PLANE STRESS WRAPPER DIDNT CONVERGE" << std::endl;
+                         pNewdT = 0.25; return;}
             }
 
         dStrain =   dStrainTemp;
         stress =    stressTemp;
         stateVars = stateVarsTemp;
-        intParamLocal = intParamLocalTemp;
 
     }
 
@@ -282,6 +295,82 @@ namespace bft{
             simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
                         matProps, nProps, pNewdT, charElemlen, time, 
                         dT, 3, 3, 6, noEl, materialID, umatPointer);
+
+            if (pNewdT < 1.0)
+                return ;
+
+            if(planeStressCount > 20) {
+                pNewdT = 0.25;
+                return; }
+
+            s33 = stressTemp(2);
+
+            if (std::abs(s33)<1.e-10 || (planeStressCount > 15 && std::abs(s33)<1.e-2 ) ) 
+                break;
+
+            if( (s33 < 0  && sgn > 0) || (s33 >= 0 && sgn < 0) )
+                dStrainInside = dStrainCenter;
+            else
+                dStrainOutside = dStrainCenter;
+        }
+
+        dStrain =   dStrainTemp;
+        stress =    stressTemp;
+        stateVars = stateVarsTemp;
+    }
+
+void umatPlaneStressBisectionMethodNonLocal(
+                            Ref<MatrixXd>                       dStressdStrain,
+                            Ref<VectorXd>                       stress,
+                            double&                             intParamLocal,
+                            Ref<Vector6>                        dStressDIntParamNonlocal,
+                            Ref<Vector6>                        dIntParamLocalDStrain,
+                            double&                             nonLocalRadius,
+                            Ref<VectorXd>                       stateVars,
+                            const  Ref<const VectorXd>&         strainOld,
+                            Ref<VectorXd>                       dStrain,
+                            double                              intParamNonLocalOld,
+                            double                              dIntParamNonLocal,
+                            const  Ref<const VectorXd>&         matProps,
+                            double&                             pNewdT,
+                            double                              time[2],
+                            double                              dT,
+                            int                                 nDirect,
+                            int                                 nShear,
+                            int                                 nTensor,
+                            int                                 noEl,
+                            int                                 noGaussPt, 
+                            pUmatType                           umatPointer) {
+        int planeStressCount = 1;
+
+        Vector6 stressTemp ;
+        VectorXd stateVarsTemp;
+        Vector6 dStrainTemp = dStrain;
+
+
+        // factor 2 is arbitrary, maybe it can be improved
+        double dStrainOutside = 2 * std::abs(dStrain(0)) > std::abs(dStrain(1)) ? -dStrain(0) : -dStrain(1);
+        double dStrainInside = -dStrainOutside;
+        double sgn = dStrainOutside > 0 ? 1 : -1;
+
+        double dStrainCenter;
+        double s33;
+
+        std::ostringstream str;
+
+        while (true){
+            planeStressCount +=1;
+            stressTemp =        stress;
+            stateVarsTemp =     stateVars;
+
+            dStrainCenter  = (dStrainInside + dStrainOutside) / 2;
+            dStrainTemp(2) = dStrainCenter;
+            //simpleUmat(Cep, stressTemp, stateVarsTemp, strain, dStrainTemp, 
+                        //matProps, nProps, pNewdT, charElemlen, time, 
+                        //dT, 3, 3, 6, noEl, materialID, umatPointer);
+                simpleUmatNonLocal( dStressdStrain, stressTemp, intParamLocal, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
+                        nonLocalRadius, stateVarsTemp, strainOld, dStrainTemp, intParamNonLocalOld, dIntParamNonLocal, 
+                        matProps, pNewdT, &time[2], dT, 3, 3, 6, noEl, noGaussPt, umatPointer);
 
             if (pNewdT < 1.0)
                 return ;

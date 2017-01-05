@@ -1,14 +1,16 @@
 #include "bftAbaqusUtility.h"
 #include "bftVoigt.h"
 #include "bftFunctions.h"
-
+#include "bftTypedefs.h"
 /*
  * convinience functions for umats in Abaqus
  * */
 
 namespace bft{
 
-    void backToAbaqus(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian, const Vector6& stress, Map<VectorXd>& ABQStress, int nTensor)
+    void backToAbaqus(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian,
+                      const Vector6& stress, Map<VectorXd>& ABQStress,
+                      int nTensor)
     {
         ABQStress =     stress.head(nTensor);
         ABQJacobian =   jacobian.topLeftCorner(nTensor, nTensor);
@@ -25,8 +27,8 @@ namespace bft{
         return;
     }
 
-    void backToAbaqusNonLocal(  const Matrix6& dStressdStrain,              Ref<MatrixXd>&  ABQdStressDStrain, 
-                                const Vector6& stress,                      Ref<VectorXd>&  ABQStress,
+    void backToAbaqusNonLocal(  const Matrix6& dStressdStrain,              Ref<MatrixXd>  ABQdStressDStrain, 
+                                const Vector6& stress,                      Ref<VectorXd>  ABQStress,
                                 double intParameterLocal,                   double&         ABQParameterLocal,
                                 const Vector6& dStressDIntParamNonLocal,    Ref<VectorXd>   ABQDStressDIntParamNonLocal,
                                 const Vector6& dIntParamLocalDStrain,       Ref<VectorXd>   ABQDIntParameterLocalDStrain,
