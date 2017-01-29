@@ -54,9 +54,8 @@ namespace bft{
 
             Matrix3d CPlaneStress = CPlaneStressInv.inverse();
             */
-            Matrix3d CPlaneStress = Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress(C);
+            return Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress(C);
           
-            return CPlaneStress;
         } 
 
         Matrix3d getPlaneStrainTangent(const Matrix6& C)
