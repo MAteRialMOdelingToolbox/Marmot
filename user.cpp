@@ -134,9 +134,9 @@ extern "C" void FOR_NAME(umat)(
         //                                              // additional fields *may* be: procedure key, large deformation flag, perturbation step flag
         const   int &kInc,                              // increment Number
         const   int matNameLength                       // length of Material Name := 80, passed in when FORTRAN calls c/c++: Microsoft C compiler AND GCC (it *may* differ for IntelC++)
-        )                     
-{    
-		const std::string materialName(matName);
+        ){       
+           
+        const std::string materialName(matName);
 
         bft::pUmatType umat = userLibrary::getUmatByName(materialName.substr(0, materialName.find_first_of(' ')));
 
@@ -147,6 +147,11 @@ extern "C" void FOR_NAME(umat)(
                     nProps, coords, dRot, pNewdT, charElemLength, dfGrd0, dfGrd1, noEl, nPt,
                     layer, kSectPt, jStep, kInc, matNameLength);	
 
-       return ; 
+        else if(nDirect == 2)
+            userLibrary::umatPlaneStressWrapped(umat, stress, stateVariables, jacobianSigmaEpsilon, sSE, sPD, sCD, rpl, ddSigma_ddTemp, 
+                    dRpl_dEpsilon, dRpl_dTemp, strain, dStrain, time, dtime, temp, dTemp,
+                    preDef, dPreDef, matName, nDirect, nShear, nTensor, nStatV, props, 
+                    nProps, coords, dRot, pNewdT, charElemLength, dfGrd0, dfGrd1, noEl, nPt,
+                    layer, kSectPt, jStep, kInc, matNameLength);	
 }
 

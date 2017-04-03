@@ -15,5 +15,6 @@ namespace userLibrary{
     bft::pUmatType getUmatByName(const std::string& nameUpperCase);
 
     bft::pSimpleUelWithUmatType getSimpleUelWithUmatById(int id);
+    void umatPlaneStressWrapped(const bft::pUmatType, double[],double[],double[],double&,double&,double&,double&,double[],double[],double&,const double[],const double[],const double[2],const double&,const double&,const double&,const double[],const double[],const char[80],const int&, const int&,const int&,const int&,const double[],const int&,const double[3],const double[9],double&,const double&,const double[9],const double[9],const int&,const int&,const int&,const int&,const int[4],const int&,const int);
 }
 

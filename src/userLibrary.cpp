@@ -88,7 +88,7 @@ namespace userLibrary{
 
         static std::map<int, bft::pSimpleUelWithUmatType> userElements= { 
             #ifdef uelCPE4
-            {10, uelCPE4SimpleUmat} ,
+            {412, uelCPE4SimpleUmat} ,
             #endif
 
             #ifdef uelCPS4 
@@ -107,4 +107,5 @@ namespace userLibrary{
 
     return userElements.at(id);
     }
+
 } 
