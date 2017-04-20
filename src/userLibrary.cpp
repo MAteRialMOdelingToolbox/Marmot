@@ -17,6 +17,12 @@
 #ifdef SchaedlichSchweiger 
     #include "umatSchaedlichSchweiger.h"
 #endif
+#ifdef HoekBrown 
+    #include "umatHoekBrown.h"
+#endif
+#ifdef UntereggerRockMass 
+    #include "umatUntereggerRockMass.h"
+#endif
 
 namespace userLibrary{
     bft::pUmatType getUmatById(int id){
@@ -35,6 +41,12 @@ namespace userLibrary{
             #endif
             #ifdef ModLeonNonLocal 
             {5,   umatModLeonNonLocal},  
+            #endif 
+            #ifdef HoekBrown 
+            {6,   umatHoekBrown},  
+            #endif 
+            #ifdef UntereggerRockMass 
+            {7,   umatUntereggerRockMass},  
             #endif 
             };
 
@@ -58,6 +70,12 @@ namespace userLibrary{
             #endif
             #ifdef ModLeonNonLocal 
             {"MODLEONNONLOCAL",   umatModLeonNonLocal},  
+            #endif
+            #ifdef HoekBrown 
+            {"HOEKBROWN",   umatHoekBrown},  
+            #endif
+            #ifdef UntereggerRockMass 
+            {"UNTEREGGERROCKMASS",   umatUntereggerRockMass},  
             #endif
             };
 

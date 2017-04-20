@@ -138,7 +138,8 @@ extern "C" void FOR_NAME(umat)(
            
         const std::string materialName(matName);
 
-        bft::pUmatType umat = userLibrary::getUmatByName(materialName.substr(0, materialName.find_first_of(' ')));
+
+        bft::pUmatType umat = userLibrary::getUmatByName(  materialName.substr(0, materialName.find_first_of(' ')).substr(0, materialName.find_first_of('-'))  );
 
         if(nDirect == 3) 
             umat(stress, stateVariables, jacobianSigmaEpsilon, sSE, sPD, sCD, rpl, ddSigma_ddTemp, 

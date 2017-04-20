@@ -27,12 +27,14 @@ set(bftMechanicsDir "../bftMechanics/")
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
 
+    HoekBrown
     ModLeon
     ModLeonNonLocal
     Meschke
     SchaedlichSchweiger
     ShotLeon
     SolidificationCreep
+    UntereggerRockMass
 
     uelCPE4
     
