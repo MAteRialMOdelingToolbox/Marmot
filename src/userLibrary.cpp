@@ -75,33 +75,67 @@ namespace userLibrary{
 #ifdef uelCPS4NonLocal
     #include "uelCPS4NonLocalSimpleUmat.h"
 #endif
-
 #ifdef uelCPS8R
     #include "uelCPS8RSimpleUmat.h"
+#endif
+#ifdef uelCPS8NonLocal 
+    #include "uelCPS8NonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPS8RNonLocal 
     #include "uelCPS8RNonLocalSimpleUmat.h"
 #endif
 
+
+/* UEL ID System
+ *
+ * XXXX
+ * ||||_ 4: active fields: 
+ * |||__ 3: type of element 
+ * ||___ 2:  number of nodes
+ * |____ 1:  (number of nodes)
+ *
+ *
+ * active fields:   0: mechanical (=displacement),
+ *                  1: mechanical + nonlocal damage,
+ *
+ * type of element: 1: 1D full integration, 
+ *                  2: 2D full integration, plane stress 
+ *                  3: 3D full integration, 
+ *                  4: 1D red. integration, 
+ *                  5: 2D red. integration, plane stress
+ *                  6: 3D red. integration
+ *                  7: 2D full integration, plane strain 
+ *                  8: 2D red. integration, plane strain 
+ *
+ * examples:
+ *
+ * C3D20:           2003
+ * C3D8:            803
+ * C3D8R:           806
+ * CPS4NonLocal:    412
+ *
+ * */
+
 namespace userLibrary{
     bft::pSimpleUelWithUmatType getSimpleUelWithUmatById(int id){
-
         static std::map<int, bft::pSimpleUelWithUmatType> userElements= { 
             #ifdef uelCPE4
-            {412, uelCPE4SimpleUmat} ,
+            {407, uelCPE4SimpleUmat} ,
             #endif
-
             #ifdef uelCPS4 
             {402, uelCPS4SimpleUmat} ,
             #endif
             #ifdef uelCPS4NonLocal 
-            {403, uelCPS4NonLocalSimpleUmat} ,
+            {412, uelCPS4NonLocalSimpleUmat} ,
             #endif
             #ifdef uelCPS8R
-            {802, uelCPS8RSimpleUmat} ,
+            {805, uelCPS8RSimpleUmat} ,
+            #endif
+            #ifdef uelCPS8NonLocal 
+            {812, uelCPS8NonLocalSimpleUmat} ,
             #endif
             #ifdef uelCPS8RNonLocal 
-            {803, uelCPS8RNonLocalSimpleUmat} ,
+            {815, uelCPS8RNonLocalSimpleUmat} ,
             #endif
         };
 

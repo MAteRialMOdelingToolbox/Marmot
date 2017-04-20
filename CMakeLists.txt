@@ -39,6 +39,7 @@ set (optionalLibraries
     uelCPS4
     uelCPS4NonLocal
     uelCPS8R
+    uelCPS8NonLocal
     uelCPS8RNonLocal
     )
 
