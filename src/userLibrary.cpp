@@ -23,10 +23,13 @@
 #ifdef UntereggerRockMass 
     #include "umatUntereggerRockMass.h"
 #endif
+#ifdef MohrCoulomb 
+    #include "umatMohrCoulomb.h"
+#endif
 
 namespace userLibrary{
     bft::pUmatType getUmatById(int id){
-        static std::map < int, bft::pUmatType> userMaterials= { 
+        static std::map <int, bft::pUmatType> userMaterials= { 
             #ifdef ModLeon 
             {1,   umatModLeon},  
             #endif
@@ -34,7 +37,7 @@ namespace userLibrary{
             {2,   umatShotLeon},  
             #endif
             #ifdef Meschke 
-            {3,   umatMeschke },  
+            {3,   umatMeschke},  
             #endif
             #ifdef SchaedlichSchweiger 
             {4,   umatSchaedlichSchweiger},  
@@ -47,6 +50,9 @@ namespace userLibrary{
             #endif 
             #ifdef UntereggerRockMass 
             {7,   umatUntereggerRockMass},  
+            #endif 
+            #ifdef MohrCoulomb 
+            {8,   umatMohrCoulomb},  
             #endif 
             };
 
@@ -76,6 +82,9 @@ namespace userLibrary{
             #endif
             #ifdef UntereggerRockMass 
             {"UNTEREGGERROCKMASS",   umatUntereggerRockMass},  
+            #endif
+            #ifdef MohrCoulomb 
+            {"MOHRCOULOMB",   umatMohrCoulomb},  
             #endif
             };
 
