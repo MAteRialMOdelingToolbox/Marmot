@@ -1,7 +1,4 @@
 #include "umatLinearElastic.h"
-#include <iostream>
-#include <string>
-#include <cstring>
 #include "bftTypedefs.h"
 #include "bftFunctions.h"
 #include "bftAbaqusUtility.h"
@@ -53,41 +50,25 @@ extern "C" void umatLinearElastic(
         const   int matNameLength                       // length of Material Name := 80, passed in when FORTRAN calls c/c++: Microsoft C compiler
         )                        
 {		
+    //material properties
+    const double& E  =                      props[0];
+    const double& nu =                      props[1];
 
-        //material properties
-        const double& E  =                      props[0];
-        const double& nu =                      props[1];
+    Matrix6 Cel = 							mechanics::Cel(E,nu);
 
-	    // state variables
-        bool& umatIsInitialized =               reinterpret_cast<bool&>(stateVariables[0]);
+    Map<VectorXd>                           abqNomStress(stress, nTensor);
+    Map<const VectorXd>                     abqDE(dStrain, nTensor);
+    Map<MatrixXd>                           abqC(jacobianSigmaEpsilon, nTensor, nTensor);   
 
-        Matrix6 Cel = 							mechanics::Cel(E,nu);
-       // Matrix6 CelInv = 						mechanics::CelInverse(E,nu);
-		Matrix6 C = 							Cel;
+    bft::Vector6 oldStress =                Vector6::Zero(); oldStress.head(nTensor)= abqNomStress;
+    bft::Vector6 dE =                       Vector6::Zero(); dE.head(nTensor)       = abqDE;
 
-        Map<VectorXd>                           abqNomStress(stress, nTensor);
-        Map<const VectorXd>                     abqDE(dStrain, nTensor);
-        Map<MatrixXd>                           abqC(jacobianSigmaEpsilon, nTensor, nTensor);   
-		
-        bft::Vector6 nomStress =                     Vector6::Zero(); nomStress.head(nTensor)= abqNomStress;
-        bft::Vector6 dE =                            Vector6::Zero(); dE.head(nTensor)       = abqDE;
+    // Zero strain  increment check
+    if((dE.array() == 0).all())
+        return backToAbaqus(Cel, abqC, oldStress, abqNomStress, nTensor);               
 
-        if(umatIsInitialized == false){
-				umatIsInitialized =             true;}
+    Vector6 newStress = oldStress + Cel * dE;                                                                         
 
-        // Zero strain  increment check
-        if((dE.array() == 0).all())
-                return backToAbaqus(C, abqC, nomStress, abqNomStress, nTensor);               
-
-        Vector6                                 effStress = nomStress;
-        Vector6                                 trialStress;
-
-        Matrix6                                 Cep;
-
-		trialStress = effStress + Cel * dE;                                                                         
-        nomStress = trialStress;                                                                                                        
-        C =  Cel;                          
-
-        return backToAbaqus(C, abqC, nomStress, abqNomStress, nTensor);
+    return backToAbaqus(Cel, abqC,newStress, abqNomStress, nTensor);
 }
 
