@@ -35,6 +35,7 @@ set (optionalLibraries
     ShotLeon
     SolidificationCreep
     UntereggerRockMass
+    linearElastic
 
     uelCPE4
     
