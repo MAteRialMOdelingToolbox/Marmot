@@ -26,6 +26,9 @@
 #ifdef MohrCoulomb 
     #include "umatMohrCoulomb.h"
 #endif
+#ifdef linearElastic 
+    #include "umatLinearElastic.h"
+#endif
 
 namespace userLibrary{
     bft::pUmatType getUmatById(int id){
@@ -85,6 +88,9 @@ namespace userLibrary{
             #endif
             #ifdef MohrCoulomb 
             {"MOHRCOULOMB",   umatMohrCoulomb},  
+            #endif
+            #ifdef linearElastic 
+            {"LINEARELASTIC",   umatLinearElastic},  
             #endif
             };
 
