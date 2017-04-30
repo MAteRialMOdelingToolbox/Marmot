@@ -37,12 +37,10 @@ set (optionalLibraries
     UntereggerRockMass
     linearElastic
 
-    #uelCPE4
-    
+    uelCPE4
     uelCPS4
     uelCPS4NonLocal
     uelCPS8R
-    #uelCPS8NonLocal
     uelCPS8RNonLocal
     )
 
