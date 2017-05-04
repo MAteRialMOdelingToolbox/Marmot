@@ -79,16 +79,53 @@ extern "C" void FOR_NAME(uel)(
         const double &period)
 {    
         // get umatPointer and number of stateVars for umat
-        const int& materialID =           integerProperties[0];
-        const int nStateVarsUmat =        integerProperties[1];
+        const int materialID =              integerProperties[0];
+        const int nStateVarsUmat =          integerProperties[1];
+        const int nPropertiesUmat =         integerProperties[2];
+        const int nPropertiesElement =      integerProperties[3];
 
-        bft::pUmatType umatPointer =      userLibrary::getUmatById(materialID);
-        bft::pSimpleUelWithUmatType simpleUel = userLibrary::getSimpleUelWithUmatById(elementType);
+        // get additional definitions: [active Geostatic stress], 
+        const bool activeGeostatic = nIntegerProperties > 2 && integerProperties[2] > 0; 
 
-        simpleUel(  rightHandSide, KMatrix, stateVars, nStateVars, 
-                    properties, nProperties, coordinates, U_, dU_, 
-                    time, dTime, elementNumber, pNewdT, integerProperties, 
-                    nIntegerProperties, umatPointer, nStateVarsUmat);  
+        int additionalProperties = 0;
+
+        if (activeGeostatic)
+            additionalProperties += userLibrary::sizeGeostaticDefinition;
+
+        if(nPropertiesUmat+ nPropertiesElement+ additionalProperties < nProperties){
+            std::cout << "insufficient properties defined" << nPropertiesUmat+ nPropertiesElement+ additionalProperties  << " / " << nProperties << std::endl;
+            pNewDT = 1e-36;
+            return;}
+
+        bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
+
+        const double* propertiesUmat = properites;
+        const double* propertiesElement = properties[nPropertiesUmat];
+
+        BftBaseUel* myUel = userLibrary::UelFactory(elementType, 
+                                                coordinates,
+                                                stateVars,
+                                                nStateVars,
+                                                propertiesElement,
+                                                nPropertiesElement, 
+                                                elementNumber,
+                                                umatPointer,
+                                                nStateVarsUmat,
+                                                propertiesUmat, 
+                                                nPropertiesUmat);
+        if(myUel == nullptr) {
+            std::cout << "element " << elementType << " not found!" << std::endl;
+            pNewDT = 1e-36;
+            return; }
+
+        switch(lFlags[1]) {
+            case UelFlags1::Geostatic: 
+                    myUel->setInitialConditions(BftBaseUel::GeostaticStress, properties[ nProperties-1 - additionalProperties], sizeGeostaticDefinition); break;
+            default: break;}
+
+        myUel->computeYourself(U_ , dU_, rightHandSide, KMatrix, time, dTime, pNewdT); 
+        
+        delete myUel;
 }
 
 extern "C" void FOR_NAME(umat)(

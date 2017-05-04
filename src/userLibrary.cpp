@@ -1,6 +1,10 @@
 #include <map>
 #include <tuple>
-#include "userLibrary.h"
+//#include "userLibrary.h"
+#include "bftUel.h"
+#include "bftTypedefs.h"
+#include <iostream>
+#include <string>
 
 #ifdef ModLeon 
     #include "umatModLeon.h"
@@ -102,20 +106,19 @@ namespace userLibrary{
 } 
 
 #ifdef uelCPE4 
-    #include "uelCPE4SimpleUmat.h"
+    #include "cpe4.h"
 #endif
-
 #ifdef uelCPS4
-    #include "uelCPS4SimpleUmat.h"
+    #include "cps4.h"
 #endif
 #ifdef uelCPS4NonLocal
-    #include "uelCPS4NonLocalSimpleUmat.h"
+    #include "cps4NonLocal.h"
 #endif
 #ifdef uelCPS8R
-    #include "uelCPS8RSimpleUmat.h"
+    #include "cps8r.h"
 #endif
 #ifdef uelCPS8RNonLocal 
-    #include "uelCPS8RNonLocalSimpleUmat.h"
+    #include "cps8rNonLocal.h"
 #endif
 
 
@@ -150,26 +153,29 @@ namespace userLibrary{
  * */
 
 namespace userLibrary{
-    bft::pSimpleUelWithUmatType getSimpleUelWithUmatById(int id){
-        static std::map<int, bft::pSimpleUelWithUmatType> userElements= { 
-            #ifdef uelCPE4
-            {407, uelCPE4SimpleUmat} ,
+
+    BftUel* UelFactory(int id, const double* elementCoordinates, double* stateVars, int nStateVars, 
+            const double* propertiesElement, int nPropertiesElement, int elementNumber, 
+            bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat)
+    {
+        switch(id){
+            #ifdef uelCPS4
+            case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
-            #ifdef uelCPS4 
-            {402, uelCPS4SimpleUmat} ,
+            #ifdef uelCPE4
+            case 417:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS4NonLocal 
-            {412, uelCPS4NonLocalSimpleUmat} ,
+            case 412:{return new CPS4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8R
-            {805, uelCPS8RSimpleUmat} ,
+            case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8RNonLocal 
-            {815, uelCPS8RNonLocalSimpleUmat} ,
+            case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
-        };
-
-    return userElements.at(id);
+            default: return nullptr;
+        }
     }
 
 } 
