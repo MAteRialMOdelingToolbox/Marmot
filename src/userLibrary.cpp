@@ -1,7 +1,11 @@
 #include <map>
 #include <tuple>
+#include <iostream>
 #include "userLibrary.h"
 
+#ifdef LinearElastic 
+    #include "umatLinearElastic.h"
+#endif
 #ifdef ModLeon 
     #include "umatModLeon.h"
 #endif
@@ -26,10 +30,16 @@
 #ifdef MohrCoulomb 
     #include "umatMohrCoulomb.h"
 #endif
+#ifdef UntereggerRockMassNonLocal 
+    #include "umatUntereggerRockMassNonLocal.h"
+#endif
 
 namespace userLibrary{
     bft::pUmatType getUmatById(int id){
         static std::map <int, bft::pUmatType> userMaterials= { 
+            #ifdef LinearElastic 
+            {0,   umatLinearElastic},  
+            #endif
             #ifdef ModLeon 
             {1,   umatModLeon},  
             #endif
@@ -54,6 +64,9 @@ namespace userLibrary{
             #ifdef MohrCoulomb 
             {8,   umatMohrCoulomb},  
             #endif 
+            #ifdef UntereggerRockMassNonLocal 
+            {9,   umatUntereggerRockMassNonLocal},  
+            #endif 
             };
 
     return userMaterials.at(id);
@@ -62,6 +75,9 @@ namespace userLibrary{
     bft::pUmatType getUmatByName(const std::string& nameUpperCase)
     {
         static std::map<std::string, bft::pUmatType> userMaterials= { 
+            #ifdef LinearElastic 
+            {"LINEARELASTIC",   umatLinearElastic},  
+            #endif
             #ifdef ModLeon 
             {"MODLEON",   umatModLeon},  
             #endif
@@ -83,6 +99,9 @@ namespace userLibrary{
             #ifdef UntereggerRockMass 
             {"UNTEREGGERROCKMASS",   umatUntereggerRockMass},  
             #endif
+            #ifdef UntereggerRockMassNonLocal 
+            {"UNTEREGGERROCKMASSNONLOCAL",   umatUntereggerRockMassNonLocal},  
+            #endif
             #ifdef MohrCoulomb 
             {"MOHRCOULOMB",   umatMohrCoulomb},  
             #endif
@@ -95,12 +114,14 @@ namespace userLibrary{
 #ifdef uelCPE4 
     #include "uelCPE4SimpleUmat.h"
 #endif
-
 #ifdef uelCPS4
     #include "uelCPS4SimpleUmat.h"
 #endif
 #ifdef uelCPS4NonLocal
     #include "uelCPS4NonLocalSimpleUmat.h"
+#endif
+#ifdef uelCPE4NonLocal
+    #include "uelCPE4NonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPS8R
     #include "uelCPS8RSimpleUmat.h"
@@ -111,15 +132,18 @@ namespace userLibrary{
 #ifdef uelCPS8RNonLocal 
     #include "uelCPS8RNonLocalSimpleUmat.h"
 #endif
+#ifdef uelCPE8NonLocal 
+    #include "uelCPE8NonLocalSimpleUmat.h"
+#endif
 
 
 /* UEL ID System
  *
  * XXXX
- * ||||_ 4: active fields: 
- * |||__ 3: type of element 
- * ||___ 2:  number of nodes
- * |____ 1:  (number of nodes)
+ * ||||_ 4: type of element 
+ * |||__ 3: active fields 
+ * ||___ 2: number of nodes
+ * |____ 1: (number of nodes)
  *
  *
  * active fields:   0: mechanical (=displacement),
@@ -140,7 +164,7 @@ namespace userLibrary{
  * C3D8:            803
  * C3D8R:           806
  * CPS4NonLocal:    412
- *
+ * CPE4NonLocal:    472
  * */
 
 namespace userLibrary{
@@ -155,6 +179,9 @@ namespace userLibrary{
             #ifdef uelCPS4NonLocal 
             {412, uelCPS4NonLocalSimpleUmat} ,
             #endif
+            #ifdef uelCPE4NonLocal 
+            {417, uelCPE4NonLocalSimpleUmat} ,
+            #endif
             #ifdef uelCPS8R
             {805, uelCPS8RSimpleUmat} ,
             #endif
@@ -164,8 +191,10 @@ namespace userLibrary{
             #ifdef uelCPS8RNonLocal 
             {815, uelCPS8RNonLocalSimpleUmat} ,
             #endif
+            #ifdef uelCPE8NonLocal 
+            {817, uelCPE8NonLocalSimpleUmat} ,
+            #endif
         };
-
     return userElements.at(id);
     }
 

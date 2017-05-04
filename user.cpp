@@ -81,14 +81,36 @@ extern "C" void FOR_NAME(uel)(
         // get umatPointer and number of stateVars for umat
         const int& materialID =           integerProperties[0];
         const int nStateVarsUmat =        integerProperties[1];
+        const int nGaussPoints =          nStateVars/(nStateVarsUmat+12);
 
         bft::pUmatType umatPointer =      userLibrary::getUmatById(materialID);
         bft::pSimpleUelWithUmatType simpleUel = userLibrary::getSimpleUelWithUmatById(elementType);
+
+        // apply initial geostatic stress state
+        if (lFlags[0] == 61) {
+            double sigY=0;
+            double sigX=0;
+            double sigZ=0;
+           
+            // apply CONSTANT geostatic stress state  
+            if ((nIntegerProperties>2) && (integerProperties[2]==1)){
+                sigY = properties[nProperties-1-2];
+                sigX = properties[nProperties-1-1] * sigY;
+                sigZ = properties[nProperties-1]   * sigY;
+            }
+
+            for(int i=0; i<nGaussPoints; i++){   
+                    stateVars[nStateVarsUmat        + i * (nStateVarsUmat+6+6) ] = sigX;
+                    stateVars[nStateVarsUmat + 1    + i * (nStateVarsUmat+6+6) ] = sigY;
+                    stateVars[nStateVarsUmat + 2    + i * (nStateVarsUmat+6+6) ] = sigZ;
+                }
+            }
 
         simpleUel(  rightHandSide, KMatrix, stateVars, nStateVars, 
                     properties, nProperties, coordinates, U_, dU_, 
                     time, dTime, elementNumber, pNewdT, integerProperties, 
                     nIntegerProperties, umatPointer, nStateVarsUmat);  
+        
 }
 
 extern "C" void FOR_NAME(umat)(
