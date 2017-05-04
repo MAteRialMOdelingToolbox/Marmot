@@ -39,13 +39,12 @@ set (optionalLibraries
     UntereggerRockMassNonLocal
 
     uelCPE4
-    
     uelCPS4
     uelCPS4NonLocal
     uelCPE4NonLocal
     uelCPS8R
-    uelCPS8NonLocal
     uelCPS8RNonLocal
+    uelCPE8NonLocal
     )
 
 #optional libraries

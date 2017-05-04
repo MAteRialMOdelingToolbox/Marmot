@@ -105,6 +105,9 @@ namespace userLibrary{
             #ifdef MohrCoulomb 
             {"MOHRCOULOMB",   umatMohrCoulomb},  
             #endif
+            #ifdef linearElastic 
+            {"LINEARELASTIC",   umatLinearElastic},  
+            #endif
             };
 
     return userMaterials.at(nameUpperCase);
@@ -125,9 +128,6 @@ namespace userLibrary{
 #endif
 #ifdef uelCPS8R
     #include "uelCPS8RSimpleUmat.h"
-#endif
-#ifdef uelCPS8NonLocal 
-    #include "uelCPS8NonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPS8RNonLocal 
     #include "uelCPS8RNonLocalSimpleUmat.h"
@@ -184,9 +184,6 @@ namespace userLibrary{
             #endif
             #ifdef uelCPS8R
             {805, uelCPS8RSimpleUmat} ,
-            #endif
-            #ifdef uelCPS8NonLocal 
-            {812, uelCPS8NonLocalSimpleUmat} ,
             #endif
             #ifdef uelCPS8RNonLocal 
             {815, uelCPS8RNonLocalSimpleUmat} ,
