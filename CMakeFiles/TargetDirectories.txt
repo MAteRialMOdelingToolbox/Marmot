@@ -1,7 +1,0 @@
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/install.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/list_install_components.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/rebuild_cache.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/bftUserLibrary.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/edit_cache.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/install/strip.dir
-/media/c8441146/MagdalenaBackUp/Dropbox (Green Energy Center)/PHD/GITrepositoryLinux/bftUserLibrary/CMakeFiles/install/local.dir
