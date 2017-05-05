@@ -40,7 +40,7 @@ extern "C" bool notificationToMSG(const std::string& message)
 }
 
 
-extern "C" void FOR_NAME(uel)(
+extern "C" void FORNAME(uel)(
         double rightHandSide[/*lVarx , nRightHandSide*/],           // right hand side load vector(s) 1: common, 2: additional for RIKS (see documentation)
         double KMatrix[/*nDof * nDof*/],                            // stiffness matrix 
         double stateVars[],                                         // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
@@ -53,10 +53,10 @@ extern "C" void FOR_NAME(uel)(
         const double coordinates[/*mcrd, nNodes*/],                    // undeformed coordinates of the node respective DOFs
         const int &maxNCoords,                                        // max number of coordinates (see documentation)
         const int &nNodes,                  
-        const double U_[/*nDof*/],                                   // current solution (end of increment)
-        const double dU_[/*mlvarx=nDof(?), nRightHandSide*/],        // increment of solutions
-        const double UDot_[/*nDof*/],                                // first derivative (velocity..)
-        const double UDotDot_[/*nDof*/],                             // second derivative (acceleration..)
+        const double U[/*nDof*/],                                   // current solution (end of increment)
+        const double dU[/*mlvarx=nDof(?), nRightHandSide*/],        // increment of solutions
+        const double UDot[/*nDof*/],                                // first derivative (velocity..)
+        const double UDotDot[/*nDof*/],                             // second derivative (acceleration..)
         const int &elementType,                                     // user defined element type id
         const double time[2],                                       // 1: time of step, 2: total time
         const double &dTime,                                        // time increment
@@ -119,11 +119,11 @@ extern "C" void FOR_NAME(uel)(
             return; }
 
         switch(lFlags[1]) {
-            case UelFlags1::Geostatic: 
+            case Abaqus::UelFlags1::Geostatic: 
                     myUel->setInitialConditions(BftBaseUel::GeostaticStress, properties[ nProperties-1 - additionalProperties], sizeGeostaticDefinition); break;
             default: break;}
 
-        myUel->computeYourself(U_ , dU_, rightHandSide, KMatrix, time, dTime, pNewdT); 
+        myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewdT); 
         
         delete myUel;
 }

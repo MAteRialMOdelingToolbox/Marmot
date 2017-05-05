@@ -26,7 +26,7 @@ set(bftMechanicsDir "../bftMechanics/")
 
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
-
+    LinearElastic
     HoekBrown
     ModLeon
     ModLeonNonLocal
@@ -35,13 +35,15 @@ set (optionalLibraries
     ShotLeon
     SolidificationCreep
     UntereggerRockMass
-    linearElastic
+    UntereggerRockMassNonLocal
 
     uelCPE4
     uelCPS4
     uelCPS4NonLocal
+    uelCPE4NonLocal
     uelCPS8R
     uelCPS8RNonLocal
+    uelCPE8NonLocal
     )
 
 #optional libraries
