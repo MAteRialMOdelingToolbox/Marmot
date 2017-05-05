@@ -1,10 +1,7 @@
 #include <map>
 #include <tuple>
-//#include "userLibrary.h"
-#include "bftUel.h"
-#include "bftTypedefs.h"
 #include <iostream>
-#include <string>
+#include "userLibrary.h"
 
 #ifdef LinearElastic 
     #include "umatLinearElastic.h"
@@ -33,8 +30,13 @@
 #ifdef MohrCoulomb 
     #include "umatMohrCoulomb.h"
 #endif
+<<<<<<< HEAD
 #ifdef UntereggerRockMassNonLocal 
     #include "umatUntereggerRockMassNonLocal.h"
+=======
+#ifdef linearElastic 
+    #include "umatLinearElastic.h"
+>>>>>>> f9d3e58dd5b831fd9e190f93ab9b4d3442cb9e8e
 #endif
 
 namespace userLibrary{
@@ -67,8 +69,13 @@ namespace userLibrary{
             #ifdef MohrCoulomb 
             {8,   umatMohrCoulomb},  
             #endif 
+<<<<<<< HEAD
             #ifdef UntereggerRockMassNonLocal 
             {9,   umatUntereggerRockMassNonLocal},  
+=======
+            #ifdef linearElastic 
+            {9,   umatLinearElastic},  
+>>>>>>> f9d3e58dd5b831fd9e190f93ab9b4d3442cb9e8e
             #endif 
             };
 
@@ -118,22 +125,22 @@ namespace userLibrary{
 } 
 
 #ifdef uelCPE4 
-    #include "cpe4.h"
+    #include "uelCPE4SimpleUmat.h"
 #endif
 #ifdef uelCPS4
-    #include "cps4.h"
+    #include "uelCPS4SimpleUmat.h"
 #endif
 #ifdef uelCPS4NonLocal
-    #include "cps4NonLocal.h"
+    #include "uelCPS4NonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPE4NonLocal
     #include "uelCPE4NonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPS8R
-    #include "cps8r.h"
+    #include "uelCPS8RSimpleUmat.h"
 #endif
 #ifdef uelCPS8RNonLocal 
-    #include "cps8rNonLocal.h"
+    #include "uelCPS8RNonLocalSimpleUmat.h"
 #endif
 #ifdef uelCPE8NonLocal 
     #include "uelCPE8NonLocalSimpleUmat.h"
@@ -171,32 +178,31 @@ namespace userLibrary{
  * */
 
 namespace userLibrary{
-
-    BftUel* UelFactory(int id, const double* elementCoordinates, double* stateVars, int nStateVars, 
-            const double* propertiesElement, int nPropertiesElement, int elementNumber, 
-            bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat)
-    {
-        switch(id){
-            #ifdef uelCPS4
-            case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            #endif
+    bft::pSimpleUelWithUmatType getSimpleUelWithUmatById(int id){
+        static std::map<int, bft::pSimpleUelWithUmatType> userElements= { 
             #ifdef uelCPE4
-            case 417:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            {407, uelCPE4SimpleUmat} ,
+            #endif
+            #ifdef uelCPS4 
+            {402, uelCPS4SimpleUmat} ,
             #endif
             #ifdef uelCPS4NonLocal 
-            case 412:{return new CPS4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            {412, uelCPS4NonLocalSimpleUmat} ,
             #endif
             #ifdef uelCPE4NonLocal 
             {417, uelCPE4NonLocalSimpleUmat} ,
             #endif
             #ifdef uelCPS8R
-            case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            {805, uelCPS8RSimpleUmat} ,
             #endif
             #ifdef uelCPS8RNonLocal 
-            case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            {815, uelCPS8RNonLocalSimpleUmat} ,
             #endif
-            default: return nullptr;
-        }
+            #ifdef uelCPE8NonLocal 
+            {817, uelCPE8NonLocalSimpleUmat} ,
+            #endif
+        };
+    return userElements.at(id);
     }
 
 } 
