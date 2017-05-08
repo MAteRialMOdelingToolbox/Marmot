@@ -40,10 +40,10 @@ set (optionalLibraries
     uelCPE4
     uelCPS4
     uelCPS4NonLocal
-    uelCPE4NonLocal
+    #uelCPE4NonLocal
     uelCPS8R
     uelCPS8RNonLocal
-    uelCPE8NonLocal
+    #uelCPE8NonLocal
     )
 
 #optional libraries
