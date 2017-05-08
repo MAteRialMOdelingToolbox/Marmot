@@ -90,7 +90,6 @@ namespace bft{
             const double dRdTheta_ = dRdTheta(theta, e, rNum, rDen);
 
             dFdXi =         m * Cf;
-
             dFdRho =        2*Af*rho*Af +  m*Bf*r_;
             dFdTheta =      m*Bf*rho*dRdTheta_;
 

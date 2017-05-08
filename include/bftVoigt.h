@@ -74,6 +74,8 @@ namespace bft
         Matrix6 planeStressTangentTransformationMatrix(const Matrix6& tangent);
         Matrix<double, 6, 3> dStrainDStrainPlaneStress(const Matrix6& tangent);
         Matrix<double, 3, 6> dStressPlaneStressDStress();
+        Matrix<double, 6, 3> dStrainDStrainPlaneStrain();
+        
         // function prototypes for Vector6 handling
         Matrix3d voigtToStrain(const Vector6& strainVector);
         Matrix3d voigtToStress(const Vector6& stressVector);
@@ -111,11 +113,16 @@ namespace bft
         Vector6 dSigmaMdSigma();
         Vector6 dRhodSigma(double rho, const Vector6& stress);
         Vector6 dThetadSigma(double theta, const Vector6& stress);
-
+		// derivatives of Haigh Westergaard stresses with respect to deviatoric invariants
+		double dTheta_dJ2(const Vector6& stress);
+		double dTheta_dJ3(const Vector6& stress);
 		// derivatives of Haigh Westergaard strains with respect to deviatoric invariants
 		double dThetaE_dJ2E(const Vector6& strain);
 		double dThetaE_dJ3E(const Vector6& strain);
-
+		
+        // derivatives of deviatoric invariants with respect to eng. stresses
+		Vector6 dJ2_dStress(const Vector6& stress);
+		Vector6 dJ3_dStress(const Vector6& stress);
 		// derivatives of deviatoric invariants with respect to eng. strains
 		Vector6 dJ2E_dE(const Vector6& strain);
 		Vector6 dJ3E_dE(const Vector6& strain);

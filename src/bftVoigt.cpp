@@ -44,18 +44,7 @@ namespace bft{
 
         Matrix3d getPlaneStressTangent(const Matrix6& C)
         {
-            /*Matrix6 CInv = C.inverse(); //.householderQr().solve(Matrix6::Identity());
-            Matrix3d CPlaneStressInv = Matrix3d::Zero();
-
-            CPlaneStressInv.topLeftCorner(2,2) = CInv.topLeftCorner(2,2);	
-            CPlaneStressInv(2,2) = CInv(3,3);
-	        CPlaneStressInv.block<1,2>(2,0) = CInv.block<1,2>(3,0);
-	        CPlaneStressInv.block<2,1>(0,2) = CInv.block<2,1>(0,3);
-
-            Matrix3d CPlaneStress = CPlaneStressInv.inverse();
-            */
             return Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress(C);
-          
         } 
 
         Matrix3d getPlaneStrainTangent(const Matrix6& C)
@@ -87,7 +76,6 @@ namespace bft{
             return P;
         }
 
-
         const Vector6& I()
         {
             const static Vector6 I(I_data);
@@ -98,7 +86,6 @@ namespace bft{
             const static Vector6 Ihyd(Ihyd_data);
             return Ihyd;
         }
-
 
         const Matrix6& Idev()
         {
@@ -200,6 +187,15 @@ namespace bft{
             return T;
         }
         
+        Matrix<double, 6, 3> dStrainDStrainPlaneStrain()
+        {
+            Matrix<double, 6, 3> T = Matrix<double, 6, 3>::Zero();
+            T(0,0) = 1;
+            T(1,1) = 1;
+            T(3,2) = 1;
+            return T;
+        }
+        
         Matrix<double, 3, 6> dStressPlaneStressDStress()
         {
             Matrix<double, 3, 6> T = Matrix<double, 3, 6>::Zero();
@@ -208,24 +204,31 @@ namespace bft{
             T(2,3) = 1;
             return T;
         }
-
+        
 		Vector3d haighWestergaard(const Vector6& stress)
         {
             Vector3d hw;
             const double J2_ = J2(stress);
-            const double J3_ = J3(stress) ;
             hw(0) = I1(stress) / sqrt3;
             hw(1) = sqrt(2 * J2_);
 
-            const double x =  3*(sqrt3/2) * J3_ / (pow(J2_, 3./2));
-            if(x<= -1)
-                hw(2) = 1./3 * Pi ;
-            else if(x>= 1)
-                hw(2) = 0;
-            else if(x!=x)
-                hw(2) = 1./3 * Pi;
-            else
-                hw(2) = 1./3 * acos(x);
+
+			if (hw(1)!=0)
+			{
+                const double J3_ = J3(stress) ;
+                const double x =  3*(sqrt3/2) * J3_ / (pow(J2_, 3./2));
+                if(x<= -1)
+                    hw(2) = 1./3 * Pi ;
+                else if(x>= 1)
+                    hw(2) = 0;
+                else if(x!=x)
+                    hw(2) = 1./3 * Pi;
+                else
+                    hw(2) = 1./3 * acos(x);
+			}
+			else
+					hw(2)=0;
+            
             return hw;
         }
 
@@ -251,7 +254,7 @@ namespace bft{
 							hw(2) = 1./3 * acos(x);
 				}
 				else
-					hw(2)=0;
+					        hw(2)=0;
 
                 return hw;
         }
@@ -376,24 +379,51 @@ namespace bft{
 
         Vector6 dThetadSigma(double theta, const Vector6& stress)
         {
-            if(theta <= 0 || theta >= Pi/3)
-                return Vector6::Zero();
+            //if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
+                 //return Vector6::Zero();
 
+            const double J2_ = J2(stress);
+            const double J3_ = J3(stress);
+
+            const double dThetadJ2 = dTheta_dJ2(stress); 
+            const double dThetadJ3 = dTheta_dJ3(stress);
+
+            if(isNaN(dThetadJ2) || isNaN(dThetadJ3))
+                return Vector6::Zero(); 
+
+            return dThetadJ2 * dJ2_dStress(stress)   +    dThetadJ3 * dJ3_dStress(stress);
+        }
+
+        double dTheta_dJ2(const Vector6& stress)
+        {
+            const Vector3d hw = haighWestergaard(stress);
+			const double& theta = hw(2);
+            
+            if(theta <= 1e-14 || theta >= Pi/3 - 1e-14)
+				return 1e16;
+            
             const double J2_ = J2(stress);
             const double J3_ = J3(stress);
 
             const double cos2_3theta = std::cos(3*theta) * std::cos(3*theta);
             const double dThetadJ2 = 3*sqrt3/4 * J3_/(std::pow(J2_, 2.5) * std::sqrt(1.0 - cos2_3theta)); 
-            const double dThetadJ3 = - sqrt3/2 * 1./ (std::pow(J2_, 1.5) * std::sqrt(1.0 - cos2_3theta));
+            return dThetadJ2;
+        }
+        
+        double dTheta_dJ3(const Vector6& stress)
+        {
+            const Vector3d hw = haighWestergaard(stress);
+			const double& theta = hw(2);
+            
+            if(theta <= 1e-14 || theta >= Pi/3 - 1e-14)
+				return -1e16;
+            
+            const double J2_ = J2(stress);
+            const double J3_ = J3(stress);
 
-            if(isNaN(dThetadJ2) || isNaN(dThetadJ3))
-                return Vector6::Zero(); 
-
-
-            Vector6 s_ = Idev() * stress;
-            const Matrix3d s = voigtToStress (s_);
-
-            return dThetadJ2*P()*s_ + dThetadJ3*(P() * stressToVoigt(s*s) - 2./3 * J2_ *I());
+            const double cos2_3theta = std::cos(3*theta) * std::cos(3*theta);
+            const double dThetadJ3 = - sqrt3/2. * 1./ (std::pow(J2_, 1.5) * std::sqrt(1.0 - cos2_3theta));
+            return dThetadJ3;
         }
 
 		double dThetaE_dJ2E(const Vector6& strain)
@@ -402,30 +432,31 @@ namespace bft{
 			const double theta = hw(2);
 		
             if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
-			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)//(std::pow(std::cos(3.*theta),2)==1.0 || J2strain(strain)==0)
-			{
 				return 1e16;
-			}
 			else
-			{
 				return 3.*std::sqrt(3.)/4.*J3strain(strain)/( std::pow(J2strain(strain),5./2) *std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
-			}
 		}
 
 		double dThetaE_dJ3E(const Vector6& strain)
 		{
 			const Vector3d hw = haighWestergaardStrain(strain);
 			const double& theta = hw(2);
-
-			//if (fabs(std::pow(std::cos(3.*theta),2.)-1.)<=1e-16)// || J2strain(strain)==0)
+			
             if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
-			{
 				return -1e16;
-			}
 			else
-			{
 				return -std::sqrt(3.)/2.*1./   (std::pow(J2strain(strain),3./2)*std::sqrt(1.-std::pow(std::cos(3.*theta),2.)));
-			}
+		}
+
+		Vector6 dJ2_dStress(const Vector6& stress)
+		{
+			return P() * Idev() * stress;
+		}
+
+		Vector6 dJ3_dStress(const Vector6& stress)
+		{
+			Vector6 s=Idev()*stress;
+			return P()*stressToVoigt(voigtToStress(s)*voigtToStress(s)) - 2./3.*J2(stress)*I();
 		}
 		
 		Vector6 dJ2E_dE(const Vector6& strain)
