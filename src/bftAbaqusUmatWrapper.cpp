@@ -120,6 +120,7 @@ namespace bft{
         
         //assumption of isochoric deformation for initial guess
         dStrainTemp(2) = (- dStrain(0) - dStrain(1));
+        //dStrainTemp(2) = 0.0;
 
         while (true)
             {
@@ -135,7 +136,8 @@ namespace bft{
                     //return umatPlaneStressBisectionMethod( Cep, stress, stateVars, strain, 
                     //        dStrain, matProps, nProps, pNewdT, charElemlen, 
                     //        time, dT, noEl, materialID, umatPointer);
-                    {pNewdT = 0.25; return;}
+                    return;
+                    //{pNewdT = 0.25; return;}
                 }
 
                 double residual = stressTemp.array().abs()[2];
