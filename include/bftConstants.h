@@ -3,7 +3,7 @@
 namespace bft{
     namespace Constants{
         const double            Pi =                3.141592653589793238463;
-        const double            numZeroPos =        1e-10;
+        const double            numZeroPos =        1e-16;
         double                  cubicRootEps(); 
         double                  squareRootEps();
         const double            sqrt3_8 =           0.61237243569579452454932101867647;
