@@ -13,4 +13,7 @@ namespace bft{
         const double            sqrt3 =             1.7320508075688772935274463415059;
         const double            sqrt6 =             2.4494897427831780981972840747059;
     }
+    namespace Functions{
+        double linearInterpolation(double x, double x0, double x1, double y0, double y1);
+    }
 }
