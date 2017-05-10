@@ -4,6 +4,7 @@
 #include <map>
 #include <tuple>
 #include <string>
+#include "bftUel.h"
 
 //These functions are provided to the 'sub' UMATs for easy printing Messages and Warnings. 
 #ifndef FOR_NAME
@@ -40,7 +41,7 @@ extern "C" bool notificationToMSG(const std::string& message)
 }
 
 
-extern "C" void FORNAME(uel)(
+extern "C" void FOR_NAME(uel)(
         double rightHandSide[/*lVarx , nRightHandSide*/],           // right hand side load vector(s) 1: common, 2: additional for RIKS (see documentation)
         double KMatrix[/*nDof * nDof*/],                            // stiffness matrix 
         double stateVars[],                                         // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
@@ -85,24 +86,45 @@ extern "C" void FORNAME(uel)(
         const int nPropertiesElement =      integerProperties[3];
 
         // get additional definitions: [active Geostatic stress], 
-        const bool activeGeostatic = nIntegerProperties > 2 && integerProperties[2] > 0; 
+        const bool activeGeostatic = nIntegerProperties > 4 && integerProperties[4] > 0; 
 
-        int additionalProperties = 0;
-
-        if (activeGeostatic)
-            additionalProperties += userLibrary::sizeGeostaticDefinition;
-
-        if(nPropertiesUmat+ nPropertiesElement+ additionalProperties < nProperties){
-            std::cout << "insufficient properties defined" << nPropertiesUmat+ nPropertiesElement+ additionalProperties  << " / " << nProperties << std::endl;
-            pNewDT = 1e-36;
-            return;}
+        //if(nPropertiesUmat+ nPropertiesElement+ additionalProperties < nProperties){
+            //std::cout << "insufficient properties defined" << nPropertiesUmat+ nPropertiesElement+ additionalProperties  << " / " << nProperties << std::endl;
+            //pNewdT = 1e-36;
+            //return;}
 
         bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
 
-        const double* propertiesUmat = properites;
-        const double* propertiesElement = properties[nPropertiesUmat];
+        const double* propertiesUmat =    &properties[0];
+        const double* propertiesElement = &properties[nPropertiesUmat];
 
-        BftBaseUel* myUel = userLibrary::UelFactory(elementType, 
+        //std::cout << " materialID: " << materialID << std::endl;
+        //std::cout << " nStateVarsUmat : " << nStateVarsUmat<< std::endl;
+        //std::cout << " nPropertiesUmat: " << nPropertiesUmat<< std::endl;
+        //std::cout << " nPropertiesElement: " << nPropertiesElement<< std::endl;
+
+        //std::cout << " umatProperties: " ;
+
+        //for(int i = 0 ; i < nPropertiesUmat ; i ++) 
+            //std::cout << propertiesUmat[i]<< ", ";
+        //std::cout << std::endl;
+
+        //std::cout << " elProperties: ";
+        //for(int i = 0 ; i < nPropertiesElement; i ++) 
+            //std::cout << propertiesElement[i]<< ", ";
+        //std::cout << std::endl;
+
+        //if(activeGeostatic)
+        //{
+            //std::cout << "geostatic def: " ;
+            //for(int i = 0 ; i < userLibrary::sizeGeostaticDefinition; i ++) 
+                //std::cout << properties[ nPropertiesUmat+nPropertiesElement + i] << ", ";
+            //std::cout << std::endl;
+
+        //}
+
+
+        BftUel* myUel = userLibrary::UelFactory(elementType, 
                                                 coordinates,
                                                 stateVars,
                                                 nStateVars,
@@ -115,12 +137,17 @@ extern "C" void FORNAME(uel)(
                                                 nPropertiesUmat);
         if(myUel == nullptr) {
             std::cout << "element " << elementType << " not found!" << std::endl;
-            pNewDT = 1e-36;
+            pNewdT = 1e-36;
             return; }
-
-        switch(lFlags[1]) {
-            case Abaqus::UelFlags1::Geostatic: 
-                    myUel->setInitialConditions(BftBaseUel::GeostaticStress, properties[ nProperties-1 - additionalProperties], sizeGeostaticDefinition); break;
+            
+        switch(lFlags[0]) {
+            case Abaqus::UelFlags1::Geostatic: { 
+                    myUel->setInitialConditions(BftUel::GeostaticStress, &properties[nPropertiesUmat+nPropertiesElement], userLibrary::sizeGeostaticDefinition); 
+                    for(int i=0; i<4; i++){
+                        int GaussShiftStateVars =   nStateVars/4 * i;
+                        std::cout << "STRESS  " << i << "  "<< stateVars[GaussShiftStateVars + nStateVarsUmat] << std::endl;   }                     
+                                                
+                        break;                       }
             default: break;}
 
         myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewdT); 
