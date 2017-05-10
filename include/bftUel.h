@@ -13,6 +13,10 @@ class BftUel{
             UmatStateVars
         };
 
+        enum DistributedLoadTypes{
+            Pressure, 
+        };
+
         BftUel(){};
 
         virtual ~BftUel(){};
@@ -25,6 +29,15 @@ class BftUel{
                                             double dT,
                                             double& pNewdT) = 0;
 
-        virtual void setInitialConditions(StateTypes state, const double* values, int nValues) = 0;
+        virtual void setInitialConditions(StateTypes state, const double* values){};
+
+        virtual void computeDistributedLoad(
+                                    DistributedLoadTypes loadType,
+                                    double* P, 
+                                    const int* surfaceFacet, 
+                                    const double* load,
+                                    const double* time,
+                                    double dT,
+                                    double& pNewdT) {};
 };
 
