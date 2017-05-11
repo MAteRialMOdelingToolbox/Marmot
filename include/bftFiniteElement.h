@@ -16,6 +16,11 @@ namespace bft{
             Matrix<double, nNodes, 1> shapeFunctions(const Ref<const Vector2d>& xi);           
             Matrix<double, nNodes, nDim> dNdXi(const Ref <const Vector2d>& xi);
         } 
+        namespace Boundary2 
+        {
+            const Matrix2d gaussPts1d_2(int elementFace);
+            Vector4d dNdXi(int elementFace, const Ref<const Vector2d>& xi);
+        } 
 
         namespace NumIntegration
         {
