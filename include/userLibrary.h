@@ -28,7 +28,7 @@ namespace Abaqus{
    
     
     enum UelFlags1{
-        Geostatic=61,   // Geostatic stress field according to Abaqus Analysis User's Guide Tab. 5.1.2-1 Keys to procedure types.
+        GeostaticStress=61,   // Geostatic stress field according to Abaqus Analysis User's Guide Tab. 5.1.2-1 Keys to procedure types.
     };
 }
 

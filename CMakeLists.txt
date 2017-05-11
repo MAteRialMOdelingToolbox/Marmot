@@ -42,7 +42,7 @@ set (optionalLibraries
     uelCPS4NonLocal
     #uelCPE4NonLocal
     uelCPS8R
-    uelCPS8RNonLocal
+    #uelCPS8RNonLocal
     #uelCPE8NonLocal
     )
 
