@@ -1,8 +1,3 @@
-#include "bftVoigt.h"
-#include "bftFunctions.h"
-#include "bftConstants.h"
-#include <iostream>
-#include <map>
 #include "bftFiniteElement.h"
 
 namespace bft{
@@ -87,10 +82,158 @@ namespace bft{
                 }
         
         } // end of namespace Boundary2
+
+        namespace Spatial2D{
+            namespace Truss2{
+                /* 
+                 *     
+                 * (1)----(2)
+                 *
+                 * <-------> xi
+                 * -1  0  1
+                 * 
+                 * */
+
+                Vector2d N(double  xi)
+                {
+                    Vector2d N;
+                    N <<    (1-xi) * 0.5,
+                            (1+xi) * 0.5;
+                    return N;
+                }
+
+                Nb_SizedMatrix Nb(const Vector2d& N)
+                {
+                    Truss2::Nb_SizedMatrix Nb;
+                    Nb <<   N(0),   0,      N(1),   0,    
+                            0,      N(0),   0,      N(1);
+                    return Nb;
+                }
+
+                Vector2d dNdXi(double xi)
+                {
+                    Vector2d dNdXi;
+                    dNdXi << -0.5, 0.5;  
+                    return dNdXi;
+                }
+        
+                Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates)
+                {
+                    Vector2d J = Vector2d::Zero();
+
+                    for(int i = 0; i < nDim; i++)		
+                        for(int k=0; k<nNodes; k++) 
+                            J(i) += dNdXi(k) * coordinates(i + k*nDim);
+                    return J;
+                }
+
+                Vector2d TangentialVector(const Vector2d& Jacobian)
+                {
+                    return Jacobian / Jacobian.norm();
+                }
+
+                Vector2d NormalVector(const Vector2d& Jacobian)
+                {
+                    Vector2d n;
+                    n <<    Jacobian(1),
+                            -Jacobian(0); 
+                    return n / n.norm();
+                }
+            }
+            namespace Truss3{
+                /* 
+                 *     
+                 * (1)--(3)--(2)
+                 *
+                 * <-----.-----> xi
+                 * -1    0    1
+                 *
+                 * 
+                 * */
+
+                Vector3d N(double  xi)
+                {
+                    Vector3d N;
+                    N << (xi - 1 ) * xi / 2,
+                         (xi + 1 ) * xi / 2,
+                         (-xi + 1) * (xi + 1);
+                    return N;
+                }
+
+                Nb_SizedMatrix Nb(const Vector3d& N){
+                
+                    Truss3::Nb_SizedMatrix Nb;
+
+                    Nb <<   N(0),   0,      N(1),   0,      N(2),   0,
+                            0,      N(0),   0,      N(1),   0,      N(2); 
+
+                    return Nb;
+                }
+
+                Vector3d dNdXi(double xi)
+                {
+                    Vector3d dNdXi;
+                    dNdXi <<    xi - 0.5, 
+                                xi + 0.5,
+                                -2*xi;
+
+                    return dNdXi;
+                }
+        
+                Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates)
+                {
+                    Vector2d J = Vector2d::Zero();
+
+                    for(int i = 0; i < nDim; i++)		
+                            for(int k=0; k<nNodes; k++) 
+                                J(i) += dNdXi(k) * coordinates(i + k*nDim);
+                    return J;
+                }
+
+                Vector2d TangentialVector(const Vector2d& Jacobian)
+                {
+                    return Jacobian / Jacobian.norm();
+                }
+
+                Vector2d NormalVector(const Vector2d& Jacobian)
+                {
+                    Vector2d n;
+                    n <<    Jacobian(1),
+                            -Jacobian(0); 
+
+                    return n / n.norm();
+                }
+            }
+            namespace Quad4{
+
+                Vector4d get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
+                    Vector4d truss2IndicesInQuad4;
+                    switch(elementFace){
+                        case 1: truss2IndicesInQuad4 <<     0,1,    2,3 /*  4,5,    6,7,*/  ; break;
+                        case 2: truss2IndicesInQuad4 << /*  0,1,*/  2,3,    4,5/*,  6,7,*/  ; break;
+                        case 3: truss2IndicesInQuad4 << /*  0,1,    2,3,  */4,5,    6,7     ; break;
+                        case 4: truss2IndicesInQuad4 <<     6,7,/*  2,3,    4,5, */ 0,1     ; break;
+                    }
+                    return truss2IndicesInQuad4;
+                }
+            }
+            namespace Quad8{
+
+                Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
+                    Vector6 truss3IndicesInQuad8;
+                    switch(elementFace){
+                        case 1: truss3IndicesInQuad8 <<     0,1,    2,3, /* 4,5,    6,7, */ 8,9/*   10,11,  12,13,   14,15 */; break;
+                        case 2: truss3IndicesInQuad8 << /*  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 */; break;
+                        case 3: truss3IndicesInQuad8 << /*  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 */; break;
+                        case 4: truss3IndicesInQuad8 <<     6,7,/*  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,*/ 14,15 ; break;
+                    }
+                    return truss3IndicesInQuad8;
+                }
+            }
+        }
         //****************************************************
         namespace NumIntegration
         {
-
             const Matrix<double, 4, 2> gaussPts2d_2x2()
             {
     		    double gp = 0.577350269189625764509;
