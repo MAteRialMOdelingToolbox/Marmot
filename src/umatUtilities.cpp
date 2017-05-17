@@ -59,7 +59,6 @@ namespace userLibrary{
             Map<const Vector3d>             dStrain_(dStrain);
             Map<VectorXd>                   stateVars_(stateVariables, nStatV);
             Map<const VectorXd>             matProps(props, nProps);
-
             
             Vector6 stress6d =              Vgt::planeVoigtToVoigt(stress_);
             Vector6 dStrain6d =             Vgt::planeVoigtToVoigt(dStrain_);

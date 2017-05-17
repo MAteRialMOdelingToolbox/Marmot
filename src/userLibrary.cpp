@@ -174,21 +174,24 @@ namespace userLibrary{
     {
         switch(id){
             #ifdef uelCPS4
-            case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPE4
-            case 407:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 407:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS4NonLocal 
-            case 412:{return new CPS4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 412:{return new CPS4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelCPE4NonLocal 
+            case 417:{return new CPE4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8R
-            case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8RNonLocal 
-            case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
-            default: return nullptr;
+            default:{ return nullptr;}
         }
     }
 

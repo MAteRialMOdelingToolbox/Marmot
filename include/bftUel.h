@@ -34,7 +34,7 @@ class BftUel{
         virtual void computeDistributedLoad(
                                     DistributedLoadTypes loadType,
                                     double* P, 
-                                    int surfaceID, 
+                                    int elementFace, 
                                     const double* load,
                                     const double* time,
                                     double dT) {};
