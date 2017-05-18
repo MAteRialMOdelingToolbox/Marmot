@@ -11,6 +11,7 @@ namespace bft{
     typedef Map<Matrix6> mMatrix6;
 
     typedef Matrix<double,6,1> Vector6;
+    typedef Matrix<double,8,1> Vector8d;
 	typedef Matrix<double,1,6> RowVector6d;
     typedef Map<Vector6> mVector6;
 	typedef Eigen::Map<Eigen::VectorXd> mVectorXd;
