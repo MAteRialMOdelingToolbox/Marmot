@@ -2,10 +2,11 @@
 #include "Eigen/Core"
 #include "../include/bftVoigt.h"
 #include "../include/bftTypedefs.h"
+#include "../include/bftFiniteElement.h"
 
 using namespace bft;
 
-Matrix3d testPlaneStressTangentAnalytically(double E, double nu)
+Matrix3d test_PlaneStressTangentAnalytically(double E, double nu)
 {
 
     Matrix3d CAnalytic = Matrix3d::Zero();
@@ -25,11 +26,22 @@ Matrix3d testPlaneStressTangentAnalytically(double E, double nu)
     std::cout << CPlaneStress << std::endl;
 }
 
+void test_NBold(const int nDoF)
+{
+    const Matrix<double, 4, 2> gp = bft::NumIntegration::gaussPts2d_2x2();
+    //Vector3d NLinear = bft::FiniteElement::Truss3::shapeFunctions(gp(0,0));
+    Vector3d NLinear = bft::FiniteElement::Truss3::shapeFunctions(gp(0,0));
+    std::cout << "N " << std::endl;
+    std::cout << bft::FiniteElement::createNBold(NLinear, nDoF) << std::endl;
+}
 
 int main(void){
 
     std::cout << "this is the test area for bftMechanics" << std::endl; 
-    testPlaneStressTangentAnalytically(20000, 0.3); 
+    
+    test_PlaneStressTangentAnalytically(20000, 0.3); 
+
+    test_NBold(3);
 
     return 0;
 
