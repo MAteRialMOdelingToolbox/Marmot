@@ -9,7 +9,7 @@ namespace bft{
     {
         MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode);
 
-        namespace Spatial2d
+        namespace Spatial2D
         {
             static constexpr int nDim = 2;
             
