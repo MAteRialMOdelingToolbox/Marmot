@@ -9,7 +9,22 @@ namespace bft{
     {
         MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode);
 
-        namespace Spatial2d
+        // works, but offers no real advantage
+        //template <int dim, int nNodes>
+            //Matrix<double, dim, dim*nNodes> Nb(const Ref<const Matrix<double, nNodes, 1>>& N )
+            //{
+                //Matrix<double, dim, dim*nNodes> N_ = Matrix<double, dim, dim*nNodes>::Zero();
+                //for (int i=0; i<N.size(); i++){
+                    //for (int j=0; j<dim; j++){
+                        //N_(j,dim*i+j) = N(i);
+                    //}
+                //}
+
+                //return N_;
+            //}
+        
+
+        namespace Spatial2D
         {
             static constexpr int nDim = 2;
             
@@ -36,26 +51,20 @@ namespace bft{
             {
                 static constexpr int nNodes = 2;
                 
-                //typedef Eigen::Matrix<double, nDim , nDim * nNodes> Nb_SizedMatrix;
-                
                 Vector2d N(double  xi);
-                //Nb_SizedMatrix Nb(const Vector2d& N);
-                Matrix<double, nNodes, nDim> dNdXi(const double& xi);
+                Vector2d dNdXi(double xi);
                 
                 Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates);
 
                 Vector2d TangentialVector(const Vector2d& Jacobian);
-                Eigen::Vector2d NormalVector(const Vector2d& Jacobian);
+                Vector2d NormalVector(const Vector2d& Jacobian);
             }
             
             namespace Truss3
             {
                 static constexpr int nNodes = 3;
                 
-                //typedef Eigen::Matrix<double, nDim , nDim * nNodes> Nb_SizedMatrix;
-                
                 Vector3d N(double  xi);
-                //Nb_SizedMatrix Nb(const Vector3d& N);
                 Vector3d dNdXi(double xi);
 
                 Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates);

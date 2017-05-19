@@ -20,7 +20,7 @@ namespace bft{
             return N_;} 
         
         
-        namespace Spatial2d
+        namespace Spatial2D
         {
         
             //****************************************************
