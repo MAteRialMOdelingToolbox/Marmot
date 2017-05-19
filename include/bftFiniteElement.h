@@ -35,6 +35,12 @@ namespace bft{
                 Vector4d N(const Ref<const Vector2d>& xi);           
                 Matrix<double, nNodes,nDim> dNdXi(const Ref <const Vector2d>& xi);
                 Vector4d get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+
+                namespace Boundary2 
+                {
+                    const Matrix2d gaussPts1d_2(int elementFace);
+                    Vector4d dNdXi(int elementFace, const Ref<const Vector2d>& xi);
+                } 
             } 
             
             namespace Quad8
@@ -73,19 +79,14 @@ namespace bft{
                 Vector2d NormalVector(const Vector2d& Jacobian);
             }    
 
-            namespace Boundary2 
-            {
-                const Matrix2d gaussPts1d_2(int elementFace);
-                Vector4d dNdXi(int elementFace, const Ref<const Vector2d>& xi);
-            } 
 
         }//end of namespace Spatial2D
 
-        namespace NumIntegration
-        {
-            const Vector2d gaussPts1d_2();
-            const Matrix<double, 4, 2> gaussPts2d_2x2();
-        } 
     }
+    namespace NumIntegration
+    {
+        const Vector2d gaussPts1d_2();
+        const Matrix<double, 4, 2> gaussPts2d_2x2();
+    } 
 } 
 
