@@ -44,8 +44,8 @@ set (optionalLibraries
     
     uelCPE4
     uelCPE4NonLocal
-    uelCPER8
-    uelCPER8NonLocal
+    uelCPE8R
+    uelCPE8RNonLocal
     )
 
 #optional libraries
