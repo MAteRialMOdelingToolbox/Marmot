@@ -128,10 +128,14 @@ extern "C" void FOR_NAME(uel)(
 
         // compute K and P 
         myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewdT); 
+                     if (pNewdT < 0.25)
+                         pNewdT = 0.25;
+
+                     //std:: cout  << mDload << std::endl;
 
         // recompute distributed loads in nodal forces and add it to P 
-        for (int i =0; i<mDload; i++)
-            myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);
+        //for (int i =0; i<mDload; i++)
+            //myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);
         
         delete myUel;
 }

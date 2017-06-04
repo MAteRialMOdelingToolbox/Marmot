@@ -44,6 +44,9 @@ set (optionalLibraries
     uelCPS8R
     uelCPS8RNonLocal
     #uelCPE8NonLocal
+
+    uelC3D8
+    uelC3D8NonLocal
     )
 
 #optional libraries

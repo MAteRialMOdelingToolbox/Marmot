@@ -135,6 +135,13 @@ namespace userLibrary{
     #include "cpe8rNonLocal.h"
 #endif
 
+#ifdef uelC3D8 
+    #include "c3d8.h"
+#endif
+#ifdef uelC3D8NonLocal
+    #include "c3d8NonLocal.h"
+#endif
+
 
 /* UEL ID System
  *
@@ -187,6 +194,12 @@ namespace userLibrary{
             #endif
             #ifdef uelCPS8R
             case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelC3D8
+            case 803:{return new C3D8(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelC3D8NonLocal
+            case 813:{return new C3D8NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8RNonLocal 
             case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
