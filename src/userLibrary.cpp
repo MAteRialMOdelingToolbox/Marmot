@@ -113,25 +113,33 @@ namespace userLibrary{
     }
 } 
 
-#ifdef uelCPE4 
-    #include "cpe4.h"
-#endif
+// plane stress elements
 #ifdef uelCPS4
     #include "cps4.h"
 #endif
 #ifdef uelCPS4NonLocal
     #include "cps4NonLocal.h"
 #endif
-#ifdef uelCPE4NonLocal
-    #include "cpe4NonLocal.h"
-#endif
+
 #ifdef uelCPS8R
     #include "cps8r.h"
 #endif
 #ifdef uelCPS8RNonLocal 
     #include "cps8rNonLocal.h"
 #endif
-#ifdef uelCPE8NonLocal 
+
+// plane strain elements
+#ifdef uelCPE4 
+    #include "cpe4.h"
+#endif
+#ifdef uelCPE4NonLocal
+    #include "cpe4NonLocal.h"
+#endif
+
+#ifdef uelCPE8R
+    #include "cpe8r.h"
+#endif
+#ifdef uelCPE8RNonLocal 
     #include "cpe8rNonLocal.h"
 #endif
 
@@ -203,6 +211,12 @@ namespace userLibrary{
             #endif
             #ifdef uelCPS8RNonLocal 
             case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelCPE8R
+            case 807:{return new CPE8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelCPE8RNonLocal 
+            case 817:{return new CPE8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             default:{ return nullptr;}
         }
