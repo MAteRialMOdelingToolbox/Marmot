@@ -1,5 +1,6 @@
 #include "bftFiniteElement.h"
 #include "bftTypedefs.h"
+#include <iostream>
 
 namespace bft{
     
@@ -17,17 +18,30 @@ namespace bft{
                     N_(j,nDoFPerNode*i+j) = N(i);
                 }
             }
+
             return N_;} 
+
+        MatrixXd Jacobian(const MatrixXd& dNdXi, const VectorXd& coordinates)
+        {
+            int nDim = dNdXi.rows();
+            int nNodes = dNdXi.cols();
+
+            MatrixXd J_ = MatrixXd::Zero(nDim, nDim);
+
+            for(int i = 0; i < nDim; i++)		// loop over global dimensions
+                for(int j=0; j < nDim; j++)		// loop over local dimensions
+                    for(int k=0; k<nNodes; k++) // Loop over nodes
+                        J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDim);
+            return J_;
+        }
         
         
         namespace Spatial2D
         {
-        
-            //****************************************************
             namespace Quad4
             {
                 
-                Vector4d N(const Ref<const Vector2d>& xi){
+                NSized N(const Ref<const Vector2d>& xi){
                 
               /* Shape functions
                  (1) _______(0)
@@ -36,7 +50,7 @@ namespace bft{
                     |_______|  
                  (2)        (3) */
                 
-                    Vector4d N_;
+                    NSized N_;
                     N_ <<   1./4 * (1.+xi(0))*(1.+xi(1)),
                             1./4 * (1.-xi(0))*(1.+xi(1)),
                             1./4 * (1.-xi(0))*(1.-xi(1)),
@@ -44,19 +58,18 @@ namespace bft{
                     return N_;
                 }
                 
-                Matrix<double, nNodes,nDim> dNdXi(const Ref<const Vector2d>& xi){
+                dNdXiSized dNdXi(const Ref<const Vector2d>& xi){
 
-                        Matrix<double, nNodes, nDim> result;
-                        // 					dN(i)/dxi1		dN(i)/dxi2
-                        result <<
-                                        +1./4*(1+xi(1)), +1./4*(1+xi(0)),   
-                                        -1./4*(1+xi(1)), +1./4*(1-xi(0)),
-                                        -1./4*(1-xi(1)), -1./4*(1-xi(0)),
-                                        +1./4*(1-xi(1)), -1./4*(1+xi(0));
+                        dNdXiSized result;
+                        
+                        result <<   /* 1                2                 3                 4*/
+                        /* ,xi1 */  +1./4*(1+xi(1)),    -1./4*(1+xi(1)), -1./4*(1-xi(1)), +1./4*(1-xi(1)), 
+                        /*, xi2 */  +1./4*(1+xi(0)),    +1./4*(1-xi(0)), -1./4*(1-xi(0)), -1./4*(1+xi(0));
+
                         return result;}
 
-                 Vector4d get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
-                        Vector4d truss2IndicesInQuad4;
+                 NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
+                        NSized truss2IndicesInQuad4;
                         switch(elementFace){
                             case 1: truss2IndicesInQuad4 <<     0,1,    2,3 /*  4,5,    6,7,*/  ; break;
                             case 2: truss2IndicesInQuad4 << /*  0,1,*/  2,3,    4,5/*,  6,7,*/  ; break;
@@ -65,6 +78,20 @@ namespace bft{
                         }
                         return truss2IndicesInQuad4;
                     }
+
+                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Vector8d>& coordinates)
+                {
+                    // convenience wrapper to the templated version of the Jacobian
+                    return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
+                }
+
+                BSized B(const Ref<const  dNdXiSized>& dNdX)
+                {
+                    // convenience wrapper to the templated version of the Spatial2D B Operator
+                    return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
+                }
+
+
                 //****************************************************
                 namespace Boundary2
                 {
@@ -96,14 +123,15 @@ namespace bft{
                             return gp;
                         }
                 
-                    Vector4d dNdXi(int elementFace, const Ref<const Vector2d>& xi){
+                    NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi){
                             // derivative of shapeFunction of element face and direction of gradient 
                             // following counterclockwise element numbering
                             switch(elementFace){
-                                case 1: { return -Quad4::dNdXi(xi).col(0); break;}
-                                case 2: { return -Quad4::dNdXi(xi).col(1); break;}
-                                case 3: { return Quad4::dNdXi(xi).col(0); break;}
-                                case 4: { return Quad4::dNdXi(xi).col(1); break;}
+                                case 1: { return -Quad4::dNdXi(xi).row(0); break;}
+                                case 2: { return -Quad4::dNdXi(xi).row(1); break;}
+                                case 3: { return Quad4::dNdXi(xi).row(0); break;}
+                                case 4: { return Quad4::dNdXi(xi).row(1); break;}
+                                default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
                             }
                         }
                 } 
@@ -113,7 +141,7 @@ namespace bft{
             } // end of namespace Quad4
             namespace Quad8
             {
-                Matrix<double, nNodes, 1> N(const Ref<const Vector2d>& xi){
+                NSized N(const Ref<const Vector2d>& xi){
                 
               /* Shape functions
                        (6)
@@ -139,32 +167,46 @@ namespace bft{
                 }
             
                 
-                Matrix<double, nNodes, nDim> dNdXi(const Ref<const Vector2d>& xi){
+                dNdXiSized dNdXi(const Ref<const Vector2d>& xi){
 
                         const double xi0 = xi(0);
                         const double xi1 = xi(1);
-                        Matrix<double, nNodes, nDim> result;
-                        // 					dN(i)/dxi1		                    dN(i)/dxi2
-                        result <<           (1-xi1) * (2*xi0 + xi1)/4,       (1-xi0)*(xi0+ 2*xi1)/4,
-                                            (1-xi1) * (2*xi0 - xi1)/4,      -(1+xi0)*(xi0- 2*xi1)/4,
-                                            (1+xi1) * (2*xi0 + xi1)/4,       (1+xi0)*(xi0+ 2*xi1)/4,
-                                            (1+xi1) * (2*xi0 - xi1)/4,      (1-xi0)*(-xi0+ 2*xi1)/4,
-                                                  -xi0 * (1-xi1),                -(1-xi0*xi0)/2,
-                                                   (1-xi1*xi1)/2,              -xi1 * (1 + xi0),
-                                                  -xi0 * (1+xi1),                +(1-xi0*xi0)/2,
-                                                 -(1-xi1*xi1)/2,               -xi1 * (1 - xi0);
+                        Matrix<double, nDim, nNodes> result;
+                                    /*                  1                           2                           3                           4
+                                     *                  5                           6                           7                           8 */
+                        result <<       /* ,Xi1 */     (1-xi1)*(2*xi0+xi1)/4,      (1-xi1)*(2*xi0-xi1)/4,      (1+xi1)*(2*xi0+xi1)/4,      (1+xi1)*(2*xi0-xi1)/4,
+                                        /* ,Xi1 */     -xi0*(1-xi1),               (1-xi1*xi1)/2,              -xi0*(1+xi1),               -(1-xi1*xi1)/2,
+
+                                    /*                  1                           2                           3                           4
+                                     *                  5                           6                           7                           8*/
+                                        /* ,Xi2 */     (1-xi0)*(xi0+2*xi1)/4,      -(1+xi0)*(xi0-2*xi1)/4,     (1+xi0)*(xi0+2*xi1)/4,      (1-xi0)*(-xi0+2*xi1)/4,
+                                        /* ,Xi2 */     -(1-xi0*xi0)/2,             -xi1*(1+xi0),               +(1-xi0*xi0)/2,             -xi1*(1-xi0);
+
+
                         return result;
                         }
+
+                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates)
+                {
+                    // convenience wrapper to the templated version of the Jacobian
+                    return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
+                }
+
+                BSized B(const Ref<const  dNdXiSized>& dNdX)
+                {
+                    // convenience wrapper to the templated version of the Spatial2D B Operator
+                    return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
+                }
                         
                 std::array<int,3> getNodesOfFace(int elementFace){
                         // create gausspoints in order to use shapefunctions of quad4 element
-                        //std::array<int,3> nodes;
                         switch(elementFace){
                             case 1: { return {0, 1, 4};  break;}
                             case 2: { return {1, 2, 5};  break;}
                             case 3: { return {2, 3, 6};  break;}
-                            case 4: { return {3, 0, 7};  break;} }
-                        //return nodes;
+                            case 4: { return {3, 0, 7};  break;} 
+                            default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
+                        }
                         }
 
                     Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
@@ -174,6 +216,8 @@ namespace bft{
                             case 2: truss3IndicesInQuad8 << /*  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 */; break;
                             case 3: truss3IndicesInQuad8 << /*  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 */; break;
                             case 4: truss3IndicesInQuad8 <<     6,7,/*  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,*/ 14,15 ; break;
+                            default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
+                        
                         }
                         return truss3IndicesInQuad8;
                     }
@@ -280,6 +324,92 @@ namespace bft{
                 }
             } // end of namespace Truss3
         } // end of namespace Spatial2D
+
+        namespace Spatial3D
+        {
+            namespace Hexa8{
+                NSized N(const Ref<const Vector3d>& xi)
+                { /*    (8)________(7)   
+                          /|      /|   
+                      (5)/_|_____(6)    
+                        |  |     | |
+                        |(4)_____|_|(3)
+                        | /      | /
+                        |/_______|/
+                      (1)        (2) 
+
+                     x3  x2
+                      | /
+                      |/___x1 */
+
+                      NSized N_;
+
+                      N_ << (1-xi(0)) * (1-xi(1)) * (1-xi(2)),
+                            (1+xi(0)) * (1-xi(1)) * (1-xi(2)),
+                            (1+xi(0)) * (1+xi(1)) * (1-xi(2)),
+                            (1-xi(0)) * (1+xi(1)) * (1-xi(2)),
+                            (1-xi(0)) * (1-xi(1)) * (1+xi(2)),
+                            (1+xi(0)) * (1-xi(1)) * (1+xi(2)),
+                            (1+xi(0)) * (1+xi(1)) * (1+xi(2)),
+                            (1-xi(0)) * (1+xi(1)) * (1+xi(2));
+
+                      N_ *= 1./8;
+                      return N_;
+
+                }
+                dNdXiSized dNdXi(const Ref<const Vector3d>& xi)
+                {
+                    dNdXiSized dNdXi_;
+
+                    dNdXi_ <<
+                            -1 * (1-xi(1)) * (1-xi(2)),
+                            +1 * (1-xi(1)) * (1-xi(2)),
+                            +1 * (1+xi(1)) * (1-xi(2)),
+                            -1 * (1+xi(1)) * (1-xi(2)),
+                            -1 * (1-xi(1)) * (1+xi(2)),
+                            +1 * (1-xi(1)) * (1+xi(2)),
+                            +1 * (1+xi(1)) * (1+xi(2)),
+                            -1 * (1+xi(1)) * (1+xi(2)),
+                            
+                            (1-xi(0)) * -1 * (1-xi(2)),
+                            (1+xi(0)) * -1 * (1-xi(2)),
+                            (1+xi(0)) * +1 * (1-xi(2)),
+                            (1-xi(0)) * +1 * (1-xi(2)),
+                            (1-xi(0)) * -1 * (1+xi(2)),
+                            (1+xi(0)) * -1 * (1+xi(2)),
+                            (1+xi(0)) * +1 * (1+xi(2)),
+                            (1-xi(0)) * +1 * (1+xi(2)),
+                            
+                            (1-xi(0)) * (1-xi(1)) * -1,
+                            (1+xi(0)) * (1-xi(1)) * -1,
+                            (1+xi(0)) * (1+xi(1)) * -1,
+                            (1-xi(0)) * (1+xi(1)) * -1,
+                            (1-xi(0)) * (1-xi(1)) * +1,
+                            (1+xi(0)) * (1-xi(1)) * +1,
+                            (1+xi(0)) * (1+xi(1)) * +1,
+                            (1-xi(0)) * (1+xi(1)) * +1;
+
+                    dNdXi_ *= 1./8;
+
+                    return dNdXi_;
+                }
+
+                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates)
+                {
+                    // convenience wrapper to the templated version of the Jacobian
+                    return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
+                }
+
+                BSized B(const Ref<const  dNdXiSized>& dNdX)
+                {
+                    // convenience wrapper to the templated version of the Spatial2D B Operator
+                    return FiniteElement::Spatial3D::B<nNodes> ( dNdX ) ;
+                }
+
+          } // end of namespace Hexa8 
+
+        } // end of namespace Spatial3D
+
    } // end of namespace FiniteElement
  
   

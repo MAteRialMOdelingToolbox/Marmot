@@ -4,58 +4,101 @@
 
 namespace bft{
 
-	//****************************************************
 	namespace FiniteElement
     {
-        MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode);
+        // 'Expanded' N , aka NBold aka multidimensional Interpolation Operator
+        MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode); // Dynamic version
 
-        // works, but offers no real advantage
-        //template <int dim, int nNodes>
-            //Matrix<double, dim, dim*nNodes> Nb(const Ref<const Matrix<double, nNodes, 1>>& N )
-            //{
-                //Matrix<double, dim, dim*nNodes> N_ = Matrix<double, dim, dim*nNodes>::Zero();
-                //for (int i=0; i<N.size(); i++){
-                    //for (int j=0; j<dim; j++){
-                        //N_(j,dim*i+j) = N(i);
-                    //}
-                //}
-
-                //return N_;
-            //}
+        template <int dim, int nNodes>
+            Matrix<double, dim, dim*nNodes> NB(const Ref<const Matrix<double, nNodes, 1>>& N )
+            {
+                // Alternative Templated version of Interpolation operator NBold;
+                Matrix<double, dim, dim*nNodes> N_ = Matrix<double, dim, dim*nNodes>::Zero();
+                for (int i=0; i<nNodes; i++){
+                    for (int j=0; j<dim; j++){
+                        N_(j,dim*i+j) = N(i);
+                    }
+                }
+                return N_;
+            }
         
+
+        MatrixXd Jacobian(const MatrixXd& dN_dXi, const VectorXd& coordinates); // Dynamic version
+
+        template <int nDim, int nNodes> 
+            Matrix<double, nDim, nDim> Jacobian(const Matrix<double, nDim, nNodes>&         dNdXi, 
+                                                const Matrix<double, nDim * nNodes, 1>&     coordinates)
+        {
+            // Alternative Templated version of Jacobian for compile time known sizes
+                Matrix<double, nDim, nDim> J_ = Matrix<double, nDim, nDim>::Zero();
+                for(int i = 0; i < nDim; i++)		// loop over global dimensions
+                    for(int j=0; j < nDim; j++)		// loop over local dimensions
+                        for(int k=0; k<nNodes; k++) // Loop over nodes
+                            J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDim);
+                return J_;
+        }
 
         namespace Spatial2D
         {
-            static constexpr int nDim = 2;
+            constexpr int nDim = 2;
+            constexpr int voigtLength=3;
+
+            template<int nNodes> 
+                Matrix<double, voigtLength, nNodes*nDim> B(const Ref<const  Matrix<double, nDim, nNodes>>& dNdX) {   
+
+                    Matrix<double, voigtLength, nNodes*nDim> B_ = Matrix<double, voigtLength, nNodes*nDim>::Zero();
+                    for(int i = 0; i < nNodes; i++){
+                        B_(0, 2*i) =        dNdX(0, i);
+                        B_(1, 2*i +1) =     dNdX(1, i);
+                        B_(2, 2*i) =        dNdX(1, i);
+                        B_(2, 2*i +1) =     dNdX(0, i);}  
+                    return B_;
+                }
             
             namespace Quad4
             {
-                static constexpr int nNodes = 4;
-                
-                Vector4d N(const Ref<const Vector2d>& xi);           
-                Matrix<double, nNodes,nDim> dNdXi(const Ref <const Vector2d>& xi);
-                Vector4d get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+                constexpr int nNodes = 4;
+
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
+                typedef Matrix<double, 3, nNodes * nDim>        BSized;
+
+                NSized N(const Ref<const Vector2d>& xi);           
+                dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
+                NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+              
+                // convenience functions; they are wrappers to the corresponding template functions
+                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
+                BSized B(const Ref<const dNdXiSized>& dNdXi);
 
                 namespace Boundary2 
                 {
                     const Matrix2d gaussPts1d_2(int elementFace);
-                    Vector4d dNdXi(int elementFace, const Ref<const Vector2d>& xi);
+                    NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
                 } 
             } 
             
             namespace Quad8
             {
-                static constexpr int nNodes = 8;
+                constexpr int nNodes = 8;
+
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
+                typedef Matrix<double, 3, nNodes * nDim>        BSized;
                 
-                Matrix<double, nNodes,1> N(const Ref<const Vector2d>& xi);           
-                Matrix<double, nNodes,nDim> dNdXi(const Ref <const Vector2d>& xi);
+                NSized N(const Ref<const Vector2d>& xi);           
+                dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
                 std::array<int,3> getNodesOfFace(int elementFace);   
                 Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+
+                // convenience functions; they are wrappers to the corresponding template functions
+                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
+                BSized B(const Ref<const dNdXiSized>& dNdXi);
             } 
             
             namespace Truss2
             {
-                static constexpr int nNodes = 2;
+                constexpr int nNodes = 2;
                 
                 Vector2d N(double  xi);
                 Vector2d dNdXi(double xi);
@@ -68,7 +111,7 @@ namespace bft{
             
             namespace Truss3
             {
-                static constexpr int nNodes = 3;
+                constexpr int nNodes = 3;
                 
                 Vector3d N(double  xi);
                 Vector3d dNdXi(double xi);
@@ -78,15 +121,83 @@ namespace bft{
                 Vector2d TangentialVector(const Vector2d& Jacobian);
                 Vector2d NormalVector(const Vector2d& Jacobian);
             }    
-
-
         }//end of namespace Spatial2D
 
+        namespace Spatial3D
+        {
+            constexpr int nDim = 3;
+            constexpr int voigtLength = 6;
+
+            template<int nNodes> 
+                Matrix<double, voigtLength, nNodes*nDim> B(const Ref<const  Matrix<double, nDim, nNodes>>& dNdX) {   
+
+                    Matrix<double, voigtLength, nNodes*nDim> B_ = Matrix<double, voigtLength, nNodes*nDim>::Zero();
+                    for(int i = 0; i < nNodes; i++){
+                        B_(0, nDim*i) =        dNdX(0, i);
+                        B_(1, nDim*i +1) =     dNdX(1, i);
+                        B_(2, nDim*i +2) =     dNdX(1, i);
+                        B_(3, nDim*i +0) =     dNdX(1, i);
+                        B_(3, nDim*i +1) =     dNdX(0, i);
+                        B_(4, nDim*i +1) =     dNdX(2, i);
+                        B_(4, nDim*i +2) =     dNdX(1, i);
+                        B_(5, nDim*i +2) =     dNdX(0, i);
+                        B_(5, nDim*i +0) =     dNdX(2, i); }  
+
+                    return B_;
+                }
+ 
+            namespace Hexa8
+            {
+                constexpr int nNodes = 8;
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
+                typedef Matrix<double, 6,       nNodes * nDim>  BSized;
+
+                NSized N(const Ref<const Vector3d>& xi);           
+                dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
+               
+                // convenience functions; they are wrappers to the corresponding template functions
+                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
+                BSized B(const Ref<const dNdXiSized>& dNdXi);
+            }
+        }
     }
+
     namespace NumIntegration
     {
         const Vector2d gaussPts1d_2();
         const Matrix<double, 4, 2> gaussPts2d_2x2();
+
+        constexpr double gp2 = 0.577350269189625764509;
+        
+        namespace Spatial2D
+        { 
+            constexpr int nDim = 2;
+
+            using Matrix42 = Matrix<double, 4, nDim>;
+            const Matrix42 gaussPtList2x2 = (Matrix42() 
+                <<  +gp2,  +gp2, 
+                    -gp2,  +gp2,
+                    -gp2,  -gp2, 
+                    +gp2,  -gp2).finished();
+        }
+
+        namespace Spatial3D
+        { 
+            constexpr int nDim = 3;
+
+            const Matrix<double, 8, nDim> gaussPtList2x2x2 = (
+               Matrix<double, 8, nDim>() <<  
+                   -gp2,    -gp2,     -gp2,
+                   +gp2,    -gp2,     -gp2,
+                   +gp2,    +gp2,     -gp2,
+                   -gp2,    +gp2,     -gp2,
+                   -gp2,    -gp2,     +gp2,
+                   +gp2,    -gp2,     +gp2,
+                   +gp2,    +gp2,     +gp2,
+                   -gp2,    +gp2,     +gp2).finished();
+        }
+
     } 
 } 
 
