@@ -6,17 +6,26 @@ namespace bft{
 
 	namespace FiniteElement
     {
+        enum ElementShapes{
+            Quad4,
+            Quad8,
+            Hexa8,
+            Hexa30,
+        };
+
+        ElementShapes getElementShapeByMetric(int nDim, int nNodes);
+
         // 'Expanded' N , aka NBold aka multidimensional Interpolation Operator
         MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode); // Dynamic version
 
-        template <int dim, int nNodes>
-            Matrix<double, dim, dim*nNodes> NB(const Ref<const Matrix<double, nNodes, 1>>& N )
+        template <int nDim, int nNodes>
+            Matrix<double, nDim, nDim*nNodes> NB(const Ref<const Matrix<double, nNodes, 1>>& N )
             {
                 // Alternative Templated version of Interpolation operator NBold;
-                Matrix<double, dim, dim*nNodes> N_ = Matrix<double, dim, dim*nNodes>::Zero();
+                Matrix<double, nDim, nDim*nNodes> N_ = Matrix<double, nDim, nDim*nNodes>::Zero();
                 for (int i=0; i<nNodes; i++){
-                    for (int j=0; j<dim; j++){
-                        N_(j,dim*i+j) = N(i);
+                    for (int j=0; j<nDim; j++){
+                        N_(j,nDim*i+j) = N(i);
                     }
                 }
                 return N_;
@@ -169,33 +178,75 @@ namespace bft{
         const Matrix<double, 4, 2> gaussPts2d_2x2();
 
         constexpr double gp2 = 0.577350269189625764509;
+        constexpr double gp3 = 0.774596669241483;
+
+        enum IntegrationTypes{
+            FullIntegration,
+            ReducedIntegration
+        };
+
+        MatrixXd getGaussPointList(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
+        VectorXd getGaussWeights (bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
+
         
         namespace Spatial2D
         { 
             constexpr int nDim = 2;
 
+            const RowVector2d gaussPtList1x1 = RowVector2d :: Zero();
+            const Matrix<double,1,1> gaussPtList1x1Weights = (Matrix<double,1,1>() << 
+                    4).finished();
+
             using Matrix42 = Matrix<double, 4, nDim>;
-            const Matrix42 gaussPtList2x2 = (Matrix42() 
-                <<  +gp2,  +gp2, 
+            const Matrix42 gaussPtList2x2 = (Matrix42() <<  
+                    +gp2,  +gp2, 
                     -gp2,  +gp2,
                     -gp2,  -gp2, 
                     +gp2,  -gp2).finished();
+            const Matrix<double, 4,1>   gaussPtList2x2Weights = (Matrix<double,4,1>() << 
+                    1,1,1,1).finished();
+
+            using Matrix92 = Matrix<double, 9, nDim>;
+            const Matrix92 gaussPtList3x3 = (Matrix92() <<  
+                    0,     0,
+                    -gp3,  -gp3,
+                    +gp3,  -gp3,
+                    +gp3,  +gp3,
+                    -gp3,  +gp3,
+                    0,     -gp3,
+                    gp3,   0,
+                    0,     +gp3,
+                    -gp3,  0).finished();
+            const Matrix<double, 9,1>   gaussPtList3x3Weights = (Matrix<double,9,1>() <<   
+                    64./81, 25./91, 25./81, 
+                    25./81, 25./81, 40./81, 
+                    40./81, 40./81, 40./81).finished();
+
         }
 
         namespace Spatial3D
         { 
             constexpr int nDim = 3;
 
+            const RowVector3d gaussPtList1x1x1 = RowVector3d::Zero();
+            const Matrix<double, 1, 1> gaussPtList1x1x1Weights = 
+                (Matrix<double, 1, 1>() << 
+                8.0
+                ).finished();
+
             const Matrix<double, 8, nDim> gaussPtList2x2x2 = (
-               Matrix<double, 8, nDim>() <<  
-                   -gp2,    -gp2,     -gp2,
-                   +gp2,    -gp2,     -gp2,
-                   +gp2,    +gp2,     -gp2,
-                   -gp2,    +gp2,     -gp2,
-                   -gp2,    -gp2,     +gp2,
-                   +gp2,    -gp2,     +gp2,
-                   +gp2,    +gp2,     +gp2,
-                   -gp2,    +gp2,     +gp2).finished();
+            Matrix<double, 8, nDim>() <<  
+               -gp2,    -gp2,     -gp2,
+               +gp2,    -gp2,     -gp2,
+               +gp2,    +gp2,     -gp2,
+               -gp2,    +gp2,     -gp2,
+               -gp2,    -gp2,     +gp2,
+               +gp2,    -gp2,     +gp2,
+               +gp2,    +gp2,     +gp2,
+               -gp2,    +gp2,     +gp2).finished();
+
+            const Matrix<double, 8,1>   gaussPtList2x2x2Weights = (Matrix<double,8,1>() <<   
+                    1,1,1,1,1,1,1,1).finished();
         }
 
     } 
