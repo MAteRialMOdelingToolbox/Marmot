@@ -20,40 +20,47 @@ class UelDisplacementPlane : public UelDisplacement<2, nNodes>
 
     const SectionType sectionType;
 
-        UelDisplacementPlane(const double* coordinates,
-                                    double* stateVars,
-                                    int nStateVars,
-                                    const double* propertiesElement,
-                                    int nPropertiesElement,
-                                    int noEl,
-                                    const bft::pUmatType umat,
-                                    int nStateVarsUmat,
-                                    const double* propertiesUmat,
-                                    int nPropertiesUmat,
-                                    bft::NumIntegration::IntegrationTypes integrationType,
-                                    SectionType sectionType): 
-            ParentUelDisplacement(coordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, noEl, 
-            umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat, integrationType), sectionType(sectionType){};
+    UelDisplacementPlane(const double* coordinates,
+            double* stateVars,
+            int nStateVars,
+            const double* propertiesElement,
+            int nPropertiesElement,
+            int noEl,
+            const bft::pUmatType umat,
+            int nStateVarsUmat,
+            const double* propertiesUmat,
+            int nPropertiesUmat,
+            bft::NumIntegration::IntegrationTypes integrationType,
+            SectionType sectionType): 
+        ParentUelDisplacement(coordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, noEl, 
+                umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat, integrationType), sectionType(sectionType){};
 
-        void computeYourself( const double* QTotal,
-                                            const double* dQ,
-                                            double* Pe,
-                                            double* Ke,
-                                            const double* time,
-                                            double dT,
-                                            double& pNewdT);
+    void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
+            double* P, 
+            const int elementFace, 
+            const double* load,
+            const double* time,
+            double dT);
+
+    void computeYourself( const double* QTotal,
+            const double* dQ,
+            double* Pe,
+            double* Ke,
+            const double* time,
+            double dT,
+            double& pNewdT);
 
 };
 
 template <int nNodes>
 void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
-                                    const double* dQ_,
-                                    double* Pe_,
-                                    double* Ke_,
-                                    const double* time,
-                                    double dT,
-                                    double& pNewdT
-							   	){
+        const double* dQ_,
+        double* Pe_,
+        double* Ke_,
+        const double* time,
+        double dT,
+        double& pNewdT
+        ){
 
     using namespace bft;
 
@@ -90,7 +97,7 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
         if (sectionType == SectionType::PlaneStress){
 
             bft::umatPlaneStress(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
-                             pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
+                    pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
             if (pNewdT<1.0)
                 return;
 
@@ -100,8 +107,8 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
 
         else if(sectionType == SectionType::PlaneStrain)
         {
-		    bft::simpleUmat(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
-                                    pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
+            bft::simpleUmat(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
+                    pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
 
             if (pNewdT<1.0)
                 return; 
@@ -109,13 +116,59 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
             Vector3d stressCondensed;
             stressCondensed.head(2) = stress.head(2);
             stressCondensed(2) = stress(3);
-            
+
             Ke += B.transpose() * bft::mechanics::getPlaneStrainTangent(Cep) * B *  vol;
             Pe -= B.transpose() * stressCondensed * vol;
         }
 
         strain += dStrain; 
-    
+
     }
 
 }
+
+
+template <int nNodes>
+void UelDisplacementPlane<nNodes>::computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
+        double* P, 
+        const int elementFace, 
+        const double* load,
+        const double* time,
+        double dT){
+
+    Map<typename ParentUelDisplacement::RhsSized> fU(P);
+
+    Vector4d truss2IndicesInQuad4 = bft::FiniteElement::Spatial2D::Quad4::get2DCoordinateIndicesOfBoundaryTruss( elementFace );
+    Vector4d boundaryTrussCoordinates;
+
+    for(int i = 0; i < truss2IndicesInQuad4.size(); i++)
+        boundaryTrussCoordinates(i) = this->coordinates( truss2IndicesInQuad4(i) );
+
+    switch(loadType){
+
+        case BftUel::Pressure:  
+
+            const double p = load[0];
+            if (std::abs(p)<bft::Constants::numZeroPos)
+                return;
+
+            Vector4d P = Vector4d::Zero();
+            Vector2d J;
+
+            constexpr double gp = 0.0;
+            constexpr double iWeight = 2.0;
+            using namespace bft::FiniteElement::Spatial2D;
+            using namespace bft::FiniteElement;
+
+            // numerical integraion
+            J = Truss2::Jacobian(Truss2::dNdXi(gp), boundaryTrussCoordinates);
+
+            P += NB( Truss2::N(gp), 2 ).transpose() * Truss2::NormalVector(J) * -p * this->propertiesElement(0) * J.norm() * iWeight;
+
+            for(int i = 0; i < truss2IndicesInQuad4.size(); i++)
+                fU( truss2IndicesInQuad4(i) ) +=  P(i);
+
+            break;
+    }
+}
+
