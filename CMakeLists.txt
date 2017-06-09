@@ -49,6 +49,10 @@ set (optionalLibraries
     uelCPE4NonLocal
     uelCPE8R
     uelCPE8RNonLocal
+
+    uelDisplacement
+    uelNonLocal
+
     )
 
 #optional libraries
