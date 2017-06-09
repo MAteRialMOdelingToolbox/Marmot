@@ -194,33 +194,33 @@ namespace userLibrary{
             bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat)
     {
         switch(id){
-            //#ifdef uelCPS4
-            //case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //#endif
-            //#ifdef uelCPE4
-            //case 407:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //#endif
+            #ifdef uelCPS4
+            case 402:{return new CPS4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelCPE4
+            case 407:{return new CPE4(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
             #ifdef uelCPS4NonLocal 
             case 412:{return new CPS4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPE4NonLocal 
             case 417:{return new CPE4NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
-            //#ifdef uelCPS8R
-            //case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //#endif
-            //#ifdef uelC3D8
-            //case 803:{return new C3D8(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //#endif
+            #ifdef uelCPS8R
+            case 805:{return new CPS8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
+            #ifdef uelC3D8
+            case 803:{return new C3D8(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
             #ifdef uelC3D8NonLocal
             case 813:{return new C3D8NonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef uelCPS8RNonLocal 
             case 815:{return new CPS8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
-            //#ifdef uelCPE8R
-            //case 807:{return new CPE8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //#endif
+            #ifdef uelCPE8R
+            case 807:{return new CPE8R(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #endif
             #ifdef uelCPE8RNonLocal 
             case 817:{return new CPE8RNonLocal(elementCoordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
