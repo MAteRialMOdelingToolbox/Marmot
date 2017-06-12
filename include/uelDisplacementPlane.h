@@ -1,6 +1,7 @@
 #pragma once
 #include "uelDisplacement.h"
 #include "bftAbaqusUmatWrapper.h"
+#include "bftFiniteElement.h"
 
 template <int nNodes> 
 class UelDisplacementPlane : public UelDisplacement<2, nNodes>
@@ -138,37 +139,36 @@ void UelDisplacementPlane<nNodes>::computeDistributedLoad( BftUel::DistributedLo
 
     Map<typename ParentUelDisplacement::RhsSized> fU(P);
 
-    Vector4d truss2IndicesInQuad4 = bft::FiniteElement::Spatial2D::Quad4::get2DCoordinateIndicesOfBoundaryTruss( elementFace );
-    Vector4d boundaryTrussCoordinates;
-
-    for(int i = 0; i < truss2IndicesInQuad4.size(); i++)
-        boundaryTrussCoordinates(i) = this->coordinates( truss2IndicesInQuad4(i) );
+    using namespace bft::FiniteElement::BoundaryElementFactory;
+    VectorXd boundaryCoordIndices = getBoundaryNodeList(this->shape, elementFace);
+    
+    VectorXd boundaryCoordinates(boundaryCoordIndices.size());
+    for(int i = 0; i < boundaryCoordIndices.size(); i++)
+        boundaryCoordinates(i) = this->coordinates( boundaryCoordIndices(i) );
 
     switch(loadType){
 
-        case BftUel::Pressure:  
-
+        case BftUel::Pressure: { 
             const double p = load[0];
+            
             if (std::abs(p)<bft::Constants::numZeroPos)
                 return;
 
-            Vector4d P = Vector4d::Zero();
-            Vector2d J;
+            VectorXd Pk = VectorXd::Zero(boundaryCoordIndices.size());
+            MatrixXd gp = getGaussPointList(this->shape); 
+            VectorXd gpWeight = getGaussWeights(this->shape);  
 
-            constexpr double gp = 0.0;
-            constexpr double iWeight = 2.0;
-            using namespace bft::FiniteElement::Spatial2D;
-            using namespace bft::FiniteElement;
-
-            // numerical integraion
-            J = Truss2::Jacobian(Truss2::dNdXi(gp), boundaryTrussCoordinates);
-
-            P += NB( Truss2::N(gp), 2 ).transpose() * Truss2::NormalVector(J) * -p * this->propertiesElement(0) * J.norm() * iWeight;
-
-            for(int i = 0; i < truss2IndicesInQuad4.size(); i++)
-                fU( truss2IndicesInQuad4(i) ) +=  P(i);
-
+            for(int i=0; i<gp.rows(); i++){
+                MatrixXd xi = gp.row(i);        // necessary matrix mapping, as factory return type of gauss points is a matrix (with regard to future 3d elements) 
+                VectorXd tractionVec = -p * getNormalVector(this->shape, boundaryCoordinates, xi);
+                Pk += getIntVol(this->shape, boundaryCoordinates, xi) * this->propertiesElement(0) * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
+            
+            for(int i = 0; i < boundaryCoordIndices.size(); i++)
+                fU( boundaryCoordIndices(i) ) +=  Pk(i);
+            
             break;
+        }
+        default:  {std::cout << "Load type not supported" << std::endl; exit(-1);}
     }
 }
 

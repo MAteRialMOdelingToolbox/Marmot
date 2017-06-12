@@ -21,13 +21,13 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
         typedef Matrix<double, sizeLoadVector, 1>                RhsSized;
         typedef Matrix<double, sizeLoadVector, sizeLoadVector>   KeSizedMatrix;
 
-        Map<VectorXd> stateVars;
-        const int nStateVars;
-        const Map<const VectorXd> propertiesElement;
-        const Map<const VectorXd> propertiesUmat;
-        const int elLabel;
-        const bft::pUmatType umat;
-        const int nStateVarsUmat;
+        Map<VectorXd>               stateVars;
+        const int                   nStateVars;
+        const Map<const VectorXd>   propertiesElement;
+        const Map<const VectorXd>   propertiesUmat;
+        const int                   elLabel;
+        const bft::pUmatType        umat;
+        const int                   nStateVarsUmat;
 
         MatrixXd gaussPointList;
         VectorXd gaussWeights;
