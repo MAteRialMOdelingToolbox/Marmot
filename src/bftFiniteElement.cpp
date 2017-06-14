@@ -716,24 +716,5 @@ namespace bft{
                 default: {std::cout << "Invalid shape/integrationType combination" << std::endl; exit(-1);}
             }
         }
-
-        const Vector2d gaussPts1d_2()
-        {
-            double gp = 0.577350269189625764509;
-            Eigen::Matrix<double, 2,  1> gaussPts;
-            gaussPts << -gp, +gp; 
-            return gaussPts; 
-        }
-
-        const Matrix<double, 4, 2> gaussPts2d_2x2()
-        {
-            double gp = 0.577350269189625764509;
-            Eigen::Matrix<double, 4,  2> gaussPts;
-            gaussPts << +gp,  +gp, 
-                     -gp,  +gp,
-                     -gp,  -gp, 
-                     +gp,  -gp;
-            return gaussPts; 
-        }
     } // end of namespace NumIntegration
 } // end of namespace bft

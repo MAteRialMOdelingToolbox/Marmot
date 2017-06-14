@@ -206,9 +206,6 @@ namespace bft{
 
     namespace NumIntegration
     {
-        const Vector2d gaussPts1d_2();
-        const Matrix<double, 4, 2> gaussPts2d_2x2();
-
         constexpr double gp2 = 0.577350269189625764509;
         constexpr double gp3 = 0.774596669241483;
 
