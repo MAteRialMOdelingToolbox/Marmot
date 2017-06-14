@@ -66,6 +66,12 @@ namespace UelDisplacementFactory{
                                  nPropertiesElement, noEl, umat, nStateVarsUmat, propertiesUmat, 
                                  nPropertiesUmat,  bft::NumIntegration::IntegrationTypes::FullIntegration); }
 
+    BftUel* generateUelC3D8R(const double* coordinates, double* stateVars, int nStateVars, const double* propertiesElement, int nPropertiesElement,
+                            int noEl, const bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat){
+            return new UelDisplacementSolid< 8 >(coordinates, stateVars, nStateVars, propertiesElement, 
+                                 nPropertiesElement, noEl, umat, nStateVarsUmat, propertiesUmat, 
+                                 nPropertiesUmat,  bft::NumIntegration::IntegrationTypes::ReducedIntegration); }
+
     BftUel* generateUelC3D20(const double* coordinates, double* stateVars, int nStateVars, const double* propertiesElement, int nPropertiesElement,
                             int noEl, const bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat){
             return new UelDisplacementSolid< 20 >(coordinates, stateVars, nStateVars, propertiesElement, 

@@ -31,6 +31,9 @@ namespace UelDisplacementFactory{
     BftUel* generateUelC3D8(const double* coordinates, double* stateVars, int nStateVars, const double* propertiesElement, int nPropertiesElement,
                             int noEl, const bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat);
 
+    BftUel* generateUelC3D8R(const double* coordinates, double* stateVars, int nStateVars, const double* propertiesElement, int nPropertiesElement,
+                            int noEl, const bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat);
+
     BftUel* generateUelC3D20(const double* coordinates, double* stateVars, int nStateVars, const double* propertiesElement, int nPropertiesElement,
                             int noEl, const bft::pUmatType umat, int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat);
 
