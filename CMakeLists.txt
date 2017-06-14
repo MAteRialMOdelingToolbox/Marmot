@@ -37,19 +37,6 @@ set (optionalLibraries
     UntereggerRockMass
     UntereggerRockMassNonLocal
 
-    uelCPS4
-    uelCPS4NonLocal
-    uelCPS8R
-    uelCPS8RNonLocal
-
-    uelC3D8
-    uelC3D8NonLocal
-    
-    uelCPE4
-    uelCPE4NonLocal
-    uelCPE8R
-    uelCPE8RNonLocal
-
     uelDisplacement
     uelNonLocal
 
