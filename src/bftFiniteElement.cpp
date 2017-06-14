@@ -574,7 +574,87 @@ namespace bft{
 
         } // end of namespace Spatial3D
 
+    namespace BoundaryElementFactory{
+        
+        using bft::FiniteElement::ElementShapes;
+       
+        VectorXd getBoundaryNodeList(bft::FiniteElement::ElementShapes shape, const int& elementFace){
+            switch(shape)
+            {
+                case(ElementShapes::Quad4):  { using namespace FiniteElement::Spatial2D::Quad4;
+                                               return get2DCoordinateIndicesOfBoundaryTruss(elementFace); }
+                case(ElementShapes::Quad8):  { using namespace FiniteElement::Spatial2D::Quad8;
+                                               return get2DCoordinateIndicesOfBoundaryTruss(elementFace); } 
+                //case(ElementShapes::Hexa8):   exit(-1);  
+                default: {std::cout << "NodeIdxList: Invalid shape combination for boundary element" << std::endl; exit(-1);}
+            }
+        }
+        
+        MatrixXd getNormalVector(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords,  const Ref<const VectorXd>& gp){
+            switch(shape)
+            {
+                case(ElementShapes::Quad4): { using namespace FiniteElement::Spatial2D::Truss2;
+                                              return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
+                case(ElementShapes::Quad8): { using namespace FiniteElement::Spatial2D::Truss3; 
+                                              return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
+                //case(ElementShapes::Hexa8):   exit(-1);  
+                default: {std::cout << "Jacobian: Invalid shape combination for boundary element" << std::endl; exit(-1);}
+            }
+        }
+
+        MatrixXd getGaussPointList(bft::FiniteElement::ElementShapes shape)
+        {
+            switch(shape)
+            {
+                case(ElementShapes::Quad4): {  return gaussPtList2; }
+                case(ElementShapes::Quad8): {  return gaussPtList3; } 
+                //case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2; } 
+                default: {std::cout << "Gausspoints: Invalid shape/integrationType combination boundary eement" << std::endl; exit(-1);}
+            }
+        }
+        
+        VectorXd getGaussWeights(bft::FiniteElement::ElementShapes shape)
+        {
+            switch(shape)
+            {
+                case(ElementShapes::Quad4): {  return gaussPtList2Weights; }
+                case(ElementShapes::Quad8): {  return gaussPtList3Weights; } 
+                //case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2Weights; } 
+                default: {std::cout << "Boundary element: invalid gauss weights" << std::endl; exit(-1);}
+            }
+        }
+        
+        MatrixXd getNB(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp)
+        {
+            using namespace bft::FiniteElement;
+            switch(shape)
+            {
+                case(ElementShapes::Quad4): {  return NB( Spatial2D::Truss2::N(gp(0)), 2); }
+                case(ElementShapes::Quad8): {  return NB( Spatial2D::Truss3::N(gp(0)), 2); } 
+                //case(ElementShapes::Hexa8): {  exit(-1); } 
+                default: {std::cout << "Boundary element: invalid NB shape" << std::endl; exit(-1);}
+            }
+        }
+    
+        double getIntVol(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp)
+        {
+            switch(shape)
+            {
+                case(ElementShapes::Quad4): {  using namespace Spatial2D::Truss2; 
+                                               return Jacobian(dNdXi(gp(0)), coords).norm(); }
+                case(ElementShapes::Quad8): {  using namespace Spatial2D::Truss3; 
+                                               return Jacobian(dNdXi(gp(0)), coords).norm(); } 
+                //case(ElementShapes::Hexa8): {  exit(-1); } 
+                default: {std::cout << "Boundary element: invalid integration volume" << std::endl; exit(-1);}
+            }
+        }
+        
+        }// end of namespace BoundaryElementFactory
+
+
     } // end of namespace FiniteElement
+
+
 
 
     //****************************************************

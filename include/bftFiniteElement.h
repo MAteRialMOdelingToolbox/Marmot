@@ -131,6 +131,23 @@ namespace bft{
                 Vector2d NormalVector(const Vector2d& Jacobian);
             }    
         }//end of namespace Spatial2D
+        
+        namespace BoundaryElementFactory{
+            constexpr double gp2 = 0.577350269189625764509;
+            constexpr double gp3 = 0.774596669241483;
+            
+            const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
+            const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
+            const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
+            const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
+
+            VectorXd getBoundaryNodeList(   bft::FiniteElement::ElementShapes shape, const int& elementFace);
+            MatrixXd getGaussPointList(     bft::FiniteElement::ElementShapes shape);
+            MatrixXd getNormalVector(       bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
+            VectorXd getGaussWeights(       bft::FiniteElement::ElementShapes shape);
+            MatrixXd getNB(                 bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp);
+            double getIntVol(               bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
+        } 
 
         namespace Spatial3D
         {
@@ -238,6 +255,7 @@ namespace bft{
                     40./81, 40./81, 40./81).finished();
 
         }
+
 
         namespace Spatial3D
         { 
