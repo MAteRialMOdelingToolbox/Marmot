@@ -10,7 +10,7 @@ namespace bft{
             Quad4,
             Quad8,
             Hexa8,
-            Hexa30,
+            Hexa20,
         };
 
         ElementShapes getElementShapeByMetric(int nDim, int nNodes);
@@ -169,6 +169,21 @@ namespace bft{
                 Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
             }
+
+            namespace Hexa20
+            {
+                constexpr int nNodes = 20;
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
+                typedef Matrix<double, 6,       nNodes * nDim>  BSized;
+
+                NSized N(const Ref<const Vector3d>& xi);           
+                dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
+               
+                // convenience functions; they are wrappers to the corresponding template functions
+                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
+                BSized B(const Ref<const dNdXiSized>& dNdXi);
+            }
         }
     }
 
@@ -247,6 +262,51 @@ namespace bft{
 
             const Matrix<double, 8,1>   gaussPtList2x2x2Weights = (Matrix<double,8,1>() <<   
                     1,1,1,1,1,1,1,1).finished();
+
+            const Matrix<double, 3*3*3, nDim> gaussPtList3x3x3 = (Matrix<double, 3*3*3, nDim>() <<  
+                    -gp3,  -gp3, -gp3,
+                    0,     -gp3, -gp3,
+                    +gp3,  -gp3, -gp3,
+                    -gp3,  0,    -gp3,
+                    0,     0,    -gp3,
+                    gp3,   0,    -gp3,
+                    -gp3,  +gp3, -gp3,
+                    0,     +gp3, -gp3,
+                    +gp3,  +gp3, -gp3,
+
+                    -gp3,  -gp3, 0,
+                    0,     -gp3, 0,
+                    +gp3,  -gp3, 0,
+                    -gp3,  0,    0,
+                    0,     0,    0,
+                    gp3,   0,    0,
+                    -gp3,  +gp3, 0,
+                    0,     +gp3, 0,
+                    +gp3,  +gp3, 0,
+
+                    -gp3,  -gp3, +gp3,
+                    0,     -gp3, +gp3,
+                    +gp3,  -gp3, +gp3,
+                    -gp3,  0,    +gp3,
+                    0,     0,    +gp3,
+                    gp3,   0,    +gp3,
+                    -gp3,  +gp3, +gp3,
+                    0,     +gp3, +gp3,
+                    +gp3,  +gp3, +gp3
+
+                    ).finished();
+
+            const Matrix<double, 3*3*3,1>   gaussPtList3x3x3Weights = (Matrix<double,3*3*3,1>() <<   
+                    0.171467764060357,  0.274348422496571,  0.171467764060357,
+                    0.274348422496571,  0.438957475994513,  0.274348422496571,
+                    0.171467764060357,  0.274348422496571,  0.171467764060357,
+                    0.274348422496571,  0.438957475994513,  0.274348422496571,
+                    0.438957475994513,  0.702331961591221,  0.438957475994513,
+                    0.274348422496571,  0.438957475994513,  0.274348422496571,
+                    0.171467764060357,  0.274348422496571,  0.171467764060357,
+                    0.274348422496571,  0.438957475994513,  0.274348422496571,
+                    0.171467764060357,  0.274348422496571,  0.171467764060357
+                    ).finished();
         }
 
     } 
