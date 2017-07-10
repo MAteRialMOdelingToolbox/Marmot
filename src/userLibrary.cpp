@@ -170,6 +170,8 @@ namespace userLibrary{
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 806: {return UelDisplacementFactory:: generateUelC3D8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 807: {return UelDisplacementFactory:: generateUelCPE8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 2003: {return UelDisplacementFactory:: generateUelC3D20 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 2006: {return UelDisplacementFactory:: generateUelC3D20R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
@@ -189,6 +191,8 @@ namespace userLibrary{
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 816: {return UelNonLocalFactory:: generateUelC3D8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 817: {return UelNonLocalFactory:: generateUelCPE8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 2013: {return UelNonLocalFactory:: generateUelC3D20NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 2016: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
