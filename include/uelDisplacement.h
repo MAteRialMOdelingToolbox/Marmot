@@ -129,7 +129,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const
                     const double sigY2 = values[2];
                     const double y1    = values[1];
                     const double y2    = values[3];
-
+                    
                     stress(1) = bft::Functions::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
                     stress(0) = values[4]*stress(1);  // sigma_x
                     stress(2) = values[5]*stress(1);}  // sigma_z

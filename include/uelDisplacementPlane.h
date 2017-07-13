@@ -83,7 +83,10 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
 
         const typename ParentUelDisplacement::ParentGeometryElement::BSized& B =   this->BAtGauss[i]; 
         const double detJ =         this->detJAtGauss[i];
-        const double charElemlen =  std::sqrt(4*detJ);
+        double charElemlen =  std::sqrt(4*detJ);
+        
+        if (this->gaussWeights.size()==9)
+            bft::NumIntegration::Spatial2D::modifyCharElemLengthAbaqusLike(charElemlen, i);
 
         // mapping for global state vars; sequence: stateVarsLocal[nStateVarsUmatPerGaussPt], stress[nTens], strain[nTens]
         int GaussShiftStateVars =   this->nUelStatVars + i*nStateVarsTotalPerGaussPt;
