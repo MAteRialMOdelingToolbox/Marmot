@@ -33,6 +33,7 @@ set (optionalLibraries
     Meschke
     SchaedlichSchweiger
     ShotLeon
+    ShotLeonNonLocal
     SolidificationCreep
     UntereggerRockMass
     UntereggerRockMassNonLocal

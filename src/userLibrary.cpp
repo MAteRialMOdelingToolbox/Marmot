@@ -14,6 +14,9 @@
 #ifdef ShotLeon 
     #include "umatShotLeon.h"
 #endif
+#ifdef ShotLeon 
+    #include "umatShotLeonNonLocal.h"
+#endif
 #ifdef ModLeonNonLocal 
     #include "umatModLeonNonLocal.h"
 #endif
@@ -69,6 +72,9 @@ namespace userLibrary{
             #ifdef UntereggerRockMassNonLocal 
             {9,   umatUntereggerRockMassNonLocal},  
             #endif 
+            #ifdef umatShotLeonNonLocal
+            {10,   umatShotLeonNonLocal},  
+            #endif
             };
 
     return userMaterials.at(id);
@@ -85,6 +91,9 @@ namespace userLibrary{
             #endif
             #ifdef ShotLeon 
             {"SHOTLEON",   umatShotLeon},  
+            #endif
+            #ifdef ShotLeonNonLocal 
+            {"SHOTLEONNONLOCAL",   umatShotLeonNonLocal},  
             #endif
             #ifdef Meschke 
             {"MESCHKE",   umatMeschke},  
