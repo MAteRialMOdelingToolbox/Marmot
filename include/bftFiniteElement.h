@@ -251,6 +251,7 @@ namespace bft{
                     25./81, 25./81, 40./81, 
                     40./81, 40./81, 40./81).finished();
 
+            void modifyCharElemLengthAbaqusLike(double& charElemLength, int intPoint);
         }
 
 

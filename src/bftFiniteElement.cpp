@@ -716,5 +716,22 @@ namespace bft{
                 default: {std::cout << "Invalid shape/integrationType combination" << std::endl; exit(-1);}
             }
         }
+        namespace Spatial2D{
+            void modifyCharElemLengthAbaqusLike(double& charElemLength, int intPoint){
+                switch(intPoint){
+                    case 0:         // central node
+                        charElemLength *= 2./3.; break;
+                    case 1:         // corner nodes 
+                    case 2: 
+                    case 3: 
+                    case 4:
+                        charElemLength *= 5./12; break;
+                    case 5:         // middle nodes
+                    case 6:
+                    case 7:
+                    case 8:
+                        charElemLength *= std::sqrt(5./18.); break; }
+            }
+        } // end of namespace Spatial2D 
     } // end of namespace NumIntegration
 } // end of namespace bft
