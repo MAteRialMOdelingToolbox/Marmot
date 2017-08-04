@@ -18,5 +18,15 @@ namespace bft{
         double linearInterpolation(double x, double x0, double x1, double y0, double y1)
         { return y0 + (x - x0) * (y1 -y0)/(x1 - x0);}   
 
+        double exp(double x)
+        {
+            // bounded version of std::exp
+            if(x <= -708.4)
+                return 0.0;
+            if(x >= 709.8)
+                return std::exp(709.8);
+            return std::exp(x);
+        }
+
     }
 }

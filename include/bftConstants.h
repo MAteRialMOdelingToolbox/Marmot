@@ -15,5 +15,6 @@ namespace bft{
     }
     namespace Functions{
         double linearInterpolation(double x, double x0, double x1, double y0, double y1);
+        double exp(double x);
     }
 }
