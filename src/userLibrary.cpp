@@ -14,7 +14,10 @@
 #ifdef ShotLeon 
     #include "umatShotLeon.h"
 #endif
-#ifdef ShotLeon 
+#ifdef ShotLeonV2
+    #include "umatShotLeonV2.h"
+#endif
+#ifdef ShotLeonNonLocal
     #include "umatShotLeonNonLocal.h"
 #endif
 #ifdef ModLeonNonLocal 
@@ -75,9 +78,16 @@ namespace userLibrary{
             #ifdef umatShotLeonNonLocal
             {10,   umatShotLeonNonLocal},  
             #endif
+            #ifdef umatShotLeonV2
+            {11,   umatShotLeonV2},  
+            #endif
             };
 
-    return userMaterials.at(id);
+    try{
+        return userMaterials.at(id);}
+    catch (const std::exception& ) {
+        std::cout << "Material with ID "<<id<<" not found!" << std::endl;
+        return nullptr; }
     }
 
     bft::pUmatType getUmatByName(const std::string& nameUpperCase)
@@ -91,6 +101,9 @@ namespace userLibrary{
             #endif
             #ifdef ShotLeon 
             {"SHOTLEON",   umatShotLeon},  
+            #endif
+            #ifdef ShotLeonV2
+            {"SHOTLEONV2",   umatShotLeonV2},  
             #endif
             #ifdef ShotLeonNonLocal 
             {"SHOTLEONNONLOCAL",   umatShotLeonNonLocal},  
@@ -117,8 +130,11 @@ namespace userLibrary{
             {"MOHRCOULOMB",   umatMohrCoulomb},  
             #endif
             };
-
-    return userMaterials.at(nameUpperCase);
+    try{
+        return userMaterials.at(nameUpperCase);}
+    catch (const std::exception& ) {
+        std::cout << "Material "<<nameUpperCase<<" not found!" << std::endl;
+        return nullptr; }
     }
 } 
 
