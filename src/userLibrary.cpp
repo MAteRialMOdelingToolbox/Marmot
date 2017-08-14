@@ -75,7 +75,7 @@ namespace userLibrary{
             #ifdef UntereggerRockMassNonLocal 
             {9,   umatUntereggerRockMassNonLocal},  
             #endif 
-            #ifdef umatShotLeonNonLocal
+            #ifdef ShotLeonNonLocal
             {10,   umatShotLeonNonLocal},  
             #endif
             #ifdef umatShotLeonV2
