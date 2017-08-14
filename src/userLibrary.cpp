@@ -20,6 +20,9 @@
 #ifdef ShotLeonNonLocal
     #include "umatShotLeonNonLocal.h"
 #endif
+#ifdef ShotLeonV2NonLocal
+    #include "umatShotLeonV2NonLocal.h"
+#endif
 #ifdef ModLeonNonLocal 
     #include "umatModLeonNonLocal.h"
 #endif
@@ -75,11 +78,14 @@ namespace userLibrary{
             #ifdef UntereggerRockMassNonLocal 
             {9,   umatUntereggerRockMassNonLocal},  
             #endif 
-            #ifdef umatShotLeonNonLocal
+            #ifdef ShotLeonNonLocal
             {10,   umatShotLeonNonLocal},  
             #endif
-            #ifdef umatShotLeonV2
+            #ifdef ShotLeonV2
             {11,   umatShotLeonV2},  
+            #endif
+            #ifdef ShotLeonV2NonLocal
+            {12,   umatShotLeonV2NonLocal},  
             #endif
             };
 
@@ -107,6 +113,9 @@ namespace userLibrary{
             #endif
             #ifdef ShotLeonNonLocal 
             {"SHOTLEONNONLOCAL",   umatShotLeonNonLocal},  
+            #endif
+            #ifdef ShotLeonV2NonLocal 
+            {"SHOTLEONV2NONLOCAL",   umatShotLeonV2NonLocal},  
             #endif
             #ifdef Meschke 
             {"MESCHKE",   umatMeschke},  

@@ -35,6 +35,7 @@ set (optionalLibraries
     ShotLeon
     ShotLeonV2
     ShotLeonNonLocal
+    ShotLeonV2NonLocal
     SolidificationCreep
     UntereggerRockMass
     UntereggerRockMassNonLocal
