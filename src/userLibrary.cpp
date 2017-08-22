@@ -14,6 +14,15 @@
 #ifdef ShotLeon 
     #include "umatShotLeon.h"
 #endif
+#ifdef ShotLeonV2
+    #include "umatShotLeonV2.h"
+#endif
+#ifdef ShotLeonNonLocal
+    #include "umatShotLeonNonLocal.h"
+#endif
+#ifdef ShotLeonV2NonLocal
+    #include "umatShotLeonV2NonLocal.h"
+#endif
 #ifdef ModLeonNonLocal 
     #include "umatModLeonNonLocal.h"
 #endif
@@ -69,9 +78,22 @@ namespace userLibrary{
             #ifdef UntereggerRockMassNonLocal 
             {9,   umatUntereggerRockMassNonLocal},  
             #endif 
+            #ifdef ShotLeonNonLocal
+            {10,   umatShotLeonNonLocal},  
+            #endif
+            #ifdef ShotLeonV2
+            {11,   umatShotLeonV2},  
+            #endif
+            #ifdef ShotLeonV2NonLocal
+            {12,   umatShotLeonV2NonLocal},  
+            #endif
             };
 
-    return userMaterials.at(id);
+    try{
+        return userMaterials.at(id);}
+    catch (const std::exception& ) {
+        std::cout << "Material with ID "<<id<<" not found!" << std::endl;
+        return nullptr; }
     }
 
     bft::pUmatType getUmatByName(const std::string& nameUpperCase)
@@ -85,6 +107,15 @@ namespace userLibrary{
             #endif
             #ifdef ShotLeon 
             {"SHOTLEON",   umatShotLeon},  
+            #endif
+            #ifdef ShotLeonV2
+            {"SHOTLEONV2",   umatShotLeonV2},  
+            #endif
+            #ifdef ShotLeonNonLocal 
+            {"SHOTLEONNONLOCAL",   umatShotLeonNonLocal},  
+            #endif
+            #ifdef ShotLeonV2NonLocal 
+            {"SHOTLEONV2NONLOCAL",   umatShotLeonV2NonLocal},  
             #endif
             #ifdef Meschke 
             {"MESCHKE",   umatMeschke},  
@@ -108,8 +139,11 @@ namespace userLibrary{
             {"MOHRCOULOMB",   umatMohrCoulomb},  
             #endif
             };
-
-    return userMaterials.at(nameUpperCase);
+    try{
+        return userMaterials.at(nameUpperCase);}
+    catch (const std::exception& ) {
+        std::cout << "Material "<<nameUpperCase<<" not found!" << std::endl;
+        return nullptr; }
     }
 } 
 
