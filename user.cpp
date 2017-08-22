@@ -122,8 +122,9 @@ extern "C" void FOR_NAME(uel)(
 
         // apply geostatic stress by setting values to statevars corresponding to stress 
         switch(lFlags[0]) {
-            case Abaqus::UelFlags1::GeostaticStress: { 
-                myUel->setInitialConditions(BftUel::GeostaticStress, &properties[nPropertiesUmat+nPropertiesElement] ); break;}
+            case Abaqus::UelFlags1::GeostaticStress: {
+                myUel->setInitialConditions(BftUel::GeostaticStress, &properties[nPropertiesUmat+nPropertiesElement] ); 
+                break;}
             default: break;}       
 
         // compute K and P 
@@ -131,11 +132,9 @@ extern "C" void FOR_NAME(uel)(
                      if (pNewdT < 0.25)
                          pNewdT = 0.25;
 
-                     //std:: cout  << mDload << std::endl;
-
         // recompute distributed loads in nodal forces and add it to P 
-        //for (int i =0; i<mDload; i++)
-            //myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);
+        for (int i =0; i<mDload; i++)
+            myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);
         
         delete myUel;
 }
