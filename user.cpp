@@ -73,7 +73,7 @@ extern "C" void FOR_NAME(uel)(
         const int &nPredef,
         const int lFlags[],
         const int mlvarx[],
-        const double dDistributedLoadMags[/*mDloads, * */],         // increment of maginitudes 
+        const double dDistributedLoadMags[/*mDloads, * */],         // increment of magnitudes 
         const int &mDload,                                          // total number of distributed loads and fluxes defined on this element
         double &pNewdT,         
         const int integerProperties[],
@@ -133,9 +133,11 @@ extern "C" void FOR_NAME(uel)(
                          pNewdT = 0.25;
 
         // recompute distributed loads in nodal forces and add it to P 
-        for (int i =0; i<mDload; i++)
-            myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);
-        
+        for (int i =0; i<mDload; i++){
+            if (distributedLoadMags[i]<1.e-16)
+                continue;
+            myUel->computeDistributedLoad(BftUel::Pressure, rightHandSide, distributedLoadTypes[i], &distributedLoadMags[i], time, dTime);}
+
         delete myUel;
 }
 
