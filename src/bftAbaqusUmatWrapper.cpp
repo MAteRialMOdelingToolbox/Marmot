@@ -141,7 +141,6 @@ namespace bft{
                 }
 
                 double residual = stressTemp.array().abs()[2];
-                
 
                 if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-5) ) {
                     break;}
@@ -201,7 +200,7 @@ namespace bft{
 
                 simpleUmatNonLocal( dStressdStrain, stressTemp, intParamLocal, dStressDIntParamNonlocal, dIntParamLocalDStrain, 
                         nonLocalRadius, stateVarsTemp, strainOld, dStrainTemp, intParamNonLocalOld, dIntParamNonLocal, 
-                        matProps, pNewdT, &time[2], dT, noEl, noGaussPt, umatPointer);
+                        matProps, pNewdT, time, dT, noEl, noGaussPt, umatPointer);
 
                 if(pNewdT < 1.0){
                    // pNewdT = 1e36;
@@ -214,7 +213,7 @@ namespace bft{
 
                 double residual = stressTemp.array().abs()[2];
                 
-                if (residual <1.e-12 || (planeStressCount > 9 && residual < 1e-8) ) {
+                if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-5) ) {
                     break;}
 
                 double tangentCompliance = 1./dStressdStrain(2,2);
