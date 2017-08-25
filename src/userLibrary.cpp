@@ -11,6 +11,18 @@
 #ifdef ModLeon 
     #include "umatModLeon.h"
 #endif
+#ifdef ModLeonSemiExplicit
+    #include "umatModLeonSemiExplicit.h"
+#endif
+#ifdef ModLeonAdaptive
+    #include "umatModLeonAdaptive.h"
+#endif
+#ifdef ModLeonSemiExplicitAdaptive
+    #include "umatModLeonSemiExplicitAdaptive.h"
+#endif
+#ifdef ModLeonPlaneStress
+    #include "umatModLeonPS.h"
+#endif
 #ifdef ShotLeon 
     #include "umatShotLeon.h"
 #endif
@@ -104,6 +116,18 @@ namespace userLibrary{
             #endif
             #ifdef ModLeon 
             {"MODLEON",   umatModLeon},  
+            #endif
+            #ifdef ModLeonAdaptive
+            {"MODLEONADAPTIVE",   umatModLeonAdaptive},  
+            #endif
+            #ifdef ModLeonSemiExplicit
+            {"MODLEONSEMIEXPLICIT",   umatModLeonSemiExplicit},  
+            #endif
+            #ifdef ModLeonSemiExplicitAdaptive
+            {"MODLEONSEMIEXPLICITADAPTIVE",   umatModLeonSemiExplicitAdaptive},  
+            #endif
+            #ifdef ModLeonPlaneStress 
+            {"MODLEONPLANESTRESS",   umatModLeonPS},  
             #endif
             #ifdef ShotLeon 
             {"SHOTLEON",   umatShotLeon},  

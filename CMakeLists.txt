@@ -29,6 +29,10 @@ set (optionalLibraries
     LinearElastic
     HoekBrown
     ModLeon
+    ModLeonSemiExplicit
+    ModLeonAdaptive
+    ModLeonSemiExplicitAdaptive
+    ModLeonPlaneStress
     ModLeonNonLocal
     Meschke
     SchaedlichSchweiger
