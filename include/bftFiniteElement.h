@@ -247,7 +247,7 @@ namespace bft{
                     0,     +gp3,
                     -gp3,  0).finished();
             const Matrix<double, 9,1>   gaussPtList3x3Weights = (Matrix<double,9,1>() <<   
-                    64./81, 25./91, 25./81, 
+                    64./81, 25./81, 25./81, 
                     25./81, 25./81, 40./81, 
                     40./81, 40./81, 40./81).finished();
 
