@@ -3,6 +3,7 @@
 #include "bftFunctions.h"
 
 /* Deprecated, do not use anymore (!)
+ * Matthias Neuner (2015)
  * */
 
 namespace bft{

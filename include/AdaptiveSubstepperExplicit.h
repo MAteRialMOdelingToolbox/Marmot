@@ -4,6 +4,8 @@
 
 /* Adaptive Substepper, employing an error estimation and 
  * Richardson Extrapolation for an (semi)-Explicit Return Mapping algorithm
+ *
+ * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
 
 namespace bft{
