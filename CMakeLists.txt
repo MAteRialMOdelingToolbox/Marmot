@@ -44,6 +44,7 @@ set (optionalLibraries
     UntereggerRockMass
     UntereggerRockMassNonLocal
 
+    uelCPE4NonLocal
     uelDisplacement
     uelNonLocal
 
