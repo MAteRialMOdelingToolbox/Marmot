@@ -2,6 +2,10 @@
 #include "bftTypedefs.h"
 #include "bftFunctions.h"
 
+/* Substepper for elastoplastic materials, implicit return mapping version
+ * Matthias Neuner (2016)
+ * */
+
 namespace bft{
 
     template <int nSizeMatTangent>

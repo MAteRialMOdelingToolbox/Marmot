@@ -1,6 +1,10 @@
 #pragma once
 #include "bftTypedefs.h"
 
+/* Manager for yield surface combinations for multisurface plasticity
+ * Matthias Neuner (2015)
+ * */
+
 namespace bft{
     template <int nYieldSurfaces>
     class YieldSurfaceCombinationManager
