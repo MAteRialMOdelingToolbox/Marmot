@@ -152,7 +152,7 @@ namespace bft{
                             case 2: { return -Quad4::dNdXi(xi).row(1); break;}
                             case 3: { return Quad4::dNdXi(xi).row(0); break;}
                             case 4: { return Quad4::dNdXi(xi).row(1); break;}
-                            default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
+                            default: {std::cout << "Boundary 2: invalid face ID specifed" << std::endl; exit(-1);}
                         }
                     }
                 } 
@@ -229,7 +229,7 @@ namespace bft{
                         case 2: { return {1, 2, 5};  break;}
                         case 3: { return {2, 3, 6};  break;}
                         case 4: { return {3, 0, 7};  break;} 
-                        default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
+                        default: {std::cout << "Quad8: invalid face ID specifed" << std::endl; exit(-1);}
                     }
                 }
 
@@ -240,7 +240,7 @@ namespace bft{
                         case 2: truss3IndicesInQuad8 << /*  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 */; break;
                         case 3: truss3IndicesInQuad8 << /*  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 */; break;
                         case 4: truss3IndicesInQuad8 <<     6,7,/*  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,*/ 14,15 ; break;
-                        default: {std::cout << "invalid face ID specifed" << std::endl; exit(-1);}
+                        default: {std::cout << "Quad8: invalid face ID specifed" << std::endl; exit(-1);}
 
                     }
                     return truss3IndicesInQuad8;
