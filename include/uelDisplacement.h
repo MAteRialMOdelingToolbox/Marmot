@@ -4,6 +4,7 @@
 #include "bftConstants.h"
 #include "bftUel.h"
 #include "bftFiniteElement.h"
+#include "bftFunctions.h"
 #include "bftGeometryElement.h"
 #include <iostream>
 #include <vector>
