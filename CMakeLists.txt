@@ -53,6 +53,7 @@ set (optionalLibraries
 #optional libraries
 foreach(library ${optionalLibraries})
     file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
+    get_filename_component(librarypath ${librarypath} ABSOLUTE) # make the path absolute, which is is sometimes necessary for some reason
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         include_directories(${librarypath}/include)
@@ -67,6 +68,7 @@ foreach(library ${optionalLibraries})
 endforeach(library)
 
 # mandatory bftMechanics
+get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) # make the path absolute, which is is sometimes necessary for some reason
 if(EXISTS ${bftMechanicsDir})
     message("--> found bftMechanics")
     include_directories(${bftMechanicsDir}/include)
