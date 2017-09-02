@@ -19,7 +19,7 @@ class UelDisplacementSolid: public UelDisplacement<3, nNodes>
                                             double* Ke,
                                             const double* time,
                                             double dT,
-                                            double& pNewdT);
+                                            double& pNewDT);
 };
 
 template <int nNodes>
@@ -29,7 +29,7 @@ void UelDisplacementSolid<nNodes>::computeYourself( const double* QTotal_,
                                     double* Ke_,
                                     const double* time,
                                     double dT,
-                                    double& pNewdT
+                                    double& pNewDT
                                    ){
 
     using namespace bft;
@@ -42,9 +42,6 @@ void UelDisplacementSolid<nNodes>::computeYourself( const double* QTotal_,
     Ke.setZero();
     Pe.setZero();
 
-    const int nStateVarsUmatPerGaussPt =        this->nStateVarsUmat;
-    const int nStateVarsTotalPerGaussPt =       nStateVarsUmatPerGaussPt + 2*Vgt::VoigtSize;// stateVars per each integrationPoint	
-
     Vector6 dStrain;
     Matrix6 Cep;
 
@@ -54,19 +51,21 @@ void UelDisplacementSolid<nNodes>::computeYourself( const double* QTotal_,
         const double detJ =         this->detJAtGauss[i];
         const double charElemlen =  std::cbrt(8*detJ);
 
-        // mapping for global state vars; sequence: stateVarsLocal[nStateVarsUmatPerGaussPt], stress[nTens], strain[nTens]
-        int GaussShiftStateVars =       this->nUelStatVars + i*nStateVarsTotalPerGaussPt;
-        Ref<VectorXd> stateVarsUmat(    this->stateVars.segment(GaussShiftStateVars,  nStateVarsUmatPerGaussPt));
-        Ref<Vector6> stress( 			this->stateVars.segment(GaussShiftStateVars + nStateVarsUmatPerGaussPt,   Vgt::VoigtSize)  );
-        Ref<Vector6> strain( 			this->stateVars.segment(GaussShiftStateVars + nStateVarsUmatPerGaussPt +  Vgt::VoigtSize, Vgt::VoigtSize) );	
+        this->materialAtGauss[i]->setCharacteristicElementLength( charElemlen );
+
+        Ref<Vector6>    stress(             this->stressAtGauss(i));
+        Ref<Vector6>    strain(             this->strainAtGauss(i));
 
         dStrain = B * dQ;
         Cep.setZero();
 
-        bft::simpleUmat(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
-                         pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
+        this->materialAtGauss[i]->computeStress(stress.data(), 
+                                                Cep.data(),  
+                                                strain.data(),
+                                                dStrain.data(), 
+                                                time, dT, pNewDT);
 
-        if (pNewdT<1.0)
+        if (pNewDT<1.0)
             return;
 
         const double vol = detJ * this->gaussWeights(i);

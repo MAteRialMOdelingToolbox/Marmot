@@ -5,8 +5,11 @@
 #include "bftUel.h"
 #include "bftFiniteElement.h"
 #include "bftGeometryElement.h"
+#include "bftMaterialHypoElastic.h"
+#include "userLibrary.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 
 template <int nDim, int nNodes>
 class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
@@ -16,18 +19,20 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
         static constexpr int sizeLoadVector =   nNodes * nDim;
         static constexpr int nCoordinates =     nNodes * nDim;
-        static constexpr int nUelStatVars =     0;
+
+        static constexpr int nStateVarsElement=     0;
+        static constexpr int nStateVarsStressStrain = 12;
 
         typedef Matrix<double, sizeLoadVector, 1>                RhsSized;
         typedef Matrix<double, sizeLoadVector, sizeLoadVector>   KeSizedMatrix;
 
         Map<VectorXd>               stateVars;
         const int                   nStateVars;
-        const Map<const VectorXd>   propertiesElement;
-        const Map<const VectorXd>   propertiesUmat;
+        const Map<const VectorXd>   elementProperties;
+        const Map<const VectorXd>   materialProperties;
         const int                   elLabel;
-        const bft::pUmatType        umat;
-        const int                   nStateVarsUmat;
+        //const bft::pUmatType        umat;
+        const int                   nStateVarsMaterial;
 
         MatrixXd gaussPointList;
         VectorXd gaussWeights;
@@ -38,19 +43,20 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
         std::vector< typename ParentGeometryElement::dNdXiSized   > dNdXiAtGauss;
         std::vector< typename ParentGeometryElement::dNdXiSized   > dNdXAtGauss;
         std::vector< typename ParentGeometryElement::BSized       > BAtGauss;
+        std::vector< std::unique_ptr< BftMaterialHypoElastic>     > materialAtGauss;
 
     public:
 
         UelDisplacement(const double* coordinates,
                 double* stateVars,
                 int nStateVars,
-                const double* propertiesElement,
-                int nPropertiesElement,
+                const double* elementProperties,
+                int nElementPropertiesElement,
                 int noEl,
-                const bft::pUmatType umat,
-                int nStateVarsUmat,
-                const double* propertiesUmat,
-                int nPropertiesUmat,
+                const std::string& bftMaterialHypoElasticName,
+                int nStateVarsMaterial,
+                const double* materialProperties,
+                int nMaterialProperties,
                 bft::NumIntegration::IntegrationTypes integrationType
                 );
 
@@ -71,29 +77,61 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
                 const double* time,
                 double dT,
                 double& pNewdT) = 0;
+
+        Ref<VectorXd> stateVarsMaterialAtGauss(int gaussPt)
+        { 
+            return stateVars.segment(gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ), nStateVarsMaterial); 
+        }
+
+        Ref<bft::Vector6> stressAtGauss(int gaussPt)
+        { 
+            return stateVars.segment( nStateVarsMaterial + gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ), 6); 
+        }
+        Ref<bft::Vector6>  strainAtGauss(int gaussPt)
+        { 
+            return stateVars.segment( nStateVarsMaterial + gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ) + 6 ,6);
+        }
+
+        double* getPermanentResultPointer(const std::string& resultName, int gaussPt, int& resultLength)
+        {
+            if (resultName == "stress" ){
+                resultLength = bft::Vgt::VoigtSize;
+                return stressAtGauss(gaussPt).data();}
+            else if (resultName == "strain" ){ 
+                resultLength = bft::Vgt::VoigtSize;
+                return strainAtGauss(gaussPt).data();}
+            else if( resultName == "sdv"){
+                resultLength = nStateVarsMaterial;
+                return stateVarsMaterialAtGauss(gaussPt).data();}
+            else
+                return this->materialAtGauss[gaussPt]->getPermanentResultPointer(resultName, resultLength);
+        }
 };
 
 template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords, double* stateVars,
+UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords, 
+        double* stateVars,
         int nStateVars,
         const double* properties,
-        int nProperties,
+        int nElementProperties,
         int noEl,
-        const bft::pUmatType umat,
-        int nStateVarsUmat ,
-        const double* propertiesUmat,
-        int nPropertiesUmat,
+        //const bft::pUmatType umat,
+        const std::string& materialName,
+        int nStateVarsMaterial ,
+        const double* materialProperties,
+        int nMaterialProperties,
         bft::NumIntegration::IntegrationTypes integrationType
         ):
     ParentGeometryElement(coords),
-    stateVars(Map<VectorXd>(stateVars, nStateVars)),
+    //stateVars(Map<VectorXd>(stateVars, nStateVars)),
+    stateVars(stateVars, nStateVars),
     nStateVars(nStateVars),
-    propertiesElement(Map<const VectorXd>(properties, nProperties)),
-    propertiesUmat(Map<const VectorXd>(propertiesUmat, nPropertiesUmat)),
+    elementProperties(Map<const VectorXd>(properties, nElementProperties)),
+    materialProperties(Map<const VectorXd>(materialProperties, nMaterialProperties)),
     elLabel(noEl),
-    umat(umat),
-    nStateVarsUmat(nStateVarsUmat)
+    nStateVarsMaterial(nStateVarsMaterial)
 {
+    //std::cout << "Creation of Element" << std::endl;
     gaussPointList =    bft::NumIntegration::getGaussPointList(this->shape, integrationType);
     gaussWeights =      bft::NumIntegration::getGaussWeights( this->shape, integrationType);
 
@@ -106,14 +144,24 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords, double* sta
         dNdXAtGauss		.push_back		(this->dNdX(dNdXiAtGauss [i] , JInvAtGauss [i] ));
         BAtGauss		.push_back		(this->B(dNdXAtGauss [i] ));
         detJAtGauss		.push_back		(JAtGauss [i] .determinant());
+
+        materialAtGauss .push_back      (std::unique_ptr<BftMaterialHypoElastic> (
+                                            dynamic_cast<BftMaterialHypoElastic*>(
+                                                userLibrary::bftMaterialFactory( 
+                                                    materialName, 
+                                                    stateVarsMaterialAtGauss(i).data(), 
+                                                    nStateVarsMaterial, 
+                                                    materialProperties, 
+                                                    nMaterialProperties, 
+                                                    elLabel, 
+                                                    i))));
     }
+    //std::cout << "End of Creation of Element" << std::endl;
 }
 
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const double* values)
 {
-    const int nStateVarsTotalPerGaussPt = nStateVarsUmat + 2*bft::Vgt::VoigtSize;    
-
     switch(state){
 
         case BftUel::GeostaticStress: 
@@ -122,8 +170,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const
                 {
                     typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(this->gaussPointList.row(i))) * this->coordinates; 
 
-                    int GaussShiftStateVars =   nUelStatVars + i*nStateVarsTotalPerGaussPt;
-                    Ref<bft::Vector6> stress(stateVars.segment(GaussShiftStateVars + nStateVarsUmat, bft::Vgt::VoigtSize));
+                    Ref<bft::Vector6> stress( stressAtGauss(i) );
 
                     const double sigY1 = values[0];
                     const double sigY2 = values[2];

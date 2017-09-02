@@ -20,21 +20,29 @@ class UelDisplacementPlane : public UelDisplacement<2, nNodes>
     };
 
     const SectionType sectionType;
+    const double thickness;
 
     UelDisplacementPlane(const double* coordinates,
             double* stateVars,
             int nStateVars,
-            const double* propertiesElement,
+            const double* elementProperties,
             int nPropertiesElement,
             int noEl,
-            const bft::pUmatType umat,
-            int nStateVarsUmat,
+            const std::string& materialName,
+            int nStateVarsMaterial,
             const double* propertiesUmat,
             int nPropertiesUmat,
             bft::NumIntegration::IntegrationTypes integrationType,
             SectionType sectionType): 
-        ParentUelDisplacement(coordinates, stateVars, nStateVars, propertiesElement, nPropertiesElement, noEl, 
-                umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat, integrationType), sectionType(sectionType){};
+                ParentUelDisplacement(coordinates, stateVars, nStateVars, elementProperties, nPropertiesElement, noEl, 
+                materialName, nStateVarsMaterial, propertiesUmat, nPropertiesUmat, integrationType), 
+                sectionType(sectionType),
+                thickness( elementProperties[0] )
+                {
+                    for(int i = 0; i < this->gaussWeights.size(); i++){
+                        const double charElemlen =  std::sqrt(4* this->detJAtGauss[i]);
+                        this->materialAtGauss[i]->setCharacteristicElementLength( charElemlen );}
+                };
 
     void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
             double* P, 
@@ -49,7 +57,7 @@ class UelDisplacementPlane : public UelDisplacement<2, nNodes>
             double* Ke,
             const double* time,
             double dT,
-            double& pNewdT);
+            double& pNewDT);
 
 };
 
@@ -60,7 +68,7 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
         double* Ke_,
         const double* time,
         double dT,
-        double& pNewdT
+        double& pNewDT
         ){
 
     using namespace bft;
@@ -73,9 +81,6 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
     Ke.setZero();
     Pe.setZero();
 
-    const int nStateVarsUmatPerGaussPt =        this->nStateVarsUmat;
-    const int nStateVarsTotalPerGaussPt =       nStateVarsUmatPerGaussPt + 2*Vgt::VoigtSize;// stateVars per each integrationPoint	
-
     Vector6 dStrain;
     Matrix6 Cep;
 
@@ -83,35 +88,39 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
 
         const typename ParentUelDisplacement::ParentGeometryElement::BSized& B =   this->BAtGauss[i]; 
         const double detJ =         this->detJAtGauss[i];
-        const double charElemlen =  std::sqrt(4*detJ);
+        const double vol =    detJ * thickness * this->gaussWeights(i);
 
-        // mapping for global state vars; sequence: stateVarsLocal[nStateVarsUmatPerGaussPt], stress[nTens], strain[nTens]
-        int GaussShiftStateVars =   this->nUelStatVars + i*nStateVarsTotalPerGaussPt;
-        Ref<VectorXd> stateVarsUmat(this->stateVars.segment(GaussShiftStateVars,  nStateVarsUmatPerGaussPt));
-        Ref<Vector6> stress( 		this->stateVars.segment(GaussShiftStateVars + nStateVarsUmatPerGaussPt,   Vgt::VoigtSize)  );
-        Ref<Vector6> strain( 		this->stateVars.segment(GaussShiftStateVars + nStateVarsUmatPerGaussPt +  Vgt::VoigtSize, Vgt::VoigtSize) );	
+        Ref<Vector6>    stress(this->stressAtGauss(i));
+        Ref<Vector6>    strain(this->strainAtGauss(i));
 
         Cep.setZero();
         dStrain =       Vgt::planeVoigtToVoigt(B * dQ);
-        const double vol =    detJ * this->propertiesElement[0] * this->gaussWeights(i);
 
         if (sectionType == SectionType::PlaneStress){
 
-            bft::umatPlaneStress(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
-                    pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
-            if (pNewdT<1.0)
+            this->materialAtGauss[i]->computePlaneStress(stress.data(), 
+                                                    Cep.data(),  
+                                                    strain.data(),
+                                                    dStrain.data(), 
+                                                    time, dT, pNewDT);
+                    
+            if (pNewDT<1.0)
                 return;
 
             Ke += B.transpose() * mechanics::getPlaneStressTangent(Cep) * B * vol;
-            Pe -= B.transpose() * Vgt::voigtToPlaneVoigt(stress)* vol;
+            Pe -= B.transpose() * Vgt::voigtToPlaneVoigt(stress) * vol;
         }
 
         else if(sectionType == SectionType::PlaneStrain)
         {
-            bft::simpleUmat(Cep, stress, stateVarsUmat, strain, dStrain, this->propertiesUmat, 
-                    pNewdT, charElemlen, time, dT, this->elLabel, i, this->umat);
+            this->materialAtGauss[i]->computeStress(stress.data(), 
+                                                    Cep.data(),  
+                                                    strain.data(),
+                                                    dStrain.data(), 
+                                                    time, dT, pNewDT);
 
-            if (pNewdT<1.0)
+
+            if (pNewDT<1.0)
                 return; 
 
             Vector3d stressCondensed;
@@ -161,7 +170,7 @@ void UelDisplacementPlane<nNodes>::computeDistributedLoad( BftUel::DistributedLo
             for(int i=0; i<gp.rows(); i++){
                 MatrixXd xi = gp.row(i);        // necessary matrix mapping, as factory return type of gauss points is a matrix (with regard to future 3d elements) 
                 VectorXd tractionVec = -p * getNormalVector(this->shape, boundaryCoordinates, xi);
-                Pk += getIntVol(this->shape, boundaryCoordinates, xi) * this->propertiesElement(0) * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
+                Pk += getIntVol(this->shape, boundaryCoordinates, xi) * this->elementProperties(0) * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
             
             for(int i = 0; i < boundaryCoordIndices.size(); i++)
                 fU( boundaryCoordIndices(i) ) +=  Pk(i);
