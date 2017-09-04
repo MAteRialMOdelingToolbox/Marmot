@@ -1,30 +1,39 @@
 #pragma once 
 #include "bftMaterial.h"
 
-class BftMaterialHypoElastic : virtual public BftMaterial{
+class BftMaterialHypoElasticNonLocal : public virtual BftMaterial{
 
     public: 
 
         using BftMaterial::BftMaterial;
 
-        double characteristicElementLength;
-        void setCharacteristicElementLength(double length) { characteristicElementLength = length; }
-
         // Abstract methods
         virtual void computeStress(
                 double *stress, 
+                double& K_local,
+                double& nonLocalRadius,
                 double* dStressDDStrain,  
+                double* dK_localDDStrain, 
+                double* dStressDK,
                 const double *strainOld,
                 const double *dStrain,
+                double KOld,
+                double dK,
                 const double* timeOld,
                 const double  dT,
                 double& pNewDT) = 0;
 
         virtual void computePlaneStress(
                 double *stress, 
+                double& K_local,
+                double& nonLocalRadius,
                 double* dStressDDStrain,  
+                double* dK_localDDStrain, 
+                double* dStressDK,
                 const double *strainOld,
                 double *dStrain,
+                double KOld,
+                double dK,
                 const double* timeOld,
                 const double  dT,
                 double& pNewDT);

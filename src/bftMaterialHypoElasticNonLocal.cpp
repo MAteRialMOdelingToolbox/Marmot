@@ -1,15 +1,21 @@
-#include "bftMaterialHypoElastic.h"
+#include "bftMaterialHypoElasticNonLocal.h"
 #include "bftVoigt.h"
 #include "bftFunctions.h"
 
-void BftMaterialHypoElastic::computePlaneStress(
-        double *stress_, 
-        double* dStressDDStrain_,  
-        const double *strainOld,
-        double *dStrain_,
-        const double* timeOld,
-        const double  dT,
-        double& pNewDT)
+void BftMaterialHypoElasticNonLocal::computePlaneStress(
+                double *stress_, 
+                double& K_local,
+                double& nonLocalRadius,
+                double* dStressDDStrain_,  
+                double* dK_localDDStrain, 
+                double* dStressDK,
+                const double *strainOld,
+                double *dStrain_,
+                double KOld,
+                double dK,
+                const double* timeOld,
+                const double  dT,
+                double& pNewDT)
 {
         using namespace bft;
 
@@ -32,9 +38,15 @@ void BftMaterialHypoElastic::computePlaneStress(
                 stateVars=          stateVarsOld;
                 
                 computeStress(  stressTemp.data(), 
+                                K_local,
+                                nonLocalRadius,
                                 dStressDDStrain.data(), 
+                                dK_localDDStrain, 
+                                dStressDK,
                                 strainOld, 
                                 dStrainTemp.data(), 
+                                KOld,
+                                dK,
                                 timeOld, dT, pNewDT);
 
                 if(pNewDT < 1.0){
