@@ -27,6 +27,7 @@ set(bftMechanicsDir "../bftMechanics/")
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
     LinearElastic
+    LinearElasticSolidificationCreep
     HoekBrown
     ModLeon
     ModLeonSemiExplicit
@@ -57,7 +58,8 @@ foreach(library ${optionalLibraries})
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         include_directories(${librarypath}/include)
-        add_definitions(-D${library})
+        string(TOUPPER ${library} LIBRARY)
+        add_definitions(-D${LIBRARY})
         set(FOUND_LIB "FOUND_LIB-NOTFOUND")
         find_library(FOUND_LIB ${library} ${librarypath}/lib)
         if(NOT FOUND_LIB)

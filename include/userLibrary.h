@@ -3,25 +3,39 @@
 #include "bftUel.h"
 #include "bftMaterial.h"
 
-//namespace bft{
-    //[>copy of bftTypedefs.h<]
-        //typedef void (*pUmatType)( double[],double[],double[],double&,double&,double&,double&,double[],double[],double&,const double[],const double[],const double[2],const double&,const double&,const double&,const double[],const double[],const char[80],const int&,const int&,const int&,const int&,const double[],const int&,const double[3],const double[9],double&,const double&,const double[9],const double[9],const int&,const int&,const int&,const int&,const int[4],const int&,const int);
-
-        //typedef void (*pSimpleUelWithUmatType)( double [], double [], double [], const int &, const double [], const int &, const double [], const double [], const double [], const double [2], const double &, const int& , double &, const int [], const int &, bft::pUmatType, int );
-
-//}
-
 namespace userLibrary{
 
-    //bft::pUmatType getUmatById(int id);
-    //bft::pUmatType getUmatByName(const std::string& nameUpperCase);
+    enum MaterialCode{
+        LinearElastic=0,
+        ModLeon=1,
+        ShotLeon=2,
+        Meschke=3,
+        SchaedlichSchweiger=4,
+        ModLeonNonLocal=5,
+        HoekBrown=6,
+        UntereggerRockMass=7,
+        MohrCoulomb=8,
+        UntereggerRockMassNonLocal=9,
+        ShotLeonNonLocal=10,
+        ShotLeonV2=11,
+        ShotLeonV2NonLocal=12,
+        LinearElasticSolidificationCreep = 13,
+        ModLeonAdaptive=14,
+        ModLeonSemiExplicit=15,
+        ModLeonSemiExplicitAdaptive=16,
+    };
 
-    BftUel* UelFactory(int id, const double* elementCoordinates, double* stateVars, int nStateVars, 
+    MaterialCode getMaterialCodeFromName(const std::string& materialName);
+
+    BftUel* UelFactory(
+            int elementCode,
+            const double* elementCoordinates, double* stateVars, int nStateVars, 
             const double* propertiesElement, int nPropertiesElement, int elementNumber, 
-            const std::string& bftMaterialName,
+            MaterialCode material,
             int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat);
 
-    BftMaterial* bftMaterialFactory(const std::string& nameUpperCase ,
+    BftMaterial* bftMaterialFactory(
+                                    MaterialCode material,
                                     double* stateVars,
                                     int nStateVars,
                                     const double* materialProperties, 
@@ -29,8 +43,6 @@ namespace userLibrary{
                                     int element, 
                                     int gaussPt
                                     );
-
-    //void umatPlaneStressWrapped(const bft::pUmatType, double[],double[],double[],double&,double&,double&,double&,double[],double[],double&,const double[],const double[],const double[2],const double&,const double&,const double&,const double[],const double[],const char[80],const int&, const int&,const int&,const int&,const double[],const int&,const double[3],const double[9],double&,const double&,const double[9],const double[9],const int&,const int&,const int&,const int&,const int[4],const int&,const int);
 
     static const int sizeGeostaticDefinition = 6;
 }

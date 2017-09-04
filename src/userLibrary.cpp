@@ -1,116 +1,83 @@
 #include <map>
 #include <tuple>
+#include "userLibrary.h"
 #include "bftUel.h"
 #include "bftTypedefs.h"
 #include "bftMaterial.h"
 #include <iostream>
 #include <string>
 
-//#ifdef LinearElastic 
-    //#include "umatLinearElastic.h"
-//#endif
-#ifdef ModLeon 
+#ifdef LINEARELASTIC
+    #include "LinearElastic.h"
+#endif
+#ifdef LINEARELASTICSOLIDIFICATIONCREEP
+    #include "LESolidificationCreep.h"
+#endif
+#ifdef MODLEON
     #include "ModLeon.h"
 #endif
-//#ifdef ModLeonSemiExplicit
-    //#include "umatModLeonSemiExplicit.h"
-//#endif
-//#ifdef ModLeonAdaptive
-    //#include "umatModLeonAdaptive.h"
-//#endif
-//#ifdef ModLeonSemiExplicitAdaptive
-    //#include "umatModLeonSemiExplicitAdaptive.h"
-//#endif
-//#ifdef ModLeonPlaneStress
-    //#include "umatModLeonPS.h"
-//#endif
+#ifdef MODLEONSEMIEXPLICIT
+    #include "ModLeonSemiExplicit.h"
+#endif
+#ifdef MODLEONADAPTIVE
+    #include "ModLeonAdaptive.h"
+#endif
+#ifdef MODLEONSEMIEXPLICITADAPTIVE
+    #include "ModLeonSemiExplicitAdaptive.h"
+#endif
+#ifdef MODLEONPLANESTRESS
+    #include "ModLeonPS.h"
+#endif
 //#ifdef ShotLeon 
-    //#include "umatShotLeon.h"
+    //#include "NameShotLeon.h"
 //#endif
 //#ifdef ShotLeonV2
-    //#include "umatShotLeonV2.h"
+    //#include "NameShotLeonV2.h"
 //#endif
 //#ifdef ShotLeonNonLocal
-    //#include "umatShotLeonNonLocal.h"
+    //#include "NameShotLeonNonLocal.h"
 //#endif
 //#ifdef ShotLeonV2NonLocal
-    //#include "umatShotLeonV2NonLocal.h"
+    //#include "NameShotLeonV2NonLocal.h"
 //#endif
-//#ifdef ModLeonNonLocal 
-    //#include "umatModLeonNonLocal.h"
-//#endif
-//#ifdef Meschke 
-    //#include "umatMeschke.h"
-//#endif
-//#ifdef SchaedlichSchweiger 
-    //#include "umatSchaedlichSchweiger.h"
-//#endif
+#ifdef MODLEONNONLOCAL
+    #include "ModLeonNonLocal.h"
+#endif
+#ifdef MESCHKE
+    #include "Meschke.h"
+#endif
+#ifdef SCHAEDLICHSCHWEIGER
+    #include "SchaedlichSchweiger.h"
+#endif
 //#ifdef HoekBrown 
-    //#include "umatHoekBrown.h"
+    //#include "materialCodeHoekBrown.h"
 //#endif
 //#ifdef UntereggerRockMass 
-    //#include "umatUntereggerRockMass.h"
+    //#include "materialCodeUntereggerRockMass.h"
 //#endif
 //#ifdef MohrCoulomb 
-    //#include "umatMohrCoulomb.h"
+    //#include "materialCodeMohrCoulomb.h"
 //#endif
 //#ifdef UntereggerRockMassNonLocal 
-    //#include "umatUntereggerRockMassNonLocal.h"
+    //#include "materialCodeUntereggerRockMassNonLocal.h"
 //#endif
-
 namespace userLibrary{
-    //bft::pUmatType getUmatById(int id){
-        //static std::map <int, bft::pUmatType> userMaterials= { 
-            //#ifdef LinearElastic 
-            //{0,   umatLinearElastic},  
-            //#endif
-            //#ifdef ModLeon 
-            //{1,   umatModLeon},  
-            //#endif
-            //#ifdef ShotLeon 
-            //{2,   umatShotLeon},  
-            //#endif
-            //#ifdef Meschke 
-            //{3,   umatMeschke},  
-            //#endif
-            //#ifdef SchaedlichSchweiger 
-            //{4,   umatSchaedlichSchweiger},  
-            //#endif
-            //#ifdef ModLeonNonLocal 
-            //{5,   umatModLeonNonLocal},  
-            //#endif 
-            //#ifdef HoekBrown 
-            //{6,   umatHoekBrown},  
-            //#endif 
-            //#ifdef UntereggerRockMass 
-            //{7,   umatUntereggerRockMass},  
-            //#endif 
-            //#ifdef MohrCoulomb 
-            //{8,   umatMohrCoulomb},  
-            //#endif 
-            //#ifdef UntereggerRockMassNonLocal 
-            //{9,   umatUntereggerRockMassNonLocal},  
-            //#endif 
-            //#ifdef ShotLeonNonLocal
-            //{10,   umatShotLeonNonLocal},  
-            //#endif
-            //#ifdef ShotLeonV2
-            //{11,   umatShotLeonV2},  
-            //#endif
-            //#ifdef ShotLeonV2NonLocal
-            //{12,   umatShotLeonV2NonLocal},  
-            //#endif
-            //};
 
-    //try{
-        //return userMaterials.at(id);}
-    //catch (const std::exception& ) {
-        //std::cout << "Material with ID "<<id<<" not found!" << std::endl;
-        //return nullptr; }
-    //}
+    MaterialCode getMaterialCodeFromName(const std::string& materialCode)
+    {
+        if(false){}
+        else if(materialCode == "LINEARELASTIC" )           return MaterialCode::LinearElastic;
+        else if(materialCode == "LESOLIDIFICATIONCREEP" )   return MaterialCode::LinearElasticSolidificationCreep;
+        else if(materialCode == "MODLEON" )                 return MaterialCode::ModLeon;
+        else if(materialCode == "MODLEONNONLOCAL" )         return MaterialCode::ModLeonNonLocal;
+        else if(materialCode == "MESCHKE" )                 return MaterialCode::Meschke;
+        else if(materialCode == "SCHAEDLICHSCHWEIGER" )     return MaterialCode::SchaedlichSchweiger;
+        else{
+            //std::cout << "Material not found: "+materialCode  << std::endl;
+            throw std::invalid_argument("Material not found: "+materialCode);}
+    }
 
-    BftMaterial* bftMaterialFactory(
-                                    const std::string& nameUpperCase ,
+    BftMaterial* bftMaterialFactory( MaterialCode materialCode,
                                     double *stateVars,
                                     int nStateVars,
                                     const double* materialProperties, 
@@ -119,81 +86,45 @@ namespace userLibrary{
                                     int gaussPt
                                     )
     {
-        //std::cout << " creatin material" << std::endl;
-        if(nameUpperCase == "MODLEON" ){
-            return new ModLeonMaterial(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);
+        switch(materialCode)
+        {
+            #ifdef LINEARELASTIC
+            case LinearElastic: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef LINEARELASTICSOLIDIFICATIONCREEP
+            case LinearElasticSolidificationCreep: { return new class LinearElasticSolidificationCreep(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODLEON
+            case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODLEONSEMIEXPLICIT
+            case ModLeonSemiExplicit: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODLEONADAPTIVE
+            case ModLeonAdaptive: { return new class ModLeonAdaptive(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODLEONSEMIEXPLICITADAPTIVE
+            case ModLeonSemiExplicitAdaptive: { return new class ModLeonSemiExplicitAdaptive(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODLEONNONLOCAL
+            case ModLeonNonLocal: { return new class ModLeonNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MESCHKE
+            case Meschke: { return new class Meschke(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef SCHAEDLICHSCHWEIGER
+            case SchaedlichSchweiger: { return new class SchaedlichSchweiger(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            default: throw std::invalid_argument("Invalid material code requested!");
         }
-        else
-            throw std::invalid_argument("Material not found: "+nameUpperCase);
     }
 
-    //bft::pUmatType getUmatByName(const std::string& nameUpperCase)
-    //{
-        //static std::map<std::string, bft::pUmatType> userMaterials= { 
-            //#ifdef LinearElastic 
-            //{"LINEARELASTIC",   umatLinearElastic},  
-            //#endif
-            //#ifdef ModLeon 
-            //{"MODLEON",   umatModLeon},  
-            //#endif
-            //#ifdef ModLeonAdaptive
-            //{"MODLEONADAPTIVE",   umatModLeonAdaptive},  
-            //#endif
-            //#ifdef ModLeonSemiExplicit
-            //{"MODLEONSEMIEXPLICIT",   umatModLeonSemiExplicit},  
-            //#endif
-            //#ifdef ModLeonSemiExplicitAdaptive
-            //{"MODLEONSEMIEXPLICITADAPTIVE",   umatModLeonSemiExplicitAdaptive},  
-            //#endif
-            //#ifdef ModLeonPlaneStress 
-            //{"MODLEONPLANESTRESS",   umatModLeonPS},  
-            //#endif
-            //#ifdef ShotLeon 
-            //{"SHOTLEON",   umatShotLeon},  
-            //#endif
-            //#ifdef ShotLeonV2
-            //{"SHOTLEONV2",   umatShotLeonV2},  
-            //#endif
-            //#ifdef ShotLeonNonLocal 
-            //{"SHOTLEONNONLOCAL",   umatShotLeonNonLocal},  
-            //#endif
-            //#ifdef ShotLeonV2NonLocal 
-            //{"SHOTLEONV2NONLOCAL",   umatShotLeonV2NonLocal},  
-            //#endif
-            //#ifdef Meschke 
-            //{"MESCHKE",   umatMeschke},  
-            //#endif
-            //#ifdef SchaedlichSchweiger 
-            //{"SCHAEDLICHSCHWEIGER",   umatSchaedlichSchweiger},  
-            //#endif
-            //#ifdef ModLeonNonLocal 
-            //{"MODLEONNONLOCAL",   umatModLeonNonLocal},  
-            //#endif
-            //#ifdef HoekBrown 
-            //{"HOEKBROWN",   umatHoekBrown},  
-            //#endif
-            //#ifdef UntereggerRockMass 
-            //{"UNTEREGGERROCKMASS",   umatUntereggerRockMass},  
-            //#endif
-            //#ifdef UntereggerRockMassNonLocal 
-            //{"UNTEREGGERROCKMASSNONLOCAL",   umatUntereggerRockMassNonLocal},  
-            //#endif
-            //#ifdef MohrCoulomb 
-            //{"MOHRCOULOMB",   umatMohrCoulomb},  
-            //#endif
-            //};
-    //try{
-        //return userMaterials.at(nameUpperCase);}
-    //catch (const std::exception& ) {
-        //std::cout << "Material "<<nameUpperCase<<" not found!" << std::endl;
-        //return nullptr; }
-    //}
 } 
 
-#ifdef uelDisplacement
+#ifdef UELDISPLACEMENT
     #include "uelDisplacementFactory.h"
 #endif
-#ifdef uelNonLocal
+#ifdef UELNONLOCAL
     #include "uelNonLocalFactory.h"
 #endif
 
@@ -229,60 +160,62 @@ namespace userLibrary{
 
 namespace userLibrary{
 
-    BftUel* UelFactory(int id, const double* elementCoordinates, double* stateVars, int nStateVars, 
+    BftUel* UelFactory(int elementCode, const double* elementCoordinates, double* stateVars, int nStateVars, 
             const double* propertiesElement, int nPropertiesElement, int elementNumber, 
-            const std::string& materialName,
+            MaterialCode materialCode,
             int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat)
     {
-        switch(id){
-            #ifdef uelDisplacement
+        switch(elementCode){
+            #ifdef UELDISPLACEMENT
             case 402: {return UelDisplacementFactory:: generateUelCPS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialName , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+                            nPropertiesElement, elementNumber, materialCode , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case 407: {return UelDisplacementFactory:: generateUelCPE4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 802: {return UelDisplacementFactory:: generateUelCPS8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 805: {return UelDisplacementFactory:: generateUelCPS8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 803: {return UelDisplacementFactory:: generateUelC3D8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 806: {return UelDisplacementFactory:: generateUelC3D8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 808: {return UelDisplacementFactory:: generateUelCPE8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 807: {return UelDisplacementFactory:: generateUelCPE8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 2003: {return UelDisplacementFactory:: generateUelC3D20 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 2006: {return UelDisplacementFactory:: generateUelC3D20R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, materialName, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 802: {return UelDisplacementFactory:: generateUelCPS8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 805: {return UelDisplacementFactory:: generateUelCPS8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 803: {return UelDisplacementFactory:: generateUelC3D8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 806: {return UelDisplacementFactory:: generateUelC3D8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 808: {return UelDisplacementFactory:: generateUelCPE8R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 807: {return UelDisplacementFactory:: generateUelCPE8 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 2003: {return UelDisplacementFactory:: generateUelC3D20 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 2006: {return UelDisplacementFactory:: generateUelC3D20R (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
-            #ifdef uelNonLocal
-            //case 412: {return UelNonLocalFactory:: generateUelCPS4NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 417: {return UelNonLocalFactory:: generateUelCPE4NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 418: {return UelNonLocalFactory:: generateUelCPE4RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 812: {return UelNonLocalFactory:: generateUelCPS8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 815: {return UelNonLocalFactory:: generateUelCPS8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 813: {return UelNonLocalFactory:: generateUelC3D8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 816: {return UelNonLocalFactory:: generateUelC3D8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 817: {return UelNonLocalFactory:: generateUelCPE8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 818: {return UelNonLocalFactory:: generateUelCPE8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 2013: {return UelNonLocalFactory:: generateUelC3D20NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case 2016: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             //nPropertiesElement, elementNumber, umat, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            #ifdef UELNONLOCAL
+            case 412: {return UelNonLocalFactory:: generateUelCPS4NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 417: {return UelNonLocalFactory:: generateUelCPE4NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 418: {return UelNonLocalFactory:: generateUelCPE4RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 812: {return UelNonLocalFactory:: generateUelCPS8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 815: {return UelNonLocalFactory:: generateUelCPS8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 813: {return UelNonLocalFactory:: generateUelC3D8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 816: {return UelNonLocalFactory:: generateUelC3D8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 817: {return UelNonLocalFactory:: generateUelCPE8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 818: {return UelNonLocalFactory:: generateUelCPE8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 2013: {return UelNonLocalFactory:: generateUelC3D20NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 2016: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
 
-            default:{ std::cout << "bftUserLibrary: Element with ID " << id << " not found" << std::endl; exit(-1);}
+            default:{ 
+                    //std::cout << "bftUserLibrary: Element with CODE " << elementCode<< " not found" << std::endl; 
+                     throw std::invalid_argument("bftUserLibrary: Element not found");}
         }
     }
 
