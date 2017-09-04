@@ -28,20 +28,20 @@ class UelDisplacementPlane : public UelDisplacement<2, nNodes>
             const double* elementProperties,
             int nPropertiesElement,
             int noEl,
-            const std::string& materialName,
+            userLibrary::MaterialCode materialCode,
             int nStateVarsMaterial,
             const double* propertiesUmat,
             int nPropertiesUmat,
             bft::NumIntegration::IntegrationTypes integrationType,
             SectionType sectionType): 
                 ParentUelDisplacement(coordinates, stateVars, nStateVars, elementProperties, nPropertiesElement, noEl, 
-                materialName, nStateVarsMaterial, propertiesUmat, nPropertiesUmat, integrationType), 
+                materialCode, nStateVarsMaterial, propertiesUmat, nPropertiesUmat, integrationType), 
                 sectionType(sectionType),
                 thickness( elementProperties[0] )
                 {
-                    for(int i = 0; i < this->gaussWeights.size(); i++){
-                        const double charElemlen =  std::sqrt(4* this->detJAtGauss[i]);
-                        this->materialAtGauss[i]->setCharacteristicElementLength( charElemlen );}
+                    for(size_t i = 0; i < this->gaussPts.size(); i++){
+                        const double charElemlen =  std::sqrt(4* this->gaussPts[i].detJ);
+                        this->gaussPts[i].material->setCharacteristicElementLength( charElemlen );}
                 };
 
     void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
@@ -84,57 +84,52 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
     Vector6 dStrain;
     Matrix6 Cep;
 
-    for(int i = 0; i < this->gaussWeights.size(); i++){
+    for(size_t i = 0; i < this->gaussPts.size(); i++){
+        
+        typename ParentUelDisplacement::GaussPt& gaussPt = this->gaussPts[i];
 
-        const typename ParentUelDisplacement::ParentGeometryElement::BSized& B =   this->BAtGauss[i]; 
-        const double detJ =         this->detJAtGauss[i];
-        const double vol =    detJ * thickness * this->gaussWeights(i);
-
-        Ref<Vector6>    stress(this->stressAtGauss(i));
-        Ref<Vector6>    strain(this->strainAtGauss(i));
+        const typename ParentUelDisplacement::ParentGeometryElement::BSized& B = gaussPt.B;
+        const double vol = gaussPt.detJ * gaussPt.weight * thickness;
 
         Cep.setZero();
         dStrain =       Vgt::planeVoigtToVoigt(B * dQ);
 
         if (sectionType == SectionType::PlaneStress){
 
-            this->materialAtGauss[i]->computePlaneStress(stress.data(), 
-                                                    Cep.data(),  
-                                                    strain.data(),
-                                                    dStrain.data(), 
-                                                    time, dT, pNewDT);
+            gaussPt.material->computePlaneStress(gaussPt.stress.data(), 
+                                                 Cep.data(),  
+                                                 gaussPt.strain.data(),
+                                                 dStrain.data(), 
+                                                 time, dT, pNewDT);
                     
             if (pNewDT<1.0)
                 return;
 
             Ke += B.transpose() * mechanics::getPlaneStressTangent(Cep) * B * vol;
-            Pe -= B.transpose() * Vgt::voigtToPlaneVoigt(stress) * vol;
+            Pe -= B.transpose() * Vgt::voigtToPlaneVoigt(gaussPt.stress) * vol;
         }
 
         else if(sectionType == SectionType::PlaneStrain)
         {
-            this->materialAtGauss[i]->computeStress(stress.data(), 
+            gaussPt.material->computeStress(gaussPt.stress.data(), 
                                                     Cep.data(),  
-                                                    strain.data(),
+                                                    gaussPt.strain.data(),
                                                     dStrain.data(), 
                                                     time, dT, pNewDT);
-
 
             if (pNewDT<1.0)
                 return; 
 
             Vector3d stressCondensed;
-            stressCondensed.head(2) = stress.head(2);
-            stressCondensed(2) = stress(3);
+            stressCondensed.head(2) = gaussPt.stress.head(2);
+            stressCondensed(2) = gaussPt.stress(3);
 
             Ke += B.transpose() * bft::mechanics::getPlaneStrainTangent(Cep) * B *  vol;
             Pe -= B.transpose() * stressCondensed * vol;
         }
 
-        strain += dStrain; 
-
+        gaussPt.strain += dStrain; 
     }
-
 }
 
 
@@ -164,20 +159,21 @@ void UelDisplacementPlane<nNodes>::computeDistributedLoad( BftUel::DistributedLo
                 return;
 
             VectorXd Pk = VectorXd::Zero(boundaryCoordIndices.size());
-            MatrixXd gp = getGaussPointList(this->shape); 
+            MatrixXd gp =       getGaussPointList(this->shape); 
             VectorXd gpWeight = getGaussWeights(this->shape);  
 
             for(int i=0; i<gp.rows(); i++){
                 MatrixXd xi = gp.row(i);        // necessary matrix mapping, as factory return type of gauss points is a matrix (with regard to future 3d elements) 
                 VectorXd tractionVec = -p * getNormalVector(this->shape, boundaryCoordinates, xi);
-                Pk += getIntVol(this->shape, boundaryCoordinates, xi) * this->elementProperties(0) * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
+                Pk += getIntVol(this->shape, boundaryCoordinates, xi) * thickness  * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
             
             for(int i = 0; i < boundaryCoordIndices.size(); i++)
                 fU( boundaryCoordIndices(i) ) +=  Pk(i);
             
             break;
         }
-        default:  {std::cout << "Load type not supported" << std::endl; exit(-1);}
+        default:  {std::cout << "Load type not supported" << std::endl; 
+                      throw std::invalid_argument("Invalid Load Type specified");}
     }
 }
 

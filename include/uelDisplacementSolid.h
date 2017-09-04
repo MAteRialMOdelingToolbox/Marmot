@@ -31,7 +31,6 @@ void UelDisplacementSolid<nNodes>::computeYourself( const double* QTotal_,
                                     double dT,
                                     double& pNewDT
                                    ){
-
     using namespace bft;
 
     Map<const typename ParentUelDisplacement::RhsSized>                  QTotal(QTotal_);				
@@ -45,34 +44,32 @@ void UelDisplacementSolid<nNodes>::computeYourself( const double* QTotal_,
     Vector6 dStrain;
     Matrix6 Cep;
 
-    for(int i = 0; i < this->gaussPointList.rows() ; i++){
+    for(size_t i = 0; i < this->gaussPts.size() ; i++){
+        
+        typename ParentUelDisplacement::GaussPt& gaussPt = this->gaussPts[i];
+        const typename ParentUelDisplacement::ParentGeometryElement::BSized& B = gaussPt.B;
 
-        const typename ParentUelDisplacement::ParentGeometryElement::BSized& B =   this->BAtGauss[i]; 
-        const double detJ =         this->detJAtGauss[i];
+        const double detJ =         gaussPt.detJ;
         const double charElemlen =  std::cbrt(8*detJ);
 
-        this->materialAtGauss[i]->setCharacteristicElementLength( charElemlen );
-
-        Ref<Vector6>    stress(             this->stressAtGauss(i));
-        Ref<Vector6>    strain(             this->strainAtGauss(i));
+        gaussPt.material->setCharacteristicElementLength( charElemlen ); // could be moved to a constructor for solid (like plane)
 
         dStrain = B * dQ;
         Cep.setZero();
 
-        this->materialAtGauss[i]->computeStress(stress.data(), 
+        gaussPt.material->computeStress(gaussPt.stress.data(), 
                                                 Cep.data(),  
-                                                strain.data(),
+                                                gaussPt.strain.data(),
                                                 dStrain.data(), 
                                                 time, dT, pNewDT);
-
         if (pNewDT<1.0)
             return;
 
-        const double vol = detJ * this->gaussWeights(i);
+        const double vol = detJ * gaussPt.weight; // could be moved to a constructor for solid
 
         Ke += B.transpose() * Cep * B * vol;
-        Pe -= B.transpose() * stress* vol;
+        Pe -= B.transpose() * gaussPt.stress* vol;
 
-        strain += dStrain; 
+        gaussPt.strain += dStrain; 
     }
 }
