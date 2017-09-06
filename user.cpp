@@ -1,10 +1,9 @@
 #include <aba_for_c.h>
 #include "userLibrary.h"
 #include <iostream>
-#include <map>
-#include <tuple>
 #include <string>
 #include "bftUel.h"
+#include "bftMaterialHypoElastic.h"
 
 //These functions are provided to the 'sub' UMATs for easy printing Messages and Warnings. 
 //
@@ -13,7 +12,7 @@
 #endif 
 namespace MainConstants
 {
-	bool printWarnings = true;    
+	bool printWarnings = false;    
 	bool printMessages = false;
 }
 
@@ -81,7 +80,7 @@ extern "C" void FOR_NAME(uel)(
         const double &period)
 {    
         // get umatPointer and number of stateVars for umat
-        const int materialID =              integerProperties[0];
+        userLibrary::MaterialCode materialID =  static_cast<userLibrary::MaterialCode>( integerProperties[0] );
         const int nStateVarsUmat =          integerProperties[1];
         const int nPropertiesUmat =         integerProperties[2];
         const int nPropertiesElement =      integerProperties[3];
@@ -99,7 +98,7 @@ extern "C" void FOR_NAME(uel)(
             pNewdT = 1e-36;
             return;}
 
-        bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
+        //bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
 
         const double* propertiesUmat =    &properties[0];
         const double* propertiesElement = &properties[nPropertiesUmat];
@@ -111,14 +110,10 @@ extern "C" void FOR_NAME(uel)(
                                                 propertiesElement,
                                                 nPropertiesElement, 
                                                 elementNumber,
-                                                umatPointer,
+                                                materialID,
                                                 nStateVarsUmat,
                                                 propertiesUmat, 
                                                 nPropertiesUmat);
-        if(myUel == nullptr) {
-            std::cout << "element " << elementType << " not found!" << std::endl;
-            pNewdT = 1e-36;
-            return; }
 
         // apply geostatic stress by setting values to statevars corresponding to stress 
         switch(lFlags[0]) {
@@ -143,8 +138,8 @@ extern "C" void FOR_NAME(uel)(
 
 extern "C" void FOR_NAME(umat)(
         /*to be def.*/  double stress[],                // stress vector in order: S11, S22, (S33), S12, (S13), (S23) 
-        /*to be def.*/  double stateVariables[],        // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
-        /*to be def.*/  double jacobianSigmaEpsilon[],  // material Jacobian matrix ddSigma/ddEpsilon
+        /*to be def.*/  double stateVars[],        // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
+        /*to be def.*/  double dStressDDStrain[],  // material Jacobian matrix ddSigma/ddEpsilon
         /*to be def.*/  double &sSE,                    // specific elastic strain energy  |-
         /*to be def.*/  double &sPD,                    // specific plastic dissipation    |---> Should be defined in Abaqus/Standard
         /*to be def.*/  double &sCD,                    // specific creep dissipation      |-
@@ -167,9 +162,9 @@ extern "C" void FOR_NAME(umat)(
         const   int &nDirect,                           // number of direct stress components @ this point
         const   int &nShear,                            // number of engineering shear stress components @ this point
         const   int &nTensor,                           // size of stress and strain component array (nDirect + nShear)
-        const   int &nStatV,                            // number of solution dependent state variables associated with this mat. type
-        const   double props[],                         // user def. array of mat. constants associated with this material
-        const   int &nProps,                            // number of user def. variables
+        const   int &nStateVars,                            // number of solution dependent state variables associated with this mat. type
+        const   double materialProperties[],                         // user def. array of mat. constants associated with this material
+        const   int &nMaterialProperties,                            // number of user def. variables
         const   double coords[3],                       // coordinates of this point
         const   double dRot[9],                         // rotation increment matrix 3x3
         /*may be def.*/ double &pNewdT,                 // propagation for new time increment
@@ -188,21 +183,21 @@ extern "C" void FOR_NAME(umat)(
            
         const std::string materialName(matName);
 
+        userLibrary::MaterialCode materialCode = userLibrary::getMaterialCodeFromName (  materialName.substr(0, materialName.find_first_of(' ')).
+                substr(0, materialName.find_first_of('-'))  ); 
 
-        bft::pUmatType umat = userLibrary::getUmatByName(  materialName.substr(0, materialName.find_first_of(' ')).substr(0, materialName.find_first_of('-'))  );
+        BftMaterialHypoElastic* material = dynamic_cast<BftMaterialHypoElastic*> (bftMaterialFactory( 
+                                    materialCode, stateVars, nStateVars, materialProperties, nMaterialProperties, noEl, nPt));
+        
+        double stress6[6], strain6[6], dStrain6[6], dStressDDStrain66[36];
+        
+        userLibrary::extendAbaqusToVoigt(stress6, stress, strain6, strain, dStrain6, dStrain, nDirect, nShear);
 
         if(nDirect == 3) 
-            umat(stress, stateVariables, jacobianSigmaEpsilon, sSE, sPD, sCD, rpl, ddSigma_ddTemp, 
-                    dRpl_dEpsilon, dRpl_dTemp, strain, dStrain, time, dtime, temp, dTemp,
-                    preDef, dPreDef, matName, nDirect, nShear, nTensor, nStatV, props, 
-                    nProps, coords, dRot, pNewdT, charElemLength, dfGrd0, dfGrd1, noEl, nPt,
-                    layer, kSectPt, jStep, kInc, matNameLength);	
-
+            material->computeStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewdT);
         else if(nDirect == 2)
-            userLibrary::umatPlaneStressWrapped(umat, stress, stateVariables, jacobianSigmaEpsilon, sSE, sPD, sCD, rpl, ddSigma_ddTemp, 
-                    dRpl_dEpsilon, dRpl_dTemp, strain, dStrain, time, dtime, temp, dTemp,
-                    preDef, dPreDef, matName, nDirect, nShear, nTensor, nStatV, props, 
-                    nProps, coords, dRot, pNewdT, charElemLength, dfGrd0, dfGrd1, noEl, nPt,
-                    layer, kSectPt, jStep, kInc, matNameLength);	
+            material->computePlaneStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewdT);
+
+        userLibrary::backToAbaqus(stress, stress6, dStressDDStrain, dStressDDStrain66, nDirect, nShear);
 }
 

@@ -17,12 +17,13 @@ namespace userLibrary{
         MohrCoulomb=8,
         UntereggerRockMassNonLocal=9,
         ShotLeonNonLocal=10,
-        ShotLeonV2=11,
-        ShotLeonV2NonLocal=12,
+        //ShotLeonV2=11,
+        //ShotLeonV2NonLocal=12,
         LinearElasticSolidificationCreep = 13,
         ModLeonAdaptive=14,
         ModLeonSemiExplicit=15,
         ModLeonSemiExplicitAdaptive=16,
+        ModLeonPlaneStress=17,
     };
 
     MaterialCode getMaterialCodeFromName(const std::string& materialName);
@@ -34,8 +35,7 @@ namespace userLibrary{
             MaterialCode material,
             int nStateVarsUmat, const double* propertiesUmat, int nPropertiesUmat);
 
-    BftMaterial* bftMaterialFactory(
-                                    MaterialCode material,
+    BftMaterial* bftMaterialFactory(MaterialCode material,
                                     double* stateVars,
                                     int nStateVars,
                                     const double* materialProperties, 
@@ -43,6 +43,9 @@ namespace userLibrary{
                                     int element, 
                                     int gaussPt
                                     );
+
+    void extendAbaqusToVoigt(double* stress6, double* stress, double* strain6, const double* strain, double* dStrain6, const double* dStrain, int nDirect, int nShear);
+    void backToAbaqus(double* stress, double* stress6, double* dStressDDStrain, double* dStressDDStrain66, int nDirect, int nShear);
 
     static const int sizeGeostaticDefinition = 6;
 }

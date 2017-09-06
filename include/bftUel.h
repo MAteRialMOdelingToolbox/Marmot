@@ -42,10 +42,6 @@ class BftUel{
                                     const double* time,
                                     double dT) {};
 
-        //virtual int getNumberOfNecessaryStateVars() = 0;
-
-        //virtual void setStateVars(double *stateVars_, int nStateVars) = 0 ; 
-
         virtual double* getPermanentResultPointer(const std::string& resultName, int gaussPt, int& resultLength) = 0;
 };
 

@@ -28,17 +28,17 @@
 #ifdef MODLEONPLANESTRESS
     #include "ModLeonPS.h"
 #endif
-//#ifdef ShotLeon 
-    //#include "NameShotLeon.h"
-//#endif
+#ifdef SHOTLEON
+    #include "ShotLeon.h"
+#endif
 //#ifdef ShotLeonV2
-    //#include "NameShotLeonV2.h"
+    //#include "ShotLeonV2.h"
 //#endif
-//#ifdef ShotLeonNonLocal
-    //#include "NameShotLeonNonLocal.h"
+//#ifdef SHOTLEONNONLOCAL
+    //#include "ShotLeonNonLocal.h"
 //#endif
 //#ifdef ShotLeonV2NonLocal
-    //#include "NameShotLeonV2NonLocal.h"
+    //#include "ShotLeonV2NonLocal.h"
 //#endif
 #ifdef MODLEONNONLOCAL
     #include "ModLeonNonLocal.h"
@@ -65,16 +65,19 @@ namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
     {
-        if(false){}
-        else if(materialCode == "LINEARELASTIC" )           return MaterialCode::LinearElastic;
-        else if(materialCode == "LESOLIDIFICATIONCREEP" )   return MaterialCode::LinearElasticSolidificationCreep;
-        else if(materialCode == "MODLEON" )                 return MaterialCode::ModLeon;
-        else if(materialCode == "MODLEONNONLOCAL" )         return MaterialCode::ModLeonNonLocal;
-        else if(materialCode == "MESCHKE" )                 return MaterialCode::Meschke;
-        else if(materialCode == "SCHAEDLICHSCHWEIGER" )     return MaterialCode::SchaedlichSchweiger;
-        else{
-            //std::cout << "Material not found: "+materialCode  << std::endl;
-            throw std::invalid_argument("Material not found: "+materialCode);}
+        if(     materialCode == "LINEARELASTIC" )                   return MaterialCode::LinearElastic;
+        else if(materialCode == "LESOLIDIFICATIONCREEP" )           return MaterialCode::LinearElasticSolidificationCreep;
+        else if(materialCode == "MODLEON" )                         return MaterialCode::ModLeon;
+        else if(materialCode == "SHOTLEON" )                        return MaterialCode::ShotLeon;
+        else if(materialCode == "MODLEONPLANESTRESS" )              return MaterialCode::ModLeonPlaneStress;
+        else if(materialCode == "MODLEONSEMIEXPLICIT" )             return MaterialCode::ModLeonSemiExplicit;
+        else if(materialCode == "MODLEONADAPTIVE" )                 return MaterialCode::ModLeonAdaptive;
+        else if(materialCode == "MODLEONSEMIEXPLICITADAPTIVE" )     return MaterialCode::ModLeonSemiExplicitAdaptive;
+        else if(materialCode == "MODLEONNONLOCAL" )                 return MaterialCode::ModLeonNonLocal;
+        else if(materialCode == "MESCHKE" )                         return MaterialCode::Meschke;
+        else if(materialCode == "SCHAEDLICHSCHWEIGER" )             return MaterialCode::SchaedlichSchweiger;
+
+        else{ throw std::invalid_argument("bftUserLibrary: Material Not Found: "+materialCode);}
     }
 
     BftMaterial* bftMaterialFactory( MaterialCode materialCode,
@@ -83,8 +86,7 @@ namespace userLibrary{
                                     const double* materialProperties, 
                                     int nMaterialProperties,
                                     int element, 
-                                    int gaussPt
-                                    )
+                                    int gaussPt)
     {
         switch(materialCode)
         {
@@ -96,6 +98,9 @@ namespace userLibrary{
             #endif
             #ifdef MODLEON
             case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef SHOTLEON
+            case ShotLeon: { return new class ShotLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEONSEMIEXPLICIT
             case ModLeonSemiExplicit: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
@@ -115,7 +120,7 @@ namespace userLibrary{
             #ifdef SCHAEDLICHSCHWEIGER
             case SchaedlichSchweiger: { return new class SchaedlichSchweiger(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            default: throw std::invalid_argument("Invalid material code requested!");
+            default: throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
         }
     }
 
@@ -213,10 +218,51 @@ namespace userLibrary{
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
 
-            default:{ 
-                    //std::cout << "bftUserLibrary: Element with CODE " << elementCode<< " not found" << std::endl; 
-                     throw std::invalid_argument("bftUserLibrary: Element not found");}
+            default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}
         }
+    }
+
+    void extendAbaqusToVoigt(double* stress6, double* stress, double* strain6, const double* strain, double* dStrain6, double* dStrain, int nDirect, int nShear)
+    {
+        bft::mVector6 s(stress6); 
+        Map< VectorXd> abqStress ( stress, nDirect + nShear );
+        
+        s.setZero();
+        s.head(nDirect) =   abqStress.head(nDirect);
+        s.segment(3, nShear) =    abqStress.tail(nShear);
+
+        bft::mVector6 e(stress6); 
+        Map< VectorXd> abqStrain( stress, nDirect + nShear );
+
+        e.setZero();
+        e.head(nDirect) =   abqStrain.head(nDirect);
+        e.segment(3, nShear) =    abqStrain.tail(nShear);
+
+        bft::mVector6 de(stress6); 
+        Map< VectorXd> abqDStrain( stress, nDirect + nShear );
+
+        de.setZero();
+        de.head(nDirect) =   abqStrain.head(nDirect);
+        de.segment(3, nShear) =    abqStrain.tail(nShear);
+
+    }
+
+    void backToAbaqus(double* stress, double* stress6, double* dStressDDStrain, double* dStressDDStrain66, int nDirect, int nShear)
+    {
+        bft::mVector6 s(stress6); 
+        Map< VectorXd> abqStress ( stress, nDirect + nShear );
+
+        abqStress.head(nDirect) = s.head(nDirect);
+        abqStress.tail(nShear) = s.segment(3, nShear);
+
+        bft::mMatrix6 C(dStressDDStrain66);
+        Map<MatrixXd> abqC ( dStressDDStrain, nDirect + nShear);
+
+        abqC.topLeftCorner(nDirect, nDirect) =      C.topLeftCorner(nDirect, nDirect);
+        abqC.bottomRightCorner(nShear, nShear) =    C.block(3,3, nShear, nShear);
+        abqC.topRightCorner(nDirect, nShear) =      C.block(0,3, nDirect, nShear);
+        abqC.bottomLeftCorner(nShear, nDirect) =    C.block(0,3, nShear, nDirect);
+        
     }
 
 } 
