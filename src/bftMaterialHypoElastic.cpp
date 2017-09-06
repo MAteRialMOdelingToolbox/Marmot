@@ -43,7 +43,7 @@ void BftMaterialHypoElastic::computePlaneStress(
 
                 double residual = stressTemp.array().abs()[2];
 
-                if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-5) ) {
+                if (residual <1.e-10 || (planeStressCount > 7 && residual < 1e-8) ) {
                     break;}
 
                 double tangentCompliance = 1./ dStressDDStrain(2,2);
@@ -53,7 +53,7 @@ void BftMaterialHypoElastic::computePlaneStress(
                 dStrainTemp[2] -= tangentCompliance *  stressTemp[2];
                  
                 planeStressCount += 1;
-                if (planeStressCount > 10)
+                if (planeStressCount > 13)
                      {pNewDT = 0.25;
                          warningToMSG("PlaneStressWrapper requires cutback"); return;}
             }

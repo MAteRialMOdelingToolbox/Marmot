@@ -74,7 +74,7 @@ extern "C" void FOR_NAME(uel)(
         const int mlvarx[],
         const double dDistributedLoadMags[/*mDloads, * */],         // increment of magnitudes 
         const int &mDload,                                          // total number of distributed loads and fluxes defined on this element
-        double &pNewdT,         
+        double &pNewDT,         
         const int integerProperties[],
         const int &nIntegerProperties, 
         const double &period)
@@ -95,7 +95,7 @@ extern "C" void FOR_NAME(uel)(
 
         if( sumProps < nProperties){
             std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
-            pNewdT = 1e-36;
+            pNewDT = 1e-36;
             return;}
 
         //bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
@@ -123,9 +123,9 @@ extern "C" void FOR_NAME(uel)(
             default: break;}       
 
         // compute K and P 
-        myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewdT); 
-                     if (pNewdT < 0.25)
-                         pNewdT = 0.25;
+        myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); 
+                     if (pNewDT < 0.25)
+                         pNewDT = 0.25;
 
         // recompute distributed loads in nodal forces and add it to P 
         for (int i =0; i<mDload; i++){
@@ -167,7 +167,7 @@ extern "C" void FOR_NAME(umat)(
         const   int &nMaterialProperties,                            // number of user def. variables
         const   double coords[3],                       // coordinates of this point
         const   double dRot[9],                         // rotation increment matrix 3x3
-        /*may be def.*/ double &pNewdT,                 // propagation for new time increment
+        /*may be def.*/ double &pNewDT,                 // propagation for new time increment
         const   double &charElemLength,                 // characteristic element Length
         const   double dfGrd0[9],                       // deformation gradient @ beginning of increment      3x3 |
         const   double dfGrd1[9],                       // deformation gradient @ end of increment            3x3 |--> always stored as 3D-matrix
@@ -180,23 +180,29 @@ extern "C" void FOR_NAME(umat)(
         const   int &kInc,                              // increment Number
         const   int matNameLength                       // length of Material Name := 80, passed in when FORTRAN calls c/c++: Microsoft C compiler AND GCC (it *may* differ for IntelC++)
         ){       
-           
-        const std::string materialName(matName);
-
-        userLibrary::MaterialCode materialCode = userLibrary::getMaterialCodeFromName (  materialName.substr(0, materialName.find_first_of(' ')).
-                substr(0, materialName.find_first_of('-'))  ); 
+          
+        userLibrary::MaterialCode materialCode = static_cast<userLibrary::MaterialCode> ( stateVars[nStateVars-1] );
+        if ( materialCode <= 0){
+            const std::string materialName(matName);
+            materialCode = userLibrary::getMaterialCodeFromName ( materialName.substr(0, materialName.find_first_of(' ')). substr(0, materialName.find_first_of('-'))  ); 
+            stateVars[nStateVars-1] = static_cast<double> (materialCode);}
 
         BftMaterialHypoElastic* material = dynamic_cast<BftMaterialHypoElastic*> (bftMaterialFactory( 
-                                    materialCode, stateVars, nStateVars, materialProperties, nMaterialProperties, noEl, nPt));
+                                    materialCode, stateVars, nStateVars-1, 
+                                    materialProperties, nMaterialProperties, noEl, nPt));
+
+        material->setCharacteristicElementLength(charElemLength);
         
         double stress6[6], strain6[6], dStrain6[6], dStressDDStrain66[36];
-        
         userLibrary::extendAbaqusToVoigt(stress6, stress, strain6, strain, dStrain6, dStrain, nDirect, nShear);
-
         if(nDirect == 3) 
-            material->computeStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewdT);
+            material->computeStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewDT);
         else if(nDirect == 2)
-            material->computePlaneStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewdT);
+            material->computePlaneStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewDT);
+
+        if(pNewDT < 0.25){
+            pNewDT = 0.25;
+            return;}
 
         userLibrary::backToAbaqus(stress, stress6, dStressDDStrain, dStressDDStrain66, nDirect, nShear);
 }
