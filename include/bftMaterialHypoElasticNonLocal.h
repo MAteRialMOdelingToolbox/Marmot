@@ -1,7 +1,7 @@
 #pragma once 
 #include "bftMaterial.h"
 
-class BftMaterialHypoElasticNonLocal : public virtual BftMaterial{
+class BftMaterialHypoElasticNonLocal : public BftMaterial{
 
     public: 
 
