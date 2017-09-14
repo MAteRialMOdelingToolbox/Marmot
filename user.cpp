@@ -95,15 +95,14 @@ extern "C" void FOR_NAME(uel)(
 
         if( sumProps < nProperties){
             std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
-            pNewDT = 1e-36;
+            throw std::invalid_argument;
             return;}
-
-        //bft::pUmatType umatPointer = userLibrary::getUmatById(materialID);
 
         const double* propertiesUmat =    &properties[0];
         const double* propertiesElement = &properties[nPropertiesUmat];
 
-        BftUel* myUel = userLibrary::UelFactory(elementType, 
+        BftUel* myUel;
+        try{ myUel = userLibrary::UelFactory(elementType, 
                                                 coordinates,
                                                 stateVars,
                                                 nStateVars,
@@ -113,7 +112,10 @@ extern "C" void FOR_NAME(uel)(
                                                 materialID,
                                                 nStateVarsUmat,
                                                 propertiesUmat, 
-                                                nPropertiesUmat);
+                                                nPropertiesUmat); }
+        catch (std::invalid_argument& exc) {
+            std::cout << exc.what() << std::endl;
+            throw;}
 
         // apply geostatic stress by setting values to statevars corresponding to stress 
         switch(lFlags[0]) {
@@ -124,8 +126,8 @@ extern "C" void FOR_NAME(uel)(
 
         // compute K and P 
         myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); 
-                     if (pNewDT < 0.25)
-                         pNewDT = 0.25;
+         if (pNewDT < 0.25)
+             pNewDT = 0.25;
 
         // recompute distributed loads in nodal forces and add it to P 
         for (int i =0; i<mDload; i++){
@@ -182,14 +184,24 @@ extern "C" void FOR_NAME(umat)(
         ){       
           
         userLibrary::MaterialCode materialCode = static_cast<userLibrary::MaterialCode> ( stateVars[nStateVars-1] );
-        if ( materialCode <= 0){
+        if ( materialCode <= 0 ){
             const std::string materialName(matName);
-            materialCode = userLibrary::getMaterialCodeFromName ( materialName.substr(0, materialName.find_first_of(' ')). substr(0, materialName.find_first_of('-'))  ); 
+            try{
+                materialCode = userLibrary::getMaterialCodeFromName ( materialName.substr(0, materialName.find_first_of(' ')). substr(0, materialName.find_first_of('-'))  ); }
+            catch ( std::invalid_argument& exc) {
+                std::cout << exc.what() << std::endl;
+                throw; }
             stateVars[nStateVars-1] = static_cast<double> (materialCode);}
 
-        BftMaterialHypoElastic* material = dynamic_cast<BftMaterialHypoElastic*> (bftMaterialFactory( 
-                                    materialCode, stateVars, nStateVars-1, 
-                                    materialProperties, nMaterialProperties, noEl, nPt));
+        BftMaterialHypoElastic* material;
+       
+        try{
+            material = dynamic_cast<BftMaterialHypoElastic*> (bftMaterialFactory( 
+                                        materialCode, stateVars, nStateVars-1, 
+                                        materialProperties, nMaterialProperties, noEl, nPt)); }
+        catch(std::invalid_argument& exc) {
+            std::cout << exc.what() << std::endl; 
+            throw;}
 
         material->setCharacteristicElementLength(charElemLength);
         
