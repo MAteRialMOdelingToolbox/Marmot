@@ -3,6 +3,7 @@
 #include "bftVoigt.h"
 #include "bftConstants.h"
 #include "bftUel.h"
+#include "bftFunctions.h"
 #include "bftFiniteElement.h"
 #include "bftGeometryElement.h"
 #include "bftMaterialHypoElastic.h"
@@ -19,9 +20,7 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
         static constexpr int sizeLoadVector =   nNodes * nDim;
         static constexpr int nCoordinates =     nNodes * nDim;
-
-        static constexpr int nStateVarsElement=     0;
-        static constexpr int nStateVarsStressStrain = 12;
+        static constexpr int nStateVarsGPtAdditional = 12;
 
         typedef Matrix<double, sizeLoadVector, 1>                RhsSized;
         typedef Matrix<double, sizeLoadVector, sizeLoadVector>   KeSizedMatrix;
@@ -34,9 +33,9 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
         const int                   nStateVarsMaterial;
 
         struct GaussPt {
+            Ref< VectorXd >     stateVarsMaterial;
             Ref< bft::Vector6 > stress;
             Ref< bft::Vector6 > strain;
-            Ref< VectorXd >     stateVarsMaterial;
             const double weight;
             typename ParentGeometryElement::XiSized       xi;
             typename ParentGeometryElement::JacobianSized J;
@@ -47,14 +46,14 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
             typename ParentGeometryElement::BSized        B;
             std::unique_ptr< BftMaterialHypoElastic>      material;
 
-            GaussPt(Ref< bft::Vector6> stress,
+            GaussPt(Ref< VectorXd> stateVarsMaterial ,
+                    Ref< bft::Vector6> stress,
                     Ref< bft::Vector6> strain,
-                    Ref< VectorXd> stateVarsMaterial ,
                     double weight
                     ):
+                stateVarsMaterial(stateVarsMaterial),
                 stress(stress),
                 strain(strain),
-                stateVarsMaterial(stateVarsMaterial),
                 weight(weight)
             {};
         };
@@ -94,26 +93,17 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
                 double dT,
                 double& pNewdT) = 0;
 
-        Ref<VectorXd> stateVarsMaterialAtGauss(int gaussPt) { 
-            return stateVars.segment(gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ), nStateVarsMaterial); }
-
-        Ref<bft::Vector6> stressAtGauss(int gaussPt) { 
-            return stateVars.segment( nStateVarsMaterial + gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ), 6); }
-
-        Ref<bft::Vector6>  strainAtGauss(int gaussPt) { 
-            return stateVars.segment( nStateVarsMaterial + gaussPt * (nStateVarsMaterial + nStateVarsStressStrain ) + 6 ,6); }
-
         double* getPermanentResultPointer(const std::string& resultName, int gaussPt, int& resultLength)
         {
             if (resultName == "stress" ){
                 resultLength = bft::Vgt::VoigtSize;
-                return stressAtGauss(gaussPt).data();}
+                return gaussPts[gaussPt].stress.data(); }
             else if (resultName == "strain" ){ 
                 resultLength = bft::Vgt::VoigtSize;
-                return strainAtGauss(gaussPt).data();}
+                return gaussPts[gaussPt].strain.data(); }
             else if( resultName == "sdv"){
                 resultLength = nStateVarsMaterial;
-                return stateVarsMaterialAtGauss(gaussPt).data();}
+                return gaussPts[gaussPt].stateVarsMaterial.data(); }
             else
                 return this->gaussPts[gaussPt].material->getPermanentResultPointer(resultName, resultLength);
         }
@@ -147,9 +137,9 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords,
 
         const typename ParentGeometryElement::XiSized& xi = gaussPointList.row(i);
         
-        GaussPt gpt(stressAtGauss(i), 
-                    strainAtGauss(i), 
-                    stateVarsMaterialAtGauss(i), 
+        GaussPt gpt(this->stateVars.segment(                      i* (nStateVarsMaterial + nStateVarsGPtAdditional ), nStateVarsMaterial),
+                    this->stateVars.segment( nStateVarsMaterial + i* (nStateVarsMaterial + nStateVarsGPtAdditional ), 6),
+                    this->stateVars.segment( nStateVarsMaterial + i* (nStateVarsMaterial + nStateVarsGPtAdditional ) + 6 ,6),
                     gaussWeights(i) );
         
         gpt.xi      =   xi;
@@ -163,7 +153,7 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords,
                                             dynamic_cast<BftMaterialHypoElastic*>(
                                                 userLibrary::bftMaterialFactory( 
                                                     material,
-                                                    stateVarsMaterialAtGauss(i).data(), 
+                                                    gpt.stateVarsMaterial.data(), 
                                                     nStateVarsMaterial, 
                                                     materialProperties, 
                                                     nMaterialProperties, 
