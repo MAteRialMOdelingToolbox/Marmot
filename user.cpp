@@ -95,8 +95,7 @@ extern "C" void FOR_NAME(uel)(
 
         if( sumProps < nProperties){
             std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
-            throw std::invalid_argument;
-            return;}
+            throw std::invalid_argument("insufficient properties defined");}
 
         const double* propertiesUmat =    &properties[0];
         const double* propertiesElement = &properties[nPropertiesUmat];
