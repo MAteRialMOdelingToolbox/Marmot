@@ -133,6 +133,9 @@ namespace userLibrary{
 #ifdef UELNONLOCAL
     #include "uelNonLocalFactory.h"
 #endif
+#ifdef UELDISPLACEMENTEAS
+    #include "uelDisplacementEASFactory.h"
+#endif
 
 /* UEL ID System
  *
@@ -145,6 +148,8 @@ namespace userLibrary{
  *
  * active fields:   0: mechanical (=displacement),
  *                  1: mechanical + nonlocal damage,
+ *                  2: mechanical + EAS
+ *                  3: mechanical + EASV2
  *
  * type of element: 1: 1D full integration, 
  *                  2: 2D full integration, plane stress 
@@ -218,6 +223,13 @@ namespace userLibrary{
             case 2016: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
+            #ifdef UELDISPLACEMENT
+            case 427: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case 437: {return UelDisplacementEASFactory:: generateUelCPE4EAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+
+            #endif
 
             default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}
         }
