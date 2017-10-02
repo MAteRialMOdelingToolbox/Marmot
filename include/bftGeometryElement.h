@@ -18,14 +18,17 @@ class BftGeometryElement
     public:
         
         /*Typedefs*/
+        static constexpr int    VoigtSize = (((nDim*nDim) +  nDim) / 2);
+
         typedef Matrix<double,  nDim, 1 >                                   XiSized;
         typedef Matrix<double,  nDim*nNodes, 1 >                            CoordinateVector;
         typedef Matrix<double,  nDim,  nDim>                                JacobianSized;
 
         typedef Matrix<double, 1, nNodes>                                   NSized;
         typedef Matrix<double, nDim, nNodes*nDim>                           NBSized;
-        typedef Matrix<double,  nDim, nNodes>                               dNdXiSized;
-        typedef Matrix<double, (((nDim*nDim) +  nDim) / 2), nNodes*nDim >   BSized;
+        typedef Matrix<double, nDim, nNodes>                                dNdXiSized;
+        typedef Matrix<double, VoigtSize, nNodes*nDim >                     BSized;
+
 
         /*Properties*/
         const Map<const CoordinateVector>                                   coordinates;
