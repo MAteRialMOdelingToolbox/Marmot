@@ -3,11 +3,9 @@
 # depends on EIGEN library 3.2.7(+) 
 
 cmake_minimum_required(VERSION 3.1)  
-
 project(bftUserLibrary)
 
 include_directories(include)
-#include_directories(/path/to/additional/headers) <-- extend if necessary...
 
 file(GLOB sources "src/*.cpp")
 file(GLOB headers "include/*.h")

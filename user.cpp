@@ -206,6 +206,7 @@ extern "C" void FOR_NAME(umat)(
         
         double stress6[6], strain6[6], dStrain6[6], dStressDDStrain66[36];
         userLibrary::extendAbaqusToVoigt(stress6, stress, strain6, strain, dStrain6, dStrain, nDirect, nShear);
+
         if(nDirect == 3) 
             material->computeStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewDT);
         else if(nDirect == 2)
