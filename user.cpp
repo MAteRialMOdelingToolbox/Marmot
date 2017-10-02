@@ -124,8 +124,9 @@ extern "C" void FOR_NAME(uel)(
 
         // compute K and P 
         myUel->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); 
-                     if (pNewDT < 0.25)
-                         pNewDT = 0.25;
+        if (pNewDT < 0.25){
+            pNewDT = 0.25;
+            return;}
 
         // recompute distributed loads in nodal forces and add it to P 
         for (int i =0; i<mDload; i++){
@@ -182,9 +183,11 @@ extern "C" void FOR_NAME(umat)(
         ){       
           
         userLibrary::MaterialCode materialCode = static_cast<userLibrary::MaterialCode> ( stateVars[nStateVars-1] );
-        if ( materialCode <= 0){
+        if (materialCode <= 0){
             const std::string materialName(matName);
-            materialCode = userLibrary::getMaterialCodeFromName ( materialName.substr(0, materialName.find_first_of(' ')). substr(0, materialName.find_first_of('-'))  ); 
+            materialCode = userLibrary::getMaterialCodeFromName ( 
+                    materialName.substr(0, materialName.find_first_of(' ')). substr(0, materialName.find_first_of('-'))  
+                    ); 
             stateVars[nStateVars-1] = static_cast<double> (materialCode);}
 
         BftMaterialHypoElastic* material = dynamic_cast<BftMaterialHypoElastic*> (bftMaterialFactory( 
@@ -195,6 +198,7 @@ extern "C" void FOR_NAME(umat)(
         
         double stress6[6], strain6[6], dStrain6[6], dStressDDStrain66[36];
         userLibrary::extendAbaqusToVoigt(stress6, stress, strain6, strain, dStrain6, dStrain, nDirect, nShear);
+
         if(nDirect == 3) 
             material->computeStress(stress6, dStressDDStrain66, strain6, dStrain6, time, dtime, pNewDT);
         else if(nDirect == 2)
