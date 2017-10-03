@@ -24,6 +24,7 @@ namespace userLibrary{
         ModLeonSemiExplicit=15,
         ModLeonSemiExplicitAdaptive=16,
         ModLeonPlaneStress=17,
+        UntereggerRockMassPlaxis=18,
     };
 
     MaterialCode getMaterialCodeFromName(const std::string& materialName);

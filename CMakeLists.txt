@@ -27,23 +27,24 @@ set(bftMechanicsDir "../bftMechanics/")
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
     LinearElastic
-    LinearElasticSolidificationCreep
-    HoekBrown
-    ModLeon
-    ModLeonSemiExplicit
-    ModLeonAdaptive
-    ModLeonSemiExplicitAdaptive
-    ModLeonPlaneStress
-    ModLeonNonLocal
-    Meschke
-    SchaedlichSchweiger
-    ShotLeon
-    ShotLeonV2
-    ShotLeonNonLocal
-    ShotLeonV2NonLocal
-    SolidificationCreep
+    #LinearElasticSolidificationCreep
+    #HoekBrown
+    #ModLeon
+    #ModLeonSemiExplicit
+    #ModLeonAdaptive
+    #ModLeonSemiExplicitAdaptive
+    #ModLeonPlaneStress
+    #ModLeonNonLocal
+    #Meschke
+    #SchaedlichSchweiger
+    #ShotLeon
+    #ShotLeonV2
+    #ShotLeonNonLocal
+    #ShotLeonV2NonLocal
+    #SolidificationCreep
     UntereggerRockMass
     UntereggerRockMassNonLocal
+    UntereggerRockMassPlaxis
 
     uelCPE4NonLocal
     uelDisplacement
