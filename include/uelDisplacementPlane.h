@@ -120,12 +120,8 @@ void UelDisplacementPlane<nNodes>::computeYourself( const double* QTotal_,
             if (pNewDT<1.0)
                 return; 
 
-            Vector3d stressCondensed;
-            stressCondensed.head(2) = gaussPt.stress.head(2);
-            stressCondensed(2) = gaussPt.stress(3);
-
             Ke += B.transpose() * bft::mechanics::getPlaneStrainTangent(Cep) * B *  vol;
-            Pe -= B.transpose() * stressCondensed * vol;
+            Pe -= B.transpose() * Vgt::voigtToPlaneVoigt(gaussPt.stress) * vol;
         }
 
         gaussPt.strain += dStrain; 
@@ -172,8 +168,7 @@ void UelDisplacementPlane<nNodes>::computeDistributedLoad( BftUel::DistributedLo
             
             break;
         }
-        default:  {std::cout << "Load type not supported" << std::endl; 
-                      throw std::invalid_argument("Invalid Load Type specified");}
+        default: {throw std::invalid_argument("Invalid Load Type specified");}
     }
 }
 
