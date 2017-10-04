@@ -27,8 +27,7 @@ namespace userLibrary{
     };
 
     MaterialCode getMaterialCodeFromName(const std::string& materialName);
-
-    /*
+/*
      * XXXX
      * ||||_ 4: type of element 
      * |||__ 3: active fields 
@@ -53,6 +52,7 @@ namespace userLibrary{
             //Displacement
             UelCPS4 =       402,
             UelCPE4 =       407,
+            UelCPE4EAS4 =       4074,
             UelCPS8 =       802,
             UelCPS8R =      805,
                       
@@ -79,7 +79,11 @@ namespace userLibrary{
                       
             UelC3D20NonLocal = 2013,
                       
-            UelC3D20RNonLocal = 2016
+            UelC3D20RNonLocal = 2016,
+
+            UELCPE4EAS4 = 4407,
+
+
 
     };
 
