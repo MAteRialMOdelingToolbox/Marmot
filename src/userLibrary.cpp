@@ -53,9 +53,15 @@
 //#ifdef HoekBrown 
     //#include "materialCodeHoekBrown.h"
 //#endif
-//#ifdef UntereggerRockMass 
-    //#include "materialCodeUntereggerRockMass.h"
-//#endif
+#ifdef UNTEREGGERROCKMASS
+    #include "UntereggerRockMass.h"
+#endif
+#ifdef UNTEREGGERROCKMASSNONLOCAL
+    #include "UntereggerRockMassNonLocal.h"
+#endif
+#ifdef UNTEREGGERROCKMASSPLAXIS
+    #include "UntereggerRockMassPlaxis.h"
+#endif
 //#ifdef MohrCoulomb 
     //#include "materialCodeMohrCoulomb.h"
 //#endif
@@ -77,6 +83,9 @@ namespace userLibrary{
         else if(materialCode == "MODLEONNONLOCAL" )                 return MaterialCode::ModLeonNonLocal;
         else if(materialCode == "MESCHKE" )                         return MaterialCode::Meschke;
         else if(materialCode == "SCHAEDLICHSCHWEIGER" )             return MaterialCode::SchaedlichSchweiger;
+        else if(materialCode == "UNTEREGGERROCKMASS" )              return MaterialCode::UntereggerRockMass;
+        else if(materialCode == "UNTEREGGERROCKMASSNONLOCAL" )      return MaterialCode::UntereggerRockMassNonLocal;
+        else if(materialCode == "UNTEREGGERROCKMASSPLAXIS" )        return MaterialCode::UntereggerRockMassPlaxis;
 
         else{ throw std::invalid_argument("bftUserLibrary: Material Not Found: "+materialCode);}
     }
@@ -120,6 +129,15 @@ namespace userLibrary{
             #endif
             #ifdef SCHAEDLICHSCHWEIGER
             case SchaedlichSchweiger: { return new class SchaedlichSchweiger(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef UNTEREGGERROCKMASS
+            case UntereggerRockMass: { return new class UntereggerRockMass(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef UNTEREGGERROCKMASSNONLOCAL
+            case UntereggerRockMassNonLocal: { return new class UntereggerRockMassNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef UNTEREGGERROCKMASSPLAXIS
+            case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             default: throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
         }
