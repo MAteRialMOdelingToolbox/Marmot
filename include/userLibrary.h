@@ -52,7 +52,6 @@ namespace userLibrary{
             //Displacement
             UelCPS4 =       402,
             UelCPE4 =       407,
-            UelCPE4EAS4 =       4074,
             UelCPS8 =       802,
             UelCPS8R =      805,
                       
@@ -81,7 +80,9 @@ namespace userLibrary{
                       
             UelC3D20RNonLocal = 2016,
 
-            UELCPE4EAS4 = 4407,
+            UelCPE4EAS2 = 40702,
+            UelCPE4EAS4 = 40704,
+            UelCPE4EAS5 = 40705,
 
 
 
