@@ -17,8 +17,6 @@ namespace userLibrary{
         MohrCoulomb=8,
         UntereggerRockMassNonLocal=9,
         ShotLeonNonLocal=10,
-        //ShotLeonV2=11,
-        //ShotLeonV2NonLocal=12,
         LinearElasticSolidificationCreep = 13,
         ModLeonAdaptive=14,
         ModLeonSemiExplicit=15,

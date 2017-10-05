@@ -32,15 +32,6 @@
 #ifdef SHOTLEON
     #include "ShotLeon.h"
 #endif
-//#ifdef ShotLeonV2
-    //#include "ShotLeonV2.h"
-//#endif
-//#ifdef SHOTLEONNONLOCAL
-    //#include "ShotLeonNonLocal.h"
-//#endif
-//#ifdef ShotLeonV2NonLocal
-    //#include "ShotLeonV2NonLocal.h"
-//#endif
 #ifdef MODLEONNONLOCAL
     #include "ModLeonNonLocal.h"
 #endif
@@ -50,9 +41,6 @@
 #ifdef SCHAEDLICHSCHWEIGER
     #include "SchaedlichSchweiger.h"
 #endif
-//#ifdef HoekBrown 
-    //#include "materialCodeHoekBrown.h"
-//#endif
 #ifdef UNTEREGGERROCKMASS
     #include "UntereggerRockMass.h"
 #endif
@@ -62,12 +50,6 @@
 #ifdef UNTEREGGERROCKMASSPLAXIS
     #include "UntereggerRockMassPlaxis.h"
 #endif
-//#ifdef MohrCoulomb 
-    //#include "materialCodeMohrCoulomb.h"
-//#endif
-//#ifdef UntereggerRockMassNonLocal 
-    //#include "materialCodeUntereggerRockMassNonLocal.h"
-//#endif
 namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
