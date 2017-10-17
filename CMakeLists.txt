@@ -13,7 +13,7 @@ file(GLOB sources "src/*.cpp")
 file(GLOB headers "include/*.h")
 
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -30,6 +30,8 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+  set(CMAKE_CXX_FLAGS_DEBUG "-g")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 endif()
 
 #for creating a visual studio project, if you want to have only one configuration
