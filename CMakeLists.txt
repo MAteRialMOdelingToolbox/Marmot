@@ -49,6 +49,7 @@ set (optionalLibraries
     SolidificationCreep
     UntereggerRockMass
     UntereggerRockMassNonLocal
+    UntereggerRockMassPlaxis
 
     uelDisplacement
     uelDisplacementEAS
