@@ -32,8 +32,7 @@
 #ifdef SHOTLEON
     #include "ShotLeon.h"
 #endif
-<<<<<<< HEAD
-#ifdef ShotLeonV2
+#ifdef SHOTLEONV2 
     #include "ShotLeonV2.h"
 #endif
 #ifdef SHOTLEONNONLOCAL
