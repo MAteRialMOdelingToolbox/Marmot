@@ -224,7 +224,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
         if constexpr (nDim == 2) {
 
-            Vector6 dE6 = Vgt::planeVoigtToVoigt(  dE  ); // Voigt6 <- Voigt3
+            Vector6 dE6 = Vgt::planeVoigtToVoigt(  dE  ); 
             Matrix6 C66;
 
             if (sectionType == SectionType::PlaneStress) { 
