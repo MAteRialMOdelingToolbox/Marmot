@@ -5,6 +5,7 @@
 #include "bftUel.h"
 #include "bftFunctions.h"
 #include "bftFiniteElement.h"
+#include "bftFunctions.h"
 #include "bftGeometryElement.h"
 #include "bftMaterialHypoElastic.h"
 #include "userLibrary.h"
