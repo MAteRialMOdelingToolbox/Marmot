@@ -54,6 +54,7 @@ set (optionalLibraries
     uelDisplacement
     uelDisplacementEAS
     uelNonLocal
+    uelNonLocalEAS
 
     )
 

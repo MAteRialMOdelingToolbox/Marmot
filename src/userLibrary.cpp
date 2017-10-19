@@ -32,12 +32,15 @@
 #ifdef SHOTLEON
     #include "ShotLeon.h"
 #endif
-#ifdef SHOTLEONV2 
+#ifdef ShotLeonV2
     #include "ShotLeonV2.h"
 #endif
 #ifdef SHOTLEONNONLOCAL
     #include "ShotLeonNonLocal.h"
 #endif
+//#ifdef ShotLeonV2NonLocal
+    //#include "ShotLeonV2NonLocal.h"
+//#endif
 #ifdef MODLEONNONLOCAL
     #include "ModLeonNonLocal.h"
 #endif
@@ -47,15 +50,18 @@
 #ifdef SCHAEDLICHSCHWEIGER
     #include "SchaedlichSchweiger.h"
 #endif
-#ifdef UNTEREGGERROCKMASS
-    #include "UntereggerRockMass.h"
-#endif
-#ifdef UNTEREGGERROCKMASSNONLOCAL
-    #include "UntereggerRockMassNonLocal.h"
-#endif
-#ifdef UNTEREGGERROCKMASSPLAXIS
-    #include "UntereggerRockMassPlaxis.h"
-#endif
+//#ifdef HoekBrown 
+    //#include "materialCodeHoekBrown.h"
+//#endif
+//#ifdef UntereggerRockMass 
+    //#include "materialCodeUntereggerRockMass.h"
+//#endif
+//#ifdef MohrCoulomb 
+    //#include "materialCodeMohrCoulomb.h"
+//#endif
+//#ifdef UntereggerRockMassNonLocal 
+    //#include "materialCodeUntereggerRockMassNonLocal.h"
+//#endif
 namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
@@ -73,9 +79,6 @@ namespace userLibrary{
         else if(materialCode == "MODLEONNONLOCAL" )                 return MaterialCode::ModLeonNonLocal;
         else if(materialCode == "MESCHKE" )                         return MaterialCode::Meschke;
         else if(materialCode == "SCHAEDLICHSCHWEIGER" )             return MaterialCode::SchaedlichSchweiger;
-        else if(materialCode == "UNTEREGGERROCKMASS" )              return MaterialCode::UntereggerRockMass;
-        else if(materialCode == "UNTEREGGERROCKMASSNONLOCAL" )      return MaterialCode::UntereggerRockMassNonLocal;
-        else if(materialCode == "UNTEREGGERROCKMASSPLAXIS" )        return MaterialCode::UntereggerRockMassPlaxis;
 
         else{ throw std::invalid_argument("bftUserLibrary: Material Not Found: "+materialCode);}
     }
@@ -92,9 +95,6 @@ namespace userLibrary{
         {
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
-            #endif
-            #ifdef LINEARELASTICSOLIDIFICATIONCREEP
-            case LinearElasticSolidificationCreep: { return new class LinearElasticSolidificationCreep(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEON
             case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
@@ -147,6 +147,9 @@ namespace userLibrary{
 #ifdef UELDISPLACEMENTEAS
     #include "uelDisplacementEASFactory.h"
 #endif
+#ifdef UELNONLOCALEAS
+    #include "uelNonLocalEASFactory.h"
+#endif
 
 /* UEL ID System
  *
@@ -194,6 +197,7 @@ namespace userLibrary{
             else if(elementName == "UelCPE8R") return UelCPE8R;
             else if(elementName == "UelC3D20") return UelC3D20 ;
             else if(elementName == "UelC3D20R") return UelC3D20R ;
+
             else if(elementName == "UelCPS4NonLocal") return UelCPS4NonLocal ;
             else if(elementName == "UelCPE4NonLocal") return UelCPE4NonLocal ;
             else if(elementName == "UelCPE4RNonLocal") return UelCPE4RNonLocal ;
@@ -209,6 +213,8 @@ namespace userLibrary{
             else if(elementName == "UelCPE4EAS2") return UelCPE4EAS2 ;
             else if(elementName == "UelCPE4EAS4") return UelCPE4EAS4 ;
             else if(elementName == "UelCPE4EAS5") return UelCPE4EAS5 ;
+
+            else if(elementName == "UelCPE4NonLocalEAS4") return UelCPE4NonLocalEAS4 ;
             else throw std::invalid_argument("Invalid ElementName");
     }
 
@@ -256,22 +262,23 @@ namespace userLibrary{
             case UelC3D8RNonLocal: {return UelNonLocalFactory:: generateUelC3D8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE8NonLocal: {return UelNonLocalFactory:: generateUelCPE8NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8RNonLocal: {return UelNonLocalFactory:: generateUelCPE8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20NonLocal: {return UelNonLocalFactory:: generateUelC3D20NonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20RNonLocal: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
-            #ifdef UELDISPLACEMENT
+            #ifdef UELDISPLACEMENTEAS
             case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4EAS4: {return UelDisplacementEASFactory:: generateUelCPE4EAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-
+            #endif
+            #ifdef UELNONLOCALEAS 
+            //case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelCPE4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
 
             default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}

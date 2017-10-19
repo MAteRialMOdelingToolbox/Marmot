@@ -63,6 +63,11 @@ namespace userLibrary{
             UelCPE8R =       808,
             UelC3D20 =      2003,
             UelC3D20R =     2006,
+
+            // Displacement with EAS
+            UelCPE4EAS2 = 40702,
+            UelCPE4EAS4 = 40704,
+            UelCPE4EAS5 = 40705,
                      
             // Nonlocal 
             UelCPS4NonLocal = 412,
@@ -74,19 +79,12 @@ namespace userLibrary{
             UelC3D8RNonLocal = 816,
                       
             UelCPE8NonLocal = 817,
-                      
             UelCPE8RNonLocal = 818,
-                      
             UelC3D20NonLocal = 2013,
-                      
             UelC3D20RNonLocal = 2016,
 
-            UelCPE4EAS2 = 40702,
-            UelCPE4EAS4 = 40704,
-            UelCPE4EAS5 = 40705,
-
-
-
+            // Nonlocal with EAS
+            UelCPE4NonLocalEAS4 =41704,
     };
 
     ElementCode getElementCodeFromName(const std::string& elementName);
