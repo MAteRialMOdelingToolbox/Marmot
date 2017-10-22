@@ -51,40 +51,56 @@ namespace userLibrary{
     enum ElementCode{
             
             //Displacement
+            //Plane Stress
             UelCPS4 =       402,
-            UelCPE4 =       407,
             UelCPS8 =       802,
             UelCPS8R =      805,
-                      
-            UelC3D8 =       803,
-            UelC3D8R =      806,
 
+            // Plane Strain
+            UelCPE4 =       407,
             UelCPE8 =       807,
             UelCPE8R =       808,
-            UelC3D20 =      2003,
-            UelC3D20R =     2006,
 
-            // Displacement with EAS
+            // Plane Strain - EAS
             UelCPE4EAS2 = 40702,
             UelCPE4EAS4 = 40704,
             UelCPE4EAS5 = 40705,
+            
+            // Solid
+            UelC3D8 =       803,
+            UelC3D8R =      806,
+            UelC3D20 =      2003,
+            UelC3D20R =     2006,
+
                      
             // Nonlocal 
+            // Plane Stress
+            
             UelCPS4NonLocal = 412,
-            UelCPE4NonLocal =417,
-            UelCPE4RNonLocal = 418,
             UelCPS8NonLocal = 812,
             UelCPS8RNonLocal = 815,
+
+            // Plane Stress - EAS
+            UelCPS4NonLocalEAS2 =41202,
+            UelCPS4NonLocalEAS4 =41204,
+
+            // Plane Strain
+            UelCPE4NonLocal =417,
+            UelCPE4RNonLocal = 418,
+            UelCPE8NonLocal =817,
+            UelCPE8RNonLocal = 818,
+
+            // Plane Strain - EAS
+            UelCPE4NonLocalEAS2 =41702,
+            UelCPE4NonLocalEAS4 =41704,
+
+            // Solid
             UelC3D8NonLocal = 813,
             UelC3D8RNonLocal = 816,
-                      
-            UelCPE8NonLocal = 817,
-            UelCPE8RNonLocal = 818,
             UelC3D20NonLocal = 2013,
             UelC3D20RNonLocal = 2016,
 
-            // Nonlocal with EAS
-            UelCPE4NonLocalEAS4 =41704,
+
     };
 
     ElementCode getElementCodeFromName(const std::string& elementName);
