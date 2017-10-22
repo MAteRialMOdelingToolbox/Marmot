@@ -382,8 +382,8 @@ namespace bft{
             //if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
                  //return Vector6::Zero();
 
-            const double J2_ = J2(stress);
-            const double J3_ = J3(stress);
+            //const double J2_ = J2(stress);
+            //const double J3_ = J3(stress);
 
             const double dThetadJ2 = dTheta_dJ2(stress); 
             const double dThetadJ3 = dTheta_dJ3(stress);
@@ -419,7 +419,7 @@ namespace bft{
 				return -1e16;
             
             const double J2_ = J2(stress);
-            const double J3_ = J3(stress);
+            //const double J3_ = J3(stress);
 
             const double cos2_3theta = std::cos(3*theta) * std::cos(3*theta);
             const double dThetadJ3 = - sqrt3/2. * 1./ (std::pow(J2_, 1.5) * std::sqrt(1.0 - cos2_3theta));
@@ -505,9 +505,9 @@ namespace bft{
 									
 				const double sqrt2_3 =		std::sqrt(2./3.);
 				const Vector3d hw =			haighWestergaardStrain(dEp);				
-				const double& epsM =		hw(0);
-				const double& rhoE =		hw(1);
-				const double& thetaE =		hw(2);
+				//const double& epsM =		hw(0);
+                const double& rhoE =		hw(1);
+				//const double& thetaE =		hw(2);
 
 				dEpPrinc_dEpvol = 1./3.*I().head(3);
 				dEpPrinc_dEprho <<	sqrt2_3*std::cos(hw(2)), 
