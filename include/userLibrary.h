@@ -72,6 +72,8 @@ namespace userLibrary{
             UelC3D20 =      2003,
             UelC3D20R =     2006,
 
+            // Solid EAS
+            UelC3D8EAS9 =   80309,
                      
             // Nonlocal 
             // Plane Stress

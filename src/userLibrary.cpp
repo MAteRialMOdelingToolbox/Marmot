@@ -199,6 +199,8 @@ namespace userLibrary{
             else if(elementName == "UelC3D20") return UelC3D20 ;
             else if(elementName == "UelC3D20R") return UelC3D20R ;
 
+            else if(elementName == "UelC3D8EAS9") return UelC3D8EAS9 ;
+
             else if(elementName == "UelCPS4NonLocal") return UelCPS4NonLocal ;
             else if(elementName == "UelCPE4NonLocal") return UelCPE4NonLocal ;
             else if(elementName == "UelCPE4RNonLocal") return UelCPE4RNonLocal ;
@@ -276,6 +278,8 @@ namespace userLibrary{
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D8EAS9: {return UelDisplacementEASFactory:: generateUelC3D8EAS9 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef UELNONLOCALEAS 
             //case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
