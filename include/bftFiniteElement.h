@@ -161,7 +161,7 @@ namespace bft{
                     for(int i = 0; i < nNodes; i++){
                         B_(0, nDim*i) =        dNdX(0, i);
                         B_(1, nDim*i +1) =     dNdX(1, i);
-                        B_(2, nDim*i +2) =     dNdX(1, i);
+                        B_(2, nDim*i +2) =     dNdX(2, i);
                         B_(3, nDim*i +0) =     dNdX(1, i);
                         B_(3, nDim*i +1) =     dNdX(0, i);
                         B_(4, nDim*i +1) =     dNdX(2, i);

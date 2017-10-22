@@ -35,6 +35,25 @@ namespace bft{
 
                         return E_;
                     }
+
+                case DeBorstEAS9 : {
+                                       Matrix< double, 6, 9> E_ = Matrix<double, 6, 9>::Zero();
+
+                                       E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
+                                       
+                                       E_(0,3) = xi[0] * xi[1];
+                                       E_(0,4) = xi[0] * xi[2];
+
+                                       E_(1,5) = xi[1] * xi[0];
+                                       E_(1,6) = xi[1] * xi[2];
+
+                                       E_(2,7) = xi[2] * xi[0];
+                                       E_(2,8) = xi[2] * xi[1];
+
+                                       return E_;
+
+                                   }
+
                 case SimoRifaiEAS5: {
 
                        Matrix<double, 3, 5> E_; 
