@@ -6,21 +6,56 @@ namespace bft{
 
         MatrixXd F ( const Ref< const MatrixXd >& J )
         {
+            // Transformation according to 
+            // - Andelfinger, Ramm (1993),
+            // - 'Notes on Continuum Mechanics -  Eduardo WV Chaves' !
+            // - Lecture Notes S.Kinkel
+            // - Quy,Matzenmiller 2007
+            //
+            // Attention: Incosistent with Simo Rifai ( topleft block!)
+            // and FEAP Theory Manual!
             // nDim == 2
             if ( J.cols() == 2 ){
 
                 Matrix3d  F;
-                // consistent with SimoRifai
-                F <<   J(0,0)*J(0,0),    J(1,0)*J(0,1),        2*J(0,0)*J(0,1),
-                        J(0,1)*J(1,0),    J(1,1)*J(1,1),        2*J(1,0)*J(1,1),
+                
+                F <<    J(0,0)*J(0,0),    J(0,1)*J(0,1),        2*J(0,0)*J(0,1),
+                        J(1,0)*J(1,0),    J(1,1)*J(1,1),        2*J(1,0)*J(1,1),
                         J(0,0)*J(1,0),    J(0,1)*J(1,1),        J(0,0)*J(1,1)+J(0,1)*J(1,0);
+                        
+                 
                 return F;
             }
-            else{
-                throw std::invalid_argument ("Invalid Dimension for bft::EnhancedAssumedStrain!" );}
+            else if ( J.cols() == 3 ){
+
+                Matrix6  F;
+                F.topLeftCorner(3,3) << 
+                    J(0,0)*J(0,0),  J(0,1)*J(0,1),  J(0,2)*J(0,2),
+                    J(1,0)*J(1,0),  J(1,1)*J(1,1),  J(1,2)*J(1,2),
+                    J(2,0)*J(2,0),  J(2,1)*J(2,1),  J(2,2)*J(2,2);
+
+                F.topRightCorner(3,3) <<
+                    2*J(0,0)*J(0,1),  2*J(0,0)*J(0,2),  2*J(0,1)*J(0,2),
+                    2*J(1,0)*J(1,1),  2*J(1,0)*J(1,2),  2*J(1,1)*J(1,2),
+                    2*J(2,0)*J(2,1),  2*J(2,0)*J(2,2),  2*J(2,1)*J(2,2);
+
+                F.bottomLeftCorner(3,3) <<
+                    J(0,0)*J(1,0),  J(0,1)*J(1,1),  J(0,2)*J(1,2),
+                    J(0,0)*J(2,0),  J(0,1)*J(2,1),  J(0,2)*J(2,2),
+                    J(1,0)*J(2,0),  J(1,1)*J(2,1),  J(1,2)*J(2,2);
+                
+                F.bottomRightCorner(3,3) <<
+                    J(0,0)*J(1,1)+J(0,1)*J(1,0),  J(0,0)*J(1,2)+J(0,2)*J(1,0),  J(0,1)*J(1,2)+J(0,2)*J(1,1),
+                    J(0,0)*J(2,1)+J(0,1)*J(2,0),  J(0,0)*J(2,2)+J(0,2)*J(2,0),  J(0,1)*J(2,2)+J(0,2)*J(2,1),
+                    J(1,0)*J(2,1)+J(1,1)*J(2,0),  J(1,0)*J(2,2)+J(1,2)*J(2,0),  J(1,1)*J(2,2)+J(1,2)*J(2,1);
+
+                 
+                return F;
+            }
+            throw std::invalid_argument ("Invalid Dimension for bft::EnhancedAssumedStrain!" );
         }
 
-        MatrixXd EASInterpolation ( EASType type, const Ref< const Vector2d >& xi )
+        MatrixXd EASInterpolation ( EASType type, const Ref< const VectorXd >& xi )
         {
             // Implementation for 2D
             

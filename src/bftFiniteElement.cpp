@@ -41,6 +41,18 @@ namespace bft{
 
         MatrixXd Jacobian(const MatrixXd& dNdXi, const VectorXd& coordinates)
         {
+            /* Notation:
+             *
+             * /                          \
+             * | x1,xi1,  x1,xi2,  x1,xi3 |
+             * |                          |
+             * | x2,xi1,  x2,xi2,  x2,xi3 |
+             * |                          |
+             * | x3,xi1,  x3,xi2,  x3,xi3 |
+             * \                          /
+             *
+             * */
+
             int nDim = dNdXi.rows();
             int nNodes = dNdXi.cols();
 

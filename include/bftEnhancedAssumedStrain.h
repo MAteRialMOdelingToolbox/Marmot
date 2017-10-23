@@ -14,7 +14,7 @@ namespace bft{
         
         MatrixXd F ( const Ref< const MatrixXd >& J );
         
-        MatrixXd EASInterpolation ( EASType type, const Ref< const Vector2d >& xi ); 
+        MatrixXd EASInterpolation ( EASType type, const Ref< const VectorXd >& xi ); 
 
     }
 }
