@@ -80,28 +80,33 @@ extern "C" void FOR_NAME(uel)(
         const double &period)
 {    
         // get umatPointer and number of stateVars for umat
-        userLibrary::MaterialCode materialID =  static_cast<userLibrary::MaterialCode>( integerProperties[0] );
-        const int nStateVarsUmat =          integerProperties[1];
-        const int nPropertiesUmat =         integerProperties[2];
-        const int nPropertiesElement =      integerProperties[3];
+        //
+        if ( nIntegerProperties < 5 )
+            throw std::invalid_argument("insufficient integer properties defined for UEL");
+
+        userLibrary::ElementCode elementCode = static_cast<userLibrary::ElementCode> ( integerProperties[0] );
+        userLibrary::MaterialCode materialID =  static_cast<userLibrary::MaterialCode>( integerProperties[1] );
+        const int nStateVarsUmat =          integerProperties[2];
+        const int nPropertiesUmat =         integerProperties[3];
+        const int nPropertiesElement =      integerProperties[4];
 
         // get additional definitions: [active Geostatic stress], 
-        const bool activeGeostatic = nIntegerProperties > 4 && integerProperties[4] > 0; 
+        const bool activeGeostatic = nIntegerProperties > 5 && integerProperties[5] > 0; 
         
-        int sumProps = 0;
-        for (int i = 2; i< nIntegerProperties; i++)
-            sumProps += integerProperties[i];
-        sumProps = activeGeostatic ? sumProps+5 : sumProps;
+        //int sumProps = 0;
+        //for (int i = 3; i< nIntegerProperties; i++)
+            //sumProps += integerProperties[i];
+        //sumProps = activeGeostatic ? sumProps+5 : sumProps;
 
-        if( sumProps < nProperties){
-            std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
-            throw std::invalid_argument("insufficient properties defined");}
+        //if( sumProps < nProperties){
+            //std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
+            //throw std::invalid_argument("insufficient properties defined");}
 
         const double* propertiesUmat =    &properties[0];
         const double* propertiesElement = &properties[nPropertiesUmat];
 
         BftUel* myUel;
-        try{ myUel = userLibrary::UelFactory(elementType, 
+        try{ myUel = userLibrary::UelFactory(   elementCode, 
                                                 coordinates,
                                                 stateVars,
                                                 nStateVars,

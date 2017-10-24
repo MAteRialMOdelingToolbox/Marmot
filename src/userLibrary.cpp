@@ -66,22 +66,7 @@ namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
     {
-        if(     materialCode == "LINEARELASTIC" )                   return MaterialCode::LinearElastic;
-        else if(materialCode == "LESOLIDIFICATIONCREEP" )           return MaterialCode::LinearElasticSolidificationCreep;
-        else if(materialCode == "MODLEON" )                         return MaterialCode::ModLeon;
-        else if(materialCode == "SHOTLEON" )                        return MaterialCode::ShotLeon;
-        else if(materialCode == "SHOTLEONV2" )                      return MaterialCode::ShotLeonV2;
-        else if(materialCode == "SHOTLEONNONLOCAL" )                return MaterialCode::ShotLeonNonLocal;
-        else if(materialCode == "MODLEONPLANESTRESS" )              return MaterialCode::ModLeonPlaneStress;
-        else if(materialCode == "MODLEONSEMIEXPLICIT" )             return MaterialCode::ModLeonSemiExplicit;
-        else if(materialCode == "MODLEONADAPTIVE" )                 return MaterialCode::ModLeonAdaptive;
-        else if(materialCode == "MODLEONSEMIEXPLICITADAPTIVE" )     return MaterialCode::ModLeonSemiExplicitAdaptive;
-        else if(materialCode == "MODLEONNONLOCAL" )                 return MaterialCode::ModLeonNonLocal;
-        else if(materialCode == "MESCHKE" )                         return MaterialCode::Meschke;
-        else if(materialCode == "SCHAEDLICHSCHWEIGER" )             return MaterialCode::SchaedlichSchweiger;
-        else if(materialCode == "UNTEREGGERROCKMASS" )             return MaterialCode::UntereggerRockMass;
-
-        else{ throw std::invalid_argument("bftUserLibrary: Material Not Found: "+materialCode);}
+        return materialCodeMap [ materialCode ];
     }
 
     BftMaterial* bftMaterialFactory( MaterialCode materialCode,
@@ -152,75 +137,11 @@ namespace userLibrary{
     #include "uelNonLocalEASFactory.h"
 #endif
 
-/* UEL ID System
- *
- * XXXX
- * ||||_ 4: type of element 
- * |||__ 3: active fields 
- * ||___ 2: number of nodes
- * |____ 1: (number of nodes)
- *
- *
- * active fields:   0: mechanical (=displacement),
- *                  1: mechanical + nonlocal damage,
- *                  2: mechanical + EAS
- *                  3: mechanical + EASV2
- *
- * type of element: 1: 1D full integration, 
- *                  2: 2D full integration, plane stress 
- *                  3: 3D full integration, 
- *                  4: 1D red. integration, 
- *                  5: 2D red. integration, plane stress
- *                  6: 3D red. integration
- *                  7: 2D full integration, plane strain 
- *                  8: 2D red. integration, plane strain 
- *
- * examples:
- *
- * C3D20:           2003
- * C3D8:            803
- * C3D8R:           806
- * CPS4NonLocal:    412
- * CPE4NonLocal:    472
- * */
-
 namespace userLibrary{
 
     ElementCode getElementCodeFromName(const std::string& elementName)
     {
-            if(elementName == "UelCPS4") return UelCPS4 ;
-            else if(elementName == "UelCPE4") return UelCPE4 ;
-            else if(elementName == "UelCPS8")  return UelCPS8  ;
-            else if(elementName == "UelCPS8R") return UelCPS8R ;
-            else if(elementName == "UelC3D8") return UelC3D8 ;
-            else if(elementName == "UelC3D8R") return UelC3D8R ;
-            else if(elementName == "UelCPE8") return UelCPE8 ;
-            else if(elementName == "UelCPE8R") return UelCPE8R;
-            else if(elementName == "UelC3D20") return UelC3D20 ;
-            else if(elementName == "UelC3D20R") return UelC3D20R ;
-
-            else if(elementName == "UelC3D8EAS9") return UelC3D8EAS9 ;
-
-            else if(elementName == "UelCPS4NonLocal") return UelCPS4NonLocal ;
-            else if(elementName == "UelCPE4NonLocal") return UelCPE4NonLocal ;
-            else if(elementName == "UelCPE4RNonLocal") return UelCPE4RNonLocal ;
-            else if(elementName == "UelCPS8NonLocal") return UelCPS8NonLocal ;
-            else if(elementName == "UelCPS8RNonLocal") return UelCPS8RNonLocal ;
-            else if(elementName == "UelC3D8NonLocal") return UelC3D8NonLocal ;
-            else if(elementName == "UelC3D8RNonLocal") return UelC3D8RNonLocal ;
-            else if(elementName == "UelCPE8NonLocal") return UelCPE8NonLocal ;
-            else if(elementName == "UelCPE8RNonLocal") return UelCPE8RNonLocal ;
-            else if(elementName == "UelC3D20NonLocal") return UelC3D20NonLocal ;
-            else if(elementName == "UelC3D20RNonLocal") return UelC3D20RNonLocal ;
-
-            else if(elementName == "UelCPE4EAS2") return UelCPE4EAS2 ;
-            else if(elementName == "UelCPE4EAS4") return UelCPE4EAS4 ;
-            else if(elementName == "UelCPE4EAS5") return UelCPE4EAS5 ;
-
-            else if(elementName == "UelCPE4NonLocalEAS2") return UelCPE4NonLocalEAS2 ;
-            else if(elementName == "UelCPE4NonLocalEAS4") return UelCPE4NonLocalEAS4 ;
-            else if(elementName == "UelCPS4NonLocalEAS4") return UelCPS4NonLocalEAS4 ;
-            else throw std::invalid_argument("Invalid ElementName");
+        return elementCodeMap[ elementName ];
     }
 
     BftUel* UelFactory(ElementCode  elementCode, const double* elementCoordinates, double* stateVars, int nStateVars, 

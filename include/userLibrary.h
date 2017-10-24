@@ -1,5 +1,6 @@
 #pragma once 
 #include <string>
+#include <map>
 #include "bftUel.h"
 #include "bftMaterial.h"
 
@@ -23,17 +24,42 @@ namespace userLibrary{
         ModLeonSemiExplicit=15,
         ModLeonSemiExplicitAdaptive=16,
         ModLeonPlaneStress=17,
-        ShotLeonV2NonLocal=18,
         UntereggerRockMassPlaxis=18,
+        ShotLeonV2NonLocal=19,
+    };
+
+    std::map<std::string, MaterialCode> materialCodeMap =
+    {
+        {"MODLEON", ModLeon},
+        {"SHOTLEON", ShotLeon},
+        {"MESCHKE", Meschke},
+        {"SCHAEDLICHSCHWEIGER", SchaedlichSchweiger},
+        {"MODLEONNONLOCAL", ModLeonNonLocal},
+        {"HOEKBROWN", HoekBrown},
+        {"UNTEREGGERROCKMASS", UntereggerRockMass},
+        {"MOHRCOULOMB", MohrCoulomb},
+        {"UNTEREGGERROCKMASSNONLOCAL", UntereggerRockMassNonLocal},
+        {"SHOTLEONNONLOCAL", ShotLeonNonLocal},
+        {"SHOTLEONV2", ShotLeonV2},
+        {"LINEARELASTIC", LinearElastic},
+        {"LINEARELASTICSOLIDIFICATIONCREEP", LinearElasticSolidificationCreep},
+        {"MODLEONADAPTIVE", ModLeonAdaptive},
+        {"MODLEONSEMIEXPLICIT", ModLeonSemiExplicit},
+        {"MODLEONSEMIEXPLICITADAPTIVE", ModLeonSemiExplicitAdaptive},
+        {"MODLEONPLANESTRESS", ModLeonPlaneStress},
+        {"SHOTLEONV2NONLOCAL", ShotLeonV2NonLocal},
+        {"UNTEREGGERROCKMASSPLAXIS", UntereggerRockMassPlaxis},
     };
 
     MaterialCode getMaterialCodeFromName(const std::string& materialName);
 /*
-     * XXXX
-     * ||||_ 4: type of element 
-     * |||__ 3: active fields 
-     * ||___ 2: number of nodes
-     * |____ 1: (number of nodes)
+     * XXXXXX
+     * ||||||_    6: if EAS: number of EAS Parameters
+     * |||||__    5: if EAS: number of EAS Parameters
+     * ||||___    4: type of element 
+     * |||____    3: active fields 
+     * ||_____    2: number of nodes
+     * |______    1: (number of nodes)
      *
      *
      * active fields:   0: mechanical (=displacement),
@@ -101,9 +127,39 @@ namespace userLibrary{
             UelC3D8RNonLocal = 816,
             UelC3D20NonLocal = 2013,
             UelC3D20RNonLocal = 2016,
-
-
     };
+
+    std::map<std::string, ElementCode> elementCodeMap =
+    {
+        { "UelCPS4", UelCPS4 }, 
+        { "UelCPS8", UelCPS8 }, 
+        { "UelCPS8R", UelCPS8R }, 
+        { "UelCPE4", UelCPE4 }, 
+        { "UelCPE8", UelCPE8 }, 
+        { "UelCPE8R", UelCPE8R }, 
+        { "UelCPE4EAS2", UelCPE4EAS2 }, 
+        { "UelCPE4EAS4", UelCPE4EAS4 }, 
+        { "UelCPE4EAS5", UelCPE4EAS5 }, 
+        { "UelC3D8", UelC3D8 }, 
+        { "UelC3D8R", UelC3D8R }, 
+        { "UelC3D20", UelC3D20 }, 
+        { "UelC3D20R", UelC3D20R }, 
+        { "UelC3D8EAS9", UelC3D8EAS9 }, 
+        { "UelCPS4NonLocal", UelCPS4NonLocal }, 
+        { "UelCPS8NonLocal", UelCPS8NonLocal }, 
+        { "UelCPS8RNonLocal", UelCPS8RNonLocal }, 
+        { "UelCPS4NonLocalEAS2", UelCPS4NonLocalEAS2 }, 
+        { "UelCPS4NonLocalEAS4", UelCPS4NonLocalEAS4 }, 
+        { "UelCPE4NonLocal", UelCPE4NonLocal }, 
+        { "UelCPE4RNonLocal", UelCPE4RNonLocal }, 
+        { "UelCPE8NonLocal", UelCPE8NonLocal }, 
+        { "UelCPE8RNonLocal", UelCPE8RNonLocal }, 
+        { "UelCPE4NonLocalEAS2", UelCPE4NonLocalEAS2 }, 
+        { "UelCPE4NonLocalEAS4", UelCPE4NonLocalEAS4 }, 
+        { "UelC3D8NonLocal", UelC3D8NonLocal }, 
+        { "UelC3D8RNonLocal", UelC3D8RNonLocal }, 
+        { "UelC3D20NonLocal", UelC3D20NonLocal }, 
+        { "UelC3D20RNonLocal", UelC3D20RNonLocal }, };
 
     ElementCode getElementCodeFromName(const std::string& elementName);
 
