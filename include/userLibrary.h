@@ -99,6 +99,7 @@ namespace userLibrary{
             UelC3D20R =     2006,
 
             // Solid EAS
+            UelC3D8EAS3 =   80303,
             UelC3D8EAS9 =   80309,
                      
             // Nonlocal 
@@ -121,6 +122,8 @@ namespace userLibrary{
             // Plane Strain - EAS
             UelCPE4NonLocalEAS2 =41702,
             UelCPE4NonLocalEAS4 =41704,
+            UelC3D8NonLocalEAS3 = 81303,
+            UelC3D8NonLocalEAS9 = 81309,
 
             // Solid
             UelC3D8NonLocal = 813,

@@ -199,6 +199,8 @@ namespace userLibrary{
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D8EAS3: {return UelDisplacementEASFactory:: generateUelC3D8EAS3 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelC3D8EAS9: {return UelDisplacementEASFactory:: generateUelC3D8EAS9 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
@@ -211,6 +213,10 @@ namespace userLibrary{
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
 
             case UelCPS4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPS4NonLocalEAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D8NonLocalEAS3: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS3(elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             //case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
