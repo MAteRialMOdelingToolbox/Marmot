@@ -7,6 +7,7 @@ namespace bft{
         enum EASType{
             DeBorstEAS2,
             DeBorstEAS2_P2,
+            EAS3,
             DeBorstEAS9,
             SimoRifaiEAS5,
             SimoRifaiEAS4,

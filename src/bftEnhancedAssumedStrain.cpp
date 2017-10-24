@@ -70,9 +70,18 @@ namespace bft{
 
                         return E_;
                     }
+                case EAS3: {
+                                       Matrix< double, 6, 3> E_ = Matrix<double, 6, 3>::Zero();
+
+                                       E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
+                                       
+                                       return E_;
+
+                                   }
 
                 case DeBorstEAS9 : {
                                        Matrix< double, 6, 9> E_ = Matrix<double, 6, 9>::Zero();
+
 
                                        E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
                                        
