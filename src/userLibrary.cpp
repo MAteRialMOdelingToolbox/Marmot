@@ -66,6 +66,29 @@ namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
     {
+        static std::map<std::string, MaterialCode> materialCodeMap =
+        {
+            {"MODLEON", ModLeon},
+            {"SHOTLEON", ShotLeon},
+            {"MESCHKE", Meschke},
+            {"SCHAEDLICHSCHWEIGER", SchaedlichSchweiger},
+            {"MODLEONNONLOCAL", ModLeonNonLocal},
+            {"HOEKBROWN", HoekBrown},
+            {"UNTEREGGERROCKMASS", UntereggerRockMass},
+            {"MOHRCOULOMB", MohrCoulomb},
+            {"UNTEREGGERROCKMASSNONLOCAL", UntereggerRockMassNonLocal},
+            {"SHOTLEONNONLOCAL", ShotLeonNonLocal},
+            {"SHOTLEONV2", ShotLeonV2},
+            {"LINEARELASTIC", LinearElastic},
+            {"LINEARELASTICSOLIDIFICATIONCREEP", LinearElasticSolidificationCreep},
+            {"MODLEONADAPTIVE", ModLeonAdaptive},
+            {"MODLEONSEMIEXPLICIT", ModLeonSemiExplicit},
+            {"MODLEONSEMIEXPLICITADAPTIVE", ModLeonSemiExplicitAdaptive},
+            {"MODLEONPLANESTRESS", ModLeonPlaneStress},
+            {"SHOTLEONV2NONLOCAL", ShotLeonV2NonLocal},
+            {"UNTEREGGERROCKMASSPLAXIS", UntereggerRockMassPlaxis},
+        };
+
         return materialCodeMap [ materialCode ];
     }
 
@@ -139,8 +162,46 @@ namespace userLibrary{
 
 namespace userLibrary{
 
+
+
     ElementCode getElementCodeFromName(const std::string& elementName)
     {
+        static std::map<std::string, ElementCode> elementCodeMap =
+        {
+            { "UelCPS4", UelCPS4 }, 
+            { "UelCPS8", UelCPS8 }, 
+            { "UelCPS8R", UelCPS8R }, 
+            { "UelCPE4", UelCPE4 }, 
+            { "UelCPE8", UelCPE8 }, 
+            { "UelCPE8R", UelCPE8R }, 
+            { "UelCPE4EAS2", UelCPE4EAS2 }, 
+            { "UelCPE4EAS4", UelCPE4EAS4 }, 
+            { "UelCPE4EAS5", UelCPE4EAS5 }, 
+            { "UelC3D8", UelC3D8 }, 
+            { "UelC3D8R", UelC3D8R }, 
+            { "UelC3D20", UelC3D20 }, 
+            { "UelC3D20R", UelC3D20R }, 
+            { "UelC3D8EAS3", UelC3D8EAS3 }, 
+            { "UelC3D8EAS9", UelC3D8EAS9 }, 
+            { "UelCPS4NonLocal", UelCPS4NonLocal }, 
+            { "UelCPS8NonLocal", UelCPS8NonLocal }, 
+            { "UelCPS8RNonLocal", UelCPS8RNonLocal }, 
+            { "UelCPS4NonLocalEAS2", UelCPS4NonLocalEAS2 }, 
+            { "UelCPS4NonLocalEAS4", UelCPS4NonLocalEAS4 }, 
+            { "UelCPE4NonLocal", UelCPE4NonLocal }, 
+            { "UelCPE4RNonLocal", UelCPE4RNonLocal }, 
+            { "UelCPE8NonLocal", UelCPE8NonLocal }, 
+            { "UelCPE8RNonLocal", UelCPE8RNonLocal }, 
+            { "UelCPE4NonLocalEAS2", UelCPE4NonLocalEAS2 }, 
+            { "UelCPE4NonLocalEAS4", UelCPE4NonLocalEAS4 }, 
+            { "UelC3D8NonLocalEAS3", UelC3D8NonLocalEAS3 }, 
+            { "UelC3D8NonLocalEAS9", UelC3D8NonLocalEAS9 }, 
+            { "UelC3D8NonLocal", UelC3D8NonLocal }, 
+            { "UelC3D8RNonLocal", UelC3D8RNonLocal }, 
+            { "UelC3D20NonLocal", UelC3D20NonLocal }, 
+            { "UelC3D20RNonLocal", UelC3D20RNonLocal }, 
+
+        };
         return elementCodeMap[ elementName ];
     }
 

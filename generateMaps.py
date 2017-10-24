@@ -8,6 +8,7 @@ Created on Mon Oct 23 19:55:26 2017
 
 t = """
             
+            
             //Displacement
             //Plane Stress
             UelCPS4 =       402,
