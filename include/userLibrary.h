@@ -26,6 +26,7 @@ namespace userLibrary{
         ModLeonPlaneStress=17,
         UntereggerRockMassPlaxis=18,
         ShotLeonV2NonLocal=19,
+        UntereggerRockMassAssocNonLocal=20,
     };
 
 

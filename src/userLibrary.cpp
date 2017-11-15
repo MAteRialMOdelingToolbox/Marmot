@@ -59,9 +59,9 @@
 //#ifdef MohrCoulomb 
     //#include "materialCodeMohrCoulomb.h"
 //#endif
-//#ifdef UntereggerRockMassNonLocal 
-    //#include "materialCodeUntereggerRockMassNonLocal.h"
-//#endif
+#ifdef UNTEREGGERROCKMASSNONLOCAL 
+    #include "UntereggerRockMassNonLocal.h"
+#endif
 namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
