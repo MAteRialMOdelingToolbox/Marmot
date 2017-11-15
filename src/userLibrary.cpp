@@ -32,7 +32,7 @@
 #ifdef SHOTLEON
     #include "ShotLeon.h"
 #endif
-#ifdef ShotLeonV2
+#ifdef SHOTLEONV2 
     #include "ShotLeonV2.h"
 #endif
 #ifdef SHOTLEONNONLOCAL
@@ -110,6 +110,9 @@ namespace userLibrary{
             #endif
             #ifdef SHOTLEON
             case ShotLeon: { return new class ShotLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef SHOTLEONV2
+            case ShotLeonV2: { return new class ShotLeonV2(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef SHOTLEONNONLOCAL
             case ShotLeonNonLocal: { return new class ShotLeonNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
