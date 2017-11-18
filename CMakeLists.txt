@@ -7,25 +7,17 @@ project(bftUserLibrary)
 
 include_directories(include)
 
-file(GLOB sources "src/*.cpp")
-file(GLOB headers "include/*.h")
-
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
-set(CMAKE_CXX_FLAGS "-Wall ")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_library(${PROJECT_NAME} SHARED ${sources})
+if(CMAKE_VERSION VERSION_LESS "3.9.0") 
+    set(outdatedcmake TRUE)
+    message("--> Please consider to switch to CMake 3.9.0")
+endif()
 
 set(bftMechanicsDir "../bftMechanics/")
 
@@ -55,8 +47,50 @@ set (optionalLibraries
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalEAS
-
     )
+
+# check if uels are present, since they need c++17
+foreach(library ${optionalLibraries})
+    if(${library} MATCHES "(uel)+")
+        if(outdatedcmake)
+            if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+                unset(CMAKE_CXX_STANDARD)
+                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1z")
+            endif()
+        else()
+            set(CMAKE_CXX_STANDARD 17)
+        endif()
+        break()
+    endif()
+endforeach()
+
+# Compiler specific stettings
+if(MSVC)
+  if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+  endif()
+elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+  #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+endif()
+
+# If not build type was specified, Release is default
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+  message("--> setting to default CMAKE_BUILD_TYPE Release")
+endif()
+
+#
+# Add sources
+#
+file(GLOB sources "src/*.cpp")
+file(GLOB headers "include/*.h")
 
 #optional libraries
 foreach(library ${optionalLibraries})
@@ -65,14 +99,10 @@ foreach(library ${optionalLibraries})
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         include_directories(${librarypath}/include)
+        file(GLOB libsources "${librarypath}/src/*.cpp")
+        set(sources ${sources} ${libsources})
         string(TOUPPER ${library} LIBRARY)
         add_definitions(-D${LIBRARY})
-        set(FOUND_LIB "FOUND_LIB-NOTFOUND")
-        find_library(FOUND_LIB ${library} ${librarypath}/lib)
-        if(NOT FOUND_LIB)
-            message(FATAL_ERROR "found directory of ${library}, but no binary")
-        endif()
-        target_link_libraries(${PROJECT_NAME} ${FOUND_LIB})
     endif()
 endforeach(library)
 
@@ -81,14 +111,11 @@ get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) # make the p
 if(EXISTS ${bftMechanicsDir})
     message("--> found bftMechanics")
     include_directories(${bftMechanicsDir}/include)
-    find_library(bftMechanicsLib bftMechanics ${bftMechanicsDir}/lib)
-    target_link_libraries(${PROJECT_NAME} ${bftMechanicsLib})
+    file(GLOB libsources "${bftMechanicsDir}/src/*.cpp")
+    set(sources ${sources} ${libsources})
 else()
     message(FATAL_ERROR "could not find bftMechanics")
 endif()
 
-if(CMAKE_CONFIGURATION_TYPES)
-   set(CMAKE_CONFIGURATION_TYPES Release)
-endif()
-
+add_library(${PROJECT_NAME} SHARED ${sources})
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
