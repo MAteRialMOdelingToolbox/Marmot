@@ -1,4 +1,4 @@
-# matthias neuner, 2016, standard static lib cmake file for BFT
+# matthias neuner, 2016, 
 # 
 # depends on EIGEN library 3.2.7(+) 
 
@@ -7,7 +7,7 @@ project(bftUserLibrary)
 
 include_directories(include)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -32,6 +32,7 @@ set (optionalLibraries
     ModLeonSemiExplicitAdaptive
     ModLeonPlaneStress
     ModLeonNonLocal
+    MohrCoulomb
     Meschke
     SchaedlichSchweiger
     ShotLeon
@@ -65,19 +66,21 @@ foreach(library ${optionalLibraries})
 endforeach()
 
 # Compiler specific stettings
-if(MSVC)
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+  # only activate if you know what you are doing:
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+elseif(MSVC)
   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
     string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
   endif()
-elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-  #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 endif()
 
 # If not build type was specified, Release is default
@@ -86,16 +89,14 @@ if(NOT CMAKE_BUILD_TYPE)
   message("--> setting to default CMAKE_BUILD_TYPE Release")
 endif()
 
-#
 # Add sources
-#
 file(GLOB sources "src/*.cpp")
 file(GLOB headers "include/*.h")
 
 #optional libraries
 foreach(library ${optionalLibraries})
     file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
-    get_filename_component(librarypath ${librarypath} ABSOLUTE) # make the path absolute, which is is sometimes necessary for some reason
+    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         include_directories(${librarypath}/include)
@@ -107,14 +108,14 @@ foreach(library ${optionalLibraries})
 endforeach(library)
 
 # mandatory bftMechanics
-get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) # make the path absolute, which is is sometimes necessary for some reason
+get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
 if(EXISTS ${bftMechanicsDir})
     message("--> found bftMechanics")
     include_directories(${bftMechanicsDir}/include)
     file(GLOB libsources "${bftMechanicsDir}/src/*.cpp")
     set(sources ${sources} ${libsources})
 else()
-    message(FATAL_ERROR "could not find bftMechanics")
+    message(FATAL_ERROR "--> could not find bftMechanics")
 endif()
 
 add_library(${PROJECT_NAME} SHARED ${sources})
