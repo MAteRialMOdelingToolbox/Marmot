@@ -24,43 +24,13 @@ namespace bft
     namespace Vgt{
 
         const int VoigtSize = 6;
-        
-        const double P_data[]= 
-        {1,0,0,0,0,0,
-        0,1,0,0,0,0,
-        0,0,1,0,0,0,
-        0,0,0,2,0,0,
-        0,0,0,0,2,0,
-        0,0,0,0,0,2};
+       
+        extern const Vector6 P;
+        extern const Vector6 PInv;
 
-        const double PInv_data[]= 
-        {1,0,0,0,0,0,
-        0,1,0,0,0,0,
-        0,0,1,0,0,0,
-        0,0,0,0.5,0,0,
-        0,0,0,0,0.5,0,
-        0,0,0,0,0,0.5};
-
-        const Matrix6& P();
-        const Matrix6& PInv();
-        // I Vector
-        const double I_data[]= {1,1,1,0,0,0};
-
-        const Vector6& I();
-        // hydrostatic Vector
-        const double Ihyd_data[] = {1./3, 1./3, 1./3, 0, 0, 0};
-        const Vector6& Ihyd();
-
-        // Deviatoric Operator
-        const double Idev_data[]= {
-                2./3,    -1./3,   -1./3,    0,  0,  0,
-                -1./3,   2./3,    -1./3,    0,  0,  0,
-                -1./3,   -1./3,   2./3,     0,  0,  0,
-                0,          0,      0,      1,  0,  0,
-                0,          0,      0,      0,  1,  0,
-                0,          0,      0,      0,  0,  1};
-        const Matrix6& Idev();
-
+        extern const Vector6 I;
+        extern const Vector6 IHyd;
+        extern const Matrix6 IDev;
 
         // Plane Stress handling
         Vector3d voigtToPlaneVoigt(const Vector6& voigt);
