@@ -10,7 +10,9 @@ namespace bft{
     {
         double linearInterpolation(double x, double x0, double x1, double y0, double y1);
         double exp(double x);
-        double getExponentPowerTen(double x);
+        double getExponentPowerTen(const double x);
+    	double radToDeg(const double alpha);
+		double degToRad(const double alpha);
     }
 }
 

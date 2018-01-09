@@ -1,4 +1,5 @@
 #include "bftFunctions.h"
+#include "bftConstants.h"
 #include <cmath>
 #include <math.h>
 
@@ -20,7 +21,7 @@ namespace bft{
         }
 
         // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
-        double getExponentPowerTen(double x)
+        double getExponentPowerTen(const double x)
         {
             if ( x>=1e-16 ) // positive number
                 return floor(log10(x));
@@ -29,6 +30,14 @@ namespace bft{
             else // number close to 0
                 return 0;
         }
-
+		double radToDeg(const double alpha)
+		{
+			return alpha*180/bft::Constants::Pi;
+		}
+		
+		double degToRad(const double alpha)
+		{
+			return alpha/180*bft::Constants::Pi;
+		}
     }
 }
