@@ -1,5 +1,6 @@
 #pragma once
 #include "bftTypedefs.h"
+#include "bftMath.h"
 #include "bftFunctions.h"
 
 /* Substepper for elastoplastic materials, implicit return mapping version

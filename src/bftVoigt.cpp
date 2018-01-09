@@ -1,5 +1,5 @@
 #include "bftVoigt.h"
-#include "bftFunctions.h"
+#include "bftMath.h"
 #include "bftConstants.h"
 #include <iostream>
 
@@ -32,15 +32,6 @@ namespace bft{
                    0,      0,      0,      0,      1./G,   0,
                    0,      0,      0,      0,      0,      1./G;
             return CelInv;
-        }
-
-        double macauly(double scalar)
-        {
-            return scalar >= 0 ? scalar : 0.0;
-        }
-        int heaviside(double scalar)
-        {
-            return scalar >= 0 ? 1 : 0;
         }
 
         Matrix3d getPlaneStressTangent(const Matrix6& C)
@@ -274,9 +265,9 @@ namespace bft{
         {
             Vector3d dEpPrincipal = principalStrains(strain);
 
-            return  mechanics::macauly( -dEpPrincipal(0))+
-                mechanics::macauly( -dEpPrincipal(1))+
-                mechanics::macauly( -dEpPrincipal(2));
+            return  Math::macauly( -dEpPrincipal(0))+
+                Math::macauly( -dEpPrincipal(1))+
+                Math::macauly( -dEpPrincipal(2));
         }
 
         double I1(const Vector6& stress)
@@ -465,7 +456,7 @@ namespace bft{
             const Vector3d deltaEpPrinc = principalStrainsHW(strain);
 
             for(int i = 0; i < dEvdEpPrinc.size(); i++)
-                dEvdEpPrinc(i) = -mechanics::heaviside(-deltaEpPrinc(i));
+                dEvdEpPrinc(i) = -Math::heaviside(-deltaEpPrinc(i));
 
             return dEvdEpPrinc;
         }
