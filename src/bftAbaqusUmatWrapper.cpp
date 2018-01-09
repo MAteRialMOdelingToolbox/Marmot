@@ -1,8 +1,9 @@
 #include "bftAbaqusUmatWrapper.h"
+#include "bftAbaqusUtility.h"
+#include "bftFunctions.h"
 #include "bftVoigt.h"
 #include "bftTypedefs.h"
 #include <iostream>
-#include "bftFunctions.h"
 
 namespace bft{
 

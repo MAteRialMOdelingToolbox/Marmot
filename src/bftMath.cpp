@@ -1,10 +1,10 @@
-#include "bftFunctions.h"
+#include "bftMath.h"
 #include "bftConstants.h"
 #include <cmath>
 #include <math.h>
 
 namespace bft{
-    namespace Functions
+    namespace Math 
     {
         // return linear interpolation of polynom y at given coordinates (x0, y0) and (x1, y1) at point x 
         double linearInterpolation(double x, double x0, double x1, double y0, double y1)
@@ -21,7 +21,7 @@ namespace bft{
         }
 
         // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
-        double getExponentPowerTen(const double x)
+        int getExponentPowerTen(const double x)
         {
             if ( x>=1e-16 ) // positive number
                 return floor(log10(x));
@@ -30,6 +30,7 @@ namespace bft{
             else // number close to 0
                 return 0;
         }
+
 		double radToDeg(const double alpha)
 		{
 			return alpha*180/bft::Constants::Pi;
@@ -39,5 +40,16 @@ namespace bft{
 		{
 			return alpha/180*bft::Constants::Pi;
 		}
+    
+        double macauly(double scalar)
+        {
+            return scalar >= 0 ? scalar : 0.0;
+        }
+        
+        int heaviside(double scalar)
+        {
+            return scalar >= 0 ? 1 : 0;
+        }
+
     }
 }

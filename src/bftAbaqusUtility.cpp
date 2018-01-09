@@ -1,9 +1,9 @@
 #include "bftAbaqusUtility.h"
-#include "bftVoigt.h"
 #include "bftFunctions.h"
+#include "bftVoigt.h"
 #include "bftTypedefs.h"
 /*
- * convinience functions for umats in Abaqus
+ * convenience functions for umats in Abaqus
  * */
 
 namespace bft{

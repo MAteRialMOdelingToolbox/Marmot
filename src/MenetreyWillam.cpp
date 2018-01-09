@@ -1,7 +1,6 @@
 #include "MenetreyWillam.h"
 #include <cmath>
 #include "bftConstants.h"
-#include "bftFunctions.h"
 #include <sstream>
 
 namespace bft{

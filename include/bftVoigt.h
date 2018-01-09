@@ -15,8 +15,6 @@ namespace bft
 
         Matrix6 Cel(double E, double nu);
         Matrix6 CelInverse(double E, double nu);
-        double macauly(double scalar);
-        int heaviside(double scalar);
         Matrix3d getPlaneStressTangent(const Matrix6& C);
         Matrix3d getPlaneStrainTangent(const Matrix6& C);
     }
