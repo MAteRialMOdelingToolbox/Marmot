@@ -10,6 +10,7 @@ namespace bft{
     {
         double linearInterpolation(double x, double x0, double x1, double y0, double y1);
         double exp(double x);
+        double getExponentPowerTen(double x);
     }
 }
 

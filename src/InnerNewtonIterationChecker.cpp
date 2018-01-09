@@ -1,4 +1,5 @@
 #include "InnerNewtonIterationChecker.h"
+#include <iostream>
 
 namespace bft{
 

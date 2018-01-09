@@ -1,5 +1,6 @@
 #include "bftFunctions.h"
 #include <cmath>
+#include <math.h>
 
 namespace bft{
     namespace Functions
@@ -16,6 +17,17 @@ namespace bft{
             if(x >= 64)    // overflow if arg > 709.8 (type double), leave ample margin (e.g. for squaring)
                 return std::exp(64);
             return std::exp(x);
+        }
+
+        // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
+        double getExponentPowerTen(double x)
+        {
+            if ( x>=1e-16 ) // positive number
+                return floor(log10(x));
+            else if ( x<=1e-16 ) // negative number
+                return floor(log10(abs(x)));
+            else // number close to 0
+                return 0;
         }
 
     }
