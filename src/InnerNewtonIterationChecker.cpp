@@ -23,7 +23,12 @@ namespace bft{
 
     double InnerNewtonIterationChecker::relativeNorm(const VectorXd& increment, const VectorXd& reference)
     {
+        double incNorm = increment.norm();
         double refNorm = reference.norm();
+        
+        if (incNorm<1e-16)
+            return incNorm;
+        
         if (refNorm <1e-16)
             refNorm = 1e-16;
         return increment.norm() / refNorm;
