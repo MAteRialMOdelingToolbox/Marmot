@@ -1,6 +1,7 @@
 #pragma once 
 #include <string>
 #include <map>
+#include <iostream>
 #include "bftUel.h"
 #include "bftMaterial.h"
 
@@ -93,9 +94,9 @@ namespace userLibrary{
             UelCPS4NonLocalEAS4 =41204,
 
             // Plane Strain
-            UelCPE4NonLocal =417,
+            UelCPE4NonLocal =  417,
             UelCPE4RNonLocal = 418,
-            UelCPE8NonLocal =817,
+            UelCPE8NonLocal  = 817,
             UelCPE8RNonLocal = 818,
 
             // Plane Strain - EAS
@@ -111,6 +112,12 @@ namespace userLibrary{
             UelC3D20RNonLocal = 2016,
     };
 
+    ElementCode getElementCodeFromInfo(int nNodes, 
+                                       int activeFields, 
+                                       int dim,
+                                       bool fullIntegration, 
+                                       const std::string& formulation,
+                                       int EASParam);
 
     ElementCode getElementCodeFromName(const std::string& elementName);
 
