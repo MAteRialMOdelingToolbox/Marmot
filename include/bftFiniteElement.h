@@ -2,6 +2,7 @@
 #include <array>
 #include "bftTypedefs.h"
 
+
 namespace bft{
 
 	namespace FiniteElement
@@ -216,6 +217,7 @@ namespace bft{
 
         MatrixXd getGaussPointList(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
         VectorXd getGaussWeights (bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
+        int getNumGaussPoints(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
 
         
         namespace Spatial2D

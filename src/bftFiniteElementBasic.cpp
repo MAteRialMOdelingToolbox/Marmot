@@ -143,24 +143,24 @@ namespace bft{
             switch(shape)
             {
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial2D::gaussPtList2x2;
+                                                    return Spatial2D::gaussPtList2x2;
                                                 else
                                                     return Spatial2D::gaussPtList1x1;}
 
                 case(ElementShapes::Quad8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial2D::gaussPtList3x3;
+                                                    return Spatial2D::gaussPtList3x3;
                                                 else
                                                     return Spatial2D::gaussPtList2x2;}
 
                 case(ElementShapes::Hexa8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial3D::gaussPtList2x2x2;
+                                                    return Spatial3D::gaussPtList2x2x2;
                                                 else
                                                     return Spatial3D::gaussPtList1x1x1;}
 
                 case(ElementShapes::Hexa20): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                 return Spatial3D::gaussPtList3x3x3;
+                                                    return Spatial3D::gaussPtList3x3x3;
                                                  else
-                                                     return Spatial3D::gaussPtList2x2x2;}
+                                                    return Spatial3D::gaussPtList2x2x2;}
 
                 default: {throw std::invalid_argument("Invalid shape/integrationType combination");}
             }
@@ -171,27 +171,32 @@ namespace bft{
             switch(shape)
             {
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial2D::gaussPtList2x2Weights;
+                                                    return Spatial2D::gaussPtList2x2Weights;
                                                 else
                                                     return Spatial2D::gaussPtList1x1Weights;}
 
                 case(ElementShapes::Quad8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial2D::gaussPtList3x3Weights;
+                                                    return Spatial2D::gaussPtList3x3Weights;
                                                 else
                                                     return Spatial2D::gaussPtList2x2Weights;}
 
                 case(ElementShapes::Hexa8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                return Spatial3D::gaussPtList2x2x2Weights;
+                                                    return Spatial3D::gaussPtList2x2x2Weights;
                                                 else
                                                     return Spatial3D::gaussPtList1x1x1Weights;}
 
                 case(ElementShapes::Hexa20): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                 return Spatial3D::gaussPtList3x3x3Weights;
+                                                    return Spatial3D::gaussPtList3x3x3Weights;
                                                  else
-                                                     return Spatial3D::gaussPtList2x2x2Weights;}
+                                                    return Spatial3D::gaussPtList2x2x2Weights;}
 
                 default: {throw std::invalid_argument("Invalid shape/integrationType combination");}
             }
         }
+
+        int getNumGaussPoints(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType){
+                return getGaussWeights(shape,integrationType).size();
+        }
+
     } // end of namespace NumIntegration
 } // end of namespace bft
