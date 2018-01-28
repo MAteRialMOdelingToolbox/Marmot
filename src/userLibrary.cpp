@@ -37,9 +37,9 @@
 #ifdef SHOTLEONNONLOCAL
     #include "ShotLeonNonLocal.h"
 #endif
-//#ifdef ShotLeonV2NonLocal
-    //#include "ShotLeonV2NonLocal.h"
-//#endif
+#ifdef SHOTLEONV2NONLOCAL 
+    #include "ShotLeonV2NonLocal.h"
+#endif
 #ifdef MODLEONNONLOCAL
     #include "ModLeonNonLocal.h"
 #endif
@@ -121,6 +121,9 @@ namespace userLibrary{
             #endif
             #ifdef SHOTLEONNONLOCAL
             case ShotLeonNonLocal: { return new class ShotLeonNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef SHOTLEONV2NONLOCAL
+            case ShotLeonV2NonLocal: { return new class ShotLeonV2NonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEONSEMIEXPLICIT
             case ModLeonSemiExplicit: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
