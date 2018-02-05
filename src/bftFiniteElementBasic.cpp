@@ -40,7 +40,10 @@ namespace bft{
 
         MatrixXd Jacobian(const MatrixXd& dNdXi, const VectorXd& coordinates)
         {
-            /* Notation:
+            
+            /* Dynamic version of jacobian, and not necessarily square!
+             *
+             * Notation:
              *
              * /                          \
              * | x1,xi1,  x1,xi2,  x1,xi3 |
@@ -52,15 +55,16 @@ namespace bft{
              *
              * */
 
-            int nDim = dNdXi.rows();
+            int nDimXi = dNdXi.rows();
             int nNodes = dNdXi.cols();
+            int nDimX =  coordinates.size() / nNodes;
 
-            MatrixXd J_ = MatrixXd::Zero(nDim, nDim);
+            MatrixXd J_ = MatrixXd::Zero(nDimX, nDimXi);
 
-            for(int i = 0; i < nDim; i++)		// loop over global dimensions
-                for(int j=0; j < nDim; j++)		// loop over local dimensions
+            for(int i = 0; i < nDimX; i++)		// loop over global dimensions
+                for(int j=0; j < nDimXi; j++)		// loop over local dimensions
                     for(int k=0; k<nNodes; k++) // Loop over nodes
-                        J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDim);
+                        J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDimX);
             return J_;
         }
 
@@ -86,37 +90,45 @@ namespace bft{
                                                     return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
                     case(ElementShapes::Quad8): { using namespace FiniteElement::Spatial2D::Truss3; 
                                                     return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
+
+                    case(ElementShapes::Hexa8): {  MatrixXd J = Jacobian(FiniteElement::Spatial2D::Quad4::dNdXi(  gp.head(2)  ), coords);
+                                                    const Vector3d n = J.col(0).cross ( J.col(1) ) ;
+                                                    return n/ n.norm(); } 
                     default: {throw std::invalid_argument("Jacobian: Invalid shape combination for boundary element");}
                 }
             }
 
-            MatrixXd getGaussPointList(bft::FiniteElement::ElementShapes shape)
+            MatrixXd getBoundaryElementGaussPointList(bft::FiniteElement::ElementShapes parentShape)
             {
-                switch(shape)
+                switch(parentShape)
                 {
-                    case(ElementShapes::Quad4): {  return FiniteElement::BoundaryElementFactory::gaussPtList2; }
-                    case(ElementShapes::Quad8): {  return FiniteElement::BoundaryElementFactory::gaussPtList3; } 
+                    case(ElementShapes::Quad4): {  return NumIntegration::Spatial1D::gaussPtList2; }
+                    case(ElementShapes::Quad8): {  return NumIntegration::Spatial1D::gaussPtList3; } 
+                    case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2; } 
                     default: {throw std::invalid_argument("Gausspoints: Invalid shape/integrationType combination boundary eement");}
                 }
             }
 
-            VectorXd getGaussWeights(bft::FiniteElement::ElementShapes shape)
+            VectorXd getBoundaryElementGaussWeights(bft::FiniteElement::ElementShapes parentShape)
             {
-                switch(shape)
+                switch(parentShape)
                 {
-                    case(ElementShapes::Quad4): {  return FiniteElement::BoundaryElementFactory::gaussPtList2Weights; }
-                    case(ElementShapes::Quad8): {  return FiniteElement::BoundaryElementFactory::gaussPtList3Weights; } 
+                    case(ElementShapes::Quad4): {  return NumIntegration::Spatial1D::gaussPtList2Weights; }
+                    case(ElementShapes::Quad8): {  return NumIntegration::Spatial1D::gaussPtList3Weights; } 
+                    case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2Weights; } 
                     default: {throw std::invalid_argument("Boundary element: invalid gauss weights");}
                 }
             }
 
-            MatrixXd getNB(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp)
+            MatrixXd getBoundaryElementNB(bft::FiniteElement::ElementShapes parentShape, const Ref<const VectorXd>& gp)
             {
                 using namespace bft::FiniteElement;
-                switch(shape)
+                switch(parentShape)
                 {
-                    case(ElementShapes::Quad4): {  return NB( Spatial2D::Truss2::N(gp(0)), 2); }
+                    case(ElementShapes::Quad4): {  return NB( Spatial2D::Truss2::N(gp(0)), 2); } // gp(0): Eigen->double?
                     case(ElementShapes::Quad8): {  return NB( Spatial2D::Truss3::N(gp(0)), 2); } 
+
+                    case(ElementShapes::Hexa8): {  return NB( Spatial2D::Quad4::N( gp.head(2) ), 3); } 
                     default: {throw std::invalid_argument("Boundary element: invalid NB shape");}
                 }
             }
@@ -129,6 +141,14 @@ namespace bft{
                                                     return Jacobian(dNdXi(gp(0)), coords).norm(); }
                     case(ElementShapes::Quad8): {  using namespace bft::FiniteElement::Spatial2D::Truss3; 
                                                     return Jacobian(dNdXi(gp(0)), coords).norm(); } 
+
+                    case(ElementShapes::Hexa8): {  //using namespace bft::FiniteElement::Spatial3D::Quad4; 
+                                                    MatrixXd J = Jacobian(FiniteElement::Spatial2D::Quad4::dNdXi(  gp.head(2)  ), coords);
+
+                                                    const Vector3d n = J.col(0).cross ( J.col(1) ) ;
+
+                                                    return n.norm(); } 
+
                     default: {throw std::invalid_argument("Boundary element: invalid integration volume");}
                 }
             }

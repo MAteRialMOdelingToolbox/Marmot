@@ -66,8 +66,8 @@ namespace bft{
 
 
                 //****************************************************
-                namespace Boundary2
-                {
+                //namespace Boundary2
+                //{
 
                     /*    Create Edge of 2d element
                      *
@@ -80,35 +80,35 @@ namespace bft{
                      *               face 3    
                      * */
 
-                    const Matrix2d gaussPts1d_2(int elementFace){
-                        // create gausspoints in order to use shapefunctions of quad4 element
-                        Matrix2d gp;
-                        double xi = 0.577350269189625764509;
-                        switch(elementFace){
-                            case 1: { gp << -xi, 1,
-                                        xi, 1;  break;}
-                            case 2: { gp << -1, -xi,
-                                        -1,  +xi; break;}
-                            case 3: { gp <<-xi, -1,
-                                        +xi, -1; break;}
-                            case 4: { gp << 1, -xi,
-                                        1,  +xi;  break;}
-                        }
-                        return gp;
-                    }
+                    //const Matrix2d gaussPts1d_2(int elementFace){
+                        //// create gausspoints in order to use shapefunctions of quad4 element
+                        //Matrix2d gp;
+                        //double xi = 0.577350269189625764509;
+                        //switch(elementFace){
+                            //case 1: { gp << -xi, 1,
+                                        //xi, 1;  break;}
+                            //case 2: { gp << -1, -xi,
+                                        //-1,  +xi; break;}
+                            //case 3: { gp <<-xi, -1,
+                                        //+xi, -1; break;}
+                            //case 4: { gp << 1, -xi,
+                                        //1,  +xi;  break;}
+                        //}
+                        //return gp;
+                    //}
 
-                    NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi){
-                        // derivative of shapeFunction of element face and direction of gradient 
-                        // following counterclockwise element numbering
-                        switch(elementFace){
-                            case 1: { return -Quad4::dNdXi(xi).row(0); break;}
-                            case 2: { return -Quad4::dNdXi(xi).row(1); break;}
-                            case 3: { return Quad4::dNdXi(xi).row(0); break;}
-                            case 4: { return Quad4::dNdXi(xi).row(1); break;}
-                            default: {throw std::invalid_argument("Boundary 2: invalid face ID specifed");}
-                        }
-                    }
-                } 
+                    //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi){
+                        //// derivative of shapeFunction of element face and direction of gradient 
+                        //// following counterclockwise element numbering
+                        //switch(elementFace){
+                            //case 1: { return -Quad4::dNdXi(xi).row(0); break;}
+                            //case 2: { return -Quad4::dNdXi(xi).row(1); break;}
+                            //case 3: { return Quad4::dNdXi(xi).row(0); break;}
+                            //case 4: { return Quad4::dNdXi(xi).row(1); break;}
+                            //default: {throw std::invalid_argument("Boundary 2: invalid face ID specifed");}
+                        //}
+                    //}
+                //} 
 
 
                 //****************************************************
@@ -241,8 +241,7 @@ namespace bft{
                 Vector2d NormalVector(const Vector2d& Jacobian)
                 {
                     Vector2d n;
-                    n <<    Jacobian(1),
-                      -Jacobian(0); 
+                    n <<    Jacobian(1), -Jacobian(0); 
                     return n / n.norm();
                 }
             } // end of namespace Truss2
@@ -289,19 +288,19 @@ namespace bft{
                     return J;
                 }
 
-                Vector2d TangentialVector(const Vector2d& Jacobian)
-                {
-                    return Jacobian / Jacobian.norm();
-                }
+                //Vector2d TangentialVector(const Vector2d& Jacobian)
+                //{
+                    //return Jacobian / Jacobian.norm();
+                //}
 
-                Vector2d NormalVector(const Vector2d& Jacobian)
-                {
-                    Vector2d n;
-                    n <<    Jacobian(1),
-                      -Jacobian(0); 
+                //Vector2d NormalVector(const Vector2d& Jacobian)
+                //{
+                    //Vector2d n;
+                    //n <<    Jacobian(1),
+                      //-Jacobian(0); 
 
-                    return n / n.norm();
-                }
+                    //return n / n.norm();
+                //}
             } // end of namespace Truss3
 
             void modifyCharElemLengthAbaqusLike(double& charElemLength, int intPoint){

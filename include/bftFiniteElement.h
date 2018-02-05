@@ -31,7 +31,6 @@ namespace bft{
                 }
                 return N_;
             }
-        
 
         MatrixXd Jacobian(const MatrixXd& dN_dXi, const VectorXd& coordinates); // Dynamic version
 
@@ -81,11 +80,11 @@ namespace bft{
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
 
-                namespace Boundary2 
-                {
-                    const Matrix2d gaussPts1d_2(int elementFace);
-                    NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
-                } 
+                //namespace Boundary2 
+                //{
+                    //const Matrix2d gaussPts1d_2(int elementFace);
+                    //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
+                //} 
             } 
             
             namespace Quad8
@@ -134,13 +133,13 @@ namespace bft{
         }//end of namespace Spatial2D
         
         namespace BoundaryElementFactory{
-            constexpr double gp2 = 0.577350269189625764509;
-            constexpr double gp3 = 0.774596669241483;
+            //constexpr double gp2 = 0.577350269189625764509;
+            //constexpr double gp3 = 0.774596669241483;
             
-            const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
-            const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
-            const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
-            const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
+            //const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
+            //const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
+            //const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
+            //const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
 
             VectorXd getBoundaryNodeList(   bft::FiniteElement::ElementShapes shape, const int& elementFace);
             MatrixXd getGaussPointList(     bft::FiniteElement::ElementShapes shape);
@@ -172,6 +171,25 @@ namespace bft{
 
                     return B_;
                 }
+
+            //namespace Quad4
+            //{
+                //constexpr int nNodes = 4;
+                //constexpr int nXi    = 2;
+
+                //typedef Matrix<double, 1,   nNodes>         NSized;
+                //typedef Matrix<double, nXi, nNodes>            dNdXiSized;
+                ////typedef Matrix<double, voigtLength, nNodes * nDim>        BSized;
+
+                //NSized N(const Ref<const Vector2d>& xi);           
+                //dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
+                ////NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+              
+                //// convenience functions; they are wrappers to the corresponding template functions
+                //Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
+                ////BSized B(const Ref<const dNdXiSized>& dNdXi);
+
+            //} 
  
             namespace Hexa8
             {
@@ -219,6 +237,19 @@ namespace bft{
         VectorXd getGaussWeights (bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
         int getNumGaussPoints(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
 
+        namespace Spatial1D
+        {
+            constexpr int nDim = 1;
+
+            constexpr double gp2 = 0.577350269189625764509;
+            constexpr double gp3 = 0.774596669241483;
+            
+            const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
+            const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
+            const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
+            const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
+
+        }
         
         namespace Spatial2D
         { 
