@@ -43,6 +43,16 @@ namespace bft{
 
                 Vector2d getBoundaryElementIndices ( int faceID)
                 {
+                    /*    
+                     *               face 1
+                     *           (1) _______(0)
+                     *              |       |  
+                     *       face 2 |       | face 4  
+                     *              |_______|  
+                     *           (2)        (3) 
+                     *               face 3    
+                     * */
+
                     switch(faceID){
                         case 1: {return (Vector2d() << 0,1).finished();}
                         case 2: {return (Vector2d() << 1,2).finished();}
@@ -51,17 +61,6 @@ namespace bft{
                         default: {throw std::invalid_argument("Quad4: invalid face ID specifed");}
                     }
                 }
-
-                //NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
-                    //NSized truss2IndicesInQuad4;
-                    //switch(elementFace){
-                        //case 1: truss2IndicesInQuad4 <<     0,1,    2,3 [>  4,5,    6,7,<]  ; break;
-                        //case 2: truss2IndicesInQuad4 << [>  0,1,*/  2,3,    4,5/*,  6,7,<]  ; break;
-                        //case 3: truss2IndicesInQuad4 << [>  0,1,    2,3,  <]4,5,    6,7     ; break;
-                        //case 4: truss2IndicesInQuad4 <<     6,7,[>  2,3,    4,5, <] 0,1     ; break;
-                    //}
-                    //return truss2IndicesInQuad4;
-                //}
 
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Vector8d>& coordinates)
                 {
@@ -75,54 +74,6 @@ namespace bft{
                     return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
                 }
 
-
-                //****************************************************
-                //namespace Boundary2
-                //{
-
-                    /*    Create Edge of 2d element
-                     *
-                     *               face 1
-                     *           (1) _______(0)
-                     *              |       |  
-                     *       face 2 |       | face 4  
-                     *              |_______|  
-                     *           (2)        (3) 
-                     *               face 3    
-                     * */
-
-                    //const Matrix2d gaussPts1d_2(int elementFace){
-                        //// create gausspoints in order to use shapefunctions of quad4 element
-                        //Matrix2d gp;
-                        //double xi = 0.577350269189625764509;
-                        //switch(elementFace){
-                            //case 1: { gp << -xi, 1,
-                                        //xi, 1;  break;}
-                            //case 2: { gp << -1, -xi,
-                                        //-1,  +xi; break;}
-                            //case 3: { gp <<-xi, -1,
-                                        //+xi, -1; break;}
-                            //case 4: { gp << 1, -xi,
-                                        //1,  +xi;  break;}
-                        //}
-                        //return gp;
-                    //}
-
-                    //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi){
-                        //// derivative of shapeFunction of element face and direction of gradient 
-                        //// following counterclockwise element numbering
-                        //switch(elementFace){
-                            //case 1: { return -Quad4::dNdXi(xi).row(0); break;}
-                            //case 2: { return -Quad4::dNdXi(xi).row(1); break;}
-                            //case 3: { return Quad4::dNdXi(xi).row(0); break;}
-                            //case 4: { return Quad4::dNdXi(xi).row(1); break;}
-                            //default: {throw std::invalid_argument("Boundary 2: invalid face ID specifed");}
-                        //}
-                    //}
-                //} 
-
-
-                //****************************************************
             } // end of namespace Quad4
             namespace Quad8
             {
@@ -186,17 +137,6 @@ namespace bft{
                     return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
                 }
 
-                //std::array<int,3> getNodesOfFace(int elementFace){
-                    //// create gausspoints in order to use shapefunctions of quad4 element
-                    //switch(elementFace){
-                        //case 1: { return {0, 1, 4};  break;}
-                        //case 2: { return {1, 2, 5};  break;}
-                        //case 3: { return {2, 3, 6};  break;}
-                        //case 4: { return {3, 0, 7};  break;} 
-                        //default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
-                    //}
-                //}
-                //
                 Vector3d getBoundaryElementIndices ( int faceID)
                 {
                     switch(faceID){
@@ -208,18 +148,6 @@ namespace bft{
                     }
                 }
 
-                //Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
-                    //Vector6 truss3IndicesInQuad8;
-                    //switch(elementFace){
-                        //case 1: truss3IndicesInQuad8 <<     0,1,    2,3, [> 4,5,    6,7, */ 8,9/*   10,11,  12,13,   14,15 <]; break;
-                        //case 2: truss3IndicesInQuad8 << [>  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 <]; break;
-                        //case 3: truss3IndicesInQuad8 << [>  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 <]; break;
-                        //case 4: truss3IndicesInQuad8 <<     6,7,[>  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,<] 14,15 ; break;
-                        //default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
-
-                    //}
-                    //return truss3IndicesInQuad8;
-                //}
             } // end of namespace Quad8
             namespace Truss2
             {
@@ -245,31 +173,9 @@ namespace bft{
                     return dNdXi;
                 }
 
-                //Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates)
-                //{
-                    //Vector2d J = Vector2d::Zero();
-
-                    //for(int i = 0; i < nDim; i++)		
-                        //for(int k=0; k<nNodes; k++) 
-                            //J(i) += dNdXi(k) * coordinates(i + k*nDim);
-                    //return J;
-                //}
-
-                //Vector2d TangentialVector(const Vector2d& Jacobian)
-                //{
-                    //return Jacobian / Jacobian.norm();
-                //}
-
-                //Vector2d NormalVector(const Vector2d& Jacobian)
-                //{
-                    //Vector2d n;
-                    //n <<    Jacobian(1), -Jacobian(0); 
-                    //return n / n.norm();
-                //}
             } // end of namespace Truss2
 
 
-            //****************************************************
             namespace Truss3
             {
                 /* 
@@ -300,29 +206,6 @@ namespace bft{
                     return dNdXi;
                 }
 
-                //Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates)
-                //{
-                    //Vector2d J = Vector2d::Zero();
-
-                    //for(int i = 0; i < nDim; i++)		
-                        //for(int k=0; k<nNodes; k++) 
-                            //J(i) += dNdXi(k) * coordinates(i + k*nDim);
-                    //return J;
-                //}
-
-                //Vector2d TangentialVector(const Vector2d& Jacobian)
-                //{
-                    //return Jacobian / Jacobian.norm();
-                //}
-
-                //Vector2d NormalVector(const Vector2d& Jacobian)
-                //{
-                    //Vector2d n;
-                    //n <<    Jacobian(1),
-                      //-Jacobian(0); 
-
-                    //return n / n.norm();
-                //}
             } // end of namespace Truss3
 
             void modifyCharElemLengthAbaqusLike(double& charElemLength, int intPoint){
@@ -342,5 +225,4 @@ namespace bft{
             }
         } // end of namespace Spatial2D 
     } // end of namespace FiniteElement
-    //****************************************************
 } // end of namespace bft

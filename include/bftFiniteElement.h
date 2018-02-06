@@ -79,17 +79,11 @@ namespace bft{
 
                 NSized N(const Ref<const Vector2d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
-                //NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
 
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
 
-                //namespace Boundary2 
-                //{
-                //const Matrix2d gaussPts1d_2(int elementFace);
-                //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
-                //} 
                 Vector2d getBoundaryElementIndices ( int faceID);
             } 
 
@@ -103,8 +97,6 @@ namespace bft{
 
                 NSized N(const Ref<const Vector2d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
-                //std::array<int,3> getNodesOfFace(int elementFace);   
-                //Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
 
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
@@ -122,10 +114,6 @@ namespace bft{
                 NSized N(double  xi);
                 dNdXiSized dNdXi(double xi);
 
-                //Vector2d Jacobian(const dNdXiSized& dNdXi, const Vector4d& coordinates);
-
-                //Vector2d TangentialVector(const Vector2d& Jacobian);
-                //Vector2d NormalVector(const Vector2d& Jacobian);
             }
 
             namespace Truss3
@@ -137,35 +125,8 @@ namespace bft{
                 NSized N(double  xi);
                 dNdXiSized dNdXi(double xi);
 
-                //Vector2d Jacobian(const & dNdXi, const Vector6& coordinates);
-
-                //Vector2d TangentialVector(const Vector2d& Jacobian);
-                //Vector2d NormalVector(const Vector2d& Jacobian);
             }    
         }//end of namespace Spatial2D
-
-        //namespace BoundaryElementFactory{
-            //constexpr double gp2 = 0.577350269189625764509;
-            //constexpr double gp3 = 0.774596669241483;
-
-            //const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
-            //const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
-            //const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
-            //const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
-
-            //VectorXd getBoundaryNodeList(   bft::FiniteElement::ElementShapes shape, const int& elementFace);
-            //MatrixXd getGaussPointList(     bft::FiniteElement::ElementShapes shape);
-            //MatrixXd getNormalVector(       bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
-            //VectorXd getGaussWeights(       bft::FiniteElement::ElementShapes shape);
-            //MatrixXd getNB(                 bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp);
-            //double getIntVol(               bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
-
-
-
-
-            //BoundaryElement createBoundaryElement(ElementShapes parentShape, int nDim, const Ref< const VectorXd>& coordinates);
-
-        //} 
 
         namespace Spatial3D
         {
@@ -225,9 +186,7 @@ namespace bft{
 
         class BoundaryElement{
 
-            /* Boundary Element, 
-             *
-             *
+            /* Boundary element, for instance for distributed surface loads
              * */
 
             struct BoundaryElementGaussPt{
@@ -243,7 +202,7 @@ namespace bft{
 
             const int            nDim;
 
-            ElementShapes           shape;
+            ElementShapes           boundaryShape;
             int                     nNodes;
             int                     nParentCoordinates;
 
@@ -251,7 +210,6 @@ namespace bft{
 
             VectorXd boundaryIndicesInParentNodes;
             VectorXd boundaryIndicesInParentCoordinates;
-
             VectorXd coordinates;
 
             public:
@@ -362,8 +320,7 @@ namespace bft{
             const Matrix<double, 3*3*3, nDim> gaussPtList3x3x3 = (Matrix<double, 3*3*3, nDim>() <<  
                     -gp3,  -gp3, -gp3,
                     0,     -gp3, -gp3,
-                    +gp3,  -gp3, -gp3,
-                    -gp3,  0,    -gp3,
+                    +gp3,  -gp3, -gp3, -gp3,  0,    -gp3,
                     0,     0,    -gp3,
                     gp3,   0,    -gp3,
                     -gp3,  +gp3, -gp3,

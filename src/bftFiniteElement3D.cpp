@@ -2,9 +2,8 @@
 #include "bftTypedefs.h"
 #include <iostream>
 
-namespace bft{
-
-    //****************************************************
+namespace bft
+{
     namespace FiniteElement
     {
         namespace Spatial3D
@@ -95,12 +94,12 @@ namespace bft{
                 Vector4d getBoundaryElementIndices ( int faceID)
                 {
                     switch(faceID){
-                        case 1: {return (Vector4d() << 0,1,2,3).finished();}
+                        case 1: {return (Vector4d() << 3,2,1,0).finished();}
                         case 2: {return (Vector4d() << 4,5,6,7).finished();}
                         case 3: {return (Vector4d() << 0,1,5,4).finished();}
-                        case 4: {return (Vector4d() << 1,2,6,5).finished();}
-                        case 5: {return (Vector4d() << 2,3,7,6).finished();}
-                        case 6: {return (Vector4d() << 3,0,4,7).finished();}
+                        case 4: {return (Vector4d() << 6,5,1,2).finished();}
+                        case 5: {return (Vector4d() << 7,6,2,3).finished();}
+                        case 6: {return (Vector4d() << 4,7,3,0).finished();}
                         default: {throw std::invalid_argument("Hexa8: invalid face ID specifed");}
                     }
                 }

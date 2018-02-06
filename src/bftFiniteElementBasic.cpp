@@ -92,6 +92,11 @@ namespace bft{
                                                 else
                                                     return MatrixXd::Zero(1,1);}
 
+                case(ElementShapes::Truss3): {   if(integrationType == IntegrationTypes::FullIntegration)
+                                                    return Spatial1D::gaussPtList3;
+                                                else
+                                                    return Spatial1D::gaussPtList2;}
+
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
                                                     return Spatial2D::gaussPtList2x2;
                                                 else
@@ -124,6 +129,12 @@ namespace bft{
                                                     return Spatial1D::gaussPtList2Weights;
                                                 else
                                                     return MatrixXd::Ones(1,1) * 2;}
+
+                case(ElementShapes::Truss3): {   if(integrationType == IntegrationTypes::FullIntegration)
+                                                    return Spatial1D::gaussPtList3Weights;
+                                                else
+                                                    return Spatial1D::gaussPtList2Weights;}
+
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
                                                     return Spatial2D::gaussPtList2x2Weights;
                                                 else

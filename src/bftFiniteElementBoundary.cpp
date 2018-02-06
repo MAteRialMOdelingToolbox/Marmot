@@ -7,37 +7,30 @@ namespace bft{
         BoundaryElement::BoundaryElement (
                 ElementShapes parentShape,
                 int parentFaceNumber, 
-                //int parentFaceID,
                 int nDim, 
                 const Ref<const VectorXd>& parentCoordinates
-                //const Ref<const MatrixXd>& gaussPointList,
-                //const Ref<const VectorXd>& gaussPointWeights
                 ):
-            //shape(shape),
             nDim(nDim)
-            //coordinates( coordinates )
         {
-            // compute for each gaussPt the
-            // - dNdXi
-            // - Jacobian pp(x,xi)
-            // - normalVector
-            // - integrationArea 
-            //
-            //ElementShapes shape;
-
+            //get boundary shape dependent on parental shape 
             switch (parentShape)
             {
-                case Quad4: {   shape = Truss2; 
+                /* 
+                 * Extend for future elements here ... (scroll down) .. 
+                 *
+                 * */
+
+                case Quad4: {   boundaryShape = Truss2; 
                                 nNodes = bft::FiniteElement::Spatial2D::Truss2::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
 
-                case Quad8: {   shape = Truss3; 
+                case Quad8: {   boundaryShape = Truss3; 
                                 nNodes = bft::FiniteElement::Spatial2D::Truss3::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
-                case Hexa8: {   shape = Hexa8; 
-                                nNodes = bft::FiniteElement::Spatial3D::Hexa8::nNodes;
+                case Hexa8: {   boundaryShape =  Quad4; 
+                                nNodes = bft::FiniteElement::Spatial2D::Quad4::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa8::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
 
@@ -45,52 +38,52 @@ namespace bft{
 
             }
 
+            // get the 'condensed' boundary element coordinates
             nParentCoordinates =                    parentCoordinates.size();
             boundaryIndicesInParentCoordinates =    expandNodeIndicesToCoordinateIndices ( boundaryIndicesInParentNodes, nDim );
+            coordinates =                           condenseParentToBoundaryVector ( parentCoordinates );
 
+            // get the proper gausspoints for the boundary element
+            MatrixXd gaussPointList =       NumIntegration::getGaussPointList( boundaryShape , NumIntegration::IntegrationTypes::FullIntegration);
+            VectorXd gaussPointWeights =    NumIntegration::getGaussWeights( boundaryShape , NumIntegration::IntegrationTypes::FullIntegration);
 
-            coordinates =                   condenseParentToBoundaryVector ( parentCoordinates );
-            MatrixXd gaussPointList =       NumIntegration::getGaussPointList( shape , NumIntegration::IntegrationTypes::FullIntegration);
-            VectorXd gaussPointWeights =    NumIntegration::getGaussWeights( shape , NumIntegration::IntegrationTypes::FullIntegration);
-
+            // compute for each gaussPt the
+            // - dNdXi
+            // - Jacobian pp(x,xi)
+            // - normalVector
+            // - integrationArea 
             for(int i = 0; i < gaussPointList.rows(); i++){
 
                 const VectorXd& xi = gaussPointList.row(i);
 
-
-                //std::cout << " gpt " << i << xi.transpose() << std::endl;
-
                 BoundaryElementGaussPt gpt ;
                 gpt.xi = xi;
                 gpt.weight = gaussPointWeights(i);
-
+    
+                // N
                 // dNdXi
-                switch ( shape  ) 
+                switch ( boundaryShape ) 
                 {
+                    /* 
+                     * ... and extend for future elements here!
+                     *
+                     * */
                     case Truss2: {  gpt.N = Spatial2D::Truss2::N ( xi(0 ) ); 
                                      gpt.dNdXi = Spatial2D::Truss2::dNdXi( xi(0) ); 
                                      break;}
                     case Truss3: {  gpt.N = Spatial2D::Truss3::N ( xi(0) ); 
                                      gpt.dNdXi = Spatial2D::Truss3::dNdXi( xi(0) ); 
                                      break;}
-                    case Quad4: {   gpt.N =     Spatial2D::Quad4::N ( xi.head(2) ); 
-                                    gpt.dNdXi = Spatial2D::Quad4::dNdXi( xi.head(2) ); 
+                    case Quad4: {  
+                                    gpt.N =     Spatial2D::Quad4::N ( Ref<const Vector2d> ( xi ) ); 
+                                    gpt.dNdXi = Spatial2D::Quad4::dNdXi( Ref<const Vector2d> ( xi ) ); 
                                     break;}
+
                     default: break; // exception handling already in first switch
                 }
             
-                //std::cout << "N"  <<gpt.N.transpose() << std::endl;
-                //std::cout << "dNdXi" << gpt.dNdXi.transpose() << std::endl;
-                //// Jacobian
-                //std::cout << "coordSParent" << coordinates.transpose() << std::endl;
-                //std::cout << "coordS" << parentCoordinates.transpose() << std::endl;
-                //std::cout << "indicees" << boundaryIndicesInParentNodes.transpose() << std::endl;
-                //std::cout << "indices2" << boundaryIndicesInParentCoordinates.transpose() << std::endl;
-                //std::cout << "nDim " << nDim << std::endl;
-                //std::cout << "nNodes" << nNodes<< std::endl;
+                // Jacobian
                 gpt.J = Jacobian(gpt.dNdXi, coordinates); 
-
-                //std::cout << "J" << gpt.J << std::endl;
 
                 // normalVector and integration area
                 if(nDim == 2)
@@ -106,12 +99,9 @@ namespace bft{
                     // cross product
                     typedef Eigen::Ref<const Vector3d> vector3_cr;
                     Vector3d n  = vector3_cr ( gpt.J.col(0)) .cross ( vector3_cr( gpt.J.col(1)) );
-                    gpt.integrationArea = gpt.normalVector.norm();
+                    gpt.integrationArea = n.norm();
                     gpt.normalVector = n / gpt.integrationArea;
                 }
-
-                //std::cout << "n" <<  gpt.normalVector.transpose() << std::endl;
-                //std::cout << "intA" << gpt.integrationArea << std::endl;
 
                 gaussPts.push_back ( std::move (gpt) );
             }
@@ -120,6 +110,11 @@ namespace bft{
 
         VectorXd BoundaryElement::computeNormalLoadVector()
         {
+            /* compute the load vector for a constant distributed load (e.g. pressure) 
+             * Attention: result =  boundary-element-sized! 
+             *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector 
+             * */
+
             VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
             for(size_t i = 0; i < gaussPts.size(); i++){
@@ -132,6 +127,9 @@ namespace bft{
 
         VectorXd BoundaryElement::condenseParentToBoundaryVector(const Ref<const VectorXd>& parentVector)
         {
+            /*  condense any parent vector to the corresponding boundary child vector (e.g. coordinates)
+             *  dependent on the underlying indices mapping
+             * */
             VectorXd boundaryVector( nNodes * nDim );
 
             for(int i = 0; i < boundaryIndicesInParentCoordinates.size(); i++)
@@ -142,7 +140,10 @@ namespace bft{
         }
 
         VectorXd BoundaryElement::expandBoundaryToParentVector(const Ref<const VectorXd>& boundaryVector)
-        {
+        {   
+            /* expand any boundary vector (e.g. pressure load) to the corresponding parental vector
+             * */
+
             VectorXd parentVector ( nParentCoordinates  );
             parentVector.setZero();
 
