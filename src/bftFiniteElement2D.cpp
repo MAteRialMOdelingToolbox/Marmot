@@ -41,16 +41,27 @@ namespace bft{
 
                     return result;}
 
-                NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
-                    NSized truss2IndicesInQuad4;
-                    switch(elementFace){
-                        case 1: truss2IndicesInQuad4 <<     0,1,    2,3 /*  4,5,    6,7,*/  ; break;
-                        case 2: truss2IndicesInQuad4 << /*  0,1,*/  2,3,    4,5/*,  6,7,*/  ; break;
-                        case 3: truss2IndicesInQuad4 << /*  0,1,    2,3,  */4,5,    6,7     ; break;
-                        case 4: truss2IndicesInQuad4 <<     6,7,/*  2,3,    4,5, */ 0,1     ; break;
+                Vector2d getBoundaryElementIndices ( int faceID)
+                {
+                    switch(faceID){
+                        case 1: {return (Vector2d() << 0,1).finished();}
+                        case 2: {return (Vector2d() << 1,2).finished();}
+                        case 3: {return (Vector2d() << 2,3).finished();}
+                        case 4: {return (Vector2d() << 3,0).finished();}
+                        default: {throw std::invalid_argument("Quad4: invalid face ID specifed");}
                     }
-                    return truss2IndicesInQuad4;
                 }
+
+                //NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
+                    //NSized truss2IndicesInQuad4;
+                    //switch(elementFace){
+                        //case 1: truss2IndicesInQuad4 <<     0,1,    2,3 [>  4,5,    6,7,<]  ; break;
+                        //case 2: truss2IndicesInQuad4 << [>  0,1,*/  2,3,    4,5/*,  6,7,<]  ; break;
+                        //case 3: truss2IndicesInQuad4 << [>  0,1,    2,3,  <]4,5,    6,7     ; break;
+                        //case 4: truss2IndicesInQuad4 <<     6,7,[>  2,3,    4,5, <] 0,1     ; break;
+                    //}
+                    //return truss2IndicesInQuad4;
+                //}
 
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Vector8d>& coordinates)
                 {
@@ -175,29 +186,40 @@ namespace bft{
                     return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
                 }
 
-                std::array<int,3> getNodesOfFace(int elementFace){
-                    // create gausspoints in order to use shapefunctions of quad4 element
-                    switch(elementFace){
-                        case 1: { return {0, 1, 4};  break;}
-                        case 2: { return {1, 2, 5};  break;}
-                        case 3: { return {2, 3, 6};  break;}
-                        case 4: { return {3, 0, 7};  break;} 
+                //std::array<int,3> getNodesOfFace(int elementFace){
+                    //// create gausspoints in order to use shapefunctions of quad4 element
+                    //switch(elementFace){
+                        //case 1: { return {0, 1, 4};  break;}
+                        //case 2: { return {1, 2, 5};  break;}
+                        //case 3: { return {2, 3, 6};  break;}
+                        //case 4: { return {3, 0, 7};  break;} 
+                        //default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
+                    //}
+                //}
+                //
+                Vector3d getBoundaryElementIndices ( int faceID)
+                {
+                    switch(faceID){
+                        case 1: {return (Vector3d() << 0,1,4).finished();}
+                        case 2: {return (Vector3d() << 1,2,5).finished();}
+                        case 3: {return (Vector3d() << 2,3,6).finished();}
+                        case 4: {return (Vector3d() << 3,0,7).finished();}
                         default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
                     }
                 }
 
-                Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
-                    Vector6 truss3IndicesInQuad8;
-                    switch(elementFace){
-                        case 1: truss3IndicesInQuad8 <<     0,1,    2,3, /* 4,5,    6,7, */ 8,9/*   10,11,  12,13,   14,15 */; break;
-                        case 2: truss3IndicesInQuad8 << /*  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 */; break;
-                        case 3: truss3IndicesInQuad8 << /*  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 */; break;
-                        case 4: truss3IndicesInQuad8 <<     6,7,/*  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,*/ 14,15 ; break;
-                        default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
+                //Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace){
+                    //Vector6 truss3IndicesInQuad8;
+                    //switch(elementFace){
+                        //case 1: truss3IndicesInQuad8 <<     0,1,    2,3, [> 4,5,    6,7, */ 8,9/*   10,11,  12,13,   14,15 <]; break;
+                        //case 2: truss3IndicesInQuad8 << [>  0,1,*/  2,3,    4,5/*,  6,7,    8,9*/,  10,11/*,12,13,   14,15 <]; break;
+                        //case 3: truss3IndicesInQuad8 << [>  0,1,    2,3,  */4,5,    6,7,/*, 8,9     10,11,*/12,13/*, 14,15 <]; break;
+                        //case 4: truss3IndicesInQuad8 <<     6,7,[>  2,3,    4,5, */ 0,1,/*  8,9     10,11,  12,13,<] 14,15 ; break;
+                        //default: {throw std::invalid_argument("Quad8: invalid face ID specifed");}
 
-                    }
-                    return truss3IndicesInQuad8;
-                }
+                    //}
+                    //return truss3IndicesInQuad8;
+                //}
             } // end of namespace Quad8
             namespace Truss2
             {
@@ -208,42 +230,42 @@ namespace bft{
                  *     -1    0     1
                  */
 
-                Vector2d N(double  xi)
+                NSized N(double  xi)
                 {
-                    Vector2d N;
+                    NSized N;
                     N <<    (1-xi) * 0.5,
                       (1+xi) * 0.5;
                     return N;
                 }
 
-                Vector2d dNdXi(double xi)
+                dNdXiSized dNdXi(double xi)
                 {
-                    Vector2d dNdXi;
+                    dNdXiSized dNdXi;
                     dNdXi << -0.5, 0.5;  
                     return dNdXi;
                 }
 
-                Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates)
-                {
-                    Vector2d J = Vector2d::Zero();
+                //Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates)
+                //{
+                    //Vector2d J = Vector2d::Zero();
 
-                    for(int i = 0; i < nDim; i++)		
-                        for(int k=0; k<nNodes; k++) 
-                            J(i) += dNdXi(k) * coordinates(i + k*nDim);
-                    return J;
-                }
+                    //for(int i = 0; i < nDim; i++)		
+                        //for(int k=0; k<nNodes; k++) 
+                            //J(i) += dNdXi(k) * coordinates(i + k*nDim);
+                    //return J;
+                //}
 
-                Vector2d TangentialVector(const Vector2d& Jacobian)
-                {
-                    return Jacobian / Jacobian.norm();
-                }
+                //Vector2d TangentialVector(const Vector2d& Jacobian)
+                //{
+                    //return Jacobian / Jacobian.norm();
+                //}
 
-                Vector2d NormalVector(const Vector2d& Jacobian)
-                {
-                    Vector2d n;
-                    n <<    Jacobian(1), -Jacobian(0); 
-                    return n / n.norm();
-                }
+                //Vector2d NormalVector(const Vector2d& Jacobian)
+                //{
+                    //Vector2d n;
+                    //n <<    Jacobian(1), -Jacobian(0); 
+                    //return n / n.norm();
+                //}
             } // end of namespace Truss2
 
 
@@ -259,18 +281,18 @@ namespace bft{
                  * 
                  * */
 
-                Vector3d N(double  xi)
+                NSized N(double  xi)
                 {
-                    Vector3d N;
+                    NSized N;
                     N << (xi - 1 ) * xi / 2,
                       (xi + 1 ) * xi / 2,
                       (1 - xi*xi );
                     return N;
                 }
 
-                Vector3d dNdXi(double xi)
+                dNdXiSized dNdXi(double xi)
                 {
-                    Vector3d dNdXi;
+                    dNdXiSized dNdXi;
                     dNdXi <<    xi - 0.5, 
                           xi + 0.5,
                           -2*xi;
@@ -278,15 +300,15 @@ namespace bft{
                     return dNdXi;
                 }
 
-                Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates)
-                {
-                    Vector2d J = Vector2d::Zero();
+                //Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates)
+                //{
+                    //Vector2d J = Vector2d::Zero();
 
-                    for(int i = 0; i < nDim; i++)		
-                        for(int k=0; k<nNodes; k++) 
-                            J(i) += dNdXi(k) * coordinates(i + k*nDim);
-                    return J;
-                }
+                    //for(int i = 0; i < nDim; i++)		
+                        //for(int k=0; k<nNodes; k++) 
+                            //J(i) += dNdXi(k) * coordinates(i + k*nDim);
+                    //return J;
+                //}
 
                 //Vector2d TangentialVector(const Vector2d& Jacobian)
                 //{

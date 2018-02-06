@@ -64,95 +64,20 @@ namespace bft{
             for(int i = 0; i < nDimX; i++)		// loop over global dimensions
                 for(int j=0; j < nDimXi; j++)		// loop over local dimensions
                     for(int k=0; k<nNodes; k++) // Loop over nodes
-                        J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDimX);
+                        J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDimX); 
             return J_;
         }
 
-        namespace BoundaryElementFactory{
-
-            using bft::FiniteElement::ElementShapes;
-
-            VectorXd getBoundaryNodeList(bft::FiniteElement::ElementShapes shape, const int& elementFace){
-                switch(shape)
-                {
-                    case(ElementShapes::Quad4):  { using namespace FiniteElement::Spatial2D::Quad4;
-                                                     return get2DCoordinateIndicesOfBoundaryTruss(elementFace); }
-                    case(ElementShapes::Quad8):  { using namespace FiniteElement::Spatial2D::Quad8;
-                                                     return get2DCoordinateIndicesOfBoundaryTruss(elementFace); } 
-                    default: {throw std::invalid_argument("NodeIdxList: Invalid shape combination for boundary element");}
-                }
-            }
-
-            MatrixXd getNormalVector(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords,  const Ref<const VectorXd>& gp){
-                switch(shape)
-                {
-                    case(ElementShapes::Quad4): { using namespace FiniteElement::Spatial2D::Truss2;
-                                                    return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
-                    case(ElementShapes::Quad8): { using namespace FiniteElement::Spatial2D::Truss3; 
-                                                    return NormalVector(Jacobian(dNdXi(gp(0)), coords)); }
-
-                    case(ElementShapes::Hexa8): {  MatrixXd J = Jacobian(FiniteElement::Spatial2D::Quad4::dNdXi(  gp.head(2)  ), coords);
-                                                    const Vector3d n = J.col(0).cross ( J.col(1) ) ;
-                                                    return n/ n.norm(); } 
-                    default: {throw std::invalid_argument("Jacobian: Invalid shape combination for boundary element");}
-                }
-            }
-
-            MatrixXd getBoundaryElementGaussPointList(bft::FiniteElement::ElementShapes parentShape)
-            {
-                switch(parentShape)
-                {
-                    case(ElementShapes::Quad4): {  return NumIntegration::Spatial1D::gaussPtList2; }
-                    case(ElementShapes::Quad8): {  return NumIntegration::Spatial1D::gaussPtList3; } 
-                    case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2; } 
-                    default: {throw std::invalid_argument("Gausspoints: Invalid shape/integrationType combination boundary eement");}
-                }
-            }
-
-            VectorXd getBoundaryElementGaussWeights(bft::FiniteElement::ElementShapes parentShape)
-            {
-                switch(parentShape)
-                {
-                    case(ElementShapes::Quad4): {  return NumIntegration::Spatial1D::gaussPtList2Weights; }
-                    case(ElementShapes::Quad8): {  return NumIntegration::Spatial1D::gaussPtList3Weights; } 
-                    case(ElementShapes::Hexa8): {  return NumIntegration::Spatial2D::gaussPtList2x2Weights; } 
-                    default: {throw std::invalid_argument("Boundary element: invalid gauss weights");}
-                }
-            }
-
-            MatrixXd getBoundaryElementNB(bft::FiniteElement::ElementShapes parentShape, const Ref<const VectorXd>& gp)
-            {
-                using namespace bft::FiniteElement;
-                switch(parentShape)
-                {
-                    case(ElementShapes::Quad4): {  return NB( Spatial2D::Truss2::N(gp(0)), 2); } // gp(0): Eigen->double?
-                    case(ElementShapes::Quad8): {  return NB( Spatial2D::Truss3::N(gp(0)), 2); } 
-
-                    case(ElementShapes::Hexa8): {  return NB( Spatial2D::Quad4::N( gp.head(2) ), 3); } 
-                    default: {throw std::invalid_argument("Boundary element: invalid NB shape");}
-                }
-            }
-
-            double getIntVol(bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp)
-            {
-                switch(shape)
-                {
-                    case(ElementShapes::Quad4): {  using namespace bft::FiniteElement::Spatial2D::Truss2; 
-                                                    return Jacobian(dNdXi(gp(0)), coords).norm(); }
-                    case(ElementShapes::Quad8): {  using namespace bft::FiniteElement::Spatial2D::Truss3; 
-                                                    return Jacobian(dNdXi(gp(0)), coords).norm(); } 
-
-                    case(ElementShapes::Hexa8): {  //using namespace bft::FiniteElement::Spatial3D::Quad4; 
-                                                    MatrixXd J = Jacobian(FiniteElement::Spatial2D::Quad4::dNdXi(  gp.head(2)  ), coords);
-
-                                                    const Vector3d n = J.col(0).cross ( J.col(1) ) ;
-
-                                                    return n.norm(); } 
-
-                    default: {throw std::invalid_argument("Boundary element: invalid integration volume");}
-                }
-            }
-        }// end of namespace BoundaryElementFactory
+        VectorXd expandNodeIndicesToCoordinateIndices( VectorXd nodeIndices, int nDim)
+        {
+            VectorXd indices ( nDim * nodeIndices.size() );
+           
+            for (int i = 0; i < nodeIndices.size(); i++)
+                for (int k = 0; k < nDim; k++)
+                    indices ( (i*nDim) + k ) = ( nodeIndices( i ) * nDim )  + k ;
+            
+            return indices;
+        }
     }
 
     namespace NumIntegration
@@ -162,6 +87,11 @@ namespace bft{
             using bft::FiniteElement::ElementShapes;
             switch(shape)
             {
+                case(ElementShapes::Truss2): {   if(integrationType == IntegrationTypes::FullIntegration)
+                                                    return Spatial1D::gaussPtList2;
+                                                else
+                                                    return MatrixXd::Zero(1,1);}
+
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
                                                     return Spatial2D::gaussPtList2x2;
                                                 else
@@ -190,6 +120,10 @@ namespace bft{
             using bft::FiniteElement::ElementShapes;
             switch(shape)
             {
+                case(ElementShapes::Truss2): {   if(integrationType == IntegrationTypes::FullIntegration)
+                                                    return Spatial1D::gaussPtList2Weights;
+                                                else
+                                                    return MatrixXd::Ones(1,1) * 2;}
                 case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
                                                     return Spatial2D::gaussPtList2x2Weights;
                                                 else

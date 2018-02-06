@@ -1,13 +1,15 @@
 #pragma once 
 #include <array>
+#include <vector>
 #include "bftTypedefs.h"
-
 
 namespace bft{
 
-	namespace FiniteElement
+    namespace FiniteElement
     {
         enum ElementShapes{
+            Truss2,
+            Truss3,
             Quad4,
             Quad8,
             Hexa8,
@@ -36,16 +38,19 @@ namespace bft{
 
         template <int nDim, int nNodes> 
             Matrix<double, nDim, nDim> Jacobian(const Matrix<double, nDim, nNodes>&         dNdXi, 
-                                                const Matrix<double, nDim * nNodes, 1>&     coordinates)
-        {
-            // Alternative Templated version of Jacobian for compile time known sizes
+                    const Matrix<double, nDim * nNodes, 1>&     coordinates)
+            {
+                // Alternative Templated version of Jacobian for compile time known sizes
                 Matrix<double, nDim, nDim> J_ = Matrix<double, nDim, nDim>::Zero();
                 for(int i = 0; i < nDim; i++)		// loop over global dimensions
                     for(int j=0; j < nDim; j++)		// loop over local dimensions
                         for(int k=0; k<nNodes; k++) // Loop over nodes
                             J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDim);
                 return J_;
-        }
+            }
+
+        VectorXd expandNodeIndicesToCoordinateIndices( VectorXd nodeIndices, int nDim);
+
 
         namespace Spatial2D
         {
@@ -63,7 +68,7 @@ namespace bft{
                         B_(2, 2*i +1) =     dNdX(0, i);}  
                     return B_;
                 }
-            
+
             namespace Quad4
             {
                 constexpr int nNodes = 4;
@@ -74,19 +79,20 @@ namespace bft{
 
                 NSized N(const Ref<const Vector2d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
-                NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
-              
+                //NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
 
                 //namespace Boundary2 
                 //{
-                    //const Matrix2d gaussPts1d_2(int elementFace);
-                    //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
+                //const Matrix2d gaussPts1d_2(int elementFace);
+                //NSized dNdXi(int elementFace, const Ref<const Vector2d>& xi);
                 //} 
+                Vector2d getBoundaryElementIndices ( int faceID);
             } 
-            
+
             namespace Quad8
             {
                 constexpr int nNodes = 8;
@@ -94,60 +100,72 @@ namespace bft{
                 typedef Matrix<double, 1,       nNodes>         NSized;
                 typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
                 typedef Matrix<double, 3, nNodes * nDim>        BSized;
-                
+
                 NSized N(const Ref<const Vector2d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
-                std::array<int,3> getNodesOfFace(int elementFace);   
-                Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
+                //std::array<int,3> getNodesOfFace(int elementFace);   
+                //Vector6 get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
 
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
+
+                Vector3d getBoundaryElementIndices ( int faceID);
             } 
-            
+
             namespace Truss2
             {
                 constexpr int nNodes = 2;
-                
-                Vector2d N(double  xi);
-                Vector2d dNdXi(double xi);
-                
-                Vector2d Jacobian(const Vector2d& dNdXi, const Vector4d& coordinates);
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
 
-                Vector2d TangentialVector(const Vector2d& Jacobian);
-                Vector2d NormalVector(const Vector2d& Jacobian);
+                NSized N(double  xi);
+                dNdXiSized dNdXi(double xi);
+
+                //Vector2d Jacobian(const dNdXiSized& dNdXi, const Vector4d& coordinates);
+
+                //Vector2d TangentialVector(const Vector2d& Jacobian);
+                //Vector2d NormalVector(const Vector2d& Jacobian);
             }
-            
+
             namespace Truss3
             {
                 constexpr int nNodes = 3;
-                
-                Vector3d N(double  xi);
-                Vector3d dNdXi(double xi);
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
 
-                Vector2d Jacobian(const Vector3d& dNdXi, const Vector6& coordinates);
+                NSized N(double  xi);
+                dNdXiSized dNdXi(double xi);
 
-                Vector2d TangentialVector(const Vector2d& Jacobian);
-                Vector2d NormalVector(const Vector2d& Jacobian);
+                //Vector2d Jacobian(const & dNdXi, const Vector6& coordinates);
+
+                //Vector2d TangentialVector(const Vector2d& Jacobian);
+                //Vector2d NormalVector(const Vector2d& Jacobian);
             }    
         }//end of namespace Spatial2D
-        
-        namespace BoundaryElementFactory{
+
+        //namespace BoundaryElementFactory{
             //constexpr double gp2 = 0.577350269189625764509;
             //constexpr double gp3 = 0.774596669241483;
-            
+
             //const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
             //const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
             //const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
             //const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
 
-            VectorXd getBoundaryNodeList(   bft::FiniteElement::ElementShapes shape, const int& elementFace);
-            MatrixXd getGaussPointList(     bft::FiniteElement::ElementShapes shape);
-            MatrixXd getNormalVector(       bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
-            VectorXd getGaussWeights(       bft::FiniteElement::ElementShapes shape);
-            MatrixXd getNB(                 bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp);
-            double getIntVol(               bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
-        } 
+            //VectorXd getBoundaryNodeList(   bft::FiniteElement::ElementShapes shape, const int& elementFace);
+            //MatrixXd getGaussPointList(     bft::FiniteElement::ElementShapes shape);
+            //MatrixXd getNormalVector(       bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
+            //VectorXd getGaussWeights(       bft::FiniteElement::ElementShapes shape);
+            //MatrixXd getNB(                 bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& gp);
+            //double getIntVol(               bft::FiniteElement::ElementShapes shape, const Ref<const VectorXd>& coords, const Ref<const VectorXd>& gp);
+
+
+
+
+            //BoundaryElement createBoundaryElement(ElementShapes parentShape, int nDim, const Ref< const VectorXd>& coordinates);
+
+        //} 
 
         namespace Spatial3D
         {
@@ -172,25 +190,6 @@ namespace bft{
                     return B_;
                 }
 
-            //namespace Quad4
-            //{
-                //constexpr int nNodes = 4;
-                //constexpr int nXi    = 2;
-
-                //typedef Matrix<double, 1,   nNodes>         NSized;
-                //typedef Matrix<double, nXi, nNodes>            dNdXiSized;
-                ////typedef Matrix<double, voigtLength, nNodes * nDim>        BSized;
-
-                //NSized N(const Ref<const Vector2d>& xi);           
-                //dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
-                ////NSized get2DCoordinateIndicesOfBoundaryTruss(int elementFace);
-              
-                //// convenience functions; they are wrappers to the corresponding template functions
-                //Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
-                ////BSized B(const Ref<const dNdXiSized>& dNdXi);
-
-            //} 
- 
             namespace Hexa8
             {
                 constexpr int nNodes = 8;
@@ -200,10 +199,12 @@ namespace bft{
 
                 NSized N(const Ref<const Vector3d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
-               
+
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
+
+                Vector4d getBoundaryElementIndices ( int faceID );
             }
 
             namespace Hexa20
@@ -215,12 +216,57 @@ namespace bft{
 
                 NSized N(const Ref<const Vector3d>& xi);           
                 dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
-               
+
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
             }
-        }
+        } // End Spatial3D
+
+        class BoundaryElement{
+
+            /* Boundary Element, 
+             *
+             *
+             * */
+
+            struct BoundaryElementGaussPt{
+                double weight;
+                VectorXd xi ;
+                VectorXd N;
+                MatrixXd dNdXi;
+                MatrixXd J;
+
+                VectorXd normalVector;
+                double integrationArea;
+            };
+
+            const int            nDim;
+
+            ElementShapes           shape;
+            int                     nNodes;
+            int                     nParentCoordinates;
+
+            std::vector < BoundaryElementGaussPt>  gaussPts;
+
+            VectorXd boundaryIndicesInParentNodes;
+            VectorXd boundaryIndicesInParentCoordinates;
+
+            VectorXd coordinates;
+
+            public:
+
+            BoundaryElement (ElementShapes parentShape, 
+                            int nDim, 
+                            int parentFaceNumber,
+                            const Ref<const VectorXd>& parentCoordinates
+                            );
+
+            VectorXd computeNormalLoadVector ();
+            VectorXd condenseParentToBoundaryVector(const Ref<const VectorXd>& parentVector);
+            VectorXd expandBoundaryToParentVector(const Ref<const VectorXd>& boundaryVector);
+
+        };
     }
 
     namespace NumIntegration
@@ -243,14 +289,15 @@ namespace bft{
 
             constexpr double gp2 = 0.577350269189625764509;
             constexpr double gp3 = 0.774596669241483;
-            
+
             const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
             const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
+
             const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
             const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
 
         }
-        
+
         namespace Spatial2D
         { 
             constexpr int nDim = 2;
@@ -295,19 +342,19 @@ namespace bft{
             const RowVector3d gaussPtList1x1x1 = RowVector3d::Zero();
             const Matrix<double, 1, 1> gaussPtList1x1x1Weights = 
                 (Matrix<double, 1, 1>() << 
-                8.0
+                 8.0
                 ).finished();
 
             const Matrix<double, 8, nDim> gaussPtList2x2x2 = (
-            Matrix<double, 8, nDim>() <<  
-               -gp2,    -gp2,     -gp2,
-               +gp2,    -gp2,     -gp2,
-               +gp2,    +gp2,     -gp2,
-               -gp2,    +gp2,     -gp2,
-               -gp2,    -gp2,     +gp2,
-               +gp2,    -gp2,     +gp2,
-               +gp2,    +gp2,     +gp2,
-               -gp2,    +gp2,     +gp2).finished();
+                    Matrix<double, 8, nDim>() <<  
+                    -gp2,    -gp2,     -gp2,
+                    +gp2,    -gp2,     -gp2,
+                    +gp2,    +gp2,     -gp2,
+                    -gp2,    +gp2,     -gp2,
+                    -gp2,    -gp2,     +gp2,
+                    +gp2,    -gp2,     +gp2,
+                    +gp2,    +gp2,     +gp2,
+                    -gp2,    +gp2,     +gp2).finished();
 
             const Matrix<double, 8,1>   gaussPtList2x2x2Weights = (Matrix<double,8,1>() <<   
                     1,1,1,1,1,1,1,1).finished();
@@ -343,7 +390,7 @@ namespace bft{
                     0,     +gp3, +gp3,
                     +gp3,  +gp3, +gp3
 
-                    ).finished();
+                        ).finished();
 
             const Matrix<double, 3*3*3,1>   gaussPtList3x3x3Weights = (Matrix<double,3*3*3,1>() <<   
                     0.171467764060357,  0.274348422496571,  0.171467764060357,
