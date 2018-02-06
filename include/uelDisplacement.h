@@ -315,12 +315,12 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
 
     Map<RhsSized> fU(P);
 
-    using namespace bft::FiniteElement::BoundaryElementFactory;
-    VectorXd boundaryCoordIndices = getBoundaryNodeList(this->shape, elementFace);
+    //using namespace bft::FiniteElement::BoundaryElementFactory;
+    //VectorXd boundaryCoordIndices = getBoundaryNodeList(this->shape, elementFace);
     
-    VectorXd boundaryCoordinates(boundaryCoordIndices.size());
-    for(int i = 0; i < boundaryCoordIndices.size(); i++)
-        boundaryCoordinates(i) = this->coordinates( boundaryCoordIndices(i) );
+    //VectorXd boundaryCoordinates(boundaryCoordIndices.size());
+    //for(int i = 0; i < boundaryCoordIndices.size(); i++)
+        //boundaryCoordinates(i) = this->coordinates( boundaryCoordIndices(i) );
 
     switch(loadType){
 
@@ -330,20 +330,30 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
             if (std::abs(p)<bft::Constants::numZeroPos)
                 return;
 
-            VectorXd Pk = VectorXd::Zero(boundaryCoordIndices.size());
-            MatrixXd gp =       getGaussPointList(this->shape); 
-            VectorXd gpWeight = getGaussWeights(this->shape);  
+            bft::FiniteElement::BoundaryElement boundaryEl(this->shape, 
+                            elementFace,
+                            nDim, 
+                            this->coordinates);
 
-            for(int i=0; i<gp.rows(); i++){
-                MatrixXd xi = gp.row(i);        // necessary matrix mapping, as factory return type of gauss points is a matrix (with regard to future 3d elements) 
-                VectorXd tractionVec = -p * getNormalVector(this->shape, boundaryCoordinates, xi);
-                Pk += getIntVol(this->shape, boundaryCoordinates, xi)  * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
+            VectorXd Pk =  boundaryEl.expandBoundaryToParentVector(  boundaryEl.computeNormalLoadVector() * p  );
+            //std::cout << Pk.transpose() << std::endl;
+
+            fU+= Pk;
+
+            //VectorXd Pk = VectorXd::Zero(boundaryCoordIndices.size());
+            //MatrixXd gp =       getGaussPointList(this->shape); 
+            //VectorXd gpWeight = getGaussWeights(this->shape);  
+
+            //for(int i=0; i<gp.rows(); i++){
+                //MatrixXd xi = gp.row(i);        // necessary matrix mapping, as factory return type of gauss points is a matrix (with regard to future 3d elements) 
+                //VectorXd tractionVec = -p * getNormalVector(this->shape, boundaryCoordinates, xi);
+                //Pk += getIntVol(this->shape, boundaryCoordinates, xi)  * gpWeight.row(i) * tractionVec.transpose() * getNB(this->shape, xi);}
             
-            if(nDim == 2)
-                Pk *= elementProperties[0]; // thickness
+            //if(nDim == 2)
+                //Pk *= elementProperties[0]; // thickness
             
-            for(int i = 0; i < boundaryCoordIndices.size(); i++)
-                fU( boundaryCoordIndices(i) ) +=  Pk(i);
+            //for(int i = 0; i < boundaryCoordIndices.size(); i++)
+                //fU( boundaryCoordIndices(i) ) +=  Pk(i);
             
             break;
         }
