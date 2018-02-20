@@ -236,6 +236,20 @@ namespace bft
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial3D::B<nNodes> ( dNdX ) ;
                 }
+
+                Matrix<double, 8, 1 > getBoundaryElementIndices ( int faceID)
+                {
+                    typedef Matrix<double, 8, 1 > Vector8;
+                    switch(faceID){
+                        case 1: {return (Vector8() << 3,2,1,0,10,9,8,11).finished();}
+                        case 2: {return (Vector8() << 4,5,6,7,12,13,14,15).finished();}
+                        case 3: {return (Vector8() << 0,1,5,4,8,17,12,16).finished();}
+                        case 4: {return (Vector8() << 6,5,1,2,13,17,9,18).finished();}
+                        case 5: {return (Vector8() << 7,6,2,3,14,18,10,19).finished();}
+                        case 6: {return (Vector8() << 4,7,3,0,15,19,11,16).finished();}
+                        default: {throw std::invalid_argument("Hexa8: invalid face ID specifed");}
+                    }
+                }
             } // end of namespace Hexa20
         } // end of namespace Spatial3D
     }

@@ -33,6 +33,10 @@ namespace bft{
                                 nNodes = bft::FiniteElement::Spatial2D::Quad4::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa8::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
+                case Hexa20: {  boundaryShape =  Quad8; 
+                                nNodes = bft::FiniteElement::Spatial2D::Quad8::nNodes;
+                                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa20::getBoundaryElementIndices( parentFaceNumber );
+                                break;}
 
                 default: throw std::invalid_argument("Boundary Element currently not implemented");
 
@@ -77,6 +81,10 @@ namespace bft{
                     case Quad4: {  
                                     gpt.N =     Spatial2D::Quad4::N ( Ref<const Vector2d> ( xi ) ); 
                                     gpt.dNdXi = Spatial2D::Quad4::dNdXi( Ref<const Vector2d> ( xi ) ); 
+                                    break;}
+                    case Quad8: {  
+                                    gpt.N =     Spatial2D::Quad8::N ( Ref<const Vector2d> ( xi ) ); 
+                                    gpt.dNdXi = Spatial2D::Quad8::dNdXi( Ref<const Vector2d> ( xi ) ); 
                                     break;}
 
                     default: break; // exception handling already in first switch

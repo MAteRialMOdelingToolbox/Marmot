@@ -181,6 +181,8 @@ namespace bft{
                 // convenience functions; they are wrappers to the corresponding template functions
                 Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
                 BSized B(const Ref<const dNdXiSized>& dNdXi);
+
+                Matrix<double, 8, 1 > getBoundaryElementIndices ( int faceID );
             }
         } // End Spatial3D
 
