@@ -84,14 +84,14 @@ extern "C" void FOR_NAME(uel)(
         if ( nIntegerProperties < 5 )
             throw std::invalid_argument("insufficient integer properties defined for UEL");
 
-        userLibrary::ElementCode elementCode = static_cast<userLibrary::ElementCode> ( integerProperties[0] );
-        userLibrary::MaterialCode materialID =  static_cast<userLibrary::MaterialCode>( integerProperties[1] );
-        const int nStateVarsUmat =          integerProperties[2];
-        const int nPropertiesUmat =         integerProperties[3];
-        const int nPropertiesElement =      integerProperties[4];
+        userLibrary::ElementCode elementCode = static_cast<userLibrary::ElementCode> ( elementType );
+        userLibrary::MaterialCode materialID =  static_cast<userLibrary::MaterialCode>( integerProperties[0] );
+        const int nStateVarsUmat =          integerProperties[1];
+        const int nPropertiesUmat =         integerProperties[2];
+        const int nPropertiesElement =      integerProperties[3];
 
         // get additional definitions: [active Geostatic stress], 
-        const bool activeGeostatic = nIntegerProperties > 5 && integerProperties[5] > 0; 
+        const bool activeGeostatic = nIntegerProperties > 5 && integerProperties[4] > 0; 
         
         //int sumProps = 0;
         //for (int i = 3; i< nIntegerProperties; i++)
