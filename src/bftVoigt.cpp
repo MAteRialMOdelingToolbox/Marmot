@@ -353,8 +353,8 @@ namespace bft{
 
         Vector6 dThetadSigma(double theta, const Vector6& stress)
         {
-            //if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
-            //return Vector6::Zero();
+            if(theta <= 1e-15 || theta >= Pi/3 - 1e-15)
+            return Vector6::Zero();
 
             //const double J2_ = J2(stress);
             //const double J3_ = J3(stress);
