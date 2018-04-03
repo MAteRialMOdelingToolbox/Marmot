@@ -8,6 +8,7 @@ namespace bft{
             DeBorstEAS2,
             DeBorstEAS2_P2,
             EAS3,
+            DeBorstEAS6b,
             DeBorstEAS9,
             SimoRifaiEAS5,
             SimoRifaiEAS4,
