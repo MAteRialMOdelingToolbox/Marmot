@@ -62,6 +62,9 @@
 #ifdef UNTEREGGERROCKMASSNONLOCAL 
     #include "UntereggerRockMassNonLocal.h"
 #endif
+#ifdef LINEARELASTICNONLOCAL
+    #include "LinearElasticNonLocal.h"
+#endif
 namespace userLibrary{
 
     MaterialCode getMaterialCodeFromName(const std::string& materialCode)
@@ -87,6 +90,7 @@ namespace userLibrary{
             {"MODLEONPLANESTRESS", ModLeonPlaneStress},
             {"SHOTLEONV2NONLOCAL", ShotLeonV2NonLocal},
             {"UNTEREGGERROCKMASSPLAXIS", UntereggerRockMassPlaxis},
+            {"LINEARELASTICNONLOCAL", LinearElasticNonLocal},
         };
 
         return materialCodeMap [ materialCode ];
@@ -140,6 +144,9 @@ namespace userLibrary{
             #endif
             #ifdef UNTEREGGERROCKMASSNONLOCAL
             case UntereggerRockMassNonLocal: { return new class UntereggerRockMassNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef LINEARELASTICNONLOCAL
+            case LinearElasticNonLocal: { return new class LinearElasticNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
@@ -197,7 +204,9 @@ namespace userLibrary{
             { "UelCPE8RNonLocal", UelCPE8RNonLocal }, 
             { "UelCPE4NonLocalEAS2", UelCPE4NonLocalEAS2 }, 
             { "UelCPE4NonLocalEAS4", UelCPE4NonLocalEAS4 }, 
+            { "UelCPE4NonLocalEAS5", UelCPE4NonLocalEAS5 }, 
             { "UelC3D8NonLocalEAS3", UelC3D8NonLocalEAS3 }, 
+            { "UelC3D8NonLocalEAS6b", UelC3D8NonLocalEAS6b }, 
             { "UelC3D8NonLocalEAS9", UelC3D8NonLocalEAS9 }, 
             { "UelC3D8NonLocal", UelC3D8NonLocal }, 
             { "UelC3D8RNonLocal", UelC3D8RNonLocal }, 
@@ -255,6 +264,8 @@ namespace userLibrary{
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE8RNonLocal: {return UelNonLocalFactory:: generateUelCPE8RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D20RNonLocal: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
             #ifdef UELDISPLACEMENTEAS
             case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
@@ -269,21 +280,21 @@ namespace userLibrary{
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
             #ifdef UELNONLOCALEAS 
-            //case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4NonLocalEAS2: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS2 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelCPE4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelCPE4NonLocalEAS5: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
 
             case UelCPS4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPS4NonLocalEAS4 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelC3D8NonLocalEAS3: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS3(elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b(elementCoordinates, stateVars, nStateVars, propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementCoordinates, stateVars, nStateVars, propertiesElement, 
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            //case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 (elementCoordinates, stateVars, nStateVars, propertiesElement, 
-                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
 
             default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}

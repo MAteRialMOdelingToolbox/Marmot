@@ -24,6 +24,7 @@ set(bftMechanicsDir "../bftMechanics/")
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
     LinearElastic
+    LinearElasticNonLocal
     LinearElasticSolidificationCreep
     HoekBrown
     ModLeon

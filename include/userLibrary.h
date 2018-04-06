@@ -27,6 +27,7 @@ namespace userLibrary{
         UntereggerRockMassPlaxis=18,
         ShotLeonV2NonLocal=19,
         UntereggerRockMassAssocNonLocal=20,
+        LinearElasticNonLocal=21,
     };
 
 
@@ -79,6 +80,7 @@ namespace userLibrary{
 
             // Solid EAS
             UelC3D8EAS3 =   80303,
+            UelC3D8EAS6b =   80361,
             UelC3D8EAS9 =   80309,
                      
             // Nonlocal 
@@ -91,6 +93,7 @@ namespace userLibrary{
             // Plane Stress - EAS
             UelCPS4NonLocalEAS2 =41202,
             UelCPS4NonLocalEAS4 =41204,
+            UelCPS4NonLocalEAS5 =41205,
 
             // Plane Strain
             UelCPE4NonLocal =417,
@@ -101,7 +104,10 @@ namespace userLibrary{
             // Plane Strain - EAS
             UelCPE4NonLocalEAS2 =41702,
             UelCPE4NonLocalEAS4 =41704,
+            UelCPE4NonLocalEAS5 =41705,
+
             UelC3D8NonLocalEAS3 = 81303,
+            UelC3D8NonLocalEAS6b = 81361,
             UelC3D8NonLocalEAS9 = 81309,
 
             // Solid
