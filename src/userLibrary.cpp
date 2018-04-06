@@ -5,7 +5,6 @@
 #include "bftTypedefs.h"
 #include "bftMaterial.h"
 #include "bftVoigt.h"
-#include <iostream>
 #include <string>
 
 #ifdef LINEARELASTIC
@@ -38,9 +37,9 @@
 #ifdef SHOTLEONNONLOCAL
     #include "ShotLeonNonLocal.h"
 #endif
-//#ifdef ShotLeonV2NonLocal
-    //#include "ShotLeonV2NonLocal.h"
-//#endif
+#ifdef SHOTLEONV2NONLOCAL 
+    #include "ShotLeonV2NonLocal.h"
+#endif
 #ifdef MODLEONNONLOCAL
     #include "ModLeonNonLocal.h"
 #endif
@@ -50,11 +49,14 @@
 #ifdef SCHAEDLICHSCHWEIGER
     #include "SchaedlichSchweiger.h"
 #endif
-//#ifdef HoekBrown 
-    //#include "materialCodeHoekBrown.h"
-//#endif
+#ifdef HOEKBROWN 
+    #include "HoekBrown.h"
+#endif
 #ifdef UNTEREGGERROCKMASS
     #include "UntereggerRockMass.h"
+#endif
+#ifdef UNTEREGGERROCKMASSPLAXIS
+    #include "UntereggerRockMassPlaxis.h"
 #endif
 //#ifdef MohrCoulomb 
     //#include "materialCodeMohrCoulomb.h"
@@ -109,6 +111,9 @@ namespace userLibrary{
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
+            #ifdef HOEKBROWN 
+            case HoekBrown: { return new class HoekBrown(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
             #ifdef MODLEON
             case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
@@ -120,6 +125,9 @@ namespace userLibrary{
             #endif
             #ifdef SHOTLEONNONLOCAL
             case ShotLeonNonLocal: { return new class ShotLeonNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef SHOTLEONV2NONLOCAL
+            case ShotLeonV2NonLocal: { return new class ShotLeonV2NonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEONSEMIEXPLICIT
             case ModLeonSemiExplicit: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
@@ -151,7 +159,7 @@ namespace userLibrary{
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            default: throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
+            default: std::cout << " MaterialCode " << materialCode << std::endl; throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
         }
     }
 
@@ -299,6 +307,48 @@ namespace userLibrary{
 
             default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}
         }
+    }
+
+    ElementCode getElementCodeFromInfo(int nNodes, 
+                                       int activeFields, 
+                                       int dim,
+                                       bool fullIntegration, 
+                                       const std::string& formulation,
+                                       int EASParam){
+           int elInfo[4] = {0};
+           
+           elInfo[0] = nNodes;
+           elInfo[1] = activeFields - 1;
+           
+           switch(dim)
+               {
+                case 1:
+                    elInfo[2] = fullIntegration ? 1 : 4; break; 
+                case 2:
+                    {
+                    if (formulation == "PLANESTRESS")
+                        elInfo[2] = (fullIntegration) ? 2 : 5; 
+                    else if (formulation == "PLANESTRAIN")
+                        elInfo[2] = (fullIntegration) ? 7 : 8; 
+                    else
+                        throw std::invalid_argument("bftUserLibrary: formulation type cannot be identified for ElementCode");
+                    break; }
+               case 3:
+                    elInfo[2] = (fullIntegration) ? 3 : 6; break;
+               
+               default:{throw std::invalid_argument("bftUserLibrary: cannot generate ElementCode from Info");}
+               }
+           
+           elInfo[3] = (EASParam>0) ? EASParam : 0;
+
+           // concatenate to elementcode as in defined list elementCode
+           int elCode;
+           if (elInfo[3]>0)
+               elCode = elInfo[3] + elInfo[2] * 100 + elInfo[1] * 1000 + elInfo[0] * 10000;
+           else
+               elCode = elInfo[2] + elInfo[1] * 10 + elInfo[0] * 100;
+   
+           return static_cast<ElementCode>(elCode); 
     }
 
     void extendAbaqusToVoigt(double* stress6, double* stress, double* strain6, const double* strain, double* dStrain6, const double* dStrain, int nDirect, int nShear)
