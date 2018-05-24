@@ -16,7 +16,7 @@ using namespace Eigen;
 using namespace std;
 
 // directives for random field -- comment or uncomment if you want to activate randomfield or not
-#define RANDOMFIELD
+//#define RANDOMFIELD
 
 #ifdef RANDOMFIELD
     inline const std::string randomfile="/home/c8441146/Dropbox/PHD/GITrepositoryLinux/bftUserLibrary/exampleRF.csv";
