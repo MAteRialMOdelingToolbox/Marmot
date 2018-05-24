@@ -64,6 +64,9 @@
 #ifdef UNTEREGGERROCKMASSNONLOCAL 
     #include "UntereggerRockMassNonLocal.h"
 #endif
+#ifdef UNTEREGGERROCKMASSASSOCNONLOCAL 
+    #include "UntereggerRockMassAssocNonLocal.h"
+#endif
 #ifdef LINEARELASTICNONLOCAL
     #include "LinearElasticNonLocal.h"
 #endif
@@ -82,6 +85,7 @@ namespace userLibrary{
             {"UNTEREGGERROCKMASS", UntereggerRockMass},
             {"MOHRCOULOMB", MohrCoulomb},
             {"UNTEREGGERROCKMASSNONLOCAL", UntereggerRockMassNonLocal},
+            {"UNTEREGGERROCKMASSASSOCNONLOCAL", UntereggerRockMassAssocNonLocal},
             {"SHOTLEONNONLOCAL", ShotLeonNonLocal},
             {"SHOTLEONV2", ShotLeonV2},
             {"LINEARELASTIC", LinearElastic},
@@ -152,6 +156,9 @@ namespace userLibrary{
             #endif
             #ifdef UNTEREGGERROCKMASSNONLOCAL
             case UntereggerRockMassNonLocal: { return new class UntereggerRockMassNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef UNTEREGGERROCKMASSASSOCNONLOCAL
+            case UntereggerRockMassAssocNonLocal: { return new class UntereggerRockMassAssocNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef LINEARELASTICNONLOCAL
             case LinearElasticNonLocal: { return new class LinearElasticNonLocal(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}

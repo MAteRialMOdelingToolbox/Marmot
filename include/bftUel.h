@@ -13,7 +13,7 @@ class BftUel{
             Sigma33,
             HydrostaticStress,
             GeostaticStress,
-            UmatStateVars
+            UmatStateVars,
         };
 
         enum DistributedLoadTypes{
