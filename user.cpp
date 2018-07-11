@@ -91,7 +91,7 @@ extern "C" void FOR_NAME(uel)(
         const int nPropertiesElement =      integerProperties[3];
 
         // get additional definitions: [active Geostatic stress], 
-        const bool activeGeostatic = nIntegerProperties > 5 && integerProperties[4] > 0; 
+        const bool activeGeostatic = nIntegerProperties >= 5 && integerProperties[4] > 0; 
         
         //int sumProps = 0;
         //for (int i = 3; i< nIntegerProperties; i++)
@@ -106,7 +106,8 @@ extern "C" void FOR_NAME(uel)(
         const double* propertiesElement = &properties[nPropertiesUmat];
 
         BftUel* myUel;
-        try{ myUel = userLibrary::UelFactory(   elementCode, 
+        try{ 
+            myUel = userLibrary::UelFactory(   elementCode, 
                                                 coordinates,
                                                 stateVars,
                                                 nStateVars,
@@ -116,7 +117,8 @@ extern "C" void FOR_NAME(uel)(
                                                 materialID,
                                                 nStateVarsUmat,
                                                 propertiesUmat, 
-                                                nPropertiesUmat); }
+                                                nPropertiesUmat); 
+        }
         catch (std::invalid_argument& exc) {
             std::cout << exc.what() << std::endl;
             throw;}
@@ -124,7 +126,8 @@ extern "C" void FOR_NAME(uel)(
         // apply geostatic stress by setting values to statevars corresponding to stress 
         switch(lFlags[0]) {
             case Abaqus::UelFlags1::GeostaticStress: {
-                myUel->setInitialConditions(BftUel::GeostaticStress, &properties[nPropertiesUmat+nPropertiesElement] ); 
+                if (activeGeostatic)
+                    myUel->setInitialConditions(BftUel::GeostaticStress, &properties[nPropertiesUmat+nPropertiesElement] ); 
                 break;}
             default: break;}       
 
@@ -143,17 +146,17 @@ extern "C" void FOR_NAME(uel)(
 }
 
 extern "C" void FOR_NAME(umat)(
-        /*to be def.*/  double stress[],                // stress vector in order: S11, S22, (S33), S12, (S13), (S23) 
-        /*to be def.*/  double stateVars[],        // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
-        /*to be def.*/  double dStressDDStrain[],  // material Jacobian matrix ddSigma/ddEpsilon
-        /*to be def.*/  double &sSE,                    // specific elastic strain energy  |-
-        /*to be def.*/  double &sPD,                    // specific plastic dissipation    |---> Should be defined in Abaqus/Standard
-        /*to be def.*/  double &sCD,                    // specific creep dissipation      |-
+        /*[>to be def.<]*/  double stress[],                // stress vector in order: S11, S22, (S33), S12, (S13), (S23) 
+        /*[>to be def.<]*/  double stateVars[],        // solution dependent state variables; passed in values @ beginning of increment -> set to values @ end of increment
+        /*[>to be def.<]*/  double dStressDDStrain[],  // material Jacobian matrix ddSigma/ddEpsilon
+        /*[>to be def.<]*/  double &sSE,                    // specific elastic strain energy  |-
+        /*[>to be def.<]*/  double &sPD,                    // specific plastic dissipation    |---> Should be defined in Abaqus/Standard
+        /*[>to be def.<]*/  double &sCD,                    // specific creep dissipation      |-
         //FOLLOWING ARGUMENTS: only in a fully coupled thermal-stress or thermal-electrical-structural analysis
-        /*to be def.*/  double &rpl,                    // volumetric heat generation per unit time @ end of inc. caused by mech. working of material            
-        /*to be def.*/  double ddSigma_ddTemp[],        // variation of stress with respect to temperature
-        /*to be def.*/  double dRpl_dEpsilon[],         // variation of rpl with respect to strain increments
-        /*to be def.*/  double &dRpl_dTemp,             // variation of rpl with respect to temperature
+        /*[>to be def.<]*/  double &rpl,                    // volumetric heat generation per unit time @ end of inc. caused by mech. working of material            
+        /*[>to be def.<]*/  double ddSigma_ddTemp[],        // variation of stress with respect to temperature
+        /*[>to be def.<]*/  double dRpl_dEpsilon[],         // variation of rpl with respect to strain increments
+        /*[>to be def.<]*/  double &dRpl_dTemp,             // variation of rpl with respect to temperature
         const   double strain[],                        // array containing total strains @ beginning of increment     (only mechanical, no thermal); Shear Strain in engineering: e.g. gamma12 = 2*epsilon12
         const   double dStrain[],                       // array containing strain increment                           (only mechanical, no thermal)
         const   double time[2],                         // time[1]: value of step time @ beginning of current inc. or frequency
@@ -173,7 +176,7 @@ extern "C" void FOR_NAME(umat)(
         const   int &nMaterialProperties,                            // number of user def. variables
         const   double coords[3],                       // coordinates of this point
         const   double dRot[9],                         // rotation increment matrix 3x3
-        /*may be def.*/ double &pNewDT,                 // propagation for new time increment
+        /*[>may be def.<]*/ double &pNewDT,                 // propagation for new time increment
         const   double &charElemLength,                 // characteristic element Length
         const   double dfGrd0[9],                       // deformation gradient @ beginning of increment      3x3 |
         const   double dfGrd1[9],                       // deformation gradient @ end of increment            3x3 |--> always stored as 3D-matrix
@@ -222,5 +225,7 @@ extern "C" void FOR_NAME(umat)(
             return;}
 
         userLibrary::backToAbaqus(stress, stress6, dStressDDStrain, dStressDDStrain66, nDirect, nShear);
+
+        delete material;
 }
 

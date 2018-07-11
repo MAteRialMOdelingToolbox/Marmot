@@ -159,7 +159,7 @@ namespace userLibrary{
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            default: std::cout << " MaterialCode " << materialCode << std::endl; throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
+            default: std::cout << " MaterialCode " << materialCode << std::endl; std::ostringstream str; str << "code " << materialCode; throw std::invalid_argument(str.str());
         }
     }
 
