@@ -18,6 +18,7 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
     public:
 
     enum SectionType {
+        UniaxialStress,
         PlaneStress,
         PlaneStrain,
         Solid,
@@ -187,6 +188,12 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords,
             gpt.intVol = gpt.weight * gpt.detJ * thickness;
             gpt.material->setCharacteristicElementLength ( std::sqrt ( 4 * gpt.detJ )  ) ;}
 
+        else if(sectionType == SectionType::UniaxialStress){
+
+            const double& crossSection = elementProperties[0];
+            gpt.intVol = gpt.weight * gpt.detJ * crossSection;
+            gpt.material->setCharacteristicElementLength (  2 * gpt.detJ  ) ;}
+
        gaussPts.push_back ( std::move (gpt) );
     }
 
@@ -223,7 +230,20 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
        
         dE = B * dQ;
 
-        if constexpr (nDim == 2) {
+        if constexpr (nDim == 1)
+        {
+            Vector6 dE6; dE6 << dE, 0,0,0,0,0;
+            Matrix6 C66;
+            gaussPt.material->computeUniaxialStress(gaussPt.stress.data(), 
+                                                 C66.data(),  
+                                                 gaussPt.strain.data(),
+                                                 dE6.data(), 
+                                                 time, dT, pNewDT);
+
+            C <<  mechanics::getUniaxialStressTangent(C66); 
+        }
+
+        else if constexpr (nDim == 2) {
 
             Vector6 dE6 = Vgt::planeVoigtToVoigt(  dE  ); 
             Matrix6 C66;

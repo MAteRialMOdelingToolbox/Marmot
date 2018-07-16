@@ -5,6 +5,9 @@
 #include <string>
 
 namespace UelDisplacementFactory{
+
+    BftUel* generateUelT2D2(const double* coordinates, double* stateVars, int nStateVars, const double* elementProperties, int nElementProperties,
+                            int noEl, userLibrary::MaterialCode bftMaterialHypoElasticName, int nStateVarsMaterial, const double* materialProperties, int nMaterialProperties);
     
     BftUel* generateUelCPS4(const double* coordinates, double* stateVars, int nStateVars, const double* elementProperties, int nElementProperties,
                             int noEl, userLibrary::MaterialCode bftMaterialHypoElasticName, int nStateVarsMaterial, const double* materialProperties, int nMaterialProperties);
