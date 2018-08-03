@@ -28,4 +28,13 @@ class BftMaterialHypoElastic : public BftMaterial{
                 const double* timeOld,
                 const double  dT,
                 double& pNewDT);
+
+        virtual void computeUniaxialStress(
+                double *stress, 
+                double* dStressDDStrain,  
+                const double *strainOld,
+                double *dStrain,
+                const double* timeOld,
+                const double  dT,
+                double& pNewDT);
 };

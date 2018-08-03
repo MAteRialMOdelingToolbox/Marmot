@@ -44,4 +44,3 @@ class BftUel{
 
         virtual double* getPermanentResultPointer(const std::string& resultName, int gaussPt, int& resultLength) = 0;
 };
-
