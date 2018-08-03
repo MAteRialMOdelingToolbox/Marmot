@@ -51,6 +51,29 @@ namespace bft{
 
         VectorXd expandNodeIndicesToCoordinateIndices( VectorXd nodeIndices, int nDim);
 
+        namespace Spatial1D
+        {
+            namespace Truss2
+            {
+                constexpr int nNodes = 2;
+                typedef Matrix<double, 1, nNodes>         NSized;
+                typedef Matrix<double, 1, nNodes>         dNdXiSized;
+
+                NSized N(double  xi);
+                dNdXiSized dNdXi(double xi);
+
+            }
+
+            namespace Truss3
+            {
+                constexpr int nNodes = 3;
+                typedef Matrix<double, 1,       nNodes>         NSized;
+                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
+
+                NSized N(double  xi);
+                dNdXiSized dNdXi(double xi);
+            }    
+        }
 
         namespace Spatial2D
         {
@@ -105,27 +128,6 @@ namespace bft{
                 Vector3d getBoundaryElementIndices ( int faceID);
             } 
 
-            namespace Truss2
-            {
-                constexpr int nNodes = 2;
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
-
-                NSized N(double  xi);
-                dNdXiSized dNdXi(double xi);
-
-            }
-
-            namespace Truss3
-            {
-                constexpr int nNodes = 3;
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
-
-                NSized N(double  xi);
-                dNdXiSized dNdXi(double xi);
-
-            }    
         }//end of namespace Spatial2D
 
         namespace Spatial3D

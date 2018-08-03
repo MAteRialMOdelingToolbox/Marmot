@@ -8,6 +8,10 @@
  *
  * */
 
+//Truss2
+template <>
+BftGeometryElement<1,2>::NSized   BftGeometryElement<1,2>::N( const Ref< const XiSized>&   xi) {
+    return bft::FiniteElement::Spatial1D::Truss2::N(xi(0)); }
 //Quad4
 template <>
 BftGeometryElement<2,4>::NSized   BftGeometryElement<2,4>::N( const Ref< const XiSized>&   xi) {
@@ -27,7 +31,10 @@ BftGeometryElement<3,20>::NSized   BftGeometryElement<3,20>::N( const Ref< const
 
 /* Template Specialization for Shape functions derivatives.
  * */
-
+//Truss2
+template<>
+BftGeometryElement<1,2>::dNdXiSized BftGeometryElement<1,2>::dNdXi( const Ref< const XiSized>&   xi){
+    return bft::FiniteElement::Spatial1D::Truss2::dNdXi(xi(0)); }
 //Quad4
 template<>
 BftGeometryElement<2,4>::dNdXiSized BftGeometryElement<2,4>::dNdXi( const Ref< const XiSized>&   xi){
@@ -50,6 +57,10 @@ BftGeometryElement<3,20>::dNdXiSized BftGeometryElement<3,20>::dNdXi( const Ref<
  * and, hence, the B Operator must be specialized for each nDim/nNodes combination individually.
  * */
 
+//Truss2
+template<>
+typename BftGeometryElement<1, 2>::BSized BftGeometryElement<1, 2>::B( const Ref< const dNdXiSized>&  dNdX) {
+    return dNdX;}
 //Quad4
 template<>
 typename BftGeometryElement<2, 4>::BSized BftGeometryElement<2, 4>::B( const Ref< const dNdXiSized>&  dNdX) {

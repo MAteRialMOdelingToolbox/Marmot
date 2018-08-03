@@ -21,12 +21,12 @@ namespace bft{
                  * */
 
                 case Quad4: {   boundaryShape = Truss2; 
-                                nNodes = bft::FiniteElement::Spatial2D::Truss2::nNodes;
+                                nNodes = bft::FiniteElement::Spatial1D::Truss2::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
 
                 case Quad8: {   boundaryShape = Truss3; 
-                                nNodes = bft::FiniteElement::Spatial2D::Truss3::nNodes;
+                                nNodes = bft::FiniteElement::Spatial1D::Truss3::nNodes;
                                 boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
                                 break;}
                 case Hexa8: {   boundaryShape =  Quad4; 
@@ -72,11 +72,11 @@ namespace bft{
                      * ... and extend for future elements here!
                      *
                      * */
-                    case Truss2: {  gpt.N = Spatial2D::Truss2::N ( xi(0 ) ); 
-                                     gpt.dNdXi = Spatial2D::Truss2::dNdXi( xi(0) ); 
+                    case Truss2: {  gpt.N = Spatial1D::Truss2::N ( xi(0 ) ); 
+                                     gpt.dNdXi = Spatial1D::Truss2::dNdXi( xi(0) ); 
                                      break;}
-                    case Truss3: {  gpt.N = Spatial2D::Truss3::N ( xi(0) ); 
-                                     gpt.dNdXi = Spatial2D::Truss3::dNdXi( xi(0) ); 
+                    case Truss3: {  gpt.N = Spatial1D::Truss3::N ( xi(0) ); 
+                                     gpt.dNdXi = Spatial1D::Truss3::dNdXi( xi(0) ); 
                                      break;}
                     case Quad4: {  
                                     gpt.N =     Spatial2D::Quad4::N ( Ref<const Vector2d> ( xi ) ); 

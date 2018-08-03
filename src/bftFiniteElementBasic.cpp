@@ -10,6 +10,11 @@ namespace bft{
         ElementShapes getElementShapeByMetric(int nDim, int nNodes){
 
             switch(nDim){
+                case (1):{ switch(nNodes){
+                             case 2:    { return ElementShapes::Truss2;}
+                             //case 8:    { return ElementShapes::Quad8;}
+                             default:   {throw std::invalid_argument("Invalid number of nodes for nDim=1" );}
+                         }}
 
                 case (2):{ switch(nNodes){
                              case 4:    { return ElementShapes::Quad4;}

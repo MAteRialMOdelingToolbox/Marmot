@@ -9,6 +9,10 @@ project(bftMechanics)
 include_directories(include)
 #include_directories(/path/to/additional/headers) <-- extend if necessary...
 
+set(bftUserDir ../bftUserLibrary)
+include_directories(${bftUserDir}/include)
+
+
 file(GLOB sources "src/*.cpp")
 file(GLOB headers "include/*.h")
 
