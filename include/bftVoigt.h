@@ -17,6 +17,7 @@ namespace bft
         Matrix6 CelInverse(double E, double nu);
         Matrix3d getPlaneStressTangent(const Matrix6& C);
         Matrix3d getPlaneStrainTangent(const Matrix6& C);
+        double getUniaxialStressTangent(const Ref<const Matrix6>& C);
     }
 	//****************************************************
     namespace Vgt{

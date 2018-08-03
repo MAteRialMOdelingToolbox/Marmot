@@ -39,6 +39,16 @@ namespace bft{
             return Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress(C);
         } 
 
+        double getUniaxialStressTangent(const Ref<const Matrix6>& C)
+        {
+            Vector6 b ; b << 1,0,0,0,0,0;
+            Matrix6 A = C; A.row(0) << 1,0,0,0,0,0; 
+
+            Vector6 dEdEUniaxial = A.colPivHouseholderQr().solve(b);
+
+            return C.row(0) * dEdEUniaxial;
+        }
+
         Matrix3d getPlaneStrainTangent(const Matrix6& C)
         {
             Matrix3d CPlaneStrain = Matrix3d::Zero();
