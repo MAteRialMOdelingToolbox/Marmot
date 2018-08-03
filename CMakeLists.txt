@@ -42,10 +42,9 @@ set (optionalLibraries
     ShotLeonV2NonLocal
     SolidificationCreep
     UntereggerRockMass
-    UntereggerRockMassAssoc
     UntereggerRockMassNonLocal
-    UntereggerRockMassAssocNonLocal
     UntereggerRockMassPlaxis
+
     uelDisplacement
     uelDisplacementEAS
     uelNonLocal
@@ -66,7 +65,6 @@ foreach(library ${optionalLibraries})
         break()
     endif()
 endforeach()
-
 
 # Compiler specific stettings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)

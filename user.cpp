@@ -1,53 +1,19 @@
 #include <aba_for_c.h>
-#include <SMAAspUserSubroutines.h>
 #include "userLibrary.h"
+#include <iostream>
+#include <string>
 #include "bftUel.h"
 #include "bftMaterialHypoElastic.h"
 
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <string>
-
-using namespace Eigen;
-using namespace std;
-
-// directives for random field -- comment or uncomment if you want to activate randomfield or not
-#define RANDOMFIELD
-
-#ifdef RANDOMFIELD
-    inline const std::string randomfile="/home/c8441146/Dropbox/PHD/GITrepositoryLinux/bftUserLibrary/exampleRF.csv";
-#endif
-
 //These functions are provided to the 'sub' UMATs for easy printing Messages and Warnings. 
+//
 #ifndef FOR_NAME
-    #define FOR_NAME(a) a ## _
+    #define FOR_NAME(a) a##_
 #endif 
 namespace MainConstants
 {
 	bool printWarnings = false;    
 	bool printMessages = false;
-}
-
-template<typename M>
-M loadCSV (const std::string & path) {
-    std::ifstream indata;
-    indata.open(path);
-    std::string line;
-    std::vector<double> values;
-    uint rows = 0;
-    while (std::getline(indata, line)) {
-        std::stringstream lineStream(line);
-        std::string cell;
-        while (std::getline(lineStream, cell, ',')) {
-            values.push_back(std::stod(cell));
-        }
-        ++rows;
-    }
-    return Map<const Matrix<typename M::Scalar, M::RowsAtCompileTime, M::ColsAtCompileTime, RowMajor>>(values.data(), rows, values.size()/rows);
 }
 
 extern "C" 
@@ -73,6 +39,7 @@ extern "C" bool notificationToMSG(const std::string& message)
 			FOR_NAME(stdb_abqerr)(&lop, message.c_str(), nullptr , nullptr , nullptr, message.length(), 0);
     return true;
 }
+
 
 extern "C" void FOR_NAME(uel)(
         double rightHandSide[/*lVarx , nRightHandSide*/],           // right hand side load vector(s) 1: common, 2: additional for RIKS (see documentation)
@@ -113,6 +80,7 @@ extern "C" void FOR_NAME(uel)(
         const double &period)
 {    
         // get umatPointer and number of stateVars for umat
+        //
         if ( nIntegerProperties < 5 )
             throw std::invalid_argument("insufficient integer properties defined for UEL");
 
@@ -124,48 +92,21 @@ extern "C" void FOR_NAME(uel)(
 
         // get additional definitions: [active Geostatic stress], 
         const bool activeGeostatic = nIntegerProperties > 5 && integerProperties[4] > 0; 
+        
+        //int sumProps = 0;
+        //for (int i = 3; i< nIntegerProperties; i++)
+            //sumProps += integerProperties[i];
+        //sumProps = activeGeostatic ? sumProps+5 : sumProps;
 
-        // split properties into umat properties and element properties
+        //if( sumProps < nProperties){
+            //std::cout << "insufficient properties defined" << sumProps  << " / " << nProperties << std::endl;
+            //throw std::invalid_argument("insufficient properties defined");}
+
         const double* propertiesUmat =    &properties[0];
         const double* propertiesElement = &properties[nPropertiesUmat];
-       
-        // read randomfield 
-        int sizeArray = 0;
-        double * modUmatProps=NULL; // modify umatproperties
-        
-        #ifdef RANDOMFIELD
-            sizeArray = SMAFloatArraySize(elementNumber); 
-        #endif
-        
-        if (sizeArray>1)
-        { 
-            memcpy ( &modUmatProps, &propertiesUmat, sizeof(propertiesUmat));
-            double* array = SMAFloatArrayAccess(elementNumber);
-            
-            for (int i=0; i<sizeArray; i+=2)
-            {
-                modUmatProps[static_cast<int>(array[i+1])] = array[i];
-            }
-        }
 
         BftUel* myUel;
-        try{ 
-            
-            if (modUmatProps!=NULL){    // if random field data is read
-            myUel = userLibrary::UelFactory(   elementCode, 
-                                                coordinates,
-                                                stateVars,
-                                                nStateVars,
-                                                propertiesElement,
-                                                nPropertiesElement, 
-                                                elementNumber,
-                                                materialID,
-                                                nStateVarsUmat,
-                                                modUmatProps, 
-                                                nPropertiesUmat); 
-            }
-            else{
-            myUel = userLibrary::UelFactory(   elementCode, 
+        try{ myUel = userLibrary::UelFactory(   elementCode, 
                                                 coordinates,
                                                 stateVars,
                                                 nStateVars,
@@ -175,9 +116,7 @@ extern "C" void FOR_NAME(uel)(
                                                 materialID,
                                                 nStateVarsUmat,
                                                 propertiesUmat, 
-                                                nPropertiesUmat); 
-            }
-        }
+                                                nPropertiesUmat); }
         catch (std::invalid_argument& exc) {
             std::cout << exc.what() << std::endl;
             throw;}
@@ -229,9 +168,9 @@ extern "C" void FOR_NAME(umat)(
         const   int &nDirect,                           // number of direct stress components @ this point
         const   int &nShear,                            // number of engineering shear stress components @ this point
         const   int &nTensor,                           // size of stress and strain component array (nDirect + nShear)
-        const   int &nStateVars,                        // number of solution dependent state variables associated with this mat. type
-        const   double materialProperties[],            // user def. array of mat. constants associated with this material
-        const   int &nMaterialProperties,               // number of user def. variables
+        const   int &nStateVars,                            // number of solution dependent state variables associated with this mat. type
+        const   double materialProperties[],                         // user def. array of mat. constants associated with this material
+        const   int &nMaterialProperties,                            // number of user def. variables
         const   double coords[3],                       // coordinates of this point
         const   double dRot[9],                         // rotation increment matrix 3x3
         /*may be def.*/ double &pNewDT,                 // propagation for new time increment
@@ -247,7 +186,7 @@ extern "C" void FOR_NAME(umat)(
         const   int &kInc,                              // increment Number
         const   int matNameLength                       // length of Material Name := 80, passed in when FORTRAN calls c/c++: Microsoft C compiler AND GCC (it *may* differ for IntelC++)
         ){       
-
+          
         userLibrary::MaterialCode materialCode = static_cast<userLibrary::MaterialCode> ( stateVars[nStateVars-1] );
         if ( materialCode <= 0 ){
             const std::string materialName(matName);
@@ -283,42 +222,5 @@ extern "C" void FOR_NAME(umat)(
             return;}
 
         userLibrary::backToAbaqus(stress, stress6, dStressDDStrain, dStressDDStrain66, nDirect, nShear);
-
-        delete material;        
 }
 
-#ifdef RANDOMFIELD
-extern "C" void FOR_NAME(uexternaldb)(const int& lop,                               // when is uexternaldb called: 1...start of analysis; 4...start of a restart analysis
-                                      const int& lrestart,  
-                                      const double time[2],                         // time[1]: value of step time @ beginning of current inc. or frequency; time[2] total time
-                                      const double &totalTime,                      // time increment
-                                      const int& stepNumber,
-                                      const int& incrementNumber
-        )
-{
-        if ( (lop==0) || (lop==4) ){  // start of analysis and beginning of a restart analysis
-           warningToMSG("uexternaldb is called");   
-           
-           // workaround to avoid exeception for empty SMAFloatArrayAccess
-           for (int i=1;i<100000;i++)
-                SMAFloatArrayCreate(i, 0);
-           
-           // read random field data with order: #element, matprop1, index1, matrop2, index2, ... 
-           MatrixXd randomfield = loadCSV<MatrixXd>(randomfile);
-
-           const int nrows = randomfield.rows();
-           const int ncols = randomfield.cols();
-            
-           std::ostringstream str;
-           str << "Read random field for nrows=" << nrows << "  and ncols=" << ncols << std::endl; 
-
-           for (int i=0; i<nrows; ++i){
-               double* a = SMAFloatArrayCreate(static_cast<int>(randomfield(i,0)),ncols-1);   
-                for (int j=0; j<ncols-1; j++) 
-                   a[j] = randomfield(i,j+1); 
-            } 
-           
-            warningToMSG(str.str());
-       }
-}
-#endif
