@@ -159,7 +159,8 @@ namespace userLibrary{
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            default: std::cout << " MaterialCode " << materialCode << std::endl; throw std::invalid_argument("bftUserLibrary: Invalid Material Code Requested!");
+            default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid material code "<< materialCode << "requested!" << std::endl; 
+                         throw std::invalid_argument(str.str()); }
         }
     }
 
@@ -306,7 +307,8 @@ namespace userLibrary{
                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif
 
-            default:{throw std::invalid_argument("bftUserLibrary: Element Not Found");}
+            default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid element "<< elementCode<< " requested!" << std::endl; 
+                         throw std::invalid_argument(str.str()); }
         }
     }
 
