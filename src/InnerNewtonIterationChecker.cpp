@@ -29,8 +29,10 @@ namespace bft{
         if (incNorm<1e-16)
             return incNorm;
         
-        if (refNorm <1e-16)
-            refNorm = 1e-16;
+        if (refNorm <1e-14)
+            // for a too small reference norm, a reasonable relative norm cannot be computed
+            return 0.0;
+
         return increment.norm() / refNorm;
     }
 
