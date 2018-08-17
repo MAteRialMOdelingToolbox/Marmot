@@ -58,6 +58,8 @@ namespace userLibrary{
     enum ElementCode{
             
             //Displacement
+            //Truss
+            UelT2D2 =         202,
             //Plane Stress
             UelCPS4 =       402,
             UelCPS8 =       802,
