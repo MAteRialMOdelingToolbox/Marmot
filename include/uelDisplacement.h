@@ -300,28 +300,30 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const double* values)
 {
-    switch(state){
+    if constexpr (nDim>1) {
+        switch(state){
+            case BftUel::GeostaticStress: 
+                { 
+                    for(size_t i = 0; i < this->gaussPts.size(); i++) 
+                    {
+                        GaussPt& gaussPt = this->gaussPts[i];
+                        typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
 
-        case BftUel::GeostaticStress: 
-            { 
-                for(size_t i = 0; i < this->gaussPts.size(); i++) 
-                {
-                    GaussPt& gaussPt = this->gaussPts[i];
-                    typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
+                        const double sigY1 = values[0];
+                        const double sigY2 = values[2];
+                        const double y1    = values[1];
+                        const double y2    = values[3];
 
-                    const double sigY1 = values[0];
-                    const double sigY2 = values[2];
-                    const double y1    = values[1];
-                    const double y2    = values[3];
+                        gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
+                        gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
+                        gaussPt.stress(2) = values[5]*gaussPt.stress(1);
+                        }  // sigma_z
 
-                    gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
-                    gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
-                    gaussPt.stress(2) = values[5]*gaussPt.stress(1);}  // sigma_z
+                        break; 
+                }
 
-                    break; 
-            }
-
-        default: break;
+            default: break;
+        }
     }
 }
 
