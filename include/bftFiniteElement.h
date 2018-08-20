@@ -22,7 +22,7 @@ namespace bft{
         MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode); // Dynamic version
 
         template <int nDim, int nNodes>
-            Matrix<double, nDim, nDim*nNodes> NB(const Ref<const Matrix<double, nNodes, 1>>& N )
+            Matrix<double, nDim, nDim*nNodes> NB(const Ref<const Matrix<double, 1, nNodes>>& N )
             {
                 // Alternative Templated version of Interpolation operator NBold;
                 Matrix<double, nDim, nDim*nNodes> N_ = Matrix<double, nDim, nDim*nNodes>::Zero();
