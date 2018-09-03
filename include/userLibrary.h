@@ -131,18 +131,18 @@ namespace userLibrary{
 
     BftUel* UelFactory( ElementCode elementCode,
                         const double* elementCoordinates, 
-                        double* stateVars, int nStateVars, 
+                        //double* stateVars, int nStateVars, 
                         const double* propertiesElement, 
                         int nPropertiesElement, 
                         int elementNumber, 
                         MaterialCode material,
-                        int nStateVarsUmat, 
+                        //int nStateVarsUmat, 
                         const double* propertiesUmat, 
                         int nPropertiesUmat);
 
     BftMaterial* bftMaterialFactory(MaterialCode material,
-                                    double* stateVars,
-                                    int nStateVars,
+                                    //double* stateVars,
+                                    //int nStateVars,
                                     const double* materialProperties, 
                                     int nMaterialProperties,
                                     int element, 

@@ -98,9 +98,22 @@ namespace userLibrary{
         return materialCodeMap [ materialCode ];
     }
 
+    //template< class T> 
+    //BftMaterial* instanceMaterial_( double *stateVars,
+                                    //int nStateVars,
+                                    //const double* materialProperties, 
+                                    //int nMaterialProperties,
+                                    //int element, 
+                                    //int gaussPt)
+    //{
+        //if ( nStateVars < T::getRequiredNumberOfStateVars(materialProperties, nMaterialProperties) )
+            //throw std::invalid_argument("Not enough stateVars provided");
+        //return new T(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);
+    //}
+
     BftMaterial* bftMaterialFactory( MaterialCode materialCode,
-                                    double *stateVars,
-                                    int nStateVars,
+                                    //double *stateVars,
+                                    //int nStateVars,
                                     const double* materialProperties, 
                                     int nMaterialProperties,
                                     int element, 
@@ -110,12 +123,14 @@ namespace userLibrary{
         {
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            //case LinearElastic: { return instanceMaterial_<class LinearElastic>( stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef HOEKBROWN 
             case HoekBrown: { return new class HoekBrown(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEON
-            case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            //case ModLeon: { return new class ModLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
+            case ModLeon: { return new class ModLeon( materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef SHOTLEON
             case ShotLeon: { return new class ShotLeon(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
@@ -159,7 +174,7 @@ namespace userLibrary{
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(stateVars, nStateVars, materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid material code "<< materialCode << "requested!" << std::endl; 
+            default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid material code "<< materialCode << " requested!" << std::endl; 
                          throw std::invalid_argument(str.str()); }
         }
     }
@@ -232,28 +247,30 @@ namespace userLibrary{
     {
         switch(elementCode){
             #ifdef UELDISPLACEMENT
-            case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8: {return UelDisplacementFactory:: generateUelC3D8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8R: {return UelDisplacementFactory:: generateUelC3D8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8R: {return UelDisplacementFactory:: generateUelCPE8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20: {return UelDisplacementFactory:: generateUelC3D20 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode , nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4 (elementCoordinates,  propertiesElement, 
+                            nPropertiesElement, elementNumber, materialCode ,  propertiesUmat, nPropertiesUmat);}
+            //case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                            //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelC3D8: {return UelDisplacementFactory:: generateUelC3D8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelC3D8R: {return UelDisplacementFactory:: generateUelC3D8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPE8R: {return UelDisplacementFactory:: generateUelCPE8R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelC3D20: {return UelDisplacementFactory:: generateUelC3D20 (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            //case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             //nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
             #ifdef UELNONLOCAL
             case UelCPS4NonLocal: {return UelNonLocalFactory:: generateUelCPS4NonLocal (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
@@ -275,6 +292,8 @@ namespace userLibrary{
             case UelCPE8RNonLocal: {return UelNonLocalFactory:: generateUelCPE8RNonLocal (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             case UelC3D20RNonLocal: {return UelNonLocalFactory:: generateUelC3D20RNonLocal (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
+                             nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
+            case UelC3D20NonLocal: {return UelNonLocalFactory:: generateUelC3D20NonLocal (elementCoordinates,  stateVars, nStateVars, propertiesElement, 
                              nPropertiesElement, elementNumber, materialCode, nStateVarsUmat, propertiesUmat, nPropertiesUmat);}
             #endif 
             #ifdef UELDISPLACEMENTEAS

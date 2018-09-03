@@ -24,6 +24,12 @@ class BftUel{
 
         virtual ~BftUel(){};
 
+        virtual int getNumberOfRequiredStateVars() = 0;
+
+        virtual void assignStateVars(double *stateVars, int nStateVars, int nStateVarsMaterial) = 0;
+
+        virtual void initializeYourself() = 0;
+
         virtual void computeYourself( const double* QTotal,
                                             const double* dQ,
                                             double* Pe,
@@ -32,7 +38,7 @@ class BftUel{
                                             double dT,
                                             double& pNewdT) = 0;
 
-        virtual void setInitialConditions(StateTypes state, const double* values){};
+        virtual void setInitialConditions(StateTypes state, const double* values) = 0;
 
         virtual void computeDistributedLoad(
                                     DistributedLoadTypes loadType,
@@ -40,7 +46,7 @@ class BftUel{
                                     int elementFace, 
                                     const double* load,
                                     const double* time,
-                                    double dT) {};
+                                    double dT) = 0;
 
         virtual double* getPermanentResultPointer(const std::string& resultName, int gaussPt, int& resultLength) = 0;
 };

@@ -23,32 +23,32 @@ set(bftMechanicsDir "../bftMechanics/")
 
 set(optionalLibsRootDir "../")
 set (optionalLibraries 
-    LinearElastic
-    LinearElasticNonLocal
-    LinearElasticSolidificationCreep
-    HoekBrown
+    #LinearElastic
+    #LinearElasticNonLocal
+    #LinearElasticSolidificationCreep
+    #HoekBrown
     ModLeon
-    ModLeonSemiExplicit
-    ModLeonAdaptive
-    ModLeonSemiExplicitAdaptive
-    ModLeonPlaneStress
-    ModLeonNonLocal
-    MohrCoulomb
-    Meschke
-    SchaedlichSchweiger
-    ShotLeon
-    ShotLeonV2
-    ShotLeonNonLocal
-    ShotLeonV2NonLocal
-    SolidificationCreep
-    UntereggerRockMass
-    UntereggerRockMassNonLocal
-    UntereggerRockMassPlaxis
+    #ModLeonSemiExplicit
+    #ModLeonAdaptive
+    #ModLeonSemiExplicitAdaptive
+    #ModLeonPlaneStress
+    #ModLeonNonLocal
+    #MohrCoulomb
+    #Meschke
+    #SchaedlichSchweiger
+    #ShotLeon
+    #ShotLeonV2
+    #ShotLeonNonLocal
+    #ShotLeonV2NonLocal
+    #SolidificationCreep
+    #UntereggerRockMass
+    #UntereggerRockMassNonLocal
+    #UntereggerRockMassPlaxis
 
     uelDisplacement
-    uelDisplacementEAS
-    uelNonLocal
-    uelNonLocalEAS
+    #uelDisplacementEAS
+    #uelNonLocal
+    #uelNonLocalEAS
     )
 
 # check if uels are present, since they need c++17
