@@ -1,6 +1,5 @@
 #include "bftFiniteElement.h"
 #include "bftTypedefs.h"
-#include <iostream>
 
 namespace bft{
 

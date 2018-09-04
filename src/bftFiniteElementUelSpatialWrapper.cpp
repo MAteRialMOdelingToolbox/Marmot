@@ -50,11 +50,24 @@ BftUelSpatialWrapper::BftUelSpatialWrapper(int nDim, int nDimChild,
     }
 
     // Projection of node coordinates
-    MatrixXd projectedCoordinates(nDimChild, nNodes);
+    projectedCoordinates = MatrixXd::Zero(nDimChild, nNodes);
     for (int i = 0; i < nNodes; i++)
         projectedCoordinates.col(i) = T * unprojectedCoordinates.col(i);
 
     childElement = std::unique_ptr<BftUel> ( childGenerator ( projectedCoordinates.data() ) );
+}
+
+int BftUelSpatialWrapper::getNumberOfRequiredStateVars(){
+    return childElement->getNumberOfRequiredStateVars();
+}
+
+void BftUelSpatialWrapper::assignStateVars(double *stateVars, int nStateVars)
+{
+    childElement->assignStateVars(stateVars, nStateVars);
+}
+
+void BftUelSpatialWrapper::initializeYourself() {
+    childElement->initializeYourself();
 }
 
 void BftUelSpatialWrapper::computeYourself( const double* Q,
@@ -65,8 +78,11 @@ void BftUelSpatialWrapper::computeYourself( const double* Q,
         double dT,
         double& pNewDT) 
 {
-    VectorXd  Q_Projected = P * Map<const VectorXd>(  Q, unprojectedSize);
-    VectorXd dQ_Projected = P * Map<const VectorXd>( dQ, unprojectedSize);
+    Map<const VectorXd> Q_Unprojected (  Q, unprojectedSize);
+    Map<const VectorXd> dQ_Unprojected ( dQ, unprojectedSize);
+
+    VectorXd  Q_Projected = P * Q_Unprojected;
+    VectorXd dQ_Projected = P * dQ_Unprojected;
 
     VectorXd Pe_Projected(projectedSize);
     MatrixXd Ke_Projected(projectedSize, projectedSize);
