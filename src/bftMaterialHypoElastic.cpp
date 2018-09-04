@@ -1,6 +1,7 @@
 #include "bftMaterialHypoElastic.h"
 #include "bftVoigt.h"
 #include "bftFunctions.h"
+#include <iostream>
 
 void BftMaterialHypoElastic::computePlaneStress(
         double *stress_, 
