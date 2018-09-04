@@ -1,6 +1,7 @@
 #pragma once
 #include "bftMaterialHypoElastic.h"
 #include <string>
+#include <iostream>
 
 class LinearElastic: public BftMaterialHypoElastic
 { 
@@ -19,6 +20,15 @@ class LinearElastic: public BftMaterialHypoElastic
 
         double* getPermanentResultPointer(const std::string& result, int& resultLength){
         return nullptr;}
+
+        int getNumberOfRequiredStateVars() {
+            return 2;
+        }
+
+        void assignStateVars(double *stateVars, int nStateVars) { 
+            this->stateVars = stateVars;
+            this->nStateVars = nStateVars;
+        };
 
 };
 
