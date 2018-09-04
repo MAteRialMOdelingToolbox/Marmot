@@ -5,8 +5,6 @@ class BftUel{
 
     public:
 
-        double* stateVars;
-
         enum StateTypes{
             Sigma11,
             Sigma22,
@@ -26,7 +24,7 @@ class BftUel{
 
         virtual int getNumberOfRequiredStateVars() = 0;
 
-        virtual void assignStateVars(double *stateVars, int nStateVars, int nStateVarsMaterial) = 0;
+        virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
 
         virtual void initializeYourself() = 0;
 
