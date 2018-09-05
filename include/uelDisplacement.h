@@ -41,7 +41,7 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
         const SectionType           sectionType;
 
         struct GaussPt {
-            static constexpr int nRequiredStateVars= 6 + 6;
+            static constexpr int nRequiredStateVars = 6 + 6;
 
             typename ParentGeometryElement::XiSized       xi;
             const double weight;
@@ -73,7 +73,8 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
     public:
 
-        UelDisplacement(const double* coordinates,
+        UelDisplacement(
+                //const double* coordinates,
                 const double* elementProperties,
                 int nElementPropertiesElement,
                 int noEl,
@@ -88,7 +89,7 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
         virtual void assignStateVars(double *stateVars, int nStateVars);
 
-        virtual void initializeYourself();
+        virtual void initializeYourself(const double* coordinates);
 
         virtual void setInitialConditions(StateTypes state, const double* values);
 
@@ -125,7 +126,8 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 };
 
 template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords, 
+UelDisplacement<nDim, nNodes>::UelDisplacement(
+        //const double* coords, 
         const double* properties,
         int nElementProperties,
         int noEl,
@@ -135,7 +137,7 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(const double* coords,
         bft::NumIntegration::IntegrationTypes integrationType,
         SectionType sectionType
         ):
-    ParentGeometryElement(coords),
+    ParentGeometryElement(),
     elementProperties(Map<const VectorXd>(properties, nElementProperties)),
     materialProperties(Map<const VectorXd>(materialProperties, nMaterialProperties)),
     elLabel(noEl),
@@ -196,10 +198,10 @@ void UelDisplacement<nDim, nNodes>::assignStateVars(double *stateVars, int nStat
 }
 
     template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::initializeYourself()
+void UelDisplacement<nDim, nNodes>::initializeYourself(const double* coordinates)
 {
+    ParentGeometryElement::initializeYourself(coordinates);
 
-        //std::cout << this->coordinates  << std::endl;
     for( GaussPt& gpt : gaussPts){
 
         gpt.dNdXi   =   this->dNdXi(gpt.xi);
@@ -208,13 +210,6 @@ void UelDisplacement<nDim, nNodes>::initializeYourself()
         gpt.detJ	=   gpt.J.determinant();
         gpt.dNdX	=   this->dNdX(gpt.dNdXi, gpt.JInv );
         gpt.B		=   this->B(gpt.dNdX);
-
-        //std::cout << gpt.xi << std::endl;
-        //std::cout << gpt.dNdXi<< std::endl;
-        //std::cout << gpt.B<< std::endl;
-        //std::cout << gpt.J<< std::endl;
-        //std::cout << gpt.xi << std::endl;
-        //std::cout << " ----------- " << std::endl;
 
         if( sectionType == SectionType::Solid){
 
