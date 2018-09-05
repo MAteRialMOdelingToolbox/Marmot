@@ -31,14 +31,19 @@ class BftGeometryElement
 
 
         /*Properties*/
-        const Map<const CoordinateVector>                                   coordinates;
+        Map<const CoordinateVector>                                         coordinates;
         const bft::FiniteElement::ElementShapes                             shape;
 
         /*Methods*/
-        BftGeometryElement(const double* coords):
-            coordinates(coords),
+        BftGeometryElement():
+            coordinates(nullptr),
             shape ( bft::FiniteElement::getElementShapeByMetric(nDim, nNodes) ) 
             {};
+
+        void initializeYourself(const double* coords)
+        {
+            new (&coordinates) Map<const CoordinateVector> ( coords );
+        }
 
         /*Please specialize these functions for each element individially
          *.cpp file. 

@@ -14,23 +14,28 @@ class BftUelSpatialWrapper : public BftUel
 
         int projectedSize, unprojectedSize;
 
+        const int nDim;
+        const int nDimChild;
+        const int nNodes;
+        const int nRhsChild;
+        const Eigen::Map<const Eigen::VectorXi> rhsIndicesToBeProjected;
+
         std::unique_ptr<BftUel> childElement;
         Eigen::MatrixXd T;
         Eigen::MatrixXd P;
         Eigen::MatrixXd projectedCoordinates;
 
         BftUelSpatialWrapper(int nDim, int nChildDim, 
-                const double* nodeCoordinates, 
                 int nNodes, 
                 int sizeRhsChild, 
                 const int rhsIndicesToBeWrapped_[], int nRhsIndicesToBeWrapped,
-                const std::function< BftUel* (const double *reducedNodeCoordinates)>& childGenerator);
+                std::unique_ptr<BftUel> childElement);
 
         int getNumberOfRequiredStateVars();
 
         void assignStateVars(double *stateVars, int nStateVars);
 
-        void initializeYourself();
+        void initializeYourself(const double* coordinates);
 
         void computeYourself( const double* QTotal,
                                             const double* dQ,

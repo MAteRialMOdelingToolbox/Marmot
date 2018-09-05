@@ -3,20 +3,39 @@
 #include "Eigen/Sparse"
 #include <iostream>
 
-BftUelSpatialWrapper::BftUelSpatialWrapper(int nDim, int nDimChild, 
-        const double* nodeCoordinates, 
+BftUelSpatialWrapper::BftUelSpatialWrapper(
+        int nDim, int nDimChild, 
         int nNodes, 
         int nRhsChild, 
-        const int rhsIndicesToBeWrapped[], int nRhsIndicesToBeWrapped,
-        const std::function< BftUel* (const double *reducedNodeCoordinates)>& childGenerator)
+        const int rhsIndicesToBeWrapped[], 
+        int nRhsIndicesToBeWrapped,
+        std::unique_ptr<BftUel> childElement) :
+    nDim(nDim),
+    nDimChild(nDimChild),
+    nNodes(nNodes),
+    nRhsChild(nRhsChild),
+    rhsIndicesToBeProjected (rhsIndicesToBeWrapped, nRhsIndicesToBeWrapped),
+    childElement ( std::move( childElement ) )
 {
-    Map < const MatrixXd > unprojectedCoordinates (nodeCoordinates, nDim, nNodes);
-    Map < const VectorXi > rhsIndicesToBeProjected (rhsIndicesToBeWrapped, nRhsIndicesToBeWrapped);
+}
+
+int BftUelSpatialWrapper::getNumberOfRequiredStateVars(){
+    return childElement->getNumberOfRequiredStateVars();
+}
+
+void BftUelSpatialWrapper::assignStateVars(double *stateVars, int nStateVars)
+{
+    childElement->assignStateVars(stateVars, nStateVars);
+}
+
+void BftUelSpatialWrapper::initializeYourself(const double *coordinates) {
+
+    Map < const MatrixXd > unprojectedCoordinates (coordinates, nDim, nNodes);
 
     int nDimDiff = nDim - nDimChild;
 
     projectedSize =   nRhsChild;
-    unprojectedSize = nRhsChild + nRhsIndicesToBeWrapped * nDimDiff;
+    unprojectedSize = nRhsChild + rhsIndicesToBeProjected.size() * nDimDiff;
 
     if(nDimChild == 1)
     {
@@ -54,20 +73,7 @@ BftUelSpatialWrapper::BftUelSpatialWrapper(int nDim, int nDimChild,
     for (int i = 0; i < nNodes; i++)
         projectedCoordinates.col(i) = T * unprojectedCoordinates.col(i);
 
-    childElement = std::unique_ptr<BftUel> ( childGenerator ( projectedCoordinates.data() ) );
-}
-
-int BftUelSpatialWrapper::getNumberOfRequiredStateVars(){
-    return childElement->getNumberOfRequiredStateVars();
-}
-
-void BftUelSpatialWrapper::assignStateVars(double *stateVars, int nStateVars)
-{
-    childElement->assignStateVars(stateVars, nStateVars);
-}
-
-void BftUelSpatialWrapper::initializeYourself() {
-    childElement->initializeYourself();
+    childElement->initializeYourself(projectedCoordinates.data());
 }
 
 void BftUelSpatialWrapper::computeYourself( const double* Q,
