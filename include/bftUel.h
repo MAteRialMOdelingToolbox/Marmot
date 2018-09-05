@@ -26,7 +26,7 @@ class BftUel{
 
         virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
 
-        virtual void initializeYourself() = 0;
+        virtual void initializeYourself(const double *coordinates) = 0;
 
         virtual void computeYourself( const double* QTotal,
                                             const double* dQ,

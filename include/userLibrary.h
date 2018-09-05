@@ -130,7 +130,7 @@ namespace userLibrary{
     ElementCode getElementCodeFromName(const std::string& elementName);
 
     BftUel* UelFactory( ElementCode elementCode,
-                        const double* elementCoordinates, 
+                        //const double* elementCoordinates, 
                         const double* propertiesElement, 
                         int nPropertiesElement, 
                         int elementNumber, 
