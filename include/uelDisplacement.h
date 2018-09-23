@@ -74,7 +74,6 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
     public:
 
         UelDisplacement(
-                //const double* coordinates,
                 const double* elementProperties,
                 int nElementPropertiesElement,
                 int noEl,
@@ -85,22 +84,28 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
                 SectionType sectionType
                 );
 
-        virtual int getNumberOfRequiredStateVars();
+        int getNumberOfRequiredStateVars();
 
-        virtual void assignStateVars(double *stateVars, int nStateVars);
+        std::vector< std::vector<std::string>> getNodeFields();
 
-        virtual void initializeYourself(const double* coordinates);
+        std::vector<int> getDofIndicesPermutationPattern();
 
-        virtual void setInitialConditions(StateTypes state, const double* values);
+        std::string getElementShape();
 
-        virtual void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
+        void assignStateVars(double *stateVars, int nStateVars);
+
+        void initializeYourself(const double* coordinates);
+
+        void setInitialConditions(StateTypes state, const double* values);
+
+        void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
                 double* P, 
                 const int elementFace, 
                 const double* load,
                 const double* time,
                 double dT);
 
-        virtual void computeYourself( const double* QTotal,
+        void computeYourself( const double* QTotal,
                 const double* dQ,
                 double* Pe,
                 double* Ke,
@@ -143,9 +148,6 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(
     elLabel(noEl),
     sectionType(sectionType)
 {
-    
-
-
     MatrixXd gaussPointList =    bft::NumIntegration::getGaussPointList(this->shape, integrationType);
     VectorXd gaussWeights =      bft::NumIntegration::getGaussWeights( this->shape, integrationType);
 
@@ -172,6 +174,32 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(
 int UelDisplacement<nDim, nNodes>::getNumberOfRequiredStateVars()
 {
     return  ( gaussPts[0].material->getNumberOfRequiredStateVars() + GaussPt::nRequiredStateVars )  * gaussPts.size();
+}
+    template <int nDim, int nNodes>
+std::vector< std::vector<std::string>> UelDisplacement<nDim, nNodes>::getNodeFields()
+{
+    std::vector< std::vector<std::string>> nodeFields;
+    for(int i = 0; i < nNodes; i++){
+        nodeFields.push_back(std::vector<std::string>());
+        nodeFields[i].push_back("displacement");
+    }
+    return nodeFields;
+}
+
+    template <int nDim, int nNodes>
+std::vector<int> UelDisplacement<nDim, nNodes>::getDofIndicesPermutationPattern()
+{
+    std::vector<int> permutationPattern;
+    for(int i = 0; i < nNodes * nDim; i++)
+        permutationPattern.push_back(i);
+
+    return permutationPattern;
+}
+
+    template <int nDim, int nNodes>
+std::string UelDisplacement<nDim, nNodes>::getElementShape()
+{
+    return ParentGeometryElement::getElementShape();
 }
 
     template <int nDim, int nNodes>
@@ -232,7 +260,7 @@ void UelDisplacement<nDim, nNodes>::initializeYourself(const double* coordinates
 }
 
 
-template <int nDim, int nNodes>
+    template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
         const double* dQ_,
         double* Pe_,
@@ -334,58 +362,58 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const
 {
     switch(state){
         case BftUel::GeostaticStress: { 
-                if constexpr (nDim>1) {
-                    for(GaussPt& gaussPt : gaussPts){
+                                          if constexpr (nDim>1) {
+                                              for(GaussPt& gaussPt : gaussPts){
 
-                        typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
+                                                  typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
 
-                        const double sigY1 = values[0];
-                        const double sigY2 = values[2];
-                        const double y1    = values[1];
-                        const double y2    = values[3];
+                                                  const double sigY1 = values[0];
+                                                  const double sigY2 = values[2];
+                                                  const double y1    = values[1];
+                                                  const double y2    = values[3];
 
-                        gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
-                        gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
-                        gaussPt.stress(2) = values[5]*gaussPt.stress(1);
-                    }  // sigma_z
-                }
-                break; 
-            }
+                                                  gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
+                                                  gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
+                                                  gaussPt.stress(2) = values[5]*gaussPt.stress(1);
+                                              }  // sigma_z
+                                          }
+                                          break; 
+                                      }
 
         default: break;
     }
 }
 
-    template <int nDim, int nNodes>
-        void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
-                double* P, 
-                const int elementFace, 
-                const double* load,
-                const double* time,
-                double dT){
+template <int nDim, int nNodes>
+void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
+        double* P, 
+        const int elementFace, 
+        const double* load,
+        const double* time,
+        double dT){
 
-            Map<RhsSized> fU(P);
+    Map<RhsSized> fU(P);
 
-            switch(loadType){
+    switch(loadType){
 
-                case BftUel::Pressure: { 
-                                           const double p = load[0];
+        case BftUel::Pressure: { 
+                                   const double p = load[0];
 
-                                           bft::FiniteElement::BoundaryElement boundaryEl(this->shape, 
-                                                   elementFace,
-                                                   nDim, 
-                                                   this->coordinates);
+                                   bft::FiniteElement::BoundaryElement boundaryEl(this->shape, 
+                                           elementFace,
+                                           nDim, 
+                                           this->coordinates);
 
-                                           VectorXd Pk =  - p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
+                                   VectorXd Pk =  - p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
 
-                                           if(nDim == 2)
-                                               Pk *= elementProperties[0]; // thickness
+                                   if(nDim == 2)
+                                       Pk *= elementProperties[0]; // thickness
 
-                                           fU+= Pk;
+                                   fU+= Pk;
 
-                                           break;
-                                       }
-                default: {throw std::invalid_argument("Invalid Load Type specified");}
-            }
-        }
+                                   break;
+                               }
+        default: {throw std::invalid_argument("Invalid Load Type specified");}
+    }
+}
 
