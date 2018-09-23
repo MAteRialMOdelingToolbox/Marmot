@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class BftUel{
 
@@ -23,6 +24,12 @@ class BftUel{
         virtual ~BftUel(){};
 
         virtual int getNumberOfRequiredStateVars() = 0;
+
+        virtual void getNodeFields( std::vector< std::vector<std::string>>& nodeFields) = 0;
+
+        //virtual void getNodeDofLayout() = 0;
+
+        //virtual void 
 
         virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
 
