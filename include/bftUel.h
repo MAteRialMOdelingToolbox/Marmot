@@ -25,11 +25,11 @@ class BftUel{
 
         virtual int getNumberOfRequiredStateVars() = 0;
 
-        virtual void getNodeFields( std::vector< std::vector<std::string>>& nodeFields) = 0;
+        virtual std::vector< std::vector<std::string>> getNodeFields() = 0;
 
-        //virtual void getNodeDofLayout() = 0;
+        virtual std::vector<int> getDofIndicesPermutationPattern() = 0;
 
-        //virtual void 
+        virtual std::string getElementShape() = 0;
 
         virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
 

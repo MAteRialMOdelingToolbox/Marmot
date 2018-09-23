@@ -98,22 +98,7 @@ namespace userLibrary{
         return materialCodeMap [ materialCode ];
     }
 
-    //template< class T> 
-    //BftMaterial* instanceMaterial_( double *stateVars,
-                                    //int nStateVars,
-                                    //const double* materialProperties, 
-                                    //int nMaterialProperties,
-                                    //int element, 
-                                    //int gaussPt)
-    //{
-        //if ( nStateVars < T::getRequiredNumberOfStateVars(materialProperties, nMaterialProperties) )
-            //throw std::invalid_argument("Not enough stateVars provided");
-        //return new T(materialProperties, nMaterialProperties, element, gaussPt);
-    //}
-
     BftMaterial* bftMaterialFactory( MaterialCode materialCode,
-                                    //double *stateVars,
-                                    //int nStateVars,
                                     const double* materialProperties, 
                                     int nMaterialProperties,
                                     int element, 
@@ -123,13 +108,11 @@ namespace userLibrary{
         {
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
-            //case LinearElastic: { return instanceMaterial_<class LinearElastic>( materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef HOEKBROWN 
             case HoekBrown: { return new class HoekBrown(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEON
-            //case ModLeon: { return new class ModLeon(materialProperties, nMaterialProperties, element, gaussPt);}
             case ModLeon: { return new class ModLeon( materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef SHOTLEON
