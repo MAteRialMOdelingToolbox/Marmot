@@ -1,6 +1,7 @@
 #pragma once 
 #include "bftTypedefs.h"
 #include "bftFiniteElement.h"
+#include <map>
 
 template< int nDim, int  nNodes>
 class BftGeometryElement
@@ -39,6 +40,19 @@ class BftGeometryElement
             coordinates(nullptr),
             shape ( bft::FiniteElement::getElementShapeByMetric(nDim, nNodes) ) 
             {};
+
+        std::string getElementShape() {
+        static std::map< bft::FiniteElement::ElementShapes, std::string> shapes = 
+        {
+            {bft::FiniteElement::Truss2, "Truss2"},
+            {bft::FiniteElement::Quad4, "Quad4"},
+            {bft::FiniteElement::Quad8, "Quad8"},
+            {bft::FiniteElement::Hexa8, "Hexa8"},
+            {bft::FiniteElement::Hexa20, "Hexa8"}
+        };
+
+        return shapes[this->shape];
+}
 
         void initializeYourself(const double* coords)
         {

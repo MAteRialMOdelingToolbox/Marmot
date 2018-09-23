@@ -33,6 +33,12 @@ class BftUelSpatialWrapper : public BftUel
 
         int getNumberOfRequiredStateVars();
 
+        std::vector< std::vector<std::string>> getNodeFields();
+
+        std::vector<int> getDofIndicesPermutationPattern();
+
+        std::string getElementShape();
+
         void assignStateVars(double *stateVars, int nStateVars);
 
         void initializeYourself(const double* coordinates);

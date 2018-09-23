@@ -23,6 +23,23 @@ int BftUelSpatialWrapper::getNumberOfRequiredStateVars(){
     return childElement->getNumberOfRequiredStateVars();
 }
 
+std::vector< std::vector<std::string>> BftUelSpatialWrapper::getNodeFields()
+{
+    return childElement->getNodeFields();
+}
+
+std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
+{
+    // todo
+    return childElement->getDofIndicesPermutationPattern();
+}
+
+std::string BftUelSpatialWrapper::getElementShape()
+{
+    return childElement->getElementShape();
+}
+
+
 void BftUelSpatialWrapper::assignStateVars(double *stateVars, int nStateVars)
 {
     childElement->assignStateVars(stateVars, nStateVars);
