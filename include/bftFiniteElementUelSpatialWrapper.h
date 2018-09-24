@@ -37,7 +37,11 @@ class BftUelSpatialWrapper : public BftUel
 
         std::vector<int> getDofIndicesPermutationPattern();
 
-        std::string getElementShape();
+        int getNNodes(){return nNodes;}
+
+        int getNDofPerElement (){return unprojectedSize;}
+
+        std::string getElementShape(){return childElement->getElementShape();}
 
         void assignStateVars(double *stateVars, int nStateVars);
 

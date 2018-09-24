@@ -34,11 +34,6 @@ std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
     return childElement->getDofIndicesPermutationPattern();
 }
 
-std::string BftUelSpatialWrapper::getElementShape()
-{
-    return childElement->getElementShape();
-}
-
 
 void BftUelSpatialWrapper::assignStateVars(double *stateVars, int nStateVars)
 {
