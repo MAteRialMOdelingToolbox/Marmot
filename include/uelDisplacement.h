@@ -90,9 +90,15 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
         std::vector<int> getDofIndicesPermutationPattern();
 
-        std::string getElementShape();
+        int getNNodes(){return nNodes;}
+
+        int getNDofPerElement (){return sizeLoadVector;}
+
+        std::string getElementShape(){return ParentGeometryElement::getElementShape();}
 
         void assignStateVars(double *stateVars, int nStateVars);
+
+        void assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties);
 
         void initializeYourself(const double* coordinates);
 
@@ -142,6 +148,7 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(
         bft::NumIntegration::IntegrationTypes integrationType,
         SectionType sectionType
         ):
+    //BftUel(nNodes, sizeLoadVector),
     ParentGeometryElement(),
     elementProperties(Map<const VectorXd>(properties, nElementProperties)),
     materialProperties(Map<const VectorXd>(materialProperties, nMaterialProperties)),
@@ -196,11 +203,6 @@ std::vector<int> UelDisplacement<nDim, nNodes>::getDofIndicesPermutationPattern(
     return permutationPattern;
 }
 
-    template <int nDim, int nNodes>
-std::string UelDisplacement<nDim, nNodes>::getElementShape()
-{
-    return ParentGeometryElement::getElementShape();
-}
 
     template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::assignStateVars(double *stateVars, int nStateVars)
