@@ -19,6 +19,11 @@ class BftUel{
             Pressure, 
         };
 
+        enum PropertyTypes{
+            ElementProperties,
+            Material,
+        };
+
         BftUel(){};
 
         virtual ~BftUel(){};
@@ -29,9 +34,15 @@ class BftUel{
 
         virtual std::vector<int> getDofIndicesPermutationPattern() = 0;
 
+        virtual int getNNodes() = 0;
+
+        virtual int getNDofPerElement () = 0;
+
         virtual std::string getElementShape() = 0;
 
         virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
+
+        virtual void assignProperty(PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties) = 0;
 
         virtual void initializeYourself(const double *coordinates) = 0;
 
