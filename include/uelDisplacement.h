@@ -24,65 +24,55 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
             Solid,
         };
 
-        typedef BftGeometryElement<nDim, nNodes> ParentGeometryElement;
-
         static constexpr int sizeLoadVector =   nNodes * nDim;
         static constexpr int nCoordinates =     nNodes * nDim;
 
-        typedef Matrix<double, sizeLoadVector, 1>                RhsSized;
-        typedef Matrix<double, sizeLoadVector, sizeLoadVector>   KeSizedMatrix;
+        using ParentGeometryElement     = BftGeometryElement<nDim, nNodes>; 
+        using JacobianSized             = typename ParentGeometryElement::JacobianSized;
+        using dNdXiSized                = typename ParentGeometryElement::dNdXiSized;
+        using BSized                    = typename ParentGeometryElement::BSized;
+        using XiSized                   = typename ParentGeometryElement::XiSized;
+        using RhsSized                  = Matrix<double, sizeLoadVector, 1>;
+        using KeSizedMatrix             = Matrix<double, sizeLoadVector, sizeLoadVector>;
+        using CSized                    = Matrix<double, ParentGeometryElement::VoigtSize, ParentGeometryElement::VoigtSize>;
+        using Voigt                     = Matrix<double, ParentGeometryElement::VoigtSize, 1>;
 
-        typedef Matrix<double, ParentGeometryElement::VoigtSize, ParentGeometryElement::VoigtSize> CSized;
-        typedef Matrix<double, ParentGeometryElement::VoigtSize, 1> Voigt;
-
-        const Map<const VectorXd>   elementProperties;
-        const Map<const VectorXd>   materialProperties;
+        Map<const VectorXd>         elementProperties;
         const int                   elLabel;
         const SectionType           sectionType;
 
         struct GaussPt {
             static constexpr int nRequiredStateVars = 6 + 6;
 
-            typename ParentGeometryElement::XiSized       xi;
+            XiSized       xi;
             const double weight;
+
             std::unique_ptr< BftMaterialHypoElastic>      material;
-            Map< bft::Vector6 > stress;
-            Map< bft::Vector6 > strain;
+            bft::mVector6 stress;
+            bft::mVector6 strain;
 
-            typename ParentGeometryElement::JacobianSized J;
-            typename ParentGeometryElement::JacobianSized JInv;
-            double                                        detJ;
-            typename ParentGeometryElement::dNdXiSized    dNdXi;
-            typename ParentGeometryElement::dNdXiSized    dNdX;
-            typename ParentGeometryElement::BSized        B;
-            double                                        intVol;
+            struct Geometry{JacobianSized J;
+                            JacobianSized JInv;
+                            double        detJ;
+                            dNdXiSized    dNdXi;
+                            dNdXiSized    dNdX;
+                            BSized        B;
+            };
 
-            GaussPt(typename ParentGeometryElement::XiSized       xi,
-                    double weight,
-                    std::unique_ptr< BftMaterialHypoElastic >    material
-                   ):
+            std::unique_ptr<Geometry>                   geometry;
+
+            double  intVol;
+
+            GaussPt(XiSized       xi, double weight):
                 xi(xi),
                 weight(weight),
-                material( std::move( material ) ),
                 stress(nullptr),
-                strain(nullptr)
-            {};
+                strain(nullptr) {};
         };
 
         std::vector < GaussPt > gaussPts;
 
-    public:
-
-        UelDisplacement(
-                const double* elementProperties,
-                int nElementPropertiesElement,
-                int noEl,
-                userLibrary::MaterialCode material,
-                const double* materialProperties,
-                int nMaterialProperties,
-                bft::NumIntegration::IntegrationTypes integrationType,
-                SectionType sectionType
-                );
+        UelDisplacement( int noEl, bft::NumIntegration::IntegrationTypes integrationType, SectionType sectionType);
 
         int getNumberOfRequiredStateVars();
 
@@ -137,21 +127,9 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 };
 
 template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement(
-        //const double* coords, 
-        const double* properties,
-        int nElementProperties,
-        int noEl,
-        userLibrary::MaterialCode materialCode,
-        const double* materialProperties,
-        int nMaterialProperties,
-        bft::NumIntegration::IntegrationTypes integrationType,
-        SectionType sectionType
-        ):
-    //BftUel(nNodes, sizeLoadVector),
+UelDisplacement<nDim, nNodes>::UelDisplacement( int noEl, bft::NumIntegration::IntegrationTypes integrationType, SectionType sectionType):
     ParentGeometryElement(),
-    elementProperties(Map<const VectorXd>(properties, nElementProperties)),
-    materialProperties(Map<const VectorXd>(materialProperties, nMaterialProperties)),
+    elementProperties(Map<const VectorXd>(nullptr, 0)),
     elLabel(noEl),
     sectionType(sectionType)
 {
@@ -159,20 +137,8 @@ UelDisplacement<nDim, nNodes>::UelDisplacement(
     VectorXd gaussWeights =      bft::NumIntegration::getGaussWeights( this->shape, integrationType);
 
     for(int i = 0; i < gaussPointList.rows(); i++){
-
-        const typename ParentGeometryElement::XiSized& xi = gaussPointList.row(i);
-
-        auto material = std::unique_ptr<BftMaterialHypoElastic>(
-                dynamic_cast<BftMaterialHypoElastic*>(
-                    userLibrary::bftMaterialFactory( 
-                        materialCode,
-                        materialProperties, 
-                        nMaterialProperties, 
-                        elLabel, 
-                        i)));
-
-        GaussPt gpt( xi, gaussWeights(i), std::move( material ) );
-
+        const XiSized& xi = gaussPointList.row(i);
+        GaussPt gpt( xi, gaussWeights(i) );
         gaussPts.push_back ( std::move (gpt) );
     }
 }
@@ -182,12 +148,15 @@ int UelDisplacement<nDim, nNodes>::getNumberOfRequiredStateVars()
 {
     return  ( gaussPts[0].material->getNumberOfRequiredStateVars() + GaussPt::nRequiredStateVars )  * gaussPts.size();
 }
+
     template <int nDim, int nNodes>
 std::vector< std::vector<std::string>> UelDisplacement<nDim, nNodes>::getNodeFields()
 {
-    std::vector< std::vector<std::string>> nodeFields;
+    using namespace std;
+
+    vector< vector<string>> nodeFields;
     for(int i = 0; i < nNodes; i++){
-        nodeFields.push_back(std::vector<std::string>());
+        nodeFields.push_back(vector<string>());
         nodeFields[i].push_back("displacement");
     }
     return nodeFields;
@@ -219,11 +188,34 @@ void UelDisplacement<nDim, nNodes>::assignStateVars(double *stateVars, int nStat
         gpt.material->assignStateVars( stateVars +                      i * (nStateVarsMaterial + GaussPt::nRequiredStateVars), nStateVarsMaterial);
 
         // assign stress, strain state vars using the 'placement new' operator
-        new (&gpt.stress) Map< bft::Vector6 > (
+        new (&gpt.stress) bft::mVector6 (
                 stateVars + nStateVarsMaterial + i * (nStateVarsMaterial + GaussPt::nRequiredStateVars), 6);
 
-        new (&gpt.strain) Map< bft::Vector6 > (
+        new (&gpt.strain) bft::mVector6  (
                 stateVars + nStateVarsMaterial + i * (nStateVarsMaterial + GaussPt::nRequiredStateVars) + 6, 6);
+    }
+}
+    template <int nDim, int nNodes>
+void UelDisplacement<nDim, nNodes>::assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties)
+{
+    switch(property){
+        case ElementProperties: { new (&elementProperties) Map<const VectorXd>(propertyValues, nProperties);
+                                    break;}
+
+        case BftMaterial: { auto materialCode = static_cast<userLibrary::MaterialCode> ( propertyInfo );
+
+                              for(size_t i = 0; i < gaussPts.size(); i++){ 
+                                  GaussPt& gpt = gaussPts[i];
+                                  gpt.material =  std::unique_ptr<BftMaterialHypoElastic>(
+                                          dynamic_cast<BftMaterialHypoElastic*>(
+                                              userLibrary::bftMaterialFactory( 
+                                                  materialCode,
+                                                  propertyValues,
+                                                  nProperties,
+                                                  elLabel, 
+                                                  i)));
+                              }
+                              break;}
     }
 }
 
@@ -234,30 +226,32 @@ void UelDisplacement<nDim, nNodes>::initializeYourself(const double* coordinates
 
     for( GaussPt& gpt : gaussPts){
 
-        gpt.dNdXi   =   this->dNdXi(gpt.xi);
-        gpt.J		=   this->Jacobian(gpt.dNdXi  );
-        gpt.JInv    =   gpt.J.inverse();
-        gpt.detJ	=   gpt.J.determinant();
-        gpt.dNdX	=   this->dNdX(gpt.dNdXi, gpt.JInv );
-        gpt.B		=   this->B(gpt.dNdX);
+        gpt.geometry = std::make_unique<typename GaussPt::Geometry>();
+
+        gpt.geometry->dNdXi   = this->dNdXi( gpt.xi );
+        gpt.geometry->J		=   this->Jacobian( gpt.geometry->dNdXi  );
+        gpt.geometry->JInv    = gpt.geometry->J.inverse();
+        gpt.geometry->detJ	=   gpt.geometry->J.determinant();
+        gpt.geometry->dNdX	=   this->dNdX(gpt.geometry->dNdXi, gpt.geometry->JInv );
+        gpt.geometry->B		=   this->B(gpt.geometry->dNdX);
 
         if( sectionType == SectionType::Solid){
 
-            gpt.intVol = gpt.weight * gpt.detJ;
-            gpt.material->setCharacteristicElementLength ( std::cbrt ( 8 * gpt.detJ )  ) ;}
+            gpt.intVol = gpt.weight * gpt.geometry->detJ;
+            gpt.material->setCharacteristicElementLength ( std::cbrt ( 8 * gpt.geometry->detJ )  ) ;}
 
         else if(sectionType == SectionType::PlaneStrain || 
                 sectionType == SectionType::PlaneStress){
 
             const double& thickness = elementProperties[0];
-            gpt.intVol = gpt.weight * gpt.detJ * thickness;
-            gpt.material->setCharacteristicElementLength ( std::sqrt ( 4 * gpt.detJ )  ) ;}
+            gpt.intVol = gpt.weight * gpt.geometry->detJ * thickness;
+            gpt.material->setCharacteristicElementLength ( std::sqrt ( 4 * gpt.geometry->detJ )  ) ;}
 
         else if(sectionType == SectionType::UniaxialStress){
 
             const double& crossSection = elementProperties[0];
-            gpt.intVol = gpt.weight * gpt.detJ * crossSection;
-            gpt.material->setCharacteristicElementLength (  2 * gpt.detJ  ) ;}
+            gpt.intVol = gpt.weight * gpt.geometry->detJ * crossSection;
+            gpt.material->setCharacteristicElementLength (  2 * gpt.geometry->detJ  ) ;}
     }
 }
 
@@ -272,7 +266,6 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
         double& pNewDT
         )
 {
-
     using namespace bft;
 
     Map<const RhsSized>                  QTotal(QTotal_);				
@@ -288,7 +281,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
     for(GaussPt& gaussPt : gaussPts){  
 
-        const typename ParentGeometryElement::BSized& B = gaussPt.B;
+        const BSized& B = gaussPt.geometry->B;
 
         dE = B * dQ;
 
@@ -367,7 +360,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const
                                           if constexpr (nDim>1) {
                                               for(GaussPt& gaussPt : gaussPts){
 
-                                                  typename ParentGeometryElement::XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
+                                                  XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
 
                                                   const double sigY1 = values[0];
                                                   const double sigY2 = values[2];
@@ -418,4 +411,3 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
         default: {throw std::invalid_argument("Invalid Load Type specified");}
     }
 }
-
