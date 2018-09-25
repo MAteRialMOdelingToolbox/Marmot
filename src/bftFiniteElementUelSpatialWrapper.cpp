@@ -15,6 +15,8 @@ BftUelSpatialWrapper::BftUelSpatialWrapper(
     nNodes(nNodes),
     nRhsChild(nRhsChild),
     rhsIndicesToBeProjected (rhsIndicesToBeWrapped, nRhsIndicesToBeWrapped),
+    projectedSize (nRhsChild),
+    unprojectedSize (nRhsChild + rhsIndicesToBeProjected.size() * (nDim - nDimChild)),
     childElement ( std::move( childElement ) )
 {
 }
@@ -27,11 +29,47 @@ std::vector< std::vector<std::string>> BftUelSpatialWrapper::getNodeFields()
 {
     return childElement->getNodeFields();
 }
+int BftUelSpatialWrapper::getNNodes(){
+    return nNodes;}
+
+int BftUelSpatialWrapper::getNDofPerElement (){
+    return unprojectedSize;}
+
+std::string BftUelSpatialWrapper::getElementShape(){
+    return childElement->getElementShape();}
+
+void BftUelSpatialWrapper::assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties) {
+    childElement->assignProperty(property, propertyInfo, propertyValues, nProperties);}
 
 std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
 {
-    // todo
-    return childElement->getDofIndicesPermutationPattern();
+    auto childPermutationPattern = childElement->getDofIndicesPermutationPattern();
+    std::vector<int> permutationPattern;
+
+    int i=0, j=0, k=0; //i: projected, j: unprojected, k: indicesToProject
+    int indexChild;
+    while( i < projectedSize)
+    {
+        indexChild = childPermutationPattern[i];
+        if ( k < rhsIndicesToBeProjected.size() && i == rhsIndicesToBeProjected(k) )
+        {
+            // copy the Transformation block wise ( if current DOF is projected )
+            for(int l = 0; l < nDim; l ++)
+                permutationPattern.push_back( indexChild + j +  l );
+
+            i += nDimChild;
+            j += (nDim-nDimChild);
+            k += 1;
+        }
+        else
+        { 
+            permutationPattern.push_back( indexChild + j );
+            i++;
+            j++;
+        }
+    }
+   
+    return permutationPattern;
 }
 
 
@@ -44,10 +82,6 @@ void BftUelSpatialWrapper::initializeYourself(const double *coordinates) {
 
     Map < const MatrixXd > unprojectedCoordinates (coordinates, nDim, nNodes);
 
-    int nDimDiff = nDim - nDimChild;
-
-    projectedSize =   nRhsChild;
-    unprojectedSize = nRhsChild + rhsIndicesToBeProjected.size() * nDimDiff;
 
     if(nDimChild == 1)
     {

@@ -12,13 +12,13 @@ class BftUelSpatialWrapper : public BftUel
      * */
     public:
 
-        int projectedSize, unprojectedSize;
 
         const int nDim;
         const int nDimChild;
         const int nNodes;
         const int nRhsChild;
         const Eigen::Map<const Eigen::VectorXi> rhsIndicesToBeProjected;
+        const int projectedSize, unprojectedSize;
 
         std::unique_ptr<BftUel> childElement;
         Eigen::MatrixXd T;
@@ -37,13 +37,15 @@ class BftUelSpatialWrapper : public BftUel
 
         std::vector<int> getDofIndicesPermutationPattern();
 
-        int getNNodes(){return nNodes;}
+        int getNNodes();
 
-        int getNDofPerElement (){return unprojectedSize;}
+        int getNDofPerElement ();
 
-        std::string getElementShape(){return childElement->getElementShape();}
+        std::string getElementShape();
 
         void assignStateVars(double *stateVars, int nStateVars);
+
+        void assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties);
 
         void initializeYourself(const double* coordinates);
 
