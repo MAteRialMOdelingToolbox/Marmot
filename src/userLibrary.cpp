@@ -183,128 +183,91 @@ namespace userLibrary{
     {
         static std::map<std::string, ElementCode> elementCodeMap =
         {
-            { "UelT2D2", UelT2D2 }, 
-            { "UelCPS4", UelCPS4 }, 
-            { "UelCPS8", UelCPS8 }, 
-            { "UelCPS8R", UelCPS8R }, 
-            { "UelCPE4", UelCPE4 }, 
-            { "UelCPE8", UelCPE8 }, 
-            { "UelCPE8R", UelCPE8R }, 
-            { "UelCPE4EAS2", UelCPE4EAS2 }, 
-            { "UelCPE4EAS4", UelCPE4EAS4 }, 
-            { "UelCPE4EAS5", UelCPE4EAS5 }, 
-            { "UelC3D8", UelC3D8 }, 
-            { "UelC3D8R", UelC3D8R }, 
-            { "UelC3D20", UelC3D20 }, 
-            { "UelC3D20R", UelC3D20R }, 
-            { "UelC3D8EAS3", UelC3D8EAS3 }, 
-            { "UelC3D8EAS9", UelC3D8EAS9 }, 
-            { "UelCPS4NonLocal", UelCPS4NonLocal }, 
-            { "UelCPS8NonLocal", UelCPS8NonLocal }, 
-            { "UelCPS8RNonLocal", UelCPS8RNonLocal }, 
-            { "UelCPS4NonLocalEAS2", UelCPS4NonLocalEAS2 }, 
-            { "UelCPS4NonLocalEAS4", UelCPS4NonLocalEAS4 }, 
-            { "UelCPE4NonLocal", UelCPE4NonLocal }, 
-            { "UelCPE4RNonLocal", UelCPE4RNonLocal }, 
-            { "UelCPE8NonLocal", UelCPE8NonLocal }, 
-            { "UelCPE8RNonLocal", UelCPE8RNonLocal }, 
-            { "UelCPE4NonLocalEAS2", UelCPE4NonLocalEAS2 }, 
-            { "UelCPE4NonLocalEAS4", UelCPE4NonLocalEAS4 }, 
-            { "UelCPE4NonLocalEAS5", UelCPE4NonLocalEAS5 }, 
-            { "UelC3D8NonLocalEAS3", UelC3D8NonLocalEAS3 }, 
-            { "UelC3D8NonLocalEAS6b", UelC3D8NonLocalEAS6b }, 
-            { "UelC3D8NonLocalEAS9", UelC3D8NonLocalEAS9 }, 
-            { "UelC3D8NonLocal", UelC3D8NonLocal }, 
-            { "UelC3D8RNonLocal", UelC3D8RNonLocal }, 
-            { "UelC3D20NonLocal", UelC3D20NonLocal }, 
-            { "UelC3D20RNonLocal", UelC3D20RNonLocal }, 
+            { "UELT2D2", UelT2D2 }, 
+            { "UELCPS4", UelCPS4 }, 
+            { "UELCPS8", UelCPS8 }, 
+            { "UELCPS8R", UelCPS8R }, 
+            { "UELCPE4", UelCPE4 }, 
+            { "UELCPE8", UelCPE8 }, 
+            { "UELCPE8R", UelCPE8R }, 
+            { "UELCPE4EAS2", UelCPE4EAS2 }, 
+            { "UELCPE4EAS4", UelCPE4EAS4 }, 
+            { "UELCPE4EAS5", UelCPE4EAS5 }, 
+            { "UELC3D8", UelC3D8 }, 
+            { "UELC3D8R", UelC3D8R }, 
+            { "UELC3D20", UelC3D20 }, 
+            { "UELC3D20R", UelC3D20R }, 
+            { "UELC3D8EAS3", UelC3D8EAS3 }, 
+            { "UELC3D8EAS9", UelC3D8EAS9 }, 
+            { "UELCPS4NONLOCAL", UelCPS4NonLocal }, 
+            { "UELCPS8NONLOCAL", UelCPS8NonLocal }, 
+            { "UELCPS8RNONLOCAL", UelCPS8RNonLocal }, 
+            { "UELCPS4NONLOCALEAS2", UelCPS4NonLocalEAS2 }, 
+            { "UELCPS4NONLOCALEAS4", UelCPS4NonLocalEAS4 }, 
+            { "UELCPE4NONLOCAL", UelCPE4NonLocal }, 
+            { "UELCPE4RNONLOCAL", UelCPE4RNonLocal }, 
+            { "UELCPE8NONLOCAL", UelCPE8NonLocal }, 
+            { "UELCPE8RNONLOCAL", UelCPE8RNonLocal }, 
+            { "UELCPE4NONLOCALEAS2", UelCPE4NonLocalEAS2 }, 
+            { "UELCPE4NONLOCALEAS4", UelCPE4NonLocalEAS4 }, 
+            { "UELCPE4NONLOCALEAS5", UelCPE4NonLocalEAS5 }, 
+            { "UELC3D8NONLOCALEAS3", UelC3D8NonLocalEAS3 }, 
+            { "UELC3D8NONLOCALEAS6B", UelC3D8NonLocalEAS6b }, 
+            { "UELC3D8NONLOCALEAS9", UelC3D8NonLocalEAS9 }, 
+            { "UELC3D8NONLOCAL", UelC3D8NonLocal }, 
+            { "UELC3D8RNONLOCAL", UelC3D8RNonLocal }, 
+            { "UELC3D20NONLOCAL", UelC3D20NonLocal }, 
+            { "UELC3D20RNONLOCAL", UelC3D20RNonLocal }, 
 
         };
         return elementCodeMap[ elementName ];
     }
 
-    BftUel* UelFactory(ElementCode  elementCode, 
-            const double* propertiesElement, int nPropertiesElement, int elementNumber, 
-            MaterialCode materialCode,
-            const double* propertiesUmat, int nPropertiesUmat)
+    BftUel* UelFactory(ElementCode  elementCode, int elementNumber)
     {
         switch(elementCode){
             #ifdef UELDISPLACEMENT
-            case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode , propertiesUmat, nPropertiesUmat);}
-            case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode ,  propertiesUmat, nPropertiesUmat);}
-            case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8: {return UelDisplacementFactory:: generateUelC3D8 ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8R: {return UelDisplacementFactory:: generateUelC3D8R ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8R: {return UelDisplacementFactory:: generateUelCPE8R ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8 ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20: {return UelDisplacementFactory:: generateUelC3D20 ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
+            case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
+            case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
+            case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4(elementNumber);}
+            case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8(elementNumber);}
+            case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R(elementNumber);}
+            case UelC3D8: {return UelDisplacementFactory:: generateUelC3D8(elementNumber);}
+            case UelC3D8R: {return UelDisplacementFactory:: generateUelC3D8R(elementNumber);}
+            case UelCPE8R: {return UelDisplacementFactory:: generateUelCPE8R(elementNumber);}
+            case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8(elementNumber);}
+            case UelC3D20: {return UelDisplacementFactory:: generateUelC3D20(elementNumber);}
+            case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R(elementNumber);}
             #endif 
             #ifdef UELNONLOCAL
-            case UelCPS4NonLocal: {return UelNonLocalFactory:: generateUelCPS4NonLocal ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4NonLocal: {return UelNonLocalFactory:: generateUelCPE4NonLocal ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4RNonLocal: {return UelNonLocalFactory:: generateUelCPE4RNonLocal ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8NonLocal: {return UelNonLocalFactory:: generateUelCPS8NonLocal ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPS8RNonLocal: {return UelNonLocalFactory:: generateUelCPS8RNonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8NonLocal: {return UelNonLocalFactory:: generateUelC3D8NonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8RNonLocal: {return UelNonLocalFactory:: generateUelC3D8RNonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8NonLocal: {return UelNonLocalFactory:: generateUelCPE8NonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE8RNonLocal: {return UelNonLocalFactory:: generateUelCPE8RNonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20RNonLocal: {return UelNonLocalFactory:: generateUelC3D20RNonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D20NonLocal: {return UelNonLocalFactory:: generateUelC3D20NonLocal ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
+            case UelCPS4NonLocal: {return UelNonLocalFactory:: generateUelCPS4NonLocal(elementNumber);}
+            case UelCPE4NonLocal: {return UelNonLocalFactory:: generateUelCPE4NonLocal(elementNumber);}
+            case UelCPE4RNonLocal: {return UelNonLocalFactory:: generateUelCPE4RNonLocal(elementNumber);}
+            case UelCPS8NonLocal: {return UelNonLocalFactory:: generateUelCPS8NonLocal(elementNumber);}
+            case UelCPS8RNonLocal: {return UelNonLocalFactory:: generateUelCPS8RNonLocal(elementNumber);}
+            case UelC3D8NonLocal: {return UelNonLocalFactory:: generateUelC3D8NonLocal(elementNumber);}
+            case UelC3D8RNonLocal: {return UelNonLocalFactory:: generateUelC3D8RNonLocal(elementNumber);}
+            case UelCPE8NonLocal: {return UelNonLocalFactory:: generateUelCPE8NonLocal(elementNumber);}
+            case UelCPE8RNonLocal: {return UelNonLocalFactory:: generateUelCPE8RNonLocal(elementNumber);}
+            case UelC3D20RNonLocal: {return UelNonLocalFactory:: generateUelC3D20RNonLocal(elementNumber);}
+            case UelC3D20NonLocal: {return UelNonLocalFactory:: generateUelC3D20NonLocal(elementNumber);}
             #endif 
             #ifdef UELDISPLACEMENTEAS
-            case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4EAS4: {return UelDisplacementEASFactory:: generateUelCPE4EAS4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8EAS3: {return UelDisplacementEASFactory:: generateUelC3D8EAS3 ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8EAS9: {return UelDisplacementEASFactory:: generateUelC3D8EAS9 ( propertiesElement, 
-                             nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
+            case UelCPE4EAS2: {return UelDisplacementEASFactory:: generateUelCPE4EAS2(elementNumber);}
+            case UelCPE4EAS4: {return UelDisplacementEASFactory:: generateUelCPE4EAS4(elementNumber);}
+            case UelCPE4EAS5: {return UelDisplacementEASFactory:: generateUelCPE4EAS5(elementNumber);}
+            case UelC3D8EAS3: {return UelDisplacementEASFactory:: generateUelC3D8EAS3(elementNumber);}
+            case UelC3D8EAS9: {return UelDisplacementEASFactory:: generateUelC3D8EAS9(elementNumber);}
             #endif
             #ifdef UELNONLOCALEAS 
-            case UelCPE4NonLocalEAS2: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS2 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelCPE4NonLocalEAS5: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
+            case UelCPE4NonLocalEAS2: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS2(elementNumber);}
+            case UelCPE4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4(elementNumber);}
+            case UelCPE4NonLocalEAS5: {return UelNonLocalEASFactory:: generateUelCPE4NonLocalEAS4(elementNumber);}
 
-            case UelCPS4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPS4NonLocalEAS4 ( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8NonLocalEAS3: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS3( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
-            case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9( propertiesElement, 
-                            nPropertiesElement, elementNumber, materialCode, propertiesUmat, nPropertiesUmat);}
+            case UelCPS4NonLocalEAS4: {return UelNonLocalEASFactory:: generateUelCPS4NonLocalEAS4(elementNumber);}
+            case UelC3D8NonLocalEAS3: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS3(elementNumber);}
+            case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b(elementNumber);}
+            case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementNumber);}
             #endif
 
             default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid element "<< elementCode<< " requested!" << std::endl; 

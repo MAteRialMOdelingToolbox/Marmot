@@ -46,9 +46,9 @@ set (optionalLibraries
     UntereggerRockMassPlaxis
 
     uelDisplacement
-    #uelDisplacementEAS
-    #uelNonLocal
-    #uelNonLocalEAS
+    uelDisplacementEAS
+    uelNonLocal
+    uelNonLocalEAS
     )
 
 # check if uels are present, since they need c++17

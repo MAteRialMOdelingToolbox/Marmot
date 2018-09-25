@@ -21,7 +21,7 @@ class BftUel{
 
         enum PropertyTypes{
             ElementProperties,
-            Material,
+            BftMaterial,
         };
 
         BftUel(){};
