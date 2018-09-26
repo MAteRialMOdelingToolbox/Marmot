@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "bftUelProperty.h"
 
 class BftUel{
 
@@ -19,11 +20,12 @@ class BftUel{
             Pressure, 
         };
 
-        enum PropertyTypes{
-            ElementProperties,
-            BftMaterial,
-        };
+        //enum PropertyTypes{
+            //ElementProperties,
+            //BftMaterial,
+        //};
 
+        // todo: check if needed
         BftUel(){};
 
         virtual ~BftUel(){};
@@ -42,7 +44,7 @@ class BftUel{
 
         virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
 
-        virtual void assignProperty(PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties) = 0;
+        virtual void assignProperty(const BftUelProperty& property) = 0;
 
         virtual void initializeYourself(const double *coordinates) = 0;
 

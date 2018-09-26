@@ -7,7 +7,7 @@
 
 namespace userLibrary{
 
-    enum MaterialCode{
+    enum MaterialCode:int{
         ModLeon=1,
         ShotLeon=2,
         Meschke=3,
