@@ -38,8 +38,8 @@ int BftUelSpatialWrapper::getNDofPerElement (){
 std::string BftUelSpatialWrapper::getElementShape(){
     return childElement->getElementShape();}
 
-void BftUelSpatialWrapper::assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties) {
-    childElement->assignProperty(property, propertyInfo, propertyValues, nProperties);}
+void BftUelSpatialWrapper::assignProperty(const BftUelProperty& property){
+    childElement->assignProperty(property);}
 
 std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
 {

@@ -1,5 +1,6 @@
 #pragma once
 #include "bftUel.h"
+#include "bftUelProperty.h"
 #include "Eigen/Sparse"
 #include <functional>
 #include <memory>
@@ -45,7 +46,7 @@ class BftUelSpatialWrapper : public BftUel
 
         void assignStateVars(double *stateVars, int nStateVars);
 
-        void assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties);
+        void assignProperty(const BftUelProperty& property);
 
         void initializeYourself(const double* coordinates);
 
