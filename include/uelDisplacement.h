@@ -3,6 +3,7 @@
 #include "bftVoigt.h"
 #include "bftConstants.h"
 #include "bftUel.h"
+#include "bftUelProperty.h"
 #include "bftFunctions.h"
 #include "bftFiniteElement.h"
 #include "bftMath.h"
@@ -52,11 +53,11 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
             bft::mVector6 strain;
 
             struct Geometry{JacobianSized J;
-                            JacobianSized JInv;
-                            double        detJ;
-                            dNdXiSized    dNdXi;
-                            dNdXiSized    dNdX;
-                            BSized        B;
+                JacobianSized JInv;
+                double        detJ;
+                dNdXiSized    dNdXi;
+                dNdXiSized    dNdX;
+                BSized        B;
             };
 
             std::unique_ptr<Geometry>                   geometry;
@@ -88,7 +89,7 @@ class UelDisplacement: public BftUel, public BftGeometryElement<nDim, nNodes>{
 
         void assignStateVars(double *stateVars, int nStateVars);
 
-        void assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties);
+        void assignProperty(const BftUelProperty& bftUelProperty);
 
         void initializeYourself(const double* coordinates);
 
@@ -196,26 +197,36 @@ void UelDisplacement<nDim, nNodes>::assignStateVars(double *stateVars, int nStat
     }
 }
     template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::assignProperty(BftUel::PropertyTypes property, int propertyInfo, const double* propertyValues, int nProperties)
+void UelDisplacement<nDim, nNodes>::assignProperty(const BftUelProperty& bftUelProperty)
 {
-    switch(property){
-        case ElementProperties: { new (&elementProperties) Map<const VectorXd>(propertyValues, nProperties);
-                                    break;}
+    switch(bftUelProperty.type){
+        case BftUelProperty::Type::ElementProperties: 
+            {   
 
-        case BftMaterial: { auto materialCode = static_cast<userLibrary::MaterialCode> ( propertyInfo );
+                auto& elementPropertiesInfo = dynamic_cast<const class ElementProperties&> ( bftUelProperty) ;
 
-                              for(size_t i = 0; i < gaussPts.size(); i++){ 
-                                  GaussPt& gpt = gaussPts[i];
-                                  gpt.material =  std::unique_ptr<BftMaterialHypoElastic>(
-                                          dynamic_cast<BftMaterialHypoElastic*>(
-                                              userLibrary::bftMaterialFactory( 
-                                                  materialCode,
-                                                  propertyValues,
-                                                  nProperties,
-                                                  elLabel, 
-                                                  i)));
-                              }
-                              break;}
+                new (&elementProperties) Map<const VectorXd>(
+                        elementPropertiesInfo.elementProperties, 
+                        elementPropertiesInfo.nElementProperties);
+
+                break;
+            }
+
+        case BftUelProperty::Type::BftMaterialSection: 
+            {
+                auto& section = dynamic_cast<const class BftMaterialSection&> ( bftUelProperty) ;
+
+                for(size_t i = 0; i < gaussPts.size(); i++){ 
+                    GaussPt& gpt = gaussPts[i];
+                    gpt.material =  std::unique_ptr<BftMaterialHypoElastic>(
+                            dynamic_cast<BftMaterialHypoElastic*>(
+                                userLibrary::bftMaterialFactory( 
+                                    section.materialCode,
+                                    section.materialProperties,
+                                    section.nMaterialProperties,
+                                    elLabel, 
+                                    i))); }
+                    break;}
     }
 }
 
@@ -356,24 +367,25 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 void UelDisplacement<nDim, nNodes>::setInitialConditions(StateTypes state, const double* values)
 {
     switch(state){
-        case BftUel::GeostaticStress: { 
-                                          if constexpr (nDim>1) {
-                                              for(GaussPt& gaussPt : gaussPts){
+        case BftUel::GeostaticStress: 
+            { 
+                if constexpr (nDim>1) {
+                    for(GaussPt& gaussPt : gaussPts){
 
-                                                  XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
+                        XiSized coordAtGauss =  this->NB( this->N(gaussPt.xi)) * this->coordinates; 
 
-                                                  const double sigY1 = values[0];
-                                                  const double sigY2 = values[2];
-                                                  const double y1    = values[1];
-                                                  const double y2    = values[3];
+                        const double sigY1 = values[0];
+                        const double sigY2 = values[2];
+                        const double y1    = values[1];
+                        const double y2    = values[3];
 
-                                                  gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
-                                                  gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
-                                                  gaussPt.stress(2) = values[5]*gaussPt.stress(1);
-                                              }  // sigma_z
-                                          }
-                                          break; 
-                                      }
+                        gaussPt.stress(1) = bft::Math::linearInterpolation(coordAtGauss[1], y1, y2, sigY1, sigY2);  // sigma_y
+                        gaussPt.stress(0) = values[4]*gaussPt.stress(1);  // sigma_x
+                        gaussPt.stress(2) = values[5]*gaussPt.stress(1);
+                    }  // sigma_z
+                }
+                break; 
+            }
 
         default: break;
     }
@@ -391,23 +403,24 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
 
     switch(loadType){
 
-        case BftUel::Pressure: { 
-                                   const double p = load[0];
+        case BftUel::Pressure: 
+            { 
+                const double p = load[0];
 
-                                   bft::FiniteElement::BoundaryElement boundaryEl(this->shape, 
-                                           elementFace,
-                                           nDim, 
-                                           this->coordinates);
+                bft::FiniteElement::BoundaryElement boundaryEl(this->shape, 
+                        elementFace,
+                        nDim, 
+                        this->coordinates);
 
-                                   VectorXd Pk =  - p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
+                VectorXd Pk =  - p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
 
-                                   if(nDim == 2)
-                                       Pk *= elementProperties[0]; // thickness
+                if(nDim == 2)
+                    Pk *= elementProperties[0]; // thickness
 
-                                   fU+= Pk;
+                fU+= Pk;
 
-                                   break;
-                               }
+                break;
+            }
         default: {throw std::invalid_argument("Invalid Load Type specified");}
     }
 }
