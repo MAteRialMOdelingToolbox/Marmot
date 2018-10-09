@@ -115,6 +115,13 @@ namespace bft{
     {
             finishElasticSubstep();
             consistentTangent.applyOnTheLeft(dXdY);
+            
+            for(int i = 0; i < consistentTangent.rows(); i ++)
+                for(int j = 0; j < consistentTangent.cols(); j ++)
+                    if ( std::abs ( consistentTangent(i,j) ) < 1e-12)
+                        consistentTangent(i,j) = 0.0;
+
+
     }
 
     template <int n>
