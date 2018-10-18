@@ -44,11 +44,11 @@ class BftGeometryElement
         std::string getElementShape() {
         static std::map< bft::FiniteElement::ElementShapes, std::string> shapes = 
         {
-            {bft::FiniteElement::Truss2, "Truss2"},
-            {bft::FiniteElement::Quad4, "Quad4"},
-            {bft::FiniteElement::Quad8, "Quad8"},
-            {bft::FiniteElement::Hexa8, "Hexa8"},
-            {bft::FiniteElement::Hexa20, "Hexa8"}
+            {bft::FiniteElement::Truss2, "truss2"},
+            {bft::FiniteElement::Quad4, "quad4"},
+            {bft::FiniteElement::Quad8, "quad8"},
+            {bft::FiniteElement::Hexa8, "hexa8"},
+            {bft::FiniteElement::Hexa20, "hexa20"}
         };
 
         return shapes[this->shape];
