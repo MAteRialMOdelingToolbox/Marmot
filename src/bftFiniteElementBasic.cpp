@@ -124,43 +124,6 @@ namespace bft{
             }
         }
 
-        //const std::vector<double>& getGaussWeights (bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType){
-            //using bft::FiniteElement::ElementShapes;
-            //switch(shape)
-            //{
-                //case(ElementShapes::Truss2): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial1D::gaussPtList2Weights;
-                                                //else
-                                                    //return Spatial1D::gaussPtList1Weights;}
-
-                //case(ElementShapes::Truss3): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial1D::gaussPtList3Weights;
-                                                //else
-                                                    //return Spatial1D::gaussPtList2Weights;}
-
-                //case(ElementShapes::Quad4): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial2D::gaussPtList2x2Weights;
-                                                //else
-                                                    //return Spatial2D::gaussPtList1x1Weights;}
-
-                //case(ElementShapes::Quad8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial2D::gaussPtList3x3Weights;
-                                                //else
-                                                    //return Spatial2D::gaussPtList2x2Weights;}
-
-                //case(ElementShapes::Hexa8): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial3D::gaussPtList2x2x2Weights;
-                                                //else
-                                                    //return Spatial3D::gaussPtList1x1x1Weights;}
-
-                //case(ElementShapes::Hexa20): {   if(integrationType == IntegrationTypes::FullIntegration)
-                                                    //return Spatial3D::gaussPtList3x3x3Weights;
-                                                 //else
-                                                    //return Spatial3D::gaussPtList2x2x2Weights;}
-
-                //default: {throw std::invalid_argument("Invalid shape/integrationType combination");}
-            //}
-        //}
 
         int getNumGaussPoints(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType){
                 return getGaussPointInfo(shape,integrationType).size();
