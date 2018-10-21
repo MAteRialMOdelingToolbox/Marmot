@@ -9,7 +9,7 @@ namespace bft
         namespace Spatial3D
         {
             namespace Hexa8{
-                NSized N(const Ref<const Vector3d>& xi)
+                NSized N(const Vector3d& xi)
                 { /*
                    *        (8)________(7)   
                    *          /|      /|   
@@ -42,7 +42,7 @@ namespace bft
                     return N_;
 
                 }
-                dNdXiSized dNdXi(const Ref<const Vector3d>& xi)
+                dNdXiSized dNdXi(const Vector3d& xi)
                 {
                     dNdXiSized dNdXi_;
 
@@ -79,27 +79,27 @@ namespace bft
                     return dNdXi_;
                 }
 
-                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates)
+                Matrix3d Jacobian(const dNdXiSized& dNdXi, const CoordinateSized& coordinates)
                 {
                     // convenience wrapper to the templated version of the Jacobian
                     return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
                 }
 
-                BSized B(const Ref<const  dNdXiSized>& dNdX)
+                BSized B(const dNdXiSized& dNdX)
                 {
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial3D::B<nNodes> ( dNdX ) ;
                 }
 
-                Vector4d getBoundaryElementIndices ( int faceID)
+                Vector4i getBoundaryElementIndices ( int faceID)
                 {
                     switch(faceID){
-                        case 1: {return (Vector4d() << 3,2,1,0).finished();}
-                        case 2: {return (Vector4d() << 4,5,6,7).finished();}
-                        case 3: {return (Vector4d() << 0,1,5,4).finished();}
-                        case 4: {return (Vector4d() << 6,5,1,2).finished();}
-                        case 5: {return (Vector4d() << 7,6,2,3).finished();}
-                        case 6: {return (Vector4d() << 4,7,3,0).finished();}
+                        case 1: {return (Vector4i() << 3,2,1,0).finished();}
+                        case 2: {return (Vector4i() << 4,5,6,7).finished();}
+                        case 3: {return (Vector4i() << 0,1,5,4).finished();}
+                        case 4: {return (Vector4i() << 6,5,1,2).finished();}
+                        case 5: {return (Vector4i() << 7,6,2,3).finished();}
+                        case 6: {return (Vector4i() << 4,7,3,0).finished();}
                         default: {throw std::invalid_argument("Hexa8: invalid face ID specifed");}
                     }
                 }
@@ -107,7 +107,7 @@ namespace bft
             } // end of namespace Hexa8 
 
             namespace Hexa20{
-                NSized N(const Ref<const Vector3d>& xi)
+                NSized N(const Vector3d& xi)
                 { /*
                    *           (8)_____(15)_____(7)   
                    *            /|             /|   
@@ -156,7 +156,7 @@ namespace bft
                     return N_;
 
                 }
-                dNdXiSized dNdXi(const Ref<const Vector3d>& xi)
+                dNdXiSized dNdXi(const Vector3d& xi)
                 {
                     dNdXiSized dNdXi_;
 
@@ -225,28 +225,27 @@ namespace bft
                     return dNdXi_;
                 }
 
-                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates)
+                Matrix3d Jacobian(const dNdXiSized & dNdXi, const CoordinateSized& coordinates)
                 {
                     // convenience wrapper to the templated version of the Jacobian
                     return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
                 }
 
-                BSized B(const Ref<const  dNdXiSized>& dNdX)
+                BSized B(const dNdXiSized& dNdX)
                 {
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial3D::B<nNodes> ( dNdX ) ;
                 }
 
-                Matrix<double, 8, 1 > getBoundaryElementIndices ( int faceID)
+                Vector8i getBoundaryElementIndices ( int faceID )
                 {
-                    typedef Matrix<double, 8, 1 > Vector8;
                     switch(faceID){
-                        case 1: {return (Vector8() << 3,2,1,0,10,9,8,11).finished();}
-                        case 2: {return (Vector8() << 4,5,6,7,12,13,14,15).finished();}
-                        case 3: {return (Vector8() << 0,1,5,4,8,17,12,16).finished();}
-                        case 4: {return (Vector8() << 6,5,1,2,13,17,9,18).finished();}
-                        case 5: {return (Vector8() << 7,6,2,3,14,18,10,19).finished();}
-                        case 6: {return (Vector8() << 4,7,3,0,15,19,11,16).finished();}
+                        case 1: {return (Vector8i() << 3,2,1,0,10,9,8,11).finished();}
+                        case 2: {return (Vector8i() << 4,5,6,7,12,13,14,15).finished();}
+                        case 3: {return (Vector8i() << 0,1,5,4,8,17,12,16).finished();}
+                        case 4: {return (Vector8i() << 6,5,1,2,13,17,9,18).finished();}
+                        case 5: {return (Vector8i() << 7,6,2,3,14,18,10,19).finished();}
+                        case 6: {return (Vector8i() << 4,7,3,0,15,19,11,16).finished();}
                         default: {throw std::invalid_argument("Hexa8: invalid face ID specifed");}
                     }
                 }

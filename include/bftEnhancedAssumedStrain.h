@@ -14,9 +14,9 @@ namespace bft{
             SimoRifaiEAS4,
         };
         
-        MatrixXd F ( const Ref< const MatrixXd >& J );
+        MatrixXd F ( const MatrixXd& J );
         
-        MatrixXd EASInterpolation ( EASType type, const Ref< const VectorXd >& xi ); 
+        MatrixXd EASInterpolation ( EASType type, const VectorXd& xi ); 
 
     }
 }

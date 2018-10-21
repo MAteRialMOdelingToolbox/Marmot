@@ -44,11 +44,11 @@ class BftGeometryElement
         std::string getElementShape() {
         static std::map< bft::FiniteElement::ElementShapes, std::string> shapes = 
         {
-            {bft::FiniteElement::Truss2, "truss2"},
-            {bft::FiniteElement::Quad4, "quad4"},
-            {bft::FiniteElement::Quad8, "quad8"},
-            {bft::FiniteElement::Hexa8, "hexa8"},
-            {bft::FiniteElement::Hexa20, "hexa20"}
+            {bft::FiniteElement::Truss2,    "truss2"},
+            {bft::FiniteElement::Quad4,     "quad4"},
+            {bft::FiniteElement::Quad8,     "quad8"},
+            {bft::FiniteElement::Hexa8,     "hexa8"},
+            {bft::FiniteElement::Hexa20,    "hexa20"}
         };
 
         return shapes[this->shape];
@@ -63,16 +63,16 @@ class BftGeometryElement
          *.cpp file. 
          *Fully specialized templates are precompiled in bftMechanics (rather than the unspecialized and partially specialized templates)
          * */
-        NSized   N( const Ref< const XiSized>&   xi);
-        dNdXiSized dNdXi( const Ref< const XiSized>&   xi);
-        BSized   B( const Ref< const dNdXiSized>&  dNdX);
+        NSized   N( const XiSized&   xi);
+        dNdXiSized dNdXi( const XiSized&   xi);
+        BSized   B( const dNdXiSized&  dNdX);
 
         /*These functions are equal for each element and independent of node number and  nDimension*/
-        NBSized NB(const Ref<const NSized>&  N) {
+        NBSized NB(const NSized&  N) {
             return bft::FiniteElement::NB<nDim, nNodes>(N);}
-        JacobianSized Jacobian( const Ref< const dNdXiSized>& dNdXi) { 
+        JacobianSized Jacobian( const dNdXiSized& dNdXi) { 
             return bft::FiniteElement::Jacobian<nDim, nNodes> (dNdXi, coordinates); }
-        dNdXiSized dNdX(const Ref<const dNdXiSized>& dNdXi, const Ref<const JacobianSized>& JacobianInverse) {
+        dNdXiSized dNdX(const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse) {
             return (dNdXi.transpose() * JacobianInverse).transpose();}
 
 };

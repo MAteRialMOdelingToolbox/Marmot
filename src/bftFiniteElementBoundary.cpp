@@ -8,7 +8,7 @@ namespace bft{
                 ElementShapes parentShape,
                 int parentFaceNumber, 
                 int nDim, 
-                const Ref<const VectorXd>& parentCoordinates
+                const VectorXd& parentCoordinates
                 ):
             nDim(nDim)
         {
@@ -48,21 +48,17 @@ namespace bft{
             coordinates =                           condenseParentToBoundaryVector ( parentCoordinates );
 
             // get the proper gausspoints for the boundary element
-            MatrixXd gaussPointList =       NumIntegration::getGaussPointList( boundaryShape , NumIntegration::IntegrationTypes::FullIntegration);
-            VectorXd gaussPointWeights =    NumIntegration::getGaussWeights( boundaryShape , NumIntegration::IntegrationTypes::FullIntegration);
 
             // compute for each gaussPt the
             // - dNdXi
             // - Jacobian pp(x,xi)
             // - normalVector
             // - integrationArea 
-            for(int i = 0; i < gaussPointList.rows(); i++){
+            for( const auto& gaussPtInfo : NumIntegration::getGaussPointInfo( boundaryShape , NumIntegration::IntegrationTypes::FullIntegration) ){
 
-                const VectorXd& xi = gaussPointList.row(i);
-
-                BoundaryElementGaussPt gpt ;
-                gpt.xi = xi;
-                gpt.weight = gaussPointWeights(i);
+                BoundaryElementGaussPt  gpt;
+                gpt.xi                  = gaussPtInfo.xi;
+                gpt.weight              = gaussPtInfo.weight;
     
                 // N
                 // dNdXi
@@ -72,19 +68,19 @@ namespace bft{
                      * ... and extend for future elements here!
                      *
                      * */
-                    case Truss2: {  gpt.N = Spatial1D::Truss2::N ( xi(0 ) ); 
-                                     gpt.dNdXi = Spatial1D::Truss2::dNdXi( xi(0) ); 
+                    case Truss2: {  gpt.N = Spatial1D::Truss2::N ( gpt.xi(0 ) ); 
+                                     gpt.dNdXi = Spatial1D::Truss2::dNdXi( gpt.xi(0) ); 
                                      break;}
-                    case Truss3: {  gpt.N = Spatial1D::Truss3::N ( xi(0) ); 
-                                     gpt.dNdXi = Spatial1D::Truss3::dNdXi( xi(0) ); 
+                    case Truss3: {  gpt.N = Spatial1D::Truss3::N ( gpt.xi(0) ); 
+                                     gpt.dNdXi = Spatial1D::Truss3::dNdXi( gpt.xi(0) ); 
                                      break;}
                     case Quad4: {  
-                                    gpt.N =     Spatial2D::Quad4::N ( Ref<const Vector2d> ( xi ) ); 
-                                    gpt.dNdXi = Spatial2D::Quad4::dNdXi( Ref<const Vector2d> ( xi ) ); 
+                                    gpt.N =     Spatial2D::Quad4::N ( gpt.xi ); 
+                                    gpt.dNdXi = Spatial2D::Quad4::dNdXi( gpt.xi ); 
                                     break;}
                     case Quad8: {  
-                                    gpt.N =     Spatial2D::Quad8::N ( Ref<const Vector2d> ( xi ) ); 
-                                    gpt.dNdXi = Spatial2D::Quad8::dNdXi( Ref<const Vector2d> ( xi ) ); 
+                                    gpt.N =     Spatial2D::Quad8::N ( gpt.xi ); 
+                                    gpt.dNdXi = Spatial2D::Quad8::dNdXi( Vector2d ( gpt.xi ) ); 
                                     break;}
 
                     default: break; // exception handling already in first switch
@@ -133,7 +129,7 @@ namespace bft{
             return Pk;
         }
 
-        VectorXd BoundaryElement::condenseParentToBoundaryVector(const Ref<const VectorXd>& parentVector)
+        VectorXd BoundaryElement::condenseParentToBoundaryVector(const VectorXd& parentVector)
         {
             /*  condense any parent vector to the corresponding boundary child vector (e.g. coordinates)
              *  dependent on the underlying indices mapping
@@ -147,7 +143,7 @@ namespace bft{
             
         }
 
-        VectorXd BoundaryElement::expandBoundaryToParentVector(const Ref<const VectorXd>& boundaryVector)
+        VectorXd BoundaryElement::expandBoundaryToParentVector(const VectorXd& boundaryVector)
         {   
             /* expand any boundary vector (e.g. pressure load) to the corresponding parental vector
              * */

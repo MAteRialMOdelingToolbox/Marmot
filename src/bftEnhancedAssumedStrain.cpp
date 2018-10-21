@@ -4,7 +4,7 @@
 namespace bft{
     namespace EAS{
 
-        MatrixXd F ( const Ref< const MatrixXd >& J )
+        MatrixXd F ( const MatrixXd& J )
         {
             // Transformation according to 
             // - Andelfinger, Ramm (1993),
@@ -55,7 +55,7 @@ namespace bft{
             throw std::invalid_argument ("Invalid Dimension for bft::EnhancedAssumedStrain!" );
         }
 
-        MatrixXd EASInterpolation ( EASType type, const Ref< const VectorXd >& xi )
+        MatrixXd EASInterpolation ( EASType type, const  VectorXd& xi )
         {
             // Implementation for 2D
             

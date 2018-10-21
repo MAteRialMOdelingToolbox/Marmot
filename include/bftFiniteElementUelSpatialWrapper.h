@@ -13,7 +13,6 @@ class BftUelSpatialWrapper : public BftUel
      * */
     public:
 
-
         const int nDim;
         const int nDimChild;
         const int nNodes;
@@ -60,8 +59,7 @@ class BftUelSpatialWrapper : public BftUel
 
         void setInitialConditions(StateTypes state, const double* values);
 
-        void computeDistributedLoad(
-                                    DistributedLoadTypes loadType,
+        void computeDistributedLoad(DistributedLoadTypes loadType,
                                     double* P, 
                                     int elementFace, 
                                     const double* load,
