@@ -1,53 +1,61 @@
 #include "bftAbaqusUtility.h"
 #include "bftFunctions.h"
-#include "bftVoigt.h"
 #include "bftTypedefs.h"
+#include "bftVoigt.h"
 /*
  * convenience functions for umats in Abaqus
  * */
 
-namespace bft{
+namespace bft {
 
-    void backToAbaqus(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian,
-                      const Vector6& stress, Map<VectorXd>& ABQStress,
-                      int nTensor)
-    {
-        ABQStress =     stress.head(nTensor);
-        ABQJacobian =   jacobian.topLeftCorner(nTensor, nTensor);
+    void backToAbaqus( const Matrix6& jacobian,
+                       Map<MatrixXd>& ABQJacobian,
+                       const Vector6& stress,
+                       Map<VectorXd>& ABQStress,
+                       int            nTensor ) {
+        ABQStress   = stress.head( nTensor );
+        ABQJacobian = jacobian.topLeftCorner( nTensor, nTensor );
         return;
     }
 
-    void backToAbaqusPlaneStress(const Matrix6& jacobian, Map<MatrixXd>& ABQJacobian, const Vector6& stress, 
-                                Map<VectorXd>& ABQStress)
-    {
-        ABQStress(0) = stress(0);
-        ABQStress(1) = stress(1);
-        ABQStress(2) = stress(3);
-        ABQJacobian = bft::mechanics::getPlaneStressTangent(jacobian);
+    void backToAbaqusPlaneStress( const Matrix6& jacobian,
+                                  Map<MatrixXd>& ABQJacobian,
+                                  const Vector6& stress,
+                                  Map<VectorXd>& ABQStress ) {
+        ABQStress( 0 ) = stress( 0 );
+        ABQStress( 1 ) = stress( 1 );
+        ABQStress( 2 ) = stress( 3 );
+        ABQJacobian    = bft::mechanics::getPlaneStressTangent( jacobian );
         return;
     }
 
-    void backToAbaqusNonLocal(  const Matrix6& dStressdStrain,              Ref<MatrixXd>  ABQdStressDStrain, 
-                                const Vector6& stress,                      Ref<VectorXd>  ABQStress,
-                                double intParameterLocal,                   double&         ABQParameterLocal,
-                                const Vector6& dStressDIntParamNonLocal,    Ref<VectorXd>   ABQDStressDIntParamNonLocal,
-                                const Vector6& dIntParamLocalDStrain,       Ref<VectorXd>   ABQDIntParameterLocalDStrain,
-                                double nonLocalRadius,                      double&         ABQNonLocalRadius,
-                                int nTensor)
-    {
-        ABQdStressDStrain =             dStressdStrain.topLeftCorner(nTensor, nTensor);
-        ABQStress =                     stress.head(nTensor);
-        ABQParameterLocal =             intParameterLocal;
-        ABQDStressDIntParamNonLocal =   dStressDIntParamNonLocal.head(nTensor);
-        ABQDIntParameterLocalDStrain =  dIntParamLocalDStrain.head(nTensor);
-        ABQNonLocalRadius =             nonLocalRadius;
+    void backToAbaqusNonLocal( const Matrix6& dStressdStrain,
+                               Ref<MatrixXd>  ABQdStressDStrain,
+                               const Vector6& stress,
+                               Ref<VectorXd>  ABQStress,
+                               double         intParameterLocal,
+                               double&        ABQParameterLocal,
+                               const Vector6& dStressDIntParamNonLocal,
+                               Ref<VectorXd>  ABQDStressDIntParamNonLocal,
+                               const Vector6& dIntParamLocalDStrain,
+                               Ref<VectorXd>  ABQDIntParameterLocalDStrain,
+                               double         nonLocalRadius,
+                               double&        ABQNonLocalRadius,
+                               int            nTensor ) {
+        ABQdStressDStrain            = dStressdStrain.topLeftCorner( nTensor, nTensor );
+        ABQStress                    = stress.head( nTensor );
+        ABQParameterLocal            = intParameterLocal;
+        ABQDStressDIntParamNonLocal  = dStressDIntParamNonLocal.head( nTensor );
+        ABQDIntParameterLocalDStrain = dIntParamLocalDStrain.head( nTensor );
+        ABQNonLocalRadius            = nonLocalRadius;
     }
 
-    void discardIncrementAndBackToAbaqus(double& pNewDT, double value, const std::string& message)
-    {
+    void discardIncrementAndBackToAbaqus( double&            pNewDT,
+                                          double             value,
+                                          const std::string& message ) {
         pNewDT = value;
-        warningToMSG(message);
+        warningToMSG( message );
         return;
     }
 
-}
+} // namespace bft
