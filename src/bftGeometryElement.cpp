@@ -10,27 +10,32 @@
 
 // Truss2
 template <>
-BftGeometryElement<1, 2>::NSized BftGeometryElement<1, 2>::N( const XiSized& xi ) {
+BftGeometryElement<1, 2>::NSized BftGeometryElement<1, 2>::N( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial1D::Truss2::N( xi( 0 ) );
 }
 // Quad4
 template <>
-BftGeometryElement<2, 4>::NSized BftGeometryElement<2, 4>::N( const XiSized& xi ) {
+BftGeometryElement<2, 4>::NSized BftGeometryElement<2, 4>::N( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial2D::Quad4::N( xi );
 }
 // Quad8
 template <>
-BftGeometryElement<2, 8>::NSized BftGeometryElement<2, 8>::N( const XiSized& xi ) {
+BftGeometryElement<2, 8>::NSized BftGeometryElement<2, 8>::N( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial2D::Quad8::N( xi );
 }
 // Hexa8
 template <>
-BftGeometryElement<3, 8>::NSized BftGeometryElement<3, 8>::N( const XiSized& xi ) {
+BftGeometryElement<3, 8>::NSized BftGeometryElement<3, 8>::N( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial3D::Hexa8::N( xi );
 }
 // Hexa20
 template <>
-BftGeometryElement<3, 20>::NSized BftGeometryElement<3, 20>::N( const XiSized& xi ) {
+BftGeometryElement<3, 20>::NSized BftGeometryElement<3, 20>::N( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial3D::Hexa20::N( xi );
 }
 
@@ -38,27 +43,32 @@ BftGeometryElement<3, 20>::NSized BftGeometryElement<3, 20>::N( const XiSized& x
  * */
 // Truss2
 template <>
-BftGeometryElement<1, 2>::dNdXiSized BftGeometryElement<1, 2>::dNdXi( const XiSized& xi ) {
+BftGeometryElement<1, 2>::dNdXiSized BftGeometryElement<1, 2>::dNdXi( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial1D::Truss2::dNdXi( xi( 0 ) );
 }
 // Quad4
 template <>
-BftGeometryElement<2, 4>::dNdXiSized BftGeometryElement<2, 4>::dNdXi( const XiSized& xi ) {
+BftGeometryElement<2, 4>::dNdXiSized BftGeometryElement<2, 4>::dNdXi( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial2D::Quad4::dNdXi( xi );
 }
 // Quad8
 template <>
-BftGeometryElement<2, 8>::dNdXiSized BftGeometryElement<2, 8>::dNdXi( const XiSized& xi ) {
+BftGeometryElement<2, 8>::dNdXiSized BftGeometryElement<2, 8>::dNdXi( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial2D::Quad8::dNdXi( xi );
 }
 // Hexa8
 template <>
-BftGeometryElement<3, 8>::dNdXiSized BftGeometryElement<3, 8>::dNdXi( const XiSized& xi ) {
+BftGeometryElement<3, 8>::dNdXiSized BftGeometryElement<3, 8>::dNdXi( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial3D::Hexa8::dNdXi( xi );
 }
 // Hexa20
 template <>
-BftGeometryElement<3, 20>::dNdXiSized BftGeometryElement<3, 20>::dNdXi( const XiSized& xi ) {
+BftGeometryElement<3, 20>::dNdXiSized BftGeometryElement<3, 20>::dNdXi( const XiSized& xi )
+{
     return bft::FiniteElement::Spatial3D::Hexa20::dNdXi( xi );
 }
 
@@ -70,26 +80,31 @@ BftGeometryElement<3, 20>::dNdXiSized BftGeometryElement<3, 20>::dNdXi( const Xi
 
 // Truss2
 template <>
-typename BftGeometryElement<1, 2>::BSized BftGeometryElement<1, 2>::B( const dNdXiSized& dNdX ) {
+typename BftGeometryElement<1, 2>::BSized BftGeometryElement<1, 2>::B( const dNdXiSized& dNdX )
+{
     return dNdX;
 }
 // Quad4
 template <>
-typename BftGeometryElement<2, 4>::BSized BftGeometryElement<2, 4>::B( const dNdXiSized& dNdX ) {
+typename BftGeometryElement<2, 4>::BSized BftGeometryElement<2, 4>::B( const dNdXiSized& dNdX )
+{
     return bft::FiniteElement::Spatial2D::B<4>( dNdX );
 }
 // Quad8
 template <>
-typename BftGeometryElement<2, 8>::BSized BftGeometryElement<2, 8>::B( const dNdXiSized& dNdX ) {
+typename BftGeometryElement<2, 8>::BSized BftGeometryElement<2, 8>::B( const dNdXiSized& dNdX )
+{
     return bft::FiniteElement::Spatial2D::B<8>( dNdX );
 }
 // Hexa8
 template <>
-typename BftGeometryElement<3, 8>::BSized BftGeometryElement<3, 8>::B( const dNdXiSized& dNdX ) {
+typename BftGeometryElement<3, 8>::BSized BftGeometryElement<3, 8>::B( const dNdXiSized& dNdX )
+{
     return bft::FiniteElement::Spatial3D::B<8>( dNdX );
 }
 // Hexa20
 template <>
-typename BftGeometryElement<3, 20>::BSized BftGeometryElement<3, 20>::B( const dNdXiSized& dNdX ) {
+typename BftGeometryElement<3, 20>::BSized BftGeometryElement<3, 20>::B( const dNdXiSized& dNdX )
+{
     return bft::FiniteElement::Spatial3D::B<20>( dNdX );
 }

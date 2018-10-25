@@ -12,7 +12,8 @@ namespace bft {
                        Map<MatrixXd>& ABQJacobian,
                        const Vector6& stress,
                        Map<VectorXd>& ABQStress,
-                       int            nTensor ) {
+                       int            nTensor )
+    {
         ABQStress   = stress.head( nTensor );
         ABQJacobian = jacobian.topLeftCorner( nTensor, nTensor );
         return;
@@ -21,7 +22,8 @@ namespace bft {
     void backToAbaqusPlaneStress( const Matrix6& jacobian,
                                   Map<MatrixXd>& ABQJacobian,
                                   const Vector6& stress,
-                                  Map<VectorXd>& ABQStress ) {
+                                  Map<VectorXd>& ABQStress )
+    {
         ABQStress( 0 ) = stress( 0 );
         ABQStress( 1 ) = stress( 1 );
         ABQStress( 2 ) = stress( 3 );
@@ -41,7 +43,8 @@ namespace bft {
                                Ref<VectorXd>  ABQDIntParameterLocalDStrain,
                                double         nonLocalRadius,
                                double&        ABQNonLocalRadius,
-                               int            nTensor ) {
+                               int            nTensor )
+    {
         ABQdStressDStrain            = dStressdStrain.topLeftCorner( nTensor, nTensor );
         ABQStress                    = stress.head( nTensor );
         ABQParameterLocal            = intParameterLocal;
@@ -50,9 +53,8 @@ namespace bft {
         ABQNonLocalRadius            = nonLocalRadius;
     }
 
-    void discardIncrementAndBackToAbaqus( double&            pNewDT,
-                                          double             value,
-                                          const std::string& message ) {
+    void discardIncrementAndBackToAbaqus( double& pNewDT, double value, const std::string& message )
+    {
         pNewDT = value;
         warningToMSG( message );
         return;

@@ -21,7 +21,8 @@ namespace bft {
                      const int       nDoFPerNode ); // Dynamic version
 
         template <int nDim, int nNodes>
-        Matrix<double, nDim, nDim * nNodes> NB( const Matrix<double, 1, nNodes>& N ) {
+        Matrix<double, nDim, nDim * nNodes> NB( const Matrix<double, 1, nNodes>& N )
+        {
             // Alternative Templated version of Interpolation operator NBold;
             Matrix<double, nDim, nDim* nNodes> N_ = Matrix<double, nDim, nDim * nNodes>::Zero();
             for ( int i = 0; i < nNodes; i++ ) {
@@ -37,7 +38,8 @@ namespace bft {
 
         template <int nDim, int nNodes>
         Matrix<double, nDim, nDim> Jacobian( const Matrix<double, nDim, nNodes>&     dNdXi,
-                                             const Matrix<double, nDim * nNodes, 1>& coordinates ) {
+                                             const Matrix<double, nDim * nNodes, 1>& coordinates )
+        {
             // Alternative Templated version of Jacobian for compile time known
             // sizes
             Matrix<double, nDim, nDim> J_ = Matrix<double, nDim, nDim>::Zero();
@@ -77,10 +79,10 @@ namespace bft {
             constexpr int voigtSize = 3;
 
             template <int nNodes>
-            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX ) {
+            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX )
+            {
 
-                Matrix<double, voigtSize, nNodes* nDim> B_ =
-                    Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, 2 * i )     = dNdX( 0, i );
                     B_( 1, 2 * i + 1 ) = dNdX( 1, i );
@@ -135,10 +137,10 @@ namespace bft {
             constexpr int voigtSize = 6;
 
             template <int nNodes>
-            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX ) {
+            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX )
+            {
 
-                Matrix<double, voigtSize, nNodes* nDim> B_ =
-                    Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
 
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, nDim * i )     = dNdX( 0, i );
@@ -243,9 +245,8 @@ namespace bft {
         };
 
         const std::vector<GaussPtInfo>& getGaussPointInfo( bft::FiniteElement::ElementShapes shape,
-                                                           IntegrationTypes integrationType );
-        int                             getNumGaussPoints( bft::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType );
+        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
 
         namespace Spatial1D {
             constexpr int nDim = 1;

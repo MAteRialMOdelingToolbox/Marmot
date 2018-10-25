@@ -3,7 +3,8 @@
 
 namespace bft {
     namespace FiniteElement {
-        ElementShapes getElementShapeByMetric( int nDim, int nNodes ) {
+        ElementShapes getElementShapeByMetric( int nDim, int nNodes )
+        {
 
             switch ( nDim ) {
             case ( 1 ): {
@@ -31,7 +32,8 @@ namespace bft {
             }
         }
         // create a large N matrix dependent on the degrees of freedom per node
-        MatrixXd NB( const VectorXd& N, const int nDoFPerNode ) {
+        MatrixXd NB( const VectorXd& N, const int nDoFPerNode )
+        {
 
             MatrixXd N_( nDoFPerNode, N.size() * nDoFPerNode );
             N_ = MatrixXd::Zero( nDoFPerNode, N.size() * nDoFPerNode );
@@ -45,7 +47,8 @@ namespace bft {
             return N_;
         }
 
-        MatrixXd Jacobian( const MatrixXd& dNdXi, const VectorXd& coordinates ) {
+        MatrixXd Jacobian( const MatrixXd& dNdXi, const VectorXd& coordinates )
+        {
 
             /* Dynamic version of jacobian, and not necessarily square!
              *
@@ -61,9 +64,9 @@ namespace bft {
              *
              * */
 
-            int nDimXi = dNdXi.rows();
-            int nNodes = dNdXi.cols();
-            int nDimX  = coordinates.size() / nNodes;
+            const int nDimXi = dNdXi.rows();
+            const int nNodes = dNdXi.cols();
+            const int nDimX  = coordinates.size() / nNodes;
 
             MatrixXd J_ = MatrixXd::Zero( nDimX, nDimXi );
 
@@ -74,7 +77,8 @@ namespace bft {
             return J_;
         }
 
-        VectorXi expandNodeIndicesToCoordinateIndices( const VectorXi& nodeIndices, int nDim ) {
+        VectorXi expandNodeIndicesToCoordinateIndices( const VectorXi& nodeIndices, int nDim )
+        {
             VectorXi indices( nDim * nodeIndices.size() );
 
             for ( int i = 0; i < nodeIndices.size(); i++ )
@@ -87,7 +91,8 @@ namespace bft {
 
     namespace NumIntegration {
         const std::vector<GaussPtInfo>& getGaussPointInfo( bft::FiniteElement::ElementShapes shape,
-                                                           IntegrationTypes integrationType ) {
+                                                           IntegrationTypes                  integrationType )
+        {
             using bft::FiniteElement::ElementShapes;
             switch ( shape ) {
             case ( ElementShapes::Truss2 ): {
@@ -132,12 +137,14 @@ namespace bft {
                     return Spatial3D::gaussPtList2x2x2;
             }
 
-            default: { throw std::invalid_argument( "Invalid shape/integrationType combination" ); }
+            default: {
+                throw std::invalid_argument( "Invalid shape/integrationType combination" );
+            }
             }
         }
 
-        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape,
-                               IntegrationTypes                  integrationType ) {
+        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
+        {
             return getGaussPointInfo( shape, integrationType ).size();
         }
 

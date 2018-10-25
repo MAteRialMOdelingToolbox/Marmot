@@ -5,7 +5,7 @@
 
 template <int nDim, int nNodes>
 class BftGeometryElement {
-    /* This is the Geometry Base element, which serves as a bases for all BftUels.
+    /* This is the Geometry Base element, which serves as a base for all BftUels.
      * It corresponds to the GeometryElement in mpFEM,
      * although this as a static templated version.
      *
@@ -33,23 +33,21 @@ class BftGeometryElement {
 
     /*Methods*/
     BftGeometryElement()
-        : coordinates( nullptr ),
-          shape( bft::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
+        : coordinates( nullptr ), shape( bft::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
 
-    std::string getElementShape() {
-        static std::map<bft::FiniteElement::ElementShapes, std::string> shapes =
-            {{bft::FiniteElement::Truss2, "truss2"},
-             {bft::FiniteElement::Quad4, "quad4"},
-             {bft::FiniteElement::Quad8, "quad8"},
-             {bft::FiniteElement::Hexa8, "hexa8"},
-             {bft::FiniteElement::Hexa20, "hexa20"}};
+    std::string getElementShape()
+    {
+        using namespace bft::FiniteElement;
+        const static std::map<ElementShapes, std::string> shapes = {{Truss2, "truss2"},
+                                                                    {Quad4, "quad4"},
+                                                                    {Quad8, "quad8"},
+                                                                    {Hexa8, "hexa8"},
+                                                                    {Hexa20, "hexa20"}};
 
         return shapes[this->shape];
     }
 
-    void initializeYourself( const double* coords ) {
-        new ( &coordinates ) Map<const CoordinateVector>( coords );
-    }
+    void initializeYourself( const double* coords ) { new ( &coordinates ) Map<const CoordinateVector>( coords ); }
 
     /*Please specialize these functions for each element individially
      *.cpp file.
@@ -63,11 +61,13 @@ class BftGeometryElement {
     /*These functions are equal for each element and independent of node number and  nDimension*/
     NBSized NB( const NSized& N ) { return bft::FiniteElement::NB<nDim, nNodes>( N ); }
 
-    JacobianSized Jacobian( const dNdXiSized& dNdXi ) {
+    JacobianSized Jacobian( const dNdXiSized& dNdXi )
+    {
         return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
     }
 
-    dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse ) {
+    dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse )
+    {
         return ( dNdXi.transpose() * JacobianInverse ).transpose();
     }
 };

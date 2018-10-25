@@ -68,7 +68,5 @@ class BftUelSpatialWrapper : public BftUel {
                                  const double*        time,
                                  double               dT );
 
-    double* getPermanentResultPointer( const std::string& resultName,
-                                       int                gaussPt,
-                                       int&               resultLength );
+    double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength );
 };

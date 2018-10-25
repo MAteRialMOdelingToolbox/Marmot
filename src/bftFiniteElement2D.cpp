@@ -7,7 +7,8 @@ namespace bft {
         namespace Spatial2D {
             namespace Quad4 {
 
-                NSized N( const Vector2d& xi ) {
+                NSized N( const Vector2d& xi )
+                {
 
                     /*
                      *   Shape functions
@@ -28,7 +29,8 @@ namespace bft {
                     return N_;
                 }
 
-                dNdXiSized dNdXi( const Vector2d& xi ) {
+                dNdXiSized dNdXi( const Vector2d& xi )
+                {
 
                     dNdXiSized result;
 
@@ -41,7 +43,8 @@ namespace bft {
                     return result;
                 }
 
-                Vector2i getBoundaryElementIndices( int faceID ) {
+                Vector2i getBoundaryElementIndices( int faceID )
+                {
                     /*
                      *               face 1
                      *           (1) _______(0)
@@ -65,23 +68,28 @@ namespace bft {
                     case 4: {
                         return ( Vector2i() << 3, 0 ).finished();
                     }
-                    default: { throw std::invalid_argument( "Quad4: invalid face ID specifed" ); }
+                    default: {
+                        throw std::invalid_argument( "Quad4: invalid face ID specifed" );
+                    }
                     }
                 }
 
-                Matrix2d Jacobian( const dNdXiSized& dNdXi, const Vector8d& coordinates ) {
+                Matrix2d Jacobian( const dNdXiSized& dNdXi, const Vector8d& coordinates )
+                {
                     // convenience wrapper to the templated version of the Jacobian
                     return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
                 }
 
-                BSized B( const dNdXiSized& dNdX ) {
+                BSized B( const dNdXiSized& dNdX )
+                {
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial2D::B<nNodes>( dNdX );
                 }
 
             } // end of namespace Quad4
             namespace Quad8 {
-                NSized N( const Vector2d& xi ) {
+                NSized N( const Vector2d& xi )
+                {
                     /* Shape functions
                      *
                      *         (6)
@@ -111,7 +119,8 @@ namespace bft {
                     return N_;
                 }
 
-                dNdXiSized dNdXi( const Vector2d& xi ) {
+                dNdXiSized dNdXi( const Vector2d& xi )
+                {
 
                     Matrix<double, nDim, nNodes> result;
 

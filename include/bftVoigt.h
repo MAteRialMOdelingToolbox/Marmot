@@ -6,7 +6,11 @@
 namespace bft {
     //****************************************************
     namespace mechanics {
-        template <typename T> int sgn( T val ) { return ( T( 0 ) < val ) - ( val < T( 0 ) ); }
+        template <typename T>
+        int sgn( T val )
+        {
+            return ( T( 0 ) < val ) - ( val < T( 0 ) );
+        }
 
         Matrix6  Cel( double E, double nu );
         Matrix6  CelInverse( double E, double nu );
@@ -98,9 +102,7 @@ namespace bft {
         Matrix6     dEp_dE( const Matrix6& CelInv, const Matrix6& Cep );
         RowVector6d dDeltaEpv_dE( const Matrix6& CelInv, const Matrix6& Cep );
         Matrix36    dDeltaEpPrincipals_dDeltaEp( const Vector6& dEp );
-        RowVector6d dDeltaEpvneg_dE( const Vector6& dEp,
-                                     const Matrix6& CelInv,
-                                     const Matrix6& Cep );
+        RowVector6d dDeltaEpvneg_dE( const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep );
     } // namespace Vgt
 
 } // namespace bft

@@ -31,7 +31,5 @@ namespace bft {
                                double&        ABQNonLocalRadius,
                                int            nTensor );
 
-    void discardIncrementAndBackToAbaqus( double&            pNewDT,
-                                          double             value,
-                                          const std::string& message );
+    void discardIncrementAndBackToAbaqus( double& pNewDT, double value, const std::string& message );
 } // namespace bft

@@ -2,7 +2,8 @@
 namespace bft {
     namespace EAS {
 
-        MatrixXd F( const MatrixXd& J ) {
+        MatrixXd F( const MatrixXd& J )
+        {
             // Transformation according to
             // - Andelfinger, Ramm (1993),
             // - 'Notes on Continuum Mechanics -  Eduardo WV Chaves' !
@@ -53,7 +54,8 @@ namespace bft {
             throw std::invalid_argument( "Invalid Dimension for bft::EnhancedAssumedStrain!" );
         }
 
-        MatrixXd EASInterpolation( EASType type, const VectorXd& xi ) {
+        MatrixXd EASInterpolation( EASType type, const VectorXd& xi )
+        {
             // Implementation for 2D
 
             switch ( type ) {

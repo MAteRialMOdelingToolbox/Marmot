@@ -6,7 +6,9 @@ namespace bft {
     namespace FiniteElement {
         namespace Spatial3D {
             namespace Hexa8 {
-                NSized N( const Vector3d& xi ) {
+
+                NSized N( const Vector3d& xi )
+                {
                     /*
                      *        (8)________(7)
                      *          /|      /|
@@ -80,17 +82,20 @@ namespace bft {
                     return dNdXi_;
                 }
 
-                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates ) {
+                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates )
+                {
                     // convenience wrapper to the templated version of the Jacobian
                     return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
                 }
 
-                BSized B( const dNdXiSized& dNdX ) {
+                BSized B( const dNdXiSized& dNdX )
+                {
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial3D::B<nNodes>( dNdX );
                 }
 
-                Vector4i getBoundaryElementIndices( int faceID ) {
+                Vector4i getBoundaryElementIndices( int faceID )
+                {
                     switch ( faceID ) {
                     case 1: {
                         return ( Vector4i() << 3, 2, 1, 0 ).finished();
@@ -110,14 +115,17 @@ namespace bft {
                     case 6: {
                         return ( Vector4i() << 4, 7, 3, 0 ).finished();
                     }
-                    default: { throw std::invalid_argument( "Hexa8: invalid face ID specifed" ); }
+                    default: {
+                        throw std::invalid_argument( "Hexa8: invalid face ID specifed" );
+                    }
                     }
                 }
 
             } // end of namespace Hexa8
 
             namespace Hexa20 {
-                NSized N( const Vector3d& xi ) {
+                NSized N( const Vector3d& xi )
+                {
                     /*
                      *           (8)_____(15)_____(7)
                      *            /|             /|
@@ -167,7 +175,8 @@ namespace bft {
                     // clang-format on
                     return N_;
                 }
-                dNdXiSized dNdXi( const Vector3d& xi ) {
+                dNdXiSized dNdXi( const Vector3d& xi )
+                {
                     dNdXiSized dNdXi_;
 
                     // clang-format off
@@ -237,17 +246,20 @@ namespace bft {
                     return dNdXi_;
                 }
 
-                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates ) {
+                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates )
+                {
                     // convenience wrapper to the templated version of the Jacobian
                     return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
                 }
 
-                BSized B( const dNdXiSized& dNdX ) {
+                BSized B( const dNdXiSized& dNdX )
+                {
                     // convenience wrapper to the templated version of the Spatial2D B Operator
                     return FiniteElement::Spatial3D::B<nNodes>( dNdX );
                 }
 
-                Vector8i getBoundaryElementIndices( int faceID ) {
+                Vector8i getBoundaryElementIndices( int faceID )
+                {
                     switch ( faceID ) {
                     case 1: {
                         return ( Vector8i() << 3, 2, 1, 0, 10, 9, 8, 11 ).finished();
@@ -267,7 +279,9 @@ namespace bft {
                     case 6: {
                         return ( Vector8i() << 4, 7, 3, 0, 15, 19, 11, 16 ).finished();
                     }
-                    default: { throw std::invalid_argument( "Hexa8: invalid face ID specifed" ); }
+                    default: {
+                        throw std::invalid_argument( "Hexa8: invalid face ID specifed" );
+                    }
                     }
                 }
             } // end of namespace Hexa20

@@ -8,7 +8,8 @@ namespace bft {
                                           int             parentFaceNumber,
                                           int             nDim,
                                           const VectorXd& parentCoordinates )
-            : nDim( nDim ) {
+            : nDim( nDim )
+        {
             // get boundary shape dependent on parental shape
             switch ( parentShape ) {
                 /*
@@ -17,36 +18,32 @@ namespace bft {
                  * */
 
             case Quad4: {
-                boundaryShape = Truss2;
-                nNodes        = bft::FiniteElement::Spatial1D::Truss2::nNodes;
-                boundaryIndicesInParentNodes =
-                    bft::FiniteElement::Spatial2D::Quad4::getBoundaryElementIndices(
-                        parentFaceNumber );
+                boundaryShape                = Truss2;
+                nNodes                       = bft::FiniteElement::Spatial1D::Truss2::nNodes;
+                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad4::getBoundaryElementIndices(
+                    parentFaceNumber );
                 break;
             }
 
             case Quad8: {
-                boundaryShape = Truss3;
-                nNodes        = bft::FiniteElement::Spatial1D::Truss3::nNodes;
-                boundaryIndicesInParentNodes =
-                    bft::FiniteElement::Spatial2D::Quad8::getBoundaryElementIndices(
-                        parentFaceNumber );
+                boundaryShape                = Truss3;
+                nNodes                       = bft::FiniteElement::Spatial1D::Truss3::nNodes;
+                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad8::getBoundaryElementIndices(
+                    parentFaceNumber );
                 break;
             }
             case Hexa8: {
-                boundaryShape = Quad4;
-                nNodes        = bft::FiniteElement::Spatial2D::Quad4::nNodes;
-                boundaryIndicesInParentNodes =
-                    bft::FiniteElement::Spatial3D::Hexa8::getBoundaryElementIndices(
-                        parentFaceNumber );
+                boundaryShape                = Quad4;
+                nNodes                       = bft::FiniteElement::Spatial2D::Quad4::nNodes;
+                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa8::getBoundaryElementIndices(
+                    parentFaceNumber );
                 break;
             }
             case Hexa20: {
-                boundaryShape = Quad8;
-                nNodes        = bft::FiniteElement::Spatial2D::Quad8::nNodes;
-                boundaryIndicesInParentNodes =
-                    bft::FiniteElement::Spatial3D::Hexa20::getBoundaryElementIndices(
-                        parentFaceNumber );
+                boundaryShape                = Quad8;
+                nNodes                       = bft::FiniteElement::Spatial2D::Quad8::nNodes;
+                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa20::getBoundaryElementIndices(
+                    parentFaceNumber );
                 break;
             }
 
@@ -54,10 +51,10 @@ namespace bft {
             }
 
             // get the 'condensed' boundary element coordinates
-            nParentCoordinates = parentCoordinates.size();
-            boundaryIndicesInParentCoordinates =
-                expandNodeIndicesToCoordinateIndices( boundaryIndicesInParentNodes, nDim );
-            coordinates = condenseParentToBoundaryVector( parentCoordinates );
+            nParentCoordinates                 = parentCoordinates.size();
+            boundaryIndicesInParentCoordinates = expandNodeIndicesToCoordinateIndices( boundaryIndicesInParentNodes,
+                                                                                       nDim );
+            coordinates                        = condenseParentToBoundaryVector( parentCoordinates );
 
             // get the proper gausspoints for the boundary element
 
@@ -66,9 +63,9 @@ namespace bft {
             // - Jacobian pp(x,xi)
             // - normalVector
             // - integrationArea
-            for ( const auto& gaussPtInfo : NumIntegration::
-                      getGaussPointInfo( boundaryShape,
-                                         NumIntegration::IntegrationTypes::FullIntegration ) ) {
+            for ( const auto& gaussPtInfo :
+                  NumIntegration::getGaussPointInfo( boundaryShape,
+                                                     NumIntegration::IntegrationTypes::FullIntegration ) ) {
 
                 BoundaryElementGaussPt gpt;
                 gpt.xi     = gaussPtInfo.xi;
@@ -115,11 +112,11 @@ namespace bft {
                     n << gpt.J( 1 ), -gpt.J( 0 );
                     gpt.integrationArea = n.norm();
                     gpt.normalVector    = n / gpt.integrationArea;
-
-                } else {
+                }
+                else {
                     // cross product
                     typedef Eigen::Ref<const Vector3d> vector3_cr;
-                    Vector3d n = vector3_cr( gpt.J.col( 0 ) ).cross( vector3_cr( gpt.J.col( 1 ) ) );
+                    Vector3d n          = vector3_cr( gpt.J.col( 0 ) ).cross( vector3_cr( gpt.J.col( 1 ) ) );
                     gpt.integrationArea = n.norm();
                     gpt.normalVector    = n / gpt.integrationArea;
                 }
@@ -128,7 +125,8 @@ namespace bft {
             }
         }
 
-        VectorXd BoundaryElement::computeNormalLoadVector() {
+        VectorXd BoundaryElement::computeNormalLoadVector()
+        {
             /* compute the load vector for a constant distributed load (e.g. pressure)
              * Attention: result =  boundary-element-sized!
              *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
@@ -138,14 +136,14 @@ namespace bft {
 
             for ( size_t i = 0; i < gaussPts.size(); i++ ) {
                 const BoundaryElementGaussPt& gpt = gaussPts[i];
-                Pk += gpt.integrationArea * gpt.weight * gpt.normalVector.transpose() *
-                      NB( gpt.N, nDim );
+                Pk += gpt.integrationArea * gpt.weight * gpt.normalVector.transpose() * NB( gpt.N, nDim );
             }
 
             return Pk;
         }
 
-        VectorXd BoundaryElement::condenseParentToBoundaryVector( const VectorXd& parentVector ) {
+        VectorXd BoundaryElement::condenseParentToBoundaryVector( const VectorXd& parentVector )
+        {
             /*  condense any parent vector to the corresponding boundary child vector (e.g.
              * coordinates) dependent on the underlying indices mapping
              * */
@@ -157,7 +155,8 @@ namespace bft {
             return boundaryVector;
         }
 
-        VectorXd BoundaryElement::expandBoundaryToParentVector( const VectorXd& boundaryVector ) {
+        VectorXd BoundaryElement::expandBoundaryToParentVector( const VectorXd& boundaryVector )
+        {
             /* expand any boundary vector (e.g. pressure load) to the corresponding parental vector
              * */
 

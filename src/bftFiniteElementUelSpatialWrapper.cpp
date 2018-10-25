@@ -18,29 +18,45 @@ BftUelSpatialWrapper::BftUelSpatialWrapper( int                     nDim,
       rhsIndicesToBeProjected( rhsIndicesToBeWrapped, nRhsIndicesToBeWrapped ),
       projectedSize( nRhsChild ),
       unprojectedSize( nRhsChild + rhsIndicesToBeProjected.size() * ( nDim - nDimChild ) ),
-      childElement( std::move( childElement ) ) {}
+      childElement( std::move( childElement ) )
+{
+}
 
-int BftUelSpatialWrapper::getNumberOfRequiredStateVars() {
+int BftUelSpatialWrapper::getNumberOfRequiredStateVars()
+{
     return childElement->getNumberOfRequiredStateVars();
 }
 
-std::vector<std::vector<std::string>> BftUelSpatialWrapper::getNodeFields() {
+std::vector<std::vector<std::string>> BftUelSpatialWrapper::getNodeFields()
+{
     return childElement->getNodeFields();
 }
 
-int BftUelSpatialWrapper::getNNodes() { return nNodes; }
+int BftUelSpatialWrapper::getNNodes()
+{
+    return nNodes;
+}
 
-int BftUelSpatialWrapper::getNDofPerElement() { return unprojectedSize; }
+int BftUelSpatialWrapper::getNDofPerElement()
+{
+    return unprojectedSize;
+}
 
-std::string BftUelSpatialWrapper::getElementShape() { return childElement->getElementShape(); }
+std::string BftUelSpatialWrapper::getElementShape()
+{
+    return childElement->getElementShape();
+}
 
-void BftUelSpatialWrapper::assignProperty( const BftUelProperty& property ) {
+void BftUelSpatialWrapper::assignProperty( const BftUelProperty& property )
+{
     childElement->assignProperty( property );
 }
 
-std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern() {
-    auto             childPermutationPattern = childElement->getDofIndicesPermutationPattern();
+std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
+{
     std::vector<int> permutationPattern;
+
+    auto childPermutationPattern = childElement->getDofIndicesPermutationPattern();
 
     int i = 0, j = 0, k = 0; // i: projected, j: unprojected, k: indicesToProject
     int indexChild;
@@ -55,7 +71,8 @@ std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern() {
             i += nDimChild;
             j += ( nDim - nDimChild );
             k += 1;
-        } else {
+        }
+        else {
             permutationPattern.push_back( indexChild + j );
             i++;
             j++;
@@ -65,12 +82,13 @@ std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern() {
     return permutationPattern;
 }
 
-void BftUelSpatialWrapper::assignStateVars( double* stateVars, int nStateVars ) {
+void BftUelSpatialWrapper::assignStateVars( double* stateVars, int nStateVars )
+{
     childElement->assignStateVars( stateVars, nStateVars );
 }
 
-void BftUelSpatialWrapper::initializeYourself( const double* coordinates ) {
-
+void BftUelSpatialWrapper::initializeYourself( const double* coordinates )
+{
     Map<const MatrixXd> unprojectedCoordinates( coordinates, nDim, nNodes );
 
     if ( nDimChild == 1 ) {
@@ -86,6 +104,7 @@ void BftUelSpatialWrapper::initializeYourself( const double* coordinates ) {
 
     int i = 0, j = 0, k = 0; // i: projected, j: unprojected, k: indicesToProject
     while ( i < projectedSize ) {
+
         if ( k < rhsIndicesToBeProjected.size() && i == rhsIndicesToBeProjected( k ) ) {
             // copy the Transformation block wise ( if current DOF is projected )
             P.block( i, j, nDimChild, nDim ) = T;
@@ -93,7 +112,8 @@ void BftUelSpatialWrapper::initializeYourself( const double* coordinates ) {
             i += nDimChild;
             j += nDim;
             k += 1;
-        } else {
+        }
+        else {
             P( i, j ) = 1.0;
             i++;
             j++;
@@ -114,7 +134,8 @@ void BftUelSpatialWrapper::computeYourself( const double* Q,
                                             double*       Ke_,
                                             const double* time,
                                             double        dT,
-                                            double&       pNewDT ) {
+                                            double&       pNewDT )
+{
     Map<const VectorXd> Q_Unprojected( Q, unprojectedSize );
     Map<const VectorXd> dQ_Unprojected( dQ, unprojectedSize );
 
@@ -142,7 +163,8 @@ void BftUelSpatialWrapper::computeYourself( const double* Q,
     Pe_Unprojected = P.transpose() * Pe_Projected;
 }
 
-void BftUelSpatialWrapper::setInitialConditions( StateTypes state, const double* values ) {
+void BftUelSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
+{
     childElement->setInitialConditions( state, values );
 }
 
@@ -151,23 +173,22 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
                                                    int                  elementFace,
                                                    const double*        load,
                                                    const double*        time,
-                                                   double               dT ) {
+                                                   double               dT )
+{
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
 
-    childElement
-        ->computeDistributedLoad( loadType, P_Projected.data(), elementFace, load, time, dT );
+    childElement->computeDistributedLoad( loadType, P_Projected.data(), elementFace, load, time, dT );
 
     Map<VectorXd> P_Unprojected( P_, unprojectedSize );
     P_Unprojected = P.transpose() * P_Projected;
 }
 
-double* BftUelSpatialWrapper::getPermanentResultPointer( const std::string& resultName,
-                                                         int                gaussPt,
-                                                         int&               resultLength ) {
+double* BftUelSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
+{
     if ( resultName == "BftUelSpatialWrapper.T" ) {
         resultLength = T.size();
         return T.data();
-    } else {
-        return childElement->getPermanentResultPointer( resultName, gaussPt, resultLength );
     }
+
+    return childElement->getPermanentResultPointer( resultName, gaussPt, resultLength );
 }

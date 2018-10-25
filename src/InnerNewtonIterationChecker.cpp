@@ -5,21 +5,23 @@ namespace bft {
 
     InnerNewtonIterationChecker::InnerNewtonIterationChecker( const MatrixXd& residualScaleMatrix,
                                                               int             nMaxInnerNewtonCycles,
-                                                              int    nMaxInnerNewtonCyclesAlt,
-                                                              double innerNewtonTol,
-                                                              double innerNewtonRTol,
-                                                              double innerNewtonTolAlt,
-                                                              double innerNewtonRTolAlt )
+                                                              int             nMaxInnerNewtonCyclesAlt,
+                                                              double          innerNewtonTol,
+                                                              double          innerNewtonRTol,
+                                                              double          innerNewtonTolAlt,
+                                                              double          innerNewtonRTolAlt )
         : residualScaleMatrix( residualScaleMatrix ),
           nMaxInnerNewtonCycles( nMaxInnerNewtonCycles ),
           nMaxInnerNewtonCyclesAlt( nMaxInnerNewtonCyclesAlt ),
           innerNewtonTol( innerNewtonTol ),
           innerNewtonRTol( innerNewtonRTol ),
           innerNewtonTolAlt( innerNewtonTolAlt ),
-          innerNewtonRTolAlt( innerNewtonRTolAlt ) {}
+          innerNewtonRTolAlt( innerNewtonRTolAlt )
+    {
+    }
 
-    double InnerNewtonIterationChecker::relativeNorm( const VectorXd& increment,
-                                                      const VectorXd& reference ) {
+    double InnerNewtonIterationChecker::relativeNorm( const VectorXd& increment, const VectorXd& reference )
+    {
         double incNorm = increment.norm();
         double refNorm = reference.norm();
 
@@ -33,16 +35,17 @@ namespace bft {
         return increment.norm() / refNorm;
     }
 
-    double InnerNewtonIterationChecker::residualNorm( const VectorXd& residual ) {
+    double InnerNewtonIterationChecker::residualNorm( const VectorXd& residual )
+    {
         return ( residualScaleMatrix * residual ).norm();
     }
 
     bool InnerNewtonIterationChecker::iterationFinished( const VectorXd& residual,
                                                          const VectorXd& X,
                                                          const VectorXd& dX,
-                                                         int             numberOfIterations ) {
-        if ( isConverged( residual, X, dX, numberOfIterations ) ||
-             numberOfIterations > nMaxInnerNewtonCyclesAlt )
+                                                         int             numberOfIterations )
+    {
+        if ( isConverged( residual, X, dX, numberOfIterations ) || numberOfIterations > nMaxInnerNewtonCyclesAlt )
             return true;
         else
             return false;
@@ -51,14 +54,16 @@ namespace bft {
     bool InnerNewtonIterationChecker::isConverged( const VectorXd& residual,
                                                    const VectorXd& X,
                                                    const VectorXd& dX,
-                                                   int             numberOfIterations ) {
+                                                   int             numberOfIterations )
+    {
         const double resNorm = residualNorm( residual );
         const double relNorm = relativeNorm( dX, X );
 
         if ( numberOfIterations <= nMaxInnerNewtonCycles ) {
             if ( resNorm <= innerNewtonTol && relNorm <= innerNewtonRTol )
                 return true;
-        } else if ( numberOfIterations <= nMaxInnerNewtonCyclesAlt ) {
+        }
+        else if ( numberOfIterations <= nMaxInnerNewtonCyclesAlt ) {
             if ( resNorm <= innerNewtonTolAlt && relNorm <= innerNewtonRTolAlt )
                 return true;
         }
