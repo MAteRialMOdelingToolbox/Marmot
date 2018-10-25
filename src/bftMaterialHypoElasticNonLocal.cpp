@@ -14,7 +14,8 @@ void BftMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
                                                          double        dK,
                                                          const double* timeOld,
                                                          const double  dT,
-                                                         double&       pNewDT ) {
+                                                         double&       pNewDT )
+{
     using namespace bft;
 
     Map<Vector6>  stress( stress_ );

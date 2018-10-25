@@ -9,7 +9,8 @@ void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
                                                  double*       dStrain_,
                                                  const double* timeOld,
                                                  const double  dT,
-                                                 double&       pNewDT ) {
+                                                 double&       pNewDT )
+{
     using namespace bft;
 
     Map<Vector6>  stress( stress_ );
@@ -29,13 +30,7 @@ void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
         stressTemp = stress;
         stateVars  = stateVarsOld;
 
-        computeStress( stressTemp.data(),
-                       dStressDDStrain.data(),
-                       strainOld,
-                       dStrainTemp.data(),
-                       timeOld,
-                       dT,
-                       pNewDT );
+        computeStress( stressTemp.data(), dStressDDStrain.data(), strainOld, dStrainTemp.data(), timeOld, dT, pNewDT );
 
         if ( pNewDT < 1.0 ) {
             return;
@@ -71,7 +66,8 @@ void BftMaterialHypoElastic::computeUniaxialStress( double*       stress_,
                                                     double*       dStrain_,
                                                     const double* timeOld,
                                                     const double  dT,
-                                                    double&       pNewDT ) {
+                                                    double&       pNewDT )
+{
     using namespace bft;
 
     Map<Vector6>  stress( stress_ );
@@ -91,13 +87,7 @@ void BftMaterialHypoElastic::computeUniaxialStress( double*       stress_,
         stressTemp = stress;
         stateVars  = stateVarsOld;
 
-        computeStress( stressTemp.data(),
-                       dStressDDStrain.data(),
-                       strainOld,
-                       dStrainTemp.data(),
-                       timeOld,
-                       dT,
-                       pNewDT );
+        computeStress( stressTemp.data(), dStressDDStrain.data(), strainOld, dStrainTemp.data(), timeOld, dT, pNewDT );
 
         if ( pNewDT < 1.0 ) {
             return;
@@ -109,9 +99,8 @@ void BftMaterialHypoElastic::computeUniaxialStress( double*       stress_,
             break;
         }
 
-        dStrainTemp.segment<2>( 1 ) -=
-            dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve(
-                stressTemp.segment<2>( 1 ) );
+        dStrainTemp.segment<2>( 1 ) -= dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve(
+            stressTemp.segment<2>( 1 ) );
 
         count += 1;
         if ( count > 13 ) {

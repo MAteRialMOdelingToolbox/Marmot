@@ -23,8 +23,7 @@ namespace bft {
                             double         integrationErrorTolerance,
                             int            nPassesToIncrease,
                             const Matrix6& Cel );
-        void   setConvergedProgress( const Vector6&                stressOld,
-                                     const IntegrationStateVector& stateVarsOld );
+        void   setConvergedProgress( const Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
         bool   isFinished();
         double getNextSubstep();
         int    getNumberOfSubsteps();
@@ -37,15 +36,12 @@ namespace bft {
 
         void    getConvergedProgress( Vector6& stress, IntegrationStateVector& stateVars );
         Matrix6 getCurrentTangentOperator();
-        void    getResults( Vector6&                stress,
-                            Matrix6&                consistentTangent,
-                            IntegrationStateVector& stateVars );
+        void    getResults( Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
 
       private:
-        const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor,
-            integrationErrorTolerance;
-        const int  nPassesToIncrease;
-        const bool ignoreErrorToleranceOnMinimumStepSize;
+        const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
+        const int    nPassesToIncrease;
+        const bool   ignoreErrorToleranceOnMinimumStepSize;
 
         double currentProgress;
         double currentSubstepSize;
@@ -91,7 +87,8 @@ namespace bft {
           currentProgress( 0.0 ),
           currentSubstepSize( initialStepSize ),
           passedSubsteps( 0 ),
-          substepIndex( -1 ) {
+          substepIndex( -1 )
+    {
         elasticTangent                       = TangentSizedMatrix::Identity();
         elasticTangent.topLeftCorner( 6, 6 ) = Cel;
 
@@ -110,20 +107,22 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::setConvergedProgress(
-        const Vector6&                stressOld,
-        const IntegrationStateVector& stateVarsOld ) {
+    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const Vector6&                stressOld,
+                                                              const IntegrationStateVector& stateVarsOld )
+    {
         stressProgress = stressOld;
         stateProgress  = stateVarsOld;
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::isFinished() {
+    bool AdaptiveSubstepper<n, nState>::isFinished()
+    {
         return ( ( 1.0 - currentProgress ) <= 2e-16 && currentState == FullStep );
     }
 
     template <size_t n, size_t nState>
-    double AdaptiveSubstepper<n, nState>::getNextSubstep() {
+    double AdaptiveSubstepper<n, nState>::getNextSubstep()
+    {
         switch ( currentState ) {
         case FullStep: {
             const double remainingProgress = 1.0 - currentProgress;
@@ -145,8 +144,8 @@ namespace bft {
         }
     }
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getConvergedProgress( Vector6&                stress,
-                                                              IntegrationStateVector& stateVars ) {
+    void AdaptiveSubstepper<n, nState>::getConvergedProgress( Vector6& stress, IntegrationStateVector& stateVars )
+    {
         switch ( currentState ) {
         case FullStep: {
             stress    = stressProgress;
@@ -167,7 +166,8 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::discardSubstep() {
+    bool AdaptiveSubstepper<n, nState>::discardSubstep()
+    {
         passedSubsteps = 0;
         switch ( currentState ) {
         case FullStep: {
@@ -195,7 +195,8 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::repeatSubstep( double factorNew ) {
+    bool AdaptiveSubstepper<n, nState>::repeatSubstep( double factorNew )
+    {
         currentState   = FullStep;
         passedSubsteps = 0;
 
@@ -210,7 +211,8 @@ namespace bft {
     template <size_t n, size_t nState>
     bool AdaptiveSubstepper<n, nState>::finishSubstep( const Vector6&                resultStress,
                                                        const TangentSizedMatrix&     dXdY,
-                                                       const IntegrationStateVector& stateVars ) {
+                                                       const IntegrationStateVector& stateVars )
+    {
         if ( currentState == FullStep ) {
             stressProgressFullTemp            = resultStress;
             stateProgressFullTemp             = stateVars;
@@ -219,7 +221,8 @@ namespace bft {
             consistentTangentProgressFullTemp.applyOnTheLeft( dXdY );
             currentState = FirstHalfStep;
             return true;
-        } else if ( currentState == FirstHalfStep ) {
+        }
+        else if ( currentState == FirstHalfStep ) {
 
             stressProgressHalfTemp            = resultStress;
             stateProgressHalfTemp             = stateVars;
@@ -255,19 +258,20 @@ namespace bft {
                 passedSubsteps = 0;
                 if ( errorRatio < 2 ) {
                     return splitCurrentSubstep();
-                } else {
+                }
+                else {
                     return repeatSubstep( scaleFactor );
                 }
-            } else {
+            }
+            else {
                 stressProgressHalfTemp = resultStress;
                 stateProgressHalfTemp  = stateVars;
                 consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
                 consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
 
-                consistentTangentProgress =
-                    2 * consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
-                stressProgress = 2 * stressProgressHalfTemp - stressProgressFullTemp;
-                stateProgress  = 2 * stateProgressHalfTemp - stateProgressFullTemp;
+                consistentTangentProgress = 2 * consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
+                stressProgress            = 2 * stressProgressHalfTemp - stressProgressFullTemp;
+                stateProgress             = 2 * stateProgressHalfTemp - stateProgressFullTemp;
 
                 currentProgress += currentSubstepSize;
 
@@ -276,12 +280,14 @@ namespace bft {
 
                 return true;
             }
-        } else
+        }
+        else
             return false;
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const Vector6& newStress ) {
+    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const Vector6& newStress )
+    {
         switch ( currentState ) {
         case FullStep: {
             // this means, that the complete current cycle is already successfull,
@@ -309,16 +315,18 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getResults( Vector6& stress,
-                                                    Matrix6& consistentTangentOperator,
-                                                    IntegrationStateVector& stateVars ) {
+    void AdaptiveSubstepper<n, nState>::getResults( Vector6&                stress,
+                                                    Matrix6&                consistentTangentOperator,
+                                                    IntegrationStateVector& stateVars )
+    {
         stress                    = stressProgress;
         stateVars                 = stateProgress;
         consistentTangentOperator = consistentTangentProgress.topLeftCorner( 6, 6 );
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::acceptSubstepWithFullStepOnly() {
+    bool AdaptiveSubstepper<n, nState>::acceptSubstepWithFullStepOnly()
+    {
         consistentTangentProgress = consistentTangentProgressFullTemp;
         stressProgress            = stressProgressFullTemp;
         stateProgress             = stateProgressFullTemp;
@@ -330,7 +338,8 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::splitCurrentSubstep() {
+    bool AdaptiveSubstepper<n, nState>::splitCurrentSubstep()
+    {
         if ( currentSubstepSize < 2 * minimumStepSize ) {
             if ( ignoreErrorToleranceOnMinimumStepSize )
                 return acceptSubstepWithFullStepOnly();
@@ -347,7 +356,8 @@ namespace bft {
         return true;
     }
     template <size_t n, size_t nState>
-    int AdaptiveSubstepper<n, nState>::getNumberOfSubsteps() {
+    int AdaptiveSubstepper<n, nState>::getNumberOfSubsteps()
+    {
         return substepIndex;
     }
 } // namespace bft
