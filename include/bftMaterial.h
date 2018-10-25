@@ -1,37 +1,30 @@
 #pragma once
 #include <string>
 
-class BftMaterial{
-    public:
+class BftMaterial {
 
-        double* stateVars;
-        int nStateVars;
+  public:
+    double* stateVars;
+    int     nStateVars;
 
-        const double* materialProperties;
-        const int nMaterialProperties;
+    const double* materialProperties;
+    const int     nMaterialProperties;
 
-        const int elementID, gaussPt;
+    const int elementID, gaussPt;
 
-        BftMaterial(
-                    const double* materialProperties, 
-                    int nMaterialProperties,
-                    int elementID,
-                    int gaussPt
-                    ):
-                    stateVars(nullptr),
-                    nStateVars(0),
-                    materialProperties(materialProperties),
-                    nMaterialProperties(nMaterialProperties),
-                    elementID(elementID),
-                    gaussPt(gaussPt)
-                    {};
+    BftMaterial( const double* materialProperties, int nMaterialProperties, int elementID, int gaussPt )
+        : stateVars( nullptr ),
+          nStateVars( 0 ),
+          materialProperties( materialProperties ),
+          nMaterialProperties( nMaterialProperties ),
+          elementID( elementID ),
+          gaussPt( gaussPt ){};
 
-        virtual ~BftMaterial(){};
+    virtual ~BftMaterial(){};
 
-        virtual int getNumberOfRequiredStateVars() = 0;
+    virtual int getNumberOfRequiredStateVars() = 0;
 
-        virtual void assignStateVars(double *stateVars, int nStateVars) = 0;
+    virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 
-        virtual double* getPermanentResultPointer(const std::string& resultName, int& resultLength) = 0;
-
+    virtual double* getPermanentResultPointer( const std::string& resultName, int& resultLength ) = 0;
 };

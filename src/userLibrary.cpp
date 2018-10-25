@@ -1,78 +1,77 @@
-#include <map>
-#include <tuple>
-#include "userLibrary.h"
-#include "bftUel.h"
-#include "bftTypedefs.h"
 #include "bftMaterial.h"
+#include "bftTypedefs.h"
+#include "bftUel.h"
 #include "bftVoigt.h"
+#include "userLibrary.h"
+#include <map>
 #include <string>
+#include <tuple>
 
 #ifdef LINEARELASTIC
-    #include "LinearElastic.h"
+#    include "LinearElastic.h"
 #endif
 #ifdef LINEARELASTICSOLIDIFICATIONCREEP
-    #include "LESolidificationCreep.h"
+#    include "LESolidificationCreep.h"
 #endif
 #ifdef MODLEON
-    #include "ModLeon.h"
+#    include "ModLeon.h"
 #endif
 #ifdef MODLEONSEMIEXPLICIT
-    #include "ModLeonSemiExplicit.h"
+#    include "ModLeonSemiExplicit.h"
 #endif
 #ifdef MODLEONADAPTIVE
-    #include "ModLeonAdaptive.h"
+#    include "ModLeonAdaptive.h"
 #endif
 #ifdef MODLEONSEMIEXPLICITADAPTIVE
-    #include "ModLeonSemiExplicitAdaptive.h"
+#    include "ModLeonSemiExplicitAdaptive.h"
 #endif
 #ifdef MODLEONPLANESTRESS
-    #include "ModLeonPS.h"
+#    include "ModLeonPS.h"
 #endif
 #ifdef SHOTLEON
-    #include "ShotLeon.h"
+#    include "ShotLeon.h"
 #endif
-#ifdef SHOTLEONV2 
-    #include "ShotLeonV2.h"
+#ifdef SHOTLEONV2
+#    include "ShotLeonV2.h"
 #endif
 #ifdef SHOTLEONNONLOCAL
-    #include "ShotLeonNonLocal.h"
+#    include "ShotLeonNonLocal.h"
 #endif
-#ifdef SHOTLEONV2NONLOCAL 
-    #include "ShotLeonV2NonLocal.h"
+#ifdef SHOTLEONV2NONLOCAL
+#    include "ShotLeonV2NonLocal.h"
 #endif
 #ifdef MODLEONNONLOCAL
-    #include "ModLeonNonLocal.h"
+#    include "ModLeonNonLocal.h"
 #endif
 #ifdef MESCHKE
-    #include "Meschke.h"
+#    include "Meschke.h"
 #endif
 #ifdef SCHAEDLICHSCHWEIGER
-    #include "SchaedlichSchweiger.h"
+#    include "SchaedlichSchweiger.h"
 #endif
-#ifdef HOEKBROWN 
-    #include "HoekBrown.h"
+#ifdef HOEKBROWN
+#    include "HoekBrown.h"
 #endif
 #ifdef UNTEREGGERROCKMASS
-    #include "UntereggerRockMass.h"
+#    include "UntereggerRockMass.h"
 #endif
 #ifdef UNTEREGGERROCKMASSPLAXIS
-    #include "UntereggerRockMassPlaxis.h"
+#    include "UntereggerRockMassPlaxis.h"
 #endif
-#ifdef MohrCoulomb 
-    #include "materialCodeMohrCoulomb.h"
+#ifdef MohrCoulomb
+#    include "materialCodeMohrCoulomb.h"
 #endif
-#ifdef UNTEREGGERROCKMASSNONLOCAL 
-    #include "UntereggerRockMassNonLocal.h"
+#ifdef UNTEREGGERROCKMASSNONLOCAL
+#    include "UntereggerRockMassNonLocal.h"
 #endif
 #ifdef LINEARELASTICNONLOCAL
-    #include "LinearElasticNonLocal.h"
+#    include "LinearElasticNonLocal.h"
 #endif
-namespace userLibrary{
+namespace userLibrary {
 
-    MaterialCode getMaterialCodeFromName(const std::string& materialCode)
+    MaterialCode getMaterialCodeFromName( const std::string& materialCode )
     {
-        static std::map<std::string, MaterialCode> materialCodeMap =
-        {
+        static std::map<std::string, MaterialCode> materialCodeMap = {
             {"MODLEON", ModLeon},
             {"SHOTLEON", ShotLeon},
             {"MESCHKE", Meschke},
@@ -95,17 +94,17 @@ namespace userLibrary{
             {"LINEARELASTICNONLOCAL", LinearElasticNonLocal},
         };
 
-        return materialCodeMap [ materialCode ];
+        return materialCodeMap[materialCode];
     }
 
-    BftMaterial* bftMaterialFactory( MaterialCode materialCode,
-                                    const double* materialProperties, 
-                                    int nMaterialProperties,
-                                    int element, 
-                                    int gaussPt)
+    BftMaterial* bftMaterialFactory( MaterialCode  materialCode,
+                                     const double* materialProperties,
+                                     int           nMaterialProperties,
+                                     int           element,
+                                     int           gaussPt )
     {
-        switch(materialCode)
-        {
+        switch ( materialCode ) {
+// clang-format off
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
@@ -159,73 +158,74 @@ namespace userLibrary{
             #endif
             default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid material code "<< materialCode << " requested!" << std::endl; 
                          throw std::invalid_argument(str.str()); }
+            // clang-format on
         }
     }
 
-} 
+} // namespace userLibrary
 
 #ifdef UELDISPLACEMENT
-    #include "uelDisplacementFactory.h"
+#    include "uelDisplacementFactory.h"
 #endif
 #ifdef UELNONLOCAL
-    #include "uelNonLocalFactory.h"
+#    include "uelNonLocalFactory.h"
 #endif
 #ifdef UELDISPLACEMENTEAS
-    #include "uelDisplacementEASFactory.h"
+#    include "uelDisplacementEASFactory.h"
 #endif
 #ifdef UELNONLOCALEAS
-    #include "uelNonLocalEASFactory.h"
+#    include "uelNonLocalEASFactory.h"
 #endif
 
-namespace userLibrary{
+namespace userLibrary {
 
-    ElementCode getElementCodeFromName(const std::string& elementName)
+    ElementCode getElementCodeFromName( const std::string& elementName )
     {
-        static std::map<std::string, ElementCode> elementCodeMap =
-        {
-            { "UELT2D2", UelT2D2 }, 
-            { "UELCPS4", UelCPS4 }, 
-            { "UELCPS8", UelCPS8 }, 
-            { "UELCPS8R", UelCPS8R }, 
-            { "UELCPE4", UelCPE4 }, 
-            { "UELCPE8", UelCPE8 }, 
-            { "UELCPE8R", UelCPE8R }, 
-            { "UELCPE4EAS2", UelCPE4EAS2 }, 
-            { "UELCPE4EAS4", UelCPE4EAS4 }, 
-            { "UELCPE4EAS5", UelCPE4EAS5 }, 
-            { "UELC3D8", UelC3D8 }, 
-            { "UELC3D8R", UelC3D8R }, 
-            { "UELC3D20", UelC3D20 }, 
-            { "UELC3D20R", UelC3D20R }, 
-            { "UELC3D8EAS3", UelC3D8EAS3 }, 
-            { "UELC3D8EAS9", UelC3D8EAS9 }, 
-            { "UELCPS4NONLOCAL", UelCPS4NonLocal }, 
-            { "UELCPS8NONLOCAL", UelCPS8NonLocal }, 
-            { "UELCPS8RNONLOCAL", UelCPS8RNonLocal }, 
-            { "UELCPS4NONLOCALEAS2", UelCPS4NonLocalEAS2 }, 
-            { "UELCPS4NONLOCALEAS4", UelCPS4NonLocalEAS4 }, 
-            { "UELCPE4NONLOCAL", UelCPE4NonLocal }, 
-            { "UELCPE4RNONLOCAL", UelCPE4RNonLocal }, 
-            { "UELCPE8NONLOCAL", UelCPE8NonLocal }, 
-            { "UELCPE8RNONLOCAL", UelCPE8RNonLocal }, 
-            { "UELCPE4NONLOCALEAS2", UelCPE4NonLocalEAS2 }, 
-            { "UELCPE4NONLOCALEAS4", UelCPE4NonLocalEAS4 }, 
-            { "UELCPE4NONLOCALEAS5", UelCPE4NonLocalEAS5 }, 
-            { "UELC3D8NONLOCALEAS3", UelC3D8NonLocalEAS3 }, 
-            { "UELC3D8NONLOCALEAS6B", UelC3D8NonLocalEAS6b }, 
-            { "UELC3D8NONLOCALEAS9", UelC3D8NonLocalEAS9 }, 
-            { "UELC3D8NONLOCAL", UelC3D8NonLocal }, 
-            { "UELC3D8RNONLOCAL", UelC3D8RNonLocal }, 
-            { "UELC3D20NONLOCAL", UelC3D20NonLocal }, 
-            { "UELC3D20RNONLOCAL", UelC3D20RNonLocal }, 
+        static std::map<std::string, ElementCode> elementCodeMap = {
+            {"UELT2D2", UelT2D2},
+            {"UELCPS4", UelCPS4},
+            {"UELCPS8", UelCPS8},
+            {"UELCPS8R", UelCPS8R},
+            {"UELCPE4", UelCPE4},
+            {"UELCPE8", UelCPE8},
+            {"UELCPE8R", UelCPE8R},
+            {"UELCPE4EAS2", UelCPE4EAS2},
+            {"UELCPE4EAS4", UelCPE4EAS4},
+            {"UELCPE4EAS5", UelCPE4EAS5},
+            {"UELC3D8", UelC3D8},
+            {"UELC3D8R", UelC3D8R},
+            {"UELC3D20", UelC3D20},
+            {"UELC3D20R", UelC3D20R},
+            {"UELC3D8EAS3", UelC3D8EAS3},
+            {"UELC3D8EAS9", UelC3D8EAS9},
+            {"UELCPS4NONLOCAL", UelCPS4NonLocal},
+            {"UELCPS8NONLOCAL", UelCPS8NonLocal},
+            {"UELCPS8RNONLOCAL", UelCPS8RNonLocal},
+            {"UELCPS4NONLOCALEAS2", UelCPS4NonLocalEAS2},
+            {"UELCPS4NONLOCALEAS4", UelCPS4NonLocalEAS4},
+            {"UELCPE4NONLOCAL", UelCPE4NonLocal},
+            {"UELCPE4RNONLOCAL", UelCPE4RNonLocal},
+            {"UELCPE8NONLOCAL", UelCPE8NonLocal},
+            {"UELCPE8RNONLOCAL", UelCPE8RNonLocal},
+            {"UELCPE4NONLOCALEAS2", UelCPE4NonLocalEAS2},
+            {"UELCPE4NONLOCALEAS4", UelCPE4NonLocalEAS4},
+            {"UELCPE4NONLOCALEAS5", UelCPE4NonLocalEAS5},
+            {"UELC3D8NONLOCALEAS3", UelC3D8NonLocalEAS3},
+            {"UELC3D8NONLOCALEAS6B", UelC3D8NonLocalEAS6b},
+            {"UELC3D8NONLOCALEAS9", UelC3D8NonLocalEAS9},
+            {"UELC3D8NONLOCAL", UelC3D8NonLocal},
+            {"UELC3D8RNONLOCAL", UelC3D8RNonLocal},
+            {"UELC3D20NONLOCAL", UelC3D20NonLocal},
+            {"UELC3D20RNONLOCAL", UelC3D20RNonLocal},
 
         };
-        return elementCodeMap[ elementName ];
+        return elementCodeMap[elementName];
     }
 
-    BftUel* UelFactory(ElementCode  elementCode, int elementNumber)
+    BftUel* UelFactory( ElementCode elementCode, int elementNumber )
     {
-        switch(elementCode){
+        switch ( elementCode ) {
+// clang-format off
             #ifdef UELDISPLACEMENT
             case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
             case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
@@ -269,94 +269,110 @@ namespace userLibrary{
             case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b(elementNumber);}
             case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementNumber);}
             #endif
-
-            default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid element "<< elementCode<< " requested!" << std::endl; 
-                         throw std::invalid_argument(str.str()); }
+        // clang-format on
+        default: {
+            std::ostringstream str;
+            str << "bftUserLibrary: Invalid element " << elementCode << " requested!" << std::endl;
+            throw std::invalid_argument( str.str() );
+        }
         }
     }
 
-    ElementCode getElementCodeFromInfo(int nNodes, 
-                                       int activeFields, 
-                                       int dim,
-                                       bool fullIntegration, 
-                                       const std::string& formulation,
-                                       int EASParam){
-           int elInfo[4] = {0};
-           
-           elInfo[0] = nNodes;
-           elInfo[1] = activeFields - 1;
-           
-           switch(dim)
-               {
-                case 1:
-                    elInfo[2] = fullIntegration ? 1 : 4; break; 
-                case 2:
-                    {
-                    if (formulation == "PLANESTRESS")
-                        elInfo[2] = (fullIntegration) ? 2 : 5; 
-                    else if (formulation == "PLANESTRAIN")
-                        elInfo[2] = (fullIntegration) ? 7 : 8; 
-                    else
-                        throw std::invalid_argument("bftUserLibrary: formulation type cannot be identified for ElementCode");
-                    break; }
-               case 3:
-                    elInfo[2] = (fullIntegration) ? 3 : 6; break;
-               
-               default:{throw std::invalid_argument("bftUserLibrary: cannot generate ElementCode from Info");}
-               }
-           
-           elInfo[3] = (EASParam>0) ? EASParam : 0;
+    ElementCode getElementCodeFromInfo( int                nNodes,
+                                        int                activeFields,
+                                        int                dim,
+                                        bool               fullIntegration,
+                                        const std::string& formulation,
+                                        int                EASParam )
+    {
+        int elInfo[4] = {0};
 
-           // concatenate to elementcode as in defined list elementCode
-           int elCode;
-           if (elInfo[3]>0)
-               elCode = elInfo[3] + elInfo[2] * 100 + elInfo[1] * 1000 + elInfo[0] * 10000;
-           else
-               elCode = elInfo[2] + elInfo[1] * 10 + elInfo[0] * 100;
-   
-           return static_cast<ElementCode>(elCode); 
+        elInfo[0] = nNodes;
+        elInfo[1] = activeFields - 1;
+
+        switch ( dim ) {
+        case 1: elInfo[2] = fullIntegration ? 1 : 4; break;
+        case 2: {
+            if ( formulation == "PLANESTRESS" )
+                elInfo[2] = ( fullIntegration ) ? 2 : 5;
+            else if ( formulation == "PLANESTRAIN" )
+                elInfo[2] = ( fullIntegration ) ? 7 : 8;
+            else
+                throw std::invalid_argument( "bftUserLibrary: formulation type cannot be identified for ElementCode" );
+            break;
+        }
+        case 3: elInfo[2] = ( fullIntegration ) ? 3 : 6; break;
+
+        default: {
+            throw std::invalid_argument( "bftUserLibrary: cannot generate ElementCode from Info" );
+        }
+        }
+
+        elInfo[3] = ( EASParam > 0 ) ? EASParam : 0;
+
+        // concatenate to elementcode as in defined list elementCode
+        int elCode;
+        if ( elInfo[3] > 0 )
+            elCode = elInfo[3] + elInfo[2] * 100 + elInfo[1] * 1000 + elInfo[0] * 10000;
+        else
+            elCode = elInfo[2] + elInfo[1] * 10 + elInfo[0] * 100;
+
+        return static_cast<ElementCode>( elCode );
     }
 
-    void extendAbaqusToVoigt(double* stress6, double* stress, double* strain6, const double* strain, double* dStrain6, const double* dStrain, int nDirect, int nShear)
+    void extendAbaqusToVoigt( double*       stress6,
+                              double*       stress,
+                              double*       strain6,
+                              const double* strain,
+                              double*       dStrain6,
+                              const double* dStrain,
+                              int           nDirect,
+                              int           nShear )
     {
-        bft::mVector6 s(stress6); 
-        Map< VectorXd> abqStress ( stress, nDirect + nShear );
+        bft::mVector6 s( stress6 );
+        Map<VectorXd> abqStress( stress, nDirect + nShear );
         s.setZero();
-        s.head(nDirect) =           abqStress.head(nDirect);
-        s.segment(3, nShear) =      abqStress.tail(nShear);
+        s.head( nDirect )      = abqStress.head( nDirect );
+        s.segment( 3, nShear ) = abqStress.tail( nShear );
 
-        bft::mVector6 e(strain6); 
-        Map< const VectorXd> abqStrain( strain, nDirect + nShear );
+        bft::mVector6       e( strain6 );
+        Map<const VectorXd> abqStrain( strain, nDirect + nShear );
         e.setZero();
-        e.head(nDirect) =           abqStrain.head(nDirect);
-        e.segment(3, nShear) =      abqStrain.tail(nShear);
+        e.head( nDirect )      = abqStrain.head( nDirect );
+        e.segment( 3, nShear ) = abqStrain.tail( nShear );
 
-        bft::mVector6 de(dStrain6); 
-        Map< const VectorXd> abqDStrain( dStrain, nDirect + nShear );
+        bft::mVector6       de( dStrain6 );
+        Map<const VectorXd> abqDStrain( dStrain, nDirect + nShear );
         de.setZero();
-        de.head(nDirect) =      abqDStrain.head(nDirect);
-        de.segment(3, nShear) = abqDStrain.tail(nShear);
-
+        de.head( nDirect )      = abqDStrain.head( nDirect );
+        de.segment( 3, nShear ) = abqDStrain.tail( nShear );
     }
 
-    void backToAbaqus(double* stress, double* stress6, double* dStressDDStrain, double* dStressDDStrain66, int nDirect, int nShear)
+    void backToAbaqus( double* stress,
+                       double* stress6,
+                       double* dStressDDStrain,
+                       double* dStressDDStrain66,
+                       int     nDirect,
+                       int     nShear )
     {
-        bft::mVector6 s(stress6); 
-        Map< VectorXd> abqStress ( stress, nDirect + nShear );
+        bft::mVector6 s( stress6 );
+        Map<VectorXd> abqStress( stress, nDirect + nShear );
 
-        abqStress.head(nDirect) = s.head(nDirect);
-        abqStress.tail(nShear) = s.segment(3, nShear);
+        abqStress.head( nDirect ) = s.head( nDirect );
+        abqStress.tail( nShear )  = s.segment( 3, nShear );
 
-        bft::mMatrix6 C(dStressDDStrain66);
-        Map<MatrixXd> abqC ( dStressDDStrain, nDirect + nShear, nDirect + nShear);
+        bft::mMatrix6 C( dStressDDStrain66 );
+        Map<MatrixXd> abqC( dStressDDStrain, nDirect + nShear, nDirect + nShear );
 
-        if(nDirect == 2 ){
-            abqC = bft::mechanics::getPlaneStressTangent(C); }
-        else{
-            abqC.topLeftCorner(nDirect, nDirect) =      C.topLeftCorner(nDirect, nDirect);
-            abqC.bottomRightCorner(nShear, nShear) =    C.block(3,3, nShear, nShear);
-            abqC.topRightCorner(nDirect, nShear) =      C.block(0,3, nDirect, nShear);
-            abqC.bottomLeftCorner(nShear, nDirect) =    C.block(0,3, nShear, nDirect);}
+        if ( nDirect == 2 ) {
+            abqC = bft::mechanics::getPlaneStressTangent( C );
+        }
+        else {
+            abqC.topLeftCorner( nDirect, nDirect )   = C.topLeftCorner( nDirect, nDirect );
+            abqC.bottomRightCorner( nShear, nShear ) = C.block( 3, 3, nShear, nShear );
+            abqC.topRightCorner( nDirect, nShear )   = C.block( 0, 3, nDirect, nShear );
+            abqC.bottomLeftCorner( nShear, nDirect ) = C.block( 0, 3, nShear, nDirect );
+        }
     }
 
-} 
+} // namespace userLibrary
