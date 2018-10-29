@@ -1,4 +1,4 @@
-This is the centra library of team Matthias/Magdalena providing access to
+This is the central library of team Matthias/Magdalena providing access to
 - BftMaterials:  Constutitive Models compatible with
     - EdelweissFE
     - Abaqus (via Abaqus-UserLibraryInterface)
@@ -15,3 +15,6 @@ For compilation, please make sure that
 - desired Materials and Elements are present
 - a proper version of the Eigen library is at hand
 - and CMakeLists.txt is configured
+
+For extension of the library, please stick to the coding style by using 
+clang-format with the provided .clang-format style file.
