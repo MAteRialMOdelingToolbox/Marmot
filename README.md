@@ -2,7 +2,7 @@ This is the central library of team Matthias/Magdalena providing access to
 - BftMaterials:  Constutitive Models compatible with
     - EdelweissFE
     - Abaqus (via Abaqus-UserLibraryInterface)
-    - Plaxis
+    - Plaxis (via PlaxisUserlibrary)
     - OpenSees (via OpenSeesBftMaterialWrapper)
     - mpFEM 
 - BftUels: Finite Elements compatible with
