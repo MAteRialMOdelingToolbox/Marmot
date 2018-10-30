@@ -57,7 +57,10 @@ namespace bft
         Vector3d principalStrains(const Vector6& strain);
 		// principal strains calculated from haigh westergaard strains ( sorted --> e1 > e2 > e3 )
 		Vector3d principalStrainsHW(const Vector6& strain);
-		// principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
+		// equivalent von Mises strain 
+        double vonMisesEquivalentStrain(const Vector6& strain);
+
+        // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
         Vector3d principalStresses(const Vector6& stress);
 
 		// Euclidian norm of strain
