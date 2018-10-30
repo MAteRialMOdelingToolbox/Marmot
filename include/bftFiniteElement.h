@@ -1,13 +1,11 @@
-#pragma once 
-#include <array>
-#include <vector>
+#pragma once
 #include "bftTypedefs.h"
+#include <vector>
 
-namespace bft{
+namespace bft {
 
-    namespace FiniteElement
-    {
-        enum ElementShapes{
+    namespace FiniteElement {
+        enum ElementShapes {
             Truss2,
             Truss3,
             Quad4,
@@ -16,355 +14,345 @@ namespace bft{
             Hexa20,
         };
 
-        ElementShapes getElementShapeByMetric(int nDim, int nNodes);
+        ElementShapes getElementShapeByMetric( int nDim, int nNodes );
 
         // 'Expanded' N , aka NBold aka multidimensional Interpolation Operator
-        MatrixXd NB(const Ref<const VectorXd>& N, const int nDoFPerNode); // Dynamic version
+        MatrixXd NB( const VectorXd& N,
+                     const int       nDoFPerNode ); // Dynamic version
 
         template <int nDim, int nNodes>
-            Matrix<double, nDim, nDim*nNodes> NB(const Ref<const Matrix<double, 1, nNodes>>& N )
-            {
-                // Alternative Templated version of Interpolation operator NBold;
-                Matrix<double, nDim, nDim*nNodes> N_ = Matrix<double, nDim, nDim*nNodes>::Zero();
-                for (int i=0; i<nNodes; i++){
-                    for (int j=0; j<nDim; j++){
-                        N_(j,nDim*i+j) = N(i);
-                    }
-                }
-                return N_;
-            }
-
-        MatrixXd Jacobian(const MatrixXd& dN_dXi, const VectorXd& coordinates); // Dynamic version
-
-        template <int nDim, int nNodes> 
-            Matrix<double, nDim, nDim> Jacobian(const Matrix<double, nDim, nNodes>&         dNdXi, 
-                    const Matrix<double, nDim * nNodes, 1>&     coordinates)
-            {
-                // Alternative Templated version of Jacobian for compile time known sizes
-                Matrix<double, nDim, nDim> J_ = Matrix<double, nDim, nDim>::Zero();
-                for(int i = 0; i < nDim; i++)		// loop over global dimensions
-                    for(int j=0; j < nDim; j++)		// loop over local dimensions
-                        for(int k=0; k<nNodes; k++) // Loop over nodes
-                            J_(i, j) += dNdXi(j, k) * coordinates(i + k*nDim);
-                return J_;
-            }
-
-        VectorXd expandNodeIndicesToCoordinateIndices( VectorXd nodeIndices, int nDim);
-
-        namespace Spatial1D
+        Matrix<double, nDim, nDim * nNodes> NB( const Matrix<double, 1, nNodes>& N )
         {
-            namespace Truss2
-            {
-                constexpr int nNodes = 2;
-                typedef Matrix<double, 1, nNodes>         NSized;
-                typedef Matrix<double, 1, nNodes>         dNdXiSized;
-
-                NSized N(double  xi);
-                dNdXiSized dNdXi(double xi);
-
+            // Alternative Templated version of Interpolation operator NBold;
+            Matrix<double, nDim, nDim* nNodes> N_ = Matrix<double, nDim, nDim * nNodes>::Zero();
+            for ( int i = 0; i < nNodes; i++ ) {
+                for ( int j = 0; j < nDim; j++ ) {
+                    N_( j, nDim * i + j ) = N( i );
+                }
             }
-
-            namespace Truss3
-            {
-                constexpr int nNodes = 3;
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, 1,    nNodes>         dNdXiSized;
-
-                NSized N(double  xi);
-                dNdXiSized dNdXi(double xi);
-            }    
+            return N_;
         }
 
-        namespace Spatial2D
+        MatrixXd Jacobian( const MatrixXd& dN_dXi,
+                           const VectorXd& coordinates ); // Dynamic version
+
+        template <int nDim, int nNodes>
+        Matrix<double, nDim, nDim> Jacobian( const Matrix<double, nDim, nNodes>&     dNdXi,
+                                             const Matrix<double, nDim * nNodes, 1>& coordinates )
         {
-            constexpr int nDim = 2;
-            constexpr int voigtLength=3;
+            // Alternative Templated version of Jacobian for compile time known
+            // sizes
+            Matrix<double, nDim, nDim> J_ = Matrix<double, nDim, nDim>::Zero();
+            for ( int i = 0; i < nDim; i++ )           // loop over global dimensions
+                for ( int j = 0; j < nDim; j++ )       // loop over local dimensions
+                    for ( int k = 0; k < nNodes; k++ ) // Loop over nodes
+                        J_( i, j ) += dNdXi( j, k ) * coordinates( i + k * nDim );
+            return J_;
+        }
 
-            template<int nNodes> 
-                Matrix<double, voigtLength, nNodes*nDim> B(const Ref<const  Matrix<double, nDim, nNodes>>& dNdX) {   
+        VectorXi expandNodeIndicesToCoordinateIndices( const VectorXi& nodeIndices, int nDim );
 
-                    Matrix<double, voigtLength, nNodes*nDim> B_ = Matrix<double, voigtLength, nNodes*nDim>::Zero();
-                    for(int i = 0; i < nNodes; i++){
-                        B_(0, 2*i) =        dNdX(0, i);
-                        B_(1, 2*i +1) =     dNdX(1, i);
-                        B_(2, 2*i) =        dNdX(1, i);
-                        B_(2, 2*i +1) =     dNdX(0, i);}  
-                    return B_;
-                }
+        namespace Spatial1D {
+            namespace Truss2 {
 
-            namespace Quad4
+                constexpr int nNodes = 2;
+                using NSized         = Matrix<double, 1, nNodes>;
+                using dNdXiSized     = Matrix<double, 1, nNodes>;
+
+                NSized     N( double xi );
+                dNdXiSized dNdXi( double xi );
+            } // namespace Truss2
+
+            namespace Truss3 {
+
+                constexpr int nNodes = 3;
+                using NSized         = Matrix<double, 1, nNodes>;
+                using dNdXiSized     = Matrix<double, 1, nNodes>;
+
+                NSized     N( double xi );
+                dNdXiSized dNdXi( double xi );
+            } // namespace Truss3
+        }     // namespace Spatial1D
+
+        namespace Spatial2D {
+            constexpr int nDim      = 2;
+            constexpr int voigtSize = 3;
+
+            template <int nNodes>
+            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX )
             {
+
+                Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                for ( int i = 0; i < nNodes; i++ ) {
+                    B_( 0, 2 * i )     = dNdX( 0, i );
+                    B_( 1, 2 * i + 1 ) = dNdX( 1, i );
+                    B_( 2, 2 * i )     = dNdX( 1, i );
+                    B_( 2, 2 * i + 1 ) = dNdX( 0, i );
+                }
+                return B_;
+            }
+
+            namespace Quad4 {
                 constexpr int nNodes = 4;
 
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
-                typedef Matrix<double, 3, nNodes * nDim>        BSized;
+                using CoordinateSized = Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Matrix<double, nDim, nNodes>;
+                using BSized          = Matrix<double, voigtSize, nNodes * nDim>;
 
-                NSized N(const Ref<const Vector2d>& xi);           
-                dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
+                NSized     N( const Vector2d& xi );
+                dNdXiSized dNdXi( const Vector2d& xi );
 
-                // convenience functions; they are wrappers to the corresponding template functions
-                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
-                BSized B(const Ref<const dNdXiSized>& dNdXi);
+                // convenience functions; they are wrappers to the corresponding
+                // template functions
+                Matrix2d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
+                BSized   B( const dNdXiSized& dNdXi );
 
-                Vector2d getBoundaryElementIndices ( int faceID);
-            } 
+                Vector2i getBoundaryElementIndices( int faceID );
+            } // namespace Quad4
 
-            namespace Quad8
-            {
+            namespace Quad8 {
                 constexpr int nNodes = 8;
 
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
-                typedef Matrix<double, 3, nNodes * nDim>        BSized;
+                using CoordinateSized = Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Matrix<double, nDim, nNodes>;
+                using BSized          = Matrix<double, voigtSize, nNodes * nDim>;
 
-                NSized N(const Ref<const Vector2d>& xi);           
-                dNdXiSized dNdXi(const Ref<const Vector2d>& xi);
+                NSized     N( const Vector2d& xi );
+                dNdXiSized dNdXi( const Vector2d& xi );
 
-                // convenience functions; they are wrappers to the corresponding template functions
-                Matrix2d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
-                BSized B(const Ref<const dNdXiSized>& dNdXi);
+                // convenience functions; they are wrappers to the corresponding
+                // template functions
+                Matrix2d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
+                BSized   B( const dNdXiSized& dNdXi );
 
-                Vector3d getBoundaryElementIndices ( int faceID);
-            } 
+                Vector3i getBoundaryElementIndices( int faceID );
+            } // namespace Quad8
 
-        }//end of namespace Spatial2D
+        } // end of namespace Spatial2D
 
-        namespace Spatial3D
-        {
-            constexpr int nDim = 3;
-            constexpr int voigtLength = 6;
+        namespace Spatial3D {
+            constexpr int nDim      = 3;
+            constexpr int voigtSize = 6;
 
-            template<int nNodes> 
-                Matrix<double, voigtLength, nNodes*nDim> B(const Ref<const  Matrix<double, nDim, nNodes>>& dNdX) {   
+            template <int nNodes>
+            Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX )
+            {
 
-                    Matrix<double, voigtLength, nNodes*nDim> B_ = Matrix<double, voigtLength, nNodes*nDim>::Zero();
-                    for(int i = 0; i < nNodes; i++){
-                        B_(0, nDim*i) =        dNdX(0, i);
-                        B_(1, nDim*i +1) =     dNdX(1, i);
-                        B_(2, nDim*i +2) =     dNdX(2, i);
-                        B_(3, nDim*i +0) =     dNdX(1, i);
-                        B_(3, nDim*i +1) =     dNdX(0, i);
-                        B_(4, nDim*i +1) =     dNdX(2, i);
-                        B_(4, nDim*i +2) =     dNdX(1, i);
-                        B_(5, nDim*i +2) =     dNdX(0, i);
-                        B_(5, nDim*i +0) =     dNdX(2, i); }  
+                Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
 
-                    return B_;
+                for ( int i = 0; i < nNodes; i++ ) {
+                    B_( 0, nDim * i )     = dNdX( 0, i );
+                    B_( 1, nDim * i + 1 ) = dNdX( 1, i );
+                    B_( 2, nDim * i + 2 ) = dNdX( 2, i );
+                    B_( 3, nDim * i + 0 ) = dNdX( 1, i );
+                    B_( 3, nDim * i + 1 ) = dNdX( 0, i );
+                    B_( 4, nDim * i + 1 ) = dNdX( 2, i );
+                    B_( 4, nDim * i + 2 ) = dNdX( 1, i );
+                    B_( 5, nDim * i + 2 ) = dNdX( 0, i );
+                    B_( 5, nDim * i + 0 ) = dNdX( 2, i );
                 }
 
-            namespace Hexa8
-            {
-                constexpr int nNodes = 8;
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
-                typedef Matrix<double, 6,       nNodes * nDim>  BSized;
-
-                NSized N(const Ref<const Vector3d>& xi);           
-                dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
-
-                // convenience functions; they are wrappers to the corresponding template functions
-                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
-                BSized B(const Ref<const dNdXiSized>& dNdXi);
-
-                Vector4d getBoundaryElementIndices ( int faceID );
+                return B_;
             }
 
-            namespace Hexa20
-            {
-                constexpr int nNodes = 20;
-                typedef Matrix<double, 1,       nNodes>         NSized;
-                typedef Matrix<double, nDim,    nNodes>         dNdXiSized;
-                typedef Matrix<double, 6,       nNodes * nDim>  BSized;
+            namespace Hexa8 {
+                constexpr int nNodes  = 8;
+                using CoordinateSized = Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Matrix<double, nDim, nNodes>;
+                using BSized          = Matrix<double, 6, nNodes * nDim>;
 
-                NSized N(const Ref<const Vector3d>& xi);           
-                dNdXiSized dNdXi(const Ref<const Vector3d>& xi);
+                NSized     N( const Vector3d& xi );
+                dNdXiSized dNdXi( const Vector3d& xi );
 
-                // convenience functions; they are wrappers to the corresponding template functions
-                Matrix3d Jacobian(const Ref<const dNdXiSized >& dNdXi, const Ref<const Matrix<double, nNodes*nDim, 1>>& coordinates);
-                BSized B(const Ref<const dNdXiSized>& dNdXi);
+                // convenience functions; they are wrappers to the corresponding
+                // template functions
+                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
+                BSized   B( const dNdXiSized& dNdXi );
 
-                Matrix<double, 8, 1 > getBoundaryElementIndices ( int faceID );
-            }
-        } // End Spatial3D
+                Vector4i getBoundaryElementIndices( int faceID );
+            } // namespace Hexa8
 
-        class BoundaryElement{
+            namespace Hexa20 {
+                constexpr int nNodes  = 20;
+                using CoordinateSized = Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Matrix<double, nDim, nNodes>;
+                using BSized          = Matrix<double, 6, nNodes * nDim>;
+
+                NSized     N( const Vector3d& xi );
+                dNdXiSized dNdXi( const Vector3d& xi );
+
+                // convenience functions; they are wrappers to the corresponding
+                // template functions
+                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
+                BSized   B( const dNdXiSized& dNdXi );
+
+                Vector8i getBoundaryElementIndices( int faceID );
+            } // namespace Hexa20
+        }     // namespace Spatial3D
+
+        class BoundaryElement {
 
             /* Boundary element, for instance for distributed surface loads
              * */
 
-            struct BoundaryElementGaussPt{
-                double weight;
-                VectorXd xi ;
+            struct BoundaryElementGaussPt {
+                double   weight;
+                VectorXd xi;
                 VectorXd N;
                 MatrixXd dNdXi;
                 MatrixXd J;
-
                 VectorXd normalVector;
-                double integrationArea;
+                double   integrationArea;
             };
 
-            const int            nDim;
+            const int nDim;
 
-            ElementShapes           boundaryShape;
-            int                     nNodes;
-            int                     nParentCoordinates;
+            ElementShapes boundaryShape;
+            int           nNodes;
+            int           nParentCoordinates;
 
-            std::vector < BoundaryElementGaussPt>  gaussPts;
+            std::vector<BoundaryElementGaussPt> gaussPts;
 
-            VectorXd boundaryIndicesInParentNodes;
-            VectorXd boundaryIndicesInParentCoordinates;
+            VectorXi boundaryIndicesInParentNodes;
+            VectorXi boundaryIndicesInParentCoordinates;
             VectorXd coordinates;
 
-            public:
+          public:
+            BoundaryElement( ElementShapes   parentShape,
+                             int             nDim,
+                             int             parentFaceNumber,
+                             const VectorXd& parentCoordinates );
 
-            BoundaryElement (ElementShapes parentShape, 
-                            int nDim, 
-                            int parentFaceNumber,
-                            const Ref<const VectorXd>& parentCoordinates
-                            );
-
-            VectorXd computeNormalLoadVector ();
-            VectorXd condenseParentToBoundaryVector(const Ref<const VectorXd>& parentVector);
-            VectorXd expandBoundaryToParentVector(const Ref<const VectorXd>& boundaryVector);
-
+            VectorXd computeNormalLoadVector();
+            VectorXd condenseParentToBoundaryVector( const VectorXd& parentVector );
+            VectorXd expandBoundaryToParentVector( const VectorXd& boundaryVector );
         };
-    }
+    } // namespace FiniteElement
 
-    namespace NumIntegration
-    {
+    namespace NumIntegration {
         constexpr double gp2 = 0.577350269189625764509;
         constexpr double gp3 = 0.774596669241483;
 
-        enum IntegrationTypes{
-            FullIntegration,
-            ReducedIntegration
+        enum IntegrationTypes { FullIntegration, ReducedIntegration };
+
+        struct GaussPtInfo {
+            VectorXd xi;
+            double   weight;
         };
 
-        MatrixXd getGaussPointList(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
-        VectorXd getGaussWeights (bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
-        int getNumGaussPoints(bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType);
+        const std::vector<GaussPtInfo>& getGaussPointInfo( bft::FiniteElement::ElementShapes shape,
+                                                           IntegrationTypes                  integrationType );
+        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
 
-        namespace Spatial1D
-        {
+        namespace Spatial1D {
             constexpr int nDim = 1;
 
-            constexpr double gp2 = 0.577350269189625764509;
-            constexpr double gp3 = 0.774596669241483;
+            // clang-format off
+            const std::vector< GaussPtInfo >  gaussPtList1 = {
+                { ( VectorXd ( 1 ) << 0 ).finished(),               2.0 }
+            };
 
-            const Vector2d gaussPtList2 = (Vector2d() << -gp2,  +gp2).finished();
-            const Vector2d gaussPtList2Weights = (Vector2d() << 1,   1).finished();
+            const std::vector< GaussPtInfo >  gaussPtList2 = {
+                { ( VectorXd ( 1 ) << -gp2 ).finished(),           1.0 },
+                { ( VectorXd ( 1 ) << +gp2 ).finished(),           1.0 }
+            };
 
-            const Vector3d gaussPtList3 = (Vector3d() << -gp3,  0,  +gp3).finished();
-            const Vector3d gaussPtList3Weights = (Vector3d() << 5./9,  8./9,  5./9).finished();
+            const std::vector< GaussPtInfo >  gaussPtList3 = {
+                { ( VectorXd ( 1 ) << -gp3 ).finished(),            5./9 },
+                { ( VectorXd ( 1 ) << 0.   ).finished(),            8./9 },
+                { ( VectorXd ( 1 ) << +gp3 ).finished(),            5./9 }
+            };
+            // clang-format on
 
-        }
+        } // namespace Spatial1D
 
-        namespace Spatial2D
-        { 
+        namespace Spatial2D {
             constexpr int nDim = 2;
 
-            const RowVector2d gaussPtList1x1 = RowVector2d :: Zero();
-            const Matrix<double,1,1> gaussPtList1x1Weights = (Matrix<double,1,1>() << 
-                    4).finished();
+            // clang-format off
+            const std::vector< GaussPtInfo > gaussPtList1x1 = {
+                { Vector2d::Zero(),                             4. }
+            };
 
-            using Matrix42 = Matrix<double, 4, nDim>;
-            const Matrix42 gaussPtList2x2 = (Matrix42() <<  
-                    +gp2,  +gp2, 
-                    -gp2,  +gp2,
-                    -gp2,  -gp2, 
-                    +gp2,  -gp2).finished();
-            const Matrix<double, 4,1>   gaussPtList2x2Weights = (Matrix<double,4,1>() << 
-                    1,1,1,1).finished();
+            const std::vector< GaussPtInfo > gaussPtList2x2 = {
+                { ( Vector2d () << +gp2,     +gp2 ).finished(),   1.0 },
+                { ( Vector2d () << -gp2,     +gp2 ).finished(),   1.0 },
+                { ( Vector2d () << -gp2,     -gp2 ).finished(),   1.0 },
+                { ( Vector2d () << +gp2,     -gp2 ).finished(),   1.0 }
+            };
 
-            using Matrix92 = Matrix<double, 9, nDim>;
-            const Matrix92 gaussPtList3x3 = (Matrix92() <<  
-                    0,     0,
-                    -gp3,  -gp3,
-                    +gp3,  -gp3,
-                    +gp3,  +gp3,
-                    -gp3,  +gp3,
-                    0,     -gp3,
-                    gp3,   0,
-                    0,     +gp3,
-                    -gp3,  0).finished();
-            const Matrix<double, 9,1>   gaussPtList3x3Weights = (Matrix<double,9,1>() <<   
-                    64./81, 25./81, 25./81, 
-                    25./81, 25./81, 40./81, 
-                    40./81, 40./81, 40./81).finished();
+            const std::vector< GaussPtInfo > gaussPtList3x3 = {
+                { ( Vector2d () << 0,        0.   ).finished(),   64./81},
+                { ( Vector2d () << -gp3,     -gp3 ).finished(),   25./81},
+                { ( Vector2d () << +gp3,     -gp3 ).finished(),   25./81},
+                { ( Vector2d () << +gp3,     +gp3 ).finished(),   25./81},
+                { ( Vector2d () << -gp3,     +gp3 ).finished(),   25./81},
+                { ( Vector2d () << 0,        -gp3 ).finished(),   40./81},
+                { ( Vector2d () << gp3,      0.   ).finished(),   40./81},
+                { ( Vector2d () << 0,        +gp3 ).finished(),   40./81},
+                { ( Vector2d () << -gp3,     0.   ).finished(),   40./81},
+            };
+            // clang-format on
 
-            void modifyCharElemLengthAbaqusLike(double& charElemLength, int intPoint);
-        }
+            void modifyCharElemLengthAbaqusLike( double& charElemLength, int intPoint );
+        } // namespace Spatial2D
 
-
-        namespace Spatial3D
-        { 
+        namespace Spatial3D {
             constexpr int nDim = 3;
 
-            const RowVector3d gaussPtList1x1x1 = RowVector3d::Zero();
-            const Matrix<double, 1, 1> gaussPtList1x1x1Weights = 
-                (Matrix<double, 1, 1>() << 
-                 8.0
-                ).finished();
+            // clang-format off
+            const std::vector< GaussPtInfo > gaussPtList1x1x1 = {
+                { Vector3d::Zero(),                                         8.0 }
+            };
 
-            const Matrix<double, 8, nDim> gaussPtList2x2x2 = (
-                    Matrix<double, 8, nDim>() <<  
-                    -gp2,    -gp2,     -gp2,
-                    +gp2,    -gp2,     -gp2,
-                    +gp2,    +gp2,     -gp2,
-                    -gp2,    +gp2,     -gp2,
-                    -gp2,    -gp2,     +gp2,
-                    +gp2,    -gp2,     +gp2,
-                    +gp2,    +gp2,     +gp2,
-                    -gp2,    +gp2,     +gp2).finished();
+            const std::vector< GaussPtInfo > gaussPtList2x2x2 = {
+                { ( Vector3d () << -gp2,    -gp2,   -gp2 ).finished(),       1.0},
+                { ( Vector3d () << +gp2,    -gp2,   -gp2 ).finished(),       1.0},
+                { ( Vector3d () << +gp2,    +gp2,   -gp2 ).finished(),       1.0},
+                { ( Vector3d () << -gp2,    +gp2,   -gp2 ).finished(),       1.0},
+                { ( Vector3d () << -gp2,    -gp2,   +gp2 ).finished(),       1.0},
+                { ( Vector3d () << +gp2,    -gp2,   +gp2 ).finished(),       1.0},
+                { ( Vector3d () << +gp2,    +gp2,   +gp2 ).finished(),       1.0},
+                { ( Vector3d () << -gp2,    +gp2,   +gp2 ).finished(),       1.0},
+            };
 
-            const Matrix<double, 8,1>   gaussPtList2x2x2Weights = (Matrix<double,8,1>() <<   
-                    1,1,1,1,1,1,1,1).finished();
+            const std::vector< GaussPtInfo > gaussPtList3x3x3 = {
+                { ( Vector3d () << -gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << 0,        -gp3,   -gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << +gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << -gp3,     0,      -gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << 0,        0,      -gp3 ).finished(),       0.438957475994513},
+                { ( Vector3d () << gp3,      0,      -gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << -gp3,     +gp3,   -gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << 0,        +gp3,   -gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << +gp3,     +gp3,   -gp3 ).finished(),       0.171467764060357},
 
-            const Matrix<double, 3*3*3, nDim> gaussPtList3x3x3 = (Matrix<double, 3*3*3, nDim>() <<  
-                    -gp3,  -gp3, -gp3,
-                    0,     -gp3, -gp3,
-                    +gp3,  -gp3, -gp3, -gp3,  0,    -gp3,
-                    0,     0,    -gp3,
-                    gp3,   0,    -gp3,
-                    -gp3,  +gp3, -gp3,
-                    0,     +gp3, -gp3,
-                    +gp3,  +gp3, -gp3,
+                { ( Vector3d () << -gp3,     -gp3,   0 ).finished(),          0.274348422496571},
+                { ( Vector3d () << 0,        -gp3,   0 ).finished(),          0.438957475994513},
+                { ( Vector3d () << +gp3,     -gp3,   0 ).finished(),          0.274348422496571},
+                { ( Vector3d () << -gp3,     0,      0 ).finished(),          0.438957475994513},
+                { ( Vector3d () << 0,        0,      0 ).finished(),          0.702331961591221},
+                { ( Vector3d () << gp3,      0,      0 ).finished(),          0.438957475994513},
+                { ( Vector3d () << -gp3,     +gp3,   0 ).finished(),          0.274348422496571},
+                { ( Vector3d () << 0,        +gp3,   0 ).finished(),          0.438957475994513},
+                { ( Vector3d () << +gp3,     +gp3,   0 ).finished(),          0.274348422496571},
 
-                    -gp3,  -gp3, 0,
-                    0,     -gp3, 0,
-                    +gp3,  -gp3, 0,
-                    -gp3,  0,    0,
-                    0,     0,    0,
-                    gp3,   0,    0,
-                    -gp3,  +gp3, 0,
-                    0,     +gp3, 0,
-                    +gp3,  +gp3, 0,
+                { ( Vector3d () << -gp3,     -gp3,   +gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << 0,        -gp3,   +gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << +gp3,     -gp3,   +gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << -gp3,     0,      +gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << 0,        0,      +gp3 ).finished(),       0.438957475994513},
+                { ( Vector3d () << gp3,      0,      +gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << -gp3,     +gp3,   +gp3 ).finished(),       0.171467764060357},
+                { ( Vector3d () << 0,        +gp3,   +gp3 ).finished(),       0.274348422496571},
+                { ( Vector3d () << +gp3,     +gp3,   +gp3 ).finished(),       0.171467764060357}
+            };
+            // clang-format on
 
-                    -gp3,  -gp3, +gp3,
-                    0,     -gp3, +gp3,
-                    +gp3,  -gp3, +gp3,
-                    -gp3,  0,    +gp3,
-                    0,     0,    +gp3,
-                    gp3,   0,    +gp3,
-                    -gp3,  +gp3, +gp3,
-                    0,     +gp3, +gp3,
-                    +gp3,  +gp3, +gp3
-
-                        ).finished();
-
-            const Matrix<double, 3*3*3,1>   gaussPtList3x3x3Weights = (Matrix<double,3*3*3,1>() <<   
-                    0.171467764060357,  0.274348422496571,  0.171467764060357,
-                    0.274348422496571,  0.438957475994513,  0.274348422496571,
-                    0.171467764060357,  0.274348422496571,  0.171467764060357,
-                    0.274348422496571,  0.438957475994513,  0.274348422496571,
-                    0.438957475994513,  0.702331961591221,  0.438957475994513,
-                    0.274348422496571,  0.438957475994513,  0.274348422496571,
-                    0.171467764060357,  0.274348422496571,  0.171467764060357,
-                    0.274348422496571,  0.438957475994513,  0.274348422496571,
-                    0.171467764060357,  0.274348422496571,  0.171467764060357
-                    ).finished();
-        }
-    } 
-} 
-
+        } // namespace Spatial3D
+    }     // namespace NumIntegration
+} // namespace bft

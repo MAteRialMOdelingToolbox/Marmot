@@ -1,381 +1,406 @@
-#pragma once 
-#include "bftTypedefs.h"
+#pragma once
 #include "bftFunctions.h"
+#include "bftTypedefs.h"
 
-/* Adaptive Substepper, employing an error estimation and 
+/* Adaptive Substepper, employing an error estimation and
  * Richardson Extrapolation for an (semi)-Explicit Return Mapping algorithm
  *
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
 
-namespace bft{
+namespace bft {
 
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
-        class AdaptiveSubstepperExplicit
-        {
-            public:
-                typedef Matrix<double, materialTangentSize, materialTangentSize> TangentSizedMatrix;
-                typedef Matrix<double, materialTangentSize, 6> MatrixStateStrain;
-                typedef Matrix<double, nIntegrationDependentStateVars, 1> IntegrationStateVector;
+    class AdaptiveSubstepperExplicit {
+      public:
+        typedef Matrix<double, materialTangentSize, materialTangentSize> TangentSizedMatrix;
+        typedef Matrix<double, materialTangentSize, 6>                   MatrixStateStrain;
+        typedef Matrix<double, nIntegrationDependentStateVars, 1>        IntegrationStateVector;
 
-                AdaptiveSubstepperExplicit(double initialStepSize, double minimumStepSize, double maxScaleUpFactor, double scaleDownFactor, 
-                                        double integrationErrorTolerance,
-                                        int nPassesToIncrease, const Matrix6& Cel);
-                void setConvergedProgress(const Vector6& stressOld, const IntegrationStateVector& stateVarsOld);
-                bool isFinished();
-                double getNextSubstep();
-                int getNumberOfSubsteps();
-                int getNumberDiscardedSubstepsDueToError();
-                bool finishSubstep(const Vector6& resultStress, 
-                        const TangentSizedMatrix& dXdY, 
-                        const TangentSizedMatrix& dYdXOld, 
-                        const IntegrationStateVector& stateVars); 
+        AdaptiveSubstepperExplicit( double         initialStepSize,
+                                    double         minimumStepSize,
+                                    double         maxScaleUpFactor,
+                                    double         scaleDownFactor,
+                                    double         integrationErrorTolerance,
+                                    int            nPassesToIncrease,
+                                    const Matrix6& Cel );
+        void   setConvergedProgress( const Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
+        bool   isFinished();
+        double getNextSubstep();
+        int    getNumberOfSubsteps();
+        int    getNumberDiscardedSubstepsDueToError();
+        bool   finishSubstep( const Vector6&                resultStress,
+                              const TangentSizedMatrix&     dXdY,
+                              const TangentSizedMatrix&     dYdXOld,
+                              const IntegrationStateVector& stateVars );
 
-                void finishElasticSubstep(const Vector6& resultStress); 
-                bool discardSubstep();
-                bool repeatSubstep(double decrementationFactor);
-                
-                void getConvergedProgress(Vector6& stress, IntegrationStateVector& stateVars);
-                Matrix6 getCurrentTangentOperator();
-                void getResults(Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars);
+        void finishElasticSubstep( const Vector6& resultStress );
+        bool discardSubstep();
+        bool repeatSubstep( double decrementationFactor );
 
-            private:
+        void    getConvergedProgress( Vector6& stress, IntegrationStateVector& stateVars );
+        Matrix6 getCurrentTangentOperator();
+        void    getResults( Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
 
+      private:
+        const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
+        const int    nPassesToIncrease;
+        const bool   ignoreErrorToleranceOnMinimumStepSize;
 
-                const double    initialStepSize,
-                                minimumStepSize,
-                                maxScaleUpFactor,
-                                scaleDownFactor,
-                                integrationErrorTolerance;
-                const int       nPassesToIncrease;
-                const bool      ignoreErrorToleranceOnMinimumStepSize;
+        const Matrix6& Cel;
+        double         currentProgress;
+        double         currentSubstepSize;
+        int            passedSubsteps;
+        int            substepIndex;
+        int            discardedDueToError;
 
-                const Matrix6& Cel;
-                double currentProgress;
-                double currentSubstepSize;
-                int passedSubsteps;
-                int substepIndex;
-                int discardedDueToError;
-                
-                // internal storages for the progress of the total increment
-                Vector6                 stressProgress;
-                IntegrationStateVector  stateProgress;
-                MatrixStateStrain consistentTangentProgress;
+        // internal storages for the progress of the total increment
+        Vector6                stressProgress;
+        IntegrationStateVector stateProgress;
+        MatrixStateStrain      consistentTangentProgress;
 
-                // temporal storages, which are used until a cycle full/half/half has finished successfully
-                Vector6                 stressProgressHalfTemp, stressProgressFullTemp;
-                IntegrationStateVector  stateProgressHalfTemp,  stateProgressFullTemp;
-                MatrixStateStrain       consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
+        // temporal storages, which are used until a cycle full/half/half has finished successfully
+        Vector6                stressProgressHalfTemp, stressProgressFullTemp;
+        IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
+        MatrixStateStrain      consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
-                const TangentSizedMatrix& IXX();
-                const MatrixStateStrain& IX6();
+        const TangentSizedMatrix& IXX();
+        const MatrixStateStrain&  IX6();
 
-                enum SubsteppingState{FullStep, FirstHalfStep, SecondHalfStep};
-                SubsteppingState currentState;
+        enum SubsteppingState { FullStep, FirstHalfStep, SecondHalfStep };
+        SubsteppingState currentState;
 
-                bool acceptSubstepWithFullStepOnly();
-                bool splitCurrentSubstep();
+        bool acceptSubstepWithFullStepOnly();
+        bool splitCurrentSubstep();
+    };
 
-        };
-   
-}
+} // namespace bft
 
-namespace bft{
-    
+namespace bft {
+
     template <size_t n, size_t nState>
-    AdaptiveSubstepperExplicit<n, nState>::AdaptiveSubstepperExplicit(double initialStepSize, 
-                                                    double minimumStepSize, 
-                                                    double maxScaleUpFactor, 
-                                                    double scaleDownFactor, 
-                                                    double integrationErrorTolerance,
-                                                    int nPassesToIncrease,
-                                                    const Matrix6& Cel):
-                                                    initialStepSize(initialStepSize),
-                                                    minimumStepSize(minimumStepSize),
-                                                    maxScaleUpFactor(maxScaleUpFactor), scaleDownFactor(scaleDownFactor),
-                                                    integrationErrorTolerance(integrationErrorTolerance),
-                                                    nPassesToIncrease(nPassesToIncrease),
-                                                    ignoreErrorToleranceOnMinimumStepSize(true),
-                                                    Cel(Cel),
-                                                    currentProgress(0.0),
-                                                    currentSubstepSize(initialStepSize),
-                                                    passedSubsteps(0),
-                                                    substepIndex(-1),
-                                                    discardedDueToError(0)
+    AdaptiveSubstepperExplicit<n, nState>::AdaptiveSubstepperExplicit( double         initialStepSize,
+                                                                       double         minimumStepSize,
+                                                                       double         maxScaleUpFactor,
+                                                                       double         scaleDownFactor,
+                                                                       double         integrationErrorTolerance,
+                                                                       int            nPassesToIncrease,
+                                                                       const Matrix6& Cel )
+        : initialStepSize( initialStepSize ),
+          minimumStepSize( minimumStepSize ),
+          maxScaleUpFactor( maxScaleUpFactor ),
+          scaleDownFactor( scaleDownFactor ),
+          integrationErrorTolerance( integrationErrorTolerance ),
+          nPassesToIncrease( nPassesToIncrease ),
+          ignoreErrorToleranceOnMinimumStepSize( true ),
+          Cel( Cel ),
+          currentProgress( 0.0 ),
+          currentSubstepSize( initialStepSize ),
+          passedSubsteps( 0 ),
+          substepIndex( -1 ),
+          discardedDueToError( 0 )
     {
-            consistentTangentProgress = MatrixStateStrain::Zero();
-            consistentTangentProgressFullTemp = MatrixStateStrain::Zero();
-            consistentTangentProgressHalfTemp = MatrixStateStrain::Zero();
+        consistentTangentProgress         = MatrixStateStrain::Zero();
+        consistentTangentProgressFullTemp = MatrixStateStrain::Zero();
+        consistentTangentProgressHalfTemp = MatrixStateStrain::Zero();
 
-            stressProgressHalfTemp.setZero();
-            stressProgressFullTemp.setZero();
-            stateProgressHalfTemp.setZero();  stateProgressFullTemp.setZero();
-            consistentTangentProgressHalfTemp.setZero(); consistentTangentProgressFullTemp.setZero();
+        stressProgressHalfTemp.setZero();
+        stressProgressFullTemp.setZero();
+        stateProgressHalfTemp.setZero();
+        stateProgressFullTemp.setZero();
+        consistentTangentProgressHalfTemp.setZero();
+        consistentTangentProgressFullTemp.setZero();
 
-            currentState = FullStep;
+        currentState = FullStep;
     }
 
     template <size_t n, size_t nState>
-    const typename AdaptiveSubstepperExplicit<n,nState>::MatrixStateStrain& AdaptiveSubstepperExplicit<n, nState>::IX6()
+    const typename AdaptiveSubstepperExplicit<n, nState>::MatrixStateStrain& AdaptiveSubstepperExplicit<n,
+                                                                                                        nState>::IX6()
     {
-        static MatrixStateStrain IX6= [] { MatrixStateStrain tmp = MatrixStateStrain::Zero(); 
-                                           tmp.topLeftCorner(6,6) = Matrix6::Identity(); return tmp; }(); 
+        static MatrixStateStrain IX6 = [] {
+            MatrixStateStrain tmp     = MatrixStateStrain::Zero();
+            tmp.topLeftCorner( 6, 6 ) = Matrix6::Identity();
+            return tmp;
+        }();
         return IX6;
     }
 
     template <size_t n, size_t nState>
-    const typename AdaptiveSubstepperExplicit<n,nState>::TangentSizedMatrix& AdaptiveSubstepperExplicit<n, nState>::IXX()
+    const typename AdaptiveSubstepperExplicit<n, nState>::TangentSizedMatrix& AdaptiveSubstepperExplicit<n,
+                                                                                                         nState>::IXX()
     {
-        static TangentSizedMatrix IXX= [] { TangentSizedMatrix tmp = TangentSizedMatrix::Identity(); return tmp; }(); 
+        static TangentSizedMatrix IXX = [] {
+            TangentSizedMatrix tmp = TangentSizedMatrix::Identity();
+            return tmp;
+        }();
         return IXX;
     }
 
-    template<size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::setConvergedProgress(const Vector6& stressOld, const IntegrationStateVector& stateVarsOld)
+    template <size_t n, size_t nState>
+    void AdaptiveSubstepperExplicit<n, nState>::setConvergedProgress( const Vector6&                stressOld,
+                                                                      const IntegrationStateVector& stateVarsOld )
     {
-            stressProgress = stressOld;
-            stateProgress = stateVarsOld;
+        stressProgress = stressOld;
+        stateProgress  = stateVarsOld;
     }
 
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     bool AdaptiveSubstepperExplicit<n, nState>::isFinished()
     {
-        return ( ( 1.0 - currentProgress) <=2e-16 && currentState == FullStep );
+        return ( ( 1.0 - currentProgress ) <= 2e-16 && currentState == FullStep );
     }
 
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     double AdaptiveSubstepperExplicit<n, nState>::getNextSubstep()
     {
-        switch(currentState){
-            case FullStep:{
-                const double remainingProgress = 1.0 - currentProgress;
-                if( remainingProgress < currentSubstepSize)
-                        currentSubstepSize = remainingProgress;            
-                substepIndex++;
-                return currentSubstepSize;
-                break;}
-            case FirstHalfStep:{
-                return 0.5 * currentSubstepSize;
-                break;}
-            case SecondHalfStep:{
-                return 0.5 * currentSubstepSize;
-                break;}
+        switch ( currentState ) {
+        case FullStep: {
+            const double remainingProgress = 1.0 - currentProgress;
+            if ( remainingProgress < currentSubstepSize )
+                currentSubstepSize = remainingProgress;
+            substepIndex++;
+            return currentSubstepSize;
+            break;
+        }
+        case FirstHalfStep: {
+            return 0.5 * currentSubstepSize;
+            break;
+        }
+        case SecondHalfStep: {
+            return 0.5 * currentSubstepSize;
+            break;
+        }
         }
         return 0;
     }
-    template<size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::getConvergedProgress(Vector6& stress, IntegrationStateVector& stateVars)
+    template <size_t n, size_t nState>
+    void AdaptiveSubstepperExplicit<n, nState>::getConvergedProgress( Vector6&                stress,
+                                                                      IntegrationStateVector& stateVars )
     {
-        switch(currentState)
-        {
-            case FullStep:{
-                stress = stressProgress;
-                stateVars = stateProgress;
-                break;}
-            case FirstHalfStep:{
-                stress = stressProgress;
-                stateVars = stateProgress;
-                break;}
-            case SecondHalfStep: {
-                stress = stressProgressHalfTemp;
-                stateVars = stateProgressHalfTemp;
-                break;}
+        switch ( currentState ) {
+        case FullStep: {
+            stress    = stressProgress;
+            stateVars = stateProgress;
+            break;
+        }
+        case FirstHalfStep: {
+            stress    = stressProgress;
+            stateVars = stateProgress;
+            break;
+        }
+        case SecondHalfStep: {
+            stress    = stressProgressHalfTemp;
+            stateVars = stateProgressHalfTemp;
+            break;
+        }
         }
     }
 
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     bool AdaptiveSubstepperExplicit<n, nState>::discardSubstep()
     {
         passedSubsteps = 0;
-        switch(currentState)
-        {
-            case FullStep: {
-                    currentSubstepSize *= scaleDownFactor; // we use the scale factor only here
-                    break; }
-            // these cases should actually never happen, as the full step has already converged!
-            case FirstHalfStep:
-                   warningToMSG("UMAT: warning, 1th half sub step has not converged after already converged full step");
-                   return acceptSubstepWithFullStepOnly();                
+        switch ( currentState ) {
+        case FullStep: {
+            currentSubstepSize *= scaleDownFactor; // we use the scale factor only here
+            break;
+        }
+        // these cases should actually never happen, as the full step has already converged!
+        case FirstHalfStep:
+            warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
+                          "converged full step" );
+            return acceptSubstepWithFullStepOnly();
 
-            case SecondHalfStep:
-                   warningToMSG("UMAT: warning, 2th half sub step has not converged after already converged full step");
-                   return acceptSubstepWithFullStepOnly();
+        case SecondHalfStep:
+            warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
+                          "converged full step" );
+            return acceptSubstepWithFullStepOnly();
         }
 
         currentState = FullStep;
 
-        if(currentSubstepSize < minimumStepSize)
-                return warningToMSG("UMAT: Substepper: Minimal stepzsize reached");
+        if ( currentSubstepSize < minimumStepSize )
+            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-                return true;
+            return true;
     }
 
-    template<size_t n, size_t nState>
-    bool AdaptiveSubstepperExplicit<n, nState>::repeatSubstep(double factorNew)
+    template <size_t n, size_t nState>
+    bool AdaptiveSubstepperExplicit<n, nState>::repeatSubstep( double factorNew )
     {
-        currentState = FullStep;
+        currentState   = FullStep;
         passedSubsteps = 0;
 
         currentSubstepSize *= factorNew; // we use the scale factor only here
 
-        if(currentSubstepSize < minimumStepSize)
-                return warningToMSG("UMAT: Substepper: Minimal stepzsize reached");
+        if ( currentSubstepSize < minimumStepSize )
+            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-                return true;
-
+            return true;
     }
 
-    template<size_t n, size_t nState>
-    bool AdaptiveSubstepperExplicit<n, nState>::finishSubstep(const Vector6& resultStress, 
-            const TangentSizedMatrix& dXdY, 
-            const TangentSizedMatrix& dYdXOld,
-            const IntegrationStateVector& stateVars)
+    template <size_t n, size_t nState>
+    bool AdaptiveSubstepperExplicit<n, nState>::finishSubstep( const Vector6&                resultStress,
+                                                               const TangentSizedMatrix&     dXdY,
+                                                               const TangentSizedMatrix&     dYdXOld,
+                                                               const IntegrationStateVector& stateVars )
     {
-            if(currentState == FullStep){
-                stressProgressFullTemp = resultStress;
-                stateProgressFullTemp = stateVars;
-                consistentTangentProgressFullTemp = consistentTangentProgress;
-                consistentTangentProgressFullTemp.applyOnTheLeft(IXX() - dYdXOld);
-                consistentTangentProgressFullTemp += currentSubstepSize * IX6() * Cel;
-                consistentTangentProgressFullTemp.applyOnTheLeft(dXdY);
-                currentState = FirstHalfStep;
-                return true; }
-            else if (currentState == FirstHalfStep){
+        if ( currentState == FullStep ) {
+            stressProgressFullTemp            = resultStress;
+            stateProgressFullTemp             = stateVars;
+            consistentTangentProgressFullTemp = consistentTangentProgress;
+            consistentTangentProgressFullTemp.applyOnTheLeft( IXX() - dYdXOld );
+            consistentTangentProgressFullTemp += currentSubstepSize * IX6() * Cel;
+            consistentTangentProgressFullTemp.applyOnTheLeft( dXdY );
+            currentState = FirstHalfStep;
+            return true;
+        }
+        else if ( currentState == FirstHalfStep ) {
 
-                stressProgressHalfTemp = resultStress;
-                stateProgressHalfTemp = stateVars;
-                consistentTangentProgressHalfTemp = consistentTangentProgress;
-                consistentTangentProgressHalfTemp.applyOnTheLeft(IXX() - dYdXOld);
-                consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * IX6() * Cel;
-                consistentTangentProgressHalfTemp.applyOnTheLeft(dXdY);
-                currentState = SecondHalfStep;
-                return true; }
+            stressProgressHalfTemp            = resultStress;
+            stateProgressHalfTemp             = stateVars;
+            consistentTangentProgressHalfTemp = consistentTangentProgress;
+            consistentTangentProgressHalfTemp.applyOnTheLeft( IXX() - dYdXOld );
+            consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * IX6() * Cel;
+            consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
+            currentState = SecondHalfStep;
+            return true;
+        }
 
-            else if (currentState == SecondHalfStep){
-                //error Estimation
-                
-                currentState = FullStep;
-                const double error = (resultStress - stressProgressFullTemp).norm(); 
-                const double errorRatio = error / integrationErrorTolerance ;
-                double scaleFactor = 1.0;
-                if(errorRatio > 1e-10)
-                    scaleFactor = 0.9 * std::sqrt( 1./errorRatio );
+        else if ( currentState == SecondHalfStep ) {
+            // error Estimation
 
-                //saturations
-                if(scaleFactor < 0.1)
-                    scaleFactor = 0.1;
-                if(scaleFactor * currentSubstepSize < minimumStepSize)
-                    scaleFactor = minimumStepSize / currentSubstepSize;
-                if(scaleFactor > maxScaleUpFactor)
-                    scaleFactor = maxScaleUpFactor;
-                if(scaleFactor > 10)
-                    scaleFactor = 10;
+            currentState             = FullStep;
+            const double error       = ( resultStress - stressProgressFullTemp ).norm();
+            const double errorRatio  = error / integrationErrorTolerance;
+            double       scaleFactor = 1.0;
+            if ( errorRatio > 1e-10 )
+                scaleFactor = 0.9 * std::sqrt( 1. / errorRatio );
 
-                //Error large than tolerance?
-                if( error > integrationErrorTolerance){
-                    discardedDueToError++;
-                    passedSubsteps = 0;
-                    if (errorRatio < 2) {
-                        return splitCurrentSubstep(); }
-                    else{
-                        return repeatSubstep(scaleFactor); }
-                        //return splitCurrentSubstep(); }
+            // saturations
+            if ( scaleFactor < 0.1 )
+                scaleFactor = 0.1;
+            if ( scaleFactor * currentSubstepSize < minimumStepSize )
+                scaleFactor = minimumStepSize / currentSubstepSize;
+            if ( scaleFactor > maxScaleUpFactor )
+                scaleFactor = maxScaleUpFactor;
+            if ( scaleFactor > 10 )
+                scaleFactor = 10;
+
+            // Error large than tolerance?
+            if ( error > integrationErrorTolerance ) {
+                discardedDueToError++;
+                passedSubsteps = 0;
+                if ( errorRatio < 2 ) {
+                    return splitCurrentSubstep();
                 }
-                else{
+                else {
+                    return repeatSubstep( scaleFactor );
+                }
+                // return splitCurrentSubstep(); }
+            }
+            else {
 
                 stressProgressHalfTemp = resultStress;
-                stateProgressHalfTemp = stateVars;
-                consistentTangentProgressHalfTemp.applyOnTheLeft(IXX() - dYdXOld);
+                stateProgressHalfTemp  = stateVars;
+                consistentTangentProgressHalfTemp.applyOnTheLeft( IXX() - dYdXOld );
                 consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * IX6() * Cel;
-                consistentTangentProgressHalfTemp.applyOnTheLeft(dXdY);
+                consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
 
-                consistentTangentProgress = 2*consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
-                stressProgress = 2*stressProgressHalfTemp - stressProgressFullTemp;
-                stateProgress = 2*stateProgressHalfTemp - stateProgressFullTemp;
+                consistentTangentProgress = 2 * consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
+                stressProgress            = 2 * stressProgressHalfTemp - stressProgressFullTemp;
+                stateProgress             = 2 * stateProgressHalfTemp - stateProgressFullTemp;
                 currentProgress += currentSubstepSize;
 
                 passedSubsteps++;
-                currentSubstepSize *=   scaleFactor;
+                currentSubstepSize *= scaleFactor;
 
-                return true;}
-             }
-            return false;
-    }
-
-    template<size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::finishElasticSubstep(const Vector6& newStress)
-    {  
-            switch(currentState)
-            {
-                case FullStep:{
-                    // this means, that the complete current cycle is already successfull, 
-                    // as the two half steps must also be elastic!
-                    consistentTangentProgress += currentSubstepSize * IX6() * Cel;
-                    stressProgress = newStress;
-                    // no need for two half steps if full step was already elastic
-                    currentProgress += currentSubstepSize; 
-                    currentState = FullStep;
-                    passedSubsteps++;
-                    break;}
-
-                case FirstHalfStep:{
-                    consistentTangentProgressHalfTemp = consistentTangentProgress;
-                    consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * IX6() * Cel;
-                    stressProgressHalfTemp = newStress;
-                    currentState = SecondHalfStep;
-                    break;}
-                case SecondHalfStep:{
-                    acceptSubstepWithFullStepOnly();
-                    break;}
+                return true;
             }
+        }
+        return false;
     }
 
-    template<size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::getResults(Vector6& stress, Matrix6& consistentTangentOperator, IntegrationStateVector& stateVars)
+    template <size_t n, size_t nState>
+    void AdaptiveSubstepperExplicit<n, nState>::finishElasticSubstep( const Vector6& newStress )
     {
-        stress = stressProgress;
-        stateVars = stateProgress;
-        consistentTangentOperator = consistentTangentProgress.topLeftCorner(6,6); 
+        switch ( currentState ) {
+        case FullStep: {
+            // this means, that the complete current cycle is already successfull,
+            // as the two half steps must also be elastic!
+            consistentTangentProgress += currentSubstepSize * IX6() * Cel;
+            stressProgress = newStress;
+            // no need for two half steps if full step was already elastic
+            currentProgress += currentSubstepSize;
+            currentState = FullStep;
+            passedSubsteps++;
+            break;
+        }
+
+        case FirstHalfStep: {
+            consistentTangentProgressHalfTemp = consistentTangentProgress;
+            consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * IX6() * Cel;
+            stressProgressHalfTemp = newStress;
+            currentState           = SecondHalfStep;
+            break;
+        }
+        case SecondHalfStep: {
+            acceptSubstepWithFullStepOnly();
+            break;
+        }
+        }
     }
 
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
+    void AdaptiveSubstepperExplicit<n, nState>::getResults( Vector6&                stress,
+                                                            Matrix6&                consistentTangentOperator,
+                                                            IntegrationStateVector& stateVars )
+    {
+        stress                    = stressProgress;
+        stateVars                 = stateProgress;
+        consistentTangentOperator = consistentTangentProgress.topLeftCorner( 6, 6 );
+    }
+
+    template <size_t n, size_t nState>
     bool AdaptiveSubstepperExplicit<n, nState>::acceptSubstepWithFullStepOnly()
     {
         consistentTangentProgress = consistentTangentProgressFullTemp;
-        stressProgress = stressProgressFullTemp;
-        stateProgress = stateProgressFullTemp;
+        stressProgress            = stressProgressFullTemp;
+        stateProgress             = stateProgressFullTemp;
 
         currentProgress += currentSubstepSize;
         currentState = FullStep;
-        
+
         return true;
     }
 
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     bool AdaptiveSubstepperExplicit<n, nState>::splitCurrentSubstep()
     {
-        if(currentSubstepSize < 2 * minimumStepSize) {
-            if( ignoreErrorToleranceOnMinimumStepSize)
+        if ( currentSubstepSize < 2 * minimumStepSize ) {
+            if ( ignoreErrorToleranceOnMinimumStepSize )
                 return acceptSubstepWithFullStepOnly();
-            else 
-                return false;}
+            else
+                return false;
+        }
 
-       consistentTangentProgressFullTemp = consistentTangentProgressHalfTemp;
-       stressProgressFullTemp = stressProgressHalfTemp;
-       stateProgressFullTemp = stateProgressHalfTemp;
-       currentSubstepSize *= 0.5;
-       currentState = FirstHalfStep;
+        consistentTangentProgressFullTemp = consistentTangentProgressHalfTemp;
+        stressProgressFullTemp            = stressProgressHalfTemp;
+        stateProgressFullTemp             = stateProgressHalfTemp;
+        currentSubstepSize *= 0.5;
+        currentState = FirstHalfStep;
 
-       return true;
+        return true;
     }
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     int AdaptiveSubstepperExplicit<n, nState>::getNumberOfSubsteps()
     {
         return substepIndex;
     }
-    template<size_t n, size_t nState>
+    template <size_t n, size_t nState>
     int AdaptiveSubstepperExplicit<n, nState>::getNumberDiscardedSubstepsDueToError()
     {
         return discardedDueToError;
     }
-}
+} // namespace bft

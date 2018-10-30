@@ -1,126 +1,124 @@
 #pragma once
-#include "bftTypedefs.h"
 #include "bftFunctions.h"
+#include "bftTypedefs.h"
 
 /* Deprecated, do not use anymore (!)
  * Matthias Neuner (2015)
  * */
 
-namespace bft{
+namespace bft {
 
     template <int nSizeMatTangent>
-    class PerezFougetSubstepper{
+    class PerezFougetSubstepper {
 
-        public:
-            typedef Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
-            PerezFougetSubstepper(  double initialStepSize, 
-                                     double minimumStepSize, 
-                                     double scaleUpFactor, 
-                                     double scaleDownFactor, 
-                                     int nPassesToIncrease,
-                                     const Matrix6& Cel);
-            bool isFinished();
-            double getNextSubstep();
-            bool decreaseSubstepSize();
+      public:
+        typedef Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
+        PerezFougetSubstepper( double         initialStepSize,
+                               double         minimumStepSize,
+                               double         scaleUpFactor,
+                               double         scaleDownFactor,
+                               int            nPassesToIncrease,
+                               const Matrix6& Cel );
+        bool   isFinished();
+        double getNextSubstep();
+        bool   decreaseSubstepSize();
 
-            void extendConsistentTangent();
-            void extendConsistentTangent(const TangentSizedMatrix& Tangent);
-            Matrix6 consistentStiffness();
+        void    extendConsistentTangent();
+        void    extendConsistentTangent( const TangentSizedMatrix& Tangent );
+        Matrix6 consistentStiffness();
 
-        private:
-            const double    initialStepSize,
-                            minimumStepSize,
-                            scaleUpFactor,
-                            scaleDownFactor;
-            const int       nPassesToIncrease;
+      private:
+        const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
+        const int    nPassesToIncrease;
 
-            double currentProgress;
-            double currentSubstepSize;
-            int passedSubsteps;
-            const Matrix6& Cel;
+        double         currentProgress;
+        double         currentSubstepSize;
+        int            passedSubsteps;
+        const Matrix6& Cel;
 
-            TangentSizedMatrix elasticTangent;
-            TangentSizedMatrix consistentTangent;
+        TangentSizedMatrix elasticTangent;
+        TangentSizedMatrix consistentTangent;
     };
-}
+} // namespace bft
 
-namespace bft{
+namespace bft {
     template <int n>
-    PerezFougetSubstepper<n>::PerezFougetSubstepper(double initialStepSize, 
-                                                    double minimumStepSize, 
-                                                    double scaleUpFactor, 
-                                                    double scaleDownFactor, 
-                                                    int nPassesToIncrease,
-                                                    const Matrix6& Cel):
+    PerezFougetSubstepper<n>::PerezFougetSubstepper( double         initialStepSize,
+                                                     double         minimumStepSize,
+                                                     double         scaleUpFactor,
+                                                     double         scaleDownFactor,
+                                                     int            nPassesToIncrease,
+                                                     const Matrix6& Cel )
+        :
 
-                                                    initialStepSize(initialStepSize),
-                                                    minimumStepSize(minimumStepSize),
-                                                    scaleUpFactor(scaleUpFactor),
-                                                    scaleDownFactor(scaleDownFactor),
-                                                    nPassesToIncrease(nPassesToIncrease),
-                                                    currentProgress(0.0),
-                                                    currentSubstepSize(initialStepSize),
-                                                    passedSubsteps(0),
-                                                    Cel(Cel)
+          initialStepSize( initialStepSize ),
+          minimumStepSize( minimumStepSize ),
+          scaleUpFactor( scaleUpFactor ),
+          scaleDownFactor( scaleDownFactor ),
+          nPassesToIncrease( nPassesToIncrease ),
+          currentProgress( 0.0 ),
+          currentSubstepSize( initialStepSize ),
+          passedSubsteps( 0 ),
+          Cel( Cel )
 
     {
-            elasticTangent = TangentSizedMatrix::Identity();
-            elasticTangent.topLeftCorner(6,6) = Cel;
-            consistentTangent = TangentSizedMatrix::Zero();
+        elasticTangent                       = TangentSizedMatrix::Identity();
+        elasticTangent.topLeftCorner( 6, 6 ) = Cel;
+        consistentTangent                    = TangentSizedMatrix::Zero();
     }
 
-    template<int n>
+    template <int n>
     bool PerezFougetSubstepper<n>::isFinished()
     {
-            return currentProgress >= 1.0;
+        return currentProgress >= 1.0;
     }
 
-    template<int n>
+    template <int n>
     double PerezFougetSubstepper<n>::getNextSubstep()
     {
-            if(passedSubsteps >= nPassesToIncrease)
-                    currentSubstepSize *= scaleUpFactor;
+        if ( passedSubsteps >= nPassesToIncrease )
+            currentSubstepSize *= scaleUpFactor;
 
-            const double remainingProgress = 1.0 - currentProgress;
-            if( remainingProgress < currentSubstepSize)
-                    currentSubstepSize = remainingProgress;            
-            
-            passedSubsteps++;
-            currentProgress += currentSubstepSize;
+        const double remainingProgress = 1.0 - currentProgress;
+        if ( remainingProgress < currentSubstepSize )
+            currentSubstepSize = remainingProgress;
 
-            return currentSubstepSize;
+        passedSubsteps++;
+        currentProgress += currentSubstepSize;
+
+        return currentSubstepSize;
     }
 
-    template<int n>
+    template <int n>
     bool PerezFougetSubstepper<n>::decreaseSubstepSize()
     {
-            currentProgress -= currentSubstepSize;
-            passedSubsteps = 0;
+        currentProgress -= currentSubstepSize;
+        passedSubsteps = 0;
 
-            currentSubstepSize *= scaleDownFactor;
+        currentSubstepSize *= scaleDownFactor;
 
-            if(currentSubstepSize < minimumStepSize)
-                    return warningToMSG("UMAT: Substepper: Minimal stepzsize reached");
-            else
-                    return notificationToMSG("UMAT: Substepper: Decreasing stepsize");
+        if ( currentSubstepSize < minimumStepSize )
+            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+        else
+            return notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
     }
 
-    template<int n>
+    template <int n>
     void PerezFougetSubstepper<n>::extendConsistentTangent()
     {
-            consistentTangent += currentSubstepSize * elasticTangent;
+        consistentTangent += currentSubstepSize * elasticTangent;
     }
 
-    template<int n>
-    void PerezFougetSubstepper<n>::extendConsistentTangent(const TangentSizedMatrix& matTangent)
+    template <int n>
+    void PerezFougetSubstepper<n>::extendConsistentTangent( const TangentSizedMatrix& matTangent )
     {
-            extendConsistentTangent();
-            consistentTangent.applyOnTheLeft(matTangent);
+        extendConsistentTangent();
+        consistentTangent.applyOnTheLeft( matTangent );
     }
 
     template <int n>
     Matrix6 PerezFougetSubstepper<n>::consistentStiffness()
     {
-            return consistentTangent.topLeftCorner(6,6);
+        return consistentTangent.topLeftCorner( 6, 6 );
     }
-}
+} // namespace bft
