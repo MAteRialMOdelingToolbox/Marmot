@@ -260,6 +260,14 @@ namespace bft{
             return strainPrinc;
         }
 
+        double vonMisesEquivalentStrain(const Vector6& strain)
+        {
+            // e_eq = sqrt( 2/3 * e_ij * e_ij )
+            return std::sqrt( 2./3 * ( strain(0) * strain(0) + strain(1) * strain(1) + strain(2) * strain(2)  ) +
+                              1./3 * ( strain(3) * strain(3) + strain(4) * strain(4) + strain(5) * strain(5) )  
+                            );
+        }
+
         Vector3d principalStresses(const Vector6& voigtStress)
         {
             SelfAdjointEigenSolver<Matrix3d> es(voigtToStress(voigtStress));
