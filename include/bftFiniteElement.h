@@ -139,10 +139,14 @@ namespace bft {
             template <int nNodes>
             Matrix<double, voigtSize, nNodes * nDim> B( const Matrix<double, nDim, nNodes>& dNdX )
             {
-
-                // ABAQUS like notation of strain
-                //
-                // ( e11, e22, e33, g12, g13, g23)
+                // ABAQUS like notation of strain: ( ε11, ε22, ε33, γ12, γ13, γ23 )
+                //   _                                 _
+                //  |   dN/dx1    0           0         |
+                //  |   0         dN/dx2      0         |
+                //  |   0         0           dN/dx3    |
+                //  |   dN/dx2    dN/dx1      0         |
+                //  |   dN/dx3    0           dN/dx1    |
+                //  |_  0         dN/dx3      dN/dx2   _|
 
                 Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
 
@@ -152,8 +156,8 @@ namespace bft {
                     B_( 2, nDim * i + 2 ) = dNdX( 2, i );
                     B_( 3, nDim * i + 0 ) = dNdX( 1, i );
                     B_( 3, nDim * i + 1 ) = dNdX( 0, i );
-                    B_( 4, nDim * i + 2 ) = dNdX( 0, i );
                     B_( 4, nDim * i + 0 ) = dNdX( 2, i );
+                    B_( 4, nDim * i + 2 ) = dNdX( 0, i );
                     B_( 5, nDim * i + 1 ) = dNdX( 2, i );
                     B_( 5, nDim * i + 2 ) = dNdX( 1, i );
                 }
