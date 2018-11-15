@@ -98,6 +98,8 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
                                  const double*                time,
                                  double                       dT );
 
+    void computeBodyForce( double* P, const double* load, const double* time, double dT );
+
     void computeYourself( const double* QTotal,
                           const double* dQ,
                           double*       Pe,
@@ -424,4 +426,14 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
         throw std::invalid_argument( "Invalid Load Type specified" );
     }
     }
+}
+
+template <int nDim, int nNodes>
+void UelDisplacement<nDim, nNodes>::computeBodyForce( double* P_, const double* load, const double* time, double dT )
+{
+    Map<RhsSized>                            Pe( P_ );
+    const Map<const Matrix<double, nDim, 1>> f( load );
+
+    for ( const auto& gpt : gaussPts )
+        Pe = this->NB( this->N( gpt.xi ) ).transpose() * f * gpt.geometry->intVol;
 }
