@@ -183,6 +183,19 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
     P_Unprojected = P.transpose() * P_Projected;
 }
 
+void BftUelSpatialWrapper::computeBodyForce( double*              P_,
+                                                   const double*        load,
+                                                   const double*        time,
+                                                   double               dT )
+{
+    VectorXd P_Projected = VectorXd::Zero( projectedSize );
+
+    childElement->computeBodyForce( P_Projected.data(), load, time, dT );
+
+    Map<VectorXd> P_Unprojected( P_, unprojectedSize );
+    P_Unprojected = P.transpose() * P_Projected;
+}
+
 double* BftUelSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
 {
     if ( resultName == "BftUelSpatialWrapper.T" ) {

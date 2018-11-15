@@ -68,5 +68,10 @@ class BftUelSpatialWrapper : public BftUel {
                                  const double*        time,
                                  double               dT );
 
+    void computeBodyForce( double*              P,
+                                 const double*        load,
+                                 const double*        time,
+                                 double               dT );
+
     double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength );
 };
