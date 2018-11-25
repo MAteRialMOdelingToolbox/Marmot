@@ -57,6 +57,7 @@ class BftGeometryElement {
     NSized     N( const XiSized& xi );
     dNdXiSized dNdXi( const XiSized& xi );
     BSized     B( const dNdXiSized& dNdX );
+    BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F);
 
     /*These functions are equal for each element and independent of node number and  nDimension*/
     NBSized NB( const NSized& N ) { return bft::FiniteElement::NB<nDim, nNodes>( N ); }
