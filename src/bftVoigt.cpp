@@ -65,7 +65,6 @@ namespace bft {
         }
 
     } // namespace mechanics
-    //****************************************************
     namespace Vgt {
 
         using namespace Constants;
@@ -77,7 +76,7 @@ namespace bft {
         const Vector6 IHyd = ( Vector6() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
         const Matrix6 IDev = ( Matrix6() <<
-                                   // clang-format off
+        // clang-format off
                 2./3,    -1./3,   -1./3,    0,  0,  0,
                 -1./3,   2./3,    -1./3,    0,  0,  0,
                 -1./3,   -1./3,   2./3,     0,  0,  0,
