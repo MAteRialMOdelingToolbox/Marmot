@@ -58,21 +58,4 @@ namespace bft {
                                  const int&,
                                  const int );
 
-    typedef void ( *pSimpleUelWithUmatType )( double[],
-                                              double[],
-                                              double[],
-                                              const int&,
-                                              const double[],
-                                              const int&,
-                                              const double[],
-                                              const double[],
-                                              const double[],
-                                              const double[2],
-                                              const double&,
-                                              const int&,
-                                              double&,
-                                              const int[],
-                                              const int&,
-                                              bft::pUmatType,
-                                              int );
 } // namespace bft

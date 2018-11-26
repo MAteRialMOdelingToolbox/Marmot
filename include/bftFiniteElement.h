@@ -93,18 +93,19 @@ namespace bft {
             }
 
             template <int nNodes>
-            Matrix<double, voigtSize, nNodes * nDim> BGreen( const Matrix<double, nDim, nNodes>& dNdX, const Matrix2d& F )
+            Matrix<double, voigtSize, nNodes * nDim> BGreen( const Matrix<double, nDim, nNodes>& dNdX,
+                                                             const Matrix2d&                     F )
             {
                 // Green-Lagrange Strain Operator for given dNdX and Deformationgradient F
                 // Belytschko et. al pp. 213
                 Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
-                    B_( 0, 2 * i )     = dNdX( 0, i ) * F (0,0);
-                    B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F (1,0);
-                    B_( 1, 2 * i )     = dNdX( 1, i ) * F (0,1);
-                    B_( 1, 2 * i + 1 ) = dNdX( 1, i ) * F (1,1);
-                    B_( 2, 2 * i )     = dNdX( 0, i ) * F (0,1) + dNdX (1, i ) * F (0,0);
-                    B_( 2, 2 * i + 1 ) = dNdX( 0, i ) * F (1,1) + dNdX (1, i ) * F (1,0);
+                    B_( 0, 2 * i )     = dNdX( 0, i ) * F( 0, 0 );
+                    B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
+                    B_( 1, 2 * i )     = dNdX( 1, i ) * F( 0, 1 );
+                    B_( 1, 2 * i + 1 ) = dNdX( 1, i ) * F( 1, 1 );
+                    B_( 2, 2 * i )     = dNdX( 0, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 0 );
+                    B_( 2, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 0 );
                 }
                 return B_;
             }
@@ -183,36 +184,37 @@ namespace bft {
             }
 
             template <int nNodes>
-            Matrix<double, voigtSize, nNodes * nDim> BGreen( const Matrix<double, nDim, nNodes>& dNdX, const Matrix3d& F )
+            Matrix<double, voigtSize, nNodes * nDim> BGreen( const Matrix<double, nDim, nNodes>& dNdX,
+                                                             const Matrix3d&                     F )
             {
                 // Green-Lagrange Strain Operator for given dNdX and Deformationgradient F
                 // Belytschko et. al pp. 213
-                
+
                 Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
-                    B_( 0, 2 * i )     = dNdX( 0, i ) * F (0,0);
-                    B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F (1,0);
-                    B_( 0, 2 * i + 2 ) = dNdX( 0, i ) * F (2,0);
+                    B_( 0, 2 * i )     = dNdX( 0, i ) * F( 0, 0 );
+                    B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
+                    B_( 0, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 0 );
 
-                    B_( 1, 2 * i )     = dNdX( 1, i ) * F (0,1);
-                    B_( 1, 2 * i + 1 ) = dNdX( 1, i ) * F (1,1);
-                    B_( 1, 2 * i + 2 ) = dNdX( 1, i ) * F (2,1);
+                    B_( 1, 2 * i )     = dNdX( 1, i ) * F( 0, 1 );
+                    B_( 1, 2 * i + 1 ) = dNdX( 1, i ) * F( 1, 1 );
+                    B_( 1, 2 * i + 2 ) = dNdX( 1, i ) * F( 2, 1 );
 
-                    B_( 2, 2 * i )     = dNdX( 2, i ) * F (0,2);
-                    B_( 2, 2 * i + 1 ) = dNdX( 2, i ) * F (1,2);
-                    B_( 2, 2 * i + 2 ) = dNdX( 2, i ) * F (2,2);
+                    B_( 2, 2 * i )     = dNdX( 2, i ) * F( 0, 2 );
+                    B_( 2, 2 * i + 1 ) = dNdX( 2, i ) * F( 1, 2 );
+                    B_( 2, 2 * i + 2 ) = dNdX( 2, i ) * F( 2, 2 );
 
-                    B_( 3, 2 * i )     = dNdX( 0, i ) * F (0,1) + dNdX (1, i ) * F (0,0);
-                    B_( 3, 2 * i + 1 ) = dNdX( 0, i ) * F (1,1) + dNdX (1, i ) * F (1,0);
-                    B_( 3, 2 * i + 2 ) = dNdX( 0, i ) * F (2,1) + dNdX (1, i ) * F (2,0);
+                    B_( 3, 2 * i )     = dNdX( 0, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 0 );
+                    B_( 3, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 0 );
+                    B_( 3, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 0 );
 
-                    B_( 4, 2 * i )     = dNdX( 0, i ) * F (0,2) + dNdX (2, i ) * F (0,0);
-                    B_( 4, 2 * i + 1 ) = dNdX( 0, i ) * F (1,2) + dNdX (2, i ) * F (1,0);
-                    B_( 4, 2 * i + 2 ) = dNdX( 0, i ) * F (2,2) + dNdX (2, i ) * F (2,0);
+                    B_( 4, 2 * i )     = dNdX( 0, i ) * F( 0, 2 ) + dNdX( 2, i ) * F( 0, 0 );
+                    B_( 4, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 2 ) + dNdX( 2, i ) * F( 1, 0 );
+                    B_( 4, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 2 ) + dNdX( 2, i ) * F( 2, 0 );
 
-                    B_( 5, 2 * i )     = dNdX( 2, i ) * F (0,1) + dNdX (1, i ) * F (0,2);
-                    B_( 5, 2 * i + 1 ) = dNdX( 2, i ) * F (1,1) + dNdX (1, i ) * F (1,2);
-                    B_( 5, 2 * i + 2 ) = dNdX( 2, i ) * F (2,1) + dNdX (1, i ) * F (2,2);
+                    B_( 5, 2 * i )     = dNdX( 2, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 2 );
+                    B_( 5, 2 * i + 1 ) = dNdX( 2, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 2 );
+                    B_( 5, 2 * i + 2 ) = dNdX( 2, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 2 );
                 }
                 return B_;
             }

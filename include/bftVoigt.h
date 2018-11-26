@@ -4,7 +4,6 @@
 #define isNaN( x ) ( x != x )
 
 namespace bft {
-    //****************************************************
     namespace mechanics {
         template <typename T>
         int sgn( T val )
@@ -18,9 +17,9 @@ namespace bft {
         Matrix3d getPlaneStrainTangent( const Matrix6& C );
         double   getUniaxialStressTangent( const Ref<const Matrix6>& C );
     } // namespace mechanics
-      //****************************************************
     namespace Vgt {
 
+        // TODO: Remove, only valid for 3D!
         const int VoigtSize = 6;
 
         extern const Vector6 P;
@@ -33,6 +32,32 @@ namespace bft {
         // Plane Stress handling
         Vector3d voigtToPlaneVoigt( const Vector6& voigt );
         Vector6  planeVoigtToVoigt( const Vector3d& voigtPlane );
+
+        template <int voigtSize>
+        Matrix<double, voigtSize, 1> reduce3DVoigt( const Vector6& Voigt3D )
+        {
+            if constexpr ( voigtSize == 1 )
+                return ( Matrix<double, 1, 1>() << Voigt3D( 0 ) ).finished();
+            else if constexpr ( voigtSize == 3 )
+                return voigtToPlaneVoigt( Voigt3D );
+            else if constexpr ( voigtSize == 6 )
+                return Voigt3D;
+            else
+                throw std::invalid_argument( "bft::Vgt::reduceVoigt: invalid dimension specified" );
+        }
+
+        template <int voigtSize>
+        Vector6 make3DVoigt( const Matrix<double, voigtSize, 1>& Voigt )
+        {
+            if constexpr ( voigtSize == 1 )
+                return ( Vector6() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
+            else if constexpr ( voigtSize == 3 )
+                return planeVoigtToVoigt( Voigt );
+            else if constexpr ( voigtSize == 6 )
+                return Voigt;
+            else
+                throw std::invalid_argument( "bft::Vgt::reduceVoigt: invalid dimension specified" );
+        }
 
         /*compute E33 for a given elastic strain, to compute the compensation for
          * planeStress = Cel : (elasticStrain + compensationStrain) */
@@ -58,9 +83,9 @@ namespace bft {
         Vector3d principalStrainsHW( const Vector6& strain );
         // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
         Vector3d principalStresses( const Vector6& stress );
-		
-        // equivalent von Mises strain 
-        double vonMisesEquivalentStrain(const Vector6& strain);
+
+        // equivalent von Mises strain
+        double vonMisesEquivalentStrain( const Vector6& strain );
         // Euclidian norm of strain
         double normStrain( const Vector6& strain );
         // Trace of compressive strains

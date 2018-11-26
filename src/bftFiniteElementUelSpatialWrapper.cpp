@@ -172,12 +172,13 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
                                                    double*              P_,
                                                    int                  elementFace,
                                                    const double*        load,
+                                 const double*        QTotal,
                                                    const double*        time,
                                                    double               dT )
 {
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
 
-    childElement->computeDistributedLoad( loadType, P_Projected.data(), elementFace, load, time, dT );
+    childElement->computeDistributedLoad( loadType, P_Projected.data(), elementFace, QTotal, load, time, dT );
 
     Map<VectorXd> P_Unprojected( P_, unprojectedSize );
     P_Unprojected = P.transpose() * P_Projected;
@@ -185,12 +186,13 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
 
 void BftUelSpatialWrapper::computeBodyForce( double*              P_,
                                                    const double*        load,
+                                 const double*        QTotal,
                                                    const double*        time,
                                                    double               dT )
 {
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
 
-    childElement->computeBodyForce( P_Projected.data(), load, time, dT );
+    childElement->computeBodyForce( P_Projected.data(), load, QTotal, time, dT );
 
     Map<VectorXd> P_Unprojected( P_, unprojectedSize );
     P_Unprojected = P.transpose() * P_Projected;

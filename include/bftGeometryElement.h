@@ -71,4 +71,9 @@ class BftGeometryElement {
     {
         return ( dNdXi.transpose() * JacobianInverse ).transpose();
     }
+
+    JacobianSized F(const dNdXiSized& dNdX, const CoordinateVector& Q)
+    {
+        return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q) + JacobianSized::Identity();
+    }
 };

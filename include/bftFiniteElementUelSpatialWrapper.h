@@ -65,11 +65,13 @@ class BftUelSpatialWrapper : public BftUel {
                                  double*              P,
                                  int                  elementFace,
                                  const double*        load,
+                                 const double*        QTotal,
                                  const double*        time,
                                  double               dT );
 
     void computeBodyForce( double*              P,
                                  const double*        load,
+                                 const double*        QTotal,
                                  const double*        time,
                                  double               dT );
 
