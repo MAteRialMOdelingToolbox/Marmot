@@ -192,29 +192,29 @@ namespace bft {
 
                 Matrix<double, voigtSize, nNodes* nDim> B_ = Matrix<double, voigtSize, nNodes * nDim>::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
-                    B_( 0, 2 * i )     = dNdX( 0, i ) * F( 0, 0 );
-                    B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
-                    B_( 0, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 0 );
+                    B_( 0, nDim * i )     = dNdX( 0, i ) * F( 0, 0 );
+                    B_( 0, nDim * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
+                    B_( 0, nDim * i + 2 ) = dNdX( 0, i ) * F( 2, 0 );
 
-                    B_( 1, 2 * i )     = dNdX( 1, i ) * F( 0, 1 );
-                    B_( 1, 2 * i + 1 ) = dNdX( 1, i ) * F( 1, 1 );
-                    B_( 1, 2 * i + 2 ) = dNdX( 1, i ) * F( 2, 1 );
+                    B_( 1, nDim * i )     = dNdX( 1, i ) * F( 0, 1 );
+                    B_( 1, nDim * i + 1 ) = dNdX( 1, i ) * F( 1, 1 );
+                    B_( 1, nDim * i + 2 ) = dNdX( 1, i ) * F( 2, 1 );
 
-                    B_( 2, 2 * i )     = dNdX( 2, i ) * F( 0, 2 );
-                    B_( 2, 2 * i + 1 ) = dNdX( 2, i ) * F( 1, 2 );
-                    B_( 2, 2 * i + 2 ) = dNdX( 2, i ) * F( 2, 2 );
+                    B_( 2, nDim * i )     = dNdX( 2, i ) * F( 0, 2 );
+                    B_( 2, nDim * i + 1 ) = dNdX( 2, i ) * F( 1, 2 );
+                    B_( 2, nDim * i + 2 ) = dNdX( 2, i ) * F( 2, 2 );
 
-                    B_( 3, 2 * i )     = dNdX( 0, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 0 );
-                    B_( 3, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 0 );
-                    B_( 3, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 0 );
+                    B_( 3, nDim * i )     = dNdX( 0, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 0 );
+                    B_( 3, nDim * i + 1 ) = dNdX( 0, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 0 );
+                    B_( 3, nDim * i + 2 ) = dNdX( 0, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 0 );
 
-                    B_( 4, 2 * i )     = dNdX( 0, i ) * F( 0, 2 ) + dNdX( 2, i ) * F( 0, 0 );
-                    B_( 4, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 2 ) + dNdX( 2, i ) * F( 1, 0 );
-                    B_( 4, 2 * i + 2 ) = dNdX( 0, i ) * F( 2, 2 ) + dNdX( 2, i ) * F( 2, 0 );
+                    B_( 4, nDim * i )     = dNdX( 0, i ) * F( 0, 2 ) + dNdX( 2, i ) * F( 0, 0 );
+                    B_( 4, nDim * i + 1 ) = dNdX( 0, i ) * F( 1, 2 ) + dNdX( 2, i ) * F( 1, 0 );
+                    B_( 4, nDim * i + 2 ) = dNdX( 0, i ) * F( 2, 2 ) + dNdX( 2, i ) * F( 2, 0 );
 
-                    B_( 5, 2 * i )     = dNdX( 2, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 2 );
-                    B_( 5, 2 * i + 1 ) = dNdX( 2, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 2 );
-                    B_( 5, 2 * i + 2 ) = dNdX( 2, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 2 );
+                    B_( 5, nDim * i )     = dNdX( 2, i ) * F( 0, 1 ) + dNdX( 1, i ) * F( 0, 2 );
+                    B_( 5, nDim * i + 1 ) = dNdX( 2, i ) * F( 1, 1 ) + dNdX( 1, i ) * F( 1, 2 );
+                    B_( 5, nDim * i + 2 ) = dNdX( 2, i ) * F( 2, 1 ) + dNdX( 1, i ) * F( 2, 2 );
                 }
                 return B_;
             }

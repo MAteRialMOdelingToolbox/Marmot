@@ -63,7 +63,6 @@ namespace bft {
 
             return CPlaneStrain;
         }
-
     } // namespace mechanics
     namespace Vgt {
 
