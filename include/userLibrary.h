@@ -29,6 +29,7 @@ namespace userLibrary {
         ShotLeonV2NonLocal               = 19,
         UntereggerRockMassAssocNonLocal  = 20,
         LinearElasticNonLocal            = 21,
+        StVenantKirchhoffIsotropic      = 22,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );
@@ -47,6 +48,7 @@ namespace userLibrary {
          *
          * active fields:   0: mechanical (=displacement),
          *                  1: mechanical + nonlocal damage,
+         *                  2: mechanical (=displacement) large strain TL,
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -81,6 +83,23 @@ namespace userLibrary {
         UelC3D8R  = 806,
         UelC3D20  = 2003,
         UelC3D20R = 2006,
+
+        UelT2D2TL = 222,
+        // Plane Stress
+        UelCPS4TL  = 422,
+        UelCPS8TL  = 822,
+        UelCPS8RTL = 825,
+
+        // Plane Strain
+        UelCPE4TL  = 427,
+        UelCPE8TL  = 827,
+        UelCPE8RTL = 828,
+
+        // Solid
+        UelC3D8TL   = 823,
+        UelC3D8RTL  = 826,
+        UelC3D20TL  = 2023,
+        UelC3D20RTL = 2026,
 
         // Solid EAS
         UelC3D8EAS3  = 80303,

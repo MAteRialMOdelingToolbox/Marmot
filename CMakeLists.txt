@@ -41,11 +41,13 @@ set (optionalLibraries
     ShotLeonNonLocal
     ShotLeonV2NonLocal
     SolidificationCreep
+    StVenantKirchhoffIsotropic
     UntereggerRockMass
     UntereggerRockMassNonLocal
     UntereggerRockMassPlaxis
 
     uelDisplacement
+    uelDisplacementTL
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalEAS

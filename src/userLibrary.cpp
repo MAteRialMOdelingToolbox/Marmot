@@ -67,6 +67,9 @@
 #ifdef LINEARELASTICNONLOCAL
 #    include "LinearElasticNonLocal.h"
 #endif
+#ifdef STVENANTKIRCHHOFFISOTROPIC
+#    include "StVenantKirchhoffIsotropic.h"
+#endif
 namespace userLibrary {
 
     MaterialCode getMaterialCodeFromName( const std::string& materialCode )
@@ -92,6 +95,7 @@ namespace userLibrary {
             {"SHOTLEONV2NONLOCAL", ShotLeonV2NonLocal},
             {"UNTEREGGERROCKMASSPLAXIS", UntereggerRockMassPlaxis},
             {"LINEARELASTICNONLOCAL", LinearElasticNonLocal},
+            {"STVENANTKIRCHHOFFISOTROPIC", StVenantKirchhoffIsotropic},
         };
 
         return materialCodeMap[materialCode];
@@ -156,6 +160,9 @@ namespace userLibrary {
             #ifdef UNTEREGGERROCKMASSPLAXIS
             case UntereggerRockMassPlaxis: { return new class UntereggerRockMassPlaxis(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
+            #ifdef STVENANTKIRCHHOFFISOTROPIC
+            case StVenantKirchhoffIsotropic: { return new class StVenantKirchhoffIsotropic(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
             default: {  std::ostringstream str; str<<"bftUserLibrary: Invalid material code "<< materialCode << " requested!" << std::endl; 
                          throw std::invalid_argument(str.str()); }
             // clang-format on
@@ -166,6 +173,9 @@ namespace userLibrary {
 
 #ifdef UELDISPLACEMENT
 #    include "uelDisplacementFactory.h"
+#endif
+#ifdef UELDISPLACEMENTTL
+#    include "uelDisplacementTLFactory.h"
 #endif
 #ifdef UELNONLOCAL
 #    include "uelNonLocalFactory.h"
@@ -189,13 +199,24 @@ namespace userLibrary {
             {"UELCPE4", UelCPE4},
             {"UELCPE8", UelCPE8},
             {"UELCPE8R", UelCPE8R},
-            {"UELCPE4EAS2", UelCPE4EAS2},
-            {"UELCPE4EAS4", UelCPE4EAS4},
-            {"UELCPE4EAS5", UelCPE4EAS5},
             {"UELC3D8", UelC3D8},
             {"UELC3D8R", UelC3D8R},
             {"UELC3D20", UelC3D20},
             {"UELC3D20R", UelC3D20R},
+            {"UELT2D2TL", UelT2D2TL},
+            {"UELCPS4TL", UelCPS4TL},
+            {"UELCPS8TL", UelCPS8TL},
+            {"UELCPS8RTL", UelCPS8RTL},
+            {"UELCPE4TL", UelCPE4TL},
+            {"UELCPE8TL", UelCPE8TL},
+            {"UELCPE8RTL", UelCPE8RTL},
+            {"UELC3D8TL", UelC3D8TL},
+            {"UELC3D8RTL", UelC3D8RTL},
+            {"UELC3D20TL", UelC3D20TL},
+            {"UELC3D20RTL", UelC3D20RTL},
+            {"UELCPE4EAS2", UelCPE4EAS2},
+            {"UELCPE4EAS4", UelCPE4EAS4},
+            {"UELCPE4EAS5", UelCPE4EAS5},
             {"UELC3D8EAS3", UelC3D8EAS3},
             {"UELC3D8EAS9", UelC3D8EAS9},
             {"UELCPS4NONLOCAL", UelCPS4NonLocal},
@@ -238,6 +259,19 @@ namespace userLibrary {
             case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8(elementNumber);}
             case UelC3D20: {return UelDisplacementFactory:: generateUelC3D20(elementNumber);}
             case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R(elementNumber);}
+            #endif 
+            #ifdef UELDISPLACEMENTTL
+            //case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
+            //case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
+            //case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4(elementNumber);}
+            //case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8(elementNumber);}
+            //case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R(elementNumber);}
+            case UelC3D8TL: {return UelDisplacementTLFactory:: generateUelC3D8TL(elementNumber);}
+            //case UelC3D8R: {return UelDisplacementFactory:: generateUelC3D8R(elementNumber);}
+            //case UelCPE8R: {return UelDisplacementFactory:: generateUelCPE8R(elementNumber);}
+            //case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8(elementNumber);}
+            case UelC3D20TL: {return UelDisplacementFactory:: generateUelC3D20(elementNumber);}
+            //case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R(elementNumber);}
             #endif 
             #ifdef UELNONLOCAL
             case UelCPS4NonLocal: {return UelNonLocalFactory:: generateUelCPS4NonLocal(elementNumber);}

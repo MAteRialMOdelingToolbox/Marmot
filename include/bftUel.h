@@ -48,12 +48,14 @@ class BftUel {
     virtual void computeDistributedLoad( DistributedLoadTypes loadType,
                                          double*              P,
                                          int                  elementFace,
+                                         const double*        QTotal,
                                          const double*        load,
                                          const double*        time,
                                          double               dT ) = 0;
 
     virtual void computeBodyForce(double*              P,
                                  const double*        load,
+                                 const double*        QTotal,
                                  const double*        time,
                                  double               dT ) = 0;
 
