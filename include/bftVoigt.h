@@ -1,22 +1,12 @@
 #pragma once
 #include "bftTypedefs.h"
+#include "bftFunctions.h"
 
 #define isNaN( x ) ( x != x )
+#define VOIGTFROMDIM( x ) ( ( ( x*x ) + x) >>  1 )
+//#define DIMFROMVOIGT( x ) ( x<<1  )
 
 namespace bft {
-    namespace mechanics {
-        template <typename T>
-        int sgn( T val )
-        {
-            return ( T( 0 ) < val ) - ( val < T( 0 ) );
-        }
-
-        Matrix6  Cel( double E, double nu );
-        Matrix6  CelInverse( double E, double nu );
-        Matrix3d getPlaneStressTangent( const Matrix6& C );
-        Matrix3d getPlaneStrainTangent( const Matrix6& C );
-        double   getUniaxialStressTangent( const Ref<const Matrix6>& C );
-    } // namespace mechanics
     namespace Vgt {
 
         // TODO: Remove, only valid for 3D!
@@ -43,7 +33,7 @@ namespace bft {
             else if constexpr ( voigtSize == 6 )
                 return Voigt3D;
             else
-                throw std::invalid_argument( "bft::Vgt::reduceVoigt: invalid dimension specified" );
+                throw std::invalid_argument( MakeString () << __PRETTY_FUNCTION__ <<  ": invalid dimension specified" );
         }
 
         template <int voigtSize>
@@ -56,8 +46,9 @@ namespace bft {
             else if constexpr ( voigtSize == 6 )
                 return Voigt;
             else
-                throw std::invalid_argument( "bft::Vgt::reduceVoigt: invalid dimension specified" );
+                throw std::invalid_argument( MakeString () << __PRETTY_FUNCTION__ <<  ": invalid dimension specified" );
         }
+
 
         /*compute E33 for a given elastic strain, to compute the compensation for
          * planeStress = Cel : (elasticStrain + compensationStrain) */
@@ -76,6 +67,32 @@ namespace bft {
         Vector6  stressToVoigt( const Matrix3d& stressTensor );
         Vector3d haighWestergaard( const Vector6& stress );
         Vector3d haighWestergaardStrain( const Vector6& strain );
+
+        template <int nDim>
+            Matrix<double, nDim, nDim> StressMatrixFromVoigt( const Matrix<double, VOIGTFROMDIM(nDim), 1>& Voigt)
+            {
+                if constexpr(nDim == 1)
+                    return (Matrix<double, nDim, nDim>() << Voigt(0)).finished();
+                else if constexpr(nDim == 2)
+                    return (Matrix<double, nDim, nDim>() <<  Voigt(0), Voigt(2), Voigt(2), Voigt(1)).finished();
+                else if constexpr(nDim == 3)
+                    return voigtToStress( Voigt);
+                else 
+                    throw std::invalid_argument( MakeString () << __PRETTY_FUNCTION__ <<  ": invalid dimension specified"  );
+            }
+
+        template <int nDim>
+             Matrix<double, VOIGTFROMDIM(nDim), 1> VoigtFromStrainMatrix(const Matrix<double, nDim, nDim>& strain )
+            {
+                if constexpr(nDim == 1)
+                    return (Matrix<double, VOIGTFROMDIM(nDim), 1>() << strain(0, 0)).finished();
+                else if constexpr(nDim == 2)
+                    return (Matrix<double, VOIGTFROMDIM(nDim), 1>() << strain(0, 0), strain(1,1), 2*strain(0,1)).finished();
+                else if constexpr(nDim == 3)
+                    return strainToVoigt ( strain);
+                else 
+                    throw std::invalid_argument( MakeString () << __PRETTY_FUNCTION__ <<  ": invalid dimension specified"  );
+            }
 
         // principal strains calculated by solving eigenvalue problem ( !NOT sorted! )
         Vector3d principalStrains( const Vector6& strain );
@@ -132,4 +149,27 @@ namespace bft {
         RowVector6d dDeltaEpvneg_dE( const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep );
     } // namespace Vgt
 
+    namespace mechanics {
+        template <typename T>
+        int sgn( T val )
+        {
+            return ( T( 0 ) < val ) - ( val < T( 0 ) );
+        }
+
+        Matrix6  Cel( double E, double nu );
+        Matrix6  CelInverse( double E, double nu );
+        Matrix3d getPlaneStressTangent( const Matrix6& C );
+        Matrix3d getPlaneStrainTangent( const Matrix6& C );
+        double   getUniaxialStressTangent( const Ref<const Matrix6>& C );
+
+
+        template<int nDim>
+        Matrix<double, VOIGTFROMDIM(nDim), 1> GreenLagrangeStrain ( const Matrix<double, nDim, nDim>& DeformationGradient  ) 
+        {
+            Matrix<double, nDim, nDim> H = DeformationGradient - Matrix<double, nDim, nDim>::Identity();
+            return bft::Vgt::VoigtFromStrainMatrix<nDim>( 0.5 * ( H + H.transpose() + H.transpose()  *  H ) ) ;
+        }
+
+
+    } // namespace mechanics
 } // namespace bft
