@@ -95,11 +95,13 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
                                  double*                      P,
                                  const int                    elementFace,
                                  const double*                load,
+                                 const double*        QTotal,
                                  const double*                time,
                                  double                       dT );
 
     void computeBodyForce( double*                      P,
                                                             const double*                load,
+                                 const double*        QTotal,
                                                             const double*                time,
                                                             double                       dT );
 
@@ -404,6 +406,7 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
                                                             double*                      P,
                                                             const int                    elementFace,
                                                             const double*                load,
+                                 const double*        QTotal,
                                                             const double*                time,
                                                             double                       dT )
 {
@@ -435,6 +438,7 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::computeBodyForce( double*                      P_,
                                                             const double*                load,
+                                 const double*        QTotal,
                                                             const double*                time,
                                                             double                       dT )
 {
