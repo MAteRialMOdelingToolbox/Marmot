@@ -7,7 +7,7 @@ project(bftUserLibrary)
 
 include_directories(include)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -19,10 +19,11 @@ if(CMAKE_VERSION VERSION_LESS "3.9.0")
     message("--> Please consider to switch to CMake 3.9.0")
 endif()
 
-set(bftMechanicsDir "../bftMechanics/")
+set(bftMechanicsDir "modules/bftMechanics/")
 
-set(optionalLibsRootDir "../")
-set (optionalLibraries 
+set(optionalLibsRootDir "modules/")
+
+set (materials
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
@@ -44,29 +45,15 @@ set (optionalLibraries
     StVenantKirchhoffIsotropic
     UntereggerRockMass
     UntereggerRockMassNonLocal
-    UntereggerRockMassPlaxis
+    UntereggerRockMassPlaxis)
 
+set(elements
     uelDisplacement
     uelDisplacementTL
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalEAS
     )
-
-# check if uels are present, since they need c++17
-foreach(library ${optionalLibraries})
-    if(${library} MATCHES "(uel)+")
-        if(outdatedcmake)
-            if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-                unset(CMAKE_CXX_STANDARD)
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1z")
-            endif()
-        else()
-            set(CMAKE_CXX_STANDARD 17)
-        endif()
-        break()
-    endif()
-endforeach()
 
 # Compiler specific stettings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -96,9 +83,23 @@ endif()
 file(GLOB sources "src/*.cpp")
 file(GLOB headers "include/*.h")
 
-#optional libraries
-foreach(library ${optionalLibraries})
-    file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
+#optional materials 
+foreach(library ${materials})
+    file(TO_CMAKE_PATH "${optionalLibsRootDir}/materials/${library}" librarypath)
+    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
+    if(EXISTS ${librarypath})
+        message("--> found ${library}")
+        include_directories(${librarypath}/include)
+        file(GLOB libsources "${librarypath}/src/*.cpp")
+        set(sources ${sources} ${libsources})
+        string(TOUPPER ${library} LIBRARY)
+        add_definitions(-D${LIBRARY})
+    endif()
+endforeach(library)
+
+#optional elements 
+foreach(library ${elements})
+    file(TO_CMAKE_PATH "${optionalLibsRootDir}/elements/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")

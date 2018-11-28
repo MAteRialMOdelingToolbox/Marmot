@@ -70,6 +70,10 @@
 #ifdef STVENANTKIRCHHOFFISOTROPIC
 #    include "StVenantKirchhoffIsotropic.h"
 #endif
+
+using namespace bft;
+using namespace Eigen;
+
 namespace userLibrary {
 
     MaterialCode getMaterialCodeFromName( const std::string& materialCode )
