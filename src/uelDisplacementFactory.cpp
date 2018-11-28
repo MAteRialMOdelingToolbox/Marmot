@@ -1,6 +1,6 @@
+#include "uelDisplacementFactory.h"
 #include "bftFiniteElementUelSpatialWrapper.h"
 #include "uelDisplacement.h"
-#include "uelDisplacementFactory.h"
 
 namespace UelDisplacementFactory {
     BftUel* generateUelT2D2( int noEl )

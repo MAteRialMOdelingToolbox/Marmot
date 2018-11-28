@@ -14,6 +14,9 @@
 #include <memory>
 #include <vector>
 
+using namespace bft;
+using namespace Eigen;
+
 template <int nDim, int nNodes>
 class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 
@@ -49,8 +52,8 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
         const double  weight;
 
         std::unique_ptr<BftMaterialHypoElastic> material;
-        bft::mVector6                           stress;
-        bft::mVector6                           strain;
+        mVector6                                stress;
+        mVector6                                strain;
 
         struct Geometry {
             JacobianSized J;
@@ -69,7 +72,7 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 
     std::vector<GaussPt> gaussPts;
 
-    UelDisplacement( int noEl, bft::NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
+    UelDisplacement( int noEl, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
 
     int getNumberOfRequiredStateVars();
 
@@ -95,15 +98,11 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
                                  double*                      P,
                                  const int                    elementFace,
                                  const double*                load,
-                                 const double*        QTotal,
+                                 const double*                QTotal,
                                  const double*                time,
                                  double                       dT );
 
-    void computeBodyForce( double*                      P,
-                                                            const double*                load,
-                                 const double*        QTotal,
-                                                            const double*                time,
-                                                            double                       dT );
+    void computeBodyForce( double* P, const double* load, const double* QTotal, const double* time, double dT );
 
     void computeYourself( const double* QTotal,
                           const double* dQ,
@@ -116,11 +115,11 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
     double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
     {
         if ( resultName == "stress" ) {
-            resultLength = bft::Vgt::VoigtSize;
+            resultLength = Vgt::VoigtSize;
             return gaussPts[gaussPt].stress.data();
         }
         else if ( resultName == "strain" ) {
-            resultLength = bft::Vgt::VoigtSize;
+            resultLength = Vgt::VoigtSize;
             return gaussPts[gaussPt].strain.data();
         }
         else if ( resultName == "sdv" ) {
@@ -133,15 +132,15 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 };
 
 template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement( int                                   noEl,
-                                                bft::NumIntegration::IntegrationTypes integrationType,
-                                                SectionType                           sectionType )
+UelDisplacement<nDim, nNodes>::UelDisplacement( int                              noEl,
+                                                NumIntegration::IntegrationTypes integrationType,
+                                                SectionType                      sectionType )
     : ParentGeometryElement(),
       elementProperties( Map<const VectorXd>( nullptr, 0 ) ),
       elLabel( noEl ),
       sectionType( sectionType )
 {
-    for ( const auto& gaussPtInfo : bft::NumIntegration::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& gaussPtInfo : NumIntegration::getGaussPointInfo( this->shape, integrationType ) ) {
         GaussPt gpt( gaussPtInfo.xi, gaussPtInfo.weight );
         gaussPts.push_back( std::move( gpt ) );
     }
@@ -193,12 +192,11 @@ void UelDisplacement<nDim, nNodes>::assignStateVars( double* stateVars, int nSta
 
         // assign stress, strain state vars using the 'placement new' operator
         new ( &gpt.stress )
-            bft::mVector6( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ),
-                           6 );
+            mVector6( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ), 6 );
 
-        new ( &gpt.strain ) bft::mVector6( stateVars + nStateVarsMaterial +
-                                               i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ) + 6,
-                                           6 );
+        new ( &gpt.strain )
+            mVector6( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ) + 6,
+                      6 );
     }
 }
 template <int nDim, int nNodes>
@@ -388,7 +386,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, cons
                 const double y1    = values[1];
                 const double y2    = values[3];
 
-                using namespace bft::Math;
+                using namespace Math;
                 gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
                 gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
                 gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
@@ -406,7 +404,7 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
                                                             double*                      P,
                                                             const int                    elementFace,
                                                             const double*                load,
-                                 const double*        QTotal,
+                                                            const double*                QTotal,
                                                             const double*                time,
                                                             double                       dT )
 {
@@ -417,7 +415,7 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
     case BftUel::Pressure: {
         const double p = load[0];
 
-        bft::FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+        FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
         VectorXd Pk = -p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
 
@@ -434,18 +432,16 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
     }
 }
 
-
 template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::computeBodyForce( double*                      P_,
-                                                            const double*                load,
-                                 const double*        QTotal,
-                                                            const double*                time,
-                                                            double                       dT )
+void UelDisplacement<nDim, nNodes>::computeBodyForce( double*       P_,
+                                                      const double* load,
+                                                      const double* QTotal,
+                                                      const double* time,
+                                                      double        dT )
 {
-    Map<RhsSized>       Pe( P_ );
-    const Map< const Matrix<double, nDim, 1> >             f( load );
+    Map<RhsSized>                            Pe( P_ );
+    const Map<const Matrix<double, nDim, 1>> f( load );
 
-    for ( const auto& gpt : gaussPts) 
-        Pe += this->NB( this->N ( gpt.xi ) ).transpose() * f * gpt.geometry->intVol;
+    for ( const auto& gpt : gaussPts )
+        Pe += this->NB( this->N( gpt.xi ) ).transpose() * f * gpt.geometry->intVol;
 }
-
