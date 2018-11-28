@@ -53,11 +53,11 @@ class BftUel {
                                          const double*        time,
                                          double               dT ) = 0;
 
-    virtual void computeBodyForce(double*              P,
-                                 const double*        load,
-                                 const double*        QTotal,
-                                 const double*        time,
-                                 double               dT ) = 0;
+    virtual void computeBodyForce( double*       P,
+                                   const double* load,
+                                   const double* QTotal,
+                                   const double* time,
+                                   double        dT ) = 0;
 
     virtual double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength ) = 0;
 };

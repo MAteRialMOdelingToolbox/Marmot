@@ -1,8 +1,8 @@
+#include "userLibrary.h"
 #include "bftMaterial.h"
 #include "bftTypedefs.h"
 #include "bftUel.h"
 #include "bftVoigt.h"
-#include "userLibrary.h"
 #include <map>
 #include <string>
 #include <tuple>
@@ -112,7 +112,7 @@ namespace userLibrary {
                                      int           gaussPt )
     {
         switch ( materialCode ) {
-// clang-format off
+            // clang-format off
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
@@ -250,7 +250,7 @@ namespace userLibrary {
     BftUel* UelFactory( ElementCode elementCode, int elementNumber )
     {
         switch ( elementCode ) {
-// clang-format off
+            // clang-format off
             #ifdef UELDISPLACEMENT
             case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
             case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
