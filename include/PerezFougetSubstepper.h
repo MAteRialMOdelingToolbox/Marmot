@@ -12,7 +12,7 @@ namespace bft {
     class PerezFougetSubstepper {
 
       public:
-        typedef Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
+        typedef Eigen::Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
         PerezFougetSubstepper( double         initialStepSize,
                                double         minimumStepSize,
                                double         scaleUpFactor,

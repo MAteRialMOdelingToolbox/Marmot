@@ -1,6 +1,8 @@
 #include "InnerNewtonIterationChecker.h"
 #include <iostream>
 
+using namespace Eigen;
+
 namespace bft {
 
     InnerNewtonIterationChecker::InnerNewtonIterationChecker( const MatrixXd& residualScaleMatrix,

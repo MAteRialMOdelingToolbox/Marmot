@@ -1,6 +1,7 @@
 #include "bftFiniteElement.h"
 #include "bftTypedefs.h"
 
+using namespace Eigen;
 namespace bft {
     namespace FiniteElement {
         ElementShapes getElementShapeByMetric( int nDim, int nNodes )

@@ -6,6 +6,8 @@
  * convenience functions for umats in Abaqus
  * */
 
+using namespace Eigen;
+
 namespace bft {
 
     void backToAbaqus( const Matrix6& jacobian,

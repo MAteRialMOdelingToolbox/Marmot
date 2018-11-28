@@ -1,6 +1,7 @@
 #include "bftFiniteElement.h"
 #include <iostream>
 
+using namespace Eigen;
 namespace bft {
     namespace FiniteElement {
 

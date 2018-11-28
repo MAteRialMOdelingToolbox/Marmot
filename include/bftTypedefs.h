@@ -2,22 +2,22 @@
 #include "Eigen/Core"
 #include "Eigen/Dense"
 
-using namespace Eigen;
+// using namespace Eigen;
 
 namespace bft {
-    typedef Matrix<double, 6, 6> Matrix6;
-    typedef Matrix<double, 7, 7> Matrix7;
-    typedef Map<Matrix6>         mMatrix6;
+    typedef Eigen::Matrix<double, 6, 6> Matrix6;
+    typedef Eigen::Matrix<double, 7, 7> Matrix7;
+    typedef Eigen::Map<Matrix6>         mMatrix6;
 
-    typedef Matrix<double, 6, 1>        Vector6;
-    typedef Matrix<double, 8, 1>        Vector8d;
-    typedef Matrix<int, 8, 1>           Vector8i;
-    typedef Matrix<double, 1, 6>        RowVector6d;
-    typedef Map<Vector6>                mVector6;
-    typedef Eigen::Map<Eigen::VectorXd> mVectorXd;
-    typedef Map<const Vector6>          mConstVector6;
+    typedef Eigen::Matrix<double, 6, 1>    Vector6;
+    typedef Eigen::Matrix<double, 8, 1>    Vector8d;
+    typedef Eigen::Matrix<int, 8, 1>       Vector8i;
+    typedef Eigen::Matrix<double, 1, 6>    RowVector6d;
+    typedef Eigen::Map<Vector6>            mVector6;
+    typedef Eigen::Map<Eigen::VectorXd>    mVectorXd;
+    typedef Eigen::Map<const bft::Vector6> mConstVector6;
 
-    typedef Matrix<double, 3, 6> Matrix36;
+    typedef Eigen::Matrix<double, 3, 6> Matrix36;
 
     typedef void ( *pUmatType )( double[],
                                  double[],

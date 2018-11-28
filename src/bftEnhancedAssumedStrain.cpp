@@ -2,6 +2,8 @@
 namespace bft {
     namespace EAS {
 
+        using namespace Eigen;
+
         MatrixXd F( const MatrixXd& J )
         {
             // Transformation according to

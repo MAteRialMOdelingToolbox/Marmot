@@ -8,11 +8,13 @@ namespace bft {
         const double viscosity;
 
       public:
-        typedef Matrix<double, nMatTangentSize, nMatTangentSize> TangentSizedMatrix;
+        typedef Eigen::Matrix<double, nMatTangentSize, nMatTangentSize> TangentSizedMatrix;
 
         DuvautLionsViscosity( double viscosity );
         double             applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
-        Vector6            applyViscosityOnStress( const Vector6& trialStress, const Vector6& stressInf, double dT );
+        bft::Vector6       applyViscosityOnStress( const bft::Vector6& trialStress,
+                                                   const bft::Vector6& stressInf,
+                                                   double              dT );
         TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
     };
 } // namespace bft
@@ -30,9 +32,9 @@ namespace bft {
     }
 
     template <int s>
-    Vector6 DuvautLionsViscosity<s>::applyViscosityOnStress( const Vector6& trialStress,
-                                                             const Vector6& stressInf,
-                                                             double         dT )
+    bft::Vector6 DuvautLionsViscosity<s>::applyViscosityOnStress( const bft::Vector6& trialStress,
+                                                                  const bft::Vector6& stressInf,
+                                                                  double              dT )
     {
         return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );
     }

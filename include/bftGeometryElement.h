@@ -19,16 +19,16 @@ class BftGeometryElement {
     /*Typedefs*/
     static constexpr int VoigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 );
 
-    typedef Matrix<double, nDim, 1>                  XiSized;
-    typedef Matrix<double, nDim * nNodes, 1>         CoordinateVector;
-    typedef Matrix<double, nDim, nDim>               JacobianSized;
-    typedef Matrix<double, 1, nNodes>                NSized;
-    typedef Matrix<double, nDim, nNodes * nDim>      NBSized;
-    typedef Matrix<double, nDim, nNodes>             dNdXiSized;
-    typedef Matrix<double, VoigtSize, nNodes * nDim> BSized;
+    typedef Eigen::Matrix<double, nDim, 1>                  XiSized;
+    typedef Eigen::Matrix<double, nDim * nNodes, 1>         CoordinateVector;
+    typedef Eigen::Matrix<double, nDim, nDim>               JacobianSized;
+    typedef Eigen::Matrix<double, 1, nNodes>                NSized;
+    typedef Eigen::Matrix<double, nDim, nNodes * nDim>      NBSized;
+    typedef Eigen::Matrix<double, nDim, nNodes>             dNdXiSized;
+    typedef Eigen::Matrix<double, VoigtSize, nNodes * nDim> BSized;
 
     /*Properties*/
-    Map<const CoordinateVector>             coordinates;
+    Eigen::Map<const CoordinateVector>      coordinates;
     const bft::FiniteElement::ElementShapes shape;
 
     /*Methods*/
@@ -47,7 +47,10 @@ class BftGeometryElement {
         return shapes[this->shape];
     }
 
-    void initializeYourself( const double* coords ) { new ( &coordinates ) Map<const CoordinateVector>( coords ); }
+    void initializeYourself( const double* coords )
+    {
+        new ( &coordinates ) Eigen::Map<const CoordinateVector>( coords );
+    }
 
     /*Please specialize these functions for each element individially
      *.cpp file.
@@ -57,7 +60,7 @@ class BftGeometryElement {
     NSized     N( const XiSized& xi );
     dNdXiSized dNdXi( const XiSized& xi );
     BSized     B( const dNdXiSized& dNdX );
-    BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F);
+    BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F );
 
     /*These functions are equal for each element and independent of node number and  nDimension*/
     NBSized NB( const NSized& N ) { return bft::FiniteElement::NB<nDim, nNodes>( N ); }
@@ -72,8 +75,8 @@ class BftGeometryElement {
         return ( dNdXi.transpose() * JacobianInverse ).transpose();
     }
 
-    JacobianSized F(const dNdXiSized& dNdX, const CoordinateVector& Q)
+    JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q )
     {
-        return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q) + JacobianSized::Identity();
+        return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q ) + JacobianSized::Identity();
     }
 };

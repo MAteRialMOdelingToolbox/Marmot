@@ -2,6 +2,8 @@
 #include "bftTypedefs.h"
 #include <iostream>
 
+using namespace Eigen;
+
 namespace bft {
     namespace FiniteElement {
         namespace Spatial2D {

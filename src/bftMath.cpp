@@ -1,5 +1,5 @@
-#include "bftConstants.h"
 #include "bftMath.h"
+#include "bftConstants.h"
 #include <cmath>
 #include <math.h>
 

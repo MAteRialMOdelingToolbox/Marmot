@@ -1,8 +1,9 @@
-#include "Eigen/Sparse"
 #include "bftFiniteElementUelSpatialWrapper.h"
+#include "Eigen/Sparse"
 #include "bftVoigt.h"
 #include <iostream>
 
+using namespace Eigen;
 BftUelSpatialWrapper::BftUelSpatialWrapper( int                     nDim,
                                             int                     nDimChild,
                                             int                     nNodes,
@@ -172,7 +173,7 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
                                                    double*              P_,
                                                    int                  elementFace,
                                                    const double*        load,
-                                 const double*        QTotal,
+                                                   const double*        QTotal,
                                                    const double*        time,
                                                    double               dT )
 {
@@ -184,11 +185,11 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
     P_Unprojected = P.transpose() * P_Projected;
 }
 
-void BftUelSpatialWrapper::computeBodyForce( double*              P_,
-                                                   const double*        load,
-                                 const double*        QTotal,
-                                                   const double*        time,
-                                                   double               dT )
+void BftUelSpatialWrapper::computeBodyForce( double*       P_,
+                                             const double* load,
+                                             const double* QTotal,
+                                             const double* time,
+                                             double        dT )
 {
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
 

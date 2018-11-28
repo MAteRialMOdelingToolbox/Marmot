@@ -3,7 +3,7 @@
 #include "bftTypedefs.h"
 
 /* Adaptive Substepper, employing an error estimation and
- * Richardson Extrapolation for an (semi)-Explicit Return Mapping algorithm
+ * Richardson Extrapolation for an (semi)-Explicit Return  Mapping algorithm
  *
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
@@ -13,9 +13,9 @@ namespace bft {
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
     class AdaptiveSubstepperExplicit {
       public:
-        typedef Matrix<double, materialTangentSize, materialTangentSize> TangentSizedMatrix;
-        typedef Matrix<double, materialTangentSize, 6>                   MatrixStateStrain;
-        typedef Matrix<double, nIntegrationDependentStateVars, 1>        IntegrationStateVector;
+        typedef Eigen::Matrix<double, materialTangentSize, materialTangentSize> TangentSizedMatrix;
+        typedef Eigen::Matrix<double, materialTangentSize, 6>                   MatrixStateStrain;
+        typedef Eigen::Matrix<double, nIntegrationDependentStateVars, 1>        IntegrationStateVector;
 
         AdaptiveSubstepperExplicit( double         initialStepSize,
                                     double         minimumStepSize,
@@ -24,23 +24,23 @@ namespace bft {
                                     double         integrationErrorTolerance,
                                     int            nPassesToIncrease,
                                     const Matrix6& Cel );
-        void   setConvergedProgress( const Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
+        void   setConvergedProgress( const bft::Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
         bool   isFinished();
         double getNextSubstep();
         int    getNumberOfSubsteps();
         int    getNumberDiscardedSubstepsDueToError();
-        bool   finishSubstep( const Vector6&                resultStress,
+        bool   finishSubstep( const bft::Vector6&           resultStress,
                               const TangentSizedMatrix&     dXdY,
                               const TangentSizedMatrix&     dYdXOld,
                               const IntegrationStateVector& stateVars );
 
-        void finishElasticSubstep( const Vector6& resultStress );
+        void finishElasticSubstep( const bft::Vector6& resultStress );
         bool discardSubstep();
         bool repeatSubstep( double decrementationFactor );
 
-        void    getConvergedProgress( Vector6& stress, IntegrationStateVector& stateVars );
+        void    getConvergedProgress( bft::Vector6& stress, IntegrationStateVector& stateVars );
         Matrix6 getCurrentTangentOperator();
-        void    getResults( Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
+        void    getResults( bft::Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
 
       private:
         const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
@@ -55,12 +55,12 @@ namespace bft {
         int            discardedDueToError;
 
         // internal storages for the progress of the total increment
-        Vector6                stressProgress;
+        bft::Vector6           stressProgress;
         IntegrationStateVector stateProgress;
         MatrixStateStrain      consistentTangentProgress;
 
         // temporal storages, which are used until a cycle full/half/half has finished successfully
-        Vector6                stressProgressHalfTemp, stressProgressFullTemp;
+        bft::Vector6           stressProgressHalfTemp, stressProgressFullTemp;
         IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
         MatrixStateStrain      consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
@@ -138,7 +138,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::setConvergedProgress( const Vector6&                stressOld,
+    void AdaptiveSubstepperExplicit<n, nState>::setConvergedProgress( const bft::Vector6&           stressOld,
                                                                       const IntegrationStateVector& stateVarsOld )
     {
         stressProgress = stressOld;
@@ -175,7 +175,7 @@ namespace bft {
         return 0;
     }
     template <size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::getConvergedProgress( Vector6&                stress,
+    void AdaptiveSubstepperExplicit<n, nState>::getConvergedProgress( bft::Vector6&           stress,
                                                                       IntegrationStateVector& stateVars )
     {
         switch ( currentState ) {
@@ -241,7 +241,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepperExplicit<n, nState>::finishSubstep( const Vector6&                resultStress,
+    bool AdaptiveSubstepperExplicit<n, nState>::finishSubstep( const bft::Vector6&           resultStress,
                                                                const TangentSizedMatrix&     dXdY,
                                                                const TangentSizedMatrix&     dYdXOld,
                                                                const IntegrationStateVector& stateVars )
@@ -323,7 +323,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::finishElasticSubstep( const Vector6& newStress )
+    void AdaptiveSubstepperExplicit<n, nState>::finishElasticSubstep( const bft::Vector6& newStress )
     {
         switch ( currentState ) {
         case FullStep: {
@@ -353,7 +353,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepperExplicit<n, nState>::getResults( Vector6&                stress,
+    void AdaptiveSubstepperExplicit<n, nState>::getResults( bft::Vector6&           stress,
                                                             Matrix6&                consistentTangentOperator,
                                                             IntegrationStateVector& stateVars )
     {
