@@ -1,6 +1,8 @@
-#include "bftFunctions.h"
 #include "bftMaterialHypoElasticNonLocal.h"
+#include "bftFunctions.h"
 #include "bftVoigt.h"
+
+using namespace Eigen;
 
 void BftMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
                                                          double&       K_local,

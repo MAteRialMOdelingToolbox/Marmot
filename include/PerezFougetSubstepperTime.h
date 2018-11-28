@@ -18,7 +18,7 @@ namespace bft {
     class PerezFougetSubstepperTime {
 
       public:
-        typedef Matrix<double, nSizeTangent, nSizeTangent> TangentSizedMatrix;
+        typedef Eigen::Matrix<double, nSizeTangent, nSizeTangent> TangentSizedMatrix;
 
         PerezFougetSubstepperTime( double initialStepSize,
                                    double minimumStepSize,

@@ -11,9 +11,9 @@ namespace bft {
         const int idxUsedFlag;
 
       public:
-        Array<bool, ( 1 << nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 )> yieldSurfaceCombinations;
-        typedef Array<bool, 1, nYieldSurfaces>                           YieldSurfFlagArr;
-        typedef Array<double, 1, nYieldSurfaces>                         YieldSurfResArr;
+        Eigen::Array<bool, ( 1 << nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 )> yieldSurfaceCombinations;
+        typedef Eigen::Array<bool, 1, nYieldSurfaces>                           YieldSurfFlagArr;
+        typedef Eigen::Array<double, 1, nYieldSurfaces>                         YieldSurfResArr;
 
         YieldSurfaceCombinationManager();
         void initYieldFlagCombinations();

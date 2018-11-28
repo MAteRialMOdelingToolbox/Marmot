@@ -1,7 +1,9 @@
+#include "bftVoigt.h"
 #include "bftConstants.h"
 #include "bftMath.h"
-#include "bftVoigt.h"
 #include <iostream>
+
+using namespace Eigen;
 
 namespace bft {
     namespace mechanics {
@@ -75,7 +77,7 @@ namespace bft {
         const Vector6 IHyd = ( Vector6() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
         const Matrix6 IDev = ( Matrix6() <<
-        // clang-format off
+                                   // clang-format off
                 2./3,    -1./3,   -1./3,    0,  0,  0,
                 -1./3,   2./3,    -1./3,    0,  0,  0,
                 -1./3,   -1./3,   2./3,     0,  0,  0,
@@ -256,7 +258,6 @@ namespace bft {
                 hw( 0 ) / sqrt3 + sqrt2_3 * hw( 1 ) * ( -std::sin( Constants::Pi / 6. + hw( 2 ) ) );
             return strainPrinc;
         }
-
 
         Vector3d principalStresses( const Vector6& voigtStress )
         {

@@ -1,7 +1,9 @@
-#include "bftFunctions.h"
 #include "bftMaterialHypoElastic.h"
+#include "bftFunctions.h"
 #include "bftVoigt.h"
 #include <iostream>
+
+using namespace Eigen;
 
 void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
                                                  double*       dStressDDStrain_,

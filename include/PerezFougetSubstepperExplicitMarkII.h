@@ -12,8 +12,8 @@ namespace bft {
     class PerezFougetSubstepper {
 
       public:
-        typedef Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
-        typedef Matrix<double, nSizeMatTangent, 6>               MatrixStateStrain;
+        typedef Eigen::Matrix<double, nSizeMatTangent, nSizeMatTangent> TangentSizedMatrix;
+        typedef Eigen::Matrix<double, nSizeMatTangent, 6>               MatrixStateStrain;
         PerezFougetSubstepper( double         initialStepSize,
                                double         minimumStepSize,
                                double         scaleUpFactor,
