@@ -37,7 +37,7 @@ class BftUel {
 
     virtual void computeYourself( const double* QTotal,
                                   const double* dQ,
-                                  double*       Pe,
+                                  double*       Pint,
                                   double*       Ke,
                                   const double* time,
                                   double        dT,
@@ -46,14 +46,14 @@ class BftUel {
     virtual void setInitialConditions( StateTypes state, const double* values ) = 0;
 
     virtual void computeDistributedLoad( DistributedLoadTypes loadType,
-                                         double*              P,
+                                         double*              Pext,
                                          int                  elementFace,
                                          const double*        QTotal,
                                          const double*        load,
                                          const double*        time,
                                          double               dT ) = 0;
 
-    virtual void computeBodyForce( double*       P,
+    virtual void computeBodyForce( double*       Pext,
                                    const double* load,
                                    const double* QTotal,
                                    const double* time,

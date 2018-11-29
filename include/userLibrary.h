@@ -30,6 +30,7 @@ namespace userLibrary {
         UntereggerRockMassAssocNonLocal  = 20,
         LinearElasticNonLocal            = 21,
         StVenantKirchhoffIsotropic       = 22,
+        ModLeonAnalytical = 23,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );

@@ -135,7 +135,7 @@ namespace userLibrary {
             case ShotLeonV2NonLocal: { return new class ShotLeonV2NonLocal(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEONSEMIEXPLICIT
-            case ModLeonSemiExplicit: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
+            case ModLeonSemiExplicit: { return new class ModLeonSemiExplicit(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEONADAPTIVE
             case ModLeonAdaptive: { return new class ModLeonAdaptive(materialProperties, nMaterialProperties, element, gaussPt);}

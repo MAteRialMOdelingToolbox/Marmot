@@ -30,6 +30,7 @@ set (materials
     HoekBrown
     ModLeon
     ModLeonSemiExplicit
+    ModLeonAnalytical
     ModLeonAdaptive
     ModLeonSemiExplicitAdaptive
     ModLeonPlaneStress
