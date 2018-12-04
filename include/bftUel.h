@@ -12,9 +12,6 @@ class BftUel {
         Pressure,
     };
 
-    // todo: check if needed
-    BftUel(){};
-
     virtual ~BftUel(){};
 
     virtual int getNumberOfRequiredStateVars() = 0;
@@ -35,18 +32,20 @@ class BftUel {
 
     virtual void initializeYourself( const double* coordinates ) = 0;
 
+    virtual void setInitialConditions( StateTypes state, const double* values ) = 0;
+
     virtual void computeYourself( const double* QTotal,
                                   const double* dQ,
                                   double*       Pint,
-                                  double*       Ke,
+                                  double*       K,
                                   const double* time,
                                   double        dT,
                                   double&       pNewdT ) = 0;
 
-    virtual void setInitialConditions( StateTypes state, const double* values ) = 0;
 
     virtual void computeDistributedLoad( DistributedLoadTypes loadType,
                                          double*              Pext,
+                                         double*              K,
                                          int                  elementFace,
                                          const double*        QTotal,
                                          const double*        load,
@@ -54,6 +53,7 @@ class BftUel {
                                          double               dT ) = 0;
 
     virtual void computeBodyForce( double*       Pext,
+                                   double*       K,
                                    const double* load,
                                    const double* QTotal,
                                    const double* time,
