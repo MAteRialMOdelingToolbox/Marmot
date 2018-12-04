@@ -96,13 +96,14 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 
     void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
                                  double*                      P,
+                                 double*                      K,
                                  const int                    elementFace,
                                  const double*                load,
                                  const double*                QTotal,
                                  const double*                time,
                                  double                       dT );
 
-    void computeBodyForce( double* P, const double* load, const double* QTotal, const double* time, double dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, const double* time, double dT );
 
     void computeYourself( const double* QTotal,
                           const double* dQ,
@@ -157,20 +158,23 @@ std::vector<std::vector<std::string>> UelDisplacement<nDim, nNodes>::getNodeFiel
 {
     using namespace std;
 
-    vector<vector<string>> nodeFields;
-    for ( int i = 0; i < nNodes; i++ ) {
-        nodeFields.push_back( vector<string>() );
-        nodeFields[i].push_back( "displacement" );
-    }
+    static vector<vector<string>> nodeFields;
+    if ( nodeFields.empty() )
+        for ( int i = 0; i < nNodes; i++ ) {
+            nodeFields.push_back( vector<string>() );
+            nodeFields[i].push_back( "displacement" );
+        }
+
     return nodeFields;
 }
 
 template <int nDim, int nNodes>
 std::vector<int> UelDisplacement<nDim, nNodes>::getDofIndicesPermutationPattern()
 {
-    std::vector<int> permutationPattern;
-    for ( int i = 0; i < nNodes * nDim; i++ )
-        permutationPattern.push_back( i );
+    static std::vector<int> permutationPattern;
+    if ( permutationPattern.empty() )
+        for ( int i = 0; i < nNodes * nDim; i++ )
+            permutationPattern.push_back( i );
 
     return permutationPattern;
 }
@@ -284,8 +288,8 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
     Map<KeSizedMatrix>  Ke( Ke_ );
     Map<RhsSized>       Pe( Pe_ );
 
-    Ke.setZero();
-    Pe.setZero();
+    //Ke.setZero();
+    //Pe.setZero();
 
     Voigt  S, dE;
     CSized C;
@@ -402,6 +406,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, cons
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
                                                             double*                      P,
+                                                            double*                      K,
                                                             const int                    elementFace,
                                                             const double*                load,
                                                             const double*                QTotal,
@@ -434,6 +439,7 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
 
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::computeBodyForce( double*       P_,
+                                                      double*       K,
                                                       const double* load,
                                                       const double* QTotal,
                                                       const double* time,
