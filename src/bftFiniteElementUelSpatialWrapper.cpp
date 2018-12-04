@@ -171,6 +171,7 @@ void BftUelSpatialWrapper::setInitialConditions( StateTypes state, const double*
 
 void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
                                                    double*              P_,
+                            double* K,
                                                    int                  elementFace,
                                                    const double*        load,
                                                    const double*        QTotal,
@@ -178,25 +179,34 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
                                                    double               dT )
 {
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
+    MatrixXd Ke_Projected( projectedSize, projectedSize );
 
-    childElement->computeDistributedLoad( loadType, P_Projected.data(), elementFace, QTotal, load, time, dT );
+    childElement->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, QTotal, load, time, dT );
 
     Map<VectorXd> P_Unprojected( P_, unprojectedSize );
     P_Unprojected = P.transpose() * P_Projected;
+
+    Map<MatrixXd> Ke_Unprojected( K, unprojectedSize, unprojectedSize );
+    Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
 void BftUelSpatialWrapper::computeBodyForce( double*       P_,
+                            double* K,
                                              const double* load,
                                              const double* QTotal,
                                              const double* time,
                                              double        dT )
 {
     VectorXd P_Projected = VectorXd::Zero( projectedSize );
+    MatrixXd Ke_Projected( projectedSize, projectedSize );
 
-    childElement->computeBodyForce( P_Projected.data(), load, QTotal, time, dT );
+    childElement->computeBodyForce( P_Projected.data(), Ke_Projected.data(), load, QTotal, time, dT );
 
     Map<VectorXd> P_Unprojected( P_, unprojectedSize );
     P_Unprojected = P.transpose() * P_Projected;
+
+    Map<MatrixXd> Ke_Unprojected( K, unprojectedSize, unprojectedSize );
+    Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
 double* BftUelSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )

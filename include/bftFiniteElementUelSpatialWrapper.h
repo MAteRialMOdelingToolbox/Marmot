@@ -63,13 +63,16 @@ class BftUelSpatialWrapper : public BftUel {
 
     void computeDistributedLoad( DistributedLoadTypes loadType,
                                  double*              P,
+                            double* K,
                                  int                  elementFace,
                                  const double*        load,
                                  const double*        QTotal,
                                  const double*        time,
                                  double               dT );
 
-    void computeBodyForce( double* P, const double* load, const double* QTotal, const double* time, double dT );
+    void computeBodyForce( double* P, 
+                            double* K,
+            const double* load, const double* QTotal, const double* time, double dT );
 
     double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength );
 };
