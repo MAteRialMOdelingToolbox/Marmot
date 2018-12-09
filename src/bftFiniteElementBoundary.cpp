@@ -58,8 +58,7 @@ namespace bft {
             // compute for each gaussPt the
             // - dNdXi
             // - Jacobian pp(x,xi)
-            // - normalVector
-            // - integrationArea
+            // - areaVector
             for ( const auto& gaussPtInfo :
                   NumIntegration::getGaussPointInfo( boundaryShape,
                                                      NumIntegration::IntegrationTypes::FullIntegration ) ) {
@@ -102,20 +101,18 @@ namespace bft {
                 // Jacobian
                 gpt.J = Jacobian( gpt.dNdXi, coordinates );
 
-                // normalVector and integration area
+                // areaVector and integration area
                 if ( nDim == 2 ) {
                     // 90deg rotation
                     Vector2d n;
                     n << gpt.J( 1 ), -gpt.J( 0 );
-                    gpt.integrationArea = n.norm();
-                    gpt.normalVector    = n / gpt.integrationArea;
+                    gpt.areaVector    = n;
                 }
                 else {
                     // cross product
                     typedef Eigen::Ref<const Vector3d> vector3_cr;
                     Vector3d n          = vector3_cr( gpt.J.col( 0 ) ).cross( vector3_cr( gpt.J.col( 1 ) ) );
-                    gpt.integrationArea = n.norm();
-                    gpt.normalVector    = n / gpt.integrationArea;
+                    gpt.areaVector    = n;
                 }
 
                 gaussPts.push_back( std::move( gpt ) );
@@ -131,8 +128,8 @@ namespace bft {
 
             VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
-            for (const auto& gPt : gaussPts)
-                Pk += gPt.integrationArea * gPt.weight * gPt.normalVector.transpose() * NB( gPt.N, nDim );
+            for ( const auto& gPt : gaussPts )
+                Pk += gPt.weight * gPt.areaVector.transpose() * NB( gPt.N, nDim );
 
             return Pk;
         }
@@ -142,33 +139,40 @@ namespace bft {
             MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
 
             if ( nDim == 2 ) {
-                Matrix2D R;
+                //Neuner, November 2018
+                Matrix2d R;
+                // clang-format off
                 R << 0, 1, 
                     -1, 0;
+                // clang-format on
 
                 for ( const auto& gPt : gaussPts )
                     for ( int I = 0; I < nNodes; I++ )
                         for ( int J = 0; J < nNodes; J++ )
-                            K.block( I*2, J*2, I*2 + 2, J*2 + 2 ) -= gPt.N( I ) * gPt.dNdXi( J ) * R * gPt.weight;
+                            K.block<2, 2>( I * 2, J * 2 ) += gPt.N( I ) * gPt.dNdXi( J ) * R * gPt.weight;
             }
 
             else if ( nDim == 3 ) {
-                Matrix3d Hxi0, Hxi1;
+                // Belytschko et al. 2014, pp.364
+                Matrix3d HXi0, HXi1;
                 for ( const auto& gPt : gaussPts ) {
-                    HXi0 << 0, J( 2, 0 ), -J( 1, 0 ), 
-                            -J( 2, 0 ), 0, J( 0, 0 ), 
-                            J( 1, 0 ), -J( 0, 0 ), 0;
+                    const MatrixXd& J = gPt.J;
 
-                    HXi1 << 0, J( 2, 1 ), -J( 1, 1 ), 
-                         -J( 2, 1 ), 0, J( 0, 1 ), 
-                         J( 1, 1 ), -J( 0, 1 ), 0;
+                    // clang-format off
+                    HXi0 << 0,       J(2,0), -J(1,0), 
+                           -J(2,0),  0,       J(0,0), 
+                            J(1,0), -J(0,0),  0;
+
+                    HXi1 << 0,       J(2,1), -J(1,1), 
+                           -J(2,1),  0,       J(0,1), 
+                            J(1,1), -J(0,1),  0;
+                    // clang-format on
 
                     for ( int I = 0; I < nNodes; I++ )
                         for ( int J = 0; J < nNodes; J++ )
-                            K.block( I*3, J*3, I*3 + 3, J*3 + 3 ) -= gPt.N( I ) *
-                                                                      ( gPt.dNdXi( 0, J ) * HXi0 -
-                                                                      gPt.dNdXi( 1, J ) * HXi1 ) *
-                                                                      gPt.weight;
+                            K.block<3, 3>( I * 3, J * 3 ) += gPt.N( I ) *
+                                                             ( gPt.dNdXi( 0, J ) * HXi0 - gPt.dNdXi( 1, J ) * HXi1 ) *
+                                                             gPt.weight;
                 }
             }
 
@@ -188,18 +192,23 @@ namespace bft {
             return boundaryVector;
         }
 
-        VectorXd BoundaryElement::expandBoundaryToParentVector( const VectorXd& boundaryVector )
+        void BoundaryElement::assembleIntoParentVector( const Eigen::VectorXd& boundaryVector, Eigen::Ref<Eigen::VectorXd> parentVector)
         {
-            /* expand any boundary vector (e.g. pressure load) to the corresponding parental vector
+            /* assemble any boundary vector (e.g. pressure load) into the corresponding parental vector
              * */
 
-            VectorXd parentVector( nParentCoordinates );
-            parentVector.setZero();
-
             for ( int i = 0; i < boundaryVector.size(); i++ )
-                parentVector( boundaryIndicesInParentCoordinates( i ) ) = boundaryVector( i );
+                parentVector( boundaryIndicesInParentCoordinates( i ) ) += boundaryVector( i );
+        }
 
-            return parentVector;
+        void BoundaryElement::assembleIntoParentStiffness( const Eigen::MatrixXd&      KBoundary,
+                                                           Eigen::Ref<Eigen::MatrixXd> KParent )
+        {
+            // mind the negative sign for a proper assembly of the residual(!) stiffness !
+            for ( int i = 0; i < KBoundary.cols(); i++ )
+                for ( int j = 0; j < KBoundary.cols(); j++ )
+                    KParent( boundaryIndicesInParentCoordinates( i ),
+                             boundaryIndicesInParentCoordinates( j ) ) -= KBoundary( i, j );
         }
 
     } // namespace FiniteElement

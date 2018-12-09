@@ -271,8 +271,7 @@ namespace bft {
                 Eigen::VectorXd N;
                 Eigen::MatrixXd dNdXi;
                 Eigen::MatrixXd J;
-                Eigen::VectorXd normalVector;
-                double          integrationArea;
+                Eigen::VectorXd areaVector;
             };
 
             const int nDim;
@@ -296,8 +295,8 @@ namespace bft {
             Eigen::VectorXd computeNormalLoadVector();
             Eigen::MatrixXd computeNormalLoadVectorStiffness();
             Eigen::VectorXd condenseParentToBoundaryVector( const Eigen::VectorXd& parentVector );
-            Eigen::VectorXd expandBoundaryToParentVector( const Eigen::VectorXd& boundaryVector );
-            void assembleIntoParentStiffness ( const Eigen::VectorXd& boundaryVector, Eigen::MatrixXd KParent);
+            void assembleIntoParentVector( const Eigen::VectorXd& boundaryVector, Eigen::Ref<Eigen::VectorXd> ParentVector);
+            void assembleIntoParentStiffness ( const Eigen::MatrixXd& KBoundary, Eigen::Ref<Eigen::MatrixXd> KParent);
         };
     } // namespace FiniteElement
 
