@@ -288,9 +288,6 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
     Map<KeSizedMatrix>  Ke( Ke_ );
     Map<RhsSized>       Pe( Pe_ );
 
-    //Ke.setZero();
-    //Pe.setZero();
-
     Voigt  S, dE;
     CSized C;
 
@@ -422,12 +419,12 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedL
 
         FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
-        VectorXd Pk = -p * boundaryEl.expandBoundaryToParentVector( boundaryEl.computeNormalLoadVector() );
+        VectorXd Pk = -p *  boundaryEl.computeNormalLoadVector() ;
 
         if ( nDim == 2 )
             Pk *= elementProperties[0]; // thickness
 
-        fU += Pk;
+        boundaryEl.assembleIntoParentVector(Pk, fU);
 
         break;
     }
