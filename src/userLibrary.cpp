@@ -267,7 +267,7 @@ namespace userLibrary {
             #ifdef UELDISPLACEMENTTL
             //case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
             //case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
-            //case UelCPE4: {return UelDisplacementFactory:: generateUelCPE4(elementNumber);}
+            case UelCPE4TL: {return UelDisplacementTLFactory:: generateUelCPE4TL(elementNumber);}
             //case UelCPS8: {return UelDisplacementFactory:: generateUelCPS8(elementNumber);}
             //case UelCPS8R: {return UelDisplacementFactory:: generateUelCPS8R(elementNumber);}
             case UelC3D8TL: {return UelDisplacementTLFactory:: generateUelC3D8TL(elementNumber);}

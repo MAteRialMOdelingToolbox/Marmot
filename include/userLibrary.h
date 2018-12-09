@@ -30,10 +30,8 @@ namespace userLibrary {
         UntereggerRockMassAssocNonLocal  = 20,
         LinearElasticNonLocal            = 21,
         StVenantKirchhoffIsotropic       = 22,
-        ModLeonAnalytical = 23,
+        ModLeonAnalytical                = 23,
     };
-
-    MaterialCode getMaterialCodeFromName( const std::string& materialName );
 
     enum ElementCode {
 
@@ -141,6 +139,8 @@ namespace userLibrary {
         UelC3D20RNonLocal = 2016,
     };
 
+    MaterialCode getMaterialCodeFromName( const std::string& materialName );
+
     ElementCode getElementCodeFromInfo( int                nNodes,
                                         int                activeFields,
                                         int                dim,
@@ -174,13 +174,4 @@ namespace userLibrary {
                        int     nDirect,
                        int     nShear );
 
-    static const int sizeGeostaticDefinition = 6;
 } // namespace userLibrary
-
-namespace Abaqus {
-
-    enum UelFlags1 {
-        GeostaticStress = 61, // Geostatic stress field according to Abaqus Analysis User's Guide Tab. 5.1.2-1 Keys to
-                              // procedure types.
-    };
-}
