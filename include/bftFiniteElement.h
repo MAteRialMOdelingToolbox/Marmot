@@ -294,8 +294,10 @@ namespace bft {
                              const Eigen::VectorXd& parentCoordinates );
 
             Eigen::VectorXd computeNormalLoadVector();
+            Eigen::MatrixXd computeNormalLoadVectorStiffness();
             Eigen::VectorXd condenseParentToBoundaryVector( const Eigen::VectorXd& parentVector );
             Eigen::VectorXd expandBoundaryToParentVector( const Eigen::VectorXd& boundaryVector );
+            void assembleIntoParentStiffness ( const Eigen::VectorXd& boundaryVector, Eigen::MatrixXd KParent);
         };
     } // namespace FiniteElement
 

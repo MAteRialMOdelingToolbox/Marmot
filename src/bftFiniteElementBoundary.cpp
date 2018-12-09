@@ -20,31 +20,27 @@ namespace bft {
 
             case Quad4: {
                 boundaryShape                = Truss2;
-                nNodes                       = bft::FiniteElement::Spatial1D::Truss2::nNodes;
-                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad4::getBoundaryElementIndices(
-                    parentFaceNumber );
+                nNodes                       = Spatial1D::Truss2::nNodes;
+                boundaryIndicesInParentNodes = Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
 
             case Quad8: {
                 boundaryShape                = Truss3;
-                nNodes                       = bft::FiniteElement::Spatial1D::Truss3::nNodes;
-                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial2D::Quad8::getBoundaryElementIndices(
-                    parentFaceNumber );
+                nNodes                       = Spatial1D::Truss3::nNodes;
+                boundaryIndicesInParentNodes = Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
             case Hexa8: {
                 boundaryShape                = Quad4;
-                nNodes                       = bft::FiniteElement::Spatial2D::Quad4::nNodes;
-                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa8::getBoundaryElementIndices(
-                    parentFaceNumber );
+                nNodes                       = Spatial2D::Quad4::nNodes;
+                boundaryIndicesInParentNodes = Spatial3D::Hexa8::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
             case Hexa20: {
                 boundaryShape                = Quad8;
-                nNodes                       = bft::FiniteElement::Spatial2D::Quad8::nNodes;
-                boundaryIndicesInParentNodes = bft::FiniteElement::Spatial3D::Hexa20::getBoundaryElementIndices(
-                    parentFaceNumber );
+                nNodes                       = Spatial2D::Quad8::nNodes;
+                boundaryIndicesInParentNodes = Spatial3D::Hexa20::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
 
@@ -135,12 +131,48 @@ namespace bft {
 
             VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
-            for ( size_t i = 0; i < gaussPts.size(); i++ ) {
-                const BoundaryElementGaussPt& gpt = gaussPts[i];
-                Pk += gpt.integrationArea * gpt.weight * gpt.normalVector.transpose() * NB( gpt.N, nDim );
-            }
+            for (const auto& gPt : gaussPts)
+                Pk += gPt.integrationArea * gPt.weight * gPt.normalVector.transpose() * NB( gPt.N, nDim );
 
             return Pk;
+        }
+
+        MatrixXd BoundaryElement::computeNormalLoadVectorStiffness()
+        {
+            MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
+
+            if ( nDim == 2 ) {
+                Matrix2D R;
+                R << 0, 1, 
+                    -1, 0;
+
+                for ( const auto& gPt : gaussPts )
+                    for ( int I = 0; I < nNodes; I++ )
+                        for ( int J = 0; J < nNodes; J++ )
+                            K.block( I*2, J*2, I*2 + 2, J*2 + 2 ) -= gPt.N( I ) * gPt.dNdXi( J ) * R * gPt.weight;
+            }
+
+            else if ( nDim == 3 ) {
+                Matrix3d Hxi0, Hxi1;
+                for ( const auto& gPt : gaussPts ) {
+                    HXi0 << 0, J( 2, 0 ), -J( 1, 0 ), 
+                            -J( 2, 0 ), 0, J( 0, 0 ), 
+                            J( 1, 0 ), -J( 0, 0 ), 0;
+
+                    HXi1 << 0, J( 2, 1 ), -J( 1, 1 ), 
+                         -J( 2, 1 ), 0, J( 0, 1 ), 
+                         J( 1, 1 ), -J( 0, 1 ), 0;
+
+                    for ( int I = 0; I < nNodes; I++ )
+                        for ( int J = 0; J < nNodes; J++ )
+                            K.block( I*3, J*3, I*3 + 3, J*3 + 3 ) -= gPt.N( I ) *
+                                                                      ( gPt.dNdXi( 0, J ) * HXi0 -
+                                                                      gPt.dNdXi( 1, J ) * HXi1 ) *
+                                                                      gPt.weight;
+                }
+            }
+
+            return K;
         }
 
         VectorXd BoundaryElement::condenseParentToBoundaryVector( const VectorXd& parentVector )
