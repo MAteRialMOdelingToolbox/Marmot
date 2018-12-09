@@ -171,7 +171,7 @@ namespace bft {
                     for ( int I = 0; I < nNodes; I++ )
                         for ( int J = 0; J < nNodes; J++ )
                             K.block<3, 3>( I * 3, J * 3 ) += gPt.N( I ) *
-                                                             ( gPt.dNdXi( 0, J ) * HXi0 - gPt.dNdXi( 1, J ) * HXi1 ) *
+                                                             ( gPt.dNdXi( 0, J ) * HXi1 - gPt.dNdXi( 1, J ) * HXi0 ) *
                                                              gPt.weight;
                 }
             }
