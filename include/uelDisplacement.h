@@ -88,7 +88,9 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 
     void assignStateVars( double* stateVars, int nStateVars );
 
-    void assignProperty( const BftUelProperty& bftUelProperty );
+    void assignProperty( const ElementProperties& bftUelProperty );
+
+    void assignProperty( const BftMaterialSection& bftUelProperty );
 
     void initializeYourself( const double* coordinates );
 
@@ -203,34 +205,25 @@ void UelDisplacement<nDim, nNodes>::assignStateVars( double* stateVars, int nSta
                       6 );
     }
 }
+
 template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::assignProperty( const BftUelProperty& bftUelProperty )
+void UelDisplacement<nDim, nNodes>::assignProperty( const ElementProperties& elementPropertiesInfo )
 {
-    switch ( bftUelProperty.type ) {
-    case BftUelProperty::Type::ElementProperties: {
+    new ( &elementProperties ) Eigen::Map<const Eigen::VectorXd>( elementPropertiesInfo.elementProperties,
+                                                                  elementPropertiesInfo.nElementProperties );
+}
 
-        auto& elementPropertiesInfo = dynamic_cast<const class ElementProperties&>( bftUelProperty );
-
-        new ( &elementProperties )
-            Map<const VectorXd>( elementPropertiesInfo.elementProperties, elementPropertiesInfo.nElementProperties );
-
-        break;
-    }
-
-    case BftUelProperty::Type::BftMaterialSection: {
-        auto& section = dynamic_cast<const class BftMaterialSection&>( bftUelProperty );
-
-        for ( size_t i = 0; i < gaussPts.size(); i++ ) {
-            GaussPt& gpt = gaussPts[i];
-            gpt.material = std::unique_ptr<BftMaterialHypoElastic>(
-                dynamic_cast<BftMaterialHypoElastic*>( userLibrary::bftMaterialFactory( section.materialCode,
-                                                                                        section.materialProperties,
-                                                                                        section.nMaterialProperties,
-                                                                                        elLabel,
-                                                                                        i ) ) );
-        }
-        break;
-    }
+template <int nDim, int nNodes>
+void UelDisplacement<nDim, nNodes>::assignProperty( const BftMaterialSection& section )
+{
+    for ( size_t i = 0; i < gaussPts.size(); i++ ) {
+        GaussPt& gpt = gaussPts[i];
+        gpt.material = std::unique_ptr<BftMaterialHypoElastic>(
+            dynamic_cast<BftMaterialHypoElastic*>( userLibrary::bftMaterialFactory( section.materialCode,
+                                                                                     section.materialProperties,
+                                                                                     section.nMaterialProperties,
+                                                                                     elLabel,
+                                                                                     i ) ) );
     }
 }
 
