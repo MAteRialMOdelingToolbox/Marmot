@@ -6,13 +6,6 @@ namespace userLibrary {
 
 class BftUelProperty {
   public:
-    enum Type { ElementProperties, BftMaterialSection };
-
-    const Type type;
-
-    // protected: // protected since only childs should be instantiated
-
-    BftUelProperty( Type type ) : type( type ){};
     virtual ~BftUelProperty(){};
 };
 
@@ -25,8 +18,7 @@ class BftMaterialSection : public BftUelProperty {
     BftMaterialSection( userLibrary::MaterialCode materialCode,
                         const double*             materialProperties,
                         int                       nMaterialProperties )
-        : BftUelProperty( Type::BftMaterialSection ),
-          materialCode( materialCode ),
+        : materialCode( materialCode ),
           materialProperties( materialProperties ),
           nMaterialProperties( nMaterialProperties ){};
 };
@@ -37,7 +29,6 @@ class ElementProperties : public BftUelProperty {
     int           nElementProperties;
 
     ElementProperties( const double* elementProperties, int nElementProperties )
-        : BftUelProperty( Type::ElementProperties ),
-          elementProperties( elementProperties ),
+        : elementProperties( elementProperties ),
           nElementProperties( nElementProperties ){};
 };

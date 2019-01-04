@@ -28,7 +28,9 @@ class BftUel {
 
     virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 
-    virtual void assignProperty( const BftUelProperty& property ) = 0;
+    virtual void assignProperty( const ElementProperties& property ) {};
+
+    virtual void assignProperty( const BftMaterialSection& property ) {};
 
     virtual void initializeYourself( const double* coordinates ) = 0;
 
