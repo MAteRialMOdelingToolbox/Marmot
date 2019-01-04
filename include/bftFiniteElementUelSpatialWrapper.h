@@ -47,7 +47,9 @@ class BftUelSpatialWrapper : public BftUel {
 
     void assignStateVars( double* stateVars, int nStateVars );
 
-    void assignProperty( const BftUelProperty& property );
+    void assignProperty( const ElementProperties& property );
+
+    void assignProperty( const BftMaterialSection& property );
 
     void initializeYourself( const double* coordinates );
 

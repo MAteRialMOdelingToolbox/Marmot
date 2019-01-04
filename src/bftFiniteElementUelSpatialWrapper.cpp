@@ -48,7 +48,12 @@ std::string BftUelSpatialWrapper::getElementShape()
     return childElement->getElementShape();
 }
 
-void BftUelSpatialWrapper::assignProperty( const BftUelProperty& property )
+void BftUelSpatialWrapper::assignProperty( const BftMaterialSection& property )
+{
+    childElement->assignProperty( property );
+}
+
+void BftUelSpatialWrapper::assignProperty( const ElementProperties& property )
 {
     childElement->assignProperty( property );
 }
