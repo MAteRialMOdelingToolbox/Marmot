@@ -1,10 +1,10 @@
 #pragma once
-#include "bftMaterial.h"
+#include "bftMaterialMechanical.h"
 
-class BftMaterialHypoElastic : public BftMaterial {
+class BftMaterialHypoElastic : public BftMaterialMechanical {
 
   public:
-    using BftMaterial::BftMaterial;
+    using BftMaterialMechanical::BftMaterialMechanical;
 
     double characteristicElementLength;
     void   setCharacteristicElementLength( double length ) { characteristicElementLength = length; }
