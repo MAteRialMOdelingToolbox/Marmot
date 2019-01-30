@@ -9,24 +9,23 @@ namespace bft {
         namespace Spatial2D {
             namespace Quad4 {
 
-                NSized N( const Vector2d& xi )
+             NSized N( const Vector2d& xi )
                 {
-
                     /*
                      *   Shape functions
-                     *    (1) _______(0)
+                     *    (3) _______(2)
                      *       |       |
                      *       |       |
                      *       |_______|
-                     *    (2)        (3)
+                     *    (0)        (1)
                      */
 
                     NSized N_;
                     // clang-format off
-                    N_ <<   1./4 * (1.+xi (0)) * (1.+xi (1)),
-                    1./4 * (1.-xi (0)) * (1.+xi (1)),
-                    1./4 * (1.-xi (0)) * (1.-xi (1)),
-                    1./4 * (1.+xi (0)) * (1.-xi (1));
+                    N_ <<   1./4 * (1.-xi (0)) * (1.-xi (1)),
+                            1./4 * (1.+xi (0)) * (1.-xi (1)),
+                            1./4 * (1.+xi (0)) * (1.+xi (1)),
+                            1./4 * (1.-xi (0)) * (1.+xi (1));
                     // clang-format on
                     return N_;
                 }
@@ -37,10 +36,9 @@ namespace bft {
                     dNdXiSized result;
 
                     // clang-format off
-                    result <<   /* 1                2                 3                 4*/
-                           /* ,xi1 */  +1./4* (1+xi (1)),    -1./4* (1+xi (1)), -1./4* (1-xi (1)), +1./4* (1-xi (1)),
-                           /*, xi2 */  +1./4* (1+xi (0)),    +1./4* (1-xi (0)), -1./4* (1-xi (0)), -1./4* (1+xi (0));
-
+                    result <<   /*          (0)                 (1)                 (2)                 (3) */
+                           /* ,xi1 */ -1./4* (1-xi (1)), +1./4* (1-xi (1)),  +1./4* (1+xi (1)),    -1./4* (1+xi (1)), 
+                           /*, xi2 */ -1./4* (1-xi (0)), -1./4* (1+xi (0)),  +1./4* (1+xi (0)),    +1./4* (1-xi (0)); 
                     // clang-format on
                     return result;
                 }
@@ -48,15 +46,14 @@ namespace bft {
                 Vector2i getBoundaryElementIndices( int faceID )
                 {
                     /*
-                     *               face 1
-                     *           (1) _______(0)
-                     *              |       |
-                     *       face 2 |       | face 4
-                     *              |_______|
-                     *           (2)        (3)
                      *               face 3
+                     *           (3) _______(2)
+                     *              |       |
+                     *       face 4 |       | face 2
+                     *              |_______|
+                     *           (0)        (1)
+                     *               face 1
                      * */
-
                     switch ( faceID ) {
                     case 1: {
                         return ( Vector2i() << 0, 1 ).finished();
