@@ -1,6 +1,6 @@
 #pragma once
 #include "bftMaterial.h"
-#include "bftUel.h"
+#include "bftElement.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -150,28 +150,12 @@ namespace userLibrary {
 
     ElementCode getElementCodeFromName( const std::string& elementName );
 
-    BftUel* UelFactory( ElementCode elementCode, int elementNumber );
+    BftElement* bftElementFactory( ElementCode elementCode, int elementNumber );
 
     BftMaterial* bftMaterialFactory( MaterialCode  material,
                                      const double* materialProperties,
                                      int           nMaterialProperties,
                                      int           element,
                                      int           gaussPt );
-
-    void extendAbaqusToVoigt( double*       stress6,
-                              double*       stress,
-                              double*       strain6,
-                              const double* strain,
-                              double*       dStrain6,
-                              const double* dStrain,
-                              int           nDirect,
-                              int           nShear );
-
-    void backToAbaqus( double* stress,
-                       double* stress6,
-                       double* dStressDDStrain,
-                       double* dStressDDStrain66,
-                       int     nDirect,
-                       int     nShear );
 
 } // namespace userLibrary

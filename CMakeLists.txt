@@ -54,11 +54,14 @@ set(elements
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalEAS
+    uelNonLocalMixed
     )
 
 # Compiler specific stettings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
   # only activate if you know what you are doing:

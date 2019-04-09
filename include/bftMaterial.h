@@ -12,19 +12,14 @@ class BftMaterial {
 
     const int elementID, gaussPt;
 
-    BftMaterial( const double* materialProperties, int nMaterialProperties, int elementID, int gaussPt )
-        : stateVars( nullptr ),
-          nStateVars( 0 ),
-          materialProperties( materialProperties ),
-          nMaterialProperties( nMaterialProperties ),
-          elementID( elementID ),
-          gaussPt( gaussPt ){};
+    BftMaterial( const double* materialProperties, int nMaterialProperties, int elementID, int gaussPt );
 
-    virtual ~BftMaterial(){};
+    virtual ~BftMaterial();
 
     virtual int getNumberOfRequiredStateVars() = 0;
 
     virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 
     virtual double* getPermanentResultPointer( const std::string& resultName, int& resultLength ) = 0;
+
 };

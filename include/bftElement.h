@@ -1,18 +1,18 @@
 #pragma once
-#include "bftUelProperty.h"
+#include "bftElementProperty.h"
 #include <string>
 #include <vector>
 
-class BftUel {
+class BftElement {
 
   public:
-    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, UmatStateVars };
+    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, BftMaterialStateVars };
 
     enum DistributedLoadTypes {
         Pressure,
     };
 
-    virtual ~BftUel(){};
+    virtual ~BftElement();
 
     virtual int getNumberOfRequiredStateVars() = 0;
 
@@ -28,9 +28,9 @@ class BftUel {
 
     virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 
-    virtual void assignProperty( const ElementProperties& property ) {};
+    virtual void assignProperty( const ElementProperties& property );
 
-    virtual void assignProperty( const BftMaterialSection& property ) {};
+    virtual void assignProperty( const BftMaterialSection& property );
 
     virtual void initializeYourself( const double* coordinates ) = 0;
 

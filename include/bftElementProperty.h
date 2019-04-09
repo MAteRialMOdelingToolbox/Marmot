@@ -4,12 +4,7 @@ namespace userLibrary {
     enum MaterialCode : int;
 }
 
-class BftUelProperty {
-  public:
-    virtual ~BftUelProperty(){};
-};
-
-class BftMaterialSection : public BftUelProperty {
+class BftMaterialSection  {
   public:
     userLibrary::MaterialCode materialCode;
     const double*             materialProperties;
@@ -23,7 +18,7 @@ class BftMaterialSection : public BftUelProperty {
           nMaterialProperties( nMaterialProperties ){};
 };
 
-class ElementProperties : public BftUelProperty {
+class ElementProperties  {
   public:
     const double* elementProperties;
     int           nElementProperties;

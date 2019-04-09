@@ -1,7 +1,7 @@
 #include "userLibrary.h"
 #include "bftMaterial.h"
 #include "bftTypedefs.h"
-#include "bftUel.h"
+#include "bftElement.h"
 #include "bftVoigt.h"
 #include <map>
 #include <string>
@@ -247,7 +247,7 @@ namespace userLibrary {
         return elementCodeMap[elementName];
     }
 
-    BftUel* UelFactory( ElementCode elementCode, int elementNumber )
+    BftElement* bftElementFactory( ElementCode elementCode, int elementNumber )
     {
         switch ( elementCode ) {
             // clang-format off
@@ -356,61 +356,6 @@ namespace userLibrary {
             elCode = elInfo[2] + elInfo[1] * 10 + elInfo[0] * 100;
 
         return static_cast<ElementCode>( elCode );
-    }
-
-    void extendAbaqusToVoigt( double*       stress6,
-                              double*       stress,
-                              double*       strain6,
-                              const double* strain,
-                              double*       dStrain6,
-                              const double* dStrain,
-                              int           nDirect,
-                              int           nShear )
-    {
-        bft::mVector6 s( stress6 );
-        Map<VectorXd> abqStress( stress, nDirect + nShear );
-        s.setZero();
-        s.head( nDirect )      = abqStress.head( nDirect );
-        s.segment( 3, nShear ) = abqStress.tail( nShear );
-
-        bft::mVector6       e( strain6 );
-        Map<const VectorXd> abqStrain( strain, nDirect + nShear );
-        e.setZero();
-        e.head( nDirect )      = abqStrain.head( nDirect );
-        e.segment( 3, nShear ) = abqStrain.tail( nShear );
-
-        bft::mVector6       de( dStrain6 );
-        Map<const VectorXd> abqDStrain( dStrain, nDirect + nShear );
-        de.setZero();
-        de.head( nDirect )      = abqDStrain.head( nDirect );
-        de.segment( 3, nShear ) = abqDStrain.tail( nShear );
-    }
-
-    void backToAbaqus( double* stress,
-                       double* stress6,
-                       double* dStressDDStrain,
-                       double* dStressDDStrain66,
-                       int     nDirect,
-                       int     nShear )
-    {
-        bft::mVector6 s( stress6 );
-        Map<VectorXd> abqStress( stress, nDirect + nShear );
-
-        abqStress.head( nDirect ) = s.head( nDirect );
-        abqStress.tail( nShear )  = s.segment( 3, nShear );
-
-        bft::mMatrix6 C( dStressDDStrain66 );
-        Map<MatrixXd> abqC( dStressDDStrain, nDirect + nShear, nDirect + nShear );
-
-        if ( nDirect == 2 ) {
-            abqC = bft::mechanics::getPlaneStressTangent( C );
-        }
-        else {
-            abqC.topLeftCorner( nDirect, nDirect )   = C.topLeftCorner( nDirect, nDirect );
-            abqC.bottomRightCorner( nShear, nShear ) = C.block( 3, 3, nShear, nShear );
-            abqC.topRightCorner( nDirect, nShear )   = C.block( 0, 3, nDirect, nShear );
-            abqC.bottomLeftCorner( nShear, nDirect ) = C.block( 0, 3, nShear, nDirect );
-        }
     }
 
 } // namespace userLibrary
