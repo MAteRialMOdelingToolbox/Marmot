@@ -1,18 +1,33 @@
 #pragma once
-#include "bftMaterialMechanical.h"
+#include "bftMaterialElastic.h"
 
-class BftMaterialHypoElastic : public BftMaterialMechanical {
+class BftMaterialHypoElastic : public BftMaterialElastic {
+
+    // Derived abstract base class for elastic materials expressed purely in rate form in terms of stretching rate d, i.e,
+    // 'hypoelastic materials' 
+    // σ^∇ = f (σ, d, t, .. ), 
+    // formulated incrementally as σ_np = f (σ_n, Δε, Δt, t, .. ) 
+    // with Δε = d * Δt
+    // Algorithmic tangent = dσdε = d Δσ d Δε 
+    // compatible with Abaqus notation
 
   public:
-    using BftMaterialMechanical::BftMaterialMechanical;
+    using BftMaterialElastic::BftMaterialElastic;
 
     double characteristicElementLength;
-    void   setCharacteristicElementLength( double length ) { characteristicElementLength = length; }
+    void setCharacteristicElementLength( double length );
+
+    virtual void computeStress( double*       stress,
+                                double*       dStressDDStrain,
+                                const double* FOld,
+                                const double* FNew,
+                                const double* timeOld,
+                                const double  dT,
+                                double&       pNewDT ) override;
 
     // Abstract methods
     virtual void computeStress( double*       stress,
                                 double*       dStressDDStrain,
-                                const double* strainOld,
                                 const double* dStrain,
                                 const double* timeOld,
                                 const double  dT,
@@ -20,7 +35,6 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
 
     virtual void computePlaneStress( double*       stress,
                                      double*       dStressDDStrain,
-                                     const double* strainOld,
                                      double*       dStrain,
                                      const double* timeOld,
                                      const double  dT,
@@ -28,7 +42,6 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
 
     virtual void computeUniaxialStress( double*       stress,
                                         double*       dStressDDStrain,
-                                        const double* strainOld,
                                         double*       dStrain,
                                         const double* timeOld,
                                         const double  dT,
