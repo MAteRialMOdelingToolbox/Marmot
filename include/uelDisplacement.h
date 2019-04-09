@@ -1,13 +1,13 @@
 #pragma once
 #include "bftConstants.h"
+#include "bftElement.h"
+#include "bftElementProperty.h"
 #include "bftFiniteElement.h"
 #include "bftFunctions.h"
 #include "bftGeometryElement.h"
 #include "bftMaterialHypoElastic.h"
 #include "bftMath.h"
 #include "bftTypedefs.h"
-#include "bftUel.h"
-#include "bftUelProperty.h"
 #include "bftVoigt.h"
 #include "userLibrary.h"
 #include <iostream>
@@ -18,7 +18,7 @@ using namespace bft;
 using namespace Eigen;
 
 template <int nDim, int nNodes>
-class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
+class UelDisplacement : public BftElement, public BftGeometryElement<nDim, nNodes> {
 
   public:
     enum SectionType {
@@ -88,24 +88,29 @@ class UelDisplacement : public BftUel, public BftGeometryElement<nDim, nNodes> {
 
     void assignStateVars( double* stateVars, int nStateVars );
 
-    void assignProperty( const ElementProperties& bftUelProperty );
+    void assignProperty( const ElementProperties& bftElementProperty );
 
-    void assignProperty( const BftMaterialSection& bftUelProperty );
+    void assignProperty( const BftMaterialSection& bftElementProperty );
 
     void initializeYourself( const double* coordinates );
 
     void setInitialConditions( StateTypes state, const double* values );
 
-    void computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
-                                 double*                      P,
-                                 double*                      K,
-                                 const int                    elementFace,
-                                 const double*                load,
-                                 const double*                QTotal,
-                                 const double*                time,
-                                 double                       dT );
+    void computeDistributedLoad( BftElement::DistributedLoadTypes loadType,
+                                 double*                          P,
+                                 double*                          K,
+                                 const int                        elementFace,
+                                 const double*                    load,
+                                 const double*                    QTotal,
+                                 const double*                    time,
+                                 double                           dT );
 
-    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, const double* time, double dT );
+    void computeBodyForce( double*       P,
+                           double*       K,
+                           const double* load,
+                           const double* QTotal,
+                           const double* time,
+                           double        dT );
 
     void computeYourself( const double* QTotal,
                           const double* dQ,
@@ -220,10 +225,10 @@ void UelDisplacement<nDim, nNodes>::assignProperty( const BftMaterialSection& se
         GaussPt& gpt = gaussPts[i];
         gpt.material = std::unique_ptr<BftMaterialHypoElastic>(
             dynamic_cast<BftMaterialHypoElastic*>( userLibrary::bftMaterialFactory( section.materialCode,
-                                                                                     section.materialProperties,
-                                                                                     section.nMaterialProperties,
-                                                                                     elLabel,
-                                                                                     i ) ) );
+                                                                                    section.materialProperties,
+                                                                                    section.nMaterialProperties,
+                                                                                    elLabel,
+                                                                                    i ) ) );
     }
 }
 
@@ -296,7 +301,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
             Matrix6 C66;
             gaussPt.material->computeUniaxialStress( gaussPt.stress.data(),
                                                      C66.data(),
-                                                     gaussPt.strain.data(),
+                                                     // gaussPt.strain.data(),
                                                      dE6.data(),
                                                      time,
                                                      dT,
@@ -314,7 +319,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computePlaneStress( gaussPt.stress.data(),
                                                       C66.data(),
-                                                      gaussPt.strain.data(),
+                                                      // gaussPt.strain.data(),
                                                       dE6.data(),
                                                       time,
                                                       dT,
@@ -327,7 +332,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computeStress( gaussPt.stress.data(),
                                                  C66.data(),
-                                                 gaussPt.strain.data(),
+                                                 // gaussPt.strain.data(),
                                                  dE6.data(),
                                                  time,
                                                  dT,
@@ -346,7 +351,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computeStress( gaussPt.stress.data(),
                                                  C.data(),
-                                                 gaussPt.strain.data(),
+                                                 // gaussPt.strain.data(),
                                                  dE.data(),
                                                  time,
                                                  dT,
@@ -369,7 +374,7 @@ template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, const double* values )
 {
     switch ( state ) {
-    case BftUel::GeostaticStress: {
+    case BftElement::GeostaticStress: {
         if constexpr ( nDim > 1 ) {
             for ( GaussPt& gaussPt : gaussPts ) {
 
@@ -394,30 +399,30 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, cons
 }
 
 template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftUel::DistributedLoadTypes loadType,
-                                                            double*                      P,
-                                                            double*                      K,
-                                                            const int                    elementFace,
-                                                            const double*                load,
-                                                            const double*                QTotal,
-                                                            const double*                time,
-                                                            double                       dT )
+void UelDisplacement<nDim, nNodes>::computeDistributedLoad( BftElement::DistributedLoadTypes loadType,
+                                                            double*                          P,
+                                                            double*                          K,
+                                                            const int                        elementFace,
+                                                            const double*                    load,
+                                                            const double*                    QTotal,
+                                                            const double*                    time,
+                                                            double                           dT )
 {
     Map<RhsSized> fU( P );
 
     switch ( loadType ) {
 
-    case BftUel::Pressure: {
+    case BftElement::Pressure: {
         const double p = load[0];
 
         FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
-        VectorXd Pk = -p *  boundaryEl.computeNormalLoadVector() ;
+        VectorXd Pk = -p * boundaryEl.computeNormalLoadVector();
 
         if ( nDim == 2 )
             Pk *= elementProperties[0]; // thickness
 
-        boundaryEl.assembleIntoParentVector(Pk, fU);
+        boundaryEl.assembleIntoParentVector( Pk, fU );
 
         break;
     }

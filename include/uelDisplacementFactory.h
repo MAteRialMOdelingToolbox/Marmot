@@ -1,23 +1,23 @@
 #pragma once
 #include "bftTypedefs.h"
-#include "bftUel.h"
+#include "bftElement.h"
 #include "userLibrary.h"
 #include <string>
 
 namespace UelDisplacementFactory {
 
-    BftUel* generateUelT2D2( int noEl );
-    BftUel* generateUelCPS4( int noEl );
-    BftUel* generateUelCPS8( int noEl );
-    BftUel* generateUelCPE4( int noEl );
-    BftUel* generateUelCPE8( int noEl );
-    BftUel* generateUelCPS4R( int noEl );
-    BftUel* generateUelCPS8R( int noEl );
-    BftUel* generateUelCPE4R( int noEl );
-    BftUel* generateUelCPE8R( int noEl );
-    BftUel* generateUelC3D8( int noEl );
-    BftUel* generateUelC3D8R( int noEl );
-    BftUel* generateUelC3D20( int noEl );
-    BftUel* generateUelC3D20R( int noEl );
+    BftElement* generateUelT2D2( int noEl );
+    BftElement* generateUelCPS4( int noEl );
+    BftElement* generateUelCPS8( int noEl );
+    BftElement* generateUelCPE4( int noEl );
+    BftElement* generateUelCPE8( int noEl );
+    BftElement* generateUelCPS4R( int noEl );
+    BftElement* generateUelCPS8R( int noEl );
+    BftElement* generateUelCPE4R( int noEl );
+    BftElement* generateUelCPE8R( int noEl );
+    BftElement* generateUelC3D8( int noEl );
+    BftElement* generateUelC3D8R( int noEl );
+    BftElement* generateUelC3D20( int noEl );
+    BftElement* generateUelC3D20R( int noEl );
 
 } // namespace UelDisplacementFactory
