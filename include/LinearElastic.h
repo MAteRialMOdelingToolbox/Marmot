@@ -9,7 +9,7 @@ class LinearElastic : public BftMaterialHypoElastic {
 
     void computeStress( double*       stress,
                         double*       dStressDDStrain,
-                        const double* strainOld,
+                        
                         const double* dStrain,
                         const double* timeOld,
                         const double  dT,
