@@ -5,11 +5,11 @@
 
 template <int nDim, int nNodes>
 class BftGeometryElement {
-    /* This is the Geometry Base element, which serves as a base for all BftUels.
+    /* This is the Geometry Base element, which serves as a base for all BftElements.
      * It corresponds to the GeometryElement in mpFEM,
      * although this as a static templated version.
      *
-     * BftUels (corresponding do DofElements in mpFEM) can inherit from this element,
+     * BftElements (corresponding do DofElements in mpFEM) can inherit from this element,
      * and access shape functions, derivatives and B Operator
      *
      * The element automatically determines its shape by the given  nDimension and number of nodes

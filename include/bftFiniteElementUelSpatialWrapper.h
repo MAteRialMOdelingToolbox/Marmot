@@ -1,11 +1,11 @@
 #pragma once
 #include "Eigen/Sparse"
-#include "bftUel.h"
-#include "bftUelProperty.h"
+#include "bftElement.h"
+#include "bftElementProperty.h"
 #include <functional>
 #include <memory>
 
-class BftUelSpatialWrapper : public BftUel {
+class BftElementSpatialWrapper : public BftElement {
     /* Wrapper for Reduced Dimension Elements (e.g. Truss elements) to be used in higher order
      * dimensions (2D, 3D). The Projected is computed automatically based on the provided node
      * coordinates, and the actual (child) element is created through a provided generator functor
@@ -20,18 +20,18 @@ class BftUelSpatialWrapper : public BftUel {
     const Eigen::Map<const Eigen::VectorXi> rhsIndicesToBeProjected;
     const int                               projectedSize, unprojectedSize;
 
-    std::unique_ptr<BftUel> childElement;
+    std::unique_ptr<BftElement> childElement;
     Eigen::MatrixXd         T;
     Eigen::MatrixXd         P;
     Eigen::MatrixXd         projectedCoordinates;
 
-    BftUelSpatialWrapper( int                     nDim,
+    BftElementSpatialWrapper( int                     nDim,
                           int                     nChildDim,
                           int                     nNodes,
                           int                     sizeRhsChild,
                           const int               rhsIndicesToBeWrapped_[],
                           int                     nRhsIndicesToBeWrapped,
-                          std::unique_ptr<BftUel> childElement );
+                          std::unique_ptr<BftElement> childElement );
 
     int getNumberOfRequiredStateVars();
 

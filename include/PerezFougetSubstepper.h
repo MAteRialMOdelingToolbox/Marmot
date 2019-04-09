@@ -98,9 +98,9 @@ namespace bft {
         currentSubstepSize *= scaleDownFactor;
 
         if ( currentSubstepSize < minimumStepSize )
-            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-            return notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+            return BftJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
     }
 
     template <int n>

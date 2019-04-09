@@ -167,13 +167,6 @@ namespace bft {
         Eigen::Matrix3d getPlaneStrainTangent( const Matrix6& C );
         double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6>& C );
 
-        template <int nDim>
-        Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1> GreenLagrangeStrain(
-            const Eigen::Matrix<double, nDim, nDim>& DeformationGradient )
-        {
-            Eigen::Matrix<double, nDim, nDim> H = DeformationGradient - Eigen::Matrix<double, nDim, nDim>::Identity();
-            return bft::Vgt::VoigtFromStrainMatrix<nDim>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
-        }
 
     } // namespace mechanics
 } // namespace bft

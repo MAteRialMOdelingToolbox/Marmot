@@ -176,12 +176,12 @@ namespace bft {
         }
         // these cases should actually never happen, as the full step has already converged!
         case FirstHalfStep:
-            warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
+            BftJournal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
                           "converged full step" );
             return acceptSubstepWithFullStepOnly();
 
         case SecondHalfStep:
-            warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
+            BftJournal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
                           "converged full step" );
             return acceptSubstepWithFullStepOnly();
         }
@@ -189,7 +189,7 @@ namespace bft {
         currentState = FullStep;
 
         if ( currentSubstepSize < minimumStepSize )
-            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
             return true;
     }
@@ -203,7 +203,7 @@ namespace bft {
         currentSubstepSize *= factorNew; // we use the scale factor only here
 
         if ( currentSubstepSize < minimumStepSize )
-            return warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
             return true;
     }

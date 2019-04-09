@@ -55,10 +55,10 @@ namespace bft {
         ABQNonLocalRadius            = nonLocalRadius;
     }
 
-    void discardIncrementAndBackToAbaqus( double& pNewDT, double value, const std::string& message )
+    void discardTheIncrement( double& pNewDT, double value, const std::string& message )
     {
         pNewDT = value;
-        warningToMSG( message );
+        BftJournal::warningToMSG( message );
         return;
     }
 

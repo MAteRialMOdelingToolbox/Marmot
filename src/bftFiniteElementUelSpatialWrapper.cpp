@@ -4,13 +4,13 @@
 #include <iostream>
 
 using namespace Eigen;
-BftUelSpatialWrapper::BftUelSpatialWrapper( int                     nDim,
+BftElementSpatialWrapper::BftElementSpatialWrapper( int                     nDim,
                                             int                     nDimChild,
                                             int                     nNodes,
                                             int                     nRhsChild,
                                             const int               rhsIndicesToBeWrapped[],
                                             int                     nRhsIndicesToBeWrapped,
-                                            std::unique_ptr<BftUel> childElement )
+                                            std::unique_ptr<BftElement> childElement )
 
     : nDim( nDim ),
       nDimChild( nDimChild ),
@@ -23,42 +23,42 @@ BftUelSpatialWrapper::BftUelSpatialWrapper( int                     nDim,
 {
 }
 
-int BftUelSpatialWrapper::getNumberOfRequiredStateVars()
+int BftElementSpatialWrapper::getNumberOfRequiredStateVars()
 {
     return childElement->getNumberOfRequiredStateVars();
 }
 
-std::vector<std::vector<std::string>> BftUelSpatialWrapper::getNodeFields()
+std::vector<std::vector<std::string>> BftElementSpatialWrapper::getNodeFields()
 {
     return childElement->getNodeFields();
 }
 
-int BftUelSpatialWrapper::getNNodes()
+int BftElementSpatialWrapper::getNNodes()
 {
     return nNodes;
 }
 
-int BftUelSpatialWrapper::getNDofPerElement()
+int BftElementSpatialWrapper::getNDofPerElement()
 {
     return unprojectedSize;
 }
 
-std::string BftUelSpatialWrapper::getElementShape()
+std::string BftElementSpatialWrapper::getElementShape()
 {
     return childElement->getElementShape();
 }
 
-void BftUelSpatialWrapper::assignProperty( const BftMaterialSection& property )
+void BftElementSpatialWrapper::assignProperty( const BftMaterialSection& property )
 {
     childElement->assignProperty( property );
 }
 
-void BftUelSpatialWrapper::assignProperty( const ElementProperties& property )
+void BftElementSpatialWrapper::assignProperty( const ElementProperties& property )
 {
     childElement->assignProperty( property );
 }
 
-std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
+std::vector<int> BftElementSpatialWrapper::getDofIndicesPermutationPattern()
 {
     std::vector<int> permutationPattern;
 
@@ -88,12 +88,12 @@ std::vector<int> BftUelSpatialWrapper::getDofIndicesPermutationPattern()
     return permutationPattern;
 }
 
-void BftUelSpatialWrapper::assignStateVars( double* stateVars, int nStateVars )
+void BftElementSpatialWrapper::assignStateVars( double* stateVars, int nStateVars )
 {
     childElement->assignStateVars( stateVars, nStateVars );
 }
 
-void BftUelSpatialWrapper::initializeYourself( const double* coordinates )
+void BftElementSpatialWrapper::initializeYourself( const double* coordinates )
 {
     Map<const MatrixXd> unprojectedCoordinates( coordinates, nDim, nNodes );
 
@@ -134,7 +134,7 @@ void BftUelSpatialWrapper::initializeYourself( const double* coordinates )
     childElement->initializeYourself( projectedCoordinates.data() );
 }
 
-void BftUelSpatialWrapper::computeYourself( const double* Q,
+void BftElementSpatialWrapper::computeYourself( const double* Q,
                                             const double* dQ,
                                             double*       Pe_,
                                             double*       Ke_,
@@ -169,12 +169,12 @@ void BftUelSpatialWrapper::computeYourself( const double* Q,
     Pe_Unprojected = P.transpose() * Pe_Projected;
 }
 
-void BftUelSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
+void BftElementSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
 {
     childElement->setInitialConditions( state, values );
 }
 
-void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
+void BftElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
                                                    double*              P_,
                             double* K,
                                                    int                  elementFace,
@@ -195,7 +195,7 @@ void BftUelSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType
     Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-void BftUelSpatialWrapper::computeBodyForce( double*       P_,
+void BftElementSpatialWrapper::computeBodyForce( double*       P_,
                             double* K,
                                              const double* load,
                                              const double* QTotal,
@@ -214,9 +214,9 @@ void BftUelSpatialWrapper::computeBodyForce( double*       P_,
     Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-double* BftUelSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
+double* BftElementSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
 {
-    if ( resultName == "BftUelSpatialWrapper.T" ) {
+    if ( resultName == "BftElementSpatialWrapper.T" ) {
         resultLength = T.size();
         return T.data();
     }
