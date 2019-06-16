@@ -1,16 +1,21 @@
 #pragma once
-#include "bftMaterialElastic.h"
+#include "bftMaterialMechanical.h"
 
-class BftMaterialHyperElastic : public BftMaterialElastic {
+class BftMaterialHyperElastic : public BftMaterialMechanical {
 
-    /* Derived abstract base class for a simple, purely hyperelastic material to be used within TL elements
-     * stress measure: Piola - Kirchhoff II .. S
-     * strain measure for algorithmic tangent: Green - Lagrange .. E = 1/2 ( F^T * F - I )
-     * Algorithmic tangent: dS dE
-     * */
+    // Derived abstract base class for a _simple_, purely hyperelastic material to be used within TL elements
+    //
+    // stress measure: Piola - Kirchhoff II .. S
+    // strain measure for algorithmic tangent: Green - Lagrange .. E = 1/2 ( F^T * F - I )
+    //
+    //      ∂ f( E, t )
+    // S =  -----------
+    //      ∂    E 
+    //
+    // Algorithmic tangent: dS/dE
 
   public:
-    using BftMaterialElastic::BftMaterialElastic;
+    using BftMaterialMechanical::BftMaterialMechanical;
 
     virtual void computeStress( double*       S,    // PK2
                                 double*       dSdE, // d PK2 d GL_E

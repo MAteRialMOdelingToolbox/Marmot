@@ -1,18 +1,23 @@
 #pragma once
-#include "bftMaterialElastic.h"
+#include "bftMaterialMechanical.h"
 
-class BftMaterialHypoElastic : public BftMaterialElastic {
+class BftMaterialHypoElastic : public BftMaterialMechanical {
 
     // Derived abstract base class for elastic materials expressed purely in rate form in terms of stretching rate d, i.e,
-    // 'hypoelastic materials' 
-    // σ^∇ = f (σ, d, t, .. ), 
-    // formulated incrementally as σ_np = f (σ_n, Δε, Δt, t, .. ) 
+    // 'hypoelastic materials':
+    //
+    // ∇ 
+    // σ = f (σ, d, t, .. ), 
+    //
+    // formulated incrementally as σ_np = f (σ_n, Δε, Δt, t_n, .. ) 
     // with Δε = d * Δt
-    // Algorithmic tangent = dσdε = d Δσ d Δε 
-    // compatible with Abaqus notation
+    //
+    // Algorithmic tangent: dσdε = d Δσ d Δε 
+    //
+    // compatible with Abaqus interface 
 
   public:
-    using BftMaterialElastic::BftMaterialElastic;
+    using BftMaterialMechanical::BftMaterialMechanical;
 
     double characteristicElementLength;
     void setCharacteristicElementLength( double length );
