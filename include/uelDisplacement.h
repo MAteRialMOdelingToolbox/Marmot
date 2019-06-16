@@ -72,7 +72,7 @@ class UelDisplacement : public BftElement, public BftGeometryElement<nDim, nNode
 
     std::vector<GaussPt> gaussPts;
 
-    UelDisplacement( int noEl, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
+    UelDisplacement( int elementID, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
 
     int getNumberOfRequiredStateVars();
 
@@ -140,12 +140,12 @@ class UelDisplacement : public BftElement, public BftGeometryElement<nDim, nNode
 };
 
 template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement( int                              noEl,
+UelDisplacement<nDim, nNodes>::UelDisplacement( int                              elementID,
                                                 NumIntegration::IntegrationTypes integrationType,
                                                 SectionType                      sectionType )
     : ParentGeometryElement(),
       elementProperties( Map<const VectorXd>( nullptr, 0 ) ),
-      elLabel( noEl ),
+      elLabel( elementID ),
       sectionType( sectionType )
 {
     for ( const auto& gaussPtInfo : NumIntegration::getGaussPointInfo( this->shape, integrationType ) ) {
@@ -296,12 +296,10 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
         dE = B * dQ;
 
         if constexpr ( nDim == 1 ) {
-            Vector6 dE6;
-            dE6 << dE, 0, 0, 0, 0, 0;
+            Vector6 dE6 = (Vector6() << dE, 0, 0, 0, 0, 0 ).finished();
             Matrix6 C66;
             gaussPt.material->computeUniaxialStress( gaussPt.stress.data(),
                                                      C66.data(),
-                                                     // gaussPt.strain.data(),
                                                      dE6.data(),
                                                      time,
                                                      dT,
@@ -319,7 +317,6 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computePlaneStress( gaussPt.stress.data(),
                                                       C66.data(),
-                                                      // gaussPt.strain.data(),
                                                       dE6.data(),
                                                       time,
                                                       dT,
@@ -332,7 +329,6 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computeStress( gaussPt.stress.data(),
                                                  C66.data(),
-                                                 // gaussPt.strain.data(),
                                                  dE6.data(),
                                                  time,
                                                  dT,
@@ -351,7 +347,6 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
                 gaussPt.material->computeStress( gaussPt.stress.data(),
                                                  C.data(),
-                                                 // gaussPt.strain.data(),
                                                  dE.data(),
                                                  time,
                                                  dT,

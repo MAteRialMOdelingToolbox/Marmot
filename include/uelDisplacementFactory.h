@@ -6,18 +6,18 @@
 
 namespace UelDisplacementFactory {
 
-    BftElement* generateUelT2D2( int noEl );
-    BftElement* generateUelCPS4( int noEl );
-    BftElement* generateUelCPS8( int noEl );
-    BftElement* generateUelCPE4( int noEl );
-    BftElement* generateUelCPE8( int noEl );
-    BftElement* generateUelCPS4R( int noEl );
-    BftElement* generateUelCPS8R( int noEl );
-    BftElement* generateUelCPE4R( int noEl );
-    BftElement* generateUelCPE8R( int noEl );
-    BftElement* generateUelC3D8( int noEl );
-    BftElement* generateUelC3D8R( int noEl );
-    BftElement* generateUelC3D20( int noEl );
-    BftElement* generateUelC3D20R( int noEl );
+    BftElement* generateUelT2D2( int elementID );
+    BftElement* generateUelCPS4( int elementID );
+    BftElement* generateUelCPS8( int elementID );
+    BftElement* generateUelCPE4( int elementID );
+    BftElement* generateUelCPE8( int elementID );
+    BftElement* generateUelCPS4R( int elementID );
+    BftElement* generateUelCPS8R( int elementID );
+    BftElement* generateUelCPE4R( int elementID );
+    BftElement* generateUelCPE8R( int elementID );
+    BftElement* generateUelC3D8( int elementID );
+    BftElement* generateUelC3D8R( int elementID );
+    BftElement* generateUelC3D20( int elementID );
+    BftElement* generateUelC3D20R( int elementID );
 
 } // namespace UelDisplacementFactory
