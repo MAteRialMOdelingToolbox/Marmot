@@ -44,7 +44,6 @@ class BftElement {
                                   double        dT,
                                   double&       pNewdT ) = 0;
 
-
     virtual void computeDistributedLoad( DistributedLoadTypes loadType,
                                          double*              Pext,
                                          double*              K,

@@ -1,11 +1,11 @@
 #include "bftFunctions.h"
-#include "bftMaterialElastic.h"
+#include "bftMaterialMechanical.h"
 #include "bftVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
 
-void BftMaterialElastic::computePlaneStress( double*       stress_,
+void BftMaterialMechanical::computePlaneStress( double*       stress_,
                                              double*       dStressDDStrain_,
                                              const double* FOld,
                                              double*       FNew,
@@ -62,7 +62,7 @@ void BftMaterialElastic::computePlaneStress( double*       stress_,
     // stress  = stressTemp;
 }
 
-void BftMaterialElastic::computeUniaxialStress( double*       stress_,
+void BftMaterialMechanical::computeUniaxialStress( double*       stress_,
                                                 double*       dStressDDStrain_,
                                                 const double* FOld,
                                                 double*       FNew,
