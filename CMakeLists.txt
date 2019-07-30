@@ -3,7 +3,8 @@
 # depends on EIGEN library 3.2.7(+) 
 
 cmake_minimum_required(VERSION 3.1)  
-project(bftUserLibrary)
+
+project(bftUserLibrary CXX Fortran)
 
 include_directories(include)
 
@@ -13,6 +14,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_FIND_LIBRARY_PREFIXES lib)
+
 
 if(CMAKE_VERSION VERSION_LESS "3.9.0") 
     set(outdatedcmake TRUE)
@@ -24,6 +27,7 @@ set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
 
 set (materials
+    Barodesy 
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
@@ -84,7 +88,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Add sources
-file(GLOB sources "src/*.cpp")
+file(GLOB sources "src/*.cpp" "src/*.f90")
+#message(${GLOB})
 file(GLOB headers "include/*.h")
 
 #optional materials 
@@ -94,7 +99,7 @@ foreach(library ${materials})
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         include_directories(${librarypath}/include)
-        file(GLOB libsources "${librarypath}/src/*.cpp")
+        file(GLOB libsources "${librarypath}/src/*.cpp" "${librarypath}/src/*.f90")
         set(sources ${sources} ${libsources})
         string(TOUPPER ${library} LIBRARY)
         add_definitions(-D${LIBRARY})
