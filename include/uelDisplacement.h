@@ -368,28 +368,32 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, const double* values )
 {
-    switch ( state ) {
-    case BftElement::GeostaticStress: {
-        if constexpr ( nDim > 1 ) {
-            for ( GaussPt& gaussPt : gaussPts ) {
+    if constexpr ( nDim > 1 ) {
+        switch ( state ) {
+        case BftElement::GeostaticStress: {
+                for ( GaussPt& gaussPt : gaussPts ) {
 
-                XiSized coordAtGauss = this->NB( this->N( gaussPt.xi ) ) * this->coordinates;
+                    XiSized coordAtGauss = this->NB( this->N( gaussPt.xi ) ) * this->coordinates;
 
-                const double sigY1 = values[0];
-                const double sigY2 = values[2];
-                const double y1    = values[1];
-                const double y2    = values[3];
+                    const double sigY1 = values[0];
+                    const double sigY2 = values[2];
+                    const double y1    = values[1];
+                    const double y2    = values[3];
 
-                using namespace Math;
-                gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
-                gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
-                gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
-            } // sigma_z
+                    using namespace Math;
+                    gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
+                    gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
+                    gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
+                } // sigma_z
+                break;
+            }
+        case BftElement::BftMaterialStateVars: {
+                for ( GaussPt& gaussPt : gaussPts ) 
+                    gaussPt.material->stateVars[static_cast<int>(values[0])] = values[1];
+                break;
+            }
+        default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
         }
-        break;
-    }
-
-    default: break;
     }
 }
 
