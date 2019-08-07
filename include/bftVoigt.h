@@ -106,10 +106,14 @@ namespace bft {
         // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
         Eigen::Vector3d principalStresses( const bft::Vector6& stress );
 
+        // equivalent von Mises stress
+        double vonMisesEquivalentStress( const bft::Vector6& stress );
         // equivalent von Mises strain
         double vonMisesEquivalentStrain( const bft::Vector6& strain );
         // Euclidian norm of strain
         double normStrain( const bft::Vector6& strain );
+        // Euclidian norm of stress
+        double normStress( const bft::Vector6& stress );
         // Trace of compressive strains
         double Evolneg( const bft::Vector6& strain );
 
@@ -166,6 +170,8 @@ namespace bft {
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6& C );
         Eigen::Matrix3d getPlaneStrainTangent( const Matrix6& C );
         double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6>& C );
+        double          E( const double K, const double G );
+        double          nu( const double K, const double G );
 
 
     } // namespace mechanics
