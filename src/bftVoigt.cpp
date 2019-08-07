@@ -65,6 +65,16 @@ namespace bft {
 
             return CPlaneStrain;
         }
+        
+        double E( const double K, const double G )
+        {
+            return 9.*K*G/(3.*K+G);
+        }
+        
+        double nu( const double K, const double G )
+        {
+            return ( 3*K - 2*G ) / ( 6*K + 2*G ) ;
+        }
     } // namespace mechanics
     namespace Vgt {
 
@@ -97,7 +107,9 @@ namespace bft {
         Matrix3d voigtToStress( const Vector6& voigt )
         {
             Matrix3d stress;
-            stress << voigt[0], voigt[3], voigt[4], voigt[3], voigt[1], voigt[5], voigt[4], voigt[5], voigt[2];
+            stress << voigt[0], voigt[3], voigt[4], 
+                      voigt[3], voigt[1], voigt[5], 
+                      voigt[4], voigt[5], voigt[2];
             return stress;
         }
 
@@ -264,6 +276,12 @@ namespace bft {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
+        
+        double vonMisesEquivalentStress( const Vector6& stress )
+        {
+            const Vector6& s = stress;
+            return sqrt(3 * J2(stress));
+        }
 
         double vonMisesEquivalentStrain( const Vector6& strain )
         {
@@ -274,6 +292,8 @@ namespace bft {
         }
 
         double normStrain( const Vector6& strain ) { return Vgt::voigtToStrain( strain ).norm(); }
+        
+        double normStress( const Vector6& stress ) { return Vgt::voigtToStress( stress ).norm(); }
 
         double Evolneg( const Vector6& strain )
         {
