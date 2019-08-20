@@ -5,61 +5,80 @@
 
 using namespace Eigen;
 
+//void BftMaterialHypoElastic::computeStress( double*       stress_,
+                                            //double*       dStressDDStrain_,
+                                            //const double* FOld_,
+                                            //const double* FNew_,
+                                            //const double* timeOld,
+                                            //const double  dT,
+                                            //double&       pNewDT )
+//{
+    //const Map<const Matrix3d> FNew( FNew_ );
+    //const Map<const Matrix3d> FOld( FOld_ );
+
+     ////bft::Vector6 dEps = 1./2 * ( bft::Vgt::StrainToVoigt( H + H.tranpose() ) );
+
+     ////computeStress (stress_, dStressDDStrain_, dEps.data(), timeOld, dT, pNewDT);
+//}
+
 void BftMaterialMechanical::computePlaneStress( double*       stress_,
-                                             double*       dStressDDStrain_,
-                                             const double* FOld,
-                                             double*       FNew,
+                                             double*       dStressDDDeformationGradient_,
+                                             const double* FOld_,
+                                             double*       FNew_,
                                              const double* timeOld,
                                              const double  dT,
                                              double&       pNewDT )
 {
-    // using namespace bft;
 
-    // Map<Vector6>  stress( stress_ );
-    // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
-    // Map<Vector6>  dStrain( dStrain_ );
-    // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
+    using namespace bft;
 
-    // Vector6  stressTemp;
-    // VectorXd stateVarsOld = stateVars;
-    // Vector6  dStrainTemp  = dStrain;
+    Map<Vector6>  stress( stress_ );
+    Map<Matrix<double, 6,9>>  dStressDDDeformationGradient( dStressDDDeformationGradient_);
+    Map<Matrix3d>  FNew( FNew_);
+    Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
-    //// assumption of isochoric deformation for initial guess
-    // dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );
+    Vector6  stressTemp;
+    VectorXd stateVarsOld = stateVars;
+    Matrix3d FNewTemp = FNew;
 
-    // int planeStressCount = 1;
-    // while ( true ) {
-    // stressTemp = stress;
-    // stateVars  = stateVarsOld;
+    // assumption of isochoric deformation for initial guess
+    FNewTemp( 2,2 ) = 1./ ( FNew( 0,0 ) * FNew( 1,1 ) );
 
-    // computeStress( stressTemp.data(), dStressDDStrain.data(), dStrainTemp.data(), timeOld, dT, pNewDT );
+    int planeStressCount = 1;
+    while ( true ) {
+        stressTemp = stress;
+        stateVars  = stateVarsOld;
 
-    // if ( pNewDT < 1.0 ) {
-    // return;
-    //}
+        computeStress( stressTemp.data(), dStressDDDeformationGradient.data(), FOld_, FNewTemp.data(), timeOld, dT, pNewDT );
 
-    // double residual = stressTemp.array().abs()[2];
+        if ( pNewDT < 1.0 ) {
+            return;
+        }
 
-    // if ( residual < 1.e-10 || ( planeStressCount > 7 && residual < 1e-8 ) ) {
-    // break;
-    //}
+        double residual = stressTemp.array().abs()[2];
 
-    // double tangentCompliance = 1. / dStressDDStrain( 2, 2 );
-    // if ( isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
-    // tangentCompliance = 1e10;
+        if ( residual < 1.e-10 || ( planeStressCount > 7 && residual < 1e-8 ) ) {
+            break;
+        }
 
-    // dStrainTemp[2] -= tangentCompliance * stressTemp[2];
+        const double dS33_dF33 = dStressDDDeformationGradient( 2, 8 );
 
-    // planeStressCount += 1;
-    // if ( planeStressCount > 13 ) {
-    // pNewDT = 0.25;
-    // warningToMSG( "PlaneStressWrapper requires cutback" );
-    // return;
-    //}
-    //}
+        double tangentCompliance = 1. / dS33_dF33;
+        if ( isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
+            tangentCompliance = 1e10;
 
-    // dStrain = dStrainTemp;
-    // stress  = stressTemp;
+        FNewTemp(2,2) -= tangentCompliance * stressTemp(2);
+
+        planeStressCount += 1;
+        if ( planeStressCount > 13 ) {
+            pNewDT = 0.25;
+            BftJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+            return;
+        }
+    }
+
+    FNew = FNewTemp;
+    stress  = stressTemp;
 }
 
 void BftMaterialMechanical::computeUniaxialStress( double*       stress_,

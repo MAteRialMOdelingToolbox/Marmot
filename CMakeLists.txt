@@ -51,6 +51,7 @@ set (materials
 set(elements
     uelDisplacement
     uelDisplacementTL
+    uelDisplacementUL
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalEAS

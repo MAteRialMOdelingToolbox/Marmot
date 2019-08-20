@@ -48,6 +48,7 @@ namespace userLibrary {
          * active fields:   0: mechanical (=displacement),
          *                  1: mechanical + nonlocal damage,
          *                  2: mechanical (=displacement) large strain TL,
+         *                  3: mechanical (=displacement) large strain UL,
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -99,6 +100,9 @@ namespace userLibrary {
         UelC3D8RTL  = 826,
         UelC3D20TL  = 2023,
         UelC3D20RTL = 2026,
+
+        UelCPE4UL   = 437,
+        UelC3D8UL   = 833,
 
         // Solid EAS
         UelC3D8EAS3  = 80303,

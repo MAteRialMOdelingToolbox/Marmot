@@ -181,6 +181,9 @@ namespace userLibrary {
 #ifdef UELDISPLACEMENTTL
 #    include "uelDisplacementTLFactory.h"
 #endif
+#ifdef UELDISPLACEMENTUL
+#    include "uelDisplacementULFactory.h"
+#endif
 #ifdef UELNONLOCAL
 #    include "uelNonLocalFactory.h"
 #endif
@@ -218,6 +221,8 @@ namespace userLibrary {
             {"UELC3D8RTL", UelC3D8RTL},
             {"UELC3D20TL", UelC3D20TL},
             {"UELC3D20RTL", UelC3D20RTL},
+            {"UELCPE4UL", UelCPE4UL},
+            {"UELC3D8UL", UelC3D8UL},
             {"UELCPE4EAS2", UelCPE4EAS2},
             {"UELCPE4EAS4", UelCPE4EAS4},
             {"UELCPE4EAS5", UelCPE4EAS5},
@@ -276,6 +281,10 @@ namespace userLibrary {
             //case UelCPE8: {return UelDisplacementFactory:: generateUelCPE8(elementNumber);}
             case UelC3D20TL: {return UelDisplacementFactory:: generateUelC3D20(elementNumber);}
             //case UelC3D20R: {return UelDisplacementFactory:: generateUelC3D20R(elementNumber);}
+            #endif 
+            #ifdef UELDISPLACEMENTUL
+            case UelCPE4UL: {return UelDisplacementULFactory:: generateUelCPE4UL(elementNumber);}
+            case UelC3D8UL: {return UelDisplacementULFactory:: generateUelC3D8UL(elementNumber);}
             #endif 
             #ifdef UELNONLOCAL
             case UelCPS4NonLocal: {return UelNonLocalFactory:: generateUelCPS4NonLocal(elementNumber);}
