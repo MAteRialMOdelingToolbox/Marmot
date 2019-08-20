@@ -279,7 +279,6 @@ namespace bft {
         
         double vonMisesEquivalentStress( const Vector6& stress )
         {
-            const Vector6& s = stress;
             return sqrt(3 * J2(stress));
         }
 
