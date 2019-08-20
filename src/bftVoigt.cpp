@@ -1,6 +1,7 @@
-#include "bftVoigt.h"
 #include "bftConstants.h"
 #include "bftMath.h"
+#include "bftTensor.h"
+#include "bftVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -65,7 +66,62 @@ namespace bft {
 
             return CPlaneStrain;
         }
-    } // namespace mechanics
+
+        namespace PlaneStrain {
+
+            Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D )
+            {
+                static constexpr int planeVoigtIndices[] = {0, 1, 3};
+                Tensor322d    tangent2D;
+                for ( int i = 0; i < 3; i++ )
+                    for ( int j = 0; j < 2; j++ )
+                        for ( int k = 0; k < 2; k++ )
+                            tangent2D( i, j, k ) = dStressdDeformationGradient3D( planeVoigtIndices[i], j, k );
+
+                return tangent2D;
+            }
+        } // namespace PlaneStrain
+
+        namespace PlaneStress {
+
+            Tensor322d dStressdDeformationGradient( const Tensor633d& dS_dF_3D )
+            {
+                /*  dS^PS    dS^PS    dS    dF^Comp
+                 *  ----- == ----- * ---- * -------
+                 *  dF^PS    dS       dF    dF^PS
+                 *
+                 *  dF^Comp_ij = dF_ij^PS       if  ij =/= 33
+                 *             = dF_^Comp_33    else
+                 *
+                 *             with dS_33 = 0 =  dS33/dFij * dFij^PS + dS33/dF33 * dF^Comp_33
+                 *
+                 *             --> dF^Comp_33 = -dS33/dFij * dFij^PS * dF33/dS33
+                 *
+                 *             --> dF^Comp
+                 *                 -------
+                 *                  dF^PS
+                 * */
+
+                // projection to plane
+                Tensor322d dS_dF = PlaneStrain::dStressdDeformationGradient( dS_dF_3D );
+
+                using namespace TensorUtility::IndexNotation;
+
+                // clang-format off
+                for ( int m = 0; m < 2; m ++ )
+                    for ( int n = 0; n < 2; n ++ )
+                        for ( int k = 0; k < 2; k ++ )
+                            for ( int l = 0; l < 2; l ++ )
+                                dS_dF(              toVoigt<2> (m,n), k, l ) 
+                                    =  -  dS_dF_3D( toVoigt<3> (m,n), 2, 2 ) 
+                                    * 1./ dS_dF_3D( toVoigt<3> (2,2), 2, 2 )
+                                    *     dS_dF_3D( toVoigt<3> (2,2), k, l );
+                // clang-format on
+                return dS_dF;
+            }
+
+        } // namespace PlaneStress
+    }     // namespace mechanics
     namespace Vgt {
 
         using namespace Constants;
