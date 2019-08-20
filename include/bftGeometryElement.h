@@ -2,6 +2,7 @@
 #include "bftFiniteElement.h"
 #include "bftTypedefs.h"
 #include <map>
+#include <iostream>
 
 template <int nDim, int nNodes>
 class BftGeometryElement {

@@ -1,9 +1,7 @@
 #pragma once
 #include "bftConstants.h"
 #include "bftTypedefs.h"
-#include <string>
-
-using namespace Eigen;
+#include <algorithm> // std::max
 
 namespace bft {
     namespace Math {
@@ -39,8 +37,8 @@ namespace bft {
             Eigen::Matrix<double, ySize, ySize> fS = Eigen::Matrix<double, ySize, ySize>::Zero();
             Eigen::Matrix<double, ySize, ySize> Iy = Eigen::Matrix<double, ySize, ySize>::Identity();
 
-            VectorXd leftX( ySize );
-            VectorXd rightX( ySize );
+            Eigen::VectorXd leftX( ySize );
+            Eigen::VectorXd rightX( ySize );
 
             for ( size_t i = 0; i < ySize; i++ ) {
                 double volatile h = std::max( 1.0, std::abs( yN( i ) ) ) * Constants::cubicRootEps();
@@ -61,8 +59,8 @@ namespace bft {
         {
             Eigen::Matrix<double, nRows, nCols> dXdY = Eigen::Matrix<double, nRows, nCols>::Zero();
 
-            VectorXd leftX( nCols );
-            VectorXd rightX( nCols );
+            Eigen::VectorXd leftX( nCols );
+            Eigen::VectorXd rightX( nCols );
 
             for ( size_t i = 0; i < nCols; i++ ) {
                 double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Constants::cubicRootEps();
@@ -85,6 +83,35 @@ namespace bft {
             yType w  = v + fRate( v, fRateArgs... ) * dt / 2.;
 
             return 2. * w - u;
+        }
+        
+        template <int ySize, typename functionType, typename... Args>
+        std::tuple<Eigen::Matrix<double, ySize, 1>, double> explicitEulerRichardsonWithErrorEstimator( Eigen::Matrix<double, ySize, 1> yN, const double dt, const double TOL, functionType fRate, Args&&... fRateArgs )
+        {
+
+            typedef Eigen::Matrix<double, ySize, 1> ySized;
+            ySized fN = fRate( yN, fRateArgs... );
+            ySized u  = yN + fN * dt;
+            ySized v  = yN + fN * dt / 2.;
+            ySized w  = v + fRate( v, fRateArgs... ) * dt / 2.;
+            ySized yNew = 2. * w - u;
+
+            // error estimator
+            const double AERR = 1.0;
+            const double aI = AERR/TOL;
+            const double rI = 1.0;
+            double scaling = 0;
+            ySized ESTVec = ySized::Zero();
+
+            for (int i =0; i < ySize; i++){
+                scaling =  aI + rI * std::max( abs(yNew(i)), abs(yN(i)) );
+                ESTVec(i) = abs(w(i) - u(i) ) / abs( scaling );
+            }
+
+            const double EST = ESTVec.maxCoeff();
+            const double tauNew = dt * std::min(2., std::max (0.2, 0.9 * std::sqrt(TOL/EST)));
+
+            return std::make_tuple( yNew, tauNew);
         }
 
     } // namespace Math
