@@ -1,11 +1,13 @@
 #pragma once
 #include "Eigen/Core"
 #include "Eigen/Dense"
-
-// using namespace Eigen;
+#include "unsupported/Eigen/CXX11/Tensor"
 
 namespace bft {
     typedef Eigen::Matrix<double, 6, 6> Matrix6;
+    typedef Eigen::Matrix<double, 6, 9> Matrix69d;
+    typedef Eigen::Matrix<double, 9, 9> Matrix99d;
+    typedef Eigen::Matrix<double, 3, 4> Matrix34d;
     typedef Eigen::Matrix<double, 7, 7> Matrix7;
     typedef Eigen::Map<Matrix6>         mMatrix6;
 
@@ -17,7 +19,12 @@ namespace bft {
     typedef Eigen::Map<Eigen::VectorXd>    mVectorXd;
     typedef Eigen::Map<const bft::Vector6> mConstVector6;
 
+    typedef Eigen::Matrix<double, 3, 6> Matrix36d;
     typedef Eigen::Matrix<double, 3, 6> Matrix36;
+
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<6,3,3>> Tensor633d; 
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<3,2,2>> Tensor322d; 
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<3,3,3,3>> Tensor3333d; 
 
     typedef void ( *pUmatType )( double[],
                                  double[],

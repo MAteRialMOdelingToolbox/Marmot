@@ -11,6 +11,7 @@ namespace bft {
         double degToRad( const double alpha );
         double macauly( double scalar );
         int    heaviside( double scalar );
+        //int const kronecker ( int i, int j);
         
         
         template <int nRows, int nCols>

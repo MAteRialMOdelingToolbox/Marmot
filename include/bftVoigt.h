@@ -6,6 +6,7 @@
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 //#define DIMFROMVOIGT( x ) ( x<<1  )
 
+
 namespace bft {
     namespace Vgt {
 
@@ -24,30 +25,30 @@ namespace bft {
         bft::Vector6    planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
 
         template <int voigtSize>
-        Eigen::Matrix<double, voigtSize, 1> reduce3DVoigt( const bft::Vector6& Voigt3D )
-        {
-            if constexpr ( voigtSize == 1 )
-                return ( Eigen::Matrix<double, 1, 1>() << Voigt3D( 0 ) ).finished();
-            else if constexpr ( voigtSize == 3 )
-                return voigtToPlaneVoigt( Voigt3D );
-            else if constexpr ( voigtSize == 6 )
-                return Voigt3D;
-            else
-                throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
-        }
+            Eigen::Matrix<double, voigtSize, 1> reduce3DVoigt( const bft::Vector6& Voigt3D )
+            {
+                if constexpr ( voigtSize == 1 )
+                    return ( Eigen::Matrix<double, 1, 1>() << Voigt3D( 0 ) ).finished();
+                else if constexpr ( voigtSize == 3 )
+                    return voigtToPlaneVoigt( Voigt3D );
+                else if constexpr ( voigtSize == 6 )
+                    return Voigt3D;
+                else
+                    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+            }
 
         template <int voigtSize>
-        bft::Vector6 make3DVoigt( const Eigen::Matrix<double, voigtSize, 1>& Voigt )
-        {
-            if constexpr ( voigtSize == 1 )
-                return ( bft::Vector6() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
-            else if constexpr ( voigtSize == 3 )
-                return planeVoigtToVoigt( Voigt );
-            else if constexpr ( voigtSize == 6 )
-                return Voigt;
-            else
-                throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
-        }
+            bft::Vector6 make3DVoigt( const Eigen::Matrix<double, voigtSize, 1>& Voigt )
+            {
+                if constexpr ( voigtSize == 1 )
+                    return ( bft::Vector6() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
+                else if constexpr ( voigtSize == 3 )
+                    return planeVoigtToVoigt( Voigt );
+                else if constexpr ( voigtSize == 6 )
+                    return Voigt;
+                else
+                    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+            }
 
         /*compute E33 for a given elastic strain, to compute the compensation for
          * planeStress = Cel : (elasticStrain + compensationStrain) */
@@ -68,36 +69,36 @@ namespace bft {
         Eigen::Vector3d haighWestergaardStrain( const bft::Vector6& strain );
 
         template <int nDim>
-        Eigen::Matrix<double, nDim, nDim> StressMatrixFromVoigt(
-            const Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>& Voigt )
-        {
-            if constexpr ( nDim == 1 )
-                return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ) ).finished();
-            else if constexpr ( nDim == 2 )
-                return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ), Voigt( 2 ), Voigt( 2 ), Voigt( 1 ) )
-                    .finished();
-            else if constexpr ( nDim == 3 )
-                return voigtToStress( Voigt );
-            else
-                throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
-        }
+            Eigen::Matrix<double, nDim, nDim> StressMatrixFromVoigt(
+                    const Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>& Voigt )
+            {
+                if constexpr ( nDim == 1 )
+                    return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ) ).finished();
+                else if constexpr ( nDim == 2 )
+                    return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ), Voigt( 2 ), Voigt( 2 ), Voigt( 1 ) )
+                        .finished();
+                else if constexpr ( nDim == 3 )
+                    return voigtToStress( Voigt );
+                else
+                    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+            }
 
         template <int nDim>
-        Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1> VoigtFromStrainMatrix(
-            const Eigen::Matrix<double, nDim, nDim>& strain )
-        {
-            if constexpr ( nDim == 1 )
-                return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ) ).finished();
-            else if constexpr ( nDim == 2 )
-                return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ),
-                         strain( 1, 1 ),
-                         2 * strain( 0, 1 ) )
-                    .finished();
-            else if constexpr ( nDim == 3 )
-                return strainToVoigt( strain );
-            else
-                throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
-        }
+            Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1> VoigtFromStrainMatrix(
+                    const Eigen::Matrix<double, nDim, nDim>& strain )
+            {
+                if constexpr ( nDim == 1 )
+                    return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ) ).finished();
+                else if constexpr ( nDim == 2 )
+                    return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ),
+                            strain( 1, 1 ),
+                            2 * strain( 0, 1 ) )
+                        .finished();
+                else if constexpr ( nDim == 3 )
+                    return strainToVoigt( strain );
+                else
+                    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+            }
 
         // principal strains calculated by solving eigenvalue problem ( !NOT sorted! )
         Eigen::Vector3d principalStrains( const bft::Vector6& strain );
@@ -152,20 +153,33 @@ namespace bft {
         RowVector6d     dDeltaEpv_dE( const Matrix6& CelInv, const Matrix6& Cep );
         bft::Matrix36   dDeltaEpPrincipals_dDeltaEp( const bft::Vector6& dEp );
         RowVector6d     dDeltaEpvneg_dE( const bft::Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep );
+
+
     } // namespace Vgt
 
     namespace mechanics {
         template <typename T>
-        int sgn( T val )
-        {
-            return ( T( 0 ) < val ) - ( val < T( 0 ) );
-        }
+            int sgn( T val )
+            {
+                return ( T( 0 ) < val ) - ( val < T( 0 ) );
+            }
 
         Matrix6         Cel( double E, double nu );
         Matrix6         CelInverse( double E, double nu );
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6& C );
+
         Eigen::Matrix3d getPlaneStrainTangent( const Matrix6& C );
         double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6>& C );
+
+
+        namespace PlaneStrain{
+            Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
+        }
+        namespace PlaneStress{
+            Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
+        }
+
+
 
 
     } // namespace mechanics

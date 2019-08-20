@@ -42,5 +42,13 @@ namespace bft {
 
         int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
+        //int const kronecker (int i, int j)
+        //{
+            //if (i == j)
+                //return 1;
+            //else
+                //return 0;
+        //}
+
     } // namespace Math
 } // namespace bft

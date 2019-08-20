@@ -5,25 +5,20 @@
 
 namespace bft {
     namespace kinematics {
-
-        template <int nDim>
-        Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1> GreenLagrangeStrain(
-            const Eigen::Matrix<double, nDim, nDim>& DeformationGradient )
-        {
-            Eigen::Matrix<double, nDim, nDim> H = DeformationGradient - Eigen::Matrix<double, nDim, nDim>::Identity();
-            return bft::Vgt::VoigtFromStrainMatrix<nDim>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
+        namespace strain {
+            bft::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
+            bft::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
         }
 
-        bft::Vector6 infinitesimalStrainIncrement( const Eigen::Ref<const Eigen::Matrix3d>& F_n,
-                                                   const Eigen::Ref<const Eigen::Matrix3d>& F_np,
-                                                   double                                   alpha = 0.5 );
+        namespace velocityGradient {
+            extern const Eigen::TensorFixedSize<double, Eigen::Sizes<3, 3, 3, 3>> dOmega_dVelocityGradient;
 
-        template <int nDim>
-        Eigen::Matrix3d makeDeformationGradient3D( const Eigen::Ref<const Eigen::Matrix<double, nDim, nDim>>& F );
+            extern const Eigen::TensorFixedSize<double, Eigen::Sizes<6, 3, 3>> dStretchingRate_dVelocityGradient;
+        } // namespace velocityGradient
 
-        Vector6 transformVoigtLeft(const Eigen::Matrix3d& Q, const Vector6& voigt);
-        Vector6 transformVoigtRight(const Vector6& voigt, const Eigen::Matrix3d& Q);
-
-
+        namespace deformationGradient {
+            template <int nDim>
+            Eigen::Matrix3d make3D( const Eigen::Ref<const Eigen::Matrix<double, nDim, nDim>>& tensor );
+        }
     } // namespace kinematics
 } // namespace bft
