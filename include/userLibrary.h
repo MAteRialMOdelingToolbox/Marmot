@@ -31,6 +31,8 @@ namespace userLibrary {
         LinearElasticNonLocal            = 21,
         StVenantKirchhoffIsotropic       = 22,
         ModLeonAnalytical                = 23,
+        Barodesy                         = 24,
+        BarodesyGradientVoid             = 25,
     };
 
     enum ElementCode {
