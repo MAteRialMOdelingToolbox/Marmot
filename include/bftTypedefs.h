@@ -12,6 +12,7 @@ namespace bft {
     typedef Eigen::Map<Matrix6>         mMatrix6;
 
     typedef Eigen::Matrix<double, 6, 1>    Vector6;
+    typedef Eigen::Matrix<double, 7, 1>    Vector7d;
     typedef Eigen::Matrix<double, 8, 1>    Vector8d;
     typedef Eigen::Matrix<int, 8, 1>       Vector8i;
     typedef Eigen::Matrix<double, 1, 6>    RowVector6d;
