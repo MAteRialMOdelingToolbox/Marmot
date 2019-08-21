@@ -22,6 +22,8 @@ class BftMaterialMechanical : public BftMaterial {
         | ...                                                               |
         | ...                                                               |
         \ ...                                                               /
+
+        such that it can be interpreted as a column-major 6x3x3 tensor (4th order, voigt left tensor)
     */
 
     public:

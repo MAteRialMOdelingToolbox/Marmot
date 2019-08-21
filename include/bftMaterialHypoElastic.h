@@ -12,7 +12,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
     // formulated incrementally as σ_np = f (σ_n, Δε, Δt, t_n, .. ) 
     // with Δε = d * Δt
     //
-    // Algorithmic tangent: dσdε = d Δσ d Δε 
+    // Algorithmic tangent: dσdε = d Δσ d Δε
     //
     // compatible with Abaqus interface 
 
