@@ -10,6 +10,9 @@
 #ifdef BARODESY 
 #    include "Barodesy.h"
 #endif
+#ifdef BARODESYGRADIENTVOID
+#    include "BarodesyGradientVoid.h"
+#endif
 #ifdef LINEARELASTIC
 #    include "LinearElastic.h"
 #endif
@@ -83,6 +86,7 @@ namespace userLibrary {
     {
         static std::map<std::string, MaterialCode> materialCodeMap = {
             {"BARODESY", Barodesy},
+            {"BARODESYGRADIENTVOID", BarodesyGradientVoid},
             {"MODLEON", ModLeon},
             {"SHOTLEON", ShotLeon},
             {"MESCHKE", Meschke},
@@ -119,6 +123,9 @@ namespace userLibrary {
             // clang-format off
             #ifdef BARODESY 
             case Barodesy: { return new class Barodesy(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef BARODESYGRADIENTVOID
+            case BarodesyGradientVoid: { return new class BarodesyGradientVoid(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}

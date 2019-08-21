@@ -27,16 +27,18 @@ set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
 
 set (materials
-    Barodesy 
+    #Barodesy 
+    Barodesy
+    BarodesyGradientVoid
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
     HoekBrown
     ModLeon
-    ModLeonSemiExplicit
+    #ModLeonSemiExplicit
     ModLeonAnalytical
     ModLeonAdaptive
-    ModLeonSemiExplicitAdaptive
+    #ModLeonSemiExplicitAdaptive
     ModLeonPlaneStress
     ModLeonNonLocal
     MohrCoulomb
