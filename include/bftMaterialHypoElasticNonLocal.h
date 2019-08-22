@@ -1,10 +1,26 @@
 #pragma once
-#include "bftMaterial.h"
+#include "bftMaterialMechanicalNonLocal.h"
 
-class BftMaterialHypoElasticNonLocal : public BftMaterial {
+class BftMaterialHypoElasticNonLocal : public BftMaterialMechanicalNonLocal {
 
   public:
-    using BftMaterial::BftMaterial;
+    using BftMaterialMechanicalNonLocal::BftMaterialMechanicalNonLocal;
+    
+    // Abstract methods
+    virtual void computeStress( double*       stress,
+                                double&       K_local,
+                                double&       nonLocalRadius,
+                                double*       dStressDDDeformationGradient,
+                                double*       dK_localDDeformationGradient,
+                                double*       dStressDK,
+                                const double* FOld,
+                                const double* FNew,
+                                const double  KOld,
+                                const double  dK,
+                                const double* timeOld,
+                                const double  dT,
+                                double&       pNewDT ) override;
+
 
     // Abstract methods
     virtual void computeStress( double*       stress,
