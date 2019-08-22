@@ -1,7 +1,7 @@
 #pragma once
 #include "bftMaterial.h"
 
-class BftMaterialMechanical : public BftMaterial {
+class BftMaterialMechanicalNonLocal : public BftMaterial {
 
     /*
        Abstract basic class for Mechanical materials.
@@ -37,8 +37,8 @@ class BftMaterialMechanical : public BftMaterial {
                                 double*       dStressDK,
                                 const double* FOld,
                                 const double* FNew,
-                                double        KOld,
-                                double        dK,
+                                const double  KOld,
+                                const double  dK,
                                 const double* timeOld,
                                 const double  dT,
                                 double&       pNewDT ) = 0;

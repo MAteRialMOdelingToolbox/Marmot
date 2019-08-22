@@ -104,6 +104,7 @@ namespace userLibrary {
         UelC3D20RTL = 2026,
 
         UelCPE4UL   = 437,
+        UelCPE8RUL  = 838,
         UelC3D8UL   = 833,
 
         // Solid EAS
