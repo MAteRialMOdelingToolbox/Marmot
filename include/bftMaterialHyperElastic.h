@@ -17,6 +17,7 @@ class BftMaterialHyperElastic : public BftMaterialMechanical {
   public:
     using BftMaterialMechanical::BftMaterialMechanical;
 
+    // Default implementation provided
     virtual void computeStress( double*       S,    // PK2
                                 double*       dSdE, // d PK2 d GL_E
                                 const double* FOld,

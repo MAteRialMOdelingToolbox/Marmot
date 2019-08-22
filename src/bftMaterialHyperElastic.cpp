@@ -38,7 +38,8 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
     TensorMap<Tensor<double, 3>> dCauchydF( dCauchy_d_F_np_, 6, 3, 3 );
     dCauchydF.setZero();
 
-    auto& F = F_np;
+    auto& F    = F_np;
+    auto  FInv = F.inverse();
 
     Tensor633d dSdF;
     dSdF.setZero();
@@ -52,16 +53,17 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     auto I = Matrix3d::Identity();
 
-    // TODO: partial derivative of J^-1 wrt F currently neglected;
     for ( int ij = 0; ij < 6; ij++ ) {
         auto [i, j] = fromVoigt<3>( ij );
         for ( int k = 0; k < 3; k++ )
-            for ( int L = 0; L < 3; L++ )
+            for ( int L = 0; L < 3; L++ ) {
+                dCauchydF( ij, k, L ) -= FInv( L, k ) * Cauchy( ij );
                 for ( int N = 0; N < 3; N++ ) {
-                    dCauchydF( ij, k, L ) += 1. / J * +S_( L, N ) * ( F( j, N ) * I( i, k ) + F( i, N ) * I( j, k ) ) ;
+                    dCauchydF( ij, k, L ) += 1. / J * +S_( L, N ) * ( F( j, N ) * I( i, k ) + F( i, N ) * I( j, k ) );
                     for ( int M = 0; M < 3; M++ )
                         dCauchydF( ij, k, L ) += 1. / J * F( i, M ) * dSdF( toVoigt<3>( M, N ), k, L ) * F( j, N );
                 }
+            }
     }
 }
 
