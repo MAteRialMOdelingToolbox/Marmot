@@ -37,8 +37,8 @@ class BftMaterialMechanicalNonLocal : public BftMaterial {
                                 double*       dStressDK,
                                 const double* FOld,
                                 const double* FNew,
-                                double        KOld,
-                                double        dK,
+                                const double  KOld,
+                                const double  dK,
                                 const double* timeOld,
                                 const double  dT,
                                 double&       pNewDT ) = 0;
