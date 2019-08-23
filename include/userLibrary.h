@@ -51,6 +51,7 @@ namespace userLibrary {
          *                  1: mechanical + nonlocal damage,
          *                  2: mechanical (=displacement) large strain TL,
          *                  3: mechanical (=displacement) large strain UL,
+         *                  4: mechanical + nonlocal damage, large strain UL,
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -143,6 +144,10 @@ namespace userLibrary {
         UelC3D8RNonLocal  = 816,
         UelC3D20NonLocal  = 2013,
         UelC3D20RNonLocal = 2016,
+
+        // Nonlocal, Updated Lagrange
+        UelC3D8NonLocalUL   = 843,
+        UelCPE4NonLocalUL   = 447,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );

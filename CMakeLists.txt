@@ -60,6 +60,7 @@ set(elements
     uelDisplacementUL
     uelDisplacementEAS
     uelNonLocal
+    uelNonLocalUL
     uelNonLocalEAS
     uelNonLocalMixed
     )

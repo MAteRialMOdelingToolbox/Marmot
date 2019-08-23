@@ -207,6 +207,9 @@ namespace userLibrary {
 #ifdef UELNONLOCALEAS
 #    include "uelNonLocalEASFactory.h"
 #endif
+#ifdef UELNONLOCALUL
+#    include "uelNonLocalULFactory.h"
+#endif
 
 namespace userLibrary {
 
@@ -261,6 +264,9 @@ namespace userLibrary {
             {"UELC3D8RNONLOCAL", UelC3D8RNonLocal},
             {"UELC3D20NONLOCAL", UelC3D20NonLocal},
             {"UELC3D20RNONLOCAL", UelC3D20RNonLocal},
+            /**/
+            {"UELC3D8NONLOCALUL", UelC3D8NonLocalUL},
+            {"UELCPE4NONLOCALUL", UelCPE4NonLocalUL},
 
         };
         return elementCodeMap[elementName];
@@ -330,6 +336,10 @@ namespace userLibrary {
             case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b(elementNumber);}
             case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementNumber);}
             #endif
+            #ifdef UELNONLOCALUL
+            case UelCPE4NonLocalUL: {return UelNonLocalULFactory:: generateUelCPE4NonLocalUL(elementNumber);}
+            case UelC3D8NonLocalUL: {return UelNonLocalULFactory:: generateUelC3D8NonLocalUL(elementNumber);}
+            #endif 
         // clang-format on
         default: {
             std::ostringstream str;
