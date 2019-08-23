@@ -239,6 +239,7 @@ namespace userLibrary {
             {"UELC3D20TL", UelC3D20TL},
             {"UELC3D20RTL", UelC3D20RTL},
             {"UELCPE4UL", UelCPE4UL},
+            {"UELCPE8RUL", UelCPE8RUL},
             {"UELC3D8UL", UelC3D8UL},
             {"UELCPE4EAS2", UelCPE4EAS2},
             {"UELCPE4EAS4", UelCPE4EAS4},
@@ -304,6 +305,7 @@ namespace userLibrary {
             #endif 
             #ifdef UELDISPLACEMENTUL
             case UelCPE4UL: {return UelDisplacementULFactory:: generateUelCPE4UL(elementNumber);}
+            case UelCPE8RUL: {return UelDisplacementULFactory:: generateUelCPE8RUL(elementNumber);}
             case UelC3D8UL: {return UelDisplacementULFactory:: generateUelC3D8UL(elementNumber);}
             #endif 
             #ifdef UELNONLOCAL
