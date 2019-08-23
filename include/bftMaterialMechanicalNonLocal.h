@@ -1,7 +1,7 @@
 #pragma once
 #include "bftMaterial.h"
 
-class BftMaterialMechanical : public BftMaterial {
+class BftMaterialMechanicalNonLocal : public BftMaterial {
 
     /*
        Abstract basic class for Mechanical materials.
