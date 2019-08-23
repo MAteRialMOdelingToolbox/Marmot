@@ -55,7 +55,7 @@ class BftMaterialMechanicalNonLocal : public BftMaterial {
                                      double        dK,
                                      const double* timeOld,
                                      const double  dT,
-                                     double&       pNewDT );
+                                     double&       pNewDT ) {};
 
     virtual void computeUniaxialStress( double*       stress,
                                         double&       K_local,
@@ -69,5 +69,5 @@ class BftMaterialMechanicalNonLocal : public BftMaterial {
                                         double        dK,
                                         const double* timeOld,
                                         const double  dT,
-                                        double&       pNewDT );
+                                        double&       pNewDT ) {};
 };

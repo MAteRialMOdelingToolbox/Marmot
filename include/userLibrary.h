@@ -149,6 +149,8 @@ namespace userLibrary {
         // Nonlocal, Updated Lagrange
         UelC3D8NonLocalUL   = 843,
         UelCPE4NonLocalUL   = 447,
+        UelCPE4RNonLocalUL   = 448,
+        UelCPE8RNonLocalUL   = 848,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );

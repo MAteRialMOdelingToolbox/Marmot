@@ -268,6 +268,8 @@ namespace userLibrary {
             /**/
             {"UELC3D8NONLOCALUL", UelC3D8NonLocalUL},
             {"UELCPE4NONLOCALUL", UelCPE4NonLocalUL},
+            {"UELCPE4RNONLOCALUL", UelCPE4RNonLocalUL},
+            {"UELCPE8RNONLOCALUL", UelCPE8RNonLocalUL},
 
         };
         return elementCodeMap[elementName];
@@ -305,7 +307,7 @@ namespace userLibrary {
             #endif 
             #ifdef UELDISPLACEMENTUL
             case UelCPE4UL: {return UelDisplacementULFactory:: generateUelCPE4UL(elementNumber);}
-            case UelCPE8RUL: {return UelDisplacementULFactory:: generateUelCPE8RUL(elementNumber);}
+            //case UelCPE8RUL: {return UelDisplacementULFactory:: generateUelCPE8RUL(elementNumber);}
             case UelC3D8UL: {return UelDisplacementULFactory:: generateUelC3D8UL(elementNumber);}
             #endif 
             #ifdef UELNONLOCAL
@@ -340,6 +342,8 @@ namespace userLibrary {
             #endif
             #ifdef UELNONLOCALUL
             case UelCPE4NonLocalUL: {return UelNonLocalULFactory:: generateUelCPE4NonLocalUL(elementNumber);}
+            case UelCPE4RNonLocalUL: {return UelNonLocalULFactory:: generateUelCPE4RNonLocalUL(elementNumber);}
+            case UelCPE8RNonLocalUL: {return UelNonLocalULFactory:: generateUelCPE8RNonLocalUL(elementNumber);}
             case UelC3D8NonLocalUL: {return UelNonLocalULFactory:: generateUelC3D8NonLocalUL(elementNumber);}
             #endif 
         // clang-format on
