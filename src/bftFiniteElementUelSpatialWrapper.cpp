@@ -148,8 +148,8 @@ void BftElementSpatialWrapper::computeYourself( const double* Q,
     VectorXd Q_Projected  = P * Q_Unprojected;
     VectorXd dQ_Projected = P * dQ_Unprojected;
 
-    VectorXd Pe_Projected( projectedSize );
-    MatrixXd Ke_Projected( projectedSize, projectedSize );
+    VectorXd Pe_Projected = VectorXd::Zero(projectedSize);
+    MatrixXd Ke_Projected = MatrixXd::Zero(projectedSize, projectedSize);
 
     childElement->computeYourself( Q_Projected.data(),
                                    dQ_Projected.data(),
@@ -165,8 +165,8 @@ void BftElementSpatialWrapper::computeYourself( const double* Q,
     Map<VectorXd> Pe_Unprojected( Pe_, unprojectedSize );
     Map<MatrixXd> Ke_Unprojected( Ke_, unprojectedSize, unprojectedSize );
 
-    Ke_Unprojected = P.transpose() * Ke_Projected * P;
-    Pe_Unprojected = P.transpose() * Pe_Projected;
+    Ke_Unprojected += P.transpose() * Ke_Projected * P;
+    Pe_Unprojected += P.transpose() * Pe_Projected;
 }
 
 void BftElementSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
