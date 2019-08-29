@@ -27,7 +27,6 @@ set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
 
 set (materials
-    #Barodesy 
     Barodesy
     BarodesyGradientVoid
     LinearElastic
@@ -35,10 +34,10 @@ set (materials
     LinearElasticSolidificationCreep
     HoekBrown
     ModLeon
-    #ModLeonSemiExplicit
+    ModLeonSemiExplicit
     ModLeonAnalytical
     ModLeonAdaptive
-    #ModLeonSemiExplicitAdaptive
+    ModLeonSemiExplicitAdaptive
     ModLeonPlaneStress
     ModLeonNonLocal
     MohrCoulomb
@@ -61,6 +60,7 @@ set(elements
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalUL
+    uelNonLocalULFBar
     uelNonLocalEAS
     uelNonLocalMixed
     )
@@ -73,8 +73,8 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
   # only activate if you know what you are doing:
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
   #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 elseif(MSVC)

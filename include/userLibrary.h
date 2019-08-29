@@ -39,8 +39,8 @@ namespace userLibrary {
 
         /*
          * XXXXXX
-         * ||||||_    6: if EAS: number of EAS Parameters
-         * |||||__    5: if EAS: number of EAS Parameters
+         * ||||||_    6: if EAS: number of EAS Parameters 
+         * |||||__    5: if EAS: number of EAS Parameters (01 = FBar / Bbar)
          * ||||___    4: type of element
          * |||____    3: active fields
          * ||_____    2: number of nodes
@@ -151,6 +151,9 @@ namespace userLibrary {
         UelCPE4NonLocalUL   = 447,
         UelCPE4RNonLocalUL   = 448,
         UelCPE8RNonLocalUL   = 848,
+        // FBar versions
+        UelC3D8NonLocalULFBar   = 84301,
+        UelCPE4NonLocalULFBar   = 44701,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );

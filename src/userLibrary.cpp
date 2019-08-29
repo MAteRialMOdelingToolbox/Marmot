@@ -210,6 +210,9 @@ namespace userLibrary {
 #ifdef UELNONLOCALUL
 #    include "uelNonLocalULFactory.h"
 #endif
+#ifdef UELNONLOCALULFBAR
+#    include "uelNonLocalULFBarFactory.h"
+#endif
 
 namespace userLibrary {
 
@@ -265,11 +268,14 @@ namespace userLibrary {
             {"UELC3D8RNONLOCAL", UelC3D8RNonLocal},
             {"UELC3D20NONLOCAL", UelC3D20NonLocal},
             {"UELC3D20RNONLOCAL", UelC3D20RNonLocal},
-            /**/
+            /*NonLocal, large strain*/
             {"UELC3D8NONLOCALUL", UelC3D8NonLocalUL},
             {"UELCPE4NONLOCALUL", UelCPE4NonLocalUL},
             {"UELCPE4RNONLOCALUL", UelCPE4RNonLocalUL},
             {"UELCPE8RNONLOCALUL", UelCPE8RNonLocalUL},
+            /*NonLocal, large strain, FBar*/
+            {"UELC3D8NONLOCALULFBAR", UelC3D8NonLocalULFBar},
+            {"UELCPE4NONLOCALULFBAR", UelCPE4NonLocalULFBar},
 
         };
         return elementCodeMap[elementName];
@@ -345,6 +351,10 @@ namespace userLibrary {
             case UelCPE4RNonLocalUL: {return UelNonLocalULFactory:: generateUelCPE4RNonLocalUL(elementNumber);}
             case UelCPE8RNonLocalUL: {return UelNonLocalULFactory:: generateUelCPE8RNonLocalUL(elementNumber);}
             case UelC3D8NonLocalUL: {return UelNonLocalULFactory:: generateUelC3D8NonLocalUL(elementNumber);}
+            #endif 
+            #ifdef UELNONLOCALULFBAR
+            case UelCPE4NonLocalULFBar: {return UelNonLocalULFBarFactory:: generateUelCPE4NonLocalULFBar(elementNumber);}
+            case UelC3D8NonLocalULFBar: {return UelNonLocalULFBarFactory:: generateUelC3D8NonLocalULFBar(elementNumber);}
             #endif 
         // clang-format on
         default: {
