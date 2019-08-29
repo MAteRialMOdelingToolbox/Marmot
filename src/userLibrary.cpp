@@ -268,12 +268,12 @@ namespace userLibrary {
             {"UELC3D8RNONLOCAL", UelC3D8RNonLocal},
             {"UELC3D20NONLOCAL", UelC3D20NonLocal},
             {"UELC3D20RNONLOCAL", UelC3D20RNonLocal},
-            /*NonLocal, large strain*/
+            //[>NonLocal, large strain<]
             {"UELC3D8NONLOCALUL", UelC3D8NonLocalUL},
             {"UELCPE4NONLOCALUL", UelCPE4NonLocalUL},
             {"UELCPE4RNONLOCALUL", UelCPE4RNonLocalUL},
             {"UELCPE8RNONLOCALUL", UelCPE8RNonLocalUL},
-            /*NonLocal, large strain, FBar*/
+            //[>NonLocal, large strain, FBar<]
             {"UELC3D8NONLOCALULFBAR", UelC3D8NonLocalULFBar},
             {"UELCPE4NONLOCALULFBAR", UelCPE4NonLocalULFBar},
 

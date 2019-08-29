@@ -20,14 +20,11 @@ void BftMaterialHypoElastic::computeStress( double*       stress_,
                                             const double* FNew_,
                                             const double* timeOld,
                                             const double  dT,
-                                            double&       pNewDT )
-{
+                                            double&       pNewDT ) {
     // Standard implemenation of the Abaqus like Hughes-Winget algorithm
     // Approximation of the algorithmic tangent in order to
     // facilitate the dCauchy_dStrain tangent provided by
     // small strain material models
-    //
-    // strain increment is computed at midstep
 
     using namespace bft;
     using namespace bft::TensorUtility;
@@ -140,14 +137,13 @@ void BftMaterialHypoElastic::computeUniaxialStress( double* stress_,
             return;
         }
 
-        double residual = stressTemp.array().abs()[1] + stressTemp.array().abs()[2];
+        const double residual = stressTemp.array().abs().segment(1,2).sum();
 
         if ( residual < 1.e-10 || ( count > 7 && residual < 1e-8 ) ) {
             break;
         }
 
-        dStrainTemp.segment<2>( 1 ) -= dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve(
-            stressTemp.segment<2>( 1 ) );
+        dStrainTemp.segment<2>( 1 ) -= dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve( stressTemp.segment<2>( 1 ) );
 
         count += 1;
         if ( count > 13 ) {
