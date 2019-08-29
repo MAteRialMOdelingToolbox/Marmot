@@ -1,3 +1,4 @@
+#include "HughesWinget.h"
 #include "bftFunctions.h"
 #include "bftKinematics.h"
 #include "bftMaterialHypoElastic.h"
@@ -32,59 +33,22 @@ void BftMaterialHypoElastic::computeStress( double*       stress_,
     using namespace bft::TensorUtility;
     using namespace kinematics::velocityGradient;
 
-    const Map<const Matrix3d> FNew( FNew_ );
     const Map<const Matrix3d> FOld( FOld_ );
+    const Map<const Matrix3d> FNew( FNew_ );
     bft::mVector6             stress( stress_ );
 
-    Matrix3d FMidStep = 0.5 * ( FNew + FOld );
+    HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
 
-    Matrix3d l = ( FNew - FOld ) * FMidStep.inverse(); // actually l * dT
-
-    Matrix3d dEps_  = 0.5 * ( l + l.transpose() ); // actually d * dT
-    Matrix3d dOmega = 0.5 * ( l - l.transpose() ); // actually omega * dT
-
-    Matrix3d dR = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
-
-    stress = Vgt::stressToVoigt( dR * Vgt::voigtToStress( stress ) * dR.transpose() );
+    auto dEps = hughesWingetIntegrator.getStrainIncrement();
+    stress    = hughesWingetIntegrator.rotateTensor( stress );
 
     Matrix6 CJaumann;
 
-    Vector6 dEps = Vgt::VoigtFromStrainMatrix( dEps_ );
     computeStress( stress.data(), CJaumann.data(), dEps.data(), timeOld, dT, pNewDT );
 
-    Tensor633d                          dS_dl;
-    Tensor633d                          dStressRotational_dl;
-    Tensor633d                          dStressJaumann_dl;
     TensorMap<Eigen::Tensor<double, 3>> dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
 
-    auto stressNew = Vgt::StressMatrixFromVoigt<3>( stress );
-
-    dStressRotational_dl.setZero();
-    for ( int ij = 0; ij < 6; ij++ ) {
-        auto [i, j] = IndexNotation::fromVoigt<3>( ij );
-        for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ )
-                for ( int m = 0; m < 3; m++ )
-                    dStressRotational_dl( ij, k, l ) += dOmega_dVelocityGradient( i, m, k, l ) * stressNew( m, j ) +
-                                                        dOmega_dVelocityGradient( j, m, k, l ) * stressNew( i, m );
-    }
-
-    dStressJaumann_dl.setZero();
-    for ( int ij = 0; ij < 6; ij++ )
-        for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ )
-                for ( int mn = 0; mn < 6; mn++ )
-                    dStressJaumann_dl( ij, k, l ) += CJaumann( ij, mn ) * dStretchingRate_dVelocityGradient( mn, k, l );
-
-    dS_dl     = dStressJaumann_dl + dStressRotational_dl;
-    auto FInv = FNew.inverse();
-
-    dS_dF.setZero();
-    for ( int ij = 0; ij < 6; ij++ )
-        for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ )
-                for ( int m = 0; m < 3; m++ )
-                    dS_dF( ij, k, l ) += dS_dl( ij, k, m ) * FInv( l, m );
+    dS_dF = hughesWingetIntegrator.compute_dS_dF( stress, FNew.inverse(), CJaumann );
 }
 
 void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
