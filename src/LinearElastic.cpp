@@ -18,8 +18,6 @@ void LinearElastic::computeStress( double* stress,
     const double& E  = materialProperties[0];
     const double& nu = materialProperties[1];
 
-    const int nTensor = 6;
-
     mVector6           S( stress );
     Map<const Vector6> dE( dStrain );
     mMatrix6           C( dStressDDStrain );
