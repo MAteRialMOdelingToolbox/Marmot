@@ -38,6 +38,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
                                 const double  dT,
                                 double&       pNewDT ) = 0;
 
+    using BftMaterialMechanical::computePlaneStress;
     virtual void computePlaneStress( double*       stress,
                                      double*       dStressDDStrain,
                                      double*       dStrain,
@@ -45,6 +46,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
                                      const double  dT,
                                      double&       pNewDT );
 
+    using BftMaterialMechanical::computeUniaxialStress;
     virtual void computeUniaxialStress( double*       stress,
                                         double*       dStressDDStrain,
                                         double*       dStrain,
