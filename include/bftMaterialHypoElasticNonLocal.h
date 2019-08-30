@@ -36,6 +36,7 @@ class BftMaterialHypoElasticNonLocal : public BftMaterialMechanicalNonLocal {
                                 const double  dT,
                                 double&       pNewDT ) = 0;
 
+    using BftMaterialMechanicalNonLocal::computePlaneStress;
     virtual void computePlaneStress( double*       stress,
                                      double&       K_local,
                                      double&       nonLocalRadius,
