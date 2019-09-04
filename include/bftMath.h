@@ -1,7 +1,7 @@
 #pragma once
 #include "bftConstants.h"
 #include "bftTypedefs.h"
-#include <algorithm> // std::max
+#include <algorithm> 
 
 namespace bft {
     namespace Math {
