@@ -23,6 +23,7 @@ if(CMAKE_VERSION VERSION_LESS "3.9.0")
 endif()
 
 set(bftMechanicsDir "modules/bftMechanics/")
+set(bftFiniteElementCoreDir "modules/bftFiniteElementCore/")
 
 set(optionalLibsRootDir "modules/")
 
@@ -67,28 +68,28 @@ set(elements
 
 # Compiler specific stettings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
-  # only activate if you know what you are doing:
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+    # only activate if you know what you are doing:
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 elseif(MSVC)
-  if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-    string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-  endif()
+    if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    endif()
 endif()
 
 # If not build type was specified, Release is default
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-  message("--> setting to default CMAKE_BUILD_TYPE Release")
+    set(CMAKE_BUILD_TYPE Release)
+    message("--> setting to default CMAKE_BUILD_TYPE Release")
 endif()
 
 # Add sources
@@ -116,6 +117,7 @@ foreach(library ${elements})
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
+        set(bftElements_are_present ON)
         include_directories(${librarypath}/include)
         file(GLOB libsources "${librarypath}/src/*.cpp")
         set(sources ${sources} ${libsources})
@@ -123,6 +125,19 @@ foreach(library ${elements})
         add_definitions(-D${LIBRARY})
     endif()
 endforeach(library)
+
+#  bftFiniteElementCore, mandatory if bftElements are used 
+get_filename_component(bftFiniteElementCoreDir ${bftFiniteElementCoreDir} ABSOLUTE) 
+if(EXISTS ${bftFiniteElementCoreDir})
+    message("--> found bftFiniteElementCore")
+    include_directories(${bftFiniteElementCoreDir}/include)
+    file(GLOB libsources "${bftFiniteElementCoreDir}/src/*.cpp")
+    set(sources ${sources} ${libsources})
+else()
+    if (DEFINED bftElements_are_present)
+        message(FATAL_ERROR "found bftElements, but no bftFiniteElementCore")
+    endif()
+endif()
 
 # mandatory bftMechanics
 get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
