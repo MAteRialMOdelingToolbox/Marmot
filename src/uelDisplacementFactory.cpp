@@ -9,8 +9,8 @@ namespace UelDisplacementFactory {
             new UelDisplacement<1, 2>( elementID,
                                        bft::NumIntegration::IntegrationTypes::FullIntegration,
                                        UelDisplacement<1, 2>::SectionType::UniaxialStress ) );
-        constexpr int indicesToBeWrapped[] = {0, 1};
-        constexpr int nIndicesToBeWrapped  = 2;
+        constexpr static int indicesToBeWrapped[] = {0, 1};
+        constexpr static int nIndicesToBeWrapped  = 2;
         return new BftElementSpatialWrapper( 2, 1, 2, 2, indicesToBeWrapped, nIndicesToBeWrapped, std::move( uelT2D2 ) );
     }
     BftElement* generateUelCPS4( int elementID )
