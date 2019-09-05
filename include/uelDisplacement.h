@@ -306,6 +306,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
                                                      pNewDT );
 
             C << mechanics::getUniaxialStressTangent( C66 );
+            S(0) = gaussPt.stress(0);
         }
 
         else if constexpr ( nDim == 2 ) {
