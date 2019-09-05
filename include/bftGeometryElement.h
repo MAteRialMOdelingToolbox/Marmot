@@ -39,7 +39,7 @@ class BftGeometryElement {
     std::string getElementShape()
     {
         using namespace bft::FiniteElement;
-        static std::map<ElementShapes, std::string> shapes = {{Truss2, "truss2"},
+        static std::map<ElementShapes, std::string> shapes = {{Bar2, "bar2"},
                                                               {Quad4, "quad4"},
                                                               {Quad8, "quad8"},
                                                               {Hexa8, "hexa8"},

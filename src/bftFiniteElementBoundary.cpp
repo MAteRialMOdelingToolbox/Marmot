@@ -19,15 +19,15 @@ namespace bft {
                  * */
 
             case Quad4: {
-                boundaryShape                = Truss2;
-                nNodes                       = Spatial1D::Truss2::nNodes;
+                boundaryShape                = Bar2;
+                nNodes                       = Spatial1D::Bar2::nNodes;
                 boundaryIndicesInParentNodes = Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
 
             case Quad8: {
-                boundaryShape                = Truss3;
-                nNodes                       = Spatial1D::Truss3::nNodes;
+                boundaryShape                = Bar3;
+                nNodes                       = Spatial1D::Bar3::nNodes;
                 boundaryIndicesInParentNodes = Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
                 break;
             }
@@ -74,14 +74,14 @@ namespace bft {
                  * ... and extend for future elements here!
                  *
                  * */
-                case Truss2: {
-                    gpt.N     = Spatial1D::Truss2::N( gpt.xi( 0 ) );
-                    gpt.dNdXi = Spatial1D::Truss2::dNdXi( gpt.xi( 0 ) );
+                case Bar2: {
+                    gpt.N     = Spatial1D::Bar2::N( gpt.xi( 0 ) );
+                    gpt.dNdXi = Spatial1D::Bar2::dNdXi( gpt.xi( 0 ) );
                     break;
                 }
-                case Truss3: {
-                    gpt.N     = Spatial1D::Truss3::N( gpt.xi( 0 ) );
-                    gpt.dNdXi = Spatial1D::Truss3::dNdXi( gpt.xi( 0 ) );
+                case Bar3: {
+                    gpt.N     = Spatial1D::Bar3::N( gpt.xi( 0 ) );
+                    gpt.dNdXi = Spatial1D::Bar3::dNdXi( gpt.xi( 0 ) );
                     break;
                 }
                 case Quad4: {

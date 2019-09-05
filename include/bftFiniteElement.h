@@ -6,8 +6,8 @@ namespace bft {
 
     namespace FiniteElement {
         enum ElementShapes {
-            Truss2,
-            Truss3,
+            Bar2,
+            Bar3,
             Quad4,
             Quad8,
             Hexa8,
@@ -53,7 +53,7 @@ namespace bft {
         Eigen::VectorXi expandNodeIndicesToCoordinateIndices( const Eigen::VectorXi& nodeIndices, int nDim );
 
         namespace Spatial1D {
-            namespace Truss2 {
+            namespace Bar2 {
 
                 constexpr int nNodes = 2;
                 using NSized         = Eigen::Matrix<double, 1, nNodes>;
@@ -61,9 +61,9 @@ namespace bft {
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
-            } // namespace Truss2
+            } // namespace Bar2 
 
-            namespace Truss3 {
+            namespace Bar3 {
 
                 constexpr int nNodes = 3;
                 using NSized         = Eigen::Matrix<double, 1, nNodes>;
@@ -71,7 +71,7 @@ namespace bft {
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
-            } // namespace Truss3
+            } // namespace Bar3 
         }     // namespace Spatial1D
 
         namespace Spatial2D {

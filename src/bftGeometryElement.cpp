@@ -10,11 +10,11 @@ using namespace Eigen;
  *
  * */
 
-// Truss2
+// Bar2
 template <>
 BftGeometryElement<1, 2>::NSized BftGeometryElement<1, 2>::N( const XiSized& xi )
 {
-    return bft::FiniteElement::Spatial1D::Truss2::N( xi( 0 ) );
+    return bft::FiniteElement::Spatial1D::Bar2::N( xi( 0 ) );
 }
 // Quad4
 template <>
@@ -43,11 +43,11 @@ BftGeometryElement<3, 20>::NSized BftGeometryElement<3, 20>::N( const XiSized& x
 
 /* Template Specialization for Shape functions derivatives.
  * */
-// Truss2
+// Bar2
 template <>
 BftGeometryElement<1, 2>::dNdXiSized BftGeometryElement<1, 2>::dNdXi( const XiSized& xi )
 {
-    return bft::FiniteElement::Spatial1D::Truss2::dNdXi( xi( 0 ) );
+    return bft::FiniteElement::Spatial1D::Bar2::dNdXi( xi( 0 ) );
 }
 // Quad4
 template <>
@@ -85,7 +85,7 @@ BftGeometryElement<3, 20>::dNdXiSized BftGeometryElement<3, 20>::dNdXi( const Xi
  *
  * */
 
-// Truss2
+// Bar2
 template <>
 typename BftGeometryElement<1, 2>::BSized BftGeometryElement<1, 2>::B( const dNdXiSized& dNdX )
 {
@@ -116,7 +116,7 @@ typename BftGeometryElement<3, 20>::BSized BftGeometryElement<3, 20>::B( const d
     return bft::FiniteElement::Spatial3D::B<20>( dNdX );
 }
 
-// Truss2
+// Bar2
 template <>
 typename BftGeometryElement<1, 2>::BSized BftGeometryElement<1, 2>::BGreen( const dNdXiSized&    dNdX,
                                                                             const JacobianSized& F )

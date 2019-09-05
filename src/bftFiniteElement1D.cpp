@@ -4,7 +4,7 @@
 namespace bft {
     namespace FiniteElement {
         namespace Spatial1D {
-            namespace Truss2 {
+            namespace Bar2 {
                 /*  (0)            (1)
                  *    o------------o
                  *
@@ -26,9 +26,9 @@ namespace bft {
                     return dNdXi;
                 }
 
-            } // end of namespace Truss2
+            } // end of namespace Bar2
 
-            namespace Truss3 {
+            namespace Bar3 {
                 /*
                  * (0)    (2)     (1)
                  *  o------o-------o
@@ -53,7 +53,7 @@ namespace bft {
                     return dNdXi;
                 }
 
-            } // end of namespace Truss3
+            } // end of namespace Bar3
         }     // namespace Spatial1D
     }         // namespace FiniteElement
 } // namespace bft

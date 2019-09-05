@@ -10,7 +10,7 @@ namespace bft {
             switch ( nDim ) {
             case ( 1 ): {
                 switch ( nNodes ) {
-                case 2: return ElementShapes::Truss2;
+                case 2: return ElementShapes::Bar2;
                 default: throw std::invalid_argument( "Invalid number of nodes for nDim=1" );
                 }
             }
@@ -96,14 +96,14 @@ namespace bft {
         {
             using bft::FiniteElement::ElementShapes;
             switch ( shape ) {
-            case ( ElementShapes::Truss2 ): {
+            case ( ElementShapes::Bar2 ): {
                 if ( integrationType == IntegrationTypes::FullIntegration )
                     return Spatial1D::gaussPtList2;
                 else
                     return Spatial1D::gaussPtList1;
             }
 
-            case ( ElementShapes::Truss3 ): {
+            case ( ElementShapes::Bar3 ): {
                 if ( integrationType == IntegrationTypes::FullIntegration )
                     return Spatial1D::gaussPtList3;
                 else
