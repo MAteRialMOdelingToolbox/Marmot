@@ -32,6 +32,7 @@ if __name__ == '__main__':
     directories += list ( walklevel( './modules/materials/' , 1) )
     directories += list ( walklevel( './modules/elements/' , 1) )
     directories += ['./modules/bftMechanics'] 
+    directories += ['./modules/bftFiniteElementCore'] 
 
     for d in directories:
 
