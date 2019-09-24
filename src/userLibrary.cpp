@@ -264,6 +264,7 @@ namespace userLibrary {
             {"UELC3D8NONLOCALEAS3", UelC3D8NonLocalEAS3},
             {"UELC3D8NONLOCALEAS6B", UelC3D8NonLocalEAS6b},
             {"UELC3D8NONLOCALEAS9", UelC3D8NonLocalEAS9},
+            {"UELC3D4NONLOCAL", UelC3D4NonLocal},
             {"UELC3D8NONLOCAL", UelC3D8NonLocal},
             {"UELC3D8RNONLOCAL", UelC3D8RNonLocal},
             {"UELC3D20NONLOCAL", UelC3D20NonLocal},
@@ -322,6 +323,7 @@ namespace userLibrary {
             case UelCPE4RNonLocal: {return UelNonLocalFactory:: generateUelCPE4RNonLocal(elementNumber);}
             case UelCPS8NonLocal: {return UelNonLocalFactory:: generateUelCPS8NonLocal(elementNumber);}
             case UelCPS8RNonLocal: {return UelNonLocalFactory:: generateUelCPS8RNonLocal(elementNumber);}
+            case UelC3D4NonLocal: {return UelNonLocalFactory:: generateUelC3D4NonLocal(elementNumber);}
             case UelC3D8NonLocal: {return UelNonLocalFactory:: generateUelC3D8NonLocal(elementNumber);}
             case UelC3D8RNonLocal: {return UelNonLocalFactory:: generateUelC3D8RNonLocal(elementNumber);}
             case UelCPE8NonLocal: {return UelNonLocalFactory:: generateUelCPE8NonLocal(elementNumber);}

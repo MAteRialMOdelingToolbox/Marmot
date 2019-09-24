@@ -141,6 +141,7 @@ namespace userLibrary {
         UelC3D8NonLocalEAS9  = 81309,
 
         // Solid
+        UelC3D4NonLocal   = 413,
         UelC3D8NonLocal   = 813,
         UelC3D8RNonLocal  = 816,
         UelC3D20NonLocal  = 2013,
