@@ -50,8 +50,8 @@ set (materials
     ShotLeonV2NonLocal
     SolidificationCreep
     StVenantKirchhoffIsotropic
-    UntereggerRockMass
-    UntereggerRockMassNonLocal
+    RockDamagePlasticity
+    RockDamagePlasticityNonLocal
     UntereggerRockMassPlaxis)
 
 set(elements

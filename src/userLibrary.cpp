@@ -58,8 +58,8 @@
 #ifdef HOEKBROWN
 #    include "HoekBrown.h"
 #endif
-#ifdef UNTEREGGERROCKMASS
-#    include "UntereggerRockMass.h"
+#ifdef ROCKDAMAGEPLASTICITY
+#    include "RockDamagePlasticity.h"
 #endif
 #ifdef UNTEREGGERROCKMASSPLAXIS
 #    include "UntereggerRockMassPlaxis.h"
@@ -67,8 +67,8 @@
 #ifdef MohrCoulomb
 #    include "materialCodeMohrCoulomb.h"
 #endif
-#ifdef UNTEREGGERROCKMASSNONLOCAL
-#    include "UntereggerRockMassNonLocal.h"
+#ifdef ROCKDAMAGEPLASTICITYNONLOCAL
+#    include "RockDamagePlasticityNonLocal.h"
 #endif
 #ifdef LINEARELASTICNONLOCAL
 #    include "LinearElasticNonLocal.h"
@@ -93,9 +93,9 @@ namespace userLibrary {
             {"SCHAEDLICHSCHWEIGER", SchaedlichSchweiger},
             {"MODLEONNONLOCAL", ModLeonNonLocal},
             {"HOEKBROWN", HoekBrown},
-            {"UNTEREGGERROCKMASS", UntereggerRockMass},
+            {"ROCKDAMAGEPLASTICITY", RockDamagePlasticity},
             {"MOHRCOULOMB", MohrCoulomb},
-            {"UNTEREGGERROCKMASSNONLOCAL", UntereggerRockMassNonLocal},
+            {"ROCKDAMAGEPLASTICITYNONLOCAL", RockDamagePlasticityNonLocal},
             {"SHOTLEONNONLOCAL", ShotLeonNonLocal},
             {"SHOTLEONV2", ShotLeonV2},
             {"LINEARELASTIC", LinearElastic},
@@ -166,11 +166,11 @@ namespace userLibrary {
             #ifdef SCHAEDLICHSCHWEIGER
             case SchaedlichSchweiger: { return new class SchaedlichSchweiger(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            #ifdef UNTEREGGERROCKMASS
-            case UntereggerRockMass: { return new class UntereggerRockMass(materialProperties, nMaterialProperties, element, gaussPt);}
+            #ifdef ROCKDAMAGEPLASTICITY
+            case RockDamagePlasticity: { return new class RockDamagePlasticity(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
-            #ifdef UNTEREGGERROCKMASSNONLOCAL
-            case UntereggerRockMassNonLocal: { return new class UntereggerRockMassNonLocal(materialProperties, nMaterialProperties, element, gaussPt);}
+            #ifdef ROCKDAMAGEPLASTICITYNONLOCAL
+            case RockDamagePlasticityNonLocal: { return new class RockDamagePlasticityNonLocal(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef LINEARELASTICNONLOCAL
             case LinearElasticNonLocal: { return new class LinearElasticNonLocal(materialProperties, nMaterialProperties, element, gaussPt);}
