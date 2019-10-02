@@ -1,17 +1,20 @@
-#include "userLibrary.h"
+#include "bftElement.h"
 #include "bftMaterial.h"
 #include "bftTypedefs.h"
-#include "bftElement.h"
 #include "bftVoigt.h"
+#include "userLibrary.h"
 #include <map>
 #include <string>
 #include <tuple>
 
-#ifdef BARODESY 
+#ifdef BARODESY
 #    include "Barodesy.h"
 #endif
 #ifdef BARODESYGRADIENTVOID
 #    include "BarodesyGradientVoid.h"
+#endif
+#ifdef COSSERATLINEARELASTIC
+#    include "CosseratLinearElastic.h"
 #endif
 #ifdef LINEARELASTIC
 #    include "LinearElastic.h"
@@ -87,6 +90,7 @@ namespace userLibrary {
         static std::map<std::string, MaterialCode> materialCodeMap = {
             {"BARODESY", Barodesy},
             {"BARODESYGRADIENTVOID", BarodesyGradientVoid},
+            {"COSSERATLINEARELASTIC", CosseratLinearElastic},
             {"MODLEON", ModLeon},
             {"SHOTLEON", ShotLeon},
             {"MESCHKE", Meschke},
@@ -120,12 +124,15 @@ namespace userLibrary {
                                      int           gaussPt )
     {
         switch ( materialCode ) {
-            // clang-format off
+// clang-format off
             #ifdef BARODESY 
             case Barodesy: { return new class Barodesy(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef BARODESYGRADIENTVOID
             case BarodesyGradientVoid: { return new class BarodesyGradientVoid(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef COSSERATLINEARELASTIC
+            case CosseratLinearElastic: { return new class CosseratLinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
@@ -213,6 +220,9 @@ namespace userLibrary {
 #ifdef UELNONLOCALULFBAR
 #    include "uelNonLocalULFBarFactory.h"
 #endif
+#ifdef UELCOSSERAT
+#    include "uelCosseratFactory.h"
+#endif
 
 namespace userLibrary {
 
@@ -277,6 +287,8 @@ namespace userLibrary {
             //[>NonLocal, large strain, FBar<]
             {"UELC3D8NONLOCALULFBAR", UelC3D8NonLocalULFBar},
             {"UELCPE4NONLOCALULFBAR", UelCPE4NonLocalULFBar},
+            // Cosserat
+            {"UELCCPE4", UelCCPE4},
 
         };
         return elementCodeMap[elementName];
@@ -285,7 +297,7 @@ namespace userLibrary {
     BftElement* bftElementFactory( ElementCode elementCode, int elementNumber )
     {
         switch ( elementCode ) {
-            // clang-format off
+// clang-format off
             #ifdef UELDISPLACEMENT
             case UelT2D2: {return UelDisplacementFactory:: generateUelT2D2(elementNumber );}
             case UelCPS4: {return UelDisplacementFactory:: generateUelCPS4(elementNumber);}
@@ -358,6 +370,9 @@ namespace userLibrary {
             case UelCPE4NonLocalULFBar: {return UelNonLocalULFBarFactory:: generateUelCPE4NonLocalULFBar(elementNumber);}
             case UelC3D8NonLocalULFBar: {return UelNonLocalULFBarFactory:: generateUelC3D8NonLocalULFBar(elementNumber);}
             #endif 
+            #ifdef UELCOSSERAT
+            case UelCCPE4 : {return UelCosseratFactory::generateUelCCPE4(elementNumber);}
+            #endif
         // clang-format on
         default: {
             std::ostringstream str;

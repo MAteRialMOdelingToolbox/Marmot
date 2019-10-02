@@ -30,6 +30,7 @@ set(optionalLibsRootDir "modules/")
 set (materials
     Barodesy
     BarodesyGradientVoid
+    CosseratLinearElastic
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
@@ -55,6 +56,7 @@ set (materials
     UntereggerRockMassPlaxis)
 
 set(elements
+    uelCosserat
     uelDisplacement
     uelDisplacementTL
     uelDisplacementUL

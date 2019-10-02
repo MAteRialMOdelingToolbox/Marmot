@@ -33,6 +33,7 @@ namespace userLibrary {
         ModLeonAnalytical                = 23,
         Barodesy                         = 24,
         BarodesyGradientVoid             = 25,
+        CosseratLinearElastic            = 26,
     };
 
     enum ElementCode {
@@ -52,6 +53,7 @@ namespace userLibrary {
          *                  2: mechanical (=displacement) large strain TL,
          *                  3: mechanical (=displacement) large strain UL,
          *                  4: mechanical + nonlocal damage, large strain UL,
+         *                  5: cosserat mechanical
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -155,6 +157,9 @@ namespace userLibrary {
         // FBar versions
         UelC3D8NonLocalULFBar   = 84301,
         UelCPE4NonLocalULFBar   = 44701,
+
+        // Cosserat
+        UelCCPE4  = 457,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );
