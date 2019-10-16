@@ -16,6 +16,9 @@
 #ifdef COSSERATLINEARELASTIC
 #    include "CosseratLinearElastic.h"
 #endif
+#ifdef COSSERATDRUCKERPRAGER
+#    include "CosseratDruckerPrager.h"
+#endif
 #ifdef LINEARELASTIC
 #    include "LinearElastic.h"
 #endif
@@ -91,6 +94,7 @@ namespace userLibrary {
             {"BARODESY", Barodesy},
             {"BARODESYGRADIENTVOID", BarodesyGradientVoid},
             {"COSSERATLINEARELASTIC", CosseratLinearElastic},
+            {"COSSERATDRUCKERPRAGER", CosseratDruckerPrager},
             {"MODLEON", ModLeon},
             {"SHOTLEON", ShotLeon},
             {"MESCHKE", Meschke},
@@ -133,6 +137,9 @@ namespace userLibrary {
             #endif
             #ifdef COSSERATLINEARELASTIC
             case CosseratLinearElastic: { return new class CosseratLinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef COSSERATDRUCKERPRAGER 
+            case CosseratDruckerPrager: { return new class CosseratDruckerPrager(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
@@ -289,6 +296,8 @@ namespace userLibrary {
             {"UELCPE4NONLOCALULFBAR", UelCPE4NonLocalULFBar},
             // Cosserat
             {"UELCCPE4", UelCCPE4},
+            {"UELCCPE8R", UelCCPE8R},
+            {"UELCC3D8", UelCC3D8},
 
         };
         return elementCodeMap[elementName];
@@ -372,6 +381,8 @@ namespace userLibrary {
             #endif 
             #ifdef UELCOSSERAT
             case UelCCPE4 : {return UelCosseratFactory::generateUelCCPE4(elementNumber);}
+            case UelCCPE8R : {return UelCosseratFactory::generateUelCCPE8R(elementNumber);}
+            case UelCC3D8 : {return UelCosseratFactory::generateUelCC3D8(elementNumber);}
             #endif
         // clang-format on
         default: {

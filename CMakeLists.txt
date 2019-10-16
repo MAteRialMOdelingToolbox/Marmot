@@ -31,6 +31,7 @@ set (materials
     Barodesy
     BarodesyGradientVoid
     CosseratLinearElastic
+    CosseratDruckerPrager
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep

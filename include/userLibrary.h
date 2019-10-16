@@ -34,6 +34,7 @@ namespace userLibrary {
         Barodesy                         = 24,
         BarodesyGradientVoid             = 25,
         CosseratLinearElastic            = 26,
+        CosseratDruckerPrager            = 27,
     };
 
     enum ElementCode {
@@ -160,6 +161,8 @@ namespace userLibrary {
 
         // Cosserat
         UelCCPE4  = 457,
+        UelCCPE8R  = 858,
+        UelCC3D8  = 853,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );
