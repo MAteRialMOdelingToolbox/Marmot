@@ -24,6 +24,7 @@ namespace bft {
             }
             case ( 3 ): {
                 switch ( nNodes ) {
+                case 4: return ElementShapes::Tetra4;
                 case 8: return ElementShapes::Hexa8;
                 case 20: return ElementShapes::Hexa20;
                 default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
@@ -122,6 +123,14 @@ namespace bft {
                     return Spatial2D::gaussPtList3x3;
                 else
                     return Spatial2D::gaussPtList2x2;
+            }
+
+            case ( ElementShapes::Tetra4): {
+                                             return Spatial3D::gaussPtListTetra4;
+                //if ( integrationType == IntegrationTypes::FullIntegration )
+                    //return Spatial3D::gaussPtList2x2x2;
+                //else
+                    //return Spatial3D::gaussPtList1x1x1;
             }
 
             case ( ElementShapes::Hexa8 ): {

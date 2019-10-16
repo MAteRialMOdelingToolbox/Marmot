@@ -6,6 +6,72 @@ using namespace Eigen;
 namespace bft {
     namespace FiniteElement {
         namespace Spatial3D {
+            namespace Tetra4{
+
+                NSized N( const Vector3d& xi )
+                {
+                    /*
+                     *        (8)________(7)
+                     *          /|      /|
+                     *      (5)/_|_____(6)
+                     *        |  |     | |
+                     *        |(4)_____|_|(3)
+                     *        | /      | /
+                     *        |/_______|/
+                     *     (1)        (2)
+                     *
+                     *
+                     *     x3  x2
+                     *     | /
+                     *     |/___x1
+                     *
+                     *  */
+
+                    NSized N_;
+
+                    // clang-format off
+                    N_ << 1 - xi(0) - xi(1) - xi(2),
+                       xi(0),
+                       xi(1),
+                       xi(2);
+
+                    // clang-format on  
+
+                    return N_;
+
+                }
+                dNdXiSized dNdXi ( const Vector3d& xi )
+                {
+                    dNdXiSized dNdXi_;
+
+                    // clang-format off
+                    dNdXi_ << -1,
+                                1,
+                                0,
+                                0,
+
+                                -1,
+                                0,
+                                1,
+                                0,
+
+                                -1,
+                                0,
+                                0,
+                                1;
+
+                    // clang-format on
+
+                    return dNdXi_;
+                }
+
+                Vector3i getBoundaryElementIndices( int faceID )
+                {
+                        throw std::invalid_argument( "Tetra4: invalid face ID specifed" );
+                }
+
+            }
+
             namespace Hexa8 {
 
                 NSized N( const Vector3d& xi )
@@ -81,18 +147,6 @@ namespace bft {
                     // clang-format on
 
                     return dNdXi_;
-                }
-
-                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates )
-                {
-                    // convenience wrapper to the templated version of the Jacobian
-                    return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
-                }
-
-                BSized B( const dNdXiSized& dNdX )
-                {
-                    // convenience wrapper to the templated version of the Spatial2D B Operator
-                    return FiniteElement::Spatial3D::B<nNodes>( dNdX );
                 }
 
                 Vector4i getBoundaryElementIndices( int faceID )
@@ -245,18 +299,6 @@ namespace bft {
 
                     // clang-format on
                     return dNdXi_;
-                }
-
-                Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates )
-                {
-                    // convenience wrapper to the templated version of the Jacobian
-                    return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
-                }
-
-                BSized B( const dNdXiSized& dNdX )
-                {
-                    // convenience wrapper to the templated version of the Spatial2D B Operator
-                    return FiniteElement::Spatial3D::B<nNodes>( dNdX );
                 }
 
                 Vector8i getBoundaryElementIndices( int faceID )

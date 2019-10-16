@@ -73,17 +73,6 @@ namespace bft {
                     }
                 }
 
-                Matrix2d Jacobian( const dNdXiSized& dNdXi, const Vector8d& coordinates )
-                {
-                    // convenience wrapper to the templated version of the Jacobian
-                    return FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
-                }
-
-                BSized B( const dNdXiSized& dNdX )
-                {
-                    // convenience wrapper to the templated version of the Spatial2D B Operator
-                    return FiniteElement::Spatial2D::B<nNodes>( dNdX );
-                }
 
             } // end of namespace Quad4
             namespace Quad8 {
@@ -138,18 +127,6 @@ namespace bft {
                     // clang-format on  
 
                     return result;
-                }
-
-                Matrix2d Jacobian ( const dNdXiSized& dNdXi, const CoordinateSized& coordinates )
-                {
-                    // convenience wrapper to the templated version of the Jacobian
-                    return FiniteElement::Jacobian<nDim, nNodes> ( dNdXi, coordinates );
-                }
-
-                BSized B ( const dNdXiSized& dNdX )
-                {
-                    // convenience wrapper to the templated version of the Spatial2D B Operator
-                    return FiniteElement::Spatial2D::B<nNodes> ( dNdX ) ;
                 }
 
                 Vector3i getBoundaryElementIndices ( int faceID )

@@ -10,6 +10,7 @@ namespace bft {
             Bar3,
             Quad4,
             Quad8,
+            Tetra4,
             Hexa8,
             Hexa20,
         };
@@ -118,15 +119,9 @@ namespace bft {
                 using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
                 using NSized          = Eigen::Matrix<double, 1, nNodes>;
                 using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
-                using BSized          = Eigen::Matrix<double, voigtSize, nNodes * nDim>;
 
                 NSized     N( const Eigen::Vector2d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector2d& xi );
-
-                // convenience functions; they are wrappers to the corresponding
-                // template functions
-                Eigen::Matrix2d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
-                BSized          B( const dNdXiSized& dNdXi );
 
                 Eigen::Vector2i getBoundaryElementIndices( int faceID );
             } // namespace Quad4
@@ -137,15 +132,9 @@ namespace bft {
                 using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
                 using NSized          = Eigen::Matrix<double, 1, nNodes>;
                 using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
-                using BSized          = Eigen::Matrix<double, voigtSize, nNodes * nDim>;
 
                 NSized     N( const Eigen::Vector2d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector2d& xi );
-
-                // convenience functions; they are wrappers to the corresponding
-                // template functions
-                Eigen::Matrix2d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
-                BSized          B( const dNdXiSized& dNdXi );
 
                 Eigen::Vector3i getBoundaryElementIndices( int faceID );
             } // namespace Quad8
@@ -223,20 +212,28 @@ namespace bft {
                 return B_;
             }
 
+            namespace Tetra4{
+
+                constexpr int nNodes  = 4;
+                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Eigen::Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+
+                NSized     N( const Eigen::Vector3d& xi );
+                dNdXiSized dNdXi( const Eigen::Vector3d& xi );
+
+                Eigen::Vector3i getBoundaryElementIndices( int faceID );
+
+            }
+
             namespace Hexa8 {
                 constexpr int nNodes  = 8;
                 using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
                 using NSized          = Eigen::Matrix<double, 1, nNodes>;
                 using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
-                using BSized          = Eigen::Matrix<double, 6, nNodes * nDim>;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
-
-                // convenience functions; they are wrappers to the corresponding
-                // template functions
-                Eigen::Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
-                BSized          B( const dNdXiSized& dNdXi );
 
                 Eigen::Vector4i getBoundaryElementIndices( int faceID );
             } // namespace Hexa8
@@ -246,15 +243,9 @@ namespace bft {
                 using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
                 using NSized          = Eigen::Matrix<double, 1, nNodes>;
                 using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
-                using BSized          = Eigen::Matrix<double, 6, nNodes * nDim>;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
-
-                // convenience functions; they are wrappers to the corresponding
-                // template functions
-                Eigen::Matrix3d Jacobian( const dNdXiSized& dNdXi, const CoordinateSized& coordinates );
-                BSized          B( const dNdXiSized& dNdXi );
 
                 bft::Vector8i getBoundaryElementIndices( int faceID );
             } // namespace Hexa20
@@ -374,6 +365,10 @@ namespace bft {
             // clang-format off
             const std::vector< GaussPtInfo > gaussPtList1x1x1 = {
                 { Eigen::Vector3d::Zero(),                                         8.0 }
+            };
+
+            const std::vector< GaussPtInfo > gaussPtListTetra4 = {
+                { (Eigen::Vector3d() << 1./4, 1./4, 1./4).finished(),  1./6}
             };
 
             const std::vector< GaussPtInfo > gaussPtList2x2x2 = {

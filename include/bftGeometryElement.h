@@ -42,6 +42,7 @@ class BftGeometryElement {
         static std::map<ElementShapes, std::string> shapes = {{Bar2, "bar2"},
                                                               {Quad4, "quad4"},
                                                               {Quad8, "quad8"},
+                                                              {Tetra4, "tetra4"},
                                                               {Hexa8, "hexa8"},
                                                               {Hexa20, "hexa20"}};
 
