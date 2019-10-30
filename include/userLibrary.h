@@ -35,6 +35,8 @@ namespace userLibrary {
         BarodesyGradientVoid             = 25,
         CosseratLinearElastic            = 26,
         CosseratDruckerPrager            = 27,
+        MCDPModel                        = 28,
+        GMCDPModel                       = 29,
     };
 
     enum ElementCode {
@@ -54,7 +56,8 @@ namespace userLibrary {
          *                  2: mechanical (=displacement) large strain TL,
          *                  3: mechanical (=displacement) large strain UL,
          *                  4: mechanical + nonlocal damage, large strain UL,
-         *                  5: cosserat mechanical
+         *                  5: cosserat 
+         *                  6: cosserat   + nonlocal damage, 
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -163,6 +166,11 @@ namespace userLibrary {
         UelCCPE4  = 457,
         UelCCPE8R  = 858,
         UelCC3D8  = 853,
+
+        // Nonlocal Cosserat
+        UelNCCPE4  = 467,
+        UelNCCPE8R  = 868,
+        UelNCC3D8  = 863,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );
