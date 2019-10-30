@@ -11,6 +11,30 @@ namespace bft {
         extern const Tensor3333d Isym;
         extern const Tensor3333d Iskew;
         extern const Tensor3333d dDeviatoricStress_dStress;
+
+        extern const Tensor333d LeviCivita3D;
+        extern const Tensor122d LeviCivita2D;
+
+        constexpr int getNumberOfDofForRotation( int nDim )
+        {
+            if ( nDim == 2 )
+                return 1;
+            else
+                return 3;
+        }
+
+        template <int nDim>
+            constexpr Eigen::TensorFixedSize< double, Eigen::Sizes<getNumberOfDofForRotation (nDim), nDim, nDim> >     getReferenceToCorrectLeviCivita()
+        //template <int nDim>
+        //template <int nDim=2>
+            //constexpr Eigen::TensorFixedSize< double, Eigen::Sizes<getNumberOfDofForRotation (nDim), nDim, nDim> >     getReferenceToCorrectLeviCivita()
+            {
+                if constexpr ( nDim == 2)
+                    return LeviCivita2D;
+                else
+                return LeviCivita3D;
+            }
+
     } // namespace CommonTensors
 
     namespace TensorUtility {
