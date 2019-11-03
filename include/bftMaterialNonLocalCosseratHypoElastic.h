@@ -33,14 +33,19 @@ class BftMaterialNonLocalCosseratHypoElastic : public BftMaterial {
 
       template <int nDim>
     struct AlgorithmicModuli {
-        Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, nDim, nDim, nDim>> dStressDDStrain;
-        Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, nDim, nDim, getNumberOfDofForRotation(nDim)>> dStressDDCurvature;
+        constexpr static int nRot = getNumberOfDofForRotation(nDim);
+        Eigen::Matrix<double, nDim*nDim, nDim*nDim> dStressDDStrain;
+        Eigen::Matrix<double, nDim*nDim, nDim*nRot> dStressDDCurvature;
+        //Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, nDim, nDim, nDim>> dStressDDStrain;
+        //Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, nDim, nDim, getNumberOfDofForRotation(nDim)>> dStressDDCurvature;
         Eigen::Matrix<double, nDim, nDim> dStressDNonLocalField;
-        Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, getNumberOfDofForRotation(nDim),  nDim, nDim>> dCoupleStressDDStrain;
-        Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, getNumberOfDofForRotation(nDim),  nDim,  getNumberOfDofForRotation(nDim) >> dCoupleStressDDCurvature;
-        Eigen::Matrix<double, nDim, getNumberOfDofForRotation(nDim)> dCoupleStressDNonLocalField;
+        Eigen::Matrix<double, nDim*nRot, nDim*nDim> dCoupleStressDDStrain;
+        Eigen::Matrix<double, nDim*nRot, nDim*nRot> dCoupleStressDDCurvature;
+        //Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, getNumberOfDofForRotation(nDim),  nDim, nDim>> dCoupleStressDDStrain;
+        //Eigen::TensorFixedSize< double, Eigen::Sizes< nDim, getNumberOfDofForRotation(nDim),  nDim,  getNumberOfDofForRotation(nDim) >> dCoupleStressDDCurvature;
+        Eigen::Matrix<double, nDim, nRot> dCoupleStressDNonLocalField;
         Eigen::Matrix<double, nDim, nDim> dLocalFieldDDStrain;
-        Eigen::Matrix<double, nDim, getNumberOfDofForRotation(nDim)> dLocalFieldDDCurvature;
+        Eigen::Matrix<double, nDim, nRot> dLocalFieldDDCurvature;
         double dLocalFieldDNonLocalField;
     };
 
@@ -65,6 +70,8 @@ class BftMaterialNonLocalCosseratHypoElastic : public BftMaterial {
                                 double& pNewDT ) = 0;
 
     virtual void computePlaneStrain( ConstitutiveResponse<2>&,
+                                    Eigen::Map<Eigen::Matrix3d>& stress3D,
+                                    Eigen::Map<Eigen::Matrix3d>& coupleStress3D,
                                 AlgorithmicModuli<2>&,
                                 const DeformationIncrement<2>&,
                                 const TimeIncrement&,
