@@ -1,3 +1,4 @@
+#include "bftCosserat2D.h"
 #include "bftCosserat2DConversionTools.h"
 #include "bftMaterialNonLocalCosseratHypoElastic.h"
 #include "bftTypedefs.h"
@@ -7,18 +8,14 @@ using namespace Eigen;
 using namespace bft;
 
 void BftMaterialNonLocalCosseratHypoElastic::computePlaneStrain( ConstitutiveResponse<2>&       response,
-
-                                Eigen::Map<Eigen::Matrix3d>& stress3D,
-                                Eigen::Map<Eigen::Matrix3d>& coupleStress3D,
+                                                                 Eigen::Map<Eigen::Matrix3d>&   stress3D,
+                                                                 Eigen::Map<Eigen::Matrix3d>&   coupleStress3D,
                                                                  AlgorithmicModuli<2>&          algorithmicModuli,
                                                                  const DeformationIncrement<2>& deformationIncrement,
                                                                  const TimeIncrement&           timeIncrement,
                                                                  double&                        pNewDT )
 {
-    ConstitutiveResponse<3> response3D{
-                                       //bft::Cosserat::to3D( response.stress ),
-                                       //bft::Cosserat::momentTo3D( response.coupleStress ),
-                                       stress3D, 
+    ConstitutiveResponse<3> response3D{stress3D,
                                        coupleStress3D,
                                        response.localField,
                                        response.nonLocalRadius};
@@ -31,8 +28,8 @@ void BftMaterialNonLocalCosseratHypoElastic::computePlaneStrain( ConstitutiveRes
 
     this->computeStress( response3D, algorithmicModuli3D, deformationIncrement3D, timeIncrement, pNewDT );
 
-    stress3D = response3D.stress;
-    coupleStress3D = response3D.coupleStress;
+    stress3D       = response3D.stress.reshaped( 3, 3 );
+    coupleStress3D = response3D.coupleStress.reshaped( 3, 3 );
 
     response = {bft::Cosserat::S_to2D( response3D.stress ),
                 bft::Cosserat::M_to2D( response3D.coupleStress ),
@@ -51,86 +48,107 @@ void BftMaterialNonLocalCosseratHypoElastic::computePlaneStrain( ConstitutiveRes
 
         bft::Cosserat::S_to2D( algorithmicModuli3D.dLocalFieldDDStrain ),
         bft::Cosserat::M_to2D( algorithmicModuli3D.dLocalFieldDDCurvature ),
-
         algorithmicModuli3D.dLocalFieldDNonLocalField};
 }
 
-// void BftMaterialNonLocalCosseratHypoElastic::computePlaneStress( ConstitutiveResponse* response,
-// AlgorithmicModuli*    algorithmicModuli,
-// DeformationIncrement* deformationIncrement,
-// const TimeIncrement*  timeIncrement,
-// double&               pNewDT )
+//void BftMaterialNonLocalCosseratHypoElastic::computePlaneStress( ConstitutiveResponse<2>&       response,
+                                                                 //AlgorithmicModuli<2>&          algorithmicModuli,
+                                                                 //const DeformationIncrement<2>& deformationIncrement,
+                                                                 //const TimeIncrement&           timeIncrement,
+                                                                 //double&                        pNewDT )
 //{
-// using mVector9 = Map< Matrix<double, 9, 1>> ;
-// using mMatrix9 = Map< Matrix<double, 9, 9>> ;
 
-// Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
-// VectorXd stateVarsOld (  stateVars ) ;
+    //Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
+    //VectorXd      stateVarsOld( stateVars );
 
-// constexpr int nS = 5;
-// constexpr int nM = 7;
+    //constexpr int nCompS = 5;
+    //constexpr int nCompM = 7;
 
-////13, 23, 31,32,33
-// const static Array<double, nS, 1> sIndices {  2,   5, 6, 7, 8};
-////   11, 12, xx, 21, 22, xx, 31, 32, 33
-// const static Array<double, nM, 1> mIndices {  0,   1,      3,  4,      6,  7,  8};
+    //// 13, 23, 31,32,33
+    //const static Array<double, nCompS, 1> compS{2, 5, 6, 7, 8};
+    ////   11, 12, xx, 21, 22, xx, 31, 32, 33
+    //const static Array<double, nCompM, 1> compM{0, 1, 2, 3, 4, 5, 8};
 
-// constexpr int sizeEq = nS + nM;
+    //constexpr int sizeEq = nCompS + nCompM;
 
-// Vector9d stressOld ( mVector9 ( response-> stress ));
-// Vector9d coupleStressOld ( mVector9 ( response-> coupleStress ));
+    //using XSized  = Matrix<double, sizeEq, 1>;
+    //using XXSized = Matrix<double, sizeEq, sizeEq>;
 
-// using XSized = Matrix<double, sizeEq, 1>;
-// using XXSized = Matrix<double, sizeEq, sizeEq>;
+    //XSized dX = XSized::Zero();
+    //XSized residual;
 
-// XSized dX = XSized::Zero();
-// XSized residual;
+    //XXSized ReducedStiffness;
 
-// XXSized  ReducedStiffness;
+    //ConstitutiveResponse<3> response3D;
+    //ConstitutiveResponse<3> response3DOld{bft::Cosserat::to3D_( response.stress ),
+                                          //bft::Cosserat::to3D_( response.coupleStress ),
+                                          //response.localField,
+                                          //response.nonLocalRadius};
+    //AlgorithmicModuli<3>    algorithmicModuli3D;
 
-// int planeStressCount = 0;
-// while ( true ) {
-// mVector9 ( response->stress ) = stressOld;
-// mVector9 ( response->coupleStress ) = coupleStressOld;
-// stateVars  = stateVarsOld;
+    //DeformationIncrement<3> deformationIncrement3D = {bft::Cosserat::to3D_( deformationIncrement.dStrain ),
+                                                      //bft::Cosserat::to3D_( deformationIncrement.dCurvature ),
+                                                      //deformationIncrement.nonLocalField};
 
-// computeStress ( response,
-// algorithmicModuli,
-// deformationIncrement,
-// timeIncrement,
-// pNewDT);
+    //int planeStressCount = 0;
+    //while ( true ) {
+        //response3D = response3DOld;
+        //stateVars  = stateVarsOld;
 
-// if ( pNewDT < 1.0 ) {
-// return;
-//}
+        //computeStress( response3D, algorithmicModuli3D, deformationIncrement3D, timeIncrement, pNewDT );
 
-// residual.head( nS ) = mVector9 ( response->stress ) ( sIndices );
-// residual.tail( nM ) = mVector9 ( response->coupleStress ) ( mIndices );
+        //if ( pNewDT < 1.0 ) {
+            //return;
+        //}
 
-// const double resNorm = residual.array().abs().maxCoeff();
+        //residual.head( nCompS ) = response3D.stress( compS );
+        //residual.tail( nCompM ) = response3D.coupleStress( compM );
 
-// if ( resNorm < 1.e-14 ){
-// std::cout << resNorm << std::endl;
-// return;
-//}
+        //const double resNorm = residual.array().abs().maxCoeff();
 
-//// clang-format off
-// ReducedStiffness.topLeftCorner      (nS, nS) = mMatrix9 ( algorithmicModuli->dStressDDStrain )          ( sIndices,
-// sIndices ); ReducedStiffness.topRightCorner     (nS, nM) = mMatrix9 ( algorithmicModuli->dStressDDCurvature)        (
-// sIndices, mIndices ); ReducedStiffness.bottomLeftCorner   (nM, nS) = mMatrix9 (
-// algorithmicModuli->dCoupleStressDDStrain )    ( mIndices, sIndices ); ReducedStiffness.bottomRightCorner  (nM, nM) =
-// mMatrix9 ( algorithmicModuli->dCoupleStressDDCurvature)  ( mIndices, mIndices );
-//// clang-format on
+        //if ( resNorm < 1.e-12 ) {
+            //break;
+        //}
 
-// dX -= ReducedStiffness.fullPivHouseholderQr().solve( residual );
+        //// clang-format off
+         //ReducedStiffness.topLeftCorner      (nCompS, nCompS) = algorithmicModuli3D.dStressDDStrain           ( compS, compS ); 
+         //ReducedStiffness.topRightCorner     (nCompS, nCompM) = algorithmicModuli3D.dStressDDCurvature        ( compS, compM ); 
+         //ReducedStiffness.bottomLeftCorner   (nCompM, nCompS) = algorithmicModuli3D.dCoupleStressDDStrain     ( compM, compS ); 
+         //ReducedStiffness.bottomRightCorner  (nCompM, nCompM) = algorithmicModuli3D.dCoupleStressDDCurvature  ( compM, compM );
+        //// clang-format on
 
-// mVector9 ( deformationIncrement-> dStrain ) (sIndices) = dX.head(nS);
-// mVector9 ( deformationIncrement-> dCurvature ) (mIndices ) = dX.tail ( nM );
+        //dX -= ReducedStiffness.colPivHouseholderQr().solve( residual );
 
-// planeStressCount += 1;
-// if ( planeStressCount > 5 ) {
-// pNewDT = 0.25;
-// return;
-//}
-//}
+        //deformationIncrement3D.dStrain( compS )    = dX.head( nCompS );
+        //deformationIncrement3D.dCurvature( compM ) = dX.tail( nCompM );
+
+        //planeStressCount += 1;
+        //if ( planeStressCount > 10 ) {
+            //pNewDT = 0.25;
+            //return;
+        //}
+    //}
+
+    //response = {bft::Cosserat::S_to2D_( response3D.stress ),
+                //bft::Cosserat::M_to2D_( response3D.coupleStress ),
+                //response3D.localField,
+                //response3D.nonLocalRadius};
+
+    //const auto psAlgorithmicModuli = bft::Cosserat::PlaneStress::
+        //computePlaneStressTangents( algorithmicModuli3D.dStressDDStrain,
+                                    //algorithmicModuli3D.dStressDDCurvature,
+                                    //algorithmicModuli3D.dCoupleStressDDStrain,
+                                    //algorithmicModuli3D.dCoupleStressDDCurvature );
+
+    //algorithmicModuli = {psAlgorithmicModuli.dStressdStrain,
+                         //psAlgorithmicModuli.dStressdCurvature,
+                         //bft::Cosserat::S_to2D_( algorithmicModuli3D.dStressDNonLocalField ),
+
+                         //psAlgorithmicModuli.dCoupleStressdStrain,
+                         //psAlgorithmicModuli.dCoupleStressdCurvature,
+                         //bft::Cosserat::M_to2D_( algorithmicModuli3D.dCoupleStressDNonLocalField ),
+
+                         //bft::Cosserat::S_to2D_( algorithmicModuli3D.dLocalFieldDDStrain ),
+                         //bft::Cosserat::M_to2D_( algorithmicModuli3D.dLocalFieldDDCurvature ),
+                         //algorithmicModuli3D.dLocalFieldDNonLocalField};
 //}

@@ -318,6 +318,7 @@ namespace userLibrary {
             //NonLocal Cosserat
             {"UELNCCPE4", UelNCCPE4},
             {"UELNCCPE8R", UelNCCPE8R},
+            {"UELNCCPS8R", UelNCCPS8R},
             {"UELNCC3D8", UelNCC3D8},
 
         };
@@ -408,6 +409,7 @@ namespace userLibrary {
             #ifdef UELNONLOCALCOSSERAT
             case UelNCCPE4 : {return UelNonLocalCosseratFactory::generateUelNCCPE4(elementNumber);}
             case UelNCCPE8R : {return UelNonLocalCosseratFactory::generateUelNCCPE8R(elementNumber);}
+            //case UelNCCPS8R : {return UelNonLocalCosseratFactory::generateUelNCCPS8R(elementNumber);}
             //case UelNCC3D8 : {return UelNonLocalCosseratFactory::generateUelNCC3D8(elementNumber);}
             #endif
         // clang-format on

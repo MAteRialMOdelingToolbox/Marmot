@@ -170,6 +170,7 @@ namespace userLibrary {
         // Nonlocal Cosserat
         UelNCCPE4  = 467,
         UelNCCPE8R  = 868,
+        UelNCCPS8R  = 865,
         UelNCC3D8  = 863,
     };
 
