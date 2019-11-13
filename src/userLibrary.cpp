@@ -314,11 +314,12 @@ namespace userLibrary {
             // Cosserat
             {"UELCCPE4", UelCCPE4},
             {"UELCCPE8R", UelCCPE8R},
-            {"UELCC3D8", UelCC3D8},
+            {"UELCC3D20R", UelCC3D20R},
             //NonLocal Cosserat
-            {"UELNCCPE4", UelNCCPE4},
+            //{"UELNCCPE4", UelNCCPE4},
             {"UELNCCPE8R", UelNCCPE8R},
-            {"UELNCC3D8", UelNCC3D8},
+            {"UELNCCPS8R", UelNCCPS8R},
+            {"UELNCC3D8R", UelNCC3D8R},
 
         };
         return elementCodeMap[elementName];
@@ -403,12 +404,13 @@ namespace userLibrary {
             #ifdef UELCOSSERAT
             case UelCCPE4 : {return UelCosseratFactory::generateUelCCPE4(elementNumber);}
             case UelCCPE8R : {return UelCosseratFactory::generateUelCCPE8R(elementNumber);}
-            case UelCC3D8 : {return UelCosseratFactory::generateUelCC3D8(elementNumber);}
+            case UelCC3D20R : {return UelCosseratFactory::generateUelCC3D20R(elementNumber);}
             #endif
             #ifdef UELNONLOCALCOSSERAT
-            case UelNCCPE4 : {return UelNonLocalCosseratFactory::generateUelNCCPE4(elementNumber);}
+            //case UelNCCPE4 : {return UelNonLocalCosseratFactory::generateUelNCCPE4(elementNumber);}
             case UelNCCPE8R : {return UelNonLocalCosseratFactory::generateUelNCCPE8R(elementNumber);}
-            //case UelNCC3D8 : {return UelNonLocalCosseratFactory::generateUelNCC3D8(elementNumber);}
+            case UelNCCPS8R : {return UelNonLocalCosseratFactory::generateUelNCCPS8R(elementNumber);}
+            case UelNCC3D8R : {return UelNonLocalCosseratFactory::generateUelNCC3D8R(elementNumber);}
             #endif
         // clang-format on
         default: {

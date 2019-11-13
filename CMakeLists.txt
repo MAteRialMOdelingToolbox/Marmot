@@ -33,6 +33,7 @@ set (materials
     BarodesyGradientVoid
     CosseratLinearElastic
     CosseratDruckerPrager
+    DiffuseMicroCracking
     GMCDP
     HoekBrown
     LinearElastic
