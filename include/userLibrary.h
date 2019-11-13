@@ -165,13 +165,13 @@ namespace userLibrary {
         // Cosserat
         UelCCPE4  = 457,
         UelCCPE8R  = 858,
-        UelCC3D8  = 853,
+        UelCC3D20R  = 2056,
 
         // Nonlocal Cosserat
         UelNCCPE4  = 467,
         UelNCCPE8R  = 868,
         UelNCCPS8R  = 865,
-        UelNCC3D8  = 863,
+        UelNCC3D8R  = 866,
     };
 
     MaterialCode getMaterialCodeFromName( const std::string& materialName );
