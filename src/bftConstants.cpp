@@ -14,5 +14,8 @@ namespace bft {
             const static double squareRootEps = std::pow( std::numeric_limits<double>::epsilon(), 1. / 2 );
             return squareRootEps;
         }
+
+        const double SquareRootEps = squareRootEps();
+        const double CubicRootEps = cubicRootEps();
     } // namespace Constants
 } // namespace bft

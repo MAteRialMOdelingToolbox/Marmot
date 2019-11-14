@@ -23,17 +23,53 @@ namespace bft {
                 return 3;
         }
 
+        template <int sizeI, int sizeJ>
+        Eigen::Matrix<double, sizeI * sizeJ, sizeI * sizeJ> makeIndexSwapTensor()
+        {
+            // Aux. Matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by
+            // multiplication ,
+            //
+            // T_(ij)(kl) * IndexSwapTensor_(kl)(lk) = T_(ij)(lk)
+            //
+            // For instance:
+            //
+            // Matrix3d t;
+            // t<<1,2,3,4,5,6,7,8,9;
+            // const auto P  = makeIndexSwapTensor<3,3>();
+            // std::cout << t.reshaped().transpose() << std::endl;
+            // std::cout << t.reshaped().transpose() * P << std::endl;
+            //
+            // Output:
+            //
+            // 1,4,7,2,5,8,3,6,9
+            // 1,2,3,4,5,6,7,8,9
+            //
+
+            Eigen::Matrix<double, sizeI * sizeJ, sizeI * sizeJ> P;
+
+            auto d = []( int a, int b ) -> double { return a == b ? 1.0 : 0.0; };
+
+            for ( int i = 0; i < sizeI; i++ )
+                for ( int j = 0; j < sizeJ; j++ )
+                    for ( int l = 0; l < sizeI; l++ )
+                        for ( int k = 0; k < sizeJ; k++ )
+                            P( i + j * sizeI, l * sizeJ + k ) = d( i, l ) * d( k, j );
+
+            return P;
+        }
+
         template <int nDim>
-            constexpr Eigen::TensorFixedSize< double, Eigen::Sizes<getNumberOfDofForRotation (nDim), nDim, nDim> >     getReferenceToCorrectLeviCivita()
-        //template <int nDim>
-        //template <int nDim=2>
-            //constexpr Eigen::TensorFixedSize< double, Eigen::Sizes<getNumberOfDofForRotation (nDim), nDim, nDim> >     getReferenceToCorrectLeviCivita()
-            {
-                if constexpr ( nDim == 2)
-                    return LeviCivita2D;
-                else
+        constexpr Eigen::TensorFixedSize<double, Eigen::Sizes<getNumberOfDofForRotation( nDim ), nDim, nDim>> getReferenceToCorrectLeviCivita()
+        // template <int nDim>
+        // template <int nDim=2>
+        // constexpr Eigen::TensorFixedSize< double, Eigen::Sizes<getNumberOfDofForRotation (nDim), nDim, nDim> >
+        // getReferenceToCorrectLeviCivita()
+        {
+            if constexpr ( nDim == 2 )
+                return LeviCivita2D;
+            else
                 return LeviCivita3D;
-            }
+        }
 
     } // namespace CommonTensors
 

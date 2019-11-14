@@ -6,6 +6,8 @@ namespace bft {
         const double numZeroPos = 1e-16;
         double       cubicRootEps();
         double       squareRootEps();
+        extern const double       CubicRootEps;
+        extern const double       SquareRootEps;
         const double sqrt3_8 = 0.61237243569579452454932101867647;
         const double sqrt2_3 = 0.8164965809277260327324280249019;
         const double sqrt3_2 = 1.2247448713915890490986420373529;

@@ -30,6 +30,10 @@ namespace bft {
     typedef Eigen::TensorFixedSize<double, Eigen::Sizes<3,3,3,3>> Tensor3333d; 
     typedef Eigen::TensorFixedSize<double, Eigen::Sizes<3, 3, 3>> Tensor333d;
     typedef Eigen::TensorFixedSize<double, Eigen::Sizes<1, 2, 2>> Tensor122d;
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<2, 2, 2, 2>> Tensor2222d;
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<2, 2, 1, 2>> Tensor2212d;
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<2, 1, 2, 2>> Tensor2122d;
+    typedef Eigen::TensorFixedSize<double, Eigen::Sizes<2, 1, 1, 2>> Tensor2112d;
 
     typedef void ( *pUmatType )( double[],
                                  double[],
