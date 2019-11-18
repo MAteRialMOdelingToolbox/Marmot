@@ -29,49 +29,50 @@ set(bftCosseratCoreDir "modules/bftCosseratCore/")
 set(optionalLibsRootDir "modules/")
 
 set (materials
-    Barodesy
-    BarodesyGradientVoid
-    CosseratLinearElastic
-    CosseratDruckerPrager
-    DiffuseMicroCracking
-    GMCDP
-    HoekBrown
-    LinearElastic
-    LinearElasticNonLocal
-    LinearElasticSolidificationCreep
-    MCDP
+    #Barodesy
+    #BarodesyGradientVoid
+    #CosseratLinearElastic
+    #CosseratDruckerPrager
+    #DiffuseMicroCracking
+    #GMCDP
+    #HoekBrown
+    #LinearElastic
+    #LinearElasticNonLocal
+    #LinearElasticSolidificationCreep
+    #MCDP
     ModLeon
-    ModLeonSemiExplicit
-    ModLeonAnalytical
-    ModLeonAdaptive
-    ModLeonSemiExplicitAdaptive
-    ModLeonPlaneStress
-    ModLeonNonLocal
-    MohrCoulomb
-    Meschke
-    SchaedlichSchweiger
-    ShotLeon
-    ShotLeonV2
-    ShotLeonNonLocal
-    ShotLeonV2NonLocal
-    SolidificationCreep
-    StVenantKirchhoffIsotropic
-    UntereggerRockMass
-    UntereggerRockMassNonLocal
-    UntereggerRockMassPlaxis)
+    #ModLeonSemiExplicit
+    #ModLeonAnalytical
+    #ModLeonAdaptive
+    #ModLeonSemiExplicitAdaptive
+    #ModLeonPlaneStress
+    #ModLeonNonLocal
+    #MohrCoulomb
+    #Meschke
+    #SchaedlichSchweiger
+    #ShotLeon
+    #ShotLeonV2
+    #ShotLeonNonLocal
+    #ShotLeonV2NonLocal
+    #SolidificationCreep
+    #StVenantKirchhoffIsotropic
+    #UntereggerRockMass
+    #UntereggerRockMassNonLocal
+    #UntereggerRockMassPlaxis)
+)
 
 set(elements
-    uelCosserat
+    #uelCosserat
     uelDisplacement
-    uelDisplacementTL
-    uelDisplacementUL
-    uelDisplacementEAS
-    uelNonLocal
-    uelNonLocalCosserat
-    uelNonLocalUL
-    uelNonLocalULFBar
-    uelNonLocalEAS
-    uelNonLocalMixed
+    #uelDisplacementTL
+    #uelDisplacementUL
+    #uelDisplacementEAS
+    #uelNonLocal
+    #uelNonLocalCosserat
+    #uelNonLocalUL
+    #uelNonLocalULFBar
+    #uelNonLocalEAS
+    #uelNonLocalMixed
     )
 
 # Compiler specific stettings
@@ -127,11 +128,12 @@ foreach(library ${elements})
     if(EXISTS ${librarypath})
         message("--> found ${library}")
         set(bftElements_are_present ON)
-        include_directories(${librarypath}/include)
-        file(GLOB libsources "${librarypath}/src/*.cpp")
-        set(sources ${sources} ${libsources})
-        string(TOUPPER ${library} LIBRARY)
-        add_definitions(-D${LIBRARY})
+        include(${librarypath}/CMakeLists.txt)
+        #include_directories(${librarypath}/include)
+        #file(GLOB libsources "${librarypath}/src/*.cpp")
+        #set(sources ${sources} ${libsources})
+        #string(TOUPPER ${library} LIBRARY)
+        #add_definitions(-D${LIBRARY})
     endif()
 endforeach(library)
 

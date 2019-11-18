@@ -1,6 +1,7 @@
 #pragma once
-#include "bftMaterial.h"
 #include "bftElement.h"
+#include "bftMaterial.h"
+#include <functional>
 #include <iostream>
 #include <map>
 #include <string>
@@ -43,7 +44,7 @@ namespace userLibrary {
 
         /*
          * XXXXXX
-         * ||||||_    6: if EAS: number of EAS Parameters 
+         * ||||||_    6: if EAS: number of EAS Parameters
          * |||||__    5: if EAS: number of EAS Parameters (01 = FBar / Bbar)
          * ||||___    4: type of element
          * |||____    3: active fields
@@ -56,8 +57,8 @@ namespace userLibrary {
          *                  2: mechanical (=displacement) large strain TL,
          *                  3: mechanical (=displacement) large strain UL,
          *                  4: mechanical + nonlocal damage, large strain UL,
-         *                  5: cosserat 
-         *                  6: cosserat   + nonlocal damage, 
+         *                  5: cosserat
+         *                  6: cosserat   + nonlocal damage,
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -110,9 +111,9 @@ namespace userLibrary {
         UelC3D20TL  = 2023,
         UelC3D20RTL = 2026,
 
-        UelCPE4UL   = 437,
-        UelCPE8RUL  = 838,
-        UelC3D8UL   = 833,
+        UelCPE4UL  = 437,
+        UelCPE8RUL = 838,
+        UelC3D8UL  = 833,
 
         // Solid EAS
         UelC3D8EAS3  = 80303,
@@ -154,43 +155,76 @@ namespace userLibrary {
         UelC3D20RNonLocal = 2016,
 
         // Nonlocal, Updated Lagrange
-        UelC3D8NonLocalUL   = 843,
-        UelCPE4NonLocalUL   = 447,
-        UelCPE4RNonLocalUL   = 448,
-        UelCPE8RNonLocalUL   = 848,
+        UelC3D8NonLocalUL  = 843,
+        UelCPE4NonLocalUL  = 447,
+        UelCPE4RNonLocalUL = 448,
+        UelCPE8RNonLocalUL = 848,
         // FBar versions
-        UelC3D8NonLocalULFBar   = 84301,
-        UelCPE4NonLocalULFBar   = 44701,
+        UelC3D8NonLocalULFBar = 84301,
+        UelCPE4NonLocalULFBar = 44701,
 
         // Cosserat
-        UelCCPE4  = 457,
+        UelCCPE4   = 457,
         UelCCPE8R  = 858,
-        UelCC3D20R  = 2056,
+        UelCC3D20R = 2056,
 
         // Nonlocal Cosserat
         UelNCCPE4  = 467,
-        UelNCCPE8R  = 868,
-        UelNCCPS8R  = 865,
-        UelNCC3D8R  = 866,
+        UelNCCPE8R = 868,
+        UelNCCPS8R = 865,
+        UelNCC3D8R = 866,
     };
 
-    MaterialCode getMaterialCodeFromName( const std::string& materialName );
 
-    ElementCode getElementCodeFromInfo( int                nNodes,
-                                        int                activeFields,
-                                        int                dim,
-                                        bool               fullIntegration,
-                                        const std::string& formulation,
-                                        int                EASParam );
 
-    ElementCode getElementCodeFromName( const std::string& elementName );
+    class BftMaterialFactory {
+      public:
+        using materialCreationFunction = BftMaterial* (*)( const double* materialProperties,
+                                            int           nMaterialProperties,
+                                            int           element,
+                                            int           gaussPt );
+        BftMaterialFactory()           = delete;
 
-    BftElement* bftElementFactory( ElementCode elementCode, int elementNumber );
+        static MaterialCode getMaterialCodeFromName( const std::string& materialName );
+        static BftMaterial* createMaterial( MaterialCode  material,
+                                            const double* materialProperties,
+                                            int           nMaterialProperties,
+                                            int           element,
+                                            int           gaussPt );
 
-    BftMaterial* bftMaterialFactory( MaterialCode  material,
-                                     const double* materialProperties,
-                                     int           nMaterialProperties,
-                                     int           element,
-                                     int           gaussPt );
+        static bool registerMaterial( const std::string&       materialName,
+                                      MaterialCode             materialCode,
+                                      materialCreationFunction creationFunction );
+
+      private:
+        static std::map<std::string, MaterialCode>              materialNameToCodeAssociation;
+        static std::map<MaterialCode, materialCreationFunction> materialCreationFunctionByCode;
+    };
+
+    template <typename T>
+    class InUserLibraryRegisteredMaterial
+    {
+        protected:
+            static bool isRegistered;
+    };
+    template <typename T>
+    bool InUserLibraryRegisteredMaterial::isRegistered = BftMaterialFactory::registerMaterial ( 
+
+    class BftElementFactory {
+      public:
+        using elementCreationFunction = BftElement* (*)( int elementNumber );
+        BftElementFactory()           = delete;
+
+        static ElementCode getElementCodeFromName( const std::string& elementName );
+        static BftElement* createElement( ElementCode elementCode, int elementNumber );
+
+        static bool registerElement( const std::string&      elementName,
+                                     ElementCode             elementCode,
+                                     elementCreationFunction creationFunction );
+
+      private:
+        static std::map<std::string, ElementCode>             elementNameToCodeAssociation;
+        static std::map<ElementCode, elementCreationFunction> elementCreationFunctionByCode;
+    };
 
 } // namespace userLibrary
