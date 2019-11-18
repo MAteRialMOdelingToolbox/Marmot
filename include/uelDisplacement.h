@@ -224,7 +224,7 @@ void UelDisplacement<nDim, nNodes>::assignProperty( const BftMaterialSection& se
     for ( size_t i = 0; i < gaussPts.size(); i++ ) {
         GaussPt& gpt = gaussPts[i];
         gpt.material = std::unique_ptr<BftMaterialHypoElastic>(
-            dynamic_cast<BftMaterialHypoElastic*>( userLibrary::bftMaterialFactory( section.materialCode,
+            dynamic_cast<BftMaterialHypoElastic*>( userLibrary::BftMaterialFactory::createMaterial( section.materialCode,
                                                                                     section.materialProperties,
                                                                                     section.nMaterialProperties,
                                                                                     elLabel,
