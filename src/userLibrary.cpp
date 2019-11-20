@@ -12,15 +12,15 @@ namespace userLibrary {
     // MaterialFactory
 
     std::map<std::string, MaterialCode> BftMaterialFactory::materialNameToCodeAssociation;
-    std::map<MaterialCode, BftMaterialFactory::materialCreationFunction>
-        BftMaterialFactory::materialCreationFunctionByCode;
+    std::map<MaterialCode, BftMaterialFactory::materialFactoryFunction>
+        BftMaterialFactory::materialFactoryFunctionByCode;
 
-    bool BftMaterialFactory::registerMaterial( MaterialCode             materialCode,
-                                               const std::string&       materialName,
-                                               materialCreationFunction creationFunction )
+    bool BftMaterialFactory::registerMaterial( MaterialCode            materialCode,
+                                               const std::string&      materialName,
+                                               materialFactoryFunction factoryFunction )
     {
-        materialNameToCodeAssociation[materialName]  = materialCode;
-        materialCreationFunctionByCode[materialCode] = creationFunction;
+        materialNameToCodeAssociation[materialName] = materialCode;
+        materialFactoryFunctionByCode[materialCode] = factoryFunction;
 
         return true;
     }
@@ -36,23 +36,23 @@ namespace userLibrary {
                                                      int           element,
                                                      int           gaussPt )
     {
-        auto const it = materialCreationFunctionByCode.find( materialCode );
-        return it != materialCreationFunctionByCode.end()
+        auto const it = materialFactoryFunctionByCode.find( materialCode );
+        return it != materialFactoryFunctionByCode.end()
                    ? it->second( materialProperties, nMaterialProperties, element, gaussPt )
                    : nullptr;
     }
 
-    // ElementFactory 
+    // ElementFactory
 
-    std::map<std::string, ElementCode>                                BftElementFactory::elementNameToCodeAssociation;
-    std::map<ElementCode, BftElementFactory::elementCreationFunction> BftElementFactory::elementCreationFunctionByCode;
+    std::map<std::string, ElementCode>                               BftElementFactory::elementNameToCodeAssociation;
+    std::map<ElementCode, BftElementFactory::elementFactoryFunction> BftElementFactory::elementFactoryFunctionByCode;
 
-    bool BftElementFactory::registerElement( const std::string&      elementName,
-                                             ElementCode             elementCode,
-                                             elementCreationFunction creationFunction )
+    bool BftElementFactory::registerElement( const std::string&     elementName,
+                                             ElementCode            elementCode,
+                                             elementFactoryFunction factoryFunction )
     {
-        elementNameToCodeAssociation[elementName]  = elementCode;
-        elementCreationFunctionByCode[elementCode] = creationFunction;
+        elementNameToCodeAssociation[elementName] = elementCode;
+        elementFactoryFunctionByCode[elementCode] = factoryFunction;
 
         return true;
     }
@@ -64,8 +64,8 @@ namespace userLibrary {
 
     BftElement* BftElementFactory::createElement( ElementCode elementCode, int elementNumber )
     {
-        auto const it = elementCreationFunctionByCode.find( elementCode );
-        return it != elementCreationFunctionByCode.end() ? it->second( elementNumber ) : nullptr;
+        auto const it = elementFactoryFunctionByCode.find( elementCode );
+        return it != elementFactoryFunctionByCode.end() ? it->second( elementNumber ) : nullptr;
     }
 
 } // namespace userLibrary

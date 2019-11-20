@@ -177,11 +177,11 @@ namespace userLibrary {
 
     class BftMaterialFactory {
       public:
-        using materialCreationFunction = BftMaterial* (*)( const double* materialProperties,
-                                                           int           nMaterialProperties,
-                                                           int           element,
-                                                           int           gaussPt );
-        BftMaterialFactory()           = delete;
+        using materialFactoryFunction = BftMaterial* (*)( const double* materialProperties,
+                                                          int           nMaterialProperties,
+                                                          int           element,
+                                                          int           gaussPt );
+        BftMaterialFactory()          = delete;
 
         static MaterialCode getMaterialCodeFromName( const std::string& materialName );
         static BftMaterial* createMaterial( MaterialCode  material,
@@ -190,22 +190,27 @@ namespace userLibrary {
                                             int           element,
                                             int           gaussPt );
 
-        static bool registerMaterial(
-                MaterialCode             materialCode,
-                const std::string&       materialName,
-                                      
-                                      materialCreationFunction creationFunction );
+        static bool registerMaterial( MaterialCode            materialCode,
+                                      const std::string&      materialName,
+                                      materialFactoryFunction factoryFunction );
 
       private:
-        static std::map<std::string, MaterialCode>              materialNameToCodeAssociation;
-        static std::map<MaterialCode, materialCreationFunction> materialCreationFunctionByCode;
+        static std::map<std::string, MaterialCode>             materialNameToCodeAssociation;
+        static std::map<MaterialCode, materialFactoryFunction> materialFactoryFunctionByCode;
     };
 
-
+    template <typename T>
+    BftMaterialFactory::materialFactoryFunction makeDefaultBftMaterialFactoryFunction()
+    {
+        return
+            []( const double* materialProperties, int nMaterialProperties, int element, int gaussPt ) -> BftMaterial* {
+                return new T( materialProperties, nMaterialProperties, element, gaussPt );
+            };
+    }
 
     class BftElementFactory {
       public:
-        using elementCreationFunction = BftElement* (*)( int elementNumber );
+        using elementFactoryFunction = BftElement* (*)( int elementNumber );
         BftElementFactory()           = delete;
 
         static ElementCode getElementCodeFromName( const std::string& elementName );
@@ -213,11 +218,11 @@ namespace userLibrary {
 
         static bool registerElement( const std::string&      elementName,
                                      ElementCode             elementCode,
-                                     elementCreationFunction creationFunction );
+                                     elementFactoryFunction factoryFunction );
 
       private:
         static std::map<std::string, ElementCode>             elementNameToCodeAssociation;
-        static std::map<ElementCode, elementCreationFunction> elementCreationFunctionByCode;
+        static std::map<ElementCode, elementFactoryFunction> elementFactoryFunctionByCode;
     };
 
 } // namespace userLibrary
