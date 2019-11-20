@@ -9,12 +9,14 @@
 
 namespace userLibrary {
 
+    // MaterialFactory
+
     std::map<std::string, MaterialCode> BftMaterialFactory::materialNameToCodeAssociation;
     std::map<MaterialCode, BftMaterialFactory::materialCreationFunction>
         BftMaterialFactory::materialCreationFunctionByCode;
 
-    bool BftMaterialFactory::registerMaterial( const std::string&       materialName,
-                                               MaterialCode             materialCode,
+    bool BftMaterialFactory::registerMaterial( MaterialCode             materialCode,
+                                               const std::string&       materialName,
                                                materialCreationFunction creationFunction )
     {
         materialNameToCodeAssociation[materialName]  = materialCode;
@@ -39,6 +41,8 @@ namespace userLibrary {
                    ? it->second( materialProperties, nMaterialProperties, element, gaussPt )
                    : nullptr;
     }
+
+    // ElementFactory 
 
     std::map<std::string, ElementCode>                                BftElementFactory::elementNameToCodeAssociation;
     std::map<ElementCode, BftElementFactory::elementCreationFunction> BftElementFactory::elementCreationFunctionByCode;

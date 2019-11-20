@@ -175,14 +175,12 @@ namespace userLibrary {
         UelNCC3D8R = 866,
     };
 
-
-
     class BftMaterialFactory {
       public:
         using materialCreationFunction = BftMaterial* (*)( const double* materialProperties,
-                                            int           nMaterialProperties,
-                                            int           element,
-                                            int           gaussPt );
+                                                           int           nMaterialProperties,
+                                                           int           element,
+                                                           int           gaussPt );
         BftMaterialFactory()           = delete;
 
         static MaterialCode getMaterialCodeFromName( const std::string& materialName );
@@ -192,8 +190,10 @@ namespace userLibrary {
                                             int           element,
                                             int           gaussPt );
 
-        static bool registerMaterial( const std::string&       materialName,
-                                      MaterialCode             materialCode,
+        static bool registerMaterial(
+                MaterialCode             materialCode,
+                const std::string&       materialName,
+                                      
                                       materialCreationFunction creationFunction );
 
       private:
@@ -201,14 +201,7 @@ namespace userLibrary {
         static std::map<MaterialCode, materialCreationFunction> materialCreationFunctionByCode;
     };
 
-    template <typename T>
-    class InUserLibraryRegisteredMaterial
-    {
-        protected:
-            static bool isRegistered;
-    };
-    template <typename T>
-    bool InUserLibraryRegisteredMaterial::isRegistered = BftMaterialFactory::registerMaterial ( 
+
 
     class BftElementFactory {
       public:
