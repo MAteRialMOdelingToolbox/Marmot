@@ -3,7 +3,6 @@
 #include "userLibrary.h"
 
 class UelDisplacementRegistrationManager {
-    // Aux. class for registrating the variety of uelDisplacmenets in the context of SELF-REGISTRING plugins
     UelDisplacementRegistrationManager() = delete;
 
   private:
@@ -35,14 +34,12 @@ BftElement* generateUelT2D2( int elementID )
 bool UelDisplacementRegistrationManager::UelT2D2_isRegistered = userLibrary::BftElementFactory::
     registerElement( "UELT2D2", userLibrary::ElementCode::UelT2D2, generateUelT2D2 );
 
-BftElement* generateUelCPS4( int elementID )
-{
-    return new UelDisplacement<2, 4>( elementID,
-                                      bft::NumIntegration::IntegrationTypes::FullIntegration,
-                                      UelDisplacement<2, 4>::SectionType::PlaneStress );
-}
 bool UelDisplacementRegistrationManager::UelCPS4_isRegistered = userLibrary::BftElementFactory::
-    registerElement( "UELCPS4", userLibrary::ElementCode::UelCPS4, generateUelCPS4 );
+    registerElement( "UELCPS4", userLibrary::ElementCode::UelCPS4, []( int elementID ) -> BftElement* {
+        return new UelDisplacement<2, 4>( elementID,
+                                          bft::NumIntegration::IntegrationTypes::FullIntegration,
+                                          UelDisplacement<2, 4>::SectionType::PlaneStress );
+    } );
 
 BftElement* generateUelCPS8( int elementID )
 {
@@ -68,14 +65,6 @@ BftElement* generateUelCPE8( int elementID )
 }
 bool UelDisplacementRegistrationManager::UelCPE8_isRegistered = userLibrary::BftElementFactory::
     registerElement( "UELCPE8", userLibrary::ElementCode::UelCPE8, generateUelCPE8 );
-// BftElement* generateUelCPS4R( int elementID )
-//{
-// return new UelDisplacement<2, 4>( elementID,
-// bft::NumIntegration::IntegrationTypes::ReducedIntegration,
-// UelDisplacement<2, 4>::SectionType::PlaneStress );
-//}
-// bool UelDisplacementRegistrationManager::UelCPS4_isRegistered =
-// userLibrary::BftElementFactory::registerElement("UELCPS4", userLibrary::ElementCode::UelCPS4, generateUelCPS4);
 BftElement* generateUelCPS8R( int elementID )
 {
     return new UelDisplacement<2, 8>( elementID,
