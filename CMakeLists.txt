@@ -8,7 +8,7 @@ project(bftUserLibrary CXX Fortran)
 
 include_directories(include)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -29,50 +29,50 @@ set(bftCosseratCoreDir "modules/bftCosseratCore/")
 set(optionalLibsRootDir "modules/")
 
 set (materials
-    #Barodesy
-    #BarodesyGradientVoid
-    #CosseratLinearElastic
-    #CosseratDruckerPrager
-    #DiffuseMicroCracking
-    #GMCDP
-    #HoekBrown
-    #LinearElastic
-    #LinearElasticNonLocal
-    #LinearElasticSolidificationCreep
-    #MCDP
+    Barodesy
+    BarodesyGradientVoid
+    CosseratLinearElastic
+    CosseratDruckerPrager
+    DiffuseMicroCracking
+    GMCDP
+    HoekBrown
+    LinearElastic
+    LinearElasticNonLocal
+    LinearElasticSolidificationCreep
+    MCDP
     ModLeon
-    #ModLeonSemiExplicit
-    #ModLeonAnalytical
-    #ModLeonAdaptive
-    #ModLeonSemiExplicitAdaptive
-    #ModLeonPlaneStress
-    #ModLeonNonLocal
-    #MohrCoulomb
-    #Meschke
-    #SchaedlichSchweiger
-    #ShotLeon
-    #ShotLeonV2
-    #ShotLeonNonLocal
-    #ShotLeonV2NonLocal
-    #SolidificationCreep
-    #StVenantKirchhoffIsotropic
-    #UntereggerRockMass
-    #UntereggerRockMassNonLocal
-    #UntereggerRockMassPlaxis)
+    ModLeonSemiExplicit
+    ModLeonAnalytical
+    ModLeonAdaptive
+    ModLeonSemiExplicitAdaptive
+    ModLeonPlaneStress
+    ModLeonNonLocal
+    MohrCoulomb
+    Meschke
+    SchaedlichSchweiger
+    ShotLeon
+    ShotLeonV2
+    ShotLeonNonLocal
+    ShotLeonV2NonLocal
+    SolidificationCreep
+    StVenantKirchhoffIsotropic
+    UntereggerRockMass
+    UntereggerRockMassNonLocal
+    UntereggerRockMassPlaxis
 )
 
 set(elements
-    #uelCosserat
+    uelCosserat
     uelDisplacement
-    #uelDisplacementTL
-    #uelDisplacementUL
-    #uelDisplacementEAS
-    #uelNonLocal
-    #uelNonLocalCosserat
-    #uelNonLocalUL
-    #uelNonLocalULFBar
-    #uelNonLocalEAS
-    #uelNonLocalMixed
+    uelDisplacementTL
+    uelDisplacementUL
+    uelDisplacementEAS
+    uelNonLocal
+    uelNonLocalCosserat
+    uelNonLocalUL
+    uelNonLocalULFBar
+    uelNonLocalEAS
+    uelNonLocalMixed
     )
 
 # Compiler specific stettings

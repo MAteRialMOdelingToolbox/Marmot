@@ -19,6 +19,9 @@ namespace userLibrary {
                                                const std::string&      materialName,
                                                materialFactoryFunction factoryFunction )
     {
+        assert( materialNameToCodeAssociation.find( materialName ) != materialNameToCodeAssociation.end() );
+        assert( materialFactoryFunctionByCode.find( materialCode ) != materialFactoryFunctionByCode.end() );
+
         materialNameToCodeAssociation[materialName] = materialCode;
         materialFactoryFunctionByCode[materialCode] = factoryFunction;
 
@@ -27,7 +30,7 @@ namespace userLibrary {
 
     MaterialCode BftMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
     {
-        return materialNameToCodeAssociation[materialName];
+        return materialNameToCodeAssociation.at( materialName );
     }
 
     BftMaterial* BftMaterialFactory::createMaterial( MaterialCode  materialCode,
@@ -36,10 +39,7 @@ namespace userLibrary {
                                                      int           element,
                                                      int           gaussPt )
     {
-        auto const it = materialFactoryFunctionByCode.find( materialCode );
-        return it != materialFactoryFunctionByCode.end()
-                   ? it->second( materialProperties, nMaterialProperties, element, gaussPt )
-                   : nullptr;
+        return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, element, gaussPt );
     }
 
     // ElementFactory
@@ -51,6 +51,9 @@ namespace userLibrary {
                                              ElementCode            elementCode,
                                              elementFactoryFunction factoryFunction )
     {
+        assert( elementNameToCodeAssociation.find( elementName ) != elementNameToCodeAssociation.end() );
+        assert( elementFactoryFunctionByCode.find( elementCode ) != elementFactoryFunctionByCode.end() );
+
         elementNameToCodeAssociation[elementName] = elementCode;
         elementFactoryFunctionByCode[elementCode] = factoryFunction;
 
@@ -59,13 +62,12 @@ namespace userLibrary {
 
     ElementCode BftElementFactory::getElementCodeFromName( const std::string& elementName )
     {
-        return elementNameToCodeAssociation[elementName];
+        return elementNameToCodeAssociation.at( elementName );
     }
 
     BftElement* BftElementFactory::createElement( ElementCode elementCode, int elementNumber )
     {
-        auto const it = elementFactoryFunctionByCode.find( elementCode );
-        return it != elementFactoryFunctionByCode.end() ? it->second( elementNumber ) : nullptr;
+        return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
     }
 
 } // namespace userLibrary

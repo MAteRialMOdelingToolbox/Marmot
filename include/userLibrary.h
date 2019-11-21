@@ -74,13 +74,13 @@ namespace userLibrary {
         // Truss
         UelT2D2 = 202,
         // Plane Stress
-        UelCPS4  = 402,
-        UelCPS8  = 802,
+        UelCPS4 = 402,
+        // UelCPS8  = 802,
         UelCPS8R = 805,
 
         // Plane Strain
-        UelCPE4  = 407,
-        UelCPE8  = 807,
+        UelCPE4 = 407,
+        // UelCPE8  = 807,
         UelCPE8R = 808,
 
         // Plane Strain - EAS
@@ -164,16 +164,19 @@ namespace userLibrary {
         UelCPE4NonLocalULFBar = 44701,
 
         // Cosserat
-        UelCCPE4   = 457,
         UelCCPE8R  = 858,
         UelCC3D20R = 2056,
 
         // Nonlocal Cosserat
-        UelNCCPE4  = 467,
-        UelNCCPE8R = 868,
-        UelNCCPS8R = 865,
-        UelNCC3D8R = 866,
+        UelNCCPE8R  = 868,
+        UelNCCPS8R  = 865,
+        UelNCC3D20R = 2066,
     };
+
+    // MaterialFactory
+    //
+    // - Allows materials to register themselve with their name and ID
+    // - Allows the user to create instances of materials
 
     class BftMaterialFactory {
       public:
@@ -184,6 +187,7 @@ namespace userLibrary {
         BftMaterialFactory()          = delete;
 
         static MaterialCode getMaterialCodeFromName( const std::string& materialName );
+
         static BftMaterial* createMaterial( MaterialCode  material,
                                             const double* materialProperties,
                                             int           nMaterialProperties,
@@ -199,29 +203,26 @@ namespace userLibrary {
         static std::map<MaterialCode, materialFactoryFunction> materialFactoryFunctionByCode;
     };
 
-    template <typename T>
-    BftMaterialFactory::materialFactoryFunction makeDefaultBftMaterialFactoryFunction()
-    {
-        return
-            []( const double* materialProperties, int nMaterialProperties, int element, int gaussPt ) -> BftMaterial* {
-                return new T( materialProperties, nMaterialProperties, element, gaussPt );
-            };
-    }
+    // ElementFactory
+    //
+    // - Allows elements to register themselve with their name and ID
+    // - Allows the user to create instances of elements
 
     class BftElementFactory {
       public:
         using elementFactoryFunction = BftElement* (*)( int elementNumber );
-        BftElementFactory()           = delete;
+        BftElementFactory()          = delete;
 
         static ElementCode getElementCodeFromName( const std::string& elementName );
+
         static BftElement* createElement( ElementCode elementCode, int elementNumber );
 
-        static bool registerElement( const std::string&      elementName,
-                                     ElementCode             elementCode,
+        static bool registerElement( const std::string&     elementName,
+                                     ElementCode            elementCode,
                                      elementFactoryFunction factoryFunction );
 
       private:
-        static std::map<std::string, ElementCode>             elementNameToCodeAssociation;
+        static std::map<std::string, ElementCode>            elementNameToCodeAssociation;
         static std::map<ElementCode, elementFactoryFunction> elementFactoryFunctionByCode;
     };
 
