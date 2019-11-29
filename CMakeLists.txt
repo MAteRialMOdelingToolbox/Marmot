@@ -8,7 +8,7 @@ project(bftUserLibrary CXX Fortran)
 
 include_directories(include)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -24,6 +24,7 @@ endif()
 
 set(bftMechanicsDir "modules/bftMechanics/")
 set(bftFiniteElementCoreDir "modules/bftFiniteElementCore/")
+set(bftCosseratCoreDir "modules/bftCosseratCore/")
 
 set(optionalLibsRootDir "modules/")
 
@@ -32,10 +33,13 @@ set (materials
     BarodesyGradientVoid
     CosseratLinearElastic
     CosseratDruckerPrager
+    DiffuseMicroCracking
+    GMCDP
+    HoekBrown
     LinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
-    HoekBrown
+    MCDP
     ModLeon
     ModLeonSemiExplicit
     ModLeonAnalytical
@@ -63,6 +67,7 @@ set(elements
     uelDisplacementUL
     uelDisplacementEAS
     uelNonLocal
+    uelNonLocalCosserat
     uelNonLocalUL
     uelNonLocalULFBar
     uelNonLocalEAS
@@ -152,6 +157,19 @@ if(EXISTS ${bftMechanicsDir})
     set(sources ${sources} ${libsources})
 else()
     message(FATAL_ERROR "--> could not find bftMechanics")
+endif()
+
+#  bftCosseratCore, mandatory if bftElements are used 
+get_filename_component(bftCosseratCoreDir ${bftCosseratCoreDir} ABSOLUTE) 
+if(EXISTS ${bftCosseratCoreDir})
+    message("--> found bftCosseratCore")
+    include_directories(${bftCosseratCoreDir}/include)
+    file(GLOB libsources "${bftCosseratCoreDir}/src/*.cpp")
+    set(sources ${sources} ${libsources})
+#else()
+    #if (DEFINED bftElements_are_present)
+        #message(FATAL_ERROR "found bftElements, but no bftCosseratCore")
+    #endif()
 endif()
 
 add_library(${PROJECT_NAME} SHARED ${sources})

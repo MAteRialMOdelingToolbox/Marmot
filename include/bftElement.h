@@ -10,6 +10,8 @@ class BftElement {
 
     enum DistributedLoadTypes {
         Pressure,
+        SurfaceTorsion,
+        SurfaceTraction,
     };
 
     virtual ~BftElement();

@@ -19,11 +19,17 @@
 #ifdef COSSERATDRUCKERPRAGER
 #    include "CosseratDruckerPrager.h"
 #endif
+#ifdef GMCDP 
+#    include "GMCDP.h"
+#endif
 #ifdef LINEARELASTIC
 #    include "LinearElastic.h"
 #endif
 #ifdef LINEARELASTICSOLIDIFICATIONCREEP
 #    include "LESolidificationCreep.h"
+#endif
+#ifdef MCDP 
+#    include "MCDP.h"
 #endif
 #ifdef MODLEON
 #    include "ModLeon.h"
@@ -95,11 +101,13 @@ namespace userLibrary {
             {"BARODESYGRADIENTVOID", BarodesyGradientVoid},
             {"COSSERATLINEARELASTIC", CosseratLinearElastic},
             {"COSSERATDRUCKERPRAGER", CosseratDruckerPrager},
+            {"GMCDP", GMCDPModel},
             {"MODLEON", ModLeon},
             {"SHOTLEON", ShotLeon},
             {"MESCHKE", Meschke},
             {"SCHAEDLICHSCHWEIGER", SchaedlichSchweiger},
             {"MODLEONNONLOCAL", ModLeonNonLocal},
+            {"MCDP", MCDPModel},
             {"HOEKBROWN", HoekBrown},
             {"ROCKDAMAGEPLASTICITY", RockDamagePlasticity},
             {"MOHRCOULOMB", MohrCoulomb},
@@ -144,8 +152,14 @@ namespace userLibrary {
             #ifdef LINEARELASTIC
             case LinearElastic: { return new class LinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
+            #ifdef GMCDP
+            case GMCDPModel: { return new class GMCDPModel( materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
             #ifdef HOEKBROWN 
             case HoekBrown: { return new class HoekBrown(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MCDP
+            case MCDPModel: { return new class MCDPModel( materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef MODLEON
             case ModLeon: { return new class ModLeon( materialProperties, nMaterialProperties, element, gaussPt);}
@@ -230,6 +244,9 @@ namespace userLibrary {
 #ifdef UELCOSSERAT
 #    include "uelCosseratFactory.h"
 #endif
+#ifdef UELNONLOCALCOSSERAT
+#    include "uelNonLocalCosseratFactory.h"
+#endif
 
 namespace userLibrary {
 
@@ -297,7 +314,12 @@ namespace userLibrary {
             // Cosserat
             {"UELCCPE4", UelCCPE4},
             {"UELCCPE8R", UelCCPE8R},
-            {"UELCC3D8", UelCC3D8},
+            {"UELCC3D20R", UelCC3D20R},
+            //NonLocal Cosserat
+            //{"UELNCCPE4", UelNCCPE4},
+            {"UELNCCPE8R", UelNCCPE8R},
+            {"UELNCCPS8R", UelNCCPS8R},
+            {"UELNCC3D8R", UelNCC3D8R},
 
         };
         return elementCodeMap[elementName];
@@ -382,7 +404,13 @@ namespace userLibrary {
             #ifdef UELCOSSERAT
             case UelCCPE4 : {return UelCosseratFactory::generateUelCCPE4(elementNumber);}
             case UelCCPE8R : {return UelCosseratFactory::generateUelCCPE8R(elementNumber);}
-            case UelCC3D8 : {return UelCosseratFactory::generateUelCC3D8(elementNumber);}
+            case UelCC3D20R : {return UelCosseratFactory::generateUelCC3D20R(elementNumber);}
+            #endif
+            #ifdef UELNONLOCALCOSSERAT
+            //case UelNCCPE4 : {return UelNonLocalCosseratFactory::generateUelNCCPE4(elementNumber);}
+            case UelNCCPE8R : {return UelNonLocalCosseratFactory::generateUelNCCPE8R(elementNumber);}
+            case UelNCCPS8R : {return UelNonLocalCosseratFactory::generateUelNCCPS8R(elementNumber);}
+            case UelNCC3D8R : {return UelNonLocalCosseratFactory::generateUelNCC3D8R(elementNumber);}
             #endif
         // clang-format on
         default: {
