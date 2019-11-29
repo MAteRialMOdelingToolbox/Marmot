@@ -37,6 +37,9 @@ namespace userLibrary {
         CosseratDruckerPrager            = 27,
         MCDPModel                        = 28,
         GMCDPModel                       = 29,
+        PorousElastic                    = 30,
+        BarodesyGradientDeformationModulus = 31,
+        ModifiedCamClay                  = 32,
     };
 
     enum ElementCode {

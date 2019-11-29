@@ -13,6 +13,9 @@
 #ifdef BARODESYGRADIENTVOID
 #    include "BarodesyGradientVoid.h"
 #endif
+#ifdef BARODESYGRADIENTDEFORMATIONMODULUS
+#    include "BarodesyGradientDeformationModulus.h"
+#endif
 #ifdef COSSERATLINEARELASTIC
 #    include "CosseratLinearElastic.h"
 #endif
@@ -46,6 +49,9 @@
 #ifdef MODLEONPLANESTRESS
 #    include "ModLeonPS.h"
 #endif
+#ifdef POROUSELASTIC
+#    include "PorousElastic.h"
+#endif
 #ifdef SHOTLEON
 #    include "ShotLeon.h"
 #endif
@@ -57,6 +63,9 @@
 #endif
 #ifdef SHOTLEONV2NONLOCAL
 #    include "ShotLeonV2NonLocal.h"
+#endif
+#ifdef MODIFIEDCAMCLAY
+#    include "ModifiedCamClay.h"
 #endif
 #ifdef MODLEONNONLOCAL
 #    include "ModLeonNonLocal.h"
@@ -76,7 +85,7 @@
 #ifdef UNTEREGGERROCKMASSPLAXIS
 #    include "UntereggerRockMassPlaxis.h"
 #endif
-#ifdef MohrCoulomb
+#ifdef MOHRCOULOMB
 #    include "materialCodeMohrCoulomb.h"
 #endif
 #ifdef ROCKDAMAGEPLASTICITYNONLOCAL
@@ -99,6 +108,7 @@ namespace userLibrary {
         static std::map<std::string, MaterialCode> materialCodeMap = {
             {"BARODESY", Barodesy},
             {"BARODESYGRADIENTVOID", BarodesyGradientVoid},
+            {"BARODESYGRADIENTDEFORMATIONMODULUS", BarodesyGradientDeformationModulus},
             {"COSSERATLINEARELASTIC", CosseratLinearElastic},
             {"COSSERATDRUCKERPRAGER", CosseratDruckerPrager},
             {"GMCDP", GMCDPModel},
@@ -108,6 +118,7 @@ namespace userLibrary {
             {"SCHAEDLICHSCHWEIGER", SchaedlichSchweiger},
             {"MODLEONNONLOCAL", ModLeonNonLocal},
             {"MCDP", MCDPModel},
+            {"MODIFIEDCAMCLAY", ModifiedCamClay},
             {"HOEKBROWN", HoekBrown},
             {"ROCKDAMAGEPLASTICITY", RockDamagePlasticity},
             {"MOHRCOULOMB", MohrCoulomb},
@@ -120,6 +131,7 @@ namespace userLibrary {
             {"MODLEONSEMIEXPLICIT", ModLeonSemiExplicit},
             {"MODLEONSEMIEXPLICITADAPTIVE", ModLeonSemiExplicitAdaptive},
             {"MODLEONPLANESTRESS", ModLeonPlaneStress},
+            {"POROUSELASTIC", PorousElastic},
             {"SHOTLEONV2NONLOCAL", ShotLeonV2NonLocal},
             {"UNTEREGGERROCKMASSPLAXIS", UntereggerRockMassPlaxis},
             {"LINEARELASTICNONLOCAL", LinearElasticNonLocal},
@@ -143,6 +155,9 @@ namespace userLibrary {
             #ifdef BARODESYGRADIENTVOID
             case BarodesyGradientVoid: { return new class BarodesyGradientVoid(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
+            #ifdef BARODESYGRADIENTDEFORMATIONMODULUS
+            case BarodesyGradientDeformationModulus: { return new class BarodesyGradientDeformationModulus(materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
             #ifdef COSSERATLINEARELASTIC
             case CosseratLinearElastic: { return new class CosseratLinearElastic(materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
@@ -163,6 +178,12 @@ namespace userLibrary {
             #endif
             #ifdef MODLEON
             case ModLeon: { return new class ModLeon( materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef POROUSELASTIC
+            case PorousElastic: { return new class PorousElastic( materialProperties, nMaterialProperties, element, gaussPt);}
+            #endif
+            #ifdef MODIFIEDCAMCLAY
+            case ModifiedCamClay: { return new class ModifiedCamClay( materialProperties, nMaterialProperties, element, gaussPt);}
             #endif
             #ifdef SHOTLEON
             case ShotLeon: { return new class ShotLeon(materialProperties, nMaterialProperties, element, gaussPt);}

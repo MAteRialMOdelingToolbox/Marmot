@@ -31,6 +31,7 @@ set(optionalLibsRootDir "modules/")
 set (materials
     Barodesy
     BarodesyGradientVoid
+    BarodesyGradientDeformationModulus
     CosseratLinearElastic
     CosseratDruckerPrager
     DiffuseMicroCracking
@@ -40,6 +41,7 @@ set (materials
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
     MCDP
+    ModifiedCamClay
     ModLeon
     ModLeonSemiExplicit
     ModLeonAnalytical
@@ -49,6 +51,9 @@ set (materials
     ModLeonNonLocal
     MohrCoulomb
     Meschke
+    PorousElastic
+    RockDamagePlasticity
+    RockDamagePlasticityNonLocal
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2
@@ -56,8 +61,6 @@ set (materials
     ShotLeonV2NonLocal
     SolidificationCreep
     StVenantKirchhoffIsotropic
-    RockDamagePlasticity
-    RockDamagePlasticityNonLocal
     UntereggerRockMassPlaxis)
 
 set(elements
