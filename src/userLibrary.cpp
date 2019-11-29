@@ -30,7 +30,12 @@ namespace userLibrary {
 
     MaterialCode BftMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
     {
-        return materialNameToCodeAssociation.at( materialName );
+        try {
+            return materialNameToCodeAssociation.at( materialName );
+        }
+        catch ( const std::out_of_range& e ) {
+            throw std::invalid_argument( MakeString() << "Invalid material " << materialName << " requested!" );
+        }
     }
 
     BftMaterial* BftMaterialFactory::createMaterial( MaterialCode  materialCode,
@@ -39,7 +44,12 @@ namespace userLibrary {
                                                      int           element,
                                                      int           gaussPt )
     {
-        return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, element, gaussPt );
+        try {
+            return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, element, gaussPt );
+        }
+        catch ( const std::out_of_range& e ) {
+            throw std::invalid_argument( MakeString() << "Invalid material " << materialCode << " requested!" );
+        }
     }
 
     // ElementFactory
@@ -62,12 +72,22 @@ namespace userLibrary {
 
     ElementCode BftElementFactory::getElementCodeFromName( const std::string& elementName )
     {
-        return elementNameToCodeAssociation.at( elementName );
+        try {
+            return elementNameToCodeAssociation.at( elementName );
+        }
+        catch ( const std::out_of_range& e ) {
+            throw std::invalid_argument( MakeString() << "Invalid element " << elementName << " requested!" );
+        }
     }
 
     BftElement* BftElementFactory::createElement( ElementCode elementCode, int elementNumber )
     {
-        return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
+        try {
+            return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
+        }
+        catch ( const std::out_of_range& e ) {
+            throw std::invalid_argument( MakeString() << "Invalid element " << elementCode << " requested!" );
+        }
     }
 
 } // namespace userLibrary

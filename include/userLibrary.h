@@ -38,6 +38,8 @@ namespace userLibrary {
         CosseratDruckerPrager            = 27,
         MCDPModel                        = 28,
         GMCDPModel                       = 29,
+        CDPModel                         = 30,
+        CDPFibreReinforcedModel          = 31,
     };
 
     enum ElementCode {

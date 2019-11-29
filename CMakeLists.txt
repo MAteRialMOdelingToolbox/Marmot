@@ -1,7 +1,6 @@
 # matthias neuner, 2016, 
 # 
 # depends on EIGEN library 3.2.7(+) 
-
 cmake_minimum_required(VERSION 3.1)  
 
 project(bftUserLibrary CXX Fortran)
@@ -16,6 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
+# usually you don't want to have the bftUserLibrary parallelized
+add_definitions(-DEIGEN_DONT_PARALLELIZE) # disable Eigens parallelization
 
 if(CMAKE_VERSION VERSION_LESS "3.9.0") 
     set(outdatedcmake TRUE)
@@ -31,6 +32,8 @@ set(optionalLibsRootDir "modules/")
 set (materials
     Barodesy
     BarodesyGradientVoid
+    CDP
+    CDPFibreReinforced
     CosseratLinearElastic
     CosseratDruckerPrager
     DiffuseMicroCracking
