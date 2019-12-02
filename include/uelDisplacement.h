@@ -369,7 +369,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 template <int nDim, int nNodes>
 void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, const double* values )
 {
-   if constexpr ( nDim > 1 ) {
+   /* if constexpr ( nDim > 1 ) { */
         switch ( state ) {
         case BftElement::GeostaticStress: {
                 for ( GaussPt& gaussPt : gaussPts ) {
@@ -395,7 +395,7 @@ void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, cons
             }
         default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
         }
-    }
+    /* } */
 }
 
 template <int nDim, int nNodes>
