@@ -65,7 +65,7 @@ namespace bft {
             if ( resNorm <= innerNewtonTol && relNorm <= innerNewtonRTol )
                 return true;
         }
-        else if ( numberOfIterations <= nMaxInnerNewtonCyclesAlt ) {
+        else if ( numberOfIterations <= nMaxInnerNewtonCyclesAlt +1 ) {
             if ( resNorm <= innerNewtonTolAlt && relNorm <= innerNewtonRTolAlt )
                 return true;
         }
