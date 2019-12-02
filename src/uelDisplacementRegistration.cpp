@@ -21,13 +21,6 @@ namespace UelDisplacementRegistration {
                                              FullIntegration,
                                              UelDisplacement<2, 4>::PlaneStress>() );
 
-    const static bool UelCPS8_isRegistered = BftElementFactory::
-        registerElement( "UELCPS8",
-                         userLibrary::ElementCode::UelCPS8,
-                         makeFactoryFunction<UelDisplacement<2, 8>,
-                                             FullIntegration,
-                                             UelDisplacement<2, 8>::PlaneStress>() );
-
     const static bool UelCPE4_isRegistered = BftElementFactory::
         registerElement( "UELCPE4",
                          userLibrary::ElementCode::UelCPE4,
@@ -35,18 +28,13 @@ namespace UelDisplacementRegistration {
                                              FullIntegration,
                                              UelDisplacement<2, 4>::PlaneStrain>() );
 
-    const static bool UelCPE8_isRegistered = BftElementFactory::
-        registerElement( "UELCPE8",
-                         userLibrary::ElementCode::UelCPE8,
-                         makeFactoryFunction<UelDisplacement<2, 8>,
-                                             FullIntegration,
-                                             UelDisplacement<2, 8>::PlaneStrain>() );
     const static bool UelCPS8R_isRegistered = BftElementFactory::
         registerElement( "UELCPS8R",
                          userLibrary::ElementCode::UelCPS8R,
                          makeFactoryFunction<UelDisplacement<2, 8>,
                                              ReducedIntegration,
                                              UelDisplacement<2, 8>::PlaneStress>() );
+
     const static bool UelCPE8R_isRegistered = BftElementFactory::
         registerElement( "UELCPE8R",
                          userLibrary::ElementCode::UelCPE8R,
