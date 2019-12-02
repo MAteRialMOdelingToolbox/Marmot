@@ -1,6 +1,8 @@
-# matthias neuner, 2016, 
-# 
-# depends on EIGEN library 3.2.7(+) 
+# Copyright (C) 2019 Matthias Neuner <matthias.neuner@uibk.ac.at>
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 cmake_minimum_required(VERSION 3.1)  
 
 project(bftUserLibrary CXX Fortran)
@@ -15,19 +17,16 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
-# usually you don't want to have the bftUserLibrary parallelized
-add_definitions(-DEIGEN_DONT_PARALLELIZE) # disable Eigens parallelization
-
-if(CMAKE_VERSION VERSION_LESS "3.9.0") 
-    set(outdatedcmake TRUE)
-    message("--> Please consider to switch to CMake 3.9.0")
-endif()
+# Disable (shared memory) parallelization within bftUserLibrary - such a parallelization is usually not desired
+add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
+add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
 
 set(bftMechanicsDir "modules/bftMechanics/")
-set(bftFiniteElementCoreDir "modules/bftFiniteElementCore/")
-set(bftCosseratCoreDir "modules/bftCosseratCore/")
-
 set(optionalLibsRootDir "modules/")
+
+set(optionalCoreLibraries
+    bftFiniteElementCore
+    bftCosseratCore)
 
 set (materials
     Barodesy
@@ -51,7 +50,7 @@ set (materials
     ModLeonPlaneStress
     ModLeonNonLocal
     MohrCoulomb
-    Meschke
+    ViscoPlasticShotcreteModel 
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2
@@ -69,12 +68,12 @@ set(elements
     uelDisplacement
     uelDisplacementTL
     uelDisplacementUL
-    uelDisplacementEAS
+    # uelDisplacementEAS
     uelNonLocal
     uelNonLocalCosserat
     uelNonLocalUL
     uelNonLocalULFBar
-    uelNonLocalEAS
+    # uelNonLocalEAS
     uelNonLocalMixed
     )
 
@@ -99,7 +98,7 @@ elseif(MSVC)
     endif()
 endif()
 
-# If not build type was specified, Release is default
+# If no build type was specified, Release is default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
     message("--> setting to default CMAKE_BUILD_TYPE Release")
@@ -114,50 +113,44 @@ file(GLOB headers "include/*.h")
 get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
 if(EXISTS ${bftMechanicsDir})
     message("--> found bftMechanics")
-    include_directories(${bftMechanicsDir}/include)
-    file(GLOB libsources "${bftMechanicsDir}/src/*.cpp")
-    set(sources ${sources} ${libsources})
+    include(${bftMechanicsDir}/module.cmake)
 else()
     message(FATAL_ERROR "--> could not find bftMechanics")
 endif()
 
-#  bftFiniteElementCore
-get_filename_component(bftFiniteElementCoreDir ${bftFiniteElementCoreDir} ABSOLUTE) 
-if(EXISTS ${bftFiniteElementCoreDir})
-    message("--> found bftFiniteElementCore")
-    set(bftFiniteElementCore ON)
-    include_directories(${bftFiniteElementCoreDir}/include)
-    file(GLOB libsources "${bftFiniteElementCoreDir}/src/*.cpp")
-    set(sources ${sources} ${libsources})
-endif()
+#
+#optional core libraries
+#
+foreach(library ${optionalCoreLibraries})
+    file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
+    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
+    if(EXISTS ${librarypath})
+        message("--> found ${library}")
+        include(${librarypath}/module.cmake)
+    endif()
+endforeach(library)
 
-#  bftCosseratCore
-get_filename_component(bftCosseratCoreDir ${bftCosseratCoreDir} ABSOLUTE) 
-if(EXISTS ${bftCosseratCoreDir})
-    message("--> found bftCosseratCore")
-    set(bftCosseratCore ON)
-    include_directories(${bftCosseratCoreDir}/include)
-    file(GLOB libsources "${bftCosseratCoreDir}/src/*.cpp")
-    set(sources ${sources} ${libsources})
-endif()
-
+#
 #optional materials 
+#
 foreach(library ${materials})
     file(TO_CMAKE_PATH "${optionalLibsRootDir}/materials/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
-        include(${librarypath}/CMakeLists.txt)
+        include(${librarypath}/module.cmake)
     endif()
 endforeach(library)
 
+#
 #optional elements 
+#
 foreach(library ${elements})
     file(TO_CMAKE_PATH "${optionalLibsRootDir}/elements/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
-        include(${librarypath}/CMakeLists.txt)
+        include(${librarypath}/module.cmake)
     endif()
 endforeach(library)
 

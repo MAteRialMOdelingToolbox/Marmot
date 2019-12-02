@@ -11,7 +11,7 @@ namespace userLibrary {
     enum MaterialCode : int {
         ModLeon                          = 1,
         ShotLeon                         = 2,
-        Meschke                          = 3,
+        ViscoPlasticShotcreteModel       = 3,
         SchaedlichSchweiger              = 4,
         ModLeonNonLocal                  = 5,
         HoekBrown                        = 6,
