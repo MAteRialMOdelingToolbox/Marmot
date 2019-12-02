@@ -15,9 +15,9 @@ namespace userLibrary {
         SchaedlichSchweiger              = 4,
         ModLeonNonLocal                  = 5,
         HoekBrown                        = 6,
-        UntereggerRockMass               = 7,
+        RockDamagePlasticity             = 7,
         MohrCoulomb                      = 8,
-        UntereggerRockMassNonLocal       = 9,
+        RockDamagePlasticityNonLocal     = 9,
         ShotLeonNonLocal                 = 10,
         ShotLeonV2                       = 11,
         LinearElastic                    = 12,
@@ -40,6 +40,9 @@ namespace userLibrary {
         GMCDPModel                       = 29,
         CDPModel                         = 30,
         CDPFibreReinforcedModel          = 31,
+        PorousElastic                    = 32,
+        BarodesyGradientDeformationModulus = 33,
+        ModifiedCamClay                  = 34,
     };
 
     enum ElementCode {

@@ -33,6 +33,7 @@ set (materials
     BarodesyGradientVoid
     CDP
     CDPFibreReinforced
+    BarodesyGradientDeformationModulus
     CosseratLinearElastic
     CosseratDruckerPrager
     DiffuseMicroCracking
@@ -42,6 +43,7 @@ set (materials
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
     MCDP
+    ModifiedCamClay
     ModLeon
     ModLeonSemiExplicit
     ModLeonAnalytical
@@ -51,6 +53,9 @@ set (materials
     ModLeonNonLocal
     MohrCoulomb
     ViscoPlasticShotcreteModel 
+    PorousElastic
+    RockDamagePlasticity
+    RockDamagePlasticityNonLocal
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2
@@ -58,10 +63,7 @@ set (materials
     ShotLeonV2NonLocal
     SolidificationCreep
     StVenantKirchhoffIsotropic
-    UntereggerRockMass
-    UntereggerRockMassNonLocal
-    UntereggerRockMassPlaxis
-)
+    UntereggerRockMassPlaxis)
 
 set(elements
     uelCosserat

@@ -12,8 +12,7 @@ namespace userLibrary {
     // MaterialFactory
 
     std::map<std::string, MaterialCode> BftMaterialFactory::materialNameToCodeAssociation;
-    std::map<MaterialCode, BftMaterialFactory::materialFactoryFunction>
-        BftMaterialFactory::materialFactoryFunctionByCode;
+    std::map<MaterialCode, BftMaterialFactory::materialFactoryFunction> BftMaterialFactory::materialFactoryFunctionByCode;
 
     bool BftMaterialFactory::registerMaterial( MaterialCode            materialCode,
                                                const std::string&      materialName,
