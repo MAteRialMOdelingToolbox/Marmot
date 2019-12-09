@@ -63,19 +63,20 @@ set (materials
     ShotLeonV2NonLocal
     SolidificationCreep
     StVenantKirchhoffIsotropic
-    UntereggerRockMassPlaxis)
+    UntereggerRockMassPlaxis
+    )
 
 set(elements
     uelCosserat
     uelDisplacement
     uelDisplacementTL
     uelDisplacementUL
-    # uelDisplacementEAS
+    uelDisplacementEAS
     uelNonLocal
     uelNonLocalCosserat
     uelNonLocalUL
     uelNonLocalULFBar
-    # uelNonLocalEAS
+    uelNonLocalEAS
     uelNonLocalMixed
     )
 

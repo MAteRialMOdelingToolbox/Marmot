@@ -18,8 +18,8 @@ namespace userLibrary {
                                                const std::string&      materialName,
                                                materialFactoryFunction factoryFunction )
     {
-        assert( materialNameToCodeAssociation.find( materialName ) != materialNameToCodeAssociation.end() );
-        assert( materialFactoryFunctionByCode.find( materialCode ) != materialFactoryFunctionByCode.end() );
+        assert( materialNameToCodeAssociation.find( materialName ) == materialNameToCodeAssociation.end() );
+        assert( materialFactoryFunctionByCode.find( materialCode ) == materialFactoryFunctionByCode.end() );
 
         materialNameToCodeAssociation[materialName] = materialCode;
         materialFactoryFunctionByCode[materialCode] = factoryFunction;
@@ -60,8 +60,8 @@ namespace userLibrary {
                                              ElementCode            elementCode,
                                              elementFactoryFunction factoryFunction )
     {
-        assert( elementNameToCodeAssociation.find( elementName ) != elementNameToCodeAssociation.end() );
-        assert( elementFactoryFunctionByCode.find( elementCode ) != elementFactoryFunctionByCode.end() );
+        assert( elementNameToCodeAssociation.find( elementName ) == elementNameToCodeAssociation.end() );
+        assert( elementFactoryFunctionByCode.find( elementCode ) == elementFactoryFunctionByCode.end() );
 
         elementNameToCodeAssociation[elementName] = elementCode;
         elementFactoryFunctionByCode[elementCode] = factoryFunction;
