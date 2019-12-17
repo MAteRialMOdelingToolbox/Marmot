@@ -256,6 +256,9 @@ namespace userLibrary {
 #ifdef UELNONLOCALEAS
 #    include "uelNonLocalEASFactory.h"
 #endif
+#ifdef UELNONLOCALMIXED
+#    include "uelNonLocalMixedFactory.h"
+#endif
 #ifdef UELNONLOCALUL
 #    include "uelNonLocalULFactory.h"
 #endif
@@ -341,6 +344,9 @@ namespace userLibrary {
             {"UELNCCPE8R", UelNCCPE8R},
             {"UELNCCPS8R", UelNCCPS8R},
             {"UELNCC3D8R", UelNCC3D8R},
+            {"UELCPS8RNONLOCALMIXED", UelCPS8RNonLocalMixed},
+            {"UELCPE8RNONLOCALMIXED", UelCPE8RNonLocalMixed},
+            {"UELC3D20RNONLOCALMIXED", UelC3D20RNonLocalMixed},
 
         };
         return elementCodeMap[elementName];
@@ -411,6 +417,11 @@ namespace userLibrary {
             case UelC3D8NonLocalEAS3: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS3(elementNumber);}
             case UelC3D8NonLocalEAS6b: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS6b(elementNumber);}
             case UelC3D8NonLocalEAS9: {return UelNonLocalEASFactory:: generateUelC3D8NonLocalEAS9(elementNumber);}
+            #endif
+            #ifdef UELNONLOCALMIXED
+            case UelCPS8RNonLocalMixed: {return UelNonLocalMixedFactory:: generateUelCPS8RNonLocalMixed(elementNumber);}
+            case UelCPE8RNonLocalMixed: {return UelNonLocalMixedFactory:: generateUelCPE8RNonLocalMixed(elementNumber);}
+            case UelC3D20RNonLocalMixed: {return UelNonLocalMixedFactory:: generateUelC3D20RNonLocalMixed(elementNumber);}
             #endif
             #ifdef UELNONLOCALUL
             case UelCPE4NonLocalUL: {return UelNonLocalULFactory:: generateUelCPE4NonLocalUL(elementNumber);}

@@ -61,6 +61,7 @@ namespace userLibrary {
          *                  4: mechanical + nonlocal damage, large strain UL,
          *                  5: cosserat 
          *                  6: cosserat   + nonlocal damage, 
+         *                  7: mechanical + nonlocal damage mixed,
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -128,6 +129,11 @@ namespace userLibrary {
         UelCPS4NonLocal  = 412,
         UelCPS8NonLocal  = 812,
         UelCPS8RNonLocal = 815,
+        
+        // Nonlocal mixed
+        UelCPS8RNonLocalMixed  = 875,
+        UelCPE8RNonLocalMixed  = 877,
+        UelC3D20RNonLocalMixed = 2076,
 
         // Plane Stress - EAS
         UelCPS4NonLocalEAS2 = 41202,
