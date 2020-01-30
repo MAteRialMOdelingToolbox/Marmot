@@ -332,6 +332,17 @@ namespace bft {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
+        Eigen::Matrix3d principalStressesDirections( const bft::Vector6& voigtStress )
+        {
+            SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
+            return es.eigenvectors();
+        }
+        bft::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const bft::Vector6& voigtStress )
+        {
+            const Matrix3d& T = voigtToStress( voigtStress); 
+            const Matrix3d& TR = Q * T * Q.transpose();
+            return stressToVoigt(TR);
+        }
         
         double vonMisesEquivalentStress( const Vector6& stress )
         {
