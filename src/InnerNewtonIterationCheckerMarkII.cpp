@@ -27,10 +27,10 @@ namespace bft {
         double incNorm = increment.norm();
         double refNorm = reference.norm();
 
-        if ( incNorm < 1e-16 )
+        if ( incNorm < 1e-14 )
             return incNorm;
 
-        if ( refNorm < 1e-14 )
+        if ( refNorm < 1e-12 )
             // for a too small reference norm, a reasonable relative norm cannot be computed
             return 0.0;
 
