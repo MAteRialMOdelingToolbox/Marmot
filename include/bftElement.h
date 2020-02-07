@@ -50,8 +50,8 @@ class BftElement {
                                          double*              Pext,
                                          double*              K,
                                          int                  elementFace,
-                                         const double*        QTotal,
                                          const double*        load,
+                                         const double*        QTotal,
                                          const double*        time,
                                          double               dT ) = 0;
 
