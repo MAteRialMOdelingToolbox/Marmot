@@ -43,6 +43,9 @@ namespace userLibrary {
         PorousElastic                    = 32,
         BarodesyGradientDeformationModulus = 33,
         ModifiedCamClay                  = 34,
+        JointedRock                      = 35,
+        TransverseIsotropicLinearElastic = 36,
+        MisesTI                          = 37
     };
 
     enum ElementCode {

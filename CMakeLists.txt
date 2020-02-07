@@ -18,8 +18,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
 # Disable (shared memory) parallelization within bftUserLibrary - such a parallelization is usually not desired
-add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
-add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
+# add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
+# add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
 
 set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
@@ -39,7 +39,9 @@ set (materials
     DiffuseMicroCracking
     GMCDP
     HoekBrown
+    JointedRock
     LinearElastic
+    transverseisotropiclinearelastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
     MCDP
@@ -52,6 +54,7 @@ set (materials
     ModLeonPlaneStress
     ModLeonNonLocal
     MohrCoulomb
+    MisesTI
     ViscoPlasticShotcreteModel 
     PorousElastic
     RockDamagePlasticity
