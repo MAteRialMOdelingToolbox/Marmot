@@ -363,15 +363,15 @@ namespace bft {
             constexpr int nDim = 3;
 
             // clang-format off
-            const std::vector< GaussPtInfo > gaussPtList1x1x1 = {
+            const inline std::vector< GaussPtInfo > gaussPtList1x1x1 = {
                 { Eigen::Vector3d::Zero(),                                         8.0 }
             };
 
-            const std::vector< GaussPtInfo > gaussPtListTetra4 = {
+            const inline std::vector< GaussPtInfo > gaussPtListTetra4 = {
                 { (Eigen::Vector3d() << 1./4, 1./4, 1./4).finished(),  1./6}
             };
 
-            const std::vector< GaussPtInfo > gaussPtList2x2x2 = {
+            const inline std::vector< GaussPtInfo > gaussPtList2x2x2 = {
                 { ( Eigen::Vector3d () << -gp2,    -gp2,   -gp2 ).finished(),       1.0},
                 { ( Eigen::Vector3d () << +gp2,    -gp2,   -gp2 ).finished(),       1.0},
                 { ( Eigen::Vector3d () << +gp2,    +gp2,   -gp2 ).finished(),       1.0},
@@ -382,7 +382,7 @@ namespace bft {
                 { ( Eigen::Vector3d () << -gp2,    +gp2,   +gp2 ).finished(),       1.0},
             };
 
-            const std::vector< GaussPtInfo > gaussPtList3x3x3 = {
+            const inline std::vector< GaussPtInfo > gaussPtList3x3x3 = {
                 { ( Eigen::Vector3d () << -gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
                 { ( Eigen::Vector3d () << 0,        -gp3,   -gp3 ).finished(),       0.274348422496571},
                 { ( Eigen::Vector3d () << +gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
