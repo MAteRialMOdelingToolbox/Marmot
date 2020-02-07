@@ -27,7 +27,7 @@ namespace bft {
                      *
                      *  */
 
-                    NSized N_;
+                    NSized N_; 
 
                     // clang-format off
                     N_ << 1 - xi(0) - xi(1) - xi(2),
@@ -62,7 +62,7 @@ namespace bft {
 
                     // clang-format on
 
-                    return dNdXi_;
+                    return dNdXi_; 
                 }
 
                 Vector3i getBoundaryElementIndices( int faceID )
@@ -85,7 +85,7 @@ namespace bft {
                      *        | /      | /
                      *        |/_______|/
                      *     (1)        (2)
-                     *
+                     *            
                      *
                      *     x3  x2
                      *     | /
@@ -152,21 +152,27 @@ namespace bft {
                 Vector4i getBoundaryElementIndices( int faceID )
                 {
                     switch ( faceID ) {
-                    case 1: {
+                    // bottom
+                    case 1: { 
                         return ( Vector4i() << 3, 2, 1, 0 ).finished();
                     }
+                    // top
                     case 2: {
                         return ( Vector4i() << 4, 5, 6, 7 ).finished();
                     }
+                    // front
                     case 3: {
                         return ( Vector4i() << 0, 1, 5, 4 ).finished();
                     }
+                    //right
                     case 4: {
                         return ( Vector4i() << 6, 5, 1, 2 ).finished();
                     }
+                    // back
                     case 5: {
                         return ( Vector4i() << 7, 6, 2, 3 ).finished();
                     }
+                    // left
                     case 6: {
                         return ( Vector4i() << 4, 7, 3, 0 ).finished();
                     }
