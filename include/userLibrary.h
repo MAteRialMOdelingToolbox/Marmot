@@ -1,6 +1,7 @@
 #pragma once
-#include "bftMaterial.h"
 #include "bftElement.h"
+#include "bftMaterial.h"
+#include <functional>
 #include <iostream>
 #include <map>
 #include <string>
@@ -10,7 +11,7 @@ namespace userLibrary {
     enum MaterialCode : int {
         ModLeon                          = 1,
         ShotLeon                         = 2,
-        Meschke                          = 3,
+        ViscoPlasticShotcreteModel       = 3,
         SchaedlichSchweiger              = 4,
         ModLeonNonLocal                  = 5,
         HoekBrown                        = 6,
@@ -37,16 +38,21 @@ namespace userLibrary {
         CosseratDruckerPrager            = 27,
         MCDPModel                        = 28,
         GMCDPModel                       = 29,
-        PorousElastic                    = 30,
-        BarodesyGradientDeformationModulus = 31,
-        ModifiedCamClay                  = 32,
+        CDPModel                         = 30,
+        CDPFibreReinforcedModel          = 31,
+        PorousElastic                    = 32,
+        BarodesyGradientDeformationModulus = 33,
+        ModifiedCamClay                  = 34,
+        JointedRock                      = 35,
+        TransverseIsotropicLinearElastic = 36,
+        MisesTI                          = 37
     };
 
     enum ElementCode {
 
         /*
          * XXXXXX
-         * ||||||_    6: if EAS: number of EAS Parameters 
+         * ||||||_    6: if EAS: number of EAS Parameters
          * |||||__    5: if EAS: number of EAS Parameters (01 = FBar / Bbar)
          * ||||___    4: type of element
          * |||____    3: active fields
@@ -77,13 +83,13 @@ namespace userLibrary {
         // Truss
         UelT2D2 = 202,
         // Plane Stress
-        UelCPS4  = 402,
-        UelCPS8  = 802,
+        UelCPS4 = 402,
+        // UelCPS8  = 802,
         UelCPS8R = 805,
 
         // Plane Strain
-        UelCPE4  = 407,
-        UelCPE8  = 807,
+        UelCPE4 = 407,
+        // UelCPE8  = 807,
         UelCPE8R = 808,
 
         // Plane Strain - EAS
@@ -114,9 +120,9 @@ namespace userLibrary {
         UelC3D20TL  = 2023,
         UelC3D20RTL = 2026,
 
-        UelCPE4UL   = 437,
-        UelCPE8RUL  = 838,
-        UelC3D8UL   = 833,
+        UelCPE4UL  = 437,
+        UelCPE8RUL = 838,
+        UelC3D8UL  = 833,
 
         // Solid EAS
         UelC3D8EAS3  = 80303,
@@ -163,43 +169,77 @@ namespace userLibrary {
         UelC3D20RNonLocal = 2016,
 
         // Nonlocal, Updated Lagrange
-        UelC3D8NonLocalUL   = 843,
-        UelCPE4NonLocalUL   = 447,
-        UelCPE4RNonLocalUL   = 448,
-        UelCPE8RNonLocalUL   = 848,
+        UelC3D8NonLocalUL  = 843,
+        UelCPE4NonLocalUL  = 447,
+        UelCPE4RNonLocalUL = 448,
+        UelCPE8RNonLocalUL = 848,
         // FBar versions
-        UelC3D8NonLocalULFBar   = 84301,
-        UelCPE4NonLocalULFBar   = 44701,
+        UelC3D8NonLocalULFBar = 84301,
+        UelCPE4NonLocalULFBar = 44701,
 
         // Cosserat
-        UelCCPE4  = 457,
+        UelCCPE4  = 458,
         UelCCPE8R  = 858,
-        UelCC3D20R  = 2056,
+        UelCC3D20R = 2056,
 
         // Nonlocal Cosserat
-        UelNCCPE4  = 467,
+        UelNCCPS4  = 465,
         UelNCCPE8R  = 868,
         UelNCCPS8R  = 865,
-        UelNCC3D8R  = 866,
+        UelNCC3D20R = 2066,
     };
 
-    MaterialCode getMaterialCodeFromName( const std::string& materialName );
+    // MaterialFactory
+    //
+    // - Allows materials to register themselve with their name and ID
+    // - Allows the user to create instances of materials
 
-    ElementCode getElementCodeFromInfo( int                nNodes,
-                                        int                activeFields,
-                                        int                dim,
-                                        bool               fullIntegration,
-                                        const std::string& formulation,
-                                        int                EASParam );
+    class BftMaterialFactory {
+      public:
+        using materialFactoryFunction = BftMaterial* (*)( const double* materialProperties,
+                                                          int           nMaterialProperties,
+                                                          int           element,
+                                                          int           gaussPt );
+        BftMaterialFactory()          = delete;
 
-    ElementCode getElementCodeFromName( const std::string& elementName );
+        static MaterialCode getMaterialCodeFromName( const std::string& materialName );
 
-    BftElement* bftElementFactory( ElementCode elementCode, int elementNumber );
+        static BftMaterial* createMaterial( MaterialCode  material,
+                                            const double* materialProperties,
+                                            int           nMaterialProperties,
+                                            int           element,
+                                            int           gaussPt );
 
-    BftMaterial* bftMaterialFactory( MaterialCode  material,
-                                     const double* materialProperties,
-                                     int           nMaterialProperties,
-                                     int           element,
-                                     int           gaussPt );
+        static bool registerMaterial( MaterialCode            materialCode,
+                                      const std::string&      materialName,
+                                      materialFactoryFunction factoryFunction );
+
+      private:
+        static std::map<std::string, MaterialCode>             materialNameToCodeAssociation;
+        static std::map<MaterialCode, materialFactoryFunction> materialFactoryFunctionByCode;
+    };
+
+    // ElementFactory
+    //
+    // - Allows elements to register themselve with their name and ID
+    // - Allows the user to create instances of elements
+
+    class BftElementFactory {
+      public:
+        using elementFactoryFunction = BftElement* (*)( int elementNumber );
+        BftElementFactory()          = delete;
+
+        static ElementCode getElementCodeFromName( const std::string& elementName );
+
+        static BftElement* createElement( ElementCode elementCode, int elementNumber );
+
+        static bool registerElement( const std::string&     elementName,
+                                     ElementCode            elementCode,
+                                     elementFactoryFunction factoryFunction );
+
+      private:
+        static std::map<std::string, ElementCode>            elementNameToCodeAssociation;
+        static std::map<ElementCode, elementFactoryFunction> elementFactoryFunctionByCode;
+    };
 
 } // namespace userLibrary

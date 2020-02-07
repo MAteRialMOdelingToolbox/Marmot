@@ -2,8 +2,8 @@
 
 BftJournal& BftJournal::getInstance()
 {
-    static BftJournal instance; // Guaranteed to be destroyed.
-                                // Instantiated on first use.
+    static BftJournal instance; 
+                                
     return instance;
 }
 
