@@ -106,6 +106,10 @@ namespace bft {
         Eigen::Vector3d principalStrainsHW( const bft::Vector6& strain );
         // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
         Eigen::Vector3d principalStresses( const bft::Vector6& stress );
+        // principal stressDirections calculated by solving eigenvalue problem ( !NOT sorted! )
+        Eigen::Matrix3d principalStressDirections( const bft::Vector6& stress );
+        // rotate a 2nd order tensor T in voigt notation by : T' = Q * T * Q^T
+        bft::Vector6   rotateVoigtStress( const Eigen::Matrix3d Q, const bft::Vector6& stress );
 
         // equivalent von Mises stress
         double vonMisesEquivalentStress( const bft::Vector6& stress );
@@ -184,9 +188,5 @@ namespace bft {
         namespace PlaneStress{
             Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
         }
-
-
-
-
     } // namespace mechanics
 } // namespace bft
