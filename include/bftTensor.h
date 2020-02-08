@@ -7,7 +7,7 @@
 
 namespace bft {
     namespace CommonTensors {
-        extern const Tensor3333d I;
+        extern const Tensor3333d I2xI2;
         extern const Tensor3333d Isym;
         extern const Tensor3333d Iskew;
         extern const Tensor3333d dDeviatoricStress_dStress;

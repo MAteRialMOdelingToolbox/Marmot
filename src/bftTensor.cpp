@@ -4,19 +4,19 @@ using namespace bft::TensorUtility;
 
 namespace bft {
     namespace CommonTensors {
-        auto Initialize_I()
+        auto Initialize_I2xI2()
         {
-            Tensor3333d I;
+            Tensor3333d I2xI2;
 
             for ( int i = 0; i < 3; i++ )
                 for ( int j = 0; j < 3; j++ )
                     for ( int k = 0; k < 3; k++ )
                         for ( int l = 0; l < 3; l++ ) {
-                            I( i, j, k, l ) = d( i, j ) * d( k, l );
+                            I2xI2( i, j, k, l ) = d( i, j ) * d( k, l );
                         }
-            return I;
+            return I2xI2;
         }
-        const Tensor3333d I = Initialize_I();
+        const Tensor3333d I2xI2 = Initialize_I2xI2();
 
         auto Initialize_Isym()
         {
