@@ -1,7 +1,7 @@
+#include "bftVoigt.h"
 #include "bftConstants.h"
 #include "bftMath.h"
 #include "bftTensor.h"
-#include "bftVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -72,7 +72,7 @@ namespace bft {
             Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D )
             {
                 static constexpr int planeVoigtIndices[] = {0, 1, 3};
-                Tensor322d    tangent2D;
+                Tensor322d           tangent2D;
                 for ( int i = 0; i < 3; i++ )
                     for ( int j = 0; j < 2; j++ )
                         for ( int k = 0; k < 2; k++ )
@@ -121,16 +121,10 @@ namespace bft {
             }
 
         } // namespace PlaneStress
-        
-        double E( const double K, const double G )
-        {
-            return 9.*K*G/(3.*K+G);
-        }
-        
-        double nu( const double K, const double G )
-        {
-            return ( 3*K - 2*G ) / ( 6*K + 2*G ) ;
-        }
+
+        double E( const double K, const double G ) { return 9. * K * G / ( 3. * K + G ); }
+
+        double nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
     } // namespace mechanics
     namespace Vgt {
 
@@ -163,9 +157,11 @@ namespace bft {
         Matrix3d voigtToStress( const Vector6& voigt )
         {
             Matrix3d stress;
+            // clang-format off
             stress << voigt[0], voigt[3], voigt[4], 
                       voigt[3], voigt[1], voigt[5], 
                       voigt[4], voigt[5], voigt[2];
+            // clang-format on
             return stress;
         }
 
@@ -339,15 +335,12 @@ namespace bft {
         }
         bft::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const bft::Vector6& voigtStress )
         {
-            const Matrix3d& T = voigtToStress( voigtStress); 
+            const Matrix3d& T  = voigtToStress( voigtStress );
             const Matrix3d& TR = Q * T * Q.transpose();
-            return stressToVoigt(TR);
+            return stressToVoigt( TR );
         }
-        
-        double vonMisesEquivalentStress( const Vector6& stress )
-        {
-            return sqrt(3 * J2(stress));
-        }
+
+        double vonMisesEquivalentStress( const Vector6& stress ) { return sqrt( 3. * J2( stress ) ); }
 
         double vonMisesEquivalentStrain( const Vector6& strain )
         {
@@ -358,7 +351,7 @@ namespace bft {
         }
 
         double normStrain( const Vector6& strain ) { return Vgt::voigtToStrain( strain ).norm(); }
-        
+
         double normStress( const Vector6& stress ) { return Vgt::voigtToStress( stress ).norm(); }
 
         double Evolneg( const Vector6& strain )
@@ -539,6 +532,26 @@ namespace bft {
 
         {
             return dThetaE_dJ2E( strain ) * dJ2E_dE( strain ) + dThetaE_dJ3E( strain ) * dJ3E_dE( strain );
+        }
+
+        Matrix36 dStressPrincipals_dStress(
+            const Vector6& stress ) // derivative when principal stresses are computed from solving Eigenvalue-Problem
+        {
+            MatrixXd J( 3, 6 );
+
+            Vector6 leftX;
+            Vector6 rightX;
+
+            for ( size_t i = 0; i < 6; i++ ) {
+                double volatile h = std::max( 1.0, std::abs( stress( i ) ) ) * Constants::cubicRootEps();
+                leftX             = stress;
+                leftX( i ) -= h;
+                rightX = stress;
+                rightX( i ) += h;
+
+                J.col( i ) = 1. / ( 2 * h ) * ( principalStresses( rightX ) - principalStresses( leftX ) );
+            }
+            return J;
         }
 
         Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Vector6& strain )
