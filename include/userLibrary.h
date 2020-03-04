@@ -45,7 +45,8 @@ namespace userLibrary {
         ModifiedCamClay                  = 34,
         JointedRock                      = 35,
         TransverseIsotropicLinearElastic = 36,
-        MisesTI                          = 37
+        MisesTI                          = 37,
+        CDPM2                            = 38,
     };
 
     enum ElementCode {

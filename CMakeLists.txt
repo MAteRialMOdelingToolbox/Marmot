@@ -33,6 +33,7 @@ set (materials
     BarodesyGradientVoid
     CDP
     CDPFibreReinforced
+    CDPM2
     BarodesyGradientDeformationModulus
     CosseratLinearElastic
     CosseratDruckerPrager
