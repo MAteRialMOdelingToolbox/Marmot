@@ -38,6 +38,7 @@ set (materials
     CosseratLinearElastic
     CosseratDruckerPrager
     DiffuseMicroCracking
+    DruckerPrager 
     GMCDP
     HoekBrown
     JointedRock
