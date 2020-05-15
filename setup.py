@@ -7,6 +7,8 @@ Created on Fri May 15 11:47:51 2020
 """
 
 import os
+import shutil
+from distutils.util import strtobool
 
 cwd = os.getcwd()
 
@@ -22,12 +24,14 @@ def basicInstall(argument):
     if argument == '1' or 'all':
          installEigen()        
         
-    if argument in ['2','3','all']:
+    if argument in ['2','3','4','all']:
         os.chdir(os.path.join(cwd,'modules'))
         print("Installing to folder {:}".format(os.path.join(cwd,'modules')))
-        if argument == '2' or 'all':    
-            cloneGitUibk("bftFiniteElementCore","c8441141"),
-        if argument == '3' or 'all':
+        if argument == '2' or 'all':
+            cloneGitUibk("bftMechanics")
+        if argument == '3' or 'all':    
+            cloneGitUibk("bftFiniteElementCore","c8441141")
+        if argument == '4' or 'all':
             cloneGitUibk("bftCosseratCore","c8441141"),
     
 def materialInstall(argument):
@@ -80,6 +84,8 @@ def elementInstall(argument):
     else:
         print("ERROR: No element for your input provided")
     
+    
+    
 if __name__=="__main__":
     
     print("""
@@ -90,8 +96,8 @@ if __name__=="__main__":
  bftUserlibrary/
 
      |-----modules/
-             |---- bftMechanics/
-             |---- materials/
+             |---- bftMechanics/            (opt)
+             |---- materials/               (opt)
              |---- elements/                (opt)
              |---- bftFiniteElementCore/    (opt)
              |---- bftCosseratCore/         (opt)
@@ -111,8 +117,9 @@ Additional external dependencies        (opt)
         """)
         txt = input("""Choose the following installation options:
             (1) Eigen library
-            (2) basic bftFiniteElement library
-            (3) basic bftCosserat library
+            (2) bftMechanics
+            (3) bftFiniteElementCore
+            (4) bftCosseratCore
             
 Input e.g. 1, all, 1 2 3 (hit enter to continue): """)
         userList = txt.split()
@@ -155,7 +162,7 @@ Input e.g. 1, all, 1 2 3 (hit enter to continue): """)
    
     while True: 
         txt = input("""Choose the element libraries you would like to install (e.g. 1, 1 2 3, or Enter to quit):
-            (1) basic elements
+            (1) displacement elements
             (2) large displacement elements (total/updated Lagrangian)
             (3) gradient-enhanced elements
             (4) gradient-enhanced large displacement elements
@@ -171,4 +178,25 @@ Input e.g. 1, all, 1 2 3 (hit enter to continue): """)
             for i in userList: elementInstall(i)
         except:
             print(" no option chosen")
-
+            
+    print("""
++-----------------------------------------------------------------------------+
+| Would you like to build the bftUserLibrary?                                 |
++-----------------------------------------------------------------------------+            """)
+    while True: 
+        txt = input("""yes or no (hit enter to continue): """)
+      
+        yn = strtobool(txt)
+      
+        if not txt:
+            break
+        if yn:
+            shutil.rmtree("CMakeFiles")
+            os.remove("CMakeCache.txt")
+            os.system("cmake -DCMAKE_CXX_COMPILER=g++ .")
+            os.system("make")
+            
+    print("""
++-----------------------------------------------------------------------------+
+| Thank you for setting up the bftUserLibrary !                               |
++-----------------------------------------------------------------------------+            """)
