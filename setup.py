@@ -6,7 +6,6 @@ Created on Fri May 15 11:47:51 2020
 @author: magdalena
 """
 
-
 import os
 import shutil
 from distutils.util import strtobool
@@ -14,16 +13,10 @@ from distutils.util import strtobool
 cwd = os.getcwd()
 defaultUser = 'afbDevelopers'
 
-lookUpMaterialCategories = {  "basic": "1",
-                              "concrete": "2",
-                              "shotcrete": "3",
-                              "soil": "4",
-                              "rock": "5",
-                              }
 
 dictMaterials = { # add material: 
                   # name: ("basic/concrete/rock/shotcrete", "afbDevelopers/c8441141/c8441146")
-                "linearElastic":         ("basic", "afbDevelopers"),
+                "LinearElastic":         ("basic", "afbDevelopers"),
                 "DruckerPrager":         ("basic", "c8441141"),
                 "MohrCoulomb":           ("basic", "c8441146"),
                 "CosseratLinearElastic": ("cosserat", "c8441141"),
@@ -42,12 +35,6 @@ dictMaterials = { # add material:
                 "SandHypo":              ("soil", "c8441146"), 
                 }
 
-lookUpElementCategories = {  "displacement": "1",
-                              "large displacement": "2",
-                              "gradient-enhanced": "3",
-                              "gradient-enhanced large displacement": "4",
-                              "cosserat": "5",
-                              }
 
 dictElements = { # add element: 
                   # name: ("displacement/large displacement/gradient-enhanced/ 
@@ -65,6 +52,22 @@ dictElements = { # add element:
                 "uelCosserat":           ("cosserat", "c8441141"),        
                 "uelNonLocalCosserat":   ("cosserat", "c8441141"),      
                 }
+
+lookUpMaterialCategories = {  "basic": "1",
+                              "concrete": "2",
+                              "shotcrete": "3",
+                              "soil": "4",
+                              "rock": "5",
+                              }
+
+lookUpElementCategories = {  "displacement": "1",
+                              "large displacement": "2",
+                              "gradient-enhanced": "3",
+                              "gradient-enhanced large displacement": "4",
+                              "cosserat": "5",
+                              }
+
+
 
 
 def cloneGitUibk(projectName,user='afbDevelopers'):
@@ -226,11 +229,9 @@ Input e.g. 1, all, 1 2 3 (hit enter to continue): """)
     while True: 
         txt = input("""yes or no (hit enter to continue): """)
       
-        yn = strtobool(txt)
-      
         if not txt:
             break
-        if yn:
+        if strtobool(txt):
             shutil.rmtree("CMakeFiles")
             os.remove("CMakeCache.txt")
             os.system("cmake -DCMAKE_CXX_COMPILER=g++ .")
