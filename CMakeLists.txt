@@ -60,6 +60,7 @@ set (materials
     PorousElastic
     RockDamagePlasticity
     RockDamagePlasticityNonLocal
+    SandHypo
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2

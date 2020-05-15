@@ -47,6 +47,7 @@ namespace userLibrary {
         TransverseIsotropicLinearElastic = 36,
         MisesTI                          = 37,
         CDPM2                            = 38,
+        SandHypo                         = 39,
     };
 
     enum ElementCode {
