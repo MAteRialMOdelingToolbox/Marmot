@@ -38,6 +38,7 @@ set (materials
     CosseratLinearElastic
     CosseratDruckerPrager
     DiffuseMicroCracking
+    DruckerPrager 
     GMCDP
     HoekBrown
     JointedRock
@@ -54,7 +55,7 @@ set (materials
     ModLeonSemiExplicitAdaptive
     ModLeonPlaneStress
     ModLeonNonLocal
-    #MohrCoulomb
+    MohrCoulomb
     MisesTI
     ViscoPlasticShotcreteModel 
     PorousElastic
