@@ -62,6 +62,7 @@ set (materials
     RockDamagePlasticity
     RockDamagePlasticityNonLocal
     SandHypo
+    SandHypoMicropolar
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2

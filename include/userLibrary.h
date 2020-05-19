@@ -49,6 +49,7 @@ namespace userLibrary {
         CDPM2                            = 38,
         DruckerPrager                    = 39,
         SandHypo                         = 40,
+        SandHypoMicropolar               = 41,
     };
 
     enum ElementCode {
@@ -184,6 +185,7 @@ namespace userLibrary {
         UelCCPE4  = 458,
         UelCCPE8R  = 858,
         UelCC3D20R = 2056,
+        UelCC3D8 = 853,
 
         // Nonlocal Cosserat
         UelNCCPS4  = 465,
