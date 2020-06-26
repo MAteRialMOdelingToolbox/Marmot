@@ -39,6 +39,7 @@ set (materials
     CosseratDruckerPrager
     DiffuseMicroCracking
     DruckerPrager 
+    DruckerPragerMD
     GMCDP
     HoekBrown
     JointedRock

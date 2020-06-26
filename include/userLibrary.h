@@ -50,6 +50,7 @@ namespace userLibrary {
         DruckerPrager                    = 39,
         SandHypo                         = 40,
         SandHypoMicropolar               = 41,
+        DruckerPragerMD                  = 42,
     };
 
     enum ElementCode {
@@ -167,6 +168,7 @@ namespace userLibrary {
 
         // Solid
         UelC3D4NonLocal   = 413,
+        UelC3D10NonLocal   = 1013,
         UelC3D8NonLocal   = 813,
         UelC3D8RNonLocal  = 816,
         UelC3D20NonLocal  = 2013,
