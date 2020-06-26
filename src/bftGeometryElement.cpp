@@ -34,6 +34,12 @@ BftGeometryElement<3, 4>::NSized BftGeometryElement<3, 4>::N( const XiSized& xi 
 {
     return bft::FiniteElement::Spatial3D::Tetra4::N( xi );
 }
+// Tetra10
+template <>
+BftGeometryElement<3, 10>::NSized BftGeometryElement<3, 10>::N( const XiSized& xi )
+{
+    return bft::FiniteElement::Spatial3D::Tetra10::N( xi );
+}
 // Hexa8
 template <>
 BftGeometryElement<3, 8>::NSized BftGeometryElement<3, 8>::N( const XiSized& xi )
@@ -72,6 +78,12 @@ template <>
 BftGeometryElement<3, 4>::dNdXiSized BftGeometryElement<3, 4>::dNdXi( const XiSized& xi )
 {
     return bft::FiniteElement::Spatial3D::Tetra4::dNdXi( xi );
+}
+// Tetra10
+template <>
+BftGeometryElement<3, 10>::dNdXiSized BftGeometryElement<3, 10>::dNdXi( const XiSized& xi )
+{
+    return bft::FiniteElement::Spatial3D::Tetra10::dNdXi( xi );
 }
 // Hexa8
 template <>
@@ -121,6 +133,12 @@ typename BftGeometryElement<3, 4>::BSized BftGeometryElement<3, 4>::B( const dNd
 {
     return bft::FiniteElement::Spatial3D::B<4>( dNdX );
 }
+// Tetra10
+template <>
+typename BftGeometryElement<3, 10>::BSized BftGeometryElement<3, 10>::B( const dNdXiSized& dNdX )
+{
+    return bft::FiniteElement::Spatial3D::B<10>( dNdX );
+}
 // Hexa8
 template <>
 typename BftGeometryElement<3, 8>::BSized BftGeometryElement<3, 8>::B( const dNdXiSized& dNdX )
@@ -161,6 +179,13 @@ typename BftGeometryElement<3, 4>::BSized BftGeometryElement<3, 4>::BGreen( cons
                                                                             const JacobianSized& F )
 {
     return bft::FiniteElement::Spatial3D::BGreen<4>( dNdX, F );
+}
+// Tetra10
+template <>
+typename BftGeometryElement<3, 10>::BSized BftGeometryElement<3, 10>::BGreen( const dNdXiSized&    dNdX,
+                                                                              const JacobianSized& F )
+{
+    return bft::FiniteElement::Spatial3D::BGreen<10>( dNdX, F );
 }
 // Hexa8
 template <>

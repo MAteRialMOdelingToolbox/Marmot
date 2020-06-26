@@ -1,8 +1,8 @@
 #pragma once
 #include "bftFiniteElement.h"
 #include "bftTypedefs.h"
-#include <map>
 #include <iostream>
+#include <map>
 
 template <int nDim, int nNodes>
 class BftGeometryElement {
@@ -39,12 +39,13 @@ class BftGeometryElement {
     std::string getElementShape()
     {
         using namespace bft::FiniteElement;
-        static std::map<ElementShapes, std::string> shapes = {{Bar2, "bar2"},
-                                                              {Quad4, "quad4"},
-                                                              {Quad8, "quad8"},
-                                                              {Tetra4, "tetra4"},
-                                                              {Hexa8, "hexa8"},
-                                                              {Hexa20, "hexa20"}};
+        static std::map<ElementShapes, std::string> shapes = { { Bar2, "bar2" },
+                                                               { Quad4, "quad4" },
+                                                               { Quad8, "quad8" },
+                                                               { Tetra4, "tetra4" },
+                                                               { Tetra10, "tetra10" },
+                                                               { Hexa8, "hexa8" },
+                                                               { Hexa20, "hexa20" } };
 
         return shapes[this->shape];
     }

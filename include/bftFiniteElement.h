@@ -11,6 +11,7 @@ namespace bft {
             Quad4,
             Quad8,
             Tetra4,
+            Tetra10,
             Hexa8,
             Hexa20,
         };
@@ -62,7 +63,7 @@ namespace bft {
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
-            } // namespace Bar2 
+            } // namespace Bar2
 
             namespace Bar3 {
 
@@ -72,7 +73,7 @@ namespace bft {
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
-            } // namespace Bar3 
+            } // namespace Bar3
         }     // namespace Spatial1D
 
         namespace Spatial2D {
@@ -212,7 +213,7 @@ namespace bft {
                 return B_;
             }
 
-            namespace Tetra4{
+            namespace Tetra4 {
 
                 constexpr int nNodes  = 4;
                 using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
@@ -224,7 +225,21 @@ namespace bft {
 
                 Eigen::Vector3i getBoundaryElementIndices( int faceID );
 
-            }
+            } // namespace Tetra4
+
+            namespace Tetra10 {
+
+                constexpr int nNodes  = 10;
+                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
+                using NSized          = Eigen::Matrix<double, 1, nNodes>;
+                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+
+                NSized     N( const Eigen::Vector3d& xi );
+                dNdXiSized dNdXi( const Eigen::Vector3d& xi );
+
+                Eigen::Vector3i getBoundaryElementIndices( int faceID );
+
+            } // namespace Tetra10
 
             namespace Hexa8 {
                 constexpr int nNodes  = 8;
@@ -286,8 +301,9 @@ namespace bft {
             Eigen::VectorXd computeNormalLoadVector();
             Eigen::MatrixXd computeNormalLoadVectorStiffness();
             Eigen::VectorXd condenseParentToBoundaryVector( const Eigen::VectorXd& parentVector );
-            void assembleIntoParentVector( const Eigen::VectorXd& boundaryVector, Eigen::Ref<Eigen::VectorXd> ParentVector);
-            void assembleIntoParentStiffness ( const Eigen::MatrixXd& KBoundary, Eigen::Ref<Eigen::MatrixXd> KParent);
+            void            assembleIntoParentVector( const Eigen::VectorXd&      boundaryVector,
+                                                      Eigen::Ref<Eigen::VectorXd> ParentVector );
+            void assembleIntoParentStiffness( const Eigen::MatrixXd& KBoundary, Eigen::Ref<Eigen::MatrixXd> KParent );
         };
     } // namespace FiniteElement
 
@@ -369,6 +385,13 @@ namespace bft {
 
             const inline std::vector< GaussPtInfo > gaussPtListTetra4 = {
                 { (Eigen::Vector3d() << 1./4, 1./4, 1./4).finished(),  1./6}
+            };
+
+            const inline std::vector< GaussPtInfo > gaussPtListTetra10 = {
+                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20     ).finished(),  1./24},
+                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20,    (5+3*std::sqrt(5))/20   ).finished(),  1./24},
+                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5+3*std::sqrt(5))/20,  (5-std::sqrt(5))/20     ).finished(),  1./24},
+                { (Eigen::Vector3d() << (5+3*std::sqrt(5))/20,  (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20     ).finished(),  1./24},
             };
 
             const inline std::vector< GaussPtInfo > gaussPtList2x2x2 = {
