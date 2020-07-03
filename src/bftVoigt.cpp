@@ -331,7 +331,8 @@ namespace bft {
         Eigen::Matrix3d principalStressesDirections( const bft::Vector6& voigtStress )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
-            return es.eigenvectors();
+            Matrix3d Q = es.eigenvectors();  Q.col(2) = Q.col(0).cross(Q.col(1)); // for a clockwise coordinate system
+            return Q; 
         }
         bft::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const bft::Vector6& voigtStress )
         {
