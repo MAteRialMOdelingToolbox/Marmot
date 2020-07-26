@@ -72,6 +72,7 @@ namespace userLibrary {
          *                  5: cosserat 
          *                  6: cosserat   + nonlocal damage, 
          *                  7: mechanical + nonlocal damage mixed,
+         *                  9: Reserved for tests
          *
          * type of element: 1: 1D full integration,
          *                  2: 2D full integration, plane stress
@@ -192,6 +193,8 @@ namespace userLibrary {
         UelNCCPE8R  = 868,
         UelNCCPS8R  = 865,
         UelNCC3D20R = 2066,
+
+        UelGMCPE8R  = 898,
     };
 
     // MaterialFactory

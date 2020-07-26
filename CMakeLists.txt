@@ -81,6 +81,7 @@ set(elements
     uelDisplacementEAS
     uelNonLocal
     uelNonLocalCosserat
+    uelGradientEnhancedMicropolar
     uelNonLocalUL
     uelNonLocalULFBar
     uelNonLocalEAS
