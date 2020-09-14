@@ -6,7 +6,7 @@
 class BftElement {
 
   public:
-    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, BftMaterialStateVars };
+    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, BftMaterialStateVars, BftMaterialInitialization};
 
     enum DistributedLoadTypes {
         Pressure,

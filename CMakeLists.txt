@@ -26,7 +26,9 @@ set(optionalLibsRootDir "modules/")
 
 set(optionalCoreLibraries
     bftFiniteElementCore
-    bftCosseratCore)
+    bftCosseratCore
+    bftTensorFastorCore
+    )
 
 set (materials
     Barodesy
@@ -40,6 +42,8 @@ set (materials
     DiffuseMicroCracking
     DruckerPrager 
     GMCDP
+    GMStVenantKirchhoff
+    GMDruckerPrager
     HoekBrown
     JointedRock
     LinearElastic
@@ -82,6 +86,7 @@ set(elements
     uelNonLocal
     uelNonLocalCosserat
     uelGradientEnhancedMicropolar
+    uelGradientEnhancedMicropolarUL
     uelNonLocalUL
     uelNonLocalULFBar
     uelNonLocalEAS
@@ -97,10 +102,11 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-copy")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     # only activate if you know what you are doing:
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+    # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

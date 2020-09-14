@@ -50,6 +50,8 @@ namespace userLibrary {
         DruckerPrager                    = 39,
         SandHypo                         = 40,
         SandHypoMicropolar               = 41,
+        GMStVenantKirchhoff              = 42,
+        GMDruckerPrager                  = 43,
     };
 
     enum ElementCode {
@@ -193,8 +195,14 @@ namespace userLibrary {
         UelNCCPE8R  = 868,
         UelNCCPS8R  = 865,
         UelNCC3D20R = 2066,
+        UelNCC3D8 = 866,
 
         UelGMCPE8R  = 898,
+        UelGMC3D20R = 2096,
+        UelGMC3D8  ,
+        UelGMCPE8RUL ,
+        UelGMC3D8UL ,
+        UelGMC3D20RUL ,
     };
 
     // MaterialFactory
