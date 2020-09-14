@@ -41,6 +41,7 @@ set (materials
     CosseratDruckerPrager
     DiffuseMicroCracking
     DruckerPrager 
+    DruckerPragerMD
     GMCDP
     GMStVenantKirchhoff
     GMDruckerPrager
