@@ -50,9 +50,10 @@ namespace userLibrary {
         DruckerPrager                    = 39,
         SandHypo                         = 40,
         SandHypoMicropolar               = 41,
-        GMStVenantKirchhoff              = 42,
+        GMBiotElastic                    = 42,
         GMDruckerPrager                  = 43,
         DruckerPragerMD                  = 44,
+        GMNeoHooke                       = 45,
     };
 
     enum ElementCode {
