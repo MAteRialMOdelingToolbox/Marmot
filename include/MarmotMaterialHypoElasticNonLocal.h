@@ -1,10 +1,10 @@
 #pragma once
-#include "bftMaterialMechanicalNonLocal.h"
+#include "MarmotMaterialMechanicalNonLocal.h"
 
-class BftMaterialHypoElasticNonLocal : public BftMaterialMechanicalNonLocal {
+class MarmotMaterialHypoElasticNonLocal : public MarmotMaterialMechanicalNonLocal {
 
   public:
-    using BftMaterialMechanicalNonLocal::BftMaterialMechanicalNonLocal;
+    using MarmotMaterialMechanicalNonLocal::MarmotMaterialMechanicalNonLocal;
     
     // Abstract methods
     virtual void computeStress( double*       stress,
@@ -36,7 +36,7 @@ class BftMaterialHypoElasticNonLocal : public BftMaterialMechanicalNonLocal {
                                 const double  dT,
                                 double&       pNewDT ) = 0;
 
-    using BftMaterialMechanicalNonLocal::computePlaneStress;
+    using MarmotMaterialMechanicalNonLocal::computePlaneStress;
     virtual void computePlaneStress( double*       stress,
                                      double&       K_local,
                                      double&       nonLocalRadius,
