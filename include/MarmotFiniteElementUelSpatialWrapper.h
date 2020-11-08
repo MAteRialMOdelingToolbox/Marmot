@@ -1,11 +1,11 @@
 #pragma once
 #include "Eigen/Sparse"
-#include "bftElement.h"
-#include "bftElementProperty.h"
+#include "MarmotElement.h"
+#include "MarmotElementProperty.h"
 #include <functional>
 #include <memory>
 
-class BftElementSpatialWrapper : public BftElement {
+class MarmotElementSpatialWrapper : public MarmotElement {
     /* Wrapper for Reduced Dimension Elements (e.g. Truss elements) to be used in higher order
      * dimensions (2D, 3D). The Projected is computed automatically based on the provided node
      * coordinates, and the actual (child) element is created through a provided generator functor
@@ -20,18 +20,18 @@ class BftElementSpatialWrapper : public BftElement {
     const Eigen::Map<const Eigen::VectorXi> rhsIndicesToBeProjected;
     const int                               projectedSize, unprojectedSize;
 
-    std::unique_ptr<BftElement> childElement;
+    std::unique_ptr<MarmotElement> childElement;
     Eigen::MatrixXd         T;
     Eigen::MatrixXd         P;
     Eigen::MatrixXd         projectedCoordinates;
 
-    BftElementSpatialWrapper( int                     nDim,
+    MarmotElementSpatialWrapper( int                     nDim,
                           int                     nChildDim,
                           int                     nNodes,
                           int                     sizeRhsChild,
                           const int               rhsIndicesToBeWrapped_[],
                           int                     nRhsIndicesToBeWrapped,
-                          std::unique_ptr<BftElement> childElement );
+                          std::unique_ptr<MarmotElement> childElement );
 
     int getNumberOfRequiredStateVars();
 
@@ -49,7 +49,7 @@ class BftElementSpatialWrapper : public BftElement {
 
     void assignProperty( const ElementProperties& property );
 
-    void assignProperty( const BftMaterialSection& property );
+    void assignProperty( const MarmotMaterialSection& property );
 
     void initializeYourself( const double* coordinates );
 
@@ -76,5 +76,5 @@ class BftElementSpatialWrapper : public BftElement {
                             double* K,
             const double* load, const double* QTotal, const double* time, double dT );
 
-    double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength );
+    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt);
 };

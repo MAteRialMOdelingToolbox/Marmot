@@ -1,8 +1,8 @@
 #pragma once
-#include "bftTypedefs.h"
+#include "MarmotTypedefs.h"
 #include <vector>
 
-namespace bft {
+namespace marmot {
 
     namespace FiniteElement {
         enum ElementShapes {
@@ -262,7 +262,7 @@ namespace bft {
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
 
-                bft::Vector8i getBoundaryElementIndices( int faceID );
+                marmot::Vector8i getBoundaryElementIndices( int faceID );
             } // namespace Hexa20
         }     // namespace Spatial3D
 
@@ -318,9 +318,9 @@ namespace bft {
             double          weight;
         };
 
-        const std::vector<GaussPtInfo>& getGaussPointInfo( bft::FiniteElement::ElementShapes shape,
+        const std::vector<GaussPtInfo>& getGaussPointInfo( marmot::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType );
-        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
+        int getNumGaussPoints( marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
 
         namespace Spatial1D {
             constexpr int nDim = 1;
@@ -440,4 +440,4 @@ namespace bft {
 
         } // namespace Spatial3D
     }     // namespace NumIntegration
-} // namespace bft
+} // namespace marmot

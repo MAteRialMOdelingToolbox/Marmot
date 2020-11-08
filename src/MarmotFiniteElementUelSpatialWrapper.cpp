@@ -1,16 +1,16 @@
-#include "bftFiniteElementUelSpatialWrapper.h"
+#include "MarmotFiniteElementUelSpatialWrapper.h"
 #include "Eigen/Sparse"
-#include "bftVoigt.h"
+#include "MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
-BftElementSpatialWrapper::BftElementSpatialWrapper( int                     nDim,
+MarmotElementSpatialWrapper::MarmotElementSpatialWrapper( int                     nDim,
                                             int                     nDimChild,
                                             int                     nNodes,
                                             int                     nRhsChild,
                                             const int               rhsIndicesToBeWrapped[],
                                             int                     nRhsIndicesToBeWrapped,
-                                            std::unique_ptr<BftElement> childElement )
+                                            std::unique_ptr<MarmotElement> childElement )
 
     : nDim( nDim ),
       nDimChild( nDimChild ),
@@ -23,42 +23,42 @@ BftElementSpatialWrapper::BftElementSpatialWrapper( int                     nDim
 {
 }
 
-int BftElementSpatialWrapper::getNumberOfRequiredStateVars()
+int MarmotElementSpatialWrapper::getNumberOfRequiredStateVars()
 {
     return childElement->getNumberOfRequiredStateVars();
 }
 
-std::vector<std::vector<std::string>> BftElementSpatialWrapper::getNodeFields()
+std::vector<std::vector<std::string>> MarmotElementSpatialWrapper::getNodeFields()
 {
     return childElement->getNodeFields();
 }
 
-int BftElementSpatialWrapper::getNNodes()
+int MarmotElementSpatialWrapper::getNNodes()
 {
     return nNodes;
 }
 
-int BftElementSpatialWrapper::getNDofPerElement()
+int MarmotElementSpatialWrapper::getNDofPerElement()
 {
     return unprojectedSize;
 }
 
-std::string BftElementSpatialWrapper::getElementShape()
+std::string MarmotElementSpatialWrapper::getElementShape()
 {
     return childElement->getElementShape();
 }
 
-void BftElementSpatialWrapper::assignProperty( const BftMaterialSection& property )
+void MarmotElementSpatialWrapper::assignProperty( const MarmotMaterialSection& property )
 {
     childElement->assignProperty( property );
 }
 
-void BftElementSpatialWrapper::assignProperty( const ElementProperties& property )
+void MarmotElementSpatialWrapper::assignProperty( const ElementProperties& property )
 {
     childElement->assignProperty( property );
 }
 
-std::vector<int> BftElementSpatialWrapper::getDofIndicesPermutationPattern()
+std::vector<int> MarmotElementSpatialWrapper::getDofIndicesPermutationPattern()
 {
     std::vector<int> permutationPattern;
 
@@ -88,12 +88,12 @@ std::vector<int> BftElementSpatialWrapper::getDofIndicesPermutationPattern()
     return permutationPattern;
 }
 
-void BftElementSpatialWrapper::assignStateVars( double* stateVars, int nStateVars )
+void MarmotElementSpatialWrapper::assignStateVars( double* stateVars, int nStateVars )
 {
     childElement->assignStateVars( stateVars, nStateVars );
 }
 
-void BftElementSpatialWrapper::initializeYourself( const double* coordinates )
+void MarmotElementSpatialWrapper::initializeYourself( const double* coordinates )
 {
     Map<const MatrixXd> unprojectedCoordinates( coordinates, nDim, nNodes );
 
@@ -134,7 +134,7 @@ void BftElementSpatialWrapper::initializeYourself( const double* coordinates )
     childElement->initializeYourself( projectedCoordinates.data() );
 }
 
-void BftElementSpatialWrapper::computeYourself( const double* Q,
+void MarmotElementSpatialWrapper::computeYourself( const double* Q,
                                             const double* dQ,
                                             double*       Pe_,
                                             double*       Ke_,
@@ -169,12 +169,12 @@ void BftElementSpatialWrapper::computeYourself( const double* Q,
     Pe_Unprojected += P.transpose() * Pe_Projected;
 }
 
-void BftElementSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
+void MarmotElementSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
 {
     childElement->setInitialConditions( state, values );
 }
 
-void BftElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
+void MarmotElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
                                                    double*              P_,
                             double* K,
                                                    int                  elementFace,
@@ -195,7 +195,7 @@ void BftElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes load
     Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-void BftElementSpatialWrapper::computeBodyForce( double*       P_,
+void MarmotElementSpatialWrapper::computeBodyForce( double*       P_,
                             double* K,
                                              const double* load,
                                              const double* QTotal,
@@ -214,12 +214,11 @@ void BftElementSpatialWrapper::computeBodyForce( double*       P_,
     Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-double* BftElementSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength )
+PermanentResultLocation MarmotElementSpatialWrapper::getPermanentResultPointer( const std::string& resultName, int gaussPt  )
 {
-    if ( resultName == "BftElementSpatialWrapper.T" ) {
-        resultLength = T.size();
-        return T.data();
+    if ( resultName == "MarmotElementSpatialWrapper.T" ) {
+        return { T.data(), T.size() };
     }
 
-    return childElement->getPermanentResultPointer( resultName, gaussPt, resultLength );
+    return childElement->getPermanentResultPointer( resultName, gaussPt );
 }

@@ -1,7 +1,7 @@
-#include "bftFiniteElement.h"
-#include "bftTypedefs.h"
+#include "MarmotFiniteElement.h"
+#include "MarmotTypedefs.h"
 
-namespace bft {
+namespace marmot {
     namespace FiniteElement {
         namespace Spatial1D {
             namespace Bar2 {
@@ -56,4 +56,4 @@ namespace bft {
             } // end of namespace Bar3
         }     // namespace Spatial1D
     }         // namespace FiniteElement
-} // namespace bft
+} // namespace marmot

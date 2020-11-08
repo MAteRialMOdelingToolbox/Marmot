@@ -1,8 +1,8 @@
-#include "bftFiniteElement.h"
+#include "MarmotFiniteElement.h"
 #include <iostream>
 
 using namespace Eigen;
-namespace bft {
+namespace marmot {
     namespace FiniteElement {
 
         BoundaryElement::BoundaryElement( ElementShapes   parentShape,
@@ -212,4 +212,4 @@ namespace bft {
         }
 
     } // namespace FiniteElement
-} // namespace bft
+} // namespace marmot

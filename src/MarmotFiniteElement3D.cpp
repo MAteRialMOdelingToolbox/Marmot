@@ -1,9 +1,9 @@
-#include "bftFiniteElement.h"
-#include "bftTypedefs.h"
+#include "MarmotFiniteElement.h"
+#include "MarmotTypedefs.h"
 #include <iostream>
 
 using namespace Eigen;
-namespace bft {
+namespace marmot {
     namespace FiniteElement {
         namespace Spatial3D {
             namespace Tetra4 {
@@ -445,4 +445,4 @@ namespace bft {
             } // end of namespace Hexa20
         }     // end of namespace Spatial3D
     }         // namespace FiniteElement
-} // end of namespace bft
+} // end of namespace marmot

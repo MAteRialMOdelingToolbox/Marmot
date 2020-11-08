@@ -1,8 +1,8 @@
-#include "bftFiniteElement.h"
-#include "bftTypedefs.h"
+#include "MarmotFiniteElement.h"
+#include "MarmotTypedefs.h"
 
 using namespace Eigen;
-namespace bft {
+namespace marmot {
     namespace FiniteElement {
         ElementShapes getElementShapeByMetric( int nDim, int nNodes )
         {
@@ -93,10 +93,10 @@ namespace bft {
     } // namespace FiniteElement
 
     namespace NumIntegration {
-        const std::vector<GaussPtInfo>& getGaussPointInfo( bft::FiniteElement::ElementShapes shape,
+        const std::vector<GaussPtInfo>& getGaussPointInfo( marmot::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType )
         {
-            using bft::FiniteElement::ElementShapes;
+            using marmot::FiniteElement::ElementShapes;
             switch ( shape ) {
             case ( ElementShapes::Bar2 ): {
                 if ( integrationType == IntegrationTypes::FullIntegration )
@@ -153,10 +153,10 @@ namespace bft {
             }
         }
 
-        int getNumGaussPoints( bft::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
+        int getNumGaussPoints( marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
         {
             return getGaussPointInfo( shape, integrationType ).size();
         }
 
     } // end of namespace NumIntegration
-} // end of namespace bft
+} // end of namespace marmot

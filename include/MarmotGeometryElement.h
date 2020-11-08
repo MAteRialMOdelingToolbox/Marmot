@@ -1,16 +1,16 @@
 #pragma once
-#include "bftFiniteElement.h"
-#include "bftTypedefs.h"
+#include "MarmotFiniteElement.h"
+#include "MarmotTypedefs.h"
 #include <iostream>
 #include <map>
 
 template <int nDim, int nNodes>
-class BftGeometryElement {
-    /* This is the Geometry Base element, which serves as a base for all BftElements.
+class MarmotGeometryElement {
+    /* This is the Geometry Base element, which serves as a base for all MarmotElements.
      * It corresponds to the GeometryElement in mpFEM,
      * although this as a static templated version.
      *
-     * BftElements (corresponding do DofElements in mpFEM) can inherit from this element,
+     * MarmotElements (corresponding do DofElements in mpFEM) can inherit from this element,
      * and access shape functions, derivatives and B Operator
      *
      * The element automatically determines its shape by the given  nDimension and number of nodes
@@ -30,15 +30,15 @@ class BftGeometryElement {
 
     /*Properties*/
     Eigen::Map<const CoordinateVector>      coordinates;
-    const bft::FiniteElement::ElementShapes shape;
+    const marmot::FiniteElement::ElementShapes shape;
 
     /*Methods*/
-    BftGeometryElement()
-        : coordinates( nullptr ), shape( bft::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
+    MarmotGeometryElement()
+        : coordinates( nullptr ), shape( marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
 
     std::string getElementShape()
     {
-        using namespace bft::FiniteElement;
+        using namespace marmot::FiniteElement;
         static std::map<ElementShapes, std::string> shapes = { { Bar2, "bar2" },
                                                                { Quad4, "quad4" },
                                                                { Quad8, "quad8" },
@@ -57,7 +57,7 @@ class BftGeometryElement {
 
     /*Please specialize these functions for each element individially
      *.cpp file.
-     *Fully specialized templates are precompiled in bftMechanics (rather than the unspecialized and
+     *Fully specialized templates are precompiled in marmotMechanics (rather than the unspecialized and
      *partially specialized templates)
      * */
     NSized     N( const XiSized& xi );
@@ -66,11 +66,11 @@ class BftGeometryElement {
     BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F );
 
     /*These functions are equal for each element and independent of node number and  nDimension*/
-    NBSized NB( const NSized& N ) { return bft::FiniteElement::NB<nDim, nNodes>( N ); }
+    NBSized NB( const NSized& N ) { return marmot::FiniteElement::NB<nDim, nNodes>( N ); }
 
     JacobianSized Jacobian( const dNdXiSized& dNdXi )
     {
-        return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
+        return marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
     }
 
     dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse )
@@ -80,6 +80,6 @@ class BftGeometryElement {
 
     JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q )
     {
-        return bft::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q ) + JacobianSized::Identity();
+        return marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q ) + JacobianSized::Identity();
     }
 };

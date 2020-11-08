@@ -1,10 +1,10 @@
-#include "bftFiniteElement.h"
-#include "bftTypedefs.h"
+#include "MarmotFiniteElement.h"
+#include "MarmotTypedefs.h"
 #include <iostream>
 
 using namespace Eigen;
 
-namespace bft {
+namespace marmot {
     namespace FiniteElement {
         namespace Spatial2D {
             namespace Quad4 {
@@ -174,4 +174,4 @@ namespace bft {
             }
         } // end of namespace Spatial2D
     } // end of namespace FiniteElement
-} // end of namespace bft
+} // end of namespace marmot
