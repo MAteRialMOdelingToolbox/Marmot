@@ -1,13 +1,13 @@
 #include "HughesWinget.h"
-#include "bftFunctions.h"
-#include "bftKinematics.h"
-#include "bftMaterialHypoElasticNonLocal.h"
-#include "bftTensor.h"
-#include "bftVoigt.h"
+#include "MarmotFunctions.h"
+#include "MarmotKinematics.h"
+#include "MarmotMaterialHypoElasticNonLocal.h"
+#include "MarmotTensor.h"
+#include "MarmotVoigt.h"
 
 using namespace Eigen;
 
-void BftMaterialHypoElasticNonLocal::computeStress( double*       stress_,
+void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
                                                     double&       K_local,
                                                     double&       nonLocalRadius,
                                                     double*       dStressDDDeformationGradient_,
@@ -26,10 +26,10 @@ void BftMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     // facilitate the dCauchy_dStrain tangent provided by
     // small strain material models
 
-    using namespace bft;
+    using namespace marmot;
     const Map<const Matrix3d> FNew( FNew_ );
     const Map<const Matrix3d> FOld( FOld_ );
-    bft::mVector6             stress( stress_ );
+    marmot::mVector6             stress( stress_ );
 
     Matrix6 CJaumann                = Matrix6::Zero();
     Vector6 dK_LocalDStretchingRate = Vector6::Zero();
@@ -60,7 +60,7 @@ void BftMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     dKLocal_dF    = hughesWingetIntegrator.compute_dScalar_dF( FInv, dK_LocalDStretchingRate );
 }
 
-void BftMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
+void MarmotMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
                                                          double&       K_local,
                                                          double&       nonLocalRadius,
                                                          double*       dStressDDStrain_,
@@ -73,7 +73,7 @@ void BftMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
                                                          const double  dT,
                                                          double&       pNewDT )
 {
-    using namespace bft;
+    using namespace marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -124,7 +124,7 @@ void BftMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
         planeStressCount += 1;
         if ( planeStressCount > 10 ) {
             pNewDT = 0.25;
-            BftJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+            MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
             return;
         }
     }

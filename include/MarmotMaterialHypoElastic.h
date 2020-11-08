@@ -1,7 +1,7 @@
 #pragma once
-#include "bftMaterialMechanical.h"
+#include "MarmotMaterialMechanical.h"
 
-class BftMaterialHypoElastic : public BftMaterialMechanical {
+class MarmotMaterialHypoElastic : public MarmotMaterialMechanical {
 
     // Derived abstract base class for elastic materials expressed purely in rate form in terms of stretching rate d, i.e,
     // 'hypoelastic materials':
@@ -17,7 +17,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
     // compatible with Abaqus interface 
 
   public:
-    using BftMaterialMechanical::BftMaterialMechanical;
+    using MarmotMaterialMechanical::MarmotMaterialMechanical;
 
     double characteristicElementLength;
     void setCharacteristicElementLength( double length );
@@ -38,7 +38,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
                                 const double  dT,
                                 double&       pNewDT ) = 0;
 
-    using BftMaterialMechanical::computePlaneStress;
+    using MarmotMaterialMechanical::computePlaneStress;
     virtual void computePlaneStress( double*       stress,
                                      double*       dStressDDStrain,
                                      double*       dStrain,
@@ -46,7 +46,7 @@ class BftMaterialHypoElastic : public BftMaterialMechanical {
                                      const double  dT,
                                      double&       pNewDT );
 
-    using BftMaterialMechanical::computeUniaxialStress;
+    using MarmotMaterialMechanical::computeUniaxialStress;
     virtual void computeUniaxialStress( double*       stress,
                                         double*       dStressDDStrain,
                                         double*       dStrain,

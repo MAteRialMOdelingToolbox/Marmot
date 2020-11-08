@@ -1,14 +1,14 @@
-#include "bftConstants.h"
-#include "bftFunctions.h"
-#include "bftKinematics.h"
-#include "bftMaterialHyperElastic.h"
-#include "bftTensor.h"
-#include "bftVoigt.h"
+#include "MarmotConstants.h"
+#include "MarmotFunctions.h"
+#include "MarmotKinematics.h"
+#include "MarmotMaterialHyperElastic.h"
+#include "MarmotTensor.h"
+#include "MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
 
-void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
+void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
                                              double*       dCauchy_d_F_np_,
                                              const double* F_n_,
                                              const double* F_np_,
@@ -16,8 +16,8 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
                                              const double  dT_,
                                              double&       pNewDT_ )
 {
-    using namespace bft;
-    using namespace bft::TensorUtility::IndexNotation;
+    using namespace marmot;
+    using namespace marmot::TensorUtility::IndexNotation;
 
     Map<Vector6>              Cauchy( Cauchy_ );
     Map<Matrix<double, 6, 9>> dCauchy_d_F_np( dCauchy_d_F_np_ );
@@ -31,9 +31,9 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     double J = F_np.determinant();
 
-    Matrix3d S_ = bft::Vgt::voigtToStress( S );
+    Matrix3d S_ = marmot::Vgt::voigtToStress( S );
 
-    Cauchy = bft::Vgt::stressToVoigt( 1. / J * F_np * S_ * F_np.transpose() );
+    Cauchy = marmot::Vgt::stressToVoigt( 1. / J * F_np * S_ * F_np.transpose() );
 
     TensorMap<Tensor<double, 3>> dCauchydF( dCauchy_d_F_np_, 6, 3, 3 );
     dCauchydF.setZero();
@@ -43,7 +43,7 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     Tensor633d dSdF;
     dSdF.setZero();
-    Tensor633d dEdF = bft::kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
+    Tensor633d dEdF = marmot::kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
 
     for ( int IJ = 0; IJ < 6; IJ++ )
         for ( int k = 0; k < 3; k++ )
@@ -67,7 +67,7 @@ void BftMaterialHyperElastic::computeStress( double*       Cauchy_,
     }
 }
 
-void BftMaterialHyperElastic::computePlaneStressPK2( double*       S,
+void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S,
                                                      double*       dSdE,
                                                      double*       E,
                                                      const double* timeOld,
@@ -75,7 +75,7 @@ void BftMaterialHyperElastic::computePlaneStressPK2( double*       S,
                                                      double&       pNewDT )
 
 {
-    // using namespace bft;
+    // using namespace marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -113,7 +113,7 @@ void BftMaterialHyperElastic::computePlaneStressPK2( double*       S,
     // planeStressCount += 1;
     // if ( planeStressCount > 13 ) {
     // pNewDT = 0.25;
-    // BftJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+    // MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
     // return;
     //}
     //}
@@ -122,14 +122,14 @@ void BftMaterialHyperElastic::computePlaneStressPK2( double*       S,
     // stress  = stressTemp;
 }
 
-void BftMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
+void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
                                                         double*       dSdE,
                                                         double*       E,
                                                         const double* timeOld,
                                                         const double  dT,
                                                         double&       pNewDT )
 {
-    // using namespace bft;
+    // using namespace marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -164,7 +164,7 @@ void BftMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
     // count += 1;
     // if ( count > 13 ) {
     // pNewDT = 0.25;
-    // BftJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
+    // MarmotJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
     // return;
     //}
     //}

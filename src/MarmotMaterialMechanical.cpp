@@ -1,11 +1,11 @@
-#include "bftFunctions.h"
-#include "bftMaterialMechanical.h"
-#include "bftVoigt.h"
+#include "MarmotFunctions.h"
+#include "MarmotMaterialMechanical.h"
+#include "MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
 
-//void BftMaterialHypoElastic::computeStress( double*       stress_,
+//void MarmotMaterialHypoElastic::computeStress( double*       stress_,
                                             //double*       dStressDDStrain_,
                                             //const double* FOld_,
                                             //const double* FNew_,
@@ -16,12 +16,12 @@ using namespace Eigen;
     //const Map<const Matrix3d> FNew( FNew_ );
     //const Map<const Matrix3d> FOld( FOld_ );
 
-     ////bft::Vector6 dEps = 1./2 * ( bft::Vgt::StrainToVoigt( H + H.tranpose() ) );
+     ////marmot::Vector6 dEps = 1./2 * ( marmot::Vgt::StrainToVoigt( H + H.tranpose() ) );
 
      ////computeStress (stress_, dStressDDStrain_, dEps.data(), timeOld, dT, pNewDT);
 //}
 
-void BftMaterialMechanical::computePlaneStress( double*       stress_,
+void MarmotMaterialMechanical::computePlaneStress( double*       stress_,
                                              double*       dStressDDDeformationGradient_,
                                              const double* FOld_,
                                              double*       FNew_,
@@ -30,7 +30,7 @@ void BftMaterialMechanical::computePlaneStress( double*       stress_,
                                              double&       pNewDT )
 {
 
-    using namespace bft;
+    using namespace marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix<double, 6,9>>  dStressDDDeformationGradient( dStressDDDeformationGradient_);
@@ -72,7 +72,7 @@ void BftMaterialMechanical::computePlaneStress( double*       stress_,
         planeStressCount += 1;
         if ( planeStressCount > 13 ) {
             pNewDT = 0.25;
-            BftJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+            MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
             return;
         }
     }
@@ -81,7 +81,7 @@ void BftMaterialMechanical::computePlaneStress( double*       stress_,
     stress  = stressTemp;
 }
 
-void BftMaterialMechanical::computeUniaxialStress( double*       stress_,
+void MarmotMaterialMechanical::computeUniaxialStress( double*       stress_,
                                                 double*       dStressDDStrain_,
                                                 const double* FOld,
                                                 double*       FNew,
@@ -89,7 +89,7 @@ void BftMaterialMechanical::computeUniaxialStress( double*       stress_,
                                                 const double  dT,
                                                 double&       pNewDT )
 {
-    // using namespace bft;
+    // using namespace marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );

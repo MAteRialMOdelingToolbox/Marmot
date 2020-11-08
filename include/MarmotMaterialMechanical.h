@@ -1,7 +1,7 @@
 #pragma once
-#include "bftMaterial.h"
+#include "MarmotMaterial.h"
 
-class BftMaterialMechanical : public BftMaterial {
+class MarmotMaterialMechanical : public MarmotMaterial {
 
     /*
        Abstract basic class for Mechanical materials with scalar nonlocal interaction.
@@ -15,7 +15,7 @@ class BftMaterialMechanical : public BftMaterial {
 
     public:
 
-        using BftMaterial::BftMaterial;
+        using MarmotMaterial::MarmotMaterial;
 
         virtual void computeStress( double*       stress,
                 double*       dStressDDFNew,
