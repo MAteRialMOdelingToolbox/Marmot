@@ -1,11 +1,16 @@
 #include "LinearElastic.h"
-#include "bftAbaqusUtility.h"
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "MarmotAbaqusUtility.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
+#include "MarmotVoigt.h"
 
-using namespace bft;
+using namespace marmot;
 using namespace Eigen;
+
+void LinearElastic::assignMaterialProperties ( const double* materialProperties, int nMaterialProperties )
+{
+    this->materialProperties = materialProperties;
+}
 
 void LinearElastic::computeStress( double* stress,
                                    double* dStressDDStrain,

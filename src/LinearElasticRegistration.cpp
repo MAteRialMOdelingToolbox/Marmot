@@ -1,13 +1,13 @@
 #include "LinearElastic.h"
-#include "bftMaterialRegistrationHelper.h"
+#include "MarmotMaterialRegistrationHelper.h"
 
 namespace LinearElasticRegistration {
 
     using namespace userLibrary;
 
     const static bool
-        isRegistered = BftMaterialFactory::registerMaterial( MaterialCode::LinearElastic,
+        isRegistered = MarmotMaterialFactory::registerMaterial( MaterialCode::LinearElastic,
                                                              "LINEARELASTIC",
-                                                             makeDefaultBftMaterialFactoryFunction<class LinearElastic>() );
+                                                             makeDefaultMarmotMaterialFactoryFunction<class LinearElastic>() );
 
 } // namespace LinearElasticRegistration
