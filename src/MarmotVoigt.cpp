@@ -1,12 +1,12 @@
-#include "bftVoigt.h"
-#include "bftConstants.h"
-#include "bftMath.h"
-#include "bftTensor.h"
+#include "MarmotVoigt.h"
+#include "MarmotConstants.h"
+#include "MarmotMath.h"
+#include "MarmotTensor.h"
 #include <iostream>
 
 using namespace Eigen;
 
-namespace bft {
+namespace marmot {
     namespace mechanics {
 
         Matrix6 Cel( double E, double nu )
@@ -328,13 +328,13 @@ namespace bft {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
-        Eigen::Matrix3d principalStressesDirections( const bft::Vector6& voigtStress )
+        Eigen::Matrix3d principalStressesDirections( const marmot::Vector6& voigtStress )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             Matrix3d Q = es.eigenvectors();  Q.col(2) = Q.col(0).cross(Q.col(1)); // for a clockwise coordinate system
             return Q; 
         }
-        bft::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const bft::Vector6& voigtStress )
+        marmot::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const marmot::Vector6& voigtStress )
         {
             const Matrix3d& T  = voigtToStress( voigtStress );
             const Matrix3d& TR = Q * T * Q.transpose();
@@ -624,4 +624,4 @@ namespace bft {
         }
 
     } // namespace Vgt
-} // namespace bft
+} // namespace marmot

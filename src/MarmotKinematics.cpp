@@ -1,9 +1,9 @@
-#include "bftKinematics.h"
-#include "bftTensor.h"
+#include "MarmotKinematics.h"
+#include "MarmotTensor.h"
 
 using namespace Eigen;
 
-namespace bft {
+namespace marmot {
     namespace kinematics {
 
         namespace velocityGradient {
@@ -47,19 +47,19 @@ namespace bft {
 
         namespace strain {
 
-            bft::Vector6 GreenLagrange( const Eigen::Matrix3d& F )
+            marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F )
             {
                 Eigen::Matrix3d H = F - Eigen::Matrix3d::Identity();
-                return bft::Vgt::VoigtFromStrainMatrix<3>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
+                return marmot::Vgt::VoigtFromStrainMatrix<3>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
             }
 
-            bft::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F )
+            marmot::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F )
             {
                 Tensor633d dEdF;
                 auto       kron = Matrix3d::Identity();
 
                 for ( int IJ = 0; IJ < 6; IJ++ ) {
-                    auto [I, J] = bft::TensorUtility::IndexNotation::fromVoigt<3>( IJ );
+                    auto [I, J] = marmot::TensorUtility::IndexNotation::fromVoigt<3>( IJ );
                     for ( int k = 0; k < 3; k++ )
                         for ( int L = 0; L < 3; L++ )
 
@@ -96,4 +96,4 @@ namespace bft {
         } // namespace deformationGradient
 
     } // namespace kinematics
-} // namespace bft
+} // namespace marmot

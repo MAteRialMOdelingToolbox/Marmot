@@ -1,11 +1,11 @@
-#include "../include/bftFiniteElement.h"
-#include "../include/bftTypedefs.h"
-#include "../include/bftVoigt.h"
+#include "../include/marmotFiniteElement.h"
+#include "../include/marmotTypedefs.h"
+#include "../include/marmotVoigt.h"
 #include "Eigen/Core"
 #include "Eigen/Dense"
 #include <iostream>
 
-using namespace bft;
+using namespace marmot;
 using namespace Eigen;
 
 Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
@@ -30,17 +30,17 @@ Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
 
 void test_NBold( const int nDoF )
 {
-    const Matrix<double, 4, 2> gp = bft::NumIntegration::gaussPts2d_2x2();
-    // Vector3d NLinear = bft::FiniteElement::Truss3::shapeFunctions(gp(0,0));
-    Vector3d NLinear = bft::FiniteElement::Spatial2D::Truss3::N( gp( 0, 0 ) );
+    const Matrix<double, 4, 2> gp = marmot::NumIntegration::gaussPts2d_2x2();
+    // Vector3d NLinear = marmot::FiniteElement::Truss3::shapeFunctions(gp(0,0));
+    Vector3d NLinear = marmot::FiniteElement::Spatial2D::Truss3::N( gp( 0, 0 ) );
     std::cout << "N " << std::endl;
-    std::cout << bft::FiniteElement::NB( NLinear, nDoF ) << std::endl;
+    std::cout << marmot::FiniteElement::NB( NLinear, nDoF ) << std::endl;
 }
 
 int main( void )
 {
 
-    std::cout << "this is the test area for bftMechanics" << std::endl;
+    std::cout << "this is the test area for marmotMechanics" << std::endl;
 
     test_PlaneStressTangentAnalytically( 20000, 0.3 );
 

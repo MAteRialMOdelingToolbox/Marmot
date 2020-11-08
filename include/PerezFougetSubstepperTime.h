@@ -1,5 +1,5 @@
 #pragma once
-#include "bftTypedefs.h"
+#include "MarmotTypedefs.h"
 
 /*
 11-22-2015 matthias neuner:
@@ -12,7 +12,7 @@ modifications:
 (*) No need for Cel for object construction anymore
 */
 
-namespace bft {
+namespace marmot {
 
     template <int nSizeTangent>
     class PerezFougetSubstepperTime {
@@ -45,11 +45,11 @@ namespace bft {
         TangentSizedMatrix elasticTangent;
         TangentSizedMatrix consistentTangent;
     };
-} // namespace bft
+} // namespace marmot
 
-#include "bftFunctions.h"
+#include "MarmotFunctions.h"
 
-namespace bft {
+namespace marmot {
     template <int s>
     PerezFougetSubstepperTime<s>::PerezFougetSubstepperTime( double initialStepSize,
                                                              double minimumStepSize,
@@ -107,9 +107,9 @@ namespace bft {
         currentSubstepSize *= scaleDownFactor;
 
         if ( currentSubstepSize < minimumStepSize )
-            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-            return BftJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+            return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
     }
 
     template <int s>
@@ -133,4 +133,4 @@ namespace bft {
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }
-} // namespace bft
+} // namespace marmot

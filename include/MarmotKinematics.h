@@ -1,13 +1,13 @@
 #pragma once
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
+#include "MarmotVoigt.h"
 
-namespace bft {
+namespace marmot {
     namespace kinematics {
         namespace strain {
-            bft::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
-            bft::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
+            marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
+            marmot::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
         }
 
         namespace velocityGradient {
@@ -21,4 +21,4 @@ namespace bft {
             Eigen::Matrix3d make3D( const Eigen::Ref<const Eigen::Matrix<double, nDim, nDim>>& tensor );
         }
     } // namespace kinematics
-} // namespace bft
+} // namespace marmot

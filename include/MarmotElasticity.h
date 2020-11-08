@@ -1,6 +1,6 @@
 #pragma once
 
-namespace bft {
+namespace marmot {
 
     namespace mechanics {
         namespace Elasticity {
@@ -16,4 +16,4 @@ namespace bft {
 
     } // namespace mechanics
 
-} // namespace bft
+} // namespace marmot

@@ -1,13 +1,13 @@
 #pragma once
-#include "bftFunctions.h"
-#include "bftMath.h"
-#include "bftTypedefs.h"
+#include "MarmotFunctions.h"
+#include "MarmotMath.h"
+#include "MarmotTypedefs.h"
 
 /* Substepper for elastoplastic materials, implicit return mapping version
  * Matthias Neuner (2016)
  * */
 
-namespace bft {
+namespace marmot {
 
     template <int nSizeMatTangent>
     class PerezFougetSubstepper {
@@ -40,9 +40,9 @@ namespace bft {
 
         TangentSizedMatrix consistentTangent;
     };
-} // namespace bft
+} // namespace marmot
 
-namespace bft {
+namespace marmot {
     template <int n>
     PerezFougetSubstepper<n>::PerezFougetSubstepper( double         initialStepSize,
                                                      double         minimumStepSize,
@@ -97,9 +97,9 @@ namespace bft {
         currentSubstepSize *= scaleDownFactor;
 
         if ( currentSubstepSize < minimumStepSize )
-            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-            return BftJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+            return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
     }
 
     template <int n>
@@ -125,4 +125,4 @@ namespace bft {
     {
         return consistentTangent.topLeftCorner( 6, 6 ) * Cel;
     }
-} // namespace bft
+} // namespace marmot

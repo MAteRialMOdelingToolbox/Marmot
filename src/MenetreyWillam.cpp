@@ -1,9 +1,9 @@
 #include "MenetreyWillam.h"
-#include "bftConstants.h"
+#include "MarmotConstants.h"
 #include <cmath>
 #include <sstream>
 
-namespace bft {
+namespace marmot {
     namespace MW {
         using namespace Constants;
         double r( double theta, double e, double& numerator, double& denominator )
@@ -175,4 +175,4 @@ namespace bft {
             e  = ( fc + 2 * ft ) / ( 2 * fc + ft );
         }
     } // namespace MW
-} // namespace bft
+} // namespace marmot

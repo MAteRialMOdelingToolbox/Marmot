@@ -1,6 +1,6 @@
 #pragma once
 
-namespace bft {
+namespace marmot {
     namespace MW {
 
         double r( double theta, double e, double& numerator, double& denominator );
@@ -65,4 +65,4 @@ namespace bft {
         void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc );
 
     } // namespace MW
-} // namespace bft
+} // namespace marmot

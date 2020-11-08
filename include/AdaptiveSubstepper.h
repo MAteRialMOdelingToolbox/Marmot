@@ -1,6 +1,6 @@
 #pragma once
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
 
 /* Adaptive Substepper, employing an error estimation and
  * Richardson Extrapolation for an Implicit Return  Mapping algorithm
@@ -8,7 +8,7 @@
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
 
-namespace bft {
+namespace marmot {
 
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
     class AdaptiveSubstepper {
@@ -23,20 +23,20 @@ namespace bft {
                             double         integrationErrorTolerance,
                             int            nPassesToIncrease,
                             const Matrix6& Cel );
-        void   setConvergedProgress( const bft::Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
+        void   setConvergedProgress( const marmot::Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
         bool   isFinished();
         double getNextSubstep();
         int    getNumberOfSubsteps();
-        bool   finishSubstep( const bft::Vector6&           resultStress,
+        bool   finishSubstep( const marmot::Vector6&           resultStress,
                               const TangentSizedMatrix&     dXdY,
                               const IntegrationStateVector& stateVars );
-        void   finishElasticSubstep( const bft::Vector6& resultStress );
+        void   finishElasticSubstep( const marmot::Vector6& resultStress );
         bool   discardSubstep();
         bool   repeatSubstep( double decrementationFactor );
 
-        void    getConvergedProgress( bft::Vector6& stress, IntegrationStateVector& stateVars );
+        void    getConvergedProgress( marmot::Vector6& stress, IntegrationStateVector& stateVars );
         Matrix6 getCurrentTangentOperator();
-        void    getResults( bft::Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
+        void    getResults( marmot::Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
 
       private:
         const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
@@ -49,12 +49,12 @@ namespace bft {
         int    substepIndex;
 
         // internal storages for the progress of the total increment
-        bft::Vector6           stressProgress;
+        marmot::Vector6           stressProgress;
         IntegrationStateVector stateProgress;
         TangentSizedMatrix     consistentTangentProgress;
 
         // temporal storages, which are used until a cycle full/half/half has finished successfully
-        bft::Vector6           stressProgressHalfTemp, stressProgressFullTemp;
+        marmot::Vector6           stressProgressHalfTemp, stressProgressFullTemp;
         IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
         TangentSizedMatrix     consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
@@ -66,9 +66,9 @@ namespace bft {
         bool acceptSubstepWithFullStepOnly();
         bool splitCurrentSubstep();
     };
-} // namespace bft
+} // namespace marmot
 
-namespace bft {
+namespace marmot {
     template <size_t n, size_t nState>
     AdaptiveSubstepper<n, nState>::AdaptiveSubstepper( double         initialStepSize,
                                                        double         minimumStepSize,
@@ -107,7 +107,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const bft::Vector6&           stressOld,
+    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const marmot::Vector6&           stressOld,
                                                               const IntegrationStateVector& stateVarsOld )
     {
         stressProgress = stressOld;
@@ -144,7 +144,7 @@ namespace bft {
         }
     }
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getConvergedProgress( bft::Vector6& stress, IntegrationStateVector& stateVars )
+    void AdaptiveSubstepper<n, nState>::getConvergedProgress( marmot::Vector6& stress, IntegrationStateVector& stateVars )
     {
         switch ( currentState ) {
         case FullStep: {
@@ -176,12 +176,12 @@ namespace bft {
         }
         // these cases should actually never happen, as the full step has already converged!
         case FirstHalfStep:
-            BftJournal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
+            MarmotJournal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
                           "converged full step" );
             return acceptSubstepWithFullStepOnly();
 
         case SecondHalfStep:
-            BftJournal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
+            MarmotJournal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
                           "converged full step" );
             return acceptSubstepWithFullStepOnly();
         }
@@ -189,7 +189,7 @@ namespace bft {
         currentState = FullStep;
 
         if ( currentSubstepSize < minimumStepSize )
-            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
             return true;
     }
@@ -203,13 +203,13 @@ namespace bft {
         currentSubstepSize *= factorNew; // we use the scale factor only here
 
         if ( currentSubstepSize < minimumStepSize )
-            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
             return true;
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::finishSubstep( const bft::Vector6&           resultStress,
+    bool AdaptiveSubstepper<n, nState>::finishSubstep( const marmot::Vector6&           resultStress,
                                                        const TangentSizedMatrix&     dXdY,
                                                        const IntegrationStateVector& stateVars )
     {
@@ -286,7 +286,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const bft::Vector6& newStress )
+    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const marmot::Vector6& newStress )
     {
         switch ( currentState ) {
         case FullStep: {
@@ -315,7 +315,7 @@ namespace bft {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getResults( bft::Vector6&           stress,
+    void AdaptiveSubstepper<n, nState>::getResults( marmot::Vector6&           stress,
                                                     Matrix6&                consistentTangentOperator,
                                                     IntegrationStateVector& stateVars )
     {
@@ -360,4 +360,4 @@ namespace bft {
     {
         return substepIndex;
     }
-} // namespace bft
+} // namespace marmot
