@@ -4,13 +4,13 @@ namespace userLibrary {
     enum MaterialCode : int;
 }
 
-class BftMaterialSection  {
+class MarmotMaterialSection  {
   public:
     userLibrary::MaterialCode materialCode;
     const double*             materialProperties;
     int                       nMaterialProperties;
 
-    BftMaterialSection( userLibrary::MaterialCode materialCode,
+    MarmotMaterialSection( userLibrary::MaterialCode materialCode,
                         const double*             materialProperties,
                         int                       nMaterialProperties )
         : materialCode( materialCode ),

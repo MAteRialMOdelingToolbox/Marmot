@@ -1,7 +1,7 @@
 #pragma once
-#include "bftMaterialMechanical.h"
+#include "MarmotMaterialMechanical.h"
 
-class BftMaterialHyperElastic : public BftMaterialMechanical {
+class MarmotMaterialHyperElastic : public MarmotMaterialMechanical {
 
     // Derived abstract base class for a _simple_, purely hyperelastic material to be used within TL elements
     //
@@ -15,7 +15,7 @@ class BftMaterialHyperElastic : public BftMaterialMechanical {
     // Algorithmic tangent: dS/dE
 
   public:
-    using BftMaterialMechanical::BftMaterialMechanical;
+    using MarmotMaterialMechanical::MarmotMaterialMechanical;
 
     // Default implementation provided
     virtual void computeStress( double*       S,    // PK2

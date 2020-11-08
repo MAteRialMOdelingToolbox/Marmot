@@ -2,17 +2,17 @@
 #include <iostream>
 #include <string>
 
-class BftJournal {
+class MarmotJournal {
   private:
-    static BftJournal& getInstance();
+    static MarmotJournal& getInstance();
 
     std::ostream output;
 
-    BftJournal();
+    MarmotJournal();
 
   public:
-    BftJournal( BftJournal const& ) = delete;
-    void operator=( BftJournal const& ) = delete;
+    MarmotJournal( MarmotJournal const& ) = delete;
+    void operator=( MarmotJournal const& ) = delete;
 
     static void setMSGOutputDirection( std::ostream& newOutputStream );
 

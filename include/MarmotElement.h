@@ -1,12 +1,13 @@
 #pragma once
-#include "bftElementProperty.h"
+#include "MarmotElementProperty.h"
+#include "MarmotUtils.h"
 #include <string>
 #include <vector>
 
-class BftElement {
+class MarmotElement {
 
   public:
-    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, BftMaterialStateVars, BftMaterialInitialization};
+    enum StateTypes { Sigma11, Sigma22, Sigma33, HydrostaticStress, GeostaticStress, MarmotMaterialStateVars, MarmotMaterialInitialization};
 
     enum DistributedLoadTypes {
         Pressure,
@@ -14,7 +15,7 @@ class BftElement {
         SurfaceTraction,
     };
 
-    virtual ~BftElement();
+    virtual ~MarmotElement();
 
     virtual int getNumberOfRequiredStateVars() = 0;
 
@@ -32,7 +33,7 @@ class BftElement {
 
     virtual void assignProperty( const ElementProperties& property );
 
-    virtual void assignProperty( const BftMaterialSection& property );
+    virtual void assignProperty( const MarmotMaterialSection& property );
 
     virtual void initializeYourself( const double* coordinates ) = 0;
 
@@ -62,5 +63,5 @@ class BftElement {
                                    const double* time,
                                    double        dT ) = 0;
 
-    virtual double* getPermanentResultPointer( const std::string& resultName, int gaussPt, int& resultLength ) = 0;
+    virtual PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt) = 0;
 };

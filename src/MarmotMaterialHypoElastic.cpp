@@ -1,20 +1,19 @@
 #include "HughesWinget.h"
-#include "bftFunctions.h"
-#include "bftKinematics.h"
-#include "bftMaterialHypoElastic.h"
-#include "bftTensor.h"
-#include "bftVoigt.h"
+#include "MarmotFunctions.h"
+#include "MarmotKinematics.h"
+#include "MarmotMaterialHypoElastic.h"
+#include "MarmotTensor.h"
+#include "MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
 
-void BftMaterialHypoElastic::setCharacteristicElementLength( double length )
-
+void MarmotMaterialHypoElastic::setCharacteristicElementLength( double length )
 {
     characteristicElementLength = length;
 }
 
-void BftMaterialHypoElastic::computeStress( double*       stress_,
+void MarmotMaterialHypoElastic::computeStress( double*       stress_,
                                             double*       dStressDDDeformationGradient_,
                                             const double* FOld_,
                                             const double* FNew_,
@@ -26,13 +25,13 @@ void BftMaterialHypoElastic::computeStress( double*       stress_,
     // facilitate the dCauchy_dStrain tangent provided by
     // small strain material models
 
-    using namespace bft;
-    using namespace bft::TensorUtility;
+    using namespace marmot;
+    using namespace marmot::TensorUtility;
     using namespace kinematics::velocityGradient;
 
     const Map<const Matrix3d> FOld( FOld_ );
     const Map<const Matrix3d> FNew( FNew_ );
-    bft::mVector6             stress( stress_ );
+    marmot::mVector6             stress( stress_ );
 
     HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
 
@@ -48,14 +47,14 @@ void BftMaterialHypoElastic::computeStress( double*       stress_,
     dS_dF = hughesWingetIntegrator.compute_dS_dF( stress, FNew.inverse(), CJaumann );
 }
 
-void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
+void MarmotMaterialHypoElastic::computePlaneStress( double*       stress_,
                                                  double*       dStressDDStrain_,
                                                  double*       dStrain_,
                                                  const double* timeOld,
                                                  const double  dT,
                                                  double&       pNewDT )
 {
-    using namespace bft;
+    using namespace marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -95,7 +94,7 @@ void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
         planeStressCount += 1;
         if ( planeStressCount > 13 ) {
             pNewDT = 0.25;
-            BftJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+            MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
             return;
         }
     }
@@ -104,7 +103,7 @@ void BftMaterialHypoElastic::computePlaneStress( double*       stress_,
     stress  = stressTemp;
 }
 
-void BftMaterialHypoElastic::computeUniaxialStress( double* stress_,
+void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress_,
                                                     double* dStressDDStrain_,
 
                                                     double*       dStrain_,
@@ -112,7 +111,7 @@ void BftMaterialHypoElastic::computeUniaxialStress( double* stress_,
                                                     const double  dT,
                                                     double&       pNewDT )
 {
-    using namespace bft;
+    using namespace marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -148,7 +147,7 @@ void BftMaterialHypoElastic::computeUniaxialStress( double* stress_,
         count += 1;
         if ( count > 13 ) {
             pNewDT = 0.25;
-            BftJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
+            MarmotJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
             return;
         }
     }

@@ -1,6 +1,6 @@
 #pragma once
-#include "bftElement.h"
-#include "bftMaterial.h"
+#include "MarmotElement.h"
+#include "MarmotMaterial.h"
 #include <functional>
 #include <iostream>
 #include <map>
@@ -213,21 +213,14 @@ namespace userLibrary {
     // - Allows materials to register themselve with their name and ID
     // - Allows the user to create instances of materials
 
-    class BftMaterialFactory {
+    class MarmotMaterialFactory {
       public:
-        using materialFactoryFunction = BftMaterial* (*)( const double* materialProperties,
-                                                          int           nMaterialProperties,
-                                                          int           element,
-                                                          int           gaussPt );
-        BftMaterialFactory()          = delete;
+        using materialFactoryFunction = MarmotMaterial* (*)( int materialNumber );
+        MarmotMaterialFactory()          = delete;
 
         static MaterialCode getMaterialCodeFromName( const std::string& materialName );
 
-        static BftMaterial* createMaterial( MaterialCode  material,
-                                            const double* materialProperties,
-                                            int           nMaterialProperties,
-                                            int           element,
-                                            int           gaussPt );
+        static MarmotMaterial* createMaterial( MaterialCode  material, int materialNumber);
 
         static bool registerMaterial( MaterialCode            materialCode,
                                       const std::string&      materialName,
@@ -243,14 +236,14 @@ namespace userLibrary {
     // - Allows elements to register themselve with their name and ID
     // - Allows the user to create instances of elements
 
-    class BftElementFactory {
+    class MarmotElementFactory {
       public:
-        using elementFactoryFunction = BftElement* (*)( int elementNumber );
-        BftElementFactory()          = delete;
+        using elementFactoryFunction = MarmotElement* (*)( int elementNumber );
+        MarmotElementFactory()          = delete;
 
         static ElementCode getElementCodeFromName( const std::string& elementName );
 
-        static BftElement* createElement( ElementCode elementCode, int elementNumber );
+        static MarmotElement* createElement( ElementCode elementCode, int elementNumber );
 
         static bool registerElement( const std::string&     elementName,
                                      ElementCode            elementCode,
