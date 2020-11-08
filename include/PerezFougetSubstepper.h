@@ -1,12 +1,12 @@
 #pragma once
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
 
 /* Deprecated, do not use anymore (!)
  * Matthias Neuner (2015)
  * */
 
-namespace bft {
+namespace marmot {
 
     template <int nSizeMatTangent>
     class PerezFougetSubstepper {
@@ -39,9 +39,9 @@ namespace bft {
         TangentSizedMatrix elasticTangent;
         TangentSizedMatrix consistentTangent;
     };
-} // namespace bft
+} // namespace marmot
 
-namespace bft {
+namespace marmot {
     template <int n>
     PerezFougetSubstepper<n>::PerezFougetSubstepper( double         initialStepSize,
                                                      double         minimumStepSize,
@@ -98,9 +98,9 @@ namespace bft {
         currentSubstepSize *= scaleDownFactor;
 
         if ( currentSubstepSize < minimumStepSize )
-            return BftJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
         else
-            return BftJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+            return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
     }
 
     template <int n>
@@ -121,4 +121,4 @@ namespace bft {
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }
-} // namespace bft
+} // namespace marmot

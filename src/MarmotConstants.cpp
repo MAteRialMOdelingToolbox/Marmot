@@ -1,8 +1,8 @@
-#include "bftConstants.h"
-#include "bftTypedefs.h"
+#include "MarmotConstants.h"
+#include "MarmotTypedefs.h"
 #include <cmath>
 
-namespace bft {
+namespace marmot {
     namespace Constants {
         double cubicRootEps()
         {
@@ -18,4 +18,4 @@ namespace bft {
         const double SquareRootEps = squareRootEps();
         const double CubicRootEps = cubicRootEps();
     } // namespace Constants
-} // namespace bft
+} // namespace marmot

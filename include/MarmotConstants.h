@@ -1,6 +1,6 @@
 #pragma once
 
-namespace bft {
+namespace marmot {
     namespace Constants {
         const double Pi         = 3.141592653589793238463;
         const double numZeroPos = 1e-16;
@@ -15,4 +15,4 @@ namespace bft {
         const double sqrt3   = 1.7320508075688772935274463415059;
         const double sqrt6   = 2.4494897427831780981972840747059;
     } // namespace Constants
-} // namespace bft
+} // namespace marmot

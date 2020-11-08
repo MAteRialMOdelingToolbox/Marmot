@@ -1,11 +1,11 @@
 #pragma once
-#include "bftTypedefs.h"
+#include "MarmotTypedefs.h"
 
 /* Manager for yield surface combinations for multisurface plasticity
  * Matthias Neuner (2015)
  * */
 
-namespace bft {
+namespace marmot {
     template <int nYieldSurfaces>
     class YieldSurfaceCombinationManager {
         const int idxUsedFlag;
@@ -21,9 +21,9 @@ namespace bft {
         void markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces );
         void resetUsedYieldFlagCombinations();
     };
-} // namespace bft
+} // namespace marmot
 
-namespace bft {
+namespace marmot {
     template <int n>
     YieldSurfaceCombinationManager<n>::YieldSurfaceCombinationManager() : idxUsedFlag( n )
     {
@@ -64,4 +64,4 @@ namespace bft {
             if ( ( yieldSurfaceCombinations.row( i ).head( n ) == activeSurfaces ).all() )
                 yieldSurfaceCombinations.row( i )( idxUsedFlag ) = true;
     }
-} // namespace bft
+} // namespace marmot

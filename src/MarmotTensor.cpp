@@ -1,8 +1,8 @@
-#include "bftTensor.h"
+#include "MarmotTensor.h"
 
-using namespace bft::TensorUtility;
+using namespace marmot::TensorUtility;
 
-namespace bft {
+namespace marmot {
     namespace CommonTensors {
         auto Initialize_I2xI2()
         {
@@ -92,4 +92,4 @@ namespace bft {
         const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
     } // namespace CommonTensors
-} // namespace bft
+} // namespace marmot

@@ -3,7 +3,7 @@
 #include "Eigen/Dense"
 #include "unsupported/Eigen/CXX11/Tensor"
 
-namespace bft {
+namespace marmot {
     typedef Eigen::Matrix<double, 6, 6> Matrix6;
     typedef Eigen::Matrix<double, 6, 9> Matrix69d;
     typedef Eigen::Matrix<double, 9, 9> Matrix99d;
@@ -19,7 +19,7 @@ namespace bft {
     typedef Eigen::Matrix<double, 1, 6>    RowVector6d;
     typedef Eigen::Map<Vector6>            mVector6;
     typedef Eigen::Map<Eigen::VectorXd>    mVectorXd;
-    typedef Eigen::Map<const bft::Vector6> mConstVector6;
+    typedef Eigen::Map<const marmot::Vector6> mConstVector6;
 
     typedef Eigen::Matrix<double, 3, 6> Matrix36d;
     typedef Eigen::Matrix<double, 3, 6> Matrix36;
@@ -74,4 +74,4 @@ namespace bft {
                                  const int&,
                                  const int );
 
-} // namespace bft
+} // namespace marmot

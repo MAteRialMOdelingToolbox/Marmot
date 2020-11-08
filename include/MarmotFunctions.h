@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-#include "bftJournal.h"
+#include "MarmotJournal.h"
 
 class MakeString {
   public:

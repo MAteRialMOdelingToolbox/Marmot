@@ -1,7 +1,7 @@
 #pragma once
-#include "bftTypedefs.h"
+#include "MarmotTypedefs.h"
 
-namespace bft {
+namespace marmot {
     template <int nMatTangentSize>
     class DuvautLionsViscosity {
       private:
@@ -12,14 +12,14 @@ namespace bft {
 
         DuvautLionsViscosity( double viscosity );
         double             applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
-        bft::Vector6       applyViscosityOnStress( const bft::Vector6& trialStress,
-                                                   const bft::Vector6& stressInf,
+        marmot::Vector6       applyViscosityOnStress( const marmot::Vector6& trialStress,
+                                                   const marmot::Vector6& stressInf,
                                                    double              dT );
         TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
     };
-} // namespace bft
+} // namespace marmot
 
-namespace bft {
+namespace marmot {
     template <int s>
     DuvautLionsViscosity<s>::DuvautLionsViscosity( double viscosity ) : viscosity( viscosity )
     {
@@ -32,8 +32,8 @@ namespace bft {
     }
 
     template <int s>
-    bft::Vector6 DuvautLionsViscosity<s>::applyViscosityOnStress( const bft::Vector6& trialStress,
-                                                                  const bft::Vector6& stressInf,
+    marmot::Vector6 DuvautLionsViscosity<s>::applyViscosityOnStress( const marmot::Vector6& trialStress,
+                                                                  const marmot::Vector6& stressInf,
                                                                   double              dT )
     {
         return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );
@@ -46,4 +46,4 @@ namespace bft {
     {
         return ( 1 / ( 1 + dT / viscosity ) ) * ( TangentSizedMatrix::Identity() + dT / viscosity * matTangentInv );
     }
-} // namespace bft
+} // namespace marmot

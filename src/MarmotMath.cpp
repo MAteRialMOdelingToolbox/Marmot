@@ -1,9 +1,9 @@
-#include "bftMath.h"
-#include "bftConstants.h"
+#include "MarmotMath.h"
+#include "MarmotConstants.h"
 #include <cmath>
 #include <math.h>
 
-namespace bft {
+namespace marmot {
     namespace Math {
         // return linear interpolation of polynom y at given coordinates (x0, y0) and (x1, y1) at
         // point x
@@ -34,9 +34,9 @@ namespace bft {
                 return 0;
         }
 
-        double radToDeg( const double alpha ) { return alpha * 180 / bft::Constants::Pi; }
+        double radToDeg( const double alpha ) { return alpha * 180 / marmot::Constants::Pi; }
 
-        double degToRad( const double alpha ) { return alpha / 180 * bft::Constants::Pi; }
+        double degToRad( const double alpha ) { return alpha / 180 * marmot::Constants::Pi; }
 
         double macauly( double scalar ) { return scalar >= 0 ? scalar : 0.0; }
 
@@ -51,4 +51,4 @@ namespace bft {
         //}
 
     } // namespace Math
-} // namespace bft
+} // namespace marmot

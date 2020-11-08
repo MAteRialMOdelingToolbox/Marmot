@@ -1,9 +1,9 @@
 #pragma once
-#include "bftConstants.h"
-#include "bftTypedefs.h"
+#include "MarmotConstants.h"
+#include "MarmotTypedefs.h"
 #include <algorithm> 
 
-namespace bft {
+namespace marmot {
     namespace Math {
         double linearInterpolation( double x, double x0, double x1, double y0, double y1 );
         double exp( double x );
@@ -114,4 +114,4 @@ namespace bft {
         }
 
     } // namespace Math
-} // namespace bft
+} // namespace marmot

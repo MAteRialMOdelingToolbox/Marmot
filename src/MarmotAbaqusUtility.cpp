@@ -1,14 +1,14 @@
-#include "bftAbaqusUtility.h"
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "MarmotAbaqusUtility.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
+#include "MarmotVoigt.h"
 /*
  * convenience functions for umats in Abaqus
  * */
 
 using namespace Eigen;
 
-namespace bft {
+namespace marmot {
 
     void backToAbaqus( const Matrix6& jacobian,
                        Map<MatrixXd>& ABQJacobian,
@@ -29,7 +29,7 @@ namespace bft {
         ABQStress( 0 ) = stress( 0 );
         ABQStress( 1 ) = stress( 1 );
         ABQStress( 2 ) = stress( 3 );
-        ABQJacobian    = bft::mechanics::getPlaneStressTangent( jacobian );
+        ABQJacobian    = marmot::mechanics::getPlaneStressTangent( jacobian );
         return;
     }
 
@@ -58,8 +58,8 @@ namespace bft {
     void discardTheIncrement( double& pNewDT, double value, const std::string& message )
     {
         pNewDT = value;
-        BftJournal::warningToMSG( message );
+        MarmotJournal::warningToMSG( message );
         return;
     }
 
-} // namespace bft
+} // namespace marmot

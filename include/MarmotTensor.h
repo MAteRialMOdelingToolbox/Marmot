@@ -1,11 +1,11 @@
 #pragma once
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "MarmotFunctions.h"
+#include "MarmotTypedefs.h"
+#include "MarmotVoigt.h"
 #include <iostream>
 #include <utility>
 
-namespace bft {
+namespace marmot {
     namespace CommonTensors {
         extern const Tensor3333d I2xI2;
         extern const Tensor3333d Isym;
@@ -165,4 +165,4 @@ namespace bft {
 
     } // namespace TensorUtility
 
-} // namespace bft
+} // namespace marmot
