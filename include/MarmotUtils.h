@@ -3,6 +3,6 @@
 struct PermanentResultLocation
 {
     const double* resultLocation;
-    const int resultLength;
+    int resultLength;
 };
 
