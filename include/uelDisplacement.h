@@ -17,8 +17,8 @@
 using namespace marmot;
 using namespace Eigen;
 
-template <int nDim, int nNodes>
-class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim, nNodes> {
+template < int nDim, int nNodes >
+class UelDisplacement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
 
   public:
     enum SectionType {
@@ -31,19 +31,19 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
     static constexpr int sizeLoadVector = nNodes * nDim;
     static constexpr int nCoordinates   = nNodes * nDim;
 
-    using ParentGeometryElement = MarmotGeometryElement<nDim, nNodes>;
+    using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
     using JacobianSized         = typename ParentGeometryElement::JacobianSized;
     using dNdXiSized            = typename ParentGeometryElement::dNdXiSized;
     using BSized                = typename ParentGeometryElement::BSized;
     using XiSized               = typename ParentGeometryElement::XiSized;
-    using RhsSized              = Matrix<double, sizeLoadVector, 1>;
-    using KeSizedMatrix         = Matrix<double, sizeLoadVector, sizeLoadVector>;
-    using CSized                = Matrix<double, ParentGeometryElement::VoigtSize, ParentGeometryElement::VoigtSize>;
-    using Voigt                 = Matrix<double, ParentGeometryElement::VoigtSize, 1>;
+    using RhsSized              = Matrix< double, sizeLoadVector, 1 >;
+    using KeSizedMatrix         = Matrix< double, sizeLoadVector, sizeLoadVector >;
+    using CSized                = Matrix< double, ParentGeometryElement::VoigtSize, ParentGeometryElement::VoigtSize >;
+    using Voigt                 = Matrix< double, ParentGeometryElement::VoigtSize, 1 >;
 
-    Map<const VectorXd> elementProperties;
-    const int           elLabel;
-    const SectionType   sectionType;
+    Map< const VectorXd > elementProperties;
+    const int             elLabel;
+    const SectionType     sectionType;
 
     struct GaussPt {
         static constexpr int nRequiredStateVars = 6 + 6;
@@ -51,9 +51,9 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
         const XiSized xi;
         const double  weight;
 
-        std::unique_ptr<MarmotMaterialHypoElastic> material;
-        mVector6                                stress;
-        mVector6                                strain;
+        std::unique_ptr< MarmotMaterialHypoElastic > material;
+        mVector6                                     stress;
+        mVector6                                     strain;
 
         struct Geometry {
             JacobianSized J;
@@ -65,20 +65,20 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
             double        intVol;
         };
 
-        std::unique_ptr<Geometry> geometry;
+        std::unique_ptr< Geometry > geometry;
 
         GaussPt( XiSized xi, double weight ) : xi( xi ), weight( weight ), stress( nullptr ), strain( nullptr ){};
     };
 
-    std::vector<GaussPt> gaussPts;
+    std::vector< GaussPt > gaussPts;
 
     UelDisplacement( int elementID, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
 
     int getNumberOfRequiredStateVars();
 
-    std::vector<std::vector<std::string>> getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields();
 
-    std::vector<int> getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern();
 
     int getNNodes() { return nNodes; }
 
@@ -97,13 +97,13 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
     void setInitialConditions( StateTypes state, const double* values );
 
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
-                                 double*                          P,
-                                 double*                          K,
-                                 const int                        elementFace,
-                                 const double*                    load,
-                                 const double*                    QTotal,
-                                 const double*                    time,
-                                 double                           dT );
+                                 double*                             P,
+                                 double*                             K,
+                                 const int                           elementFace,
+                                 const double*                       load,
+                                 const double*                       QTotal,
+                                 const double*                       time,
+                                 double                              dT );
 
     void computeBodyForce( double*       P,
                            double*       K,
@@ -120,7 +120,7 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
                           double        dT,
                           double&       pNewdT );
 
-    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt)
+    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt )
     {
         if ( resultName == "stress" ) {
             return { gaussPts[gaussPt].stress.data(), 6 };
@@ -129,19 +129,20 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement<nDim,
             return { gaussPts[gaussPt].strain.data(), 6 };
         }
         else if ( resultName == "sdv" ) {
-            return { gaussPts[gaussPt].material->getAssignedStateVars(), gaussPts[gaussPt].material->getNumberOfAssignedStateVars()} ;
+            return { gaussPts[gaussPt].material->getAssignedStateVars(),
+                     gaussPts[gaussPt].material->getNumberOfAssignedStateVars() };
         }
         else
             return this->gaussPts[gaussPt].material->getPermanentResultPointer( resultName );
     }
 };
 
-template <int nDim, int nNodes>
-UelDisplacement<nDim, nNodes>::UelDisplacement( int                              elementID,
-                                                NumIntegration::IntegrationTypes integrationType,
-                                                SectionType                      sectionType )
+template < int nDim, int nNodes >
+UelDisplacement< nDim, nNodes >::UelDisplacement( int                              elementID,
+                                                  NumIntegration::IntegrationTypes integrationType,
+                                                  SectionType                      sectionType )
     : ParentGeometryElement(),
-      elementProperties( Map<const VectorXd>( nullptr, 0 ) ),
+      elementProperties( Map< const VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
 {
@@ -151,31 +152,31 @@ UelDisplacement<nDim, nNodes>::UelDisplacement( int                             
     }
 }
 
-template <int nDim, int nNodes>
-int UelDisplacement<nDim, nNodes>::getNumberOfRequiredStateVars()
+template < int nDim, int nNodes >
+int UelDisplacement< nDim, nNodes >::getNumberOfRequiredStateVars()
 {
     return ( gaussPts[0].material->getNumberOfRequiredStateVars() + GaussPt::nRequiredStateVars ) * gaussPts.size();
 }
 
-template <int nDim, int nNodes>
-std::vector<std::vector<std::string>> UelDisplacement<nDim, nNodes>::getNodeFields()
+template < int nDim, int nNodes >
+std::vector< std::vector< std::string > > UelDisplacement< nDim, nNodes >::getNodeFields()
 {
     using namespace std;
 
-    static vector<vector<string>> nodeFields;
+    static vector< vector< string > > nodeFields;
     if ( nodeFields.empty() )
         for ( int i = 0; i < nNodes; i++ ) {
-            nodeFields.push_back( vector<string>() );
+            nodeFields.push_back( vector< string >() );
             nodeFields[i].push_back( "displacement" );
         }
 
     return nodeFields;
 }
 
-template <int nDim, int nNodes>
-std::vector<int> UelDisplacement<nDim, nNodes>::getDofIndicesPermutationPattern()
+template < int nDim, int nNodes >
+std::vector< int > UelDisplacement< nDim, nNodes >::getDofIndicesPermutationPattern()
 {
-    static std::vector<int> permutationPattern;
+    static std::vector< int > permutationPattern;
     if ( permutationPattern.empty() )
         for ( int i = 0; i < nNodes * nDim; i++ )
             permutationPattern.push_back( i );
@@ -183,8 +184,8 @@ std::vector<int> UelDisplacement<nDim, nNodes>::getDofIndicesPermutationPattern(
     return permutationPattern;
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::assignStateVars( double* stateVars, int nStateVars )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::assignStateVars( double* stateVars, int nStateVars )
 {
     /* we provide as many statevars to the material as we can (some materials store addition debugging infos if possible
      * alternatively:
@@ -208,34 +209,34 @@ void UelDisplacement<nDim, nNodes>::assignStateVars( double* stateVars, int nSta
     }
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::assignProperty( const ElementProperties& elementPropertiesInfo )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::assignProperty( const ElementProperties& elementPropertiesInfo )
 {
-    new ( &elementProperties ) Eigen::Map<const Eigen::VectorXd>( elementPropertiesInfo.elementProperties,
-                                                                  elementPropertiesInfo.nElementProperties );
+    new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
+                                                                    elementPropertiesInfo.nElementProperties );
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::assignProperty( const MarmotMaterialSection& section )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
 {
     for ( size_t i = 0; i < gaussPts.size(); i++ ) {
         GaussPt& gpt = gaussPts[i];
-        gpt.material = std::unique_ptr<MarmotMaterialHypoElastic>(
-            static_cast<MarmotMaterialHypoElastic*>( userLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
-                                                                                            elLabel) ) );
-
-        gpt.material->assignMaterialProperties( section.materialProperties, section.nMaterialProperties );
+        gpt.material = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
+            userLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
+                                                                section.materialProperties,
+                                                                section.nMaterialProperties,
+                                                                elLabel ) ) );
     }
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::initializeYourself( const double* coordinates )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::initializeYourself( const double* coordinates )
 {
     ParentGeometryElement::initializeYourself( coordinates );
 
     for ( GaussPt& gpt : gaussPts ) {
 
-        gpt.geometry = std::make_unique<typename GaussPt::Geometry>();
+        gpt.geometry = std::make_unique< typename GaussPt::Geometry >();
 
         gpt.geometry->dNdXi = this->dNdXi( gpt.xi );
         gpt.geometry->J     = this->Jacobian( gpt.geometry->dNdXi );
@@ -266,21 +267,21 @@ void UelDisplacement<nDim, nNodes>::initializeYourself( const double* coordinate
     }
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
-                                                     const double* dQ_,
-                                                     double*       Pe_,
-                                                     double*       Ke_,
-                                                     const double* time,
-                                                     double        dT,
-                                                     double&       pNewDT )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::computeYourself( const double* QTotal_,
+                                                       const double* dQ_,
+                                                       double*       Pe_,
+                                                       double*       Ke_,
+                                                       const double* time,
+                                                       double        dT,
+                                                       double&       pNewDT )
 {
     using namespace marmot;
 
-    Map<const RhsSized> QTotal( QTotal_ );
-    Map<const RhsSized> dQ( dQ_ );
-    Map<KeSizedMatrix>  Ke( Ke_ );
-    Map<RhsSized>       Pe( Pe_ );
+    Map< const RhsSized > QTotal( QTotal_ );
+    Map< const RhsSized > dQ( dQ_ );
+    Map< KeSizedMatrix >  Ke( Ke_ );
+    Map< RhsSized >       Pe( Pe_ );
 
     Voigt  S, dE;
     CSized C;
@@ -292,17 +293,12 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
         dE = B * dQ;
 
         if constexpr ( nDim == 1 ) {
-            Vector6 dE6 = (Vector6() << dE, 0, 0, 0, 0, 0 ).finished();
+            Vector6 dE6 = ( Vector6() << dE, 0, 0, 0, 0, 0 ).finished();
             Matrix6 C66;
-            gaussPt.material->computeUniaxialStress( gaussPt.stress.data(),
-                                                     C66.data(),
-                                                     dE6.data(),
-                                                     time,
-                                                     dT,
-                                                     pNewDT );
+            gaussPt.material->computeUniaxialStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
             C << mechanics::getUniaxialStressTangent( C66 );
-            S(0) = gaussPt.stress(0);
+            S( 0 ) = gaussPt.stress( 0 );
         }
 
         else if constexpr ( nDim == 2 ) {
@@ -312,24 +308,14 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
             if ( sectionType == SectionType::PlaneStress ) {
 
-                gaussPt.material->computePlaneStress( gaussPt.stress.data(),
-                                                      C66.data(),
-                                                      dE6.data(),
-                                                      time,
-                                                      dT,
-                                                      pNewDT );
+                gaussPt.material->computePlaneStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
                 C = mechanics::getPlaneStressTangent( C66 );
             }
 
             else if ( sectionType == SectionType::PlaneStrain ) {
 
-                gaussPt.material->computeStress( gaussPt.stress.data(),
-                                                 C66.data(),
-                                                 dE6.data(),
-                                                 time,
-                                                 dT,
-                                                 pNewDT );
+                gaussPt.material->computeStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
                 C = mechanics::getPlaneStrainTangent( C66 );
             }
@@ -342,12 +328,7 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
 
             if ( sectionType == SectionType::Solid ) {
 
-                gaussPt.material->computeStress( gaussPt.stress.data(),
-                                                 C.data(),
-                                                 dE.data(),
-                                                 time,
-                                                 dT,
-                                                 pNewDT );
+                gaussPt.material->computeStress( gaussPt.stress.data(), C.data(), dE.data(), time, dT, pNewDT );
             }
 
             S = gaussPt.stress;
@@ -362,52 +343,52 @@ void UelDisplacement<nDim, nNodes>::computeYourself( const double* QTotal_,
     }
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::setInitialConditions( StateTypes state, const double* values )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
 {
-   /* if constexpr ( nDim > 1 ) { */
-        switch ( state ) {
-        case MarmotElement::GeostaticStress: {
-                for ( GaussPt& gaussPt : gaussPts ) {
+    /* if constexpr ( nDim > 1 ) { */
+    switch ( state ) {
+    case MarmotElement::GeostaticStress: {
+        for ( GaussPt& gaussPt : gaussPts ) {
 
-                    XiSized coordAtGauss = this->NB( this->N( gaussPt.xi ) ) * this->coordinates;
+            XiSized coordAtGauss = this->NB( this->N( gaussPt.xi ) ) * this->coordinates;
 
-                    const double sigY1 = values[0];
-                    const double sigY2 = values[2];
-                    const double y1    = values[1];
-                    const double y2    = values[3];
+            const double sigY1 = values[0];
+            const double sigY2 = values[2];
+            const double y1    = values[1];
+            const double y2    = values[3];
 
-                    using namespace Math;
-                    gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
-                    gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
-                    gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
-                } // sigma_z
-                break;
-            }
-        case MarmotElement::MarmotMaterialStateVars: {
-             throw std::invalid_argument("Please use initializeStateVars directly on material");
-            /* for ( GaussPt& gPt : gPts ) */
-            /*     gPt.material->stateVars[static_cast<int>( values[0] )] = values[1]; */
-                /* for ( GaussPt& gaussPt : gaussPts ) */ 
-                /*     gaussPt.material->stateVars[static_cast<int>(values[0])] = values[1]; */
-                /* break; */
-            }
-        default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
-        }
+            using namespace Math;
+            gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
+            gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
+            gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
+        } // sigma_z
+        break;
+    }
+    case MarmotElement::MarmotMaterialStateVars: {
+        throw std::invalid_argument( "Please use initializeStateVars directly on material" );
+        /* for ( GaussPt& gPt : gPts ) */
+        /*     gPt.material->stateVars[static_cast<int>( values[0] )] = values[1]; */
+        /* for ( GaussPt& gaussPt : gaussPts ) */
+        /*     gaussPt.material->stateVars[static_cast<int>(values[0])] = values[1]; */
+        /* break; */
+    }
+    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+    }
     /* } */
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
-                                                            double*                          P,
-                                                            double*                          K,
-                                                            const int                        elementFace,
-                                                            const double*                    load,
-                                                            const double*                    QTotal,
-                                                            const double*                    time,
-                                                            double                           dT )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+                                                              double*                             P,
+                                                              double*                             K,
+                                                              const int                           elementFace,
+                                                              const double*                       load,
+                                                              const double*                       QTotal,
+                                                              const double*                       time,
+                                                              double                              dT )
 {
-    Map<RhsSized> fU( P );
+    Map< RhsSized > fU( P );
 
     switch ( loadType ) {
 
@@ -431,16 +412,16 @@ void UelDisplacement<nDim, nNodes>::computeDistributedLoad( MarmotElement::Distr
     }
 }
 
-template <int nDim, int nNodes>
-void UelDisplacement<nDim, nNodes>::computeBodyForce( double*       P_,
-                                                      double*       K,
-                                                      const double* load,
-                                                      const double* QTotal,
-                                                      const double* time,
-                                                      double        dT )
+template < int nDim, int nNodes >
+void UelDisplacement< nDim, nNodes >::computeBodyForce( double*       P_,
+                                                        double*       K,
+                                                        const double* load,
+                                                        const double* QTotal,
+                                                        const double* time,
+                                                        double        dT )
 {
-    Map<RhsSized>                            Pe( P_ );
-    const Map<const Matrix<double, nDim, 1>> f( load );
+    Map< RhsSized >                              Pe( P_ );
+    const Map< const Matrix< double, nDim, 1 > > f( load );
 
     for ( const auto& gpt : gaussPts )
         Pe += this->NB( this->N( gpt.xi ) ).transpose() * f * gpt.geometry->intVol;
