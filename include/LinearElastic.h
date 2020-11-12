@@ -4,10 +4,6 @@
 #include <string>
 
 class LinearElastic : public MarmotMaterialHypoElastic {
-  protected:
-
-    const double* materialProperties;
-
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
@@ -18,8 +14,6 @@ class LinearElastic : public MarmotMaterialHypoElastic {
                         const double* timeOld,
                         const double  dT,
                         double&       pNewDT );
-
-    void assignMaterialProperties ( const double* materialProperties, int nMaterialProperties );
 
     PermanentResultLocation getPermanentResultPointer( const std::string& result) 
     {

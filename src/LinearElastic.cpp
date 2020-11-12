@@ -7,11 +7,6 @@
 using namespace marmot;
 using namespace Eigen;
 
-void LinearElastic::assignMaterialProperties ( const double* materialProperties, int nMaterialProperties )
-{
-    this->materialProperties = materialProperties;
-}
-
 void LinearElastic::computeStress( double* stress,
                                    double* dStressDDStrain,
                                    const double* dStrain,
