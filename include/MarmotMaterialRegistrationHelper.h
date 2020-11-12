@@ -5,8 +5,8 @@ template <typename T>
 userLibrary::MarmotMaterialFactory::materialFactoryFunction makeDefaultMarmotMaterialFactoryFunction()
 {
     return
-        []( int materialNumber) -> MarmotMaterial* {
-            return new T( materialNumber );
+        []( const double* materialProperties, int nMaterialProperties, int materialNumber) -> MarmotMaterial* {
+            return new T( materialProperties, nMaterialProperties, materialNumber );
         };
 }
 
