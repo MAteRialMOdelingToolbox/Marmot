@@ -1,7 +1,9 @@
 #include "MarmotMaterial.h"
 
-MarmotMaterial::MarmotMaterial( int materialNumber_ )
+MarmotMaterial::MarmotMaterial( const double*materialProperties_, int nMaterialProperties_, int materialNumber_ )
     : 
+      materialProperties( materialProperties_ ),
+      nMaterialProperties ( nMaterialProperties_ ),
       stateVars( nullptr ),
       nStateVars( 0 ),
       materialNumber ( materialNumber_ )

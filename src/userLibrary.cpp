@@ -37,10 +37,10 @@ namespace userLibrary {
         }
     }
 
-    MarmotMaterial* MarmotMaterialFactory::createMaterial( MaterialCode  materialCode, int           materialNumber)
+    MarmotMaterial* MarmotMaterialFactory::createMaterial( MaterialCode materialCode, const double* materialProperties, int nMaterialProperties, int materialNumber)
     {
         try {
-            return materialFactoryFunctionByCode.at( materialCode )( materialNumber );
+            return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, materialNumber );
         }
         catch ( const std::out_of_range& e ) {
             throw std::invalid_argument( MakeString() << "Invalid material " << materialCode << " requested!" );

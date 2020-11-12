@@ -215,12 +215,15 @@ namespace userLibrary {
 
     class MarmotMaterialFactory {
       public:
-        using materialFactoryFunction = MarmotMaterial* (*)( int materialNumber );
+        using materialFactoryFunction = MarmotMaterial* (*)( const double* materialProperties, int nMaterialProperties, int materialNumber );
         MarmotMaterialFactory()          = delete;
 
         static MaterialCode getMaterialCodeFromName( const std::string& materialName );
 
-        static MarmotMaterial* createMaterial( MaterialCode  material, int materialNumber);
+        static MarmotMaterial* createMaterial( MaterialCode  material, 
+                const double* materialProperties,
+                int nMaterialProperties, 
+                int materialNumber);
 
         static bool registerMaterial( MaterialCode            materialCode,
                                       const std::string&      materialName,

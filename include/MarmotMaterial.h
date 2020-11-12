@@ -5,17 +5,19 @@
 class MarmotMaterial {
 
   protected:
+
+    const double* materialProperties;
+    const int nMaterialProperties;
+
     double* stateVars;
     int     nStateVars;
 
   public:
     const int materialNumber;
 
-    MarmotMaterial( int materialNumber );
+    MarmotMaterial( const double*materialProperties, int nMaterialProperties, int materialNumber );
 
     virtual ~MarmotMaterial();
-
-    virtual void assignMaterialProperties( const double* materialProperties, int nMaterialProperties ) = 0;
 
     virtual int getNumberOfRequiredStateVars() = 0;
 
