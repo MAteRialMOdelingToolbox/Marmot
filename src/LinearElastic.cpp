@@ -7,20 +7,24 @@
 using namespace marmot;
 using namespace Eigen;
 
-void LinearElastic::computeStress( double* stress,
-                                   double* dStressDDStrain,
+LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
+    : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+      E( materialProperties[0] ),
+      nu( materialProperties[1] )
+{
+    assert( nMaterialProperties >= 2 );
+}
+
+void LinearElastic::computeStress( double*       stress,
+                                   double*       dStressDDStrain,
                                    const double* dStrain,
                                    const double* timeOld,
                                    const double  dT,
                                    double&       pNewDT )
 {
-    // material properties
-    const double& E  = materialProperties[0];
-    const double& nu = materialProperties[1];
-
-    mVector6           S( stress );
-    Map<const Vector6> dE( dStrain );
-    mMatrix6           C( dStressDDStrain );
+    mVector6             S( stress );
+    Map< const Vector6 > dE( dStrain );
+    mMatrix6             C( dStressDDStrain );
 
     C = mechanics::Cel( E, nu );
 
