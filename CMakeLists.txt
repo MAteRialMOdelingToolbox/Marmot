@@ -3,6 +3,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
+MESSAGE(STATUS "")
 cmake_minimum_required(VERSION 3.1)  
 
 project(bftUserLibrary CXX Fortran)
@@ -132,7 +135,6 @@ endif()
 
 # Add sources
 file(GLOB sources "src/*.cpp")
-#message(${GLOB})
 file(GLOB headers "include/*.h")
 
 # mandatory bftMechanics
@@ -180,5 +182,18 @@ foreach(library ${elements})
     endif()
 endforeach(library)
 
+#
+# compile the shared library
+#
 add_library(${PROJECT_NAME} SHARED ${sources})
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+
+#
+# and finally install the library to the system location
+#
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    PUBLIC_HEADER "${headers}"
+)
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/bftUserLibrary
+    )
