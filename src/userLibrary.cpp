@@ -1,7 +1,7 @@
-#include "bftElement.h"
-#include "bftMaterial.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "MarmotElement.h"
+#include "MarmotMaterial.h"
+#include "MarmotTypedefs.h"
+#include "MarmotVoigt.h"
 #include "userLibrary.h"
 #include <map>
 #include <string>
@@ -11,10 +11,10 @@ namespace userLibrary {
 
     // MaterialFactory
 
-    std::map<std::string, MaterialCode> BftMaterialFactory::materialNameToCodeAssociation;
-    std::map<MaterialCode, BftMaterialFactory::materialFactoryFunction> BftMaterialFactory::materialFactoryFunctionByCode;
+    std::map<std::string, MaterialCode> MarmotMaterialFactory::materialNameToCodeAssociation;
+    std::map<MaterialCode, MarmotMaterialFactory::materialFactoryFunction> MarmotMaterialFactory::materialFactoryFunctionByCode;
 
-    bool BftMaterialFactory::registerMaterial( MaterialCode            materialCode,
+    bool MarmotMaterialFactory::registerMaterial( MaterialCode            materialCode,
                                                const std::string&      materialName,
                                                materialFactoryFunction factoryFunction )
     {
@@ -27,7 +27,7 @@ namespace userLibrary {
         return true;
     }
 
-    MaterialCode BftMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
+    MaterialCode MarmotMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
     {
         try {
             return materialNameToCodeAssociation.at( materialName );
@@ -37,14 +37,10 @@ namespace userLibrary {
         }
     }
 
-    BftMaterial* BftMaterialFactory::createMaterial( MaterialCode  materialCode,
-                                                     const double* materialProperties,
-                                                     int           nMaterialProperties,
-                                                     int           element,
-                                                     int           gaussPt )
+    MarmotMaterial* MarmotMaterialFactory::createMaterial( MaterialCode materialCode, const double* materialProperties, int nMaterialProperties, int materialNumber)
     {
         try {
-            return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, element, gaussPt );
+            return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, materialNumber );
         }
         catch ( const std::out_of_range& e ) {
             throw std::invalid_argument( MakeString() << "Invalid material " << materialCode << " requested!" );
@@ -53,10 +49,10 @@ namespace userLibrary {
 
     // ElementFactory
 
-    std::map<std::string, ElementCode>                               BftElementFactory::elementNameToCodeAssociation;
-    std::map<ElementCode, BftElementFactory::elementFactoryFunction> BftElementFactory::elementFactoryFunctionByCode;
+    std::map<std::string, ElementCode>                               MarmotElementFactory::elementNameToCodeAssociation;
+    std::map<ElementCode, MarmotElementFactory::elementFactoryFunction> MarmotElementFactory::elementFactoryFunctionByCode;
 
-    bool BftElementFactory::registerElement( const std::string&     elementName,
+    bool MarmotElementFactory::registerElement( const std::string&     elementName,
                                              ElementCode            elementCode,
                                              elementFactoryFunction factoryFunction )
     {
@@ -69,7 +65,7 @@ namespace userLibrary {
         return true;
     }
 
-    ElementCode BftElementFactory::getElementCodeFromName( const std::string& elementName )
+    ElementCode MarmotElementFactory::getElementCodeFromName( const std::string& elementName )
     {
         try {
             return elementNameToCodeAssociation.at( elementName );
@@ -79,7 +75,7 @@ namespace userLibrary {
         }
     }
 
-    BftElement* BftElementFactory::createElement( ElementCode elementCode, int elementNumber )
+    MarmotElement* MarmotElementFactory::createElement( ElementCode elementCode, int elementNumber )
     {
         try {
             return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
