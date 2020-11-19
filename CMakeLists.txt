@@ -17,6 +17,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
+## avoid in-source compilation
+set(DEFAULT_OUT_OF_SOURCE_FOLDER "build")
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+  message(FATAL_ERROR "In-source builds are not allowed. Create and/or change to ${DEFAULT_OUT_OF_SOURCE_FOLDER} \
+ folder and run then cmake from there, e.g. cd build && cmake ../ . You first may need to remove CMakeCache.txt and CMakeFiles/*.")
+endif ()
+
 # Disable (shared memory) parallelization within bftUserLibrary - such a parallelization is usually not desired
 # add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
