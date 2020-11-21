@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
 
 #define isNaN( x ) ( x != x )
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )

@@ -1,7 +1,7 @@
-#include "MarmotVoigt.h"
-#include "MarmotConstants.h"
-#include "MarmotMath.h"
-#include "MarmotTensor.h"
+#include "Marmot/MarmotVoigt.h"
+#include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotTensor.h"
 #include <iostream>
 
 using namespace Eigen;

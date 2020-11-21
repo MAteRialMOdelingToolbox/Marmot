@@ -1,6 +1,6 @@
-#include "../include/marmotFiniteElement.h"
-#include "../include/marmotTypedefs.h"
-#include "../include/marmotVoigt.h"
+#include "Marmot/../include/marmotFiniteElement.h"
+#include "Marmot/../include/marmotTypedefs.h"
+#include "Marmot/../include/marmotVoigt.h"
 #include "Eigen/Core"
 #include "Eigen/Dense"
 #include <iostream>

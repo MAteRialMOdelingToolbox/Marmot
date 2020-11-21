@@ -1,7 +1,7 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotMath.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /* Substepper for elastoplastic materials, implicit return mapping version
  * Matthias Neuner (2016)

@@ -1,5 +1,5 @@
 #pragma once
-#include "MarmotVoigt.h"
+#include "Marmot/MarmotVoigt.h"
 
 class HughesWinget {
   public:

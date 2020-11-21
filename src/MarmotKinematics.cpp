@@ -1,5 +1,5 @@
-#include "MarmotKinematics.h"
-#include "MarmotTensor.h"
+#include "Marmot/MarmotKinematics.h"
+#include "Marmot/MarmotTensor.h"
 
 using namespace Eigen;
 

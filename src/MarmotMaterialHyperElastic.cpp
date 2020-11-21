@@ -1,9 +1,9 @@
-#include "MarmotConstants.h"
-#include "MarmotFunctions.h"
-#include "MarmotKinematics.h"
-#include "MarmotMaterialHyperElastic.h"
-#include "MarmotTensor.h"
-#include "MarmotVoigt.h"
+#include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotKinematics.h"
+#include "Marmot/MarmotMaterialHyperElastic.h"
+#include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;

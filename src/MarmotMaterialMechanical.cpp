@@ -1,6 +1,6 @@
-#include "MarmotFunctions.h"
-#include "MarmotMaterialMechanical.h"
-#include "MarmotVoigt.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotMaterialMechanical.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
