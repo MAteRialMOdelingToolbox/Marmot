@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotElement.h"
-#include "MarmotMaterial.h"
+#include "Marmot/MarmotElement.h"
+#include "Marmot/MarmotMaterial.h"
 #include <functional>
 #include <iostream>
 #include <map>

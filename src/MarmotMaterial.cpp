@@ -1,4 +1,4 @@
-#include "MarmotMaterial.h"
+#include "Marmot/MarmotMaterial.h"
 
 MarmotMaterial::MarmotMaterial( const double*materialProperties_, int nMaterialProperties_, int materialNumber_ )
     : 

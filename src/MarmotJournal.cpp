@@ -1,4 +1,4 @@
-#include "MarmotJournal.h"
+#include "Marmot/MarmotJournal.h"
 
 MarmotJournal& MarmotJournal::getInstance()
 {

@@ -1,8 +1,8 @@
-#include "MarmotElement.h"
-#include "MarmotMaterial.h"
-#include "MarmotTypedefs.h"
-#include "MarmotVoigt.h"
-#include "userLibrary.h"
+#include "Marmot/MarmotElement.h"
+#include "Marmot/MarmotMaterial.h"
+#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
+#include "Marmot/userLibrary.h"
 #include <map>
 #include <string>
 #include <tuple>
