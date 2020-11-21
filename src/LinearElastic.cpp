@@ -1,8 +1,8 @@
-#include "LinearElastic.h"
-#include "MarmotAbaqusUtility.h"
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
-#include "MarmotVoigt.h"
+#include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotAbaqusUtility.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
 
 using namespace Marmot;
 using namespace Eigen;

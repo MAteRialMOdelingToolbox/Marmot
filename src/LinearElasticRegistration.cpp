@@ -1,5 +1,5 @@
-#include "LinearElastic.h"
-#include "MarmotMaterialRegistrationHelper.h"
+#include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotMaterialRegistrationHelper.h"
 
 namespace LinearElasticRegistration {
 
