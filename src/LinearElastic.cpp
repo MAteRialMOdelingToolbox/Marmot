@@ -4,7 +4,7 @@
 #include "MarmotTypedefs.h"
 #include "MarmotVoigt.h"
 
-using namespace marmot;
+using namespace Marmot;
 using namespace Eigen;
 
 LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
