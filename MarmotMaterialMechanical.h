@@ -1,5 +1,5 @@
 #pragma once
-#include "MarmotMaterial.h"
+#include "Marmot/MarmotMaterial.h"
 
 class MarmotMaterialMechanical : public MarmotMaterial {
 

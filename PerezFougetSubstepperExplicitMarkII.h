@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /* Substepper for semi-explicit elastoplastic materials
  * Matthias Neuner (2016)

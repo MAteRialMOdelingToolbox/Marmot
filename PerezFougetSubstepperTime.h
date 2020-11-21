@@ -1,5 +1,5 @@
 #pragma once
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /*
 11-22-2015 matthias neuner:
@@ -47,7 +47,7 @@ namespace Marmot {
     };
 } // namespace Marmot
 
-#include "MarmotFunctions.h"
+#include "Marmot/MarmotFunctions.h"
 
 namespace Marmot {
     template <int s>

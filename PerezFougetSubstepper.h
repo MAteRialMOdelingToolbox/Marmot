@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /* Deprecated, do not use anymore (!)
  * Matthias Neuner (2015)
