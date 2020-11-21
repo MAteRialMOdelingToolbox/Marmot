@@ -1,5 +1,5 @@
-#include "MarmotConstants.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotTypedefs.h"
 #include <cmath>
 
 namespace Marmot {

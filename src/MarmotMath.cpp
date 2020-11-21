@@ -1,5 +1,5 @@
-#include "MarmotMath.h"
-#include "MarmotConstants.h"
+#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotConstants.h"
 #include <cmath>
 #include <math.h>
 

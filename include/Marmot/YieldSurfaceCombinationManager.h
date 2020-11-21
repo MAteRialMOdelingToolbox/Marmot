@@ -1,5 +1,5 @@
 #pragma once
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /* Manager for yield surface combinations for multisurface plasticity
  * Matthias Neuner (2015)

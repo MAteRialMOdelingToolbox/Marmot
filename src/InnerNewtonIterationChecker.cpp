@@ -1,4 +1,4 @@
-#include "InnerNewtonIterationChecker.h"
+#include "Marmot/InnerNewtonIterationChecker.h"
 #include <iostream>
 
 using namespace Eigen;

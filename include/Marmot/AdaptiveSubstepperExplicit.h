@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /* Adaptive Substepper, employing an error estimation and
  * Richardson Extrapolation for an (semi)-Explicit Return  Mapping algorithm

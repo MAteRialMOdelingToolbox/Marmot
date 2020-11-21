@@ -1,6 +1,6 @@
 #pragma once
-#include "MarmotConstants.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotTypedefs.h"
 #include <algorithm> 
 
 namespace Marmot {

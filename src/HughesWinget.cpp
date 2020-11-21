@@ -1,7 +1,7 @@
-#include "HughesWinget.h"
-#include "MarmotKinematics.h"
-#include "MarmotTensor.h"
-#include "MarmotVoigt.h"
+#include "Marmot/HughesWinget.h"
+#include "Marmot/MarmotKinematics.h"
+#include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotVoigt.h"
 
 using namespace Eigen;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "MarmotMaterialMechanicalNonLocal.h"
+#include "Marmot/MarmotMaterialMechanicalNonLocal.h"
 
 class MarmotMaterialHypoElasticNonLocal : public MarmotMaterialMechanicalNonLocal {
 

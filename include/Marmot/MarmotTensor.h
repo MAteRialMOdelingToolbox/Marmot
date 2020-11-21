@@ -1,7 +1,7 @@
 #pragma once
-#include "MarmotFunctions.h"
-#include "MarmotTypedefs.h"
-#include "MarmotVoigt.h"
+#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 #include <utility>
 
