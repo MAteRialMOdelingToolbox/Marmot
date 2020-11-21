@@ -3,11 +3,11 @@
 #include "MarmotTypedefs.h"
 #include "MarmotVoigt.h"
 
-namespace marmot {
+namespace Marmot {
     namespace kinematics {
         namespace strain {
-            marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
-            marmot::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
+            Marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
+            Marmot::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
         }
 
         namespace velocityGradient {
@@ -21,4 +21,4 @@ namespace marmot {
             Eigen::Matrix3d make3D( const Eigen::Ref<const Eigen::Matrix<double, nDim, nDim>>& tensor );
         }
     } // namespace kinematics
-} // namespace marmot
+} // namespace Marmot

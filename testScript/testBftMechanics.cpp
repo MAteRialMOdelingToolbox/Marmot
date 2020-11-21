@@ -5,7 +5,7 @@
 #include "Eigen/Dense"
 #include <iostream>
 
-using namespace marmot;
+using namespace Marmot;
 using namespace Eigen;
 
 Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
@@ -30,11 +30,11 @@ Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
 
 void test_NBold( const int nDoF )
 {
-    const Matrix<double, 4, 2> gp = marmot::NumIntegration::gaussPts2d_2x2();
-    // Vector3d NLinear = marmot::FiniteElement::Truss3::shapeFunctions(gp(0,0));
-    Vector3d NLinear = marmot::FiniteElement::Spatial2D::Truss3::N( gp( 0, 0 ) );
+    const Matrix<double, 4, 2> gp = Marmot::NumIntegration::gaussPts2d_2x2();
+    // Vector3d NLinear = Marmot::FiniteElement::Truss3::shapeFunctions(gp(0,0));
+    Vector3d NLinear = Marmot::FiniteElement::Spatial2D::Truss3::N( gp( 0, 0 ) );
     std::cout << "N " << std::endl;
-    std::cout << marmot::FiniteElement::NB( NLinear, nDoF ) << std::endl;
+    std::cout << Marmot::FiniteElement::NB( NLinear, nDoF ) << std::endl;
 }
 
 int main( void )

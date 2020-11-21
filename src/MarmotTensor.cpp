@@ -1,8 +1,8 @@
 #include "MarmotTensor.h"
 
-using namespace marmot::TensorUtility;
+using namespace Marmot::TensorUtility;
 
-namespace marmot {
+namespace Marmot {
     namespace CommonTensors {
         auto Initialize_I2xI2()
         {
@@ -92,4 +92,4 @@ namespace marmot {
         const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
     } // namespace CommonTensors
-} // namespace marmot
+} // namespace Marmot

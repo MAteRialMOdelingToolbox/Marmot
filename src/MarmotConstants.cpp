@@ -2,7 +2,7 @@
 #include "MarmotTypedefs.h"
 #include <cmath>
 
-namespace marmot {
+namespace Marmot {
     namespace Constants {
         double cubicRootEps()
         {
@@ -18,4 +18,4 @@ namespace marmot {
         const double SquareRootEps = squareRootEps();
         const double CubicRootEps = cubicRootEps();
     } // namespace Constants
-} // namespace marmot
+} // namespace Marmot

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <sstream>
 
-namespace marmot {
+namespace Marmot {
     namespace MW {
         using namespace Constants;
         double r( double theta, double e, double& numerator, double& denominator )
@@ -175,4 +175,4 @@ namespace marmot {
             e  = ( fc + 2 * ft ) / ( 2 * fc + ft );
         }
     } // namespace MW
-} // namespace marmot
+} // namespace Marmot

@@ -26,10 +26,10 @@ void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     // facilitate the dCauchy_dStrain tangent provided by
     // small strain material models
 
-    using namespace marmot;
+    using namespace Marmot;
     const Map<const Matrix3d> FNew( FNew_ );
     const Map<const Matrix3d> FOld( FOld_ );
-    marmot::mVector6             stress( stress_ );
+    Marmot::mVector6             stress( stress_ );
 
     Matrix6 CJaumann                = Matrix6::Zero();
     Vector6 dK_LocalDStretchingRate = Vector6::Zero();
@@ -73,7 +73,7 @@ void MarmotMaterialHypoElasticNonLocal::computePlaneStress( double*       stress
                                                          const double  dT,
                                                          double&       pNewDT )
 {
-    using namespace marmot;
+    using namespace Marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );

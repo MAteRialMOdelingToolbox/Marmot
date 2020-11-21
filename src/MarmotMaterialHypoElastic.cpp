@@ -25,13 +25,13 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
     // facilitate the dCauchy_dStrain tangent provided by
     // small strain material models
 
-    using namespace marmot;
-    using namespace marmot::TensorUtility;
+    using namespace Marmot;
+    using namespace Marmot::TensorUtility;
     using namespace kinematics::velocityGradient;
 
     const Map<const Matrix3d> FOld( FOld_ );
     const Map<const Matrix3d> FNew( FNew_ );
-    marmot::mVector6             stress( stress_ );
+    Marmot::mVector6             stress( stress_ );
 
     HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
 
@@ -54,7 +54,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress_,
                                                  const double  dT,
                                                  double&       pNewDT )
 {
-    using namespace marmot;
+    using namespace Marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -111,7 +111,7 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress_,
                                                     const double  dT,
                                                     double&       pNewDT )
 {
-    using namespace marmot;
+    using namespace Marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );

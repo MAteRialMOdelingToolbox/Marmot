@@ -16,8 +16,8 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
                                              const double  dT_,
                                              double&       pNewDT_ )
 {
-    using namespace marmot;
-    using namespace marmot::TensorUtility::IndexNotation;
+    using namespace Marmot;
+    using namespace Marmot::TensorUtility::IndexNotation;
 
     Map<Vector6>              Cauchy( Cauchy_ );
     Map<Matrix<double, 6, 9>> dCauchy_d_F_np( dCauchy_d_F_np_ );
@@ -31,9 +31,9 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     double J = F_np.determinant();
 
-    Matrix3d S_ = marmot::Vgt::voigtToStress( S );
+    Matrix3d S_ = Marmot::Vgt::voigtToStress( S );
 
-    Cauchy = marmot::Vgt::stressToVoigt( 1. / J * F_np * S_ * F_np.transpose() );
+    Cauchy = Marmot::Vgt::stressToVoigt( 1. / J * F_np * S_ * F_np.transpose() );
 
     TensorMap<Tensor<double, 3>> dCauchydF( dCauchy_d_F_np_, 6, 3, 3 );
     dCauchydF.setZero();
@@ -43,7 +43,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     Tensor633d dSdF;
     dSdF.setZero();
-    Tensor633d dEdF = marmot::kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
+    Tensor633d dEdF = Marmot::kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
 
     for ( int IJ = 0; IJ < 6; IJ++ )
         for ( int k = 0; k < 3; k++ )
@@ -75,7 +75,7 @@ void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S,
                                                      double&       pNewDT )
 
 {
-    // using namespace marmot;
+    // using namespace Marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
@@ -129,7 +129,7 @@ void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
                                                         const double  dT,
                                                         double&       pNewDT )
 {
-    // using namespace marmot;
+    // using namespace Marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );

@@ -6,7 +6,7 @@
 
 using namespace Eigen;
 
-namespace marmot {
+namespace Marmot {
     namespace mechanics {
 
         Matrix6 Cel( double E, double nu )
@@ -328,13 +328,13 @@ namespace marmot {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
-        Eigen::Matrix3d principalStressesDirections( const marmot::Vector6& voigtStress )
+        Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6& voigtStress )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             Matrix3d Q = es.eigenvectors();  Q.col(2) = Q.col(0).cross(Q.col(1)); // for a clockwise coordinate system
             return Q; 
         }
-        marmot::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const marmot::Vector6& voigtStress )
+        Marmot::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6& voigtStress )
         {
             const Matrix3d& T  = voigtToStress( voigtStress );
             const Matrix3d& TR = Q * T * Q.transpose();
@@ -624,4 +624,4 @@ namespace marmot {
         }
 
     } // namespace Vgt
-} // namespace marmot
+} // namespace Marmot

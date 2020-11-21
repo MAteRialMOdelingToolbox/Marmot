@@ -8,7 +8,7 @@
 
 using namespace Eigen;
 
-namespace marmot {
+namespace Marmot {
 
     void backToAbaqus( const Matrix6& jacobian,
                        Map<MatrixXd>& ABQJacobian,
@@ -29,7 +29,7 @@ namespace marmot {
         ABQStress( 0 ) = stress( 0 );
         ABQStress( 1 ) = stress( 1 );
         ABQStress( 2 ) = stress( 3 );
-        ABQJacobian    = marmot::mechanics::getPlaneStressTangent( jacobian );
+        ABQJacobian    = Marmot::mechanics::getPlaneStressTangent( jacobian );
         return;
     }
 
@@ -62,4 +62,4 @@ namespace marmot {
         return;
     }
 
-} // namespace marmot
+} // namespace Marmot

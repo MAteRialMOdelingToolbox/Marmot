@@ -3,7 +3,7 @@
 
 using namespace Eigen;
 
-namespace marmot {
+namespace Marmot {
 
     InnerNewtonIterationCheckerMarkII::InnerNewtonIterationCheckerMarkII( const VectorXd& residualScaleVector,
                                                               int             nMaxInnerNewtonCycles,
@@ -71,4 +71,4 @@ namespace marmot {
         }
         return false;
     }
-} // namespace marmot
+} // namespace Marmot

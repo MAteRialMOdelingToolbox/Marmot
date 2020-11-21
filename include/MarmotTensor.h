@@ -5,7 +5,7 @@
 #include <iostream>
 #include <utility>
 
-namespace marmot {
+namespace Marmot {
     namespace CommonTensors {
         extern const Tensor3333d I2xI2;
         extern const Tensor3333d Isym;
@@ -165,4 +165,4 @@ namespace marmot {
 
     } // namespace TensorUtility
 
-} // namespace marmot
+} // namespace Marmot

@@ -1,7 +1,7 @@
 #pragma once
 #include "MarmotTypedefs.h"
 
-namespace marmot {
+namespace Marmot {
     class InnerNewtonIterationCheckerMarkII{
 
         const Eigen::VectorXd residualScaleVector;
@@ -35,4 +35,4 @@ namespace marmot {
                           const Eigen::VectorXd& dX,
                           int                    numberOfIterations );
     };
-} // namespace marmot
+} // namespace Marmot
