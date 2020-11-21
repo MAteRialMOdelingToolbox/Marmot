@@ -16,7 +16,7 @@ using namespace Eigen;
     //const Map<const Matrix3d> FNew( FNew_ );
     //const Map<const Matrix3d> FOld( FOld_ );
 
-     ////marmot::Vector6 dEps = 1./2 * ( marmot::Vgt::StrainToVoigt( H + H.tranpose() ) );
+     ////Marmot::Vector6 dEps = 1./2 * ( Marmot::Vgt::StrainToVoigt( H + H.tranpose() ) );
 
      ////computeStress (stress_, dStressDDStrain_, dEps.data(), timeOld, dT, pNewDT);
 //}
@@ -30,7 +30,7 @@ void MarmotMaterialMechanical::computePlaneStress( double*       stress_,
                                              double&       pNewDT )
 {
 
-    using namespace marmot;
+    using namespace Marmot;
 
     Map<Vector6>  stress( stress_ );
     Map<Matrix<double, 6,9>>  dStressDDDeformationGradient( dStressDDDeformationGradient_);
@@ -89,7 +89,7 @@ void MarmotMaterialMechanical::computeUniaxialStress( double*       stress_,
                                                 const double  dT,
                                                 double&       pNewDT )
 {
-    // using namespace marmot;
+    // using namespace Marmot;
 
     // Map<Vector6>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );

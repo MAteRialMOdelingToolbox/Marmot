@@ -3,7 +3,7 @@
 
 using namespace Eigen;
 
-namespace marmot {
+namespace Marmot {
     namespace kinematics {
 
         namespace velocityGradient {
@@ -47,19 +47,19 @@ namespace marmot {
 
         namespace strain {
 
-            marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F )
+            Marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F )
             {
                 Eigen::Matrix3d H = F - Eigen::Matrix3d::Identity();
-                return marmot::Vgt::VoigtFromStrainMatrix<3>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
+                return Marmot::Vgt::VoigtFromStrainMatrix<3>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );
             }
 
-            marmot::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F )
+            Marmot::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F )
             {
                 Tensor633d dEdF;
                 auto       kron = Matrix3d::Identity();
 
                 for ( int IJ = 0; IJ < 6; IJ++ ) {
-                    auto [I, J] = marmot::TensorUtility::IndexNotation::fromVoigt<3>( IJ );
+                    auto [I, J] = Marmot::TensorUtility::IndexNotation::fromVoigt<3>( IJ );
                     for ( int k = 0; k < 3; k++ )
                         for ( int L = 0; L < 3; L++ )
 
@@ -96,4 +96,4 @@ namespace marmot {
         } // namespace deformationGradient
 
     } // namespace kinematics
-} // namespace marmot
+} // namespace Marmot

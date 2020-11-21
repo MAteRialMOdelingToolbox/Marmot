@@ -5,7 +5,7 @@
  * Matthias Neuner (2015)
  * */
 
-namespace marmot {
+namespace Marmot {
     template <int nYieldSurfaces>
     class YieldSurfaceCombinationManager {
         const int idxUsedFlag;
@@ -21,9 +21,9 @@ namespace marmot {
         void markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces );
         void resetUsedYieldFlagCombinations();
     };
-} // namespace marmot
+} // namespace Marmot
 
-namespace marmot {
+namespace Marmot {
     template <int n>
     YieldSurfaceCombinationManager<n>::YieldSurfaceCombinationManager() : idxUsedFlag( n )
     {
@@ -64,4 +64,4 @@ namespace marmot {
             if ( ( yieldSurfaceCombinations.row( i ).head( n ) == activeSurfaces ).all() )
                 yieldSurfaceCombinations.row( i )( idxUsedFlag ) = true;
     }
-} // namespace marmot
+} // namespace Marmot

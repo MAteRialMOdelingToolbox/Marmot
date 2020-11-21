@@ -15,11 +15,11 @@ HughesWinget::HughesWinget( const Matrix3d& FOld, const Matrix3d& FNew, Formulat
 
     Matrix3d dEps_ = 0.5 * ( l + l.transpose() );              // actually d * dT
     dOmega         = 0.5 * ( l - l.transpose() );              // actually omega * dT
-    dEps           = marmot::Vgt::VoigtFromStrainMatrix( dEps_ ); 
+    dEps           = Marmot::Vgt::VoigtFromStrainMatrix( dEps_ ); 
     dR             = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
 }
 
-marmot::Vector6 HughesWinget::getStrainIncrement()
+Marmot::Vector6 HughesWinget::getStrainIncrement()
 {
     return dEps;
 }
@@ -29,19 +29,19 @@ Matrix3d HughesWinget::getRotationIncrement()
     return dOmega;
 }
 
-marmot::Vector6 HughesWinget::rotateTensor( const marmot::Vector6& tensor )
+Marmot::Vector6 HughesWinget::rotateTensor( const Marmot::Vector6& tensor )
 {
 
-    return marmot::Vgt::stressToVoigt( dR * marmot::Vgt::voigtToStress( tensor ) * dR.transpose() );
+    return Marmot::Vgt::stressToVoigt( dR * Marmot::Vgt::voigtToStress( tensor ) * dR.transpose() );
 }
 
-marmot::Tensor633d HughesWinget::compute_dS_dF( const marmot::Vector6& stress,
+Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6& stress,
                                              const Matrix3d&     FInv,
-                                             const marmot::Matrix6& dChauchydEps )
+                                             const Marmot::Matrix6& dChauchydEps )
 {
-    using namespace marmot;
-    using namespace marmot::TensorUtility;
-    using namespace marmot::kinematics::velocityGradient;
+    using namespace Marmot;
+    using namespace Marmot::TensorUtility;
+    using namespace Marmot::kinematics::velocityGradient;
 
     Tensor633d dS_dl;
     Tensor633d dS_dF;
@@ -79,9 +79,9 @@ marmot::Tensor633d HughesWinget::compute_dS_dF( const marmot::Vector6& stress,
     return dS_dF;
 }
 
-Eigen::Matrix3d HughesWinget::compute_dScalar_dF(const Eigen::Matrix3d& FInv, const marmot::Vector6& dScalarDEps){
+Eigen::Matrix3d HughesWinget::compute_dScalar_dF(const Eigen::Matrix3d& FInv, const Marmot::Vector6& dScalarDEps){
 
-    using namespace marmot::kinematics::velocityGradient;
+    using namespace Marmot::kinematics::velocityGradient;
     Matrix3d dScalar_dl = Matrix3d::Zero();
     for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ )

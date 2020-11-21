@@ -8,7 +8,7 @@
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
 
-namespace marmot {
+namespace Marmot {
 
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
     class AdaptiveSubstepper {
@@ -23,20 +23,20 @@ namespace marmot {
                             double         integrationErrorTolerance,
                             int            nPassesToIncrease,
                             const Matrix6& Cel );
-        void   setConvergedProgress( const marmot::Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
+        void   setConvergedProgress( const Marmot::Vector6& stressOld, const IntegrationStateVector& stateVarsOld );
         bool   isFinished();
         double getNextSubstep();
         int    getNumberOfSubsteps();
-        bool   finishSubstep( const marmot::Vector6&           resultStress,
+        bool   finishSubstep( const Marmot::Vector6&           resultStress,
                               const TangentSizedMatrix&     dXdY,
                               const IntegrationStateVector& stateVars );
-        void   finishElasticSubstep( const marmot::Vector6& resultStress );
+        void   finishElasticSubstep( const Marmot::Vector6& resultStress );
         bool   discardSubstep();
         bool   repeatSubstep( double decrementationFactor );
 
-        void    getConvergedProgress( marmot::Vector6& stress, IntegrationStateVector& stateVars );
+        void    getConvergedProgress( Marmot::Vector6& stress, IntegrationStateVector& stateVars );
         Matrix6 getCurrentTangentOperator();
-        void    getResults( marmot::Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
+        void    getResults( Marmot::Vector6& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
 
       private:
         const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
@@ -49,12 +49,12 @@ namespace marmot {
         int    substepIndex;
 
         // internal storages for the progress of the total increment
-        marmot::Vector6           stressProgress;
+        Marmot::Vector6           stressProgress;
         IntegrationStateVector stateProgress;
         TangentSizedMatrix     consistentTangentProgress;
 
         // temporal storages, which are used until a cycle full/half/half has finished successfully
-        marmot::Vector6           stressProgressHalfTemp, stressProgressFullTemp;
+        Marmot::Vector6           stressProgressHalfTemp, stressProgressFullTemp;
         IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
         TangentSizedMatrix     consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
@@ -66,9 +66,9 @@ namespace marmot {
         bool acceptSubstepWithFullStepOnly();
         bool splitCurrentSubstep();
     };
-} // namespace marmot
+} // namespace Marmot
 
-namespace marmot {
+namespace Marmot {
     template <size_t n, size_t nState>
     AdaptiveSubstepper<n, nState>::AdaptiveSubstepper( double         initialStepSize,
                                                        double         minimumStepSize,
@@ -107,7 +107,7 @@ namespace marmot {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const marmot::Vector6&           stressOld,
+    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const Marmot::Vector6&           stressOld,
                                                               const IntegrationStateVector& stateVarsOld )
     {
         stressProgress = stressOld;
@@ -144,7 +144,7 @@ namespace marmot {
         }
     }
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getConvergedProgress( marmot::Vector6& stress, IntegrationStateVector& stateVars )
+    void AdaptiveSubstepper<n, nState>::getConvergedProgress( Marmot::Vector6& stress, IntegrationStateVector& stateVars )
     {
         switch ( currentState ) {
         case FullStep: {
@@ -209,7 +209,7 @@ namespace marmot {
     }
 
     template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::finishSubstep( const marmot::Vector6&           resultStress,
+    bool AdaptiveSubstepper<n, nState>::finishSubstep( const Marmot::Vector6&           resultStress,
                                                        const TangentSizedMatrix&     dXdY,
                                                        const IntegrationStateVector& stateVars )
     {
@@ -286,7 +286,7 @@ namespace marmot {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const marmot::Vector6& newStress )
+    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const Marmot::Vector6& newStress )
     {
         switch ( currentState ) {
         case FullStep: {
@@ -315,7 +315,7 @@ namespace marmot {
     }
 
     template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getResults( marmot::Vector6&           stress,
+    void AdaptiveSubstepper<n, nState>::getResults( Marmot::Vector6&           stress,
                                                     Matrix6&                consistentTangentOperator,
                                                     IntegrationStateVector& stateVars )
     {
@@ -360,4 +360,4 @@ namespace marmot {
     {
         return substepIndex;
     }
-} // namespace marmot
+} // namespace Marmot
