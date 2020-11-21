@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-using namespace marmot;
+using namespace Marmot;
 using namespace Eigen;
 
 template < int nDim, int nNodes >
@@ -276,7 +276,7 @@ void UelDisplacement< nDim, nNodes >::computeYourself( const double* QTotal_,
                                                        double        dT,
                                                        double&       pNewDT )
 {
-    using namespace marmot;
+    using namespace Marmot;
 
     Map< const RhsSized > QTotal( QTotal_ );
     Map< const RhsSized > dQ( dQ_ );
