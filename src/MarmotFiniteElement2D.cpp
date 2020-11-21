@@ -4,7 +4,7 @@
 
 using namespace Eigen;
 
-namespace marmot {
+namespace Marmot {
     namespace FiniteElement {
         namespace Spatial2D {
             namespace Quad4 {
@@ -174,4 +174,4 @@ namespace marmot {
             }
         } // end of namespace Spatial2D
     } // end of namespace FiniteElement
-} // end of namespace marmot
+} // end of namespace Marmot

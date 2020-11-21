@@ -1,7 +1,7 @@
 #pragma once
 #include "MarmotTypedefs.h"
 
-namespace marmot {
+namespace Marmot {
     namespace EAS {
 
         enum EASType {
@@ -19,4 +19,4 @@ namespace marmot {
         Eigen::MatrixXd EASInterpolation( EASType type, const Eigen::VectorXd& xi );
 
     } // namespace EAS
-} // namespace marmot
+} // namespace Marmot

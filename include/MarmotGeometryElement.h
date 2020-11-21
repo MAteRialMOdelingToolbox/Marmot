@@ -30,15 +30,15 @@ class MarmotGeometryElement {
 
     /*Properties*/
     Eigen::Map<const CoordinateVector>      coordinates;
-    const marmot::FiniteElement::ElementShapes shape;
+    const Marmot::FiniteElement::ElementShapes shape;
 
     /*Methods*/
     MarmotGeometryElement()
-        : coordinates( nullptr ), shape( marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
+        : coordinates( nullptr ), shape( Marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
 
     std::string getElementShape()
     {
-        using namespace marmot::FiniteElement;
+        using namespace Marmot::FiniteElement;
         static std::map<ElementShapes, std::string> shapes = { { Bar2, "bar2" },
                                                                { Quad4, "quad4" },
                                                                { Quad8, "quad8" },
@@ -66,11 +66,11 @@ class MarmotGeometryElement {
     BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F );
 
     /*These functions are equal for each element and independent of node number and  nDimension*/
-    NBSized NB( const NSized& N ) { return marmot::FiniteElement::NB<nDim, nNodes>( N ); }
+    NBSized NB( const NSized& N ) { return Marmot::FiniteElement::NB<nDim, nNodes>( N ); }
 
     JacobianSized Jacobian( const dNdXiSized& dNdXi )
     {
-        return marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
+        return Marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdXi, coordinates );
     }
 
     dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse )
@@ -80,6 +80,6 @@ class MarmotGeometryElement {
 
     JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q )
     {
-        return marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q ) + JacobianSized::Identity();
+        return Marmot::FiniteElement::Jacobian<nDim, nNodes>( dNdX, Q ) + JacobianSized::Identity();
     }
 };

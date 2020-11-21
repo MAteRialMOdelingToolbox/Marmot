@@ -2,7 +2,7 @@
 #include "MarmotTypedefs.h"
 #include <vector>
 
-namespace marmot {
+namespace Marmot {
 
     namespace FiniteElement {
         enum ElementShapes {
@@ -262,7 +262,7 @@ namespace marmot {
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
 
-                marmot::Vector8i getBoundaryElementIndices( int faceID );
+                Marmot::Vector8i getBoundaryElementIndices( int faceID );
             } // namespace Hexa20
         }     // namespace Spatial3D
 
@@ -318,9 +318,9 @@ namespace marmot {
             double          weight;
         };
 
-        const std::vector<GaussPtInfo>& getGaussPointInfo( marmot::FiniteElement::ElementShapes shape,
+        const std::vector<GaussPtInfo>& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType );
-        int getNumGaussPoints( marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
+        int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
 
         namespace Spatial1D {
             constexpr int nDim = 1;
@@ -440,4 +440,4 @@ namespace marmot {
 
         } // namespace Spatial3D
     }     // namespace NumIntegration
-} // namespace marmot
+} // namespace Marmot

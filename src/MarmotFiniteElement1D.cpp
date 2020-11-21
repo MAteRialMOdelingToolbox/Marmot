@@ -1,7 +1,7 @@
 #include "MarmotFiniteElement.h"
 #include "MarmotTypedefs.h"
 
-namespace marmot {
+namespace Marmot {
     namespace FiniteElement {
         namespace Spatial1D {
             namespace Bar2 {
@@ -56,4 +56,4 @@ namespace marmot {
             } // end of namespace Bar3
         }     // namespace Spatial1D
     }         // namespace FiniteElement
-} // namespace marmot
+} // namespace Marmot

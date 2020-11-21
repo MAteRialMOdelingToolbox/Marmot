@@ -2,7 +2,7 @@
 #include <iostream>
 
 using namespace Eigen;
-namespace marmot {
+namespace Marmot {
     namespace FiniteElement {
 
         BoundaryElement::BoundaryElement( ElementShapes   parentShape,
@@ -212,4 +212,4 @@ namespace marmot {
         }
 
     } // namespace FiniteElement
-} // namespace marmot
+} // namespace Marmot

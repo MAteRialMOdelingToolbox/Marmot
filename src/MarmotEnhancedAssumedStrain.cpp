@@ -1,5 +1,5 @@
 #include "MarmotEnhancedAssumedStrain.h"
-namespace marmot {
+namespace Marmot {
     namespace EAS {
 
         using namespace Eigen;
@@ -53,7 +53,7 @@ namespace marmot {
 
                 return F;
             }
-            throw std::invalid_argument( "Invalid Dimension for marmot::EnhancedAssumedStrain!" );
+            throw std::invalid_argument( "Invalid Dimension for Marmot::EnhancedAssumedStrain!" );
         }
 
         MatrixXd EASInterpolation( EASType type, const VectorXd& xi )
@@ -148,4 +148,4 @@ namespace marmot {
             }
         }
     } // namespace EAS
-} // namespace marmot
+} // namespace Marmot

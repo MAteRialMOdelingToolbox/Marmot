@@ -2,7 +2,7 @@
 #include "MarmotTypedefs.h"
 
 using namespace Eigen;
-namespace marmot {
+namespace Marmot {
     namespace FiniteElement {
         ElementShapes getElementShapeByMetric( int nDim, int nNodes )
         {
@@ -93,10 +93,10 @@ namespace marmot {
     } // namespace FiniteElement
 
     namespace NumIntegration {
-        const std::vector<GaussPtInfo>& getGaussPointInfo( marmot::FiniteElement::ElementShapes shape,
+        const std::vector<GaussPtInfo>& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType )
         {
-            using marmot::FiniteElement::ElementShapes;
+            using Marmot::FiniteElement::ElementShapes;
             switch ( shape ) {
             case ( ElementShapes::Bar2 ): {
                 if ( integrationType == IntegrationTypes::FullIntegration )
@@ -153,10 +153,10 @@ namespace marmot {
             }
         }
 
-        int getNumGaussPoints( marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
+        int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
         {
             return getGaussPointInfo( shape, integrationType ).size();
         }
 
     } // end of namespace NumIntegration
-} // end of namespace marmot
+} // end of namespace Marmot
