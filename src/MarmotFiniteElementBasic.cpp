@@ -1,5 +1,5 @@
-#include "MarmotFiniteElement.h"
-#include "MarmotTypedefs.h"
+#include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotTypedefs.h"
 
 using namespace Eigen;
 namespace Marmot {

@@ -1,4 +1,4 @@
-#include "MarmotFiniteElement.h"
+#include "Marmot/MarmotFiniteElement.h"
 #include <iostream>
 
 using namespace Eigen;

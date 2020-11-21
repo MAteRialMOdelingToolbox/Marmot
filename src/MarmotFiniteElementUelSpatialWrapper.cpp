@@ -1,6 +1,6 @@
-#include "MarmotFiniteElementUelSpatialWrapper.h"
+#include "Marmot/MarmotFiniteElementUelSpatialWrapper.h"
 #include "Eigen/Sparse"
-#include "MarmotVoigt.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;

@@ -1,7 +1,7 @@
 #pragma once
 #include "Eigen/Sparse"
-#include "MarmotElement.h"
-#include "MarmotElementProperty.h"
+#include "Marmot/MarmotElement.h"
+#include "Marmot/MarmotElementProperty.h"
 #include <functional>
 #include <memory>
 
