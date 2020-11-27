@@ -53,9 +53,11 @@ set (materials
     DruckerPrager 
     DruckerPragerMD
     GMCDP
+    GMCDPFiniteStrain
     GMBiotElastic
     GMDruckerPrager
     GMNeoHooke
+    GradientEnhancedDruckerPrager
     HoekBrown
     JointedRock
     LinearElastic
