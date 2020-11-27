@@ -4,13 +4,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+MESSAGE("+--------------------------------------------------------------------+")
+MESSAGE("|                                                                    |")
+MESSAGE("|                              MARMOT                                |")
+MESSAGE("|                                                                    |")
+MESSAGE("|                  -- MAteRialMOdellingToolbox --                    |")
+MESSAGE("|                                                                    |")
+MESSAGE("+--------------------------------------------------------------------+")
+
 MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
 MESSAGE(STATUS "")
 cmake_minimum_required(VERSION 3.1)  
 
 project(bftUserLibrary CXX Fortran)
 
-include_directories(include)
+# avoid in-source compilation
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+  message(FATAL_ERROR "In-source builds are not allowed. Create and/or change to your build folder \
+  and run then cmake from there, e.g. mkdir build && cd build && cmake ../ . \\n
+  You first may need to remove CMakeCache.txt and CMakeFiles/*.")
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
@@ -20,16 +33,45 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
-## avoid in-source compilation
-set(DEFAULT_OUT_OF_SOURCE_FOLDER "build")
-if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-  message(FATAL_ERROR "In-source builds are not allowed. Create and/or change to ${DEFAULT_OUT_OF_SOURCE_FOLDER} \
- folder and run then cmake from there, e.g. cd build && cmake ../ . You first may need to remove CMakeCache.txt and CMakeFiles/*.")
-endif ()
+# set install directories
+include(GNUInstallDirs)
+
+# Compiler specific stettings
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-copy")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+    # only activate if you know what you are doing:
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+elseif(MSVC)
+    if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
+        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    endif()
+endif()
+
+# If no build type was specified, Release is default
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+    message("--> setting to default CMAKE_BUILD_TYPE Release")
+endif()
 
 # Disable (shared memory) parallelization within bftUserLibrary - such a parallelization is usually not desired
 # add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
+
+## find Eigen library
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+include_directories(${EIGEN3_INCLUDE_DIR})
+message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
@@ -107,39 +149,15 @@ set(elements
     uelNonLocalMixed
     )
 
-# Compiler specific stettings
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-copy")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
-    # only activate if you know what you are doing:
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-elseif(MSVC)
-    if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-    endif()
-endif()
-
-# If no build type was specified, Release is default
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-    message("--> setting to default CMAKE_BUILD_TYPE Release")
-endif()
-
+#
 # Add sources
+#
 file(GLOB sources "src/*.cpp")
-file(GLOB publicheaders "include/*.h")
+file(GLOB publicheaders "include/**/*.h")
 
+#
 # mandatory bftMechanics
+#
 get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
 if(EXISTS ${bftMechanicsDir})
     message("--> found bftMechanics")
@@ -149,7 +167,7 @@ else()
 endif()
 
 #
-#optional core libraries
+# optional core libraries
 #
 foreach(library ${optionalCoreLibraries})
     file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
@@ -188,6 +206,7 @@ endforeach(library)
 # compile the shared library
 #
 add_library(${PROJECT_NAME} SHARED ${sources})
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 #
 # and finally install the library to the system location
