@@ -137,7 +137,7 @@ endif()
 
 # Add sources
 file(GLOB sources "src/*.cpp")
-file(GLOB headers "include/*.h")
+file(GLOB publicheaders "include/*.h")
 
 # mandatory bftMechanics
 get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
@@ -193,7 +193,7 @@ add_library(${PROJECT_NAME} SHARED ${sources})
 # and finally install the library to the system location
 #
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    PUBLIC_HEADER "${headers}"
+    PUBLIC_HEADER "${publicheaders}"
 )
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
