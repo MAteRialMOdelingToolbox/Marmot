@@ -41,7 +41,7 @@ Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
 {
     using namespace Marmot;
     using namespace Marmot::ContinuumMechanics::TensorUtility;
-    using namespace Marmot::kinematics::velocityGradient;
+    using namespace Marmot::ContinuumMechanics::Kinematics::velocityGradient;
 
     Tensor633d dS_dl;
     Tensor633d dS_dF;
@@ -81,7 +81,7 @@ Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
 
 Eigen::Matrix3d HughesWinget::compute_dScalar_dF(const Eigen::Matrix3d& FInv, const Marmot::Vector6d& dScalarDEps){
 
-    using namespace Marmot::kinematics::velocityGradient;
+    using namespace Marmot::ContinuumMechanics::Kinematics::velocityGradient;
     Matrix3d dScalar_dl = Matrix3d::Zero();
     for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ )
