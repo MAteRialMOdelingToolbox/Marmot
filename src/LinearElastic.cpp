@@ -22,8 +22,8 @@ void LinearElastic::computeStress( double*       stress,
                                    const double  dT,
                                    double&       pNewDT )
 {
-    mVector6             S( stress );
-    Map< const Vector6 > dE( dStrain );
+    mVector6d             S( stress );
+    Map< const Vector6d > dE( dStrain );
     mMatrix6             C( dStressDDStrain );
 
     C = mechanics::Cel( E, nu );
