@@ -6,7 +6,7 @@
 #include <utility>
 
 namespace Marmot {
-    namespace CommonTensors {
+    namespace ContinuumMechanics::CommonTensors {
         extern const Tensor3333d I2xI2;
         extern const Tensor3333d Isym;
         extern const Tensor3333d Iskew;
@@ -71,7 +71,7 @@ namespace Marmot {
                 return LeviCivita3D;
         }
 
-    } // namespace CommonTensors
+    } // namespace ContinuumMechanics::CommonTensors
 
     namespace ContinuumMechanics::TensorUtility {
 
