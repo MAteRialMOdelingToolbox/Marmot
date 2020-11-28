@@ -4,7 +4,7 @@
 #include <sstream>
 
 namespace Marmot {
-    namespace MW {
+    namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
         using namespace Constants;
         double r( double theta, double e, double& numerator, double& denominator )
         {
@@ -174,5 +174,5 @@ namespace Marmot {
             m  = 1.;
             e  = ( fc + 2 * ft ) / ( 2 * fc + ft );
         }
-    } // namespace MW
+    } // namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam
 } // namespace Marmot
