@@ -28,7 +28,7 @@ namespace Marmot {
             }
             else if ( J.cols() == 3 ){
 
-                Matrix6  F;
+                Matrix6d  F;
                 // clang-format off
                 F.topLeftCorner(3,3) << 
                     J(0,0)*J(0,0),  J(0,1)*J(0,1),  J(0,2)*J(0,2),
