@@ -307,7 +307,7 @@ namespace Marmot {
         };
     } // namespace FiniteElement
 
-    namespace NumIntegration {
+    namespace Quadrature {
         constexpr double gp2 = 0.577350269189625764509;
         constexpr double gp3 = 0.774596669241483;
 
@@ -439,5 +439,5 @@ namespace Marmot {
             // clang-format on
 
         } // namespace Spatial3D
-    }     // namespace NumIntegration
+    }     // namespace Quadrature
 } // namespace Marmot
