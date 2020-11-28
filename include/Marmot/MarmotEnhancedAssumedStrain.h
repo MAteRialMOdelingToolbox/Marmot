@@ -2,7 +2,7 @@
 #include "Marmot/MarmotTypedefs.h"
 
 namespace Marmot {
-    namespace EAS {
+    namespace FiniteElementTechnology::EAS {
 
         enum EASType {
             DeBorstEAS2,
@@ -18,5 +18,5 @@ namespace Marmot {
 
         Eigen::MatrixXd EASInterpolation( EASType type, const Eigen::VectorXd& xi );
 
-    } // namespace EAS
+    } // namespace FiniteElementTechnology::EAS
 } // namespace Marmot
