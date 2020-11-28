@@ -60,8 +60,8 @@ namespace Marmot {
             // - Jacobian pp(x,xi)
             // - areaVector
             for ( const auto& gaussPtInfo :
-                  Quadrature::getGaussPointInfo( boundaryShape,
-                                                     Quadrature::IntegrationTypes::FullIntegration ) ) {
+                  FiniteElement::Quadrature::getGaussPointInfo( boundaryShape,
+                                                     FiniteElement::Quadrature::IntegrationTypes::FullIntegration ) ) {
 
                 BoundaryElementGaussPt gpt;
                 gpt.xi     = gaussPtInfo.xi;

@@ -92,7 +92,7 @@ namespace Marmot {
         }
     } // namespace FiniteElement
 
-    namespace Quadrature {
+    namespace FiniteElement::Quadrature {
         const std::vector<GaussPtInfo>& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
                                                            IntegrationTypes                  integrationType )
         {
@@ -158,5 +158,5 @@ namespace Marmot {
             return getGaussPointInfo( shape, integrationType ).size();
         }
 
-    } // end of namespace Quadrature
+    } // end of namespace FiniteElement::Quadrature
 } // end of namespace Marmot
