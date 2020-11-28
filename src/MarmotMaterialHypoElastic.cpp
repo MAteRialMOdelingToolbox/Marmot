@@ -27,7 +27,7 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
 
     using namespace Marmot;
     using namespace Marmot::ContinuumMechanics::TensorUtility;
-    using namespace kinematics::velocityGradient;
+    using namespace ContinuumMechanics::Kinematics::velocityGradient;
 
     const Map<const Matrix3d> FOld( FOld_ );
     const Map<const Matrix3d> FNew( FNew_ );

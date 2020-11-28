@@ -4,7 +4,7 @@
 using namespace Eigen;
 
 namespace Marmot {
-    namespace kinematics {
+    namespace ContinuumMechanics::Kinematics {
 
         namespace velocityGradient {
 
@@ -95,5 +95,5 @@ namespace Marmot {
             }
         } // namespace deformationGradient
 
-    } // namespace kinematics
+    } // namespace ContinuumMechanics::Kinematics
 } // namespace Marmot

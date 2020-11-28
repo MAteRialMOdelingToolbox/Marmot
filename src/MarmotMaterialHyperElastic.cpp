@@ -22,7 +22,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
     Map<Vector6d>              Cauchy( Cauchy_ );
     Map<Matrix<double, 6, 9>> dCauchy_d_F_np( dCauchy_d_F_np_ );
     const Map<const Matrix3d> F_np( F_np_ );
-    Vector6d                   E = kinematics::strain::GreenLagrange( F_np );
+    Vector6d                   E = ContinuumMechanics::Kinematics::strain::GreenLagrange( F_np );
 
     Matrix6d dSdE;
     Vector6d S;
@@ -43,7 +43,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
 
     Tensor633d dSdF;
     dSdF.setZero();
-    Tensor633d dEdF = Marmot::kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
+    Tensor633d dEdF = Marmot::ContinuumMechanics::Kinematics::strain::dGreenLagrangedDeformationGradient( F_np );
 
     for ( int IJ = 0; IJ < 6; IJ++ )
         for ( int k = 0; k < 3; k++ )

@@ -4,7 +4,7 @@
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot {
-    namespace kinematics {
+    namespace ContinuumMechanics::Kinematics {
         namespace strain {
             Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F );
             Marmot::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
@@ -20,5 +20,5 @@ namespace Marmot {
             template <int nDim>
             Eigen::Matrix3d make3D( const Eigen::Ref<const Eigen::Matrix<double, nDim, nDim>>& tensor );
         }
-    } // namespace kinematics
+    } // namespace ContinuumMechanics::Kinematics
 } // namespace Marmot
