@@ -73,7 +73,7 @@ namespace Marmot {
 
     } // namespace CommonTensors
 
-    namespace TensorUtility {
+    namespace ContinuumMechanics::TensorUtility {
 
         constexpr int d( int a, int b ) { return a == b ? 1 : 0; }
 
@@ -163,6 +163,6 @@ namespace Marmot {
 
         // namespace ContinuumMechanics::VoigtNotation
 
-    } // namespace TensorUtility
+    } // namespace ContinuumMechanics::TensorUtility
 
 } // namespace Marmot
