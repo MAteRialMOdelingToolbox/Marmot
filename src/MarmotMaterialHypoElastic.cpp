@@ -26,7 +26,7 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
     // small strain material models
 
     using namespace Marmot;
-    using namespace Marmot::TensorUtility;
+    using namespace Marmot::ContinuumMechanics::TensorUtility;
     using namespace kinematics::velocityGradient;
 
     const Map<const Matrix3d> FOld( FOld_ );

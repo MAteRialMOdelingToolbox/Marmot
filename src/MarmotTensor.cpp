@@ -1,6 +1,6 @@
 #include "Marmot/MarmotTensor.h"
 
-using namespace Marmot::TensorUtility;
+using namespace Marmot::ContinuumMechanics::TensorUtility;
 
 namespace Marmot {
     namespace CommonTensors {
