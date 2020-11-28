@@ -140,8 +140,8 @@ namespace Marmot {
                     return ( i == j ) ? ( i == 0 ? 0 : 1 ) : 2;
 
                 else if ( nDim == 3 ) {
-                    constexpr int tensor2VgtIndicesMapping[3][3] = {{0, 3, 4}, {3, 1, 5}, {4, 5, 2}};
-                    return tensor2VgtIndicesMapping[i][j];
+                    constexpr int tensor2VoigtNotationIndicesMapping[3][3] = {{0, 3, 4}, {3, 1, 5}, {4, 5, 2}};
+                    return tensor2VoigtNotationIndicesMapping[i][j];
                 }
 
                 throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
