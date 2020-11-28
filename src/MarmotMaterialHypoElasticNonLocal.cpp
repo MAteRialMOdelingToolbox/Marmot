@@ -29,10 +29,10 @@ void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     using namespace Marmot;
     const Map<const Matrix3d> FNew( FNew_ );
     const Map<const Matrix3d> FOld( FOld_ );
-    Marmot::mVector6             stress( stress_ );
+    Marmot::mVector6d             stress( stress_ );
 
     Matrix6 CJaumann                = Matrix6::Zero();
-    Vector6 dK_LocalDStretchingRate = Vector6::Zero();
+    Vector6d dK_LocalDStretchingRate = Vector6d::Zero();
 
     HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
 
@@ -75,14 +75,14 @@ void MarmotMaterialHypoElasticNonLocal::computePlaneStress( double*       stress
 {
     using namespace Marmot;
 
-    Map<Vector6>  stress( stress_ );
+    Map<Vector6d>  stress( stress_ );
     Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
-    Map<Vector6>  dStrain( dStrain_ );
+    Map<Vector6d>  dStrain( dStrain_ );
     Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
-    Vector6  stressTemp;
+    Vector6d  stressTemp;
     VectorXd stateVarsOld = stateVars;
-    Vector6  dStrainTemp  = dStrain;
+    Vector6d  dStrainTemp  = dStrain;
 
     // assumption of isochoric deformation for initial guess
     dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );

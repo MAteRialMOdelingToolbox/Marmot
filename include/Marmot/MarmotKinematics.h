@@ -6,7 +6,7 @@
 namespace Marmot {
     namespace kinematics {
         namespace strain {
-            Marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F );
+            Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F );
             Marmot::Tensor633d dGreenLagrangedDeformationGradient ( const Eigen::Matrix3d& F);
         }
 
