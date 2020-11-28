@@ -47,7 +47,7 @@ namespace Marmot {
 
         namespace strain {
 
-            Marmot::Vector6 GreenLagrange( const Eigen::Matrix3d& F )
+            Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F )
             {
                 Eigen::Matrix3d H = F - Eigen::Matrix3d::Identity();
                 return Marmot::Vgt::VoigtFromStrainMatrix<3>( 0.5 * ( H + H.transpose() + H.transpose() * H ) );

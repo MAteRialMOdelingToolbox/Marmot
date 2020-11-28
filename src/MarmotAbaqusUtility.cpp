@@ -12,7 +12,7 @@ namespace Marmot {
 
     void backToAbaqus( const Matrix6& jacobian,
                        Map<MatrixXd>& ABQJacobian,
-                       const Vector6& stress,
+                       const Vector6d& stress,
                        Map<VectorXd>& ABQStress,
                        int            nTensor )
     {
@@ -23,7 +23,7 @@ namespace Marmot {
 
     void backToAbaqusPlaneStress( const Matrix6& jacobian,
                                   Map<MatrixXd>& ABQJacobian,
-                                  const Vector6& stress,
+                                  const Vector6d& stress,
                                   Map<VectorXd>& ABQStress )
     {
         ABQStress( 0 ) = stress( 0 );
@@ -35,13 +35,13 @@ namespace Marmot {
 
     void backToAbaqusNonLocal( const Matrix6& dStressdStrain,
                                Ref<MatrixXd>  ABQdStressDStrain,
-                               const Vector6& stress,
+                               const Vector6d& stress,
                                Ref<VectorXd>  ABQStress,
                                double         intParameterLocal,
                                double&        ABQParameterLocal,
-                               const Vector6& dStressDIntParamNonLocal,
+                               const Vector6d& dStressDIntParamNonLocal,
                                Ref<VectorXd>  ABQDStressDIntParamNonLocal,
-                               const Vector6& dIntParamLocalDStrain,
+                               const Vector6d& dIntParamLocalDStrain,
                                Ref<VectorXd>  ABQDIntParameterLocalDStrain,
                                double         nonLocalRadius,
                                double&        ABQNonLocalRadius,

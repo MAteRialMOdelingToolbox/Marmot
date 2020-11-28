@@ -46,12 +46,12 @@ namespace Marmot {
 
         double getUniaxialStressTangent( const Ref<const Matrix6>& C )
         {
-            Vector6 b;
+            Vector6d b;
             b << 1, 0, 0, 0, 0, 0;
             Matrix6 A = C;
             A.row( 0 ) << 1, 0, 0, 0, 0, 0;
 
-            Vector6 dEdEUniaxial = A.colPivHouseholderQr().solve( b );
+            Vector6d dEdEUniaxial = A.colPivHouseholderQr().solve( b );
 
             return C.row( 0 ) * dEdEUniaxial;
         }
@@ -130,11 +130,11 @@ namespace Marmot {
 
         using namespace Constants;
 
-        const Vector6 P    = ( Vector6() << 1, 1, 1, 2, 2, 2 ).finished();
-        const Vector6 PInv = ( Vector6() << 1, 1, 1, .5, .5, .5 ).finished();
+        const Vector6d P    = ( Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
+        const Vector6d PInv = ( Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
 
-        const Vector6 I    = ( Vector6() << 1, 1, 1, 0, 0, 0 ).finished();
-        const Vector6 IHyd = ( Vector6() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
+        const Vector6d I    = ( Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
+        const Vector6d IHyd = ( Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
         const Matrix6 IDev = ( Matrix6() <<
                                    // clang-format off
@@ -146,7 +146,7 @@ namespace Marmot {
                 0,          0,      0,      0,  0,  1).finished();
         // clang-format on
 
-        Matrix3d voigtToStrain( const Vector6& voigt )
+        Matrix3d voigtToStrain( const Vector6d& voigt )
         {
             Matrix3d strain;
             strain << voigt[0], voigt[3] / 2, voigt[4] / 2, voigt[3] / 2, voigt[1], voigt[5] / 2, voigt[4] / 2,
@@ -154,7 +154,7 @@ namespace Marmot {
             return strain;
         }
 
-        Matrix3d voigtToStress( const Vector6& voigt )
+        Matrix3d voigtToStress( const Vector6d& voigt )
         {
             Matrix3d stress;
             // clang-format off
@@ -165,23 +165,23 @@ namespace Marmot {
             return stress;
         }
 
-        Vector6 strainToVoigt( const Matrix3d& strainTensor )
+        Vector6d strainToVoigt( const Matrix3d& strainTensor )
         {
-            Vector6 strain;
+            Vector6d strain;
             strain << strainTensor( 0, 0 ), strainTensor( 1, 1 ), strainTensor( 2, 2 ), 2 * strainTensor( 0, 1 ),
                 2 * strainTensor( 0, 2 ), 2 * strainTensor( 1, 2 );
             return strain;
         }
 
-        Vector6 stressToVoigt( const Matrix3d& stressTensor )
+        Vector6d stressToVoigt( const Matrix3d& stressTensor )
         {
-            Vector6 stress;
+            Vector6d stress;
             stress << stressTensor( 0, 0 ), stressTensor( 1, 1 ), stressTensor( 2, 2 ), stressTensor( 0, 1 ),
                 stressTensor( 0, 2 ), stressTensor( 1, 2 );
             return stress;
         }
 
-        Vector3d voigtToPlaneVoigt( const Vector6& voigt )
+        Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
         {
             /* converts a 6d voigt Vector with Abaqus notation
                S11, S22, S33, S12, S13, S23
@@ -191,24 +191,24 @@ namespace Marmot {
             return voigtPlane;
         }
 
-        Vector6 planeVoigtToVoigt( const Vector3d& voigtPlane )
+        Vector6d planeVoigtToVoigt( const Vector3d& voigtPlane )
         {
             /* converts a 3d voigt Vector with notation
-               S11, S22, S12 to a Vector6 with
+               S11, S22, S12 to a Vector6d with
                S11, S22, S33, S12, S13, S23
                !!! Don't use if 3rd component is NOT ZERO !!!*/
-            Vector6 voigt;
+            Vector6d voigt;
             voigt << voigtPlane[0], voigtPlane[1], 0, voigtPlane[2], 0, 0;
             return voigt;
         }
 
-        Vector6 planeStressCompensationStrain( const Vector6& strain, double nu )
+        Vector6d planeStressCompensationStrain( const Vector6d& strain, double nu )
         {
             /*compute E33 for a given strain, to compute the compensation for
              * planeStress = Cel : (strain + compensationStrain) */
-            const Vector6& e                = strain;
+            const Vector6d& e                = strain;
             const double   strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
-            Vector6        result;
+            Vector6d        result;
             result << 0, 0, strainCorrComp33, 0, 0, 0;
             return result;
         }
@@ -255,7 +255,7 @@ namespace Marmot {
             return T;
         }
 
-        Vector3d haighWestergaard( const Vector6& stress )
+        Vector3d haighWestergaard( const Vector6d& stress )
         {
             Vector3d     hw;
             const double J2_ = J2( stress );
@@ -280,7 +280,7 @@ namespace Marmot {
             return hw;
         }
 
-        Vector3d haighWestergaardStrain( const Vector6& strain )
+        Vector3d haighWestergaardStrain( const Vector6d& strain )
         {
             Vector3d     hw;
             const double J2_ = J2strain( strain );
@@ -306,13 +306,13 @@ namespace Marmot {
             return hw;
         }
 
-        Vector3d principalStrains( const Vector6& voigtStrain )
+        Vector3d principalStrains( const Vector6d& voigtStrain )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStrain( voigtStrain ) );
             return es.eigenvalues();
         }
 
-        Vector3d principalStrainsHW( const Vector6& voigtStrain )
+        Vector3d principalStrainsHW( const Vector6d& voigtStrain )
         {
             // if you wanna sort your eigenvalues after size
             Vector3d hw = haighWestergaardStrain( voigtStrain );
@@ -323,39 +323,39 @@ namespace Marmot {
             return strainPrinc;
         }
 
-        Vector3d principalStresses( const Vector6& voigtStress )
+        Vector3d principalStresses( const Vector6d& voigtStress )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
-        Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6& voigtStress )
+        Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& voigtStress )
         {
             SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
             Matrix3d Q = es.eigenvectors();  Q.col(2) = Q.col(0).cross(Q.col(1)); // for a clockwise coordinate system
             return Q; 
         }
-        Marmot::Vector6 rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6& voigtStress )
+        Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6d& voigtStress )
         {
             const Matrix3d& T  = voigtToStress( voigtStress );
             const Matrix3d& TR = Q * T * Q.transpose();
             return stressToVoigt( TR );
         }
 
-        double vonMisesEquivalentStress( const Vector6& stress ) { return sqrt( 3. * J2( stress ) ); }
+        double vonMisesEquivalentStress( const Vector6d& stress ) { return sqrt( 3. * J2( stress ) ); }
 
-        double vonMisesEquivalentStrain( const Vector6& strain )
+        double vonMisesEquivalentStrain( const Vector6d& strain )
         {
             // e_eq = sqrt( 2/3 * e_ij * e_ij )
-            const Vector6& e = strain;
+            const Vector6d& e = strain;
             return std::sqrt( 2. / 3. * ( e( 0 ) * e( 0 ) + e( 1 ) * e( 1 ) + e( 2 ) * e( 2 ) ) +
                               1. / 3. * ( e( 3 ) * e( 3 ) + e( 4 ) * e( 4 ) + e( 5 ) * e( 5 ) ) );
         }
 
-        double normStrain( const Vector6& strain ) { return Vgt::voigtToStrain( strain ).norm(); }
+        double normStrain( const Vector6d& strain ) { return Vgt::voigtToStrain( strain ).norm(); }
 
-        double normStress( const Vector6& stress ) { return Vgt::voigtToStress( stress ).norm(); }
+        double normStress( const Vector6d& stress ) { return Vgt::voigtToStress( stress ).norm(); }
 
-        double Evolneg( const Vector6& strain )
+        double Evolneg( const Vector6d& strain )
         {
             Vector3d dEpPrincipal = principalStrains( strain );
 
@@ -363,39 +363,39 @@ namespace Marmot {
                    Math::macauly( -dEpPrincipal( 2 ) );
         }
 
-        double I1( const Vector6& stress ) { return stress.head( 3 ).sum(); }
+        double I1( const Vector6d& stress ) { return stress.head( 3 ).sum(); }
 
-        double I2( const Vector6& stress )
+        double I2( const Vector6d& stress )
         {
-            const Vector6& s = stress;
+            const Vector6d& s = stress;
 
             return s( 0 ) * s( 1 ) + s( 1 ) * s( 2 ) + s( 2 ) * s( 0 ) - s( 3 ) * s( 3 ) - s( 4 ) * s( 4 ) -
                    s( 5 ) * s( 5 );
         }
 
-        double I2strain( const Vector6& strain ) // you could also use normal I2, but with epsilon12
+        double I2strain( const Vector6d& strain ) // you could also use normal I2, but with epsilon12
                                                  // instead of 2*epsilon12
         {
-            const Vector6& e = strain;
+            const Vector6d& e = strain;
 
             return e( 0 ) * e( 1 ) + e( 1 ) * e( 2 ) + e( 2 ) * e( 0 ) - e( 3 ) / 2. * e( 3 ) / 2. -
                    e( 4 ) / 2. * e( 4 ) / 2. - e( 5 ) / 2. * e( 5 ) / 2.;
         }
 
-        double I3( const Vector6& stress )
+        double I3( const Vector6d& stress )
         {
-            const Vector6& s = stress;
+            const Vector6d& s = stress;
             return s( 0 ) * s( 1 ) * s( 2 ) + 2 * s( 3 ) * s( 4 ) * s( 5 ) - s( 0 ) * s( 5 ) * s( 5 ) -
                    s( 1 ) * s( 4 ) * s( 4 ) - s( 2 ) * s( 3 ) * s( 3 );
         }
 
-        double I3strain( const Vector6& strain ) // you could also use normal I3, but with epsilon12
+        double I3strain( const Vector6d& strain ) // you could also use normal I3, but with epsilon12
                                                  // instead of 2*epsilon12
         {
             return voigtToStrain( strain ).determinant();
         }
 
-        double J2( const Vector6& stress )
+        double J2( const Vector6d& stress )
         {
             double I1_ = I1( stress );
             double I2_ = I2( stress );
@@ -403,13 +403,13 @@ namespace Marmot {
             return res >= 0 ? res : 0.0;
         }
 
-        double J2strain( const Vector6& strain )
+        double J2strain( const Vector6d& strain )
         {
             const double res = 1. / 3. * std::pow( I1( strain ), 2. ) - I2strain( strain );
             return res > 0 ? res : 0;
         }
 
-        double J3( const Vector6& stress )
+        double J3( const Vector6d& stress )
         {
             double I1_ = I1( stress );
             double I2_ = I2( stress );
@@ -418,28 +418,28 @@ namespace Marmot {
             return ( 2. / 27 ) * pow( I1_, 3 ) - ( 1. / 3 ) * I1_ * I2_ + I3_;
         }
 
-        double J3strain( const Vector6& strain ) // determinant of the deviatoric strain tensor
+        double J3strain( const Vector6d& strain ) // determinant of the deviatoric strain tensor
         {
             return voigtToStrain( IDev * strain ).determinant();
         }
 
-        Vector6 dSigmaMdSigma() { return 1. / 3 * I; }
+        Vector6d dSigmaMdSigma() { return 1. / 3 * I; }
 
-        Vector6 dRhodSigma( double rho, const Vector6& stress )
+        Vector6d dRhodSigma( double rho, const Vector6d& stress )
         {
 
             if ( rho <= 1e-16 )
-                return Vector6::Zero();
+                return Vector6d::Zero();
 
-            Vector6 s = IDev * stress;
+            Vector6d s = IDev * stress;
 
             return 1. / rho * P.array() * s.array();
         }
 
-        Vector6 dThetadSigma( double theta, const Vector6& stress )
+        Vector6d dThetadSigma( double theta, const Vector6d& stress )
         {
             if ( theta <= 1e-15 || theta >= Pi / 3 - 1e-15 )
-                return Vector6::Zero();
+                return Vector6d::Zero();
 
             // const double J2_ = J2(stress);
             // const double J3_ = J3(stress);
@@ -448,12 +448,12 @@ namespace Marmot {
             const double dThetadJ3 = dTheta_dJ3( stress );
 
             if ( isNaN( dThetadJ2 ) || isNaN( dThetadJ3 ) )
-                return Vector6::Zero();
+                return Vector6d::Zero();
 
             return dThetadJ2 * dJ2_dStress( stress ) + dThetadJ3 * dJ3_dStress( stress );
         }
 
-        double dTheta_dJ2( const Vector6& stress )
+        double dTheta_dJ2( const Vector6d& stress )
         {
             const Vector3d hw    = haighWestergaard( stress );
             const double&  theta = hw( 2 );
@@ -469,7 +469,7 @@ namespace Marmot {
             return dThetadJ2;
         }
 
-        double dTheta_dJ3( const Vector6& stress )
+        double dTheta_dJ3( const Vector6d& stress )
         {
             const Vector3d hw    = haighWestergaard( stress );
             const double&  theta = hw( 2 );
@@ -485,7 +485,7 @@ namespace Marmot {
             return dThetadJ3;
         }
 
-        double dThetaE_dJ2E( const Vector6& strain )
+        double dThetaE_dJ2E( const Vector6d& strain )
         {
             const Vector3d hw    = haighWestergaardStrain( strain );
             const double   theta = hw( 2 );
@@ -498,7 +498,7 @@ namespace Marmot {
                          std::sqrt( 1. - std::pow( std::cos( 3. * theta ), 2. ) ) );
         }
 
-        double dThetaE_dJ3E( const Vector6& strain )
+        double dThetaE_dJ3E( const Vector6d& strain )
         {
             const Vector3d hw    = haighWestergaardStrain( strain );
             const double&  theta = hw( 2 );
@@ -511,37 +511,37 @@ namespace Marmot {
                          std::sqrt( 1. - std::pow( std::cos( 3. * theta ), 2. ) ) );
         }
 
-        Vector6 dJ2_dStress( const Vector6& stress ) { return P.array() * ( IDev * stress ).array(); }
+        Vector6d dJ2_dStress( const Vector6d& stress ) { return P.array() * ( IDev * stress ).array(); }
 
-        Vector6 dJ3_dStress( const Vector6& stress )
+        Vector6d dJ3_dStress( const Vector6d& stress )
         {
-            Vector6 s = IDev * stress;
+            Vector6d s = IDev * stress;
             return ( P.array() * stressToVoigt( voigtToStress( s ) * voigtToStress( s ) ).array() ).matrix() -
                    2. / 3. * J2( stress ) * I;
         }
 
-        Vector6 dJ2E_dE( const Vector6& strain ) { return PInv.array() * ( IDev * strain ).array(); }
+        Vector6d dJ2E_dE( const Vector6d& strain ) { return PInv.array() * ( IDev * strain ).array(); }
 
-        Vector6 dJ3E_dE( const Vector6& strain )
+        Vector6d dJ3E_dE( const Vector6d& strain )
         {
-            Vector6 e = IDev * strain;
+            Vector6d e = IDev * strain;
             return ( PInv.array() * strainToVoigt( voigtToStrain( e ) * voigtToStrain( e ) ).array() ).matrix() -
                    2. / 3. * J2strain( strain ) * I;
         }
 
-        Vector6 dThetaE_dE( const Vector6& strain )
+        Vector6d dThetaE_dE( const Vector6d& strain )
 
         {
             return dThetaE_dJ2E( strain ) * dJ2E_dE( strain ) + dThetaE_dJ3E( strain ) * dJ3E_dE( strain );
         }
 
         Matrix36 dStressPrincipals_dStress(
-            const Vector6& stress ) // derivative when principal stresses are computed from solving Eigenvalue-Problem
+            const Vector6d& stress ) // derivative when principal stresses are computed from solving Eigenvalue-Problem
         {
             MatrixXd J( 3, 6 );
 
-            Vector6 leftX;
-            Vector6 rightX;
+            Vector6d leftX;
+            Vector6d rightX;
 
             for ( size_t i = 0; i < 6; i++ ) {
                 double volatile h = std::max( 1.0, std::abs( stress( i ) ) ) * Constants::cubicRootEps();
@@ -555,7 +555,7 @@ namespace Marmot {
             return J;
         }
 
-        Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Vector6& strain )
+        Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Vector6d& strain )
         {
             Vector3d       dEvdEpPrinc  = Vector3d::Zero();
             const Vector3d deltaEpPrinc = principalStrainsHW( strain );
@@ -574,7 +574,7 @@ namespace Marmot {
         }
 
         Matrix36 dDeltaEpPrincipals_dDeltaEp(
-            const Vector6& dEp ) // equations from page 218-219 PhD Thesis David Unteregger
+            const Vector6d& dEp ) // equations from page 218-219 PhD Thesis David Unteregger
         {
             Vector3d dEpPrinc_dEpvol   = Vector3d::Zero();
             Vector3d dEpPrinc_dEprho   = Vector3d::Zero();
@@ -617,7 +617,7 @@ namespace Marmot {
             return dEpPrincdEpAna;
         }
 
-        RowVector6d dDeltaEpvneg_dE( const Vector6& dEp, const Matrix6& CelInv, const Matrix6& Cep )
+        RowVector6d dDeltaEpvneg_dE( const Vector6d& dEp, const Matrix6& CelInv, const Matrix6& Cep )
         {
             return dDeltaEpvneg_dDeltaEpPrincipals( dEp ).transpose() * dDeltaEpPrincipals_dDeltaEp( dEp ) *
                    dEp_dE( CelInv, Cep );

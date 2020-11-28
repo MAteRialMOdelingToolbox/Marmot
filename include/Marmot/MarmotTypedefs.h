@@ -8,18 +8,18 @@ namespace Marmot {
     typedef Eigen::Matrix<double, 6, 9> Matrix69d;
     typedef Eigen::Matrix<double, 9, 9> Matrix99d;
     typedef Eigen::Matrix<double, 3, 4> Matrix34d;
-    typedef Eigen::Matrix<double, 7, 7> Matrix7;
+    /* typedef Eigen::Matrix<double, 7, 7> Matrix7; */
     typedef Eigen::Map<Matrix6>         mMatrix6;
 
-    typedef Eigen::Matrix<double, 6, 1>    Vector6;
+    typedef Eigen::Matrix<double, 6, 1>    Vector6d;
     typedef Eigen::Matrix<double, 7, 1>    Vector7d;
     typedef Eigen::Matrix<double, 8, 1>    Vector8d;
     typedef Eigen::Matrix<double, 9, 1>    Vector9d;
     typedef Eigen::Matrix<int, 8, 1>       Vector8i;
     typedef Eigen::Matrix<double, 1, 6>    RowVector6d;
-    typedef Eigen::Map<Vector6>            mVector6;
+    typedef Eigen::Map<Vector6d>            mVector6d;
     typedef Eigen::Map<Eigen::VectorXd>    mVectorXd;
-    typedef Eigen::Map<const Marmot::Vector6> mConstVector6;
+    typedef Eigen::Map<const Marmot::Vector6d> mConstVector6d;
 
     typedef Eigen::Matrix<double, 3, 6> Matrix36d;
     typedef Eigen::Matrix<double, 3, 6> Matrix36;

@@ -19,13 +19,13 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
     using namespace Marmot;
     using namespace Marmot::TensorUtility::IndexNotation;
 
-    Map<Vector6>              Cauchy( Cauchy_ );
+    Map<Vector6d>              Cauchy( Cauchy_ );
     Map<Matrix<double, 6, 9>> dCauchy_d_F_np( dCauchy_d_F_np_ );
     const Map<const Matrix3d> F_np( F_np_ );
-    Vector6                   E = kinematics::strain::GreenLagrange( F_np );
+    Vector6d                   E = kinematics::strain::GreenLagrange( F_np );
 
     Matrix6 dSdE;
-    Vector6 S;
+    Vector6d S;
 
     computeStressPK2( S.data(), dSdE.data(), E.data(), timeOld_, dT_, pNewDT_ );
 
@@ -77,14 +77,14 @@ void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S,
 {
     // using namespace Marmot;
 
-    // Map<Vector6>  stress( stress_ );
+    // Map<Vector6d>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
-    // Map<Vector6>  dStrain( dStrain_ );
+    // Map<Vector6d>  dStrain( dStrain_ );
     // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
-    // Vector6  stressTemp;
+    // Vector6d  stressTemp;
     // VectorXd stateVarsOld = stateVars;
-    // Vector6  dStrainTemp  = dStrain;
+    // Vector6d  dStrainTemp  = dStrain;
 
     //// assumption of isochoric deformation for initial guess
     // dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );
@@ -131,14 +131,14 @@ void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
 {
     // using namespace Marmot;
 
-    // Map<Vector6>  stress( stress_ );
+    // Map<Vector6d>  stress( stress_ );
     // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
-    // Map<Vector6>  dStrain( dStrain_ );
+    // Map<Vector6d>  dStrain( dStrain_ );
     // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
-    // Vector6  stressTemp;
+    // Vector6d  stressTemp;
     // VectorXd stateVarsOld = stateVars;
-    // Vector6  dStrainTemp  = dStrain;
+    // Vector6d  dStrainTemp  = dStrain;
 
     // dStrainTemp( 2 ) = 0.0;
     // dStrainTemp( 1 ) = 0.0;
