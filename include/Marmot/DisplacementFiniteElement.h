@@ -18,7 +18,7 @@ using namespace Marmot;
 using namespace Eigen;
 
 template < int nDim, int nNodes >
-class UelDisplacement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
+class DisplacementFiniteElement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
 
   public:
     enum SectionType {
@@ -72,7 +72,7 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement< nDim
 
     std::vector< GaussPt > gaussPts;
 
-    UelDisplacement( int elementID, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
+    DisplacementFiniteElement( int elementID, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
 
     int getNumberOfRequiredStateVars();
 
@@ -138,7 +138,7 @@ class UelDisplacement : public MarmotElement, public MarmotGeometryElement< nDim
 };
 
 template < int nDim, int nNodes >
-UelDisplacement< nDim, nNodes >::UelDisplacement( int                              elementID,
+DisplacementFiniteElement< nDim, nNodes >::DisplacementFiniteElement( int                              elementID,
                                                   NumIntegration::IntegrationTypes integrationType,
                                                   SectionType                      sectionType )
     : ParentGeometryElement(),
@@ -153,13 +153,13 @@ UelDisplacement< nDim, nNodes >::UelDisplacement( int                           
 }
 
 template < int nDim, int nNodes >
-int UelDisplacement< nDim, nNodes >::getNumberOfRequiredStateVars()
+int DisplacementFiniteElement< nDim, nNodes >::getNumberOfRequiredStateVars()
 {
     return ( gaussPts[0].material->getNumberOfRequiredStateVars() + GaussPt::nRequiredStateVars ) * gaussPts.size();
 }
 
 template < int nDim, int nNodes >
-std::vector< std::vector< std::string > > UelDisplacement< nDim, nNodes >::getNodeFields()
+std::vector< std::vector< std::string > > DisplacementFiniteElement< nDim, nNodes >::getNodeFields()
 {
     using namespace std;
 
@@ -174,7 +174,7 @@ std::vector< std::vector< std::string > > UelDisplacement< nDim, nNodes >::getNo
 }
 
 template < int nDim, int nNodes >
-std::vector< int > UelDisplacement< nDim, nNodes >::getDofIndicesPermutationPattern()
+std::vector< int > DisplacementFiniteElement< nDim, nNodes >::getDofIndicesPermutationPattern()
 {
     static std::vector< int > permutationPattern;
     if ( permutationPattern.empty() )
@@ -185,7 +185,7 @@ std::vector< int > UelDisplacement< nDim, nNodes >::getDofIndicesPermutationPatt
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::assignStateVars( double* stateVars, int nStateVars )
+void DisplacementFiniteElement< nDim, nNodes >::assignStateVars( double* stateVars, int nStateVars )
 {
     /* we provide as many statevars to the material as we can (some materials store addition debugging infos if possible
      * alternatively:
@@ -210,14 +210,14 @@ void UelDisplacement< nDim, nNodes >::assignStateVars( double* stateVars, int nS
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::assignProperty( const ElementProperties& elementPropertiesInfo )
+void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const ElementProperties& elementPropertiesInfo )
 {
     new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
                                                                     elementPropertiesInfo.nElementProperties );
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
+void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
 {
     for ( size_t i = 0; i < gaussPts.size(); i++ ) {
         GaussPt& gpt = gaussPts[i];
@@ -230,7 +230,7 @@ void UelDisplacement< nDim, nNodes >::assignProperty( const MarmotMaterialSectio
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::initializeYourself( const double* coordinates )
+void DisplacementFiniteElement< nDim, nNodes >::initializeYourself( const double* coordinates )
 {
     ParentGeometryElement::initializeYourself( coordinates );
 
@@ -268,7 +268,7 @@ void UelDisplacement< nDim, nNodes >::initializeYourself( const double* coordina
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::computeYourself( const double* QTotal_,
+void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* QTotal_,
                                                        const double* dQ_,
                                                        double*       Pe_,
                                                        double*       Ke_,
@@ -344,7 +344,7 @@ void UelDisplacement< nDim, nNodes >::computeYourself( const double* QTotal_,
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
+void DisplacementFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
 {
     /* if constexpr ( nDim > 1 ) { */
     switch ( state ) {
@@ -379,7 +379,7 @@ void UelDisplacement< nDim, nNodes >::setInitialConditions( StateTypes state, co
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+void DisplacementFiniteElement< nDim, nNodes >::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                                               double*                             P,
                                                               double*                             K,
                                                               const int                           elementFace,
@@ -413,7 +413,7 @@ void UelDisplacement< nDim, nNodes >::computeDistributedLoad( MarmotElement::Dis
 }
 
 template < int nDim, int nNodes >
-void UelDisplacement< nDim, nNodes >::computeBodyForce( double*       P_,
+void DisplacementFiniteElement< nDim, nNodes >::computeBodyForce( double*       P_,
                                                         double*       K,
                                                         const double* load,
                                                         const double* QTotal,
