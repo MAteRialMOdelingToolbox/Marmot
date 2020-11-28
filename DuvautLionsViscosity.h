@@ -12,8 +12,8 @@ namespace Marmot {
 
         DuvautLionsViscosity( double viscosity );
         double             applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
-        Marmot::Vector6       applyViscosityOnStress( const Marmot::Vector6& trialStress,
-                                                   const Marmot::Vector6& stressInf,
+        Marmot::Vector6d       applyViscosityOnStress( const Marmot::Vector6d& trialStress,
+                                                   const Marmot::Vector6d& stressInf,
                                                    double              dT );
         TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
     };
@@ -32,8 +32,8 @@ namespace Marmot {
     }
 
     template <int s>
-    Marmot::Vector6 DuvautLionsViscosity<s>::applyViscosityOnStress( const Marmot::Vector6& trialStress,
-                                                                  const Marmot::Vector6& stressInf,
+    Marmot::Vector6d DuvautLionsViscosity<s>::applyViscosityOnStress( const Marmot::Vector6d& trialStress,
+                                                                  const Marmot::Vector6d& stressInf,
                                                                   double              dT )
     {
         return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );
