@@ -7,7 +7,7 @@
 //#define DIMFROMVOIGT( x ) ( x<<1  )
 
 namespace Marmot {
-    namespace Vgt {
+    namespace VoigtNotation {
 
         // TODO: Remove, only valid for 3D!
         const int VoigtSize = 6;
@@ -163,7 +163,7 @@ namespace Marmot {
         Marmot::Matrix36   dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
         RowVector6d     dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
-    } // namespace Vgt
+    } // namespace VoigtNotation
 
     namespace mechanics {
         template <typename T>
