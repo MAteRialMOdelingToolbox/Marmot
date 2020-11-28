@@ -16,7 +16,7 @@ class HughesWinget {
 
     Marmot::Tensor633d compute_dS_dF( const Marmot::Vector6d&    stress,
                                    const Eigen::Matrix3d& FInv,
-                                   const Marmot::Matrix6&    dChauchyDEps );
+                                   const Marmot::Matrix6d&    dChauchyDEps );
     Eigen::Matrix3d compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Vector6d& dScalarDEps );
 
   private:

@@ -9,9 +9,9 @@ using namespace Eigen;
 namespace Marmot {
     namespace mechanics {
 
-        Matrix6 Cel( double E, double nu )
+        Matrix6d Cel( double E, double nu )
         {
-            Matrix6 Cel;
+            Matrix6d Cel;
             // clang-format off
             Cel <<  (1-nu), nu, nu, 0, 0, 0,
                 nu, (1-nu), nu, 0, 0, 0,
@@ -24,9 +24,9 @@ namespace Marmot {
             return Cel;
         }
 
-        Matrix6 CelInverse( double E, double nu )
+        Matrix6d CelInverse( double E, double nu )
         {
-            Matrix6      CelInv;
+            Matrix6d      CelInv;
             const double G = E / ( 2 * ( 1 + nu ) );
             // clang-format off
             CelInv <<   1./E,   -nu/E,  -nu/E,  0,      0,      0,
@@ -39,16 +39,16 @@ namespace Marmot {
             return CelInv;
         }
 
-        Matrix3d getPlaneStressTangent( const Matrix6& C )
+        Matrix3d getPlaneStressTangent( const Matrix6d& C )
         {
             return Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress( C );
         }
 
-        double getUniaxialStressTangent( const Ref<const Matrix6>& C )
+        double getUniaxialStressTangent( const Ref<const Matrix6d>& C )
         {
             Vector6d b;
             b << 1, 0, 0, 0, 0, 0;
-            Matrix6 A = C;
+            Matrix6d A = C;
             A.row( 0 ) << 1, 0, 0, 0, 0, 0;
 
             Vector6d dEdEUniaxial = A.colPivHouseholderQr().solve( b );
@@ -56,7 +56,7 @@ namespace Marmot {
             return C.row( 0 ) * dEdEUniaxial;
         }
 
-        Matrix3d getPlaneStrainTangent( const Matrix6& C )
+        Matrix3d getPlaneStrainTangent( const Matrix6d& C )
         {
             Matrix3d CPlaneStrain              = Matrix3d::Zero();
             CPlaneStrain.topLeftCorner( 2, 2 ) = C.topLeftCorner( 2, 2 );
@@ -136,7 +136,7 @@ namespace Marmot {
         const Vector6d I    = ( Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
         const Vector6d IHyd = ( Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
-        const Matrix6 IDev = ( Matrix6() <<
+        const Matrix6d IDev = ( Matrix6d() <<
                                    // clang-format off
                 2./3,    -1./3,   -1./3,    0,  0,  0,
                 -1./3,   2./3,    -1./3,    0,  0,  0,
@@ -213,20 +213,20 @@ namespace Marmot {
             return result;
         }
 
-        Matrix6 planeStressTangentTransformationMatrix( const Matrix6& tangent )
+        Matrix6d planeStressTangentTransformationMatrix( const Matrix6d& tangent )
         {
             /* Returns the transformation Matrix T which fullfills
              * planeStressIncrement = C : T * strainIncrement
              * for isotropic material behavior only!
              * */
-            Matrix6      T   = Matrix6::Identity();
+            Matrix6d      T   = Matrix6d::Identity();
             const double t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
             const double t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
             T.row( 2 ).head( 3 ) << t31, t32, 0.0;
             return T;
         }
 
-        Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6& tangent )
+        Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6d& tangent )
         {
             Matrix<double, 6, 3> T = Matrix<double, 6, 3>::Zero();
             T( 0, 0 )              = 1;
@@ -566,11 +566,11 @@ namespace Marmot {
             return dEvdEpPrinc;
         }
 
-        Matrix6 dEp_dE( const Matrix6& CelInv, const Matrix6& Cep ) { return Matrix6::Identity() - CelInv * Cep; }
+        Matrix6d dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep ) { return Matrix6d::Identity() - CelInv * Cep; }
 
-        RowVector6d dDeltaEpv_dE( const Matrix6& CelInv, const Matrix6& Cep )
+        RowVector6d dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep )
         {
-            return I.transpose() * ( Matrix6::Identity() - CelInv * Cep );
+            return I.transpose() * ( Matrix6d::Identity() - CelInv * Cep );
         }
 
         Matrix36 dDeltaEpPrincipals_dDeltaEp(
@@ -617,7 +617,7 @@ namespace Marmot {
             return dEpPrincdEpAna;
         }
 
-        RowVector6d dDeltaEpvneg_dE( const Vector6d& dEp, const Matrix6& CelInv, const Matrix6& Cep )
+        RowVector6d dDeltaEpvneg_dE( const Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep )
         {
             return dDeltaEpvneg_dDeltaEpPrincipals( dEp ).transpose() * dDeltaEpPrincipals_dDeltaEp( dEp ) *
                    dEp_dE( CelInv, Cep );

@@ -92,7 +92,7 @@ void MarmotMaterialMechanical::computeUniaxialStress( double*       stress_,
     // using namespace Marmot;
 
     // Map<Vector6d>  stress( stress_ );
-    // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    // Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     // Map<Vector6d>  dStrain( dStrain_ );
     // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 

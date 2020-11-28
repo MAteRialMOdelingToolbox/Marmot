@@ -22,7 +22,7 @@ namespace Marmot {
                             double         scaleDownFactor,
                             double         integrationErrorTolerance,
                             int            nPassesToIncrease,
-                            const Matrix6& Cel );
+                            const Matrix6d& Cel );
         void   setConvergedProgress( const Marmot::Vector6d& stressOld, const IntegrationStateVector& stateVarsOld );
         bool   isFinished();
         double getNextSubstep();
@@ -35,8 +35,8 @@ namespace Marmot {
         bool   repeatSubstep( double decrementationFactor );
 
         void    getConvergedProgress( Marmot::Vector6d& stress, IntegrationStateVector& stateVars );
-        Matrix6 getCurrentTangentOperator();
-        void    getResults( Marmot::Vector6d& stress, Matrix6& consistentTangent, IntegrationStateVector& stateVars );
+        Matrix6d getCurrentTangentOperator();
+        void    getResults( Marmot::Vector6d& stress, Matrix6d& consistentTangent, IntegrationStateVector& stateVars );
 
       private:
         const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
@@ -76,7 +76,7 @@ namespace Marmot {
                                                        double         scaleDownFactor,
                                                        double         integrationErrorTolerance,
                                                        int            nPassesToIncrease,
-                                                       const Matrix6& Cel )
+                                                       const Matrix6d& Cel )
         : initialStepSize( initialStepSize ),
           minimumStepSize( minimumStepSize ),
           maxScaleUpFactor( maxScaleUpFactor ),
@@ -316,7 +316,7 @@ namespace Marmot {
 
     template <size_t n, size_t nState>
     void AdaptiveSubstepper<n, nState>::getResults( Marmot::Vector6d&           stress,
-                                                    Matrix6&                consistentTangentOperator,
+                                                    Matrix6d&                consistentTangentOperator,
                                                     IntegrationStateVector& stateVars )
     {
         stress                    = stressProgress;

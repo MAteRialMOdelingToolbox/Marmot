@@ -19,14 +19,14 @@ namespace Marmot {
                                double         scaleUpFactor,
                                double         scaleDownFactor,
                                int            nPassesToIncrease,
-                               const Matrix6& Cel );
+                               const Matrix6d& Cel );
         bool   isFinished();
         double getNextSubstep();
         bool   decreaseSubstepSize();
 
         void    finishElasticSubstep();
         void    finishSubstep( const TangentSizedMatrix& dXdY, const TangentSizedMatrix& dYdXOld );
-        Matrix6 consistentStiffness();
+        Matrix6d consistentStiffness();
 
       private:
         const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
@@ -36,7 +36,7 @@ namespace Marmot {
         double currentSubstepSize;
         int    passedSubsteps;
 
-        const Matrix6&     Cel;
+        const Matrix6d&     Cel;
         MatrixStateStrain  I76;
         TangentSizedMatrix I77;
 
@@ -51,7 +51,7 @@ namespace Marmot {
                                                      double         scaleUpFactor,
                                                      double         scaleDownFactor,
                                                      int            nPassesToIncrease,
-                                                     const Matrix6& Cel )
+                                                     const Matrix6d& Cel )
         :
 
           initialStepSize( initialStepSize ),
@@ -66,7 +66,7 @@ namespace Marmot {
     {
         consistentTangent = MatrixStateStrain::Zero();
         I76.setZero();
-        I76.topLeftCorner( 6, 6 ) = Matrix6::Identity();
+        I76.topLeftCorner( 6, 6 ) = Matrix6d::Identity();
         I77                       = TangentSizedMatrix::Identity();
     }
 
@@ -122,7 +122,7 @@ namespace Marmot {
     }
 
     template <int n>
-    Matrix6 PerezFougetSubstepper<n>::consistentStiffness()
+    Matrix6d PerezFougetSubstepper<n>::consistentStiffness()
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }
