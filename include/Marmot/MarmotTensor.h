@@ -161,7 +161,7 @@ namespace Marmot {
 
         } // namespace IndexNotation
 
-        // namespace VoigtNotation
+        // namespace ContinuumMechanics::VoigtNotation
 
     } // namespace TensorUtility
 
