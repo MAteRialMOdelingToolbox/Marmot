@@ -6,7 +6,7 @@
  * Matthias Neuner (2016)
  * */
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
 
     template <int nSizeMatTangent>
     class PerezFougetSubstepper {
@@ -42,9 +42,9 @@ namespace Marmot {
 
         MatrixStateStrain consistentTangent;
     };
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
     template <int n>
     PerezFougetSubstepper<n>::PerezFougetSubstepper( double         initialStepSize,
                                                      double         minimumStepSize,
@@ -126,4 +126,4 @@ namespace Marmot {
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
