@@ -5,14 +5,14 @@
 
 namespace DisplacementFiniteElementRegistration {
 
-    template <class T, Marmot::NumIntegration::IntegrationTypes integrationType, typename T::SectionType sectionType>
+    template <class T, Marmot::Quadrature::IntegrationTypes integrationType, typename T::SectionType sectionType>
     userLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()
     {
         return []( int elementID ) -> MarmotElement* { return new T( elementID, integrationType, sectionType ); };
     }
 
     using namespace userLibrary;
-    using namespace Marmot::NumIntegration;
+    using namespace Marmot::Quadrature;
 
     const static bool UelCPS4_isRegistered = MarmotElementFactory::
         registerElement( "UELCPS4",
@@ -45,21 +45,21 @@ namespace DisplacementFiniteElementRegistration {
     const static bool UelC3D8_isRegistered = userLibrary::MarmotElementFactory::
         registerElement( "UELC3D8", userLibrary::ElementCode::UelC3D8, []( int elementID ) -> MarmotElement* {
             return new DisplacementFiniteElement<3, 8>( elementID,
-                                              Marmot::NumIntegration::IntegrationTypes::FullIntegration,
+                                              Marmot::Quadrature::IntegrationTypes::FullIntegration,
                                               DisplacementFiniteElement<3, 8>::SectionType::Solid );
         } );
 
     const static bool UelC3D20_isRegistered = userLibrary::MarmotElementFactory::
         registerElement( "UELC3D20", userLibrary::ElementCode::UelC3D20, []( int elementID ) -> MarmotElement* {
             return new DisplacementFiniteElement<3, 20>( elementID,
-                                               Marmot::NumIntegration::IntegrationTypes::FullIntegration,
+                                               Marmot::Quadrature::IntegrationTypes::FullIntegration,
                                                DisplacementFiniteElement<3, 20>::SectionType::Solid );
         } );
 
     const static bool UelC3D20R_isRegistered = userLibrary::MarmotElementFactory::
         registerElement( "UELC3D20R", userLibrary::ElementCode::UelC3D20R, []( int elementID ) -> MarmotElement* {
             return new DisplacementFiniteElement<3, 20>( elementID,
-                                               Marmot::NumIntegration::IntegrationTypes::ReducedIntegration,
+                                               Marmot::Quadrature::IntegrationTypes::ReducedIntegration,
                                                DisplacementFiniteElement<3, 20>::SectionType::Solid );
         } );
 
@@ -67,7 +67,7 @@ namespace DisplacementFiniteElementRegistration {
     {
         auto uelT2D2 = std::unique_ptr<MarmotElement>(
             new DisplacementFiniteElement<1, 2>( elementID,
-                                       Marmot::NumIntegration::IntegrationTypes::FullIntegration,
+                                       Marmot::Quadrature::IntegrationTypes::FullIntegration,
                                        DisplacementFiniteElement<1, 2>::SectionType::UniaxialStress ) );
         constexpr static int indicesToBeWrapped[] = {0, 1};
         constexpr static int nIndicesToBeWrapped  = 2;

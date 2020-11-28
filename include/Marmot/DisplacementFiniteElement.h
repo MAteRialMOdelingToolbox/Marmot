@@ -72,7 +72,7 @@ class DisplacementFiniteElement : public MarmotElement, public MarmotGeometryEle
 
     std::vector< GaussPt > gaussPts;
 
-    DisplacementFiniteElement( int elementID, NumIntegration::IntegrationTypes integrationType, SectionType sectionType );
+    DisplacementFiniteElement( int elementID, Quadrature::IntegrationTypes integrationType, SectionType sectionType );
 
     int getNumberOfRequiredStateVars();
 
@@ -139,14 +139,14 @@ class DisplacementFiniteElement : public MarmotElement, public MarmotGeometryEle
 
 template < int nDim, int nNodes >
 DisplacementFiniteElement< nDim, nNodes >::DisplacementFiniteElement( int                              elementID,
-                                                  NumIntegration::IntegrationTypes integrationType,
+                                                  Quadrature::IntegrationTypes integrationType,
                                                   SectionType                      sectionType )
     : ParentGeometryElement(),
       elementProperties( Map< const VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
 {
-    for ( const auto& gaussPtInfo : NumIntegration::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& gaussPtInfo : Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
         GaussPt gpt( gaussPtInfo.xi, gaussPtInfo.weight );
         gaussPts.push_back( std::move( gpt ) );
     }
