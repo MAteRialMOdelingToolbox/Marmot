@@ -30,7 +30,7 @@ Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
 
 void test_NBold( const int nDoF )
 {
-    const Matrix<double, 4, 2> gp = Marmot::NumIntegration::gaussPts2d_2x2();
+    const Matrix<double, 4, 2> gp = Marmot::Quadrature::gaussPts2d_2x2();
     // Vector3d NLinear = Marmot::FiniteElement::Truss3::shapeFunctions(gp(0,0));
     Vector3d NLinear = Marmot::FiniteElement::Spatial2D::Truss3::N( gp( 0, 0 ) );
     std::cout << "N " << std::endl;
