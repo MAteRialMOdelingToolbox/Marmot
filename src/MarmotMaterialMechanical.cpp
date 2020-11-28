@@ -16,7 +16,7 @@ using namespace Eigen;
     //const Map<const Matrix3d> FNew( FNew_ );
     //const Map<const Matrix3d> FOld( FOld_ );
 
-     ////Marmot::Vector6d dEps = 1./2 * ( Marmot::Vgt::StrainToVoigt( H + H.tranpose() ) );
+     ////Marmot::Vector6d dEps = 1./2 * ( Marmot::VoigtNotation::StrainToVoigt( H + H.tranpose() ) );
 
      ////computeStress (stress_, dStressDDStrain_, dEps.data(), timeOld, dT, pNewDT);
 //}

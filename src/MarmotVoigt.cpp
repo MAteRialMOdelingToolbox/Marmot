@@ -41,7 +41,7 @@ namespace Marmot {
 
         Matrix3d getPlaneStressTangent( const Matrix6d& C )
         {
-            return Vgt::dStressPlaneStressDStress() * C * Vgt::dStrainDStrainPlaneStress( C );
+            return VoigtNotation::dStressPlaneStressDStress() * C * VoigtNotation::dStrainDStrainPlaneStress( C );
         }
 
         double getUniaxialStressTangent( const Ref<const Matrix6d>& C )
@@ -126,7 +126,7 @@ namespace Marmot {
 
         double nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
     } // namespace mechanics
-    namespace Vgt {
+    namespace VoigtNotation {
 
         using namespace Constants;
 
@@ -351,9 +351,9 @@ namespace Marmot {
                               1. / 3. * ( e( 3 ) * e( 3 ) + e( 4 ) * e( 4 ) + e( 5 ) * e( 5 ) ) );
         }
 
-        double normStrain( const Vector6d& strain ) { return Vgt::voigtToStrain( strain ).norm(); }
+        double normStrain( const Vector6d& strain ) { return VoigtNotation::voigtToStrain( strain ).norm(); }
 
-        double normStress( const Vector6d& stress ) { return Vgt::voigtToStress( stress ).norm(); }
+        double normStress( const Vector6d& stress ) { return VoigtNotation::voigtToStress( stress ).norm(); }
 
         double Evolneg( const Vector6d& strain )
         {
@@ -623,5 +623,5 @@ namespace Marmot {
                    dEp_dE( CelInv, Cep );
         }
 
-    } // namespace Vgt
+    } // namespace VoigtNotation
 } // namespace Marmot
