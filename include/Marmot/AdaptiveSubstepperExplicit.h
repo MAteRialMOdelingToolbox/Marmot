@@ -8,7 +8,7 @@
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
 
     template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
     class AdaptiveSubstepperExplicit {
@@ -74,9 +74,9 @@ namespace Marmot {
         bool splitCurrentSubstep();
     };
 
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
 
     template <size_t n, size_t nState>
     AdaptiveSubstepperExplicit<n, nState>::AdaptiveSubstepperExplicit( double         initialStepSize,
@@ -403,4 +403,4 @@ namespace Marmot {
     {
         return discardedDueToError;
     }
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
