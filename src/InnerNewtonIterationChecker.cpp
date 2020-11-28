@@ -3,7 +3,7 @@
 
 using namespace Eigen;
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
 
     InnerNewtonIterationChecker::InnerNewtonIterationChecker( const MatrixXd& residualScaleMatrix,
                                                               int             nMaxInnerNewtonCycles,
@@ -71,4 +71,4 @@ namespace Marmot {
         }
         return false;
     }
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
