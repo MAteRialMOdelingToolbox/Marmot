@@ -3,7 +3,7 @@
 using namespace Marmot::ContinuumMechanics::TensorUtility;
 
 namespace Marmot {
-    namespace CommonTensors {
+    namespace ContinuumMechanics::CommonTensors {
         auto Initialize_I2xI2()
         {
             Tensor3333d I2xI2;
@@ -91,5 +91,5 @@ namespace Marmot {
         const Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
         const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
-    } // namespace CommonTensors
+    } // namespace ContinuumMechanics::CommonTensors
 } // namespace Marmot
