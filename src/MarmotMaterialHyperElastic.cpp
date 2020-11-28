@@ -17,7 +17,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
                                              double&       pNewDT_ )
 {
     using namespace Marmot;
-    using namespace Marmot::TensorUtility::IndexNotation;
+    using namespace Marmot::ContinuumMechanics::TensorUtility::IndexNotation;
 
     Map<Vector6d>              Cauchy( Cauchy_ );
     Map<Matrix<double, 6, 9>> dCauchy_d_F_np( dCauchy_d_F_np_ );

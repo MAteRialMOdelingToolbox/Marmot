@@ -105,7 +105,7 @@ namespace Marmot {
                 // projection to plane
                 Tensor322d dS_dF = PlaneStrain::dStressdDeformationGradient( dS_dF_3D );
 
-                using namespace TensorUtility::IndexNotation;
+                using namespace ContinuumMechanics::TensorUtility::IndexNotation;
 
                 // clang-format off
                 for ( int m = 0; m < 2; m ++ )

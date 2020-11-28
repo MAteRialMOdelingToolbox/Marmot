@@ -40,7 +40,7 @@ Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
                                              const Marmot::Matrix6d& dChauchydEps )
 {
     using namespace Marmot;
-    using namespace Marmot::TensorUtility;
+    using namespace Marmot::ContinuumMechanics::TensorUtility;
     using namespace Marmot::kinematics::velocityGradient;
 
     Tensor633d dS_dl;
