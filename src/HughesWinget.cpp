@@ -15,7 +15,7 @@ HughesWinget::HughesWinget( const Matrix3d& FOld, const Matrix3d& FNew, Formulat
 
     Matrix3d dEps_ = 0.5 * ( l + l.transpose() );              // actually d * dT
     dOmega         = 0.5 * ( l - l.transpose() );              // actually omega * dT
-    dEps           = Marmot::VoigtNotation::VoigtFromStrainMatrix( dEps_ ); 
+    dEps           = Marmot::ContinuumMechanics::VoigtNotation::VoigtFromStrainMatrix( dEps_ ); 
     dR             = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
 }
 
@@ -32,7 +32,7 @@ Matrix3d HughesWinget::getRotationIncrement()
 Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )
 {
 
-    return Marmot::VoigtNotation::stressToVoigt( dR * Marmot::VoigtNotation::voigtToStress( tensor ) * dR.transpose() );
+    return Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt( dR * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( tensor ) * dR.transpose() );
 }
 
 Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
@@ -47,7 +47,7 @@ Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
     Tensor633d dS_dF;
     Tensor633d dStressRotational_dl;
     Tensor633d dStressJaumann_dl;
-    auto       stressNew = VoigtNotation::StressMatrixFromVoigt<3>( stress );
+    auto       stressNew = ContinuumMechanics::VoigtNotation::StressMatrixFromVoigt<3>( stress );
 
     dStressRotational_dl.setZero();
     for ( int ij = 0; ij < 6; ij++ ) {
