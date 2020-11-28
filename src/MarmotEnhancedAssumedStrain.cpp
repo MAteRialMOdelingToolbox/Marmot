@@ -1,6 +1,6 @@
 #include "Marmot/MarmotEnhancedAssumedStrain.h"
 namespace Marmot {
-    namespace FiniteElementTechnology::EAS {
+    namespace FiniteElement::EAS {
 
         using namespace Eigen;
 
@@ -147,5 +147,5 @@ namespace Marmot {
             default: throw std::invalid_argument( "Invalid EAS Type Requested" );
             }
         }
-    } // namespace FiniteElementTechnology::EAS
+    } // namespace FiniteElement::EAS
 } // namespace Marmot
