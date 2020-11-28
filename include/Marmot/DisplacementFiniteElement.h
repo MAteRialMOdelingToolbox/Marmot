@@ -303,7 +303,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
 
         else if constexpr ( nDim == 2 ) {
 
-            Vector6d dE6 = VoigtNotation::planeVoigtToVoigt( dE );
+            Vector6d dE6 = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
             Matrix6d C66;
 
             if ( sectionType == SectionType::PlaneStress ) {
@@ -320,7 +320,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
                 C = mechanics::getPlaneStrainTangent( C66 );
             }
 
-            S = VoigtNotation::voigtToPlaneVoigt( gaussPt.stress );
+            S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( gaussPt.stress );
             gaussPt.strain += dE6;
         }
 
