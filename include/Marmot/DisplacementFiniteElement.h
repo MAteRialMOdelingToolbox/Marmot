@@ -294,7 +294,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
 
         if constexpr ( nDim == 1 ) {
             Vector6d dE6 = ( Vector6d() << dE, 0, 0, 0, 0, 0 ).finished();
-            Matrix6 C66;
+            Matrix6d C66;
             gaussPt.material->computeUniaxialStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
             C << mechanics::getUniaxialStressTangent( C66 );
@@ -304,7 +304,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
         else if constexpr ( nDim == 2 ) {
 
             Vector6d dE6 = Vgt::planeVoigtToVoigt( dE );
-            Matrix6 C66;
+            Matrix6d C66;
 
             if ( sectionType == SectionType::PlaneStress ) {
 
