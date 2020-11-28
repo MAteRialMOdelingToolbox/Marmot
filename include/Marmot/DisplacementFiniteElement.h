@@ -52,8 +52,8 @@ class DisplacementFiniteElement : public MarmotElement, public MarmotGeometryEle
         const double  weight;
 
         std::unique_ptr< MarmotMaterialHypoElastic > material;
-        mVector6                                     stress;
-        mVector6                                     strain;
+        mVector6d                                     stress;
+        mVector6d                                     strain;
 
         struct Geometry {
             JacobianSized J;
@@ -201,10 +201,10 @@ void DisplacementFiniteElement< nDim, nNodes >::assignStateVars( double* stateVa
 
         // assign stress, strain state vars using the 'placement new' operator
         new ( &gpt.stress )
-            mVector6( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ), 6 );
+            mVector6d( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ), 6 );
 
         new ( &gpt.strain )
-            mVector6( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ) + 6,
+            mVector6d( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + GaussPt::nRequiredStateVars ) + 6,
                       6 );
     }
 }
@@ -293,7 +293,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
         dE = B * dQ;
 
         if constexpr ( nDim == 1 ) {
-            Vector6 dE6 = ( Vector6() << dE, 0, 0, 0, 0, 0 ).finished();
+            Vector6d dE6 = ( Vector6d() << dE, 0, 0, 0, 0, 0 ).finished();
             Matrix6 C66;
             gaussPt.material->computeUniaxialStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
@@ -303,7 +303,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
 
         else if constexpr ( nDim == 2 ) {
 
-            Vector6 dE6 = Vgt::planeVoigtToVoigt( dE );
+            Vector6d dE6 = Vgt::planeVoigtToVoigt( dE );
             Matrix6 C66;
 
             if ( sectionType == SectionType::PlaneStress ) {
