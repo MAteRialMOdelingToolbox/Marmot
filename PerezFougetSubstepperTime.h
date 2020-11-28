@@ -12,7 +12,7 @@ modifications:
 (*) No need for Cel for object construction anymore
 */
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
 
     template <int nSizeTangent>
     class PerezFougetSubstepperTime {
@@ -45,11 +45,11 @@ namespace Marmot {
         TangentSizedMatrix elasticTangent;
         TangentSizedMatrix consistentTangent;
     };
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
 
 #include "Marmot/MarmotFunctions.h"
 
-namespace Marmot {
+namespace Marmot::NumericalAlgorithms {
     template <int s>
     PerezFougetSubstepperTime<s>::PerezFougetSubstepperTime( double initialStepSize,
                                                              double minimumStepSize,
@@ -133,4 +133,4 @@ namespace Marmot {
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }
-} // namespace Marmot
+} // namespace Marmot::NumericalAlgorithms
