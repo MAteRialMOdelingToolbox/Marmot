@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Marmot {
-    namespace MW {
+    namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
 
         double r( double theta, double e, double& numerator, double& denominator );
 
@@ -64,5 +64,5 @@ namespace Marmot {
 
         void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc );
 
-    } // namespace MW
+    } // namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam
 } // namespace Marmot
