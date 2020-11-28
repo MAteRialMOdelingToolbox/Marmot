@@ -24,7 +24,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
     const Map<const Matrix3d> F_np( F_np_ );
     Vector6d                   E = kinematics::strain::GreenLagrange( F_np );
 
-    Matrix6 dSdE;
+    Matrix6d dSdE;
     Vector6d S;
 
     computeStressPK2( S.data(), dSdE.data(), E.data(), timeOld_, dT_, pNewDT_ );
@@ -78,7 +78,7 @@ void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S,
     // using namespace Marmot;
 
     // Map<Vector6d>  stress( stress_ );
-    // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    // Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     // Map<Vector6d>  dStrain( dStrain_ );
     // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
@@ -132,7 +132,7 @@ void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
     // using namespace Marmot;
 
     // Map<Vector6d>  stress( stress_ );
-    // Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    // Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     // Map<Vector6d>  dStrain( dStrain_ );
     // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 

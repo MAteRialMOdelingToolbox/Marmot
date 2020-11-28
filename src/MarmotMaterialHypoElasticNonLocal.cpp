@@ -31,7 +31,7 @@ void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     const Map<const Matrix3d> FOld( FOld_ );
     Marmot::mVector6d             stress( stress_ );
 
-    Matrix6 CJaumann                = Matrix6::Zero();
+    Matrix6d CJaumann                = Matrix6d::Zero();
     Vector6d dK_LocalDStretchingRate = Vector6d::Zero();
 
     HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
@@ -76,7 +76,7 @@ void MarmotMaterialHypoElasticNonLocal::computePlaneStress( double*       stress
     using namespace Marmot;
 
     Map<Vector6d>  stress( stress_ );
-    Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     Map<Vector6d>  dStrain( dStrain_ );
     Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 

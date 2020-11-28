@@ -10,7 +10,7 @@ using namespace Eigen;
 
 namespace Marmot {
 
-    void backToAbaqus( const Matrix6& jacobian,
+    void backToAbaqus( const Matrix6d& jacobian,
                        Map<MatrixXd>& ABQJacobian,
                        const Vector6d& stress,
                        Map<VectorXd>& ABQStress,
@@ -21,7 +21,7 @@ namespace Marmot {
         return;
     }
 
-    void backToAbaqusPlaneStress( const Matrix6& jacobian,
+    void backToAbaqusPlaneStress( const Matrix6d& jacobian,
                                   Map<MatrixXd>& ABQJacobian,
                                   const Vector6d& stress,
                                   Map<VectorXd>& ABQStress )
@@ -33,7 +33,7 @@ namespace Marmot {
         return;
     }
 
-    void backToAbaqusNonLocal( const Matrix6& dStressdStrain,
+    void backToAbaqusNonLocal( const Matrix6d& dStressdStrain,
                                Ref<MatrixXd>  ABQdStressDStrain,
                                const Vector6d& stress,
                                Ref<VectorXd>  ABQStress,

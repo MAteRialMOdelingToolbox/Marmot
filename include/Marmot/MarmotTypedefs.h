@@ -4,12 +4,11 @@
 #include "unsupported/Eigen/CXX11/Tensor"
 
 namespace Marmot {
-    typedef Eigen::Matrix<double, 6, 6> Matrix6;
+    typedef Eigen::Matrix<double, 6, 6> Matrix6d;
     typedef Eigen::Matrix<double, 6, 9> Matrix69d;
     typedef Eigen::Matrix<double, 9, 9> Matrix99d;
     typedef Eigen::Matrix<double, 3, 4> Matrix34d;
-    /* typedef Eigen::Matrix<double, 7, 7> Matrix7; */
-    typedef Eigen::Map<Matrix6>         mMatrix6;
+    typedef Eigen::Map<Matrix6d>         mMatrix6d;
 
     typedef Eigen::Matrix<double, 6, 1>    Vector6d;
     typedef Eigen::Matrix<double, 7, 1>    Vector7d;

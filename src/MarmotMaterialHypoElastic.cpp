@@ -38,7 +38,7 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
     auto dEps = hughesWingetIntegrator.getStrainIncrement();
     stress    = hughesWingetIntegrator.rotateTensor( stress );
 
-    Matrix6 CJaumann;
+    Matrix6d CJaumann;
 
     computeStress( stress.data(), CJaumann.data(), dEps.data(), timeOld, dT, pNewDT );
 
@@ -57,7 +57,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress_,
     using namespace Marmot;
 
     Map<Vector6d>  stress( stress_ );
-    Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     Map<Vector6d>  dStrain( dStrain_ );
     Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 
@@ -114,7 +114,7 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress_,
     using namespace Marmot;
 
     Map<Vector6d>  stress( stress_ );
-    Map<Matrix6>  dStressDDStrain( dStressDDStrain_ );
+    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
     Map<Vector6d>  dStrain( dStrain_ );
     Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
 

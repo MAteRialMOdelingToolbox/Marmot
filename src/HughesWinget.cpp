@@ -37,7 +37,7 @@ Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )
 
 Marmot::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
                                              const Matrix3d&     FInv,
-                                             const Marmot::Matrix6& dChauchydEps )
+                                             const Marmot::Matrix6d& dChauchydEps )
 {
     using namespace Marmot;
     using namespace Marmot::TensorUtility;
