@@ -17,7 +17,7 @@ namespace Marmot {
 
         extern const Marmot::Vector6d I;
         extern const Marmot::Vector6d IHyd;
-        extern const Matrix6      IDev;
+        extern const Matrix6d      IDev;
 
         // Plane Stress handling
         Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
@@ -54,8 +54,8 @@ namespace Marmot {
         Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
         /* Returns the transformation Matrix T which fullfills
          * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
-        Matrix6                     planeStressTangentTransformationMatrix( const Matrix6& tangent );
-        Eigen::Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6& tangent );
+        Matrix6d                     planeStressTangentTransformationMatrix( const Matrix6d& tangent );
+        Eigen::Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6d& tangent );
         Eigen::Matrix<double, 3, 6> dStressPlaneStressDStress();
         Eigen::Matrix<double, 6, 3> dStrainDStrainPlaneStrain();
 
@@ -158,10 +158,10 @@ namespace Marmot {
 
         // derivatives of plastic strains with respect to strains
         Eigen::Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Marmot::Vector6d& strain );
-        Matrix6         dEp_dE( const Matrix6& CelInv, const Matrix6& Cep );
-        RowVector6d     dDeltaEpv_dE( const Matrix6& CelInv, const Matrix6& Cep );
+        Matrix6d         dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+        RowVector6d     dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
         Marmot::Matrix36   dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
-        RowVector6d     dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6& CelInv, const Matrix6& Cep );
+        RowVector6d     dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
     } // namespace Vgt
 
@@ -172,12 +172,12 @@ namespace Marmot {
             return ( T( 0 ) < val ) - ( val < T( 0 ) );
         }
 
-        Matrix6         Cel( double E, double nu );
-        Matrix6         CelInverse( double E, double nu );
-        Eigen::Matrix3d getPlaneStressTangent( const Matrix6& C );
+        Matrix6d         Cel( double E, double nu );
+        Matrix6d         CelInverse( double E, double nu );
+        Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
-        Eigen::Matrix3d getPlaneStrainTangent( const Matrix6& C );
-        double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6>& C );
+        Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
+        double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6d>& C );
         double          E( const double K, const double G );
         double          nu( const double K, const double G );
 

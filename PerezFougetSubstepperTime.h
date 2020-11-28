@@ -30,9 +30,9 @@ namespace Marmot {
         double getFinishedProgress();
         bool   decreaseSubstepSize();
 
-        void    extendConsistentTangent( const Matrix6& CelT );
-        void    extendConsistentTangent( const Matrix6& CelT, const TangentSizedMatrix& matTangent );
-        Matrix6 consistentStiffness();
+        void    extendConsistentTangent( const Matrix6d& CelT );
+        void    extendConsistentTangent( const Matrix6d& CelT, const TangentSizedMatrix& matTangent );
+        Matrix6d consistentStiffness();
 
       private:
         const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
@@ -113,7 +113,7 @@ namespace Marmot {
     }
 
     template <int s>
-    void PerezFougetSubstepperTime<s>::extendConsistentTangent( const Matrix6& CelT )
+    void PerezFougetSubstepperTime<s>::extendConsistentTangent( const Matrix6d& CelT )
     {
 
         elasticTangent.topLeftCorner( 6, 6 ) = CelT;
@@ -121,7 +121,7 @@ namespace Marmot {
     }
 
     template <int s>
-    void PerezFougetSubstepperTime<s>::extendConsistentTangent( const Matrix6&            CelT,
+    void PerezFougetSubstepperTime<s>::extendConsistentTangent( const Matrix6d&            CelT,
                                                                 const TangentSizedMatrix& matTangent )
     {
         extendConsistentTangent( CelT );
@@ -129,7 +129,7 @@ namespace Marmot {
     }
 
     template <int s>
-    Matrix6 PerezFougetSubstepperTime<s>::consistentStiffness()
+    Matrix6d PerezFougetSubstepperTime<s>::consistentStiffness()
     {
         return consistentTangent.topLeftCorner( 6, 6 );
     }

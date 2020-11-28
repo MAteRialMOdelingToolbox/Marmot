@@ -7,20 +7,20 @@
 
 namespace Marmot {
     [[deprecated("MarmotMaterial input is always Voigt6 - sized -> these aux. functions are not necessary anymore")]]
-    void backToAbaqus( const Matrix6&               jacobian,
+    void backToAbaqus( const Matrix6d&               jacobian,
                        Eigen::Map<Eigen::MatrixXd>& ABQJacobian,
                        const Marmot::Vector6d&          stress,
                        Eigen::Map<Eigen::VectorXd>& ABQStress,
                        int                          nTensor );
 
     [[deprecated("MarmotMaterial input is always Voigt6 - sized -> these aux. functions are not necessary anymore")]]
-    void backToAbaqusPlaneStress( const Matrix6&               jacobian,
+    void backToAbaqusPlaneStress( const Matrix6d&               jacobian,
                                   Eigen::Map<Eigen::MatrixXd>& ABQJacobian,
                                   const Marmot::Vector6d&          stress,
                                   Eigen::Map<Eigen::VectorXd>& ABQStress );
 
     [[deprecated("MarmotMaterial input is always Voigt6 - sized -> these aux. functions are not necessary anymore")]]
-    void backToAbaqusNonLocal( const Matrix6&              dStressdStrain,
+    void backToAbaqusNonLocal( const Matrix6d&              dStressdStrain,
                                Eigen::Ref<Eigen::MatrixXd> ABQdStressDStrain,
                                const Marmot::Vector6d&         stress,
                                Eigen::Ref<Eigen::VectorXd> ABQStress,
