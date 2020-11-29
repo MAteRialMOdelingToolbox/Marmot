@@ -26,7 +26,7 @@ void LinearElastic::computeStress( double*       stress,
     Map< const Vector6d > dE( dStrain );
     mMatrix6d             C( dStressDDStrain );
 
-    C = mechanics::Cel( E, nu );
+    C = ContinuumMechanics::Cel( E, nu );
 
     // Zero strain  increment check
     if ( ( dE.array() == 0 ).all() )
