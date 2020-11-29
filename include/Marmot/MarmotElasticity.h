@@ -2,7 +2,7 @@
 
 namespace Marmot {
 
-    namespace mechanics {
+    namespace ContinuumMechanics {
         namespace Elasticity {
 
             double constexpr shearModulus( const double E, const double nu ) { return E / ( 2 * ( 1 + nu ) ); }
@@ -14,6 +14,6 @@ namespace Marmot {
 
         } // namespace Elasticity
 
-    } // namespace mechanics
+    } // namespace ContinuumMechanics
 
 } // namespace Marmot

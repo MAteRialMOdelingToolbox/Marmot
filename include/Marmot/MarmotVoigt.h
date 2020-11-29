@@ -165,7 +165,7 @@ namespace Marmot {
 
     } // namespace ContinuumMechanics::VoigtNotation
 
-    namespace mechanics {
+    namespace ContinuumMechanics {
         template <typename T>
         int sgn( T val )
         {
@@ -187,5 +187,5 @@ namespace Marmot {
         namespace PlaneStress {
             Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
         }
-    } // namespace mechanics
+    } // namespace ContinuumMechanics
 } // namespace Marmot

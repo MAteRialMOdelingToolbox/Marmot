@@ -29,7 +29,7 @@ namespace Marmot {
         ABQStress( 0 ) = stress( 0 );
         ABQStress( 1 ) = stress( 1 );
         ABQStress( 2 ) = stress( 3 );
-        ABQJacobian    = Marmot::mechanics::getPlaneStressTangent( jacobian );
+        ABQJacobian    = Marmot::ContinuumMechanics::getPlaneStressTangent( jacobian );
         return;
     }
 

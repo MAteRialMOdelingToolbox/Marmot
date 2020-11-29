@@ -18,9 +18,9 @@ Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
     CAnalytic( 0, 1 )  = E / ( 1 - nu * nu ) * nu;
     CAnalytic( 1, 0 )  = E / ( 1 - nu * nu ) * nu;
 
-    Matrix6d C = mechanics::Cel( E, nu );
+    Matrix6d C = ContinuumMechanics::Cel( E, nu );
     // Test Plane Stress Tangent
-    Matrix3d CPlaneStress = mechanics::getPlaneStressTangent( C );
+    Matrix3d CPlaneStress = ContinuumMechanics::getPlaneStressTangent( C );
 
     std::cout << "PLANE STRESS TANGENT WITH ANALYTIC FORMULAS " << std::endl;
     std::cout << CAnalytic << std::endl;

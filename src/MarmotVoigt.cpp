@@ -7,7 +7,7 @@
 using namespace Eigen;
 
 namespace Marmot {
-    namespace mechanics {
+    namespace ContinuumMechanics {
 
         Matrix6d Cel( double E, double nu )
         {
@@ -125,7 +125,7 @@ namespace Marmot {
         double E( const double K, const double G ) { return 9. * K * G / ( 3. * K + G ); }
 
         double nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
-    } // namespace mechanics
+    } // namespace ContinuumMechanics
     namespace ContinuumMechanics::VoigtNotation {
 
         using namespace Constants;
