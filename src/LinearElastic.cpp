@@ -1,5 +1,5 @@
 #include "Marmot/LinearElastic.h"
-#include "Marmot/MarmotAbaqusUtility.h"
+#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotFunctions.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
