@@ -297,7 +297,7 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
             Matrix6d C66;
             gaussPt.material->computeUniaxialStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-            C << mechanics::getUniaxialStressTangent( C66 );
+            C << ContinuumMechanics::getUniaxialStressTangent( C66 );
             S( 0 ) = gaussPt.stress( 0 );
         }
 
@@ -310,14 +310,14 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
 
                 gaussPt.material->computePlaneStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-                C = mechanics::getPlaneStressTangent( C66 );
+                C = ContinuumMechanics::getPlaneStressTangent( C66 );
             }
 
             else if ( sectionType == SectionType::PlaneStrain ) {
 
                 gaussPt.material->computeStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-                C = mechanics::getPlaneStrainTangent( C66 );
+                C = ContinuumMechanics::getPlaneStrainTangent( C66 );
             }
 
             S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( gaussPt.stress );
