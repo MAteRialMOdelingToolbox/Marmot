@@ -92,122 +92,122 @@ namespace userLibrary {
 
         // Displacement
         // Truss
-        UelT2D2 = 202,
+        T2D2 = 202,
         // Plane Stress
-        UelCPS4 = 402,
-        // UelCPS8  = 802,
-        UelCPS8R = 805,
+        CPS4 = 402,
+        // CPS8  = 802,
+        CPS8R = 805,
 
         // Plane Strain
-        UelCPE4 = 407,
-        // UelCPE8  = 807,
-        UelCPE8R = 808,
+        CPE4 = 407,
+        // CPE8  = 807,
+        CPE8R = 808,
 
         // Plane Strain - EAS
-        UelCPE4EAS2 = 40702,
-        UelCPE4EAS4 = 40704,
-        UelCPE4EAS5 = 40705,
+        CPE4EAS2 = 40702,
+        CPE4EAS4 = 40704,
+        CPE4EAS5 = 40705,
 
         // Solid
-        UelC3D8   = 803,
-        UelC3D8R  = 806,
-        UelC3D20  = 2003,
-        UelC3D20R = 2006,
+        C3D8   = 803,
+        C3D8R  = 806,
+        C3D20  = 2003,
+        C3D20R = 2006,
 
-        UelT2D2TL = 222,
+        T2D2TL = 222,
         // Plane Stress
-        UelCPS4TL  = 422,
-        UelCPS8TL  = 822,
-        UelCPS8RTL = 825,
+        CPS4TL  = 422,
+        CPS8TL  = 822,
+        CPS8RTL = 825,
 
         // Plane Strain
-        UelCPE4TL  = 427,
-        UelCPE8TL  = 827,
-        UelCPE8RTL = 828,
+        CPE4TL  = 427,
+        CPE8TL  = 827,
+        CPE8RTL = 828,
 
         // Solid
-        UelC3D8TL   = 823,
-        UelC3D8RTL  = 826,
-        UelC3D20TL  = 2023,
-        UelC3D20RTL = 2026,
+        C3D8TL   = 823,
+        C3D8RTL  = 826,
+        C3D20TL  = 2023,
+        C3D20RTL = 2026,
 
-        UelCPE4UL  = 437,
-        UelCPE8RUL = 838,
-        UelC3D8UL  = 833,
+        CPE4UL  = 437,
+        CPE8RUL = 838,
+        C3D8UL  = 833,
 
         // Solid EAS
-        UelC3D8EAS3  = 80303,
-        UelC3D8EAS6b = 80361,
-        UelC3D8EAS9  = 80309,
+        C3D8EAS3  = 80303,
+        C3D8EAS6b = 80361,
+        C3D8EAS9  = 80309,
 
         // Nonlocal
         // Plane Stress
 
-        UelCPS4NonLocal  = 412,
-        UelCPS8NonLocal  = 812,
-        UelCPS8RNonLocal = 815,
+        CPS4NonLocal  = 412,
+        CPS8NonLocal  = 812,
+        CPS8RNonLocal = 815,
 
         // Nonlocal mixed
-        UelCPS8RNonLocalMixed  = 875,
-        UelCPE8RNonLocalMixed  = 877,
-        UelC3D20RNonLocalMixed = 2076,
+        CPS8RNonLocalMixed  = 875,
+        CPE8RNonLocalMixed  = 877,
+        C3D20RNonLocalMixed = 2076,
 
         // Plane Stress - EAS
-        UelCPS4NonLocalEAS2 = 41202,
-        UelCPS4NonLocalEAS4 = 41204,
-        UelCPS4NonLocalEAS5 = 41205,
+        CPS4NonLocalEAS2 = 41202,
+        CPS4NonLocalEAS4 = 41204,
+        CPS4NonLocalEAS5 = 41205,
 
         // Plane Strain
-        UelCPE4NonLocal  = 417,
-        UelCPE4RNonLocal = 418,
-        UelCPE8NonLocal  = 817,
-        UelCPE8RNonLocal = 818,
+        CPE4NonLocal  = 417,
+        CPE4RNonLocal = 418,
+        CPE8NonLocal  = 817,
+        CPE8RNonLocal = 818,
 
         // Plane Strain - EAS
-        UelCPE4NonLocalEAS2 = 41702,
-        UelCPE4NonLocalEAS4 = 41704,
-        UelCPE4NonLocalEAS5 = 41705,
+        CPE4NonLocalEAS2 = 41702,
+        CPE4NonLocalEAS4 = 41704,
+        CPE4NonLocalEAS5 = 41705,
 
-        UelC3D8NonLocalEAS3  = 81303,
-        UelC3D8NonLocalEAS6b = 81361,
-        UelC3D8NonLocalEAS9  = 81309,
+        C3D8NonLocalEAS3  = 81303,
+        C3D8NonLocalEAS6b = 81361,
+        C3D8NonLocalEAS9  = 81309,
 
         // Solid
-        UelC3D4NonLocal   = 413,
-        UelC3D10NonLocal  = 1013,
-        UelC3D8NonLocal   = 813,
-        UelC3D8RNonLocal  = 816,
-        UelC3D20NonLocal  = 2013,
-        UelC3D20RNonLocal = 2016,
+        C3D4NonLocal   = 413,
+        C3D10NonLocal  = 1013,
+        C3D8NonLocal   = 813,
+        C3D8RNonLocal  = 816,
+        C3D20NonLocal  = 2013,
+        C3D20RNonLocal = 2016,
 
         // Nonlocal, Updated Lagrange
-        UelC3D8NonLocalUL  = 843,
-        UelCPE4NonLocalUL  = 447,
-        UelCPE4RNonLocalUL = 448,
-        UelCPE8RNonLocalUL = 848,
+        C3D8NonLocalUL  = 843,
+        CPE4NonLocalUL  = 447,
+        CPE4RNonLocalUL = 448,
+        CPE8RNonLocalUL = 848,
         // FBar versions
-        UelC3D8NonLocalULFBar = 84301,
-        UelCPE4NonLocalULFBar = 44701,
+        C3D8NonLocalULFBar = 84301,
+        CPE4NonLocalULFBar = 44701,
 
         // Cosserat
-        UelCCPE4   = 458,
-        UelCCPE8R  = 858,
-        UelCC3D20R = 2056,
-        UelCC3D8   = 853,
+        CCPE4   = 458,
+        CCPE8R  = 858,
+        CC3D20R = 2056,
+        CC3D8   = 853,
 
         // Nonlocal Cosserat
-        UelNCCPS4   = 465,
-        UelNCCPE8R  = 868,
-        UelNCCPS8R  = 865,
-        UelNCC3D20R = 2066,
-        UelNCC3D8   = 866,
+        NCCPS4   = 465,
+        NCCPE8R  = 868,
+        NCCPS8R  = 865,
+        NCC3D20R = 2066,
+        NCC3D8   = 866,
 
-        UelGMCPE8R  = 898,
-        UelGMC3D20R = 2096,
-        UelGMC3D8,
-        UelGMCPE8RUL,
-        UelGMC3D8UL,
-        UelGMC3D20RUL,
+        GMCPE8R  = 898,
+        GMC3D20R = 2096,
+        GMC3D8,
+        GMCPE8RUL,
+        GMC3D8UL,
+        GMC3D20RUL,
     };
 
     // MaterialFactory
