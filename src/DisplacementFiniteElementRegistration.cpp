@@ -1,5 +1,5 @@
 #include "Marmot/MarmotFiniteElement.h"
-#include "Marmot/MarmotFiniteElementUelSpatialWrapper.h"
+#include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 #include "Marmot/DisplacementFiniteElement.h"
 #include "Marmot/userLibrary.h"
 
