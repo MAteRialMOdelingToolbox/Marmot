@@ -9,7 +9,9 @@ namespace Marmot {
     typedef Eigen::Matrix<double, 9, 9> Matrix99d;
     typedef Eigen::Matrix<double, 3, 4> Matrix34d;
     typedef Eigen::Map<Matrix6d>         mMatrix6d;
+    typedef Eigen::Matrix<double, 3, 3> Matrix3d;
 
+    typedef Eigen::Matrix<double, 3, 1>    Vector3d;
     typedef Eigen::Matrix<double, 6, 1>    Vector6d;
     typedef Eigen::Matrix<double, 7, 1>    Vector7d;
     typedef Eigen::Matrix<double, 8, 1>    Vector8d;
@@ -22,6 +24,7 @@ namespace Marmot {
 
     typedef Eigen::Matrix<double, 3, 6> Matrix36d;
     typedef Eigen::Matrix<double, 3, 6> Matrix36;
+    typedef Eigen::Matrix<double, 6, 3> Matrix63d;
     typedef Eigen::Matrix<double, 9, 9> Matrix9d;
 
     typedef Eigen::TensorFixedSize<double, Eigen::Sizes<6,3,3>> Tensor633d; 
