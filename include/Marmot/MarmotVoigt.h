@@ -181,7 +181,7 @@ namespace Marmot {
         Matrix36d        TransStressVec(const Vector3d& n);
       	Matrix36d	 TransEpsVec(const Vector3d& n);
 	Tensor3333d      P(Vector3d n, double c1, double c2, double c3);
-	Matrix6d         P2Pvoigt(Tensor3333d P);
+	Matrix6d         PToPVoigt(Tensor3333d P);
 
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 

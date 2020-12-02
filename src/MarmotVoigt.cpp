@@ -186,47 +186,43 @@ namespace Marmot {
 	    return P_;
 	}
 
-	Matrix6d P2Pvoigt(Tensor3333d P){
-		Matrix6d Pvoigt;
+	Matrix6d PToPVoigt(Tensor3333d P){
+	Eigen::Matrix<double,9,9> PVoigt;
+	Eigen::Matrix<double,9,6> PVoigtColSym;
+	Matrix6d PVoigtSym;
 
-		Pvoigt(0,0) = P(0,0,0,0);
-		Pvoigt(0,1) = P(0,0,1,1);
-		Pvoigt(0,2) = P(0,0,2,2);
-		Pvoigt(0,3) = 2*P(0,0,0,1);
-		Pvoigt(0,4) = 2*P(0,0,1,2);
-		Pvoigt(0,5) = 2*P(0,0,2,0);
-		Pvoigt(1,0) = Pvoigt(0,1);
-		Pvoigt(1,1) = P(1,1,1,1);
-		Pvoigt(1,2) = P(1,1,2,2);
-		Pvoigt(1,3) = 2*P(1,1,0,1);
-		Pvoigt(1,4) = 2*P(1,1,1,2);
-		Pvoigt(1,5) = 2*P(1,1,2,0);
-		Pvoigt(2,0) = Pvoigt(0,2);
-		Pvoigt(2,1) = Pvoigt(1,2);
-		Pvoigt(2,2) = P(2,2,2,2);
-		Pvoigt(2,3) = 2*P(2,2,0,1);
-		Pvoigt(2,4) = 2*P(2,2,1,2);
-		Pvoigt(2,5) = 2*P(2,2,2,0);
-		Pvoigt(3,0) = Pvoigt(0,3);
-		Pvoigt(3,1) = Pvoigt(1,3);
-		Pvoigt(3,2) = Pvoigt(2,3);
-		Pvoigt(3,3) = 4*P(0,1,0,1);
-		Pvoigt(3,4) = 4*P(0,1,1,2);
-		Pvoigt(3,5) = 4*P(0,1,2,0);
-		Pvoigt(4,0) = Pvoigt(0,4);
-		Pvoigt(4,1) = Pvoigt(1,4);
-		Pvoigt(4,2) = Pvoigt(2,4);
-		Pvoigt(4,3) = Pvoigt(3,4);
-		Pvoigt(4,4) = 4*P(1,2,1,2);
-		Pvoigt(4,5) = 4*P(1,2,2,0);
-		Pvoigt(5,0) = Pvoigt(0,5);
-		Pvoigt(5,1) = Pvoigt(1,5);
-		Pvoigt(5,2) = Pvoigt(2,5);
-		Pvoigt(5,3) = Pvoigt(3,5);
-		Pvoigt(5,4) = Pvoigt(4,5);
-		Pvoigt(5,5) = 4*P(2,0,2,0);
+	int MoveCol;
+	int MoveRow = 0;
 
-		return Pvoigt;
+	for (int i = 0;i<=2;i++){
+		for (int j = 0;j<=2;j++){
+			MoveCol = 0;
+			for (int k = 0;k<=2;k++){
+				for (int l = 0;l<=2;l++){
+					PVoigt(j+MoveRow,l+MoveCol) = P(i,j,k,l);
+				}
+				MoveCol += 3;
+			}	
+		}
+
+		MoveRow += 3;
+	}
+
+	PVoigtColSym.col(0) = PVoigt.col(0);
+	PVoigtColSym.col(1) = PVoigt.col(4);
+	PVoigtColSym.col(2) = PVoigt.col(8);
+	PVoigtColSym.col(3) = PVoigt.col(1)*2;
+	PVoigtColSym.col(4) = PVoigt.col(7)*2;
+	PVoigtColSym.col(5) = PVoigt.col(6)*2;
+
+	PVoigtSym.row(0) = PVoigtColSym.row(0);
+	PVoigtSym.row(1) = PVoigtColSym.row(4);
+	PVoigtSym.row(2) = PVoigtColSym.row(8);
+	PVoigtSym.row(3) = PVoigtColSym.row(1);
+	PVoigtSym.row(4) = PVoigtColSym.row(7);
+	PVoigtSym.row(5) = PVoigtColSym.row(6);
+
+	return PVoigtSym;
 	}
 
         namespace PlaneStrain {
