@@ -39,6 +39,94 @@ namespace Marmot {
             return CelInv;
         }
 
+     Matrix6d CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2)
+        {
+            Matrix6d CelInvTrIs;
+            const double G1 = E1/(2*(1+nu1));
+            // clang-format off
+            CelInvTrIs <<   1./E1,   -nu1/E1,  -nu2/E2,  0,      0,      0,
+                   -nu1/E1,  1./E1,   -nu2/E2,  0,      0,      0,
+                   -nu1/E1,  -nu1/E1,  1./E2,   0,      0,      0,
+                   0,      0,      0,      1./G1,   0,      0,
+                   0,      0,      0,      0,      1./G2,   0,
+                   0,      0,      0,      0,      0,      1./G2;
+            // clang-format on
+            return CelInvTrIs;
+        }
+
+        Matrix6d CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31)
+        {
+            Matrix6d CelInvOrtho;
+            // clang-format off
+            CelInvOrtho <<  1./E1, -nu12/E2, -nu13/E3,  0,      0,      0,
+                         -nu12/E2,  1./E2,   -nu23/E3,  0,      0,      0,
+                         -nu13/E3,  -nu23/E3,  1./E3,   0,      0,      0,
+                              0,      0,      0,      1./G12,   0,      0,
+                  	      0,      0,      0,      0,      1./G23,   0,
+                  	      0,      0,      0,      0,      0,      1./G31;
+            // clang-format on
+            return CelInvOrtho;
+        }
+
+        Matrix6d TransEps(const Matrix3d& LocCoordSys) 
+        {
+            Matrix3d N;
+            N = Math::DirCosine(LocCoordSys);
+
+            Matrix6d R_e;
+
+            R_e << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), N(0,0)*N(0,1), N(0,2)*N(0,1), N(0,2)*N(0,0),
+                pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), N(1,0)*N(1,1), N(1,2)*N(1,1), N(1,0)*N(1,2),
+                pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), N(2,0)*N(2,1), N(2,2)*N(2,1), N(2,0)*N(2,2),
+                2*N(0,0)*N(1,0), 2*N(0,1)*N(1,1), 2*N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
+                2*N(1,0)*N(2,0), 2*N(1,1)*N(2,1), 2*N(1,2)*N(2,2), N(1,0)*N(2,1)+N(1,1)*N(2,0), N(1,1)*N(2,2)+N(1,2)*N(2,1), N(1,0)*N(2,2)+N(1,2)*N(2,0),
+                2*N(2,0)*N(0,0), 2*N(2,1)*N(0,1), 2*N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
+            // clang-format on
+
+            return R_e;
+        }
+
+        Matrix6d TransSig(const Matrix3d& LocCoordSys)
+        {
+           
+            // clang-format on
+      
+            Matrix3d N;
+            N = Math::DirCosine(LocCoordSys);
+
+            Matrix6d R_s;
+
+            R_s << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
+                pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,2)*N(1,1), 2*N(1,0)*N(1,2),
+                pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,2)*N(2,1), 2*N(2,0)*N(2,2),
+                N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
+                N(1,0)*N(2,0), N(1,1)*N(2,1), N(1,2)*N(2,2), N(1,0)*N(2,1)+N(1,1)*N(2,0), N(1,1)*N(2,2)+N(1,2)*N(2,1), N(1,0)*N(2,2)+N(1,2)*N(2,0),
+                N(2,0)*N(0,0), N(2,1)*N(0,1), N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
+            // clang-format on
+
+            return R_s;
+        }
+
+        Matrix36d TransStressVec(const Vector3d& n)
+        {
+            Matrix36d Nvec;
+            Nvec << n(0), 0, 0, n(1), 0, n(2),
+                0, n(1), 0, n(0), n(2), 0,
+                0, 0, n(2), 0, n(1), n(0);
+
+            return Nvec; 
+        }
+
+      	Matrix36d TransEpsVec(const Vector3d& n)
+        {
+            Matrix36d Nvec;
+            Nvec << n(0), 0, 0, n(1)/2.0, 0, n(2)/2.0,
+                0, n(1), 0, n(0)/2.0, n(2)/2.0, 0,
+                0, 0, n(2), 0, n(1)/2.0, n(0)/2.0;
+
+            return Nvec; 
+        }
+
         Matrix3d getPlaneStressTangent( const Matrix6d& C )
         {
             return ContinuumMechanics::VoigtNotation::dStressPlaneStressDStress() * C * ContinuumMechanics::VoigtNotation::dStrainDStrainPlaneStress( C );
@@ -66,6 +154,80 @@ namespace Marmot {
 
             return CPlaneStrain;
         }
+
+	Tensor3333d P(Vector3d n, double c1, double c2, double c3)
+	{
+	    Tensor3333d P_;
+	    Matrix3d kron;
+	    Matrix3d phi;
+
+	    P_.setZero();
+
+	    kron << 1,0,0,
+	     	    0,1,0,
+	            0,0,1;
+
+	    n = 1/n.norm()*n;
+
+	    phi = Math::DyadProdNvec(n);
+	    for (int i = 0;i<3;i++){
+		for (int j = 0;j<3;j++){
+		    for (int k = 0;k<3;k++){
+			for (int l = 0;l<3;l++){
+			    P_(i,j,k,l) += c1/2*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
+				           c2/2*(phi(i,k)*phi(j,l)+phi(i,l)*phi(j,k))+
+				           c3/4*(kron(i,k)*phi(j,l)+kron(i,l)*phi(j,k)+
+				           phi(i,k)*kron(j,l)+phi(i,l)*kron(j,k));	
+			}
+		    }
+		}
+	    }
+	
+	    return P_;
+	}
+
+	Matrix6d P2Pvoigt(Tensor3333d P){
+		Matrix6d Pvoigt;
+
+		Pvoigt(0,0) = P(0,0,0,0);
+		Pvoigt(0,1) = P(0,0,1,1);
+		Pvoigt(0,2) = P(0,0,2,2);
+		Pvoigt(0,3) = 2*P(0,0,0,1);
+		Pvoigt(0,4) = 2*P(0,0,1,2);
+		Pvoigt(0,5) = 2*P(0,0,2,0);
+		Pvoigt(1,0) = Pvoigt(0,1);
+		Pvoigt(1,1) = P(1,1,1,1);
+		Pvoigt(1,2) = P(1,1,2,2);
+		Pvoigt(1,3) = 2*P(1,1,0,1);
+		Pvoigt(1,4) = 2*P(1,1,1,2);
+		Pvoigt(1,5) = 2*P(1,1,2,0);
+		Pvoigt(2,0) = Pvoigt(0,2);
+		Pvoigt(2,1) = Pvoigt(1,2);
+		Pvoigt(2,2) = P(2,2,2,2);
+		Pvoigt(2,3) = 2*P(2,2,0,1);
+		Pvoigt(2,4) = 2*P(2,2,1,2);
+		Pvoigt(2,5) = 2*P(2,2,2,0);
+		Pvoigt(3,0) = Pvoigt(0,3);
+		Pvoigt(3,1) = Pvoigt(1,3);
+		Pvoigt(3,2) = Pvoigt(2,3);
+		Pvoigt(3,3) = 4*P(0,1,0,1);
+		Pvoigt(3,4) = 4*P(0,1,1,2);
+		Pvoigt(3,5) = 4*P(0,1,2,0);
+		Pvoigt(4,0) = Pvoigt(0,4);
+		Pvoigt(4,1) = Pvoigt(1,4);
+		Pvoigt(4,2) = Pvoigt(2,4);
+		Pvoigt(4,3) = Pvoigt(3,4);
+		Pvoigt(4,4) = 4*P(1,2,1,2);
+		Pvoigt(4,5) = 4*P(1,2,2,0);
+		Pvoigt(5,0) = Pvoigt(0,5);
+		Pvoigt(5,1) = Pvoigt(1,5);
+		Pvoigt(5,2) = Pvoigt(2,5);
+		Pvoigt(5,3) = Pvoigt(3,5);
+		Pvoigt(5,4) = Pvoigt(4,5);
+		Pvoigt(5,5) = 4*P(2,0,2,0);
+
+		return Pvoigt;
+	}
 
         namespace PlaneStrain {
 

@@ -174,6 +174,15 @@ namespace Marmot {
 
         Matrix6d         Cel( double E, double nu );
         Matrix6d         CelInverse( double E, double nu );
+	Matrix6d         CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2);
+	Matrix6d	 CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31);
+        Matrix6d         TransEps(const Matrix3d& LocCoordSys);
+        Matrix6d         TransSig(const Matrix3d& LocCoordSys); 
+        Matrix36d        TransStressVec(const Vector3d& n);
+      	Matrix36d	 TransEpsVec(const Vector3d& n);
+	Tensor3333d      P(Vector3d n, double c1, double c2, double c3);
+	Matrix6d         P2Pvoigt(Tensor3333d P);
+
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
         Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
