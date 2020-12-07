@@ -1,5 +1,5 @@
 #pragma once
-#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 
