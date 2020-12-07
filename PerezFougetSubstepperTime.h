@@ -47,7 +47,7 @@ namespace Marmot::NumericalAlgorithms {
     };
 } // namespace Marmot::NumericalAlgorithms
 
-#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotJournal.h"
 
 namespace Marmot::NumericalAlgorithms {
     template <int s>
