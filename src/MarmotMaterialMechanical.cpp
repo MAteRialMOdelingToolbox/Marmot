@@ -1,4 +1,4 @@
-#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialMechanical.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
