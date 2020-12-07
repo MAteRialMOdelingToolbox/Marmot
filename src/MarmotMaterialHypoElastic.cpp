@@ -1,5 +1,5 @@
 #include "Marmot/HughesWinget.h"
-#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotKinematics.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTensor.h"
