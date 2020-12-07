@@ -222,7 +222,7 @@ void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMate
     for ( size_t i = 0; i < gaussPts.size(); i++ ) {
         GaussPt& gpt = gaussPts[i];
         gpt.material = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
-            userLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
+            MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
                                                                 section.materialProperties,
                                                                 section.nMaterialProperties,
                                                                 elLabel ) ) );
