@@ -1,5 +1,5 @@
 #pragma once
-#include "Marmot/userLibrary.h"
+#include "Marmot/Marmot.h"
 
 template <typename T>
 userLibrary::MarmotMaterialFactory::materialFactoryFunction makeDefaultMarmotMaterialFactoryFunction()

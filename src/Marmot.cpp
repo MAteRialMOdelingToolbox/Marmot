@@ -1,11 +1,11 @@
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotMaterial.h"
-#include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotVoigt.h"
-#include "Marmot/userLibrary.h"
+#include "Marmot/Marmot.h"
+#include "Marmot/MarmotJournal.h"
 #include <map>
 #include <string>
 #include <tuple>
+#include <cassert>
 
 namespace userLibrary {
 

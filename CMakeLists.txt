@@ -16,7 +16,7 @@ MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
 MESSAGE(STATUS "")
 cmake_minimum_required(VERSION 3.1)  
 
-project(bftUserLibrary CXX Fortran)
+project(Marmot CXX Fortran)
 
 # avoid in-source compilation
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
@@ -64,7 +64,7 @@ if(NOT CMAKE_BUILD_TYPE)
     message("--> setting to default CMAKE_BUILD_TYPE Release")
 endif()
 
-# Disable (shared memory) parallelization within bftUserLibrary - such a parallelization is usually not desired
+# Disable (shared memory) parallelization within Marmot - such a parallelization is usually not desired
 # add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
 
@@ -73,13 +73,13 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(${EIGEN3_INCLUDE_DIR})
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
-set(bftMechanicsDir "modules/bftMechanics/")
 set(optionalLibsRootDir "modules/")
 
 set(optionalCoreLibraries
-    bftFiniteElementCore
-    bftCosseratCore
-    bftMicromorphicCore
+    MarmotMechanicsCore
+    MarmotFiniteElementCore
+    MarmotCosseratCore
+    MarmotMicromorphicCore
     )
 
 set (materials
@@ -156,17 +156,6 @@ file(GLOB sources "src/*.cpp")
 file(GLOB publicheaders "include/**/*.h")
 
 #
-# mandatory bftMechanics
-#
-get_filename_component(bftMechanicsDir ${bftMechanicsDir} ABSOLUTE) 
-if(EXISTS ${bftMechanicsDir})
-    message("--> found bftMechanics")
-    include(${bftMechanicsDir}/module.cmake)
-else()
-    message(FATAL_ERROR "--> could not find bftMechanics")
-endif()
-
-#
 # optional core libraries
 #
 foreach(library ${optionalCoreLibraries})
@@ -216,5 +205,5 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/bftUserLibrary
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/Marmot
     )
