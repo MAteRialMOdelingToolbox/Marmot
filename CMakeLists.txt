@@ -102,8 +102,10 @@ set (materials
     GradientEnhancedDruckerPrager
     HoekBrown
     JointedRock
+    JointedHoekBrown
     LinearElastic
     transverseisotropiclinearelastic
+    OrthotropicLinearElastic
     LinearElasticNonLocal
     LinearElasticSolidificationCreep
     MCDP
@@ -121,6 +123,7 @@ set (materials
     PorousElastic
     RockDamagePlasticity
     RockDamagePlasticityNonLocal
+    ORDP
     SandHypo
     SandHypoMicropolar
     SchaedlichSchweiger

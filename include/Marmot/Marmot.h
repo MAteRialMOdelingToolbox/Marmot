@@ -56,6 +56,9 @@ namespace userLibrary {
         GMNeoHooke                         = 45,
         GradientEnhancedDruckerPrager      = 46,
         GMCDPFiniteStrain                  = 47,
+	OrthotropicLinearElastic	   = 48,
+	JointedHoekBrown 		   = 49,
+	ORDP				   = 50
     };
 
     enum ElementCode {
