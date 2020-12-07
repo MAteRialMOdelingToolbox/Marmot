@@ -20,7 +20,7 @@ if __name__ == '__main__':
     directories = ['.']
     directories += list ( walklevel( './modules/materials/' , 1) )
     directories += list ( walklevel( './modules/elements/' , 1) )
-    directories += ['./modules/MarmotMechanics'] 
+    directories += ['./modules/MarmotMechanicsCore'] 
     directories += ['./modules/MarmotFiniteElementCore'] 
     directories += ['./modules/MarmotCosseratCore'] 
     directories += ['./modules/MarmotMicromorphicCore'] 
