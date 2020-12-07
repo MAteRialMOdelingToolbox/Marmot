@@ -3,7 +3,7 @@
 
 namespace LinearElasticRegistration {
 
-    using namespace userLibrary;
+    using namespace MarmotLibrary;
 
     const static bool isRegistered = MarmotMaterialFactory::registerMaterial( MaterialCode::LinearElastic,
                                                                               "LINEARELASTIC",
