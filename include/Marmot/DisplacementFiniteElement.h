@@ -3,7 +3,7 @@
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
-#include "Marmot/MarmotFunctions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMath.h"
