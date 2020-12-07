@@ -134,19 +134,19 @@ set (materials
     )
 
 set(elements
-    uelCosserat
-    uelDisplacement
-    uelDisplacementTL
-    uelDisplacementUL
-    uelDisplacementEAS
-    uelNonLocal
-    uelNonLocalCosserat
-    uelGradientEnhancedMicropolar
-    uelGradientEnhancedMicropolarUL
-    uelNonLocalUL
-    uelNonLocalULFBar
-    uelNonLocalEAS
-    uelNonLocalMixed
+    CosseratFiniteElement
+    DisplacementFiniteElement
+    DisplacementTLFiniteElement
+    DisplacementULFiniteElement
+    DisplacementEASFiniteElement
+    GradientEnhancedDisplacementFiniteElement
+    GradientEnhancedDisplacementULFiniteElement
+    GradientEnhancedDisplacementULFBarFiniteElement
+    GradientEnhancedDisplacementEASFiniteElement
+    GradientEnhancedDisplacementMixedFiniteElement
+    GradientEnhancedCosseratFiniteElement
+    GradientEnhancedMicropolarFiniteElement
+    GradientEnhancedMicropolarULFiniteElement
     )
 
 #
