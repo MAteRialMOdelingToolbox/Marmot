@@ -9,7 +9,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include "Marmot/userLibrary.h"
+#include "Marmot/Marmot.h"
 #include <iostream>
 #include <memory>
 #include <vector>

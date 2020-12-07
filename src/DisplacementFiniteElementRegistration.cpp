@@ -1,7 +1,7 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 #include "Marmot/DisplacementFiniteElement.h"
-#include "Marmot/userLibrary.h"
+#include "Marmot/Marmot.h"
 
 namespace DisplacementFiniteElementRegistration {
 
