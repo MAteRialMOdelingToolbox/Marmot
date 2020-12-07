@@ -7,7 +7,7 @@
 #include <tuple>
 #include <cassert>
 
-namespace userLibrary {
+namespace MarmotLibrary {
 
     // MaterialFactory
 
@@ -85,4 +85,4 @@ namespace userLibrary {
         }
     }
 
-} // namespace userLibrary
+} // namespace MarmotLibrary

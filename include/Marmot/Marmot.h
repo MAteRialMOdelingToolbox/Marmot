@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 
-namespace userLibrary {
+namespace MarmotLibrary {
 
     enum MaterialCode : int {
         ModLeon                            = 1,
@@ -262,4 +262,4 @@ namespace userLibrary {
         static std::map< ElementCode, elementFactoryFunction > elementFactoryFunctionByCode;
     };
 
-} // namespace userLibrary
+} // namespace MarmotLibrary
