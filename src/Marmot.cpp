@@ -2,7 +2,7 @@
 #include "Marmot/MarmotMaterial.h"
 #include "Marmot/Marmot.h"
 #include "Marmot/MarmotJournal.h"
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <tuple>
 #include <cassert>
@@ -11,8 +11,8 @@ namespace MarmotLibrary {
 
     // MaterialFactory
 
-    std::map<std::string, MaterialCode> MarmotMaterialFactory::materialNameToCodeAssociation;
-    std::map<MaterialCode, MarmotMaterialFactory::materialFactoryFunction> MarmotMaterialFactory::materialFactoryFunctionByCode;
+    std::unordered_map<std::string, MaterialCode> MarmotMaterialFactory::materialNameToCodeAssociation;
+    std::unordered_map<MaterialCode, MarmotMaterialFactory::materialFactoryFunction> MarmotMaterialFactory::materialFactoryFunctionByCode;
 
     bool MarmotMaterialFactory::registerMaterial( MaterialCode            materialCode,
                                                const std::string&      materialName,
@@ -49,8 +49,8 @@ namespace MarmotLibrary {
 
     // ElementFactory
 
-    std::map<std::string, ElementCode>                               MarmotElementFactory::elementNameToCodeAssociation;
-    std::map<ElementCode, MarmotElementFactory::elementFactoryFunction> MarmotElementFactory::elementFactoryFunctionByCode;
+    std::unordered_map<std::string, ElementCode>                               MarmotElementFactory::elementNameToCodeAssociation;
+    std::unordered_map<ElementCode, MarmotElementFactory::elementFactoryFunction> MarmotElementFactory::elementFactoryFunctionByCode;
 
     bool MarmotElementFactory::registerElement( const std::string&     elementName,
                                              ElementCode            elementCode,

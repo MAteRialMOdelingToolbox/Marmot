@@ -3,7 +3,7 @@
 #include "Marmot/MarmotMaterial.h"
 #include <functional>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 namespace MarmotLibrary {
@@ -235,8 +235,8 @@ namespace MarmotLibrary {
                                       materialFactoryFunction factoryFunction );
 
       private:
-        static std::map< std::string, MaterialCode >             materialNameToCodeAssociation;
-        static std::map< MaterialCode, materialFactoryFunction > materialFactoryFunctionByCode;
+        static std::unordered_map< std::string, MaterialCode >             materialNameToCodeAssociation;
+        static std::unordered_map< MaterialCode, materialFactoryFunction > materialFactoryFunctionByCode;
     };
 
     // ElementFactory
@@ -258,8 +258,8 @@ namespace MarmotLibrary {
                                      elementFactoryFunction factoryFunction );
 
       private:
-        static std::map< std::string, ElementCode >            elementNameToCodeAssociation;
-        static std::map< ElementCode, elementFactoryFunction > elementFactoryFunctionByCode;
+        static std::unordered_map< std::string, ElementCode >            elementNameToCodeAssociation;
+        static std::unordered_map< ElementCode, elementFactoryFunction > elementFactoryFunctionByCode;
     };
 
 } // namespace MarmotLibrary
