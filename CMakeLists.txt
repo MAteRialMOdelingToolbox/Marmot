@@ -130,6 +130,8 @@ set (materials
     ShotLeonV2
     ShotLeonNonLocal
     ShotLeonV2NonLocal
+    ShotcreteSolidificationCreep
+    ShotcreteHydration
     SolidificationCreep
     StVenantKirchhoffIsotropic
     UntereggerRockMassPlaxis
