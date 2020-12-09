@@ -1,16 +1,16 @@
 #pragma once
 
-namespace userLibrary {
+namespace MarmotLibrary {
     enum MaterialCode : int;
 }
 
 class MarmotMaterialSection  {
   public:
-    userLibrary::MaterialCode materialCode;
+    MarmotLibrary::MaterialCode materialCode;
     const double*             materialProperties;
     int                       nMaterialProperties;
 
-    MarmotMaterialSection( userLibrary::MaterialCode materialCode,
+    MarmotMaterialSection( MarmotLibrary::MaterialCode materialCode,
                         const double*             materialProperties,
                         int                       nMaterialProperties )
         : materialCode( materialCode ),

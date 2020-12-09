@@ -20,9 +20,10 @@ if __name__ == '__main__':
     directories = ['.']
     directories += list ( walklevel( './modules/materials/' , 1) )
     directories += list ( walklevel( './modules/elements/' , 1) )
-    directories += ['./modules/bftMechanics'] 
-    directories += ['./modules/bftFiniteElementCore'] 
-    directories += ['./modules/bftCosseratCore'] 
+    directories += ['./modules/MarmotMechanicsCore'] 
+    directories += ['./modules/MarmotFiniteElementCore'] 
+    directories += ['./modules/MarmotCosseratCore'] 
+    directories += ['./modules/MarmotMicromorphicCore'] 
 
     for d in directories:
 

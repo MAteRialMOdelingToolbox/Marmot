@@ -1,8 +1,8 @@
 #pragma once
-#include "Marmot/userLibrary.h"
+#include "Marmot/Marmot.h"
 
 template <typename T>
-userLibrary::MarmotMaterialFactory::materialFactoryFunction makeDefaultMarmotMaterialFactoryFunction()
+MarmotLibrary::MarmotMaterialFactory::materialFactoryFunction makeDefaultMarmotMaterialFactoryFunction()
 {
     return
         []( const double* materialProperties, int nMaterialProperties, int materialNumber) -> MarmotMaterial* {

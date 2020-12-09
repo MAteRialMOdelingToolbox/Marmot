@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 
-namespace userLibrary {
+namespace MarmotLibrary {
 
     enum MaterialCode : int {
         ModLeon                            = 1,
@@ -146,51 +146,51 @@ namespace userLibrary {
         // Nonlocal
         // Plane Stress
 
-        CPS4NonLocal  = 412,
-        CPS8NonLocal  = 812,
-        CPS8RNonLocal = 815,
+        GCPS4  = 412,
+        GCPS8  = 812,
+        GCPS8R = 815,
 
         // Nonlocal mixed
-        CPS8RNonLocalMixed  = 875,
-        CPE8RNonLocalMixed  = 877,
-        C3D20RNonLocalMixed = 2076,
+        GCPS8RMixed  = 875,
+        GCPE8RMixed  = 877,
+        GC3D20RMixed = 2076,
 
         // Plane Stress - EAS
-        CPS4NonLocalEAS2 = 41202,
-        CPS4NonLocalEAS4 = 41204,
-        CPS4NonLocalEAS5 = 41205,
+        GCPS4EAS2 = 41202,
+        GCPS4EAS4 = 41204,
+        GCPS4EAS5 = 41205,
 
         // Plane Strain
-        CPE4NonLocal  = 417,
-        CPE4RNonLocal = 418,
-        CPE8NonLocal  = 817,
-        CPE8RNonLocal = 818,
+        GCPE4  = 417,
+        GCPE4R = 418,
+        GCPE8  = 817,
+        GCPE8R = 818,
 
         // Plane Strain - EAS
-        CPE4NonLocalEAS2 = 41702,
-        CPE4NonLocalEAS4 = 41704,
-        CPE4NonLocalEAS5 = 41705,
+        GCPE4EAS2 = 41702,
+        GCPE4EAS4 = 41704,
+        GCPE4EAS5 = 41705,
 
-        C3D8NonLocalEAS3  = 81303,
-        C3D8NonLocalEAS6b = 81361,
-        C3D8NonLocalEAS9  = 81309,
+        GC3D8EAS3  = 81303,
+        GC3D8EAS6b = 81361,
+        GC3D8EAS9  = 81309,
 
         // Solid
-        C3D4NonLocal   = 413,
-        C3D10NonLocal  = 1013,
-        C3D8NonLocal   = 813,
-        C3D8RNonLocal  = 816,
-        C3D20NonLocal  = 2013,
-        C3D20RNonLocal = 2016,
+        GC3D4   = 413,
+        GC3D10  = 1013,
+        GC3D8   = 813,
+        GC3D8R  = 816,
+        GC3D20  = 2013,
+        GC3D20R = 2016,
 
         // Nonlocal, Updated Lagrange
-        C3D8NonLocalUL  = 843,
-        CPE4NonLocalUL  = 447,
-        CPE4RNonLocalUL = 448,
-        CPE8RNonLocalUL = 848,
+        GC3D8UL  = 843,
+        GCPE4UL  = 447,
+        GCPE4RUL = 448,
+        GCPE8RUL = 848,
         // FBar versions
-        C3D8NonLocalULFBar = 84301,
-        CPE4NonLocalULFBar = 44701,
+        GC3D8ULFBar = 84301,
+        GCPE4ULFBar = 44701,
 
         // Cosserat
         CCPE4   = 458,
@@ -199,11 +199,11 @@ namespace userLibrary {
         CC3D8   = 853,
 
         // Nonlocal Cosserat
-        NCCPS4   = 465,
-        NCCPE8R  = 868,
-        NCCPS8R  = 865,
-        NCC3D20R = 2066,
-        NCC3D8   = 866,
+        GCCPS4   = 465,
+        GCCPE8R  = 868,
+        GCCPS8R  = 865,
+        GCC3D20R = 2066,
+        GCC3D8   = 866,
 
         GMCPE8R  = 898,
         GMC3D20R = 2096,
@@ -262,4 +262,4 @@ namespace userLibrary {
         static std::map< ElementCode, elementFactoryFunction > elementFactoryFunctionByCode;
     };
 
-} // namespace userLibrary
+} // namespace MarmotLibrary
