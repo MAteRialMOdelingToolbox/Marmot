@@ -195,6 +195,8 @@ foreach(library ${elements})
     endif()
 endforeach(library)
 
+message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+
 #
 # compile the shared library
 #
@@ -204,7 +206,6 @@ target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
 
 #
 # and finally install the library to the system location
-#
 set_target_properties(${PROJECT_NAME} PROPERTIES
     PUBLIC_HEADER "${publicheaders}"
 )
