@@ -1,32 +1,32 @@
 import os
-import argparse
 import sys
+import subprocess
 
-def walklevel(some_dir, level=1):
-    some_dir = some_dir.rstrip(os.path.sep)
-    assert os.path.isdir(some_dir)
-    num_sep = some_dir.count(os.path.sep)
-    for root, dirs, files in os.walk(some_dir):
-        # yield root, dirs, files
-        dirs  = [ os.path.join(some_dir, d ) for d in dirs  if os.path.isdir(os.path.join(some_dir, d ) )  ]
-        return dirs
-        # yield r dirs, files
-        num_sep_this = root.count(os.path.sep)
-        if num_sep + level <= num_sep_this:
-            del dirs[:]
+def walk_modules(rootdir, levels=1):
+
+    rootdir = rootdir.rstrip(os.path.sep)
+    assert os.path.isdir(rootdir)
+    num_sep = rootdir.count(os.path.sep)
+
+    modules = []
+
+    for directory, subdirs, files in os.walk(rootdir):
+
+        num_sep_this = directory.count(os.path.sep)
+        if num_sep + levels <= num_sep_this:
+            continue
+
+        if 'module.cmake' in files:
+            modules.append (directory)
+                
+    return modules
 
 if __name__ == '__main__':
 
-    directories = ['.']
-    directories += list ( walklevel( './modules/materials/' , 1) )
-    directories += list ( walklevel( './modules/elements/' , 1) )
-    directories += ['./modules/MarmotMechanicsCore'] 
-    directories += ['./modules/MarmotFiniteElementCore'] 
-    directories += ['./modules/MarmotCosseratCore'] 
-    directories += ['./modules/MarmotMicromorphicCore'] 
+    projects = ['.'] 
+    projects += walk_modules( './modules/', 3 )
+    for proj in projects:
+        print(proj)
+        p = subprocess.Popen(sys.argv[1:], cwd=proj)
+        p.wait()
 
-    for d in directories:
-
-        print(d)
-        execs = 'bash -c "cd {:} && {:} " '.format(d, ' '.join ( sys.argv[1:] ) )
-        os.system( execs )
