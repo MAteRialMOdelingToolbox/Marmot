@@ -43,17 +43,17 @@ dictElements = { # add element:
                   # name: ("displacement/large displacement/gradient-enhanced/ 
                   #          gradient-enhanced large displacement/cosserat", 
                 # "afbDevelopers/c8441141/c8441146")
-                "uelDisplacement":       ("displacement",       "c8441141"),
-                "uelDisplacementUL":     ("large displacement", "c8441141"),
-                "uelDisplacementTL":     ("large displacement", "c8441141"),
-                "uelNonLocal":           ("gradient-enhanced",  "c8441141"),
-                "uelNonLocalMixed":      ("gradient-enhanced",  "c8441146"),
-                "uelNonLocalEAS":        ("gradient-enhanced",  "c8441141"),
-                "uelNonLocalUL":         ("gradient-enhanced large displacement", "c8441141"),      
-                "uelNonLocalUL":         ("gradient-enhanced large displacement", "c8441141"),        
-                "uelNonLocalULFBar":     ("gradient-enhanced large displacement", "c8441141"), 
-                "uelCosserat":           ("cosserat", "c8441141"),        
-                "uelNonLocalCosserat":   ("cosserat", "c8441141"),      
+                "DisplacementFiniteElement":       ("displacement",       "c8441141"),
+                "DisplacementULFiniteElement":     ("large displacement", "c8441141"),
+                "DisplacementTLFiniteElement":     ("large displacement", "c8441141"),
+                "GradientEnhancedDisplacementFiniteElement":           ("gradient-enhanced",  "c8441141"),
+                "GradientEnhancedDisplacementMixedFiniteElement":      ("gradient-enhanced",  "c8441146"),
+                "GradientEnhancedDisplacementEASFiniteElement":        ("gradient-enhanced",  "c8441141"),
+                "GradientEnhancedDisplacementULFiniteElement":         ("gradient-enhanced large displacement", "c8441141"),      
+                "GradientEnhancedDisplacementULFiniteElement":         ("gradient-enhanced large displacement", "c8441141"),        
+                "GradientEnhancedDisplacementULFBarFiniteElement":     ("gradient-enhanced large displacement", "c8441141"), 
+                "CosseratFiniteElement":           ("cosserat", "c8441141"),        
+                "GradientEnhancedCosseratFiniteElement":   ("cosserat", "c8441141"),      
                 }
 
 lookUpMaterialCategories = {  "basic": "1",
@@ -89,11 +89,11 @@ def basicInstall(argument):
         os.chdir(os.path.join(cwd,'modules'))
         print("Installing to folder {:}".format(os.path.join(cwd,'modules')))
         if argument == '2' or 'all':
-            cloneGitUibk("bftMechanics")
+            cloneGitUibk("MarmotMechanics")
         if argument == '3' or 'all':    
-            cloneGitUibk("bftFiniteElementCore","c8441141")
+            cloneGitUibk("MarmotFiniteElementCore","c8441141")
         if argument == '4' or 'all':
-            cloneGitUibk("bftCosseratCore","c8441141"),
+            cloneGitUibk("MarmotCosseratCore","c8441141"),
     
 def materialInstall(argument):
     os.chdir(os.path.join(cwd,'modules/materials'))

@@ -118,7 +118,6 @@ set (materials
     ModLeonPlaneStress
     ModLeonNonLocal
     MohrCoulomb
-    MisesTI
     ViscoPlasticShotcreteModel 
     PorousElastic
     RockDamagePlasticity
