@@ -92,6 +92,76 @@ namespace Marmot {
         using KL   = Fastor::Index< K_, L_ >;
         using MK   = Fastor::Index< M_, K_ >;
 
+        using Mi   = Fastor::Index< M_, i_ >;
+        using MJKL = Fastor::Index< M_, J_, K_, L_ >;
+        using iK   = Fastor::Index< i_, K_ >;
+        using iKjL = Fastor::Index< i_, K_, j_, L_ >;
+        using im   = Fastor::Index< i_, m_ >;
+        using jL   = Fastor::Index< j_, L_ >;
+        using jLm  = Fastor::Index< j_, L_, m_ >;
+        using KL   = Fastor::Index< K_, L_ >;
+        using KLMP = Fastor::Index< K_, L_, M_, P_ >;
+        using ML   = Fastor::Index< M_, L_ >;
+        using Pm   = Fastor::Index< P_, m_ >;
+        using Nm   = Fastor::Index< N_, m_ >;
+        using MPm  = Fastor::Index< M_, P_, m_ >;
+        using KLNM = Fastor::Index< K_, L_, N_, M_ >;
+        using i    = Fastor::Index< i_ >;
+        using j    = Fastor::Index< j_ >;
+        using jk   = Fastor::Index< j_, k_ >;
+        using jL   = Fastor::Index< j_, L_ >;
+        using ij   = Fastor::Index< i_, j_ >;
+        using ijk  = Fastor::Index< i_, j_, k_ >;
+        using ijL  = Fastor::Index< i_, j_, L_ >;
+        using ijLm = Fastor::Index< i_, j_, L_, m_ >;
+        using ijm  = Fastor::Index< i_, j_, m_ >;
+        using ik   = Fastor::Index< i_, k_ >;
+        using iL   = Fastor::Index< i_, L_ >;
+        using im   = Fastor::Index< i_, m_ >;
+        using imk  = Fastor::Index< i_, m_, k_ >;
+        using imL  = Fastor::Index< i_, m_, L_ >;
+        using imLk = Fastor::Index< i_, m_, L_, k_ >;
+        using k    = Fastor::Index< k_ >;
+        using kl   = Fastor::Index< k_, l_ >;
+        using km   = Fastor::Index< k_, m_ >;
+        using kL   = Fastor::Index< k_, L_ >;
+        using kM   = Fastor::Index< k_, M_ >;
+        using l    = Fastor::Index< l_ >;
+        using L    = Fastor::Index< L_ >;
+        using Lm   = Fastor::Index< L_, m_ >;
+        using LN   = Fastor::Index< L_, N_ >;
+        using LmN  = Fastor::Index< L_, m_, N_ >;
+        using m    = Fastor::Index< m_ >;
+        using mj   = Fastor::Index< m_, j_ >;
+        using mjL  = Fastor::Index< m_, j_, L_ >;
+
+        using IJKL = Fastor::Index< I_, J_, K_, L_ >;
+        using iK   = Fastor::Index< i_, K_ >;
+        using iKjL = Fastor::Index< i_, K_, j_, L_ >;
+        using im   = Fastor::Index< i_, m_ >;
+        using jL   = Fastor::Index< j_, L_ >;
+        using jLm  = Fastor::Index< j_, L_, m_ >;
+        using KL   = Fastor::Index< K_, L_ >;
+        using KLMP = Fastor::Index< K_, L_, M_, P_ >;
+        using ML   = Fastor::Index< M_, L_ >;
+        using LK   = Fastor::Index< L_, K_ >;
+        using Pm   = Fastor::Index< P_, m_ >;
+        using Nm   = Fastor::Index< N_, m_ >;
+        using MPm  = Fastor::Index< M_, P_, m_ >;
+        using KLPM = Fastor::Index< K_, L_, P_, M_ >;
+        using KLMN = Fastor::Index< K_, L_, M_, N_ >;
+
+        using to_ijm  = Fastor::OIndex< i_, j_, m_ >;
+        using to_ijmM = Fastor::OIndex< i_, j_, m_, M_ >;
+
+        using to_ijk  = Fastor::OIndex< i_, j_, k_ >;
+        using to_ijLk = Fastor::OIndex< i_, j_, L_, k_ >;
+        using to_ijL  = Fastor::OIndex< i_, j_, L_ >;
+        using to_ijLm = Fastor::OIndex< i_, j_, L_, m_ >;
+
+        using to_ijm  = Fastor::OIndex< i_, j_, m_ >;
+        using to_ijmM = Fastor::OIndex< i_, j_, m_, M_ >;
+
         using to_Ii   = Fastor::OIndex< I_, i_ >;
         using to_IJKL = Fastor::OIndex< I_, J_, K_, L_ >;
         using to_iIjJ = Fastor::OIndex< i_, I_, j_, J_ >;
