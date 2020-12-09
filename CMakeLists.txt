@@ -70,7 +70,7 @@ endif()
 
 ## find Eigen library
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-include_directories(${EIGEN3_INCLUDE_DIR})
+# include_directories(${EIGEN3_INCLUDE_DIR})
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 set(optionalLibsRootDir "modules/")
@@ -198,6 +198,7 @@ endforeach(library)
 #
 add_library(${PROJECT_NAME} SHARED ${sources})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
 
 #
 # and finally install the library to the system location
