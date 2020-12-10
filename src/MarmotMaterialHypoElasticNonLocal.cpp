@@ -1,13 +1,13 @@
 #include "Marmot/HughesWinget.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotKinematics.h"
-#include "Marmot/MarmotMaterialHypoElasticNonLocal.h"
+#include "Marmot/MarmotMaterialGradientEnhancedHypoElastic.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
 using namespace Eigen;
 
-void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
+void MarmotMaterialGradientEnhancedHypoElastic::computeStress( double*       stress_,
                                                     double&       K_local,
                                                     double&       nonLocalRadius,
                                                     double*       dStressDDDeformationGradient_,
@@ -60,7 +60,7 @@ void MarmotMaterialHypoElasticNonLocal::computeStress( double*       stress_,
     dKLocal_dF    = hughesWingetIntegrator.compute_dScalar_dF( FInv, dK_LocalDStretchingRate );
 }
 
-void MarmotMaterialHypoElasticNonLocal::computePlaneStress( double*       stress_,
+void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*       stress_,
                                                          double&       K_local,
                                                          double&       nonLocalRadius,
                                                          double*       dStressDDStrain_,

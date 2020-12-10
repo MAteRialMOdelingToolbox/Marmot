@@ -1,7 +1,7 @@
 #pragma once
 #include "Marmot/MarmotMaterial.h"
 
-class MarmotMaterialMechanicalNonLocal : public MarmotMaterial {
+class MarmotMaterialGradientEnhancedMechanical : public MarmotMaterial {
 
     /*
        Abstract basic class for Mechanical materials.
