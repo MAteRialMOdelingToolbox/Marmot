@@ -157,7 +157,7 @@ set(elements
 # Add sources
 #
 file(GLOB sources "src/*.cpp")
-file(GLOB publicheaders "include/**/*.h")
+file(GLOB publicheaders "include/Marmot/*.h")
 
 #
 # optional core libraries
