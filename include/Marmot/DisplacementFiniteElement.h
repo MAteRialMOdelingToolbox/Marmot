@@ -346,9 +346,9 @@ void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* Q
 template < int nDim, int nNodes >
 void DisplacementFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
 {
-    /* if constexpr ( nDim > 1 ) { */
     switch ( state ) {
     case MarmotElement::GeostaticStress: {
+    if constexpr ( nDim == 3 ) {
         for ( GaussPt& gaussPt : gaussPts ) {
 
             XiSized coordAtGauss = this->NB( this->N( gaussPt.xi ) ) * this->coordinates;
@@ -362,7 +362,7 @@ void DisplacementFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes
             gaussPt.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
             gaussPt.stress( 0 ) = values[4] * gaussPt.stress( 1 );                              // sigma_x
             gaussPt.stress( 2 ) = values[5] * gaussPt.stress( 1 );
-        } // sigma_z
+        } }
         break;
     }
     case MarmotElement::MarmotMaterialStateVars: {
