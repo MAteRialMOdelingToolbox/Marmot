@@ -125,6 +125,7 @@ set (materials
     ORDP
     SandHypo
     SandHypoMicropolar
+    SCDPV3NonLocal
     SchaedlichSchweiger
     ShotLeon
     ShotLeonV2

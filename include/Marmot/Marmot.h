@@ -56,9 +56,10 @@ namespace MarmotLibrary {
         GMNeoHooke                         = 45,
         GradientEnhancedDruckerPrager      = 46,
         GMCDPFiniteStrain                  = 47,
-	OrthotropicLinearElastic	   = 48,
-	JointedHoekBrown 		   = 49,
-	ORDP				   = 50
+        OrthotropicLinearElastic	         = 48,
+        JointedHoekBrown 		               = 49,
+        ORDP				                       = 50,
+        SCDPV3NonLocal                     = 51
     };
 
     enum ElementCode {
