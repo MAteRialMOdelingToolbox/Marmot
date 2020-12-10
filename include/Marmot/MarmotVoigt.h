@@ -4,7 +4,6 @@
 
 #define isNaN( x ) ( x != x )
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
-//#define DIMFROMVOIGT( x ) ( x<<1  )
 
 namespace Marmot {
     namespace ContinuumMechanics::VoigtNotation {
