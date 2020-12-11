@@ -73,86 +73,92 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 # include_directories(${EIGEN3_INCLUDE_DIR})
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
-set(optionalLibsRootDir "modules/")
+set(MODULES_DIR "modules/")
 
-set(optionalCoreLibraries
-    MarmotMechanicsCore
-    MarmotFiniteElementCore
-    MarmotCosseratCore
-    MarmotMicromorphicCore
-    )
+if(NOT CORE_MODULES)
+    set(CORE_MODULES
+        MarmotMechanicsCore
+        MarmotFiniteElementCore
+        MarmotCosseratCore
+        MarmotMicromorphicCore
+        )
+endif()
 
-set (materials
-    Barodesy
-    BarodesyGradientVoid
-    CDP
-    CDPFibreReinforced
-    CDPM2
-    BarodesyGradientDeformationModulus
-    CosseratLinearElastic
-    CosseratDruckerPrager
-    DiffuseMicroCracking
-    DruckerPrager 
-    DruckerPragerMD
-    GMCDP
-    GMCDPFiniteStrain
-    GMBiotElastic
-    GMDruckerPrager
-    GMNeoHooke
-    GradientEnhancedDruckerPrager
-    HoekBrown
-    JointedRock
-    JointedHoekBrown
-    LinearElastic
-    transverseisotropiclinearelastic
-    OrthotropicLinearElastic
-    LinearElasticNonLocal
-    LinearElasticSolidificationCreep
-    MCDP
-    ModifiedCamClay
-    ModLeon
-    ModLeonSemiExplicit
-    ModLeonAnalytical
-    ModLeonAdaptive
-    ModLeonSemiExplicitAdaptive
-    ModLeonPlaneStress
-    ModLeonNonLocal
-    MohrCoulomb
-    ViscoPlasticShotcreteModel 
-    PorousElastic
-    RockDamagePlasticity
-    RockDamagePlasticityNonLocal
-    ORDP
-    SandHypo
-    SandHypoMicropolar
-    SCDPV3NonLocal
-    SchaedlichSchweiger
-    ShotLeon
-    ShotLeonV2
-    ShotLeonNonLocal
-    ShotLeonV2NonLocal
-    ShotcreteSolidificationCreep
-    ShotcreteHydration
-    SolidificationCreep
-    StVenantKirchhoffIsotropic
-    UntereggerRockMassPlaxis
-    )
+if(NOT MATERIAL_MODULES)
+    set (MATERIAL_MODULES
+        Barodesy
+        BarodesyGradientVoid
+        CDP
+        CDPFibreReinforced
+        CDPM2
+        BarodesyGradientDeformationModulus
+        CosseratLinearElastic
+        CosseratDruckerPrager
+        DiffuseMicroCracking
+        DruckerPrager 
+        DruckerPragerMD
+        GMCDP
+        GMCDPFiniteStrain
+        GMBiotElastic
+        GMDruckerPrager
+        GMNeoHooke
+        GradientEnhancedDruckerPrager
+        HoekBrown
+        JointedRock
+        JointedHoekBrown
+        LinearElastic
+        transverseisotropiclinearelastic
+        OrthotropicLinearElastic
+        LinearElasticNonLocal
+        LinearElasticSolidificationCreep
+        MCDP
+        ModifiedCamClay
+        ModLeon
+        ModLeonSemiExplicit
+        ModLeonAnalytical
+        ModLeonAdaptive
+        ModLeonSemiExplicitAdaptive
+        ModLeonPlaneStress
+        ModLeonNonLocal
+        MohrCoulomb
+        ViscoPlasticShotcreteModel 
+        PorousElastic
+        RockDamagePlasticity
+        RockDamagePlasticityNonLocal
+        ORDP
+        SandHypo
+        SandHypoMicropolar
+        SCDPV3NonLocal
+        SchaedlichSchweiger
+        ShotLeon
+        ShotLeonV2
+        ShotLeonNonLocal
+        ShotLeonV2NonLocal
+        ShotcreteSolidificationCreep
+        ShotcreteHydration
+        SolidificationCreep
+        StVenantKirchhoffIsotropic
+        UntereggerRockMassPlaxis
+        )
+endif()
 
-set(elements
-    CosseratFiniteElement
-    DisplacementFiniteElement
-    DisplacementTLFiniteElement
-    DisplacementULFiniteElement
-    DisplacementEASFiniteElement
-    GradientEnhancedDisplacementFiniteElement
-    GradientEnhancedDisplacementULFiniteElement
-    GradientEnhancedDisplacementULFBarFiniteElement
-    GradientEnhancedDisplacementEASFiniteElement
-    GradientEnhancedDisplacementMixedFiniteElement
-    GradientEnhancedCosseratFiniteElement
-    GradientEnhancedMicropolarFiniteElement
-    GradientEnhancedMicropolarULFiniteElement
-    )
+if(NOT ELEMENT_MODULES)
+    set(ELEMENT_MODULES
+        CosseratFiniteElement
+        DisplacementFiniteElement
+        DisplacementTLFiniteElement
+        DisplacementULFiniteElement
+        DisplacementEASFiniteElement
+        GradientEnhancedDisplacementFiniteElement
+        GradientEnhancedDisplacementULFiniteElement
+        GradientEnhancedDisplacementULFBarFiniteElement
+        GradientEnhancedDisplacementEASFiniteElement
+        GradientEnhancedDisplacementMixedFiniteElement
+        GradientEnhancedCosseratFiniteElement
+        GradientEnhancedMicropolarFiniteElement
+        GradientEnhancedMicropolarULFiniteElement
+        )
+endif()
 
 #
 # Add sources
@@ -160,11 +166,9 @@ set(elements
 file(GLOB sources "src/*.cpp")
 file(GLOB publicheaders "include/Marmot/*.h")
 
-#
-# optional core libraries
-#
-foreach(library ${optionalCoreLibraries})
-    file(TO_CMAKE_PATH "${optionalLibsRootDir}/${library}" librarypath)
+# optional core modules 
+foreach(library ${CORE_MODULES})
+    file(TO_CMAKE_PATH "${MODULES_DIR}/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
@@ -172,11 +176,9 @@ foreach(library ${optionalCoreLibraries})
     endif()
 endforeach(library)
 
-#
-#optional materials 
-#
-foreach(library ${materials})
-    file(TO_CMAKE_PATH "${optionalLibsRootDir}/materials/${library}" librarypath)
+#optional material modules
+foreach(library ${MATERIAL_MODULES})
+    file(TO_CMAKE_PATH "${MODULES_DIR}/materials/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
@@ -184,11 +186,10 @@ foreach(library ${materials})
     endif()
 endforeach(library)
 
-#
-#optional elements 
-#
-foreach(library ${elements})
-    file(TO_CMAKE_PATH "${optionalLibsRootDir}/elements/${library}" librarypath)
+
+#optional elements modules
+foreach(library ${ELEMENT_MODULES})
+    file(TO_CMAKE_PATH "${MODULES_DIR}/elements/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath})
         message("--> found ${library}")
@@ -198,14 +199,11 @@ endforeach(library)
 
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
-#
 # compile the shared library
-#
 add_library(${PROJECT_NAME} SHARED ${sources})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
 
-#
 # and finally install the library to the system location
 set_target_properties(${PROJECT_NAME} PROPERTIES
     PUBLIC_HEADER "${publicheaders}"
