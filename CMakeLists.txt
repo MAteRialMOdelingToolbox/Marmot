@@ -75,7 +75,7 @@ message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 set(MODULES_DIR "modules/")
 
-if(NOT CORE_MODULES)
+if(NOT CORE_MODULES OR CORE_MODULES STREQUAL "all")
     set(CORE_MODULES
         MarmotMechanicsCore
         MarmotFiniteElementCore
@@ -84,7 +84,7 @@ if(NOT CORE_MODULES)
         )
 endif()
 
-if(NOT MATERIAL_MODULES)
+if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
     set (MATERIAL_MODULES
         Barodesy
         BarodesyGradientVoid
@@ -142,7 +142,7 @@ if(NOT MATERIAL_MODULES)
         )
 endif()
 
-if(NOT ELEMENT_MODULES)
+if(NOT ELEMENT_MODULES OR ELEMENT_MODULES STREQUAL "all")
     set(ELEMENT_MODULES
         CosseratFiniteElement
         DisplacementFiniteElement
