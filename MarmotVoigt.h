@@ -162,6 +162,9 @@ namespace Marmot {
         Marmot::Matrix36   dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
         RowVector6d     dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
+        // principal values in voigt
+        std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives( const Eigen::Matrix< double, 6, 1 >& S );
+
     } // namespace ContinuumMechanics::VoigtNotation
 
     namespace ContinuumMechanics {
