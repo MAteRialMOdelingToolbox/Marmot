@@ -2,3 +2,6 @@
 [submodule "modules/materials/LinearElastic"]
 	path = modules/materials/LinearElastic
 	url = https://github.com/MAteRialMOdelingToolbox/LinearElastic
+[submodule "modules/MarmotMechanicsCore"]
+	path = modules/MarmotMechanicsCore
+	url = https://github.com/MAteRialMOdelingToolbox/MarmotMechanicsCore
