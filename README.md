@@ -25,7 +25,9 @@ cmake ..
 make
 sudo make install
 ```
-### Documentation
+## Documentation
+
+The documentation can be found under: https://marmot.github.io/marmot/.
 
 ## License
 
