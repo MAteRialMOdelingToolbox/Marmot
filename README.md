@@ -25,6 +25,10 @@ cmake ..
 make
 sudo make install
 ```
+## How to use marmot with Abaqus
+
+todo
+
 ## Documentation
 
 The documentation can be found under https://materialmodelingtoolbox.github.io/marmot/.
