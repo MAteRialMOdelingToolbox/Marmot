@@ -31,7 +31,7 @@ The documentation can be found under https://marmot.github.io/marmot/.
 
 ## License
 
-This library is freely available under the LGPLV2 license. Please find the details in the ```LICENSE``` file.
+This library is freely available under the LGPLV2 license. Please find the details in the ```LICENSE.md``` file.
 
 ## Authors
 
