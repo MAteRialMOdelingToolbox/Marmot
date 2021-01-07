@@ -1,6 +1,3 @@
 [submodule "modules/materials/LinearElastic"]
 	path = modules/materials/LinearElastic
 	url = https://github.com/MAteRialMOdelingToolbox/LinearElastic
-[submodule "modules/materials/LinearElasticSolidificationCreep"]
-	path = modules/materials/LinearElasticSolidificationCreep
-	url = https://github.com/MAteRialMOdelingToolbox/LinearElasticSolidificationCreep.git
