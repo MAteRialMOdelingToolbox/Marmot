@@ -1,1 +1,4 @@
 
+[submodule "modules/materials/LinearElastic"]
+	path = modules/materials/LinearElastic
+	url = https://github.com/MAteRialMOdelingToolbox/LinearElastic
