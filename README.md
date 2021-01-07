@@ -27,7 +27,7 @@ sudo make install
 ```
 ## Documentation
 
-The documentation can be found under: https://marmot.github.io/marmot/.
+The documentation can be found under https://marmot.github.io/marmot/.
 
 ## License
 
