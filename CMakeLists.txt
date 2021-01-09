@@ -168,7 +168,7 @@ file(GLOB publicheaders "include/Marmot/*.h")
 
 # optional core modules 
 foreach(library ${CORE_MODULES})
-    file(TO_CMAKE_PATH "${MODULES_DIR}/${library}" librarypath)
+    file(TO_CMAKE_PATH "${MODULES_DIR}/core/${library}" librarypath)
     get_filename_component(librarypath ${librarypath} ABSOLUTE) 
     if(EXISTS ${librarypath}/module.cmake)
         message("--> found ${library}")
