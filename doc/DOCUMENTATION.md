@@ -2,97 +2,98 @@
 
 \page mechanicscore MechanicsCore
 
-### Adaptive Substepper
-#### For Implicit Return Mapping Algorithms
+## Adaptive Substepper
+
+### For Implicit Return Mapping Algorithms
 
 Implementation: \ref AdaptiveSubstepper.h
 
-#### For (Semi) - Explicit Return Mapping Algorithms
+### For (Semi) - Explicit Return Mapping Algorithms
  
 Implementation: \ref AdaptiveSubstepperExplicit.h
 
-### Duvaut Lions Viscosity
+## Duvaut Lions Viscosity
 
 Implementation: \ref DuvautLionsViscosity.h
 
-### Hughes Winget
+## Hughes Winget
 
 Implementation: \ref HughesWinget
 
-### Convergency Check for Newton Iterations in the Stress Update 
+## Convergency Check for Newton Iterations in the Stress Update 
 
 Implementation:  \ref InnerNewtonIterationChecker.h
 	 	 \ref InnerNewtonIterationCheckerMarkII.h
 
-### Mathematical Constants 
+## Mathematical Constants 
 
 Implementation: \ref MarmotConstants.h
 
-### Constants for Linear Elastic Material Models 
+## Constants for Linear Elastic Material Models 
 
 Implementation: \ref MarmotElasticity.h
 
-### Kinematic Definitions 
+## Kinematic Definitions 
 
 Implementation: \ref MarmotKinematics.h
 
-### Gradient Enhancend Mechanical Materials 
+## Gradient Enhancend Mechanical Materials 
 
 Implementation: \ref MarmotMaterialGradientEnhancedMechanical
 
-#### Hypoelastic Materials
+### Hypoelastic Materials
 
 Implementation: \ref MarmotMaterialGradientEnhancedHypoElastic
 
-### Mechanical Materials
+## Mechanical Materials
 
 Implementation: \ref MarmotMaterialMechanical
 
-#### Hypoelastic Materials
+### Hypoelastic Materials
 
 Implementation: \ref MarmotMaterialHypoElastic
 
-#### Hyperelastic Materials
+### Hyperelastic Materials
 
 Implementation: \ref MarmotMaterialHyperElastic
 
-### Mathematical Functions and Numerical Algorithms
+## Mathematical Functions and Numerical Algorithms
 
 Implementation: \ref MarmotMath.h
 
-### Definitions of Common Tensors
+## Definitions of Common Tensors
 
 Implementation: \ref MarmotTensor.h
 
-### Definitions of Data Types
+## Definitions of Data Types
 
 Implementation: \ref MarmotTypedefs.h
 
-### Utilities
+## Utilities
 
 Implementation: \ref MarmotUtility.h
 
-### Functions for Implementations following Voigt Notation
+## Functions for Implementations following Voigt Notation
 
 Implementation: \ref MarmotVoigt.h
 
-### Menetrey Willam
+## Menetrey Willam
 
 Implementation: \ref MenetreyWillam.h
 
-### Perez Fouget Substepper
-#### Substepper for Semi - Explicit Elastoplastic Materials
+## Perez Fouget Substepper
+### Substepper for Semi - Explicit Elastoplastic Materials
 
 Implementation: \ref PerezFougetSubstepperExplicitMarkII.h
 
-#### Substepper Elastoplastic Materials with an Implicit Return Mapping Algorithm
+### Substepper Elastoplastic Materials with an Implicit Return Mapping Algorithm
 
 Implementation: \ref PerezFougetSubstepperMarkII.h
 
-#### Modified Version to Account Time-Variant Elastic Stiffness Tensor
+### Modified Version to Account Time-Variant Elastic Stiffness Tensor
 
 Implementation: \ref PerezFougetSubstepperTime.h
 
-### Yield Surface Combination Manager for Multisurface Plasticity
+## Yield Surface Combination Manager for Multisurface Plasticity
 
 Implementation: \ref YieldSurfaceCombinationManager.h
