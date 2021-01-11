@@ -1,6 +1,7 @@
 \page modules Modules
 
-- \subpage mechanicscore
-- \subpage finiteelementcore
+You may find the modules available in marmot here.
+
+- \subpage core
 - \subpage materials
 - \subpage elements
