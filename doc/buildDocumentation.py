@@ -46,6 +46,15 @@ if __name__ == "__main__":
     if  str( cwd ).endswith('/doc'):
         os.chdir( '..' )
 
+    
+    # modules page
+    with open( 'doc/modules.md', 'w+') as f:
+        f.write( "\page modules Modules\n" )
+        f.write( "You may find the modules available in %Marmot here\n" )
+        f.write( " - \subpage core\n" )
+        f.write( " - \subpage elements\n" )
+        f.write( " - \subpage materials\n" )
+
 
     # core modules
     coreModules = searchForDocumentedModules( 'modules/core' )
@@ -73,7 +82,6 @@ if __name__ == "__main__":
     
     with open( 'doc/elements.md', 'w+') as f:
         f.write( elementsString )
-    #writeSubpagesToFile( elementsSubpageListString, 'doc/elementsTemplate.md', 'doc/elements.md' )
 
     # execute doxygen 
     if not args.skipDoxygen:
