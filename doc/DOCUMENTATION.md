@@ -53,7 +53,7 @@ Derived abstract base class for elastic materials expressed purely in rate form.
 In course of numerical time integration, this relation will be formulated incrementally as 
 
 \f[
-  \displaystyle \Delta\boldsymbol{\sigma} = f( \boldsymbol{\sigma}_n, \Delta\boldsymbol{\varepsilon}, \Delta t, t_n, ...)
+  \displaystyle \Delta\boldsymbol{\sigma} = f ( \boldsymbol{\sigma}_n, \Delta\boldsymbol{\varepsilon}, \Delta t, t_n, ...)
 \f]
 
 with 
@@ -77,7 +77,7 @@ This formulation is compatible with an Abaqus interface.
 Derived abstract base class for _simple_, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor \f$ S \f$ will be derived by
 
 \f[
-  \displaystyle S = \frac{\partial f(\boldsymbol{E},t}{\partial \boldsymbol{E}})
+  \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}}
 \f]
 
 with the Green - Lagrange strain tensor \f$ \boldsymbol{E} \f$
