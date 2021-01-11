@@ -1,4 +1,5 @@
 import os
+import argparse
 
 def searchForDocumentedModules( directory ):
 
@@ -10,7 +11,9 @@ def searchForDocumentedModules( directory ):
         
         # append if doc folder is available
         if os.path.isdir( doc ):
-            modules.append(  f.name )
+            modules.append(  str( f.name ) )
+    
+    modules.sort()
 
     return modules
 
@@ -22,40 +25,56 @@ def createListOfSubpages( modules ):
 
         markdownString += '\n - \subpage ' + module.lower().replace('marmot', '')
     
-    return markdownString
+    return markdownString 
 
-def writeSubpagesToFile( string, template, outputfile ):
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser( 
+            description = 'A python tool to build the doxygen documentation automatically' )
+
+    parser.add_argument( '--skipDoxygen',
+                         action= 'store_true',
+                        default = False,
+                    )
+
+    args = parser.parse_args()
+
+    cwd = os.getcwd()
+
+    # move to toplevel Marmot directory
+    if  str( cwd ).endswith('/doc'):
+        os.chdir( '..' )
+
+
+    # core modules
+    coreModules = searchForDocumentedModules( 'modules/core' )
+    coreString =  "\page core Core\n"
+    coreString += "The documentation of the available core modules in %Marmot can be found here\n"
+    coreString += createListOfSubpages( coreModules )
     
+    with open( 'doc/core.md', 'w+' ) as f:
+        f.write( coreString )
 
-    with open( template, 'r' ) as temp:
+    # materials    
+    materials = searchForDocumentedModules( 'modules/materials' )
+    materialsString = "\page materials Materials\n"
+    materialsString += "The documentation of the available material models in %Marmot can be found here\n"
+    materialsString += createListOfSubpages( materials )
+    
+    with open( 'doc/materials.md', 'w+' ) as f:
+        f.write( materialsString )
 
-        data = temp.read().replace( 'PLACEHOLDER_FOR_SUBPAGELIST', string )
-        
-        with open( outputfile, 'w+') as f:
-            f.write( data )
-        
+    # elements
+    elements = searchForDocumentedModules( 'modules/elements' )
+    elementsString = "\page elements Elements\n"
+    elementsString += "The documentation of the available material models in %Marmot can be found here\n"
+    elementsString += createListOfSubpages( elements )
+    
+    with open( 'doc/elements.md', 'w+') as f:
+        f.write( elementsString )
+    #writeSubpagesToFile( elementsSubpageListString, 'doc/elementsTemplate.md', 'doc/elements.md' )
 
-cwd = os.getcwd()
-
-# move to toplevel Marmot directory
-if  str( cwd ).endswith('/doc'):
-    os.chdir( '..' )
-
-
-# search for (documented) core modules and write core.md
-coreModules = searchForDocumentedModules( 'modules/core' )
-coreSubpageListString = createListOfSubpages( coreModules )
-writeSubpagesToFile( coreSubpageListString, 'doc/coreTemplate.md', 'doc/core.md' )
-
-# search for (documented) materials and write materials.md
-materials = searchForDocumentedModules( 'modules/materials' )
-materialsSubpageListString = createListOfSubpages( materials )
-writeSubpagesToFile( materialsSubpageListString, 'doc/materialsTemplate.md', 'doc/materials.md' )
-
-# search for (documented) elements and write elements.md
-elements = searchForDocumentedModules( 'modules/elements' )
-elementsSubpageListString = createListOfSubpages( elements )
-writeSubpagesToFile( elementsSubpageListString, 'doc/elementsTemplate.md', 'doc/elements.md' )
-
-# execute doxygen 
-os.system('doxygen doc/dconfig')
+    # execute doxygen 
+    if not args.skipDoxygen:
+        os.system('doxygen doc/dconfig')

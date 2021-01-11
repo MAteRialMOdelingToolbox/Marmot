@@ -1,3 +1,35 @@
+body {
+        background-color: #CCC; 
+        color: black;
+        margin: 0;
+}
+
+div.contents {
+        margin-bottom: 0px;
+        margin-top: 0px;
+        margin-left: 0px;
+        padding: 12px;
+        margin-right: auto;
+        width: 800px;
+        background-color: white;
+        border-radius: 2px;
+}
+
+
+#titlearea {
+        background-color: white;
+}
+
+hr.footer {
+        display: none;
+}
+
+.footer {
+        background-color: #AAA;
+} 
+
+
+
 h1{ font-size:1.5em; }
 h2{ font-size:1.3em; }
 h3{ font-size:1.1em; }
