@@ -7,6 +7,7 @@
 ## Gallery
 
 ![Truss in compression using a micropolar von Mises plasticity model](share/truss.gif)
+
 Truss in compression using a micropolar von Mises plasticity model.
 
 ## Third-party dependencies
