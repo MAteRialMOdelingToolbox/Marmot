@@ -1,0 +1,37 @@
+body {
+        background-color: white; 
+        color: black;
+        margin: 0;
+}
+
+div.contents {
+        margin-bottom: 0px;
+        margin-top: 0px;
+        margin-left: 0px;
+        padding: 12px;
+        margin-right: auto;
+        max-width: 900px;
+        background-color: white;
+        border-radius: 2px;
+}
+
+
+#titlearea {
+        background-color: white;
+}
+
+hr.footer {
+        display: none;
+}
+
+.footer {
+        background-color: #AAA;
+} 
+
+
+
+h1{ font-size:1.5em; }
+h2{ font-size:1.3em; }
+h3{ font-size:1.1em; }
+h4{ font-size:1.0em; }
+h5{ font-size:1.0em; }
