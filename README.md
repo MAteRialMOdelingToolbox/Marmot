@@ -45,7 +45,7 @@ cd Marmot
 mkdir build
 cd build
 cmake \
-    -DCORE_MODULES='MarmotMechanicsCore;MarmotMicromorphicCore' \
+    -DCORE_MODULES='MarmotMechanicsCore' \
     -DELEMENT_MODULES='none' \
     -DMATERIAL_MODULES='all' \
     ..
