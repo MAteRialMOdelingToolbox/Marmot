@@ -20,6 +20,15 @@ Plane strain compression using a micropolar Drucker-Prager plasticity model
 
 If you would like to have the full experience with ```Marmot``` the Eigen (>3.3.8) library has to be installed. 
 
+```bash
+git clone https://gitlab.com/libeigen/eigen.git
+cd eigen
+mkdir build
+cd build
+cmake ..
+sudo make install
+```
+
 ## How to install Marmot
 
 ```Marmot``` including all submodules can be installed with the following steps:
