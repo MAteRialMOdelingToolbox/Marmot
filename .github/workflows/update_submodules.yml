@@ -20,6 +20,7 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           submodules: true
       - name: update submodule
         run: | 
