@@ -18,7 +18,7 @@ Plane strain compression using a micropolar Drucker-Prager plasticity model
 
 If you would like to have the full experience with ```Marmot``` the Eigen (>3.3.8) library has to be installed. 
 
-## How to install marmot
+## How to install Marmot
 
 ```Marmot``` including all submodules can be installed with the following steps:
 
@@ -31,9 +31,9 @@ cmake ..
 make
 sudo make install
 ```
-## How to use marmot with Abaqus
+## How to use Marmot with Abaqus
 
-todo
+The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface) allows to use ```Marmot``` in Abaqus simulations.
 
 ## Documentation
 
