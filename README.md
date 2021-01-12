@@ -34,7 +34,7 @@ sudo make install
 
 CMake options ```CORE_MODULES```, ```ÈLEMENT_MODULES``` and ```MATERIAL_MODULES``` 
 allow to specify the modules which should be compiled, either by passing a 
-semicolon seperated list, option ```none``` or option ```all``` (default).
+```semicolon seperated list```, option ```none``` or option ```all``` (default).
 For instance:
 
 ```bash
