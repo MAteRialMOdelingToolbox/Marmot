@@ -59,7 +59,7 @@ The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-M
 
 ## Documentation
 
-The documentation can be found under https://materialmodelingtoolbox.github.io/marmot/.
+The documentation can be found under https://materialmodelingtoolbox.github.io/Marmot/.
 
 ## License
 
@@ -80,14 +80,14 @@ Contributors are (in alphabetical order):
 ## Publications (selected)
 The results of the following publications were obtained using ```Marmot```:
 
-On discrepancies between time-dependent nonlinear 3D and 2D finite element simulations of deep tunnel advance: A numerical study on the Brenner Base Tunnel.
+* On discrepancies between time-dependent nonlinear 3D and 2D finite element simulations of deep tunnel advance: A numerical study on the Brenner Base Tunnel.
 M Neuner, M Schreter, P Gamnitzer, G Hofstetter - Computers and Geotechnics, 2020
 [https://doi.org/10.1016/j.compgeo.2019.103355](https://www.sciencedirect.com/science/article/abs/pii/S0266352X19304197)
 
-On the importance of advanced constitutive models in finite element simulations of deep tunnel advance.
+* On the importance of advanced constitutive models in finite element simulations of deep tunnel advance.
 M Schreter, M Neuner, D Unteregger, G Hofstetter - Tunnelling and Underground Space Technology, 2018
 [https://doi.org/10.1016/j.tust.2018.06.008](https://www.sciencedirect.com/science/article/abs/pii/S0886779818301950)
 
-A 3D gradient-enhanced micropolar damage-plasticity approach for modeling quasi-brittle failure of cohesive-frictional materials.
+* A 3D gradient-enhanced micropolar damage-plasticity approach for modeling quasi-brittle failure of cohesive-frictional materials.
 M Neuner, P Gamnitzer, G Hofstetter - Computers & Structures, 2020
 [https://doi.org/10.1016/j.compstruc.2020.106332](https://www.sciencedirect.com/science/article/pii/S0045794920301358)
