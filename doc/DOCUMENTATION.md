@@ -5,7 +5,9 @@ Abstract base class for mechanical materials with scalar nonlocal interaction.
 
 **Implementation:** \ref MarmotMaterialMechanical
 
-## Hypoelastic Materials
+\page hypoelastic Hypoelastic Material Models
+
+## Hypoelastic Material Models 
 
 Derived abstract base class for elastic materials expressed purely in rate form. In general, the nominal stress rate tensor \f$ \dot{\boldsymbol{\sigma}} \f$ can be written as a function of the nominal stress tensor \f$ \boldsymbol{\sigma} \f$, the stretching rate tensor \f$ \dot{\boldsymbol{\varepsilon}} \f$ and the time \f$ t \f$.
 
@@ -35,7 +37,8 @@ This formulation is compatible with an Abaqus interface.
 
 **Implementation:** \ref MarmotMaterialHypoElastic
 
-## Hyperelastic Materials
+\page hyperelastic Hyperelastic Material Models
+## Hyperelastic Material Models
 
 Derived abstract base class for _simple_, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor \f$ S \f$ will be derived by
 
@@ -66,7 +69,8 @@ Base class for mechanical materials with gradient enhanced regularization to ass
 
 **Implementation:** \ref MarmotMaterialGradientEnhancedMechanical
 
-## Gradient Enhanced Hypoelastic Materials
+\page gradhypoelastic Gradient Enhanced Hypoelastic Material Models
+## Gradient Enhanced Hypoelastic Materials Models
 **Implementation:** \ref MarmotMaterialGradientEnhancedHypoElastic
   
 
