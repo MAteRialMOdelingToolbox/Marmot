@@ -2,21 +2,17 @@
 
 \page linearelastic Linear Elastic
 
-## Installation path
-
- `Marmot/modules/materials/`
-
 ## Implementation
 
 The implementation can be found in \ref LinearElastic
 
 ## Theory 
 
-The constitutive law is given in total form by
+The constitutive law is given in total form as
 
 \f[ 
-  \displaystyle \boldsymbol{ \sigma } = \mathbb{ C } : \boldsymbol{ \varepsilon }  
-\f]
+  \displaystyle \boldsymbol{ \sigma } = \mathbb{ C } : \boldsymbol{ \varepsilon },  
+\f] 
 
 relating the nominal stress tensor \f$ \boldsymbol{ \sigma } \f$ 
 to the strain tensor\f$ \boldsymbol{ \varepsilon }  \f$ 
