@@ -1,28 +1,32 @@
-#include "LinearElastic.h"
-#include "bftAbaqusUtility.h"
-#include "bftFunctions.h"
-#include "bftTypedefs.h"
-#include "bftVoigt.h"
+#include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotUtility.h"
+#include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
 
-using namespace bft;
+using namespace Marmot;
 using namespace Eigen;
 
-void LinearElastic::computeStress( double* stress,
-                                   double* dStressDDStrain,
+LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
+    : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+      E( materialProperties[0] ),
+      nu( materialProperties[1] )
+{
+    assert( nMaterialProperties >= 2 );
+}
+
+void LinearElastic::computeStress( double*       stress,
+                                   double*       dStressDDStrain,
                                    const double* dStrain,
                                    const double* timeOld,
                                    const double  dT,
                                    double&       pNewDT )
 {
-    // material properties
-    const double& E  = materialProperties[0];
-    const double& nu = materialProperties[1];
+    mVector6d             S( stress );
+    Map< const Vector6d > dE( dStrain );
+    mMatrix6d             C( dStressDDStrain );
 
-    mVector6           S( stress );
-    Map<const Vector6> dE( dStrain );
-    mMatrix6           C( dStressDDStrain );
-
-    C = mechanics::Cel( E, nu );
+    C = ContinuumMechanics::Cel( E, nu );
 
     // Zero strain  increment check
     if ( ( dE.array() == 0 ).all() )
