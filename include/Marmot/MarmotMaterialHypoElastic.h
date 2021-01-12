@@ -43,10 +43,18 @@ class MarmotMaterialHypoElastic : public MarmotMaterialMechanical {
     //
     // compatible with Abaqus interface 
 
+    /**
+     * \brief Base class for elastic materials expressed purely in rate form in terms of stretching rate i.e 'hypoelastic materials' 
+     */
+
   public:
     using MarmotMaterialMechanical::MarmotMaterialMechanical;
-
+    
+    /// \brief Characteristic element length
     double characteristicElementLength;
+    /**< #charactersisticElementLength represents the characteristic length of a finite element.
+     * It is needed for the regularization of materials with softening behavior to assure mesh independent results.
+     */
     void setCharacteristicElementLength( double length );
 
     virtual void computeStress( double*       stress,
