@@ -781,5 +781,93 @@ namespace Marmot {
                    dEp_dE( CelInv, Cep );
         }
 
+    std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives( const Eigen::Matrix< double, 6, 1 >& S )
+    {
+        // This is a fast implementation of the classical algorithm for determining
+        // the principal components of a symmetric 3x3 Matrix in Voigt notation (off diagonals expected with
+        // factor 1) as well as its respective derivatives
+
+        using namespace Eigen;
+
+        using Vector6d  = Matrix< double, 6, 1 >;
+        using Matrix36 = Matrix< double, 3, 6 >;
+        using Matrix66 = Matrix< double, 6, 6 >;
+
+        const static auto dS0_dS = ( Vector6d() << 1, 0, 0, 0, 0, 0 ).finished();
+        const static auto dS1_dS = ( Vector6d() << 0, 1, 0, 0, 0, 0 ).finished();
+        const static auto dS2_dS = ( Vector6d() << 0, 0, 1, 0, 0, 0 ).finished();
+
+        const double p1 = S( 3 ) * S( 3 ) + S( 4 ) * S( 4 ) + S( 5 ) * S( 5 );
+
+        if ( p1 <= 1e-16 ) { // matrix is already diagonal
+            // clang-format off
+            const static auto dE_dS = ( Matrix36() << 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ).finished();
+
+            return { S.head( 3 ), dE_dS };
+            // clang-format on
+        }
+
+        const Vector6d dP1_dS = { 0, 0, 0, 2 * S( 3 ), 2 * S( 4 ), 2 * S( 5 ) };
+
+        const double  q     = S.head( 3 ).sum() / 3;
+        const Vector6d dQ_dS = Marmot::ContinuumMechanics::VoigtNotation::I / 3;
+
+        const double  p2     = std::pow( S( 0 ) - q, 2 ) + std::pow( S( 1 ) - q, 2 ) + std::pow( S( 2 ) - q, 2 ) + 2 * p1;
+        const Vector6d dP2_dS = 2 * ( S( 0 ) - q ) * ( dS0_dS - dQ_dS ) + 2 * ( S( 1 ) - q ) * ( dS1_dS - dQ_dS ) +
+                               2 * ( S( 2 ) - q ) * ( dS2_dS - dQ_dS ) + 2 * dP1_dS;
+
+        const double  p     = std::sqrt( p2 / 6 );
+        const Vector6d dP_dS = 1. / 12 * 1. / p * dP2_dS;
+
+        const Vector6d  B     = 1. / p * ( S - q * Marmot::ContinuumMechanics::VoigtNotation::I );
+        const Matrix66 dB_dS = -B * 1. / p * dP_dS.transpose() +
+                               1. / p * ( Matrix66::Identity() - Marmot::ContinuumMechanics::VoigtNotation::I * dQ_dS.transpose() );
+
+        const double detB = B( 0 ) * B( 1 ) * B( 2 ) + B( 3 ) * B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * B( 3 ) -
+                            B( 1 ) * B( 4 ) * B( 4 ) - B( 0 ) * B( 5 ) * B( 5 );
+
+        Vector6d dDetB_dB;
+        dDetB_dB( 0 ) = B( 1 ) * B( 2 ) - B( 5 ) * B( 5 );
+        dDetB_dB( 1 ) = B( 0 ) * B( 2 ) - B( 4 ) * B( 4 );
+        dDetB_dB( 2 ) = B( 0 ) * B( 1 ) - B( 3 ) * B( 3 );
+        dDetB_dB( 3 ) = B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * 2;
+        dDetB_dB( 4 ) = B( 3 ) * B( 5 ) * 2 - B( 1 ) * B( 4 ) * 2;
+        dDetB_dB( 5 ) = B( 3 ) * B( 4 ) * 2 - B( 0 ) * B( 5 ) * 2;
+
+        const double  r     = detB * 1. / 2;
+        const Vector6d dR_dS = 1. / 2 * dDetB_dB.transpose() * dB_dS;
+
+        double phi;
+        double dPhi_dR;
+        if ( r <= -1 ) {
+            phi     = Constants::Pi / 3;
+            dPhi_dR = 0.0;
+        }
+        else if ( r >= 1 ) {
+            phi     = 1.0;
+            dPhi_dR = 0.0;
+        }
+        else {
+            phi     = std::acos( r ) / 3;
+            dPhi_dR = 1. / 3 * -1. / ( std::sqrt( 1 - r * r ) );
+        }
+        const Vector6d dPhi_dS = dPhi_dR * dR_dS;
+
+        Vector3d e;
+        Matrix36 dE_dS;
+
+        e( 0 )         = q + 2 * p * std::cos( phi );
+        dE_dS.row( 0 ) = dQ_dS + 2 * ( dP_dS * std::cos( phi ) - p * std::sin( phi ) * dPhi_dS );
+
+        const double phiShifted = phi + ( 2. / 3 * Constants::Pi );
+        e( 2 )                  = q + 2 * p * std::cos( phiShifted );
+        dE_dS.row( 2 )          = dQ_dS + 2 * ( dP_dS * std::cos( phiShifted ) - p * std::sin( phiShifted ) * dPhi_dS );
+
+        e( 1 )         = 3 * q - e( 0 ) - e( 2 );
+        dE_dS.row( 1 ) = 3 * dQ_dS - dE_dS.row( 0 ).transpose() - dE_dS.row( 2 ).transpose();
+
+        return { e, dE_dS };
+    }
+
     } // namespace ContinuumMechanics::VoigtNotation
 } // namespace Marmot
