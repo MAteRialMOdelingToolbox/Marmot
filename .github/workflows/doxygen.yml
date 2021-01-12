@@ -25,7 +25,7 @@ jobs:
            python doc/buildDocumentation.py --skipDoxygen
            git config --global user.email "marmot@gmail.com"
            git config --global user.name "Marmot"
-           git add -u
+           git add .
            git diff-index --quiet HEAD || git commit -m "update md-files"
            git status
            git push
