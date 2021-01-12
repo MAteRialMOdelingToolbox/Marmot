@@ -845,11 +845,13 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = include modules doc/mainpage.md
-INPUT                  += doc/modules.md
-INPUT                  += doc/core.md
-INPUT                  += doc/materials.md
-INPUT                  += doc/elements.md
+INPUT                  = include modules 
+INPUT += doc/content.md
+INPUT += doc/continuummechanics.md
+INPUT += doc/mechanicalmaterials.md
+INPUT += doc/gradmechanicalmaterials.md
+INPUT += doc/numericalalgorithms.md
+INPUT += doc/materials.md
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
 # libiconv (or the iconv built into libc) for the transcoding. See the libiconv
@@ -952,7 +954,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */README.md
+EXCLUDE_PATTERNS       = */README.md */test/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1045,7 +1047,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = mainpage.md
+USE_MDFILE_AS_MAINPAGE = 
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -1738,7 +1740,7 @@ EXTRA_SEARCH_MAPPINGS  =
 # If the GENERATE_LATEX tag is set to YES, doxygen will generate LaTeX output.
 # The default value is: YES.
 
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of

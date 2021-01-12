@@ -1,20 +1,25 @@
 import os
 import argparse
 
-def searchForDocumentedModules( directory ):
+def searchForDocumentedProjects( directory,
+                                 motherclass = None):
 
     modules = []
 
     for f in os.scandir( directory ):
        
-        doc = os.path.join( f.path,   'doc/DOCUMENTATION.md' ) 
-        
-        # append if doc folder is available
-        if os.path.isfile( doc ):
-            modules.append(  str( f.name ) )
+        doc = os.path.join( f.path,   'doc/' ) 
+        header = os.path.join( f.path, 'include/Marmot/' + f.name + '.h' )
+        # check is documentation folder is present
+        if os.path.isdir( doc ):
+            if motherclass is not None:
+                with open( header, 'r') as g:    
+                    # check if header contains given motherclass
+                    if motherclass in g.read():
+                        modules.append(  str( f.name ) )        
+            else:
+                modules.append(  str( f.name ) )
     
-    modules.sort()
-
     return modules
 
 def createListOfSubpages( modules ):
@@ -45,48 +50,92 @@ if __name__ == "__main__":
     if  str( cwd ).endswith('/doc'):
         os.chdir( '..' )
 
-    
-    # modules page
-    with open( 'doc/modules.md', 'w+') as f:
-        f.write( "\page modules Modules\n" )
+    '''
+    Structure of the Documentation
+
+        Content
+            |- Continuum Mechanics
+            |   |
+            |   +- Mechanical Material Models
+            |   |   |
+            |   |   +- Hypo Elastic Material Models
+            |   |   |
+            |   |   +- Hyper Elastic Material Models
+            |   |   
+            |   +- Gradient Enhanced Mechanical Material Models
+            |       |
+            |       +- Gradient Enhanced Hypo Elastic Material Models
+            |    
+            |- Finite Elements
+            |- Numerical Algorithms
+            |   |
+            |   +- Substepping Algorithms
+            |   |
+            |   +-Hughes Winget
+            |
+            |- Others
+
+
+    '''
+
+    # content page
+    with open( 'doc/content.md', 'w+') as f:
+        f.write( "\page content Content\n" )
         f.write( "The modules provided by %Marmot can be found here.\n" )
-        f.write( " - \subpage core\n" )
-        f.write( " - \subpage elements\n" )
-        f.write( " - \subpage materials\n" )
-
-
-    # core modules
-    coreModules = searchForDocumentedModules( 'modules/core' )
-    coreString =  "\page core Core\n"
-    coreString += "The documentation of the available core modules in %Marmot can be found here\n"
-    coreString += createListOfSubpages( coreModules )
-    coreString += "\n### Installation path for all core modules\n"
-    coreString += " `Marmot/modules/core/`"
+        f.write( " - \subpage continuummechanics\n" )
+        f.write( " - \subpage finiteelementtechnology\n") 
+        f.write( " - \subpage numericalalgorithms\n" )
+        f.write( " - \subpage others\n" )
     
-    with open( 'doc/core.md', 'w+' ) as f:
-        f.write( coreString )
-
-    # materials page   
-    materials = searchForDocumentedModules( 'modules/materials' )
-    materialsString = "\page materials Materials\n"
-    materialsString += "The documentation of the available material models in %Marmot can be found here\n"
-    materialsString += createListOfSubpages( materials )
-    materialsString += "\n### Installation path for all materials\n"
-    materialsString += " `Marmot/modules/materials/`"
+    # continuum mechanics page
+    with open( 'doc/continuummechanics.md', 'w+' ) as f:
+        f.write( "\page continuummechanics Continuum Mechanics\n" )
+        f.write( "The following basic types of material models are available in %Marmot.\n" )
+        f.write( " - \subpage mechanicalmaterials\n" )
+        f.write( " - \subpage gradmechanicalmaterials\n" )
+        f.write( " - \subpage continuummechanicsothers\n" )
     
+    # mechanical materials page
+    with open( 'doc/mechanicalmaterials.md', 'w+' ) as f:
+        f.write( "\page mechanicalmaterials Mechanical Material Models\n" )
+        f.write( " - \subpage hypoelastic\n" )
+        f.write( " - \subpage hyperelastic\n" )
+    
+    # gradient enhanced mechanical materials page
+    with open( 'doc/gradmechanicalmaterials.md', 'w+') as f:
+        f.write( "\page gradmechanicalmaterials Gradient Enhanced Mechanical Material Models\n") 
+        f.write( " - \subpage gradhypoelastic\n" )
+
+    # collect and categorize materials   
+    hypoelasticmaterials = searchForDocumentedProjects( 'modules/materials', 'MarmotMaterialHypoElastic' )
+    gradhypoelasticmaterials = searchForDocumentedProjects( 'modules/materials',
+            'MarmotMaterialGradientEnhancedHypoElastic' )
+    hyperelasticmaterials = searchForDocumentedProjects( 'modules/materials', 'MarmotMaterialHyperElastic' )
+
+
     with open( 'doc/materials.md', 'w+' ) as f:
-        f.write( materialsString )
+        # hypo elastic materials
+        f.write( "\page hypoelastic Hypoelastic Material Models\n" )
+        f.write( "The documentation of the available hypoelastic material models in %Marmot can be found here\n")
+        f.write( createListOfSubpages( hypoelasticmaterials ) )
+    
+        # hyper elastic materials
+        f.write( "\page hyperelastic Hyperelastic Material Models\n" )
+        f.write( "The documentation of the available hyperelastic material models in %Marmot can be found here\n")
+        f.write( createListOfSubpages( hyperelasticmaterials ) )
+        
+        
+        # gradient enhanced hypo elastic materials
+        f.write( "\page gradhypoelastic Gradient Enhanced Hypoelastic Material Models\n" )
+        f.write( "The documentation of the available gradient enhanced hypoelastic material models in %Marmot can be found here\n")
+        f.write( createListOfSubpages( gradhypoelasticmaterials ) )
 
-    # elements page
-    elements = searchForDocumentedModules( 'modules/elements' )
-    elementsString = "\page elements Elements\n"
-    elementsString += "The documentation of the available elements in %Marmot can be found here\n"
-    elementsString += createListOfSubpages( elements ) 
-    elementsString += "\n### Installation path for all elements\n"
-    elementsString += " `Marmot/modules/elements/`"
 
-    with open( 'doc/elements.md', 'w+') as f:
-        f.write( elementsString )
+    # numerical algorithms page
+    with open( 'doc/numericalalgorithms.md', 'w+' ) as f:
+        f.write( "\page numericalalgorithms Numerical Algorithms\n" )
+        f.write( " - \subpage substepper\n" )
+        f.write( " - \subpage hugheswinget\n" )
 
     # execute doxygen 
     if not args.skipDoxygen:

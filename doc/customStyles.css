@@ -1,5 +1,5 @@
 body {
-        background-color: #CCC; 
+        background-color: white; 
         color: black;
         margin: 0;
 }
@@ -10,7 +10,7 @@ div.contents {
         margin-left: 0px;
         padding: 12px;
         margin-right: auto;
-        width: 800px;
+        max-width: 900px;
         background-color: white;
         border-radius: 2px;
 }
