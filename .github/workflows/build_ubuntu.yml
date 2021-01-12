@@ -1,0 +1,34 @@
+# This is a workflow to build the repo on ubuntu
+name: build_ubuntu
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with: 
+          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets 
+          submodules: true
+      - name: test build of Marmot
+        run: | 
+             git config --global user.email "marmot@gmail.com"
+             git config --global user.name "Alpine Marmot"
+             git status
+             git clone https:://gitlab.com/libeigen/eigen.git
+             cd eigen
+             mkdir build
+             cd build
+             cmake ..
+             make install
+             cd ../..
+             mkdir build
+             cd build
+             cmake ..
+             make
+           
