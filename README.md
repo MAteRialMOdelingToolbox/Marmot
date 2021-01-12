@@ -2,6 +2,8 @@
 
 ## What is Marmot?
 
+:warning: [WIP] Note: This project is still in the transfer stage to an open-source project. Thus, many changes will be made in the near future.
+
 ```Marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
 
 ## Gallery
@@ -89,39 +91,3 @@ M Schreter, M Neuner, D Unteregger, G Hofstetter - Tunnelling and Underground Sp
 A 3D gradient-enhanced micropolar damage-plasticity approach for modeling quasi-brittle failure of cohesive-frictional materials.
 M Neuner, P Gamnitzer, G Hofstetter - Computers & Structures, 2020
 [https://doi.org/10.1016/j.compstruc.2020.106332](https://www.sciencedirect.com/science/article/pii/S0045794920301358)
-
-<!--
-## Internal
-
-This repository depends on several sub-repositories which can be cloned by
-
-`git clone https://github.com/MAteRialMOdelingToolbox/marmot --recurse-submodules`
-
-A new submodule, e.g. a material, can be added by 
-
-`cd modules/materials &&
-git submodule add https://github.com/MAteRialMOdelingToolbox/LinearElastic`
-
-Submodules can be updated in your local repo by 
-
-`git submodule foreach git pull origin master`
-
-### Add a UIBK gitlab project to github
-
-```cd existingRepoUIBK
-git remote add github https://github.com/MAteRialMOdelingToolbox/NewRepoGithub 
-push -u github --all
-git push -u github --tags
-```
-
-### Update submodules
-
-Submodules are automatically updated every day at noon (12:00). Otherwise, you may re-run the `update_submodules.yml` action.
-
-
-### Documentation
-
-The documentation must be created currently by hand
-
-`cd doc/doxygen && doxygen dconfig`
--->

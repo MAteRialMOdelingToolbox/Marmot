@@ -1,5 +1,5 @@
 # This is a workflow to update private submodules
-name: schedule
+name: update_submodules
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -7,9 +7,9 @@ on:
   schedule:
     - cron: 0 12 * * *
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       - name: update submodule
         run: | 
              git config --global user.email "marmot@gmail.com"
-             git config --global user.name "Marmot"
+             git config --global user.name "Alpine Marmot"
              git submodule update --remote
              git status
              git add .
