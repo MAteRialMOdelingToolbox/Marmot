@@ -10,6 +10,10 @@
 
 Truss in compression using a micropolar von Mises plasticity model.
 
+![Plane strain compression using a micropolar Drucker-Prager plasticity model](share/plane_strain_gmdruckerprager.gif)
+
+Plane strain compression using a micropolar Drucker-Prager plasticity model
+
 ## Third-party dependencies
 
 If you would like to have the full experience with ```marmot``` the Eigen (>3.3.8) library has to be installed. 
