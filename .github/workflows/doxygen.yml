@@ -1,7 +1,5 @@
 name: Doxygen
 
-
-
 on:
   push:
     branches: [ master ]
