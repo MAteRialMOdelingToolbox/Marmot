@@ -24,7 +24,7 @@ jobs:
       - name: update submodule
         run: | 
              git config --global user.email "marmot@gmail.com"
-             git config --global user.name "Marmot"
+             git config --global user.name "Alpine Marmot"
              git submodule update --remote
              git status
              git add .
