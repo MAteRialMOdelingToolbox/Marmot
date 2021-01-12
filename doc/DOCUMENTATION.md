@@ -1,21 +1,18 @@
-# MechanicsCore
+### MechanicsCore
+\page continuummechanicsothers Others
 
-\page continuummechanics Continuum Mechanics
+#### Additional implementations for Material Models based on Plasticity Theory
 
-Theoretical Background for Continuum Mechanics.
-
-
-## Additional Implementations for Material Models Based on Plasticity Theory
-### Duvaut Lions Viscosity
+##### Duvaut Lions Viscosity
 
 **Implementation:** \ref DuvautLionsViscosity.h
 
-### Menetrey Willam Yield Surfaces
+##### Menetrey Willam Yield Surfaces
 
 **Implementation:** \ref MenetreyWillam.h
 
 
-\page mechanicalmaterials Mechanical Materials
+\page mechanicalmaterials Mechanical Material Models
 
 Abstract base class for mechanical materials with scalar nonlocal interaction. 
 
@@ -80,9 +77,8 @@ The algorithmic tangent will be calculated by
   \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
 \f]
 
-\page gradmechanicalmaterials Gradient Enhanced Mechanical Materials
+\page gradmechanicalmaterials Gradient Enhanced Mechanical Material Models
 
-## Basic Theory 
 
 **Implementation:** \ref MarmotMaterialGradientEnhancedMechanical
 
@@ -90,6 +86,7 @@ Base class for mechanical materials with gradient enhanced regularization to ass
 
 \page gradhypoelastic Gradient Enhanced Hypoelastic Material Models
 
+## Basic Theory 
 **Implementation:** \ref MarmotMaterialGradientEnhancedHypoElastic
   
 \page substepper Substepping Algorithms
@@ -134,12 +131,12 @@ Perez Fouget Substepper for semi - explicit elastoplastic materials.
 
 \page others Others
 
-## Voigt Notation
+### Voigt Notation
 
 **Implementation:** \ref MarmotVoigt.h
 
 
-## Yield Surface Combination Manager
+### Yield Surface Combination Manager
 
 Necessary for multisurface plasticity material models.
 
