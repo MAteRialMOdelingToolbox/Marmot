@@ -2,7 +2,7 @@
 
 ## What is marmot?
 
-```marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
+```Marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
 
 ## Gallery
 
@@ -16,15 +16,15 @@ Plane strain compression using a micropolar Drucker-Prager plasticity model
 
 ## Third-party dependencies
 
-If you would like to have the full experience with ```marmot``` the Eigen (>3.3.8) library has to be installed. 
+If you would like to have the full experience with ```Marmot``` the Eigen (>3.3.8) library has to be installed. 
 
 ## How to install marmot
 
-```marmot``` including all submodules can be installed with the following steps:
+```Marmot``` including all submodules can be installed with the following steps:
 
 ```bash
-git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/marmot/ 
-cd marmot
+git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+cd Marmot
 mkdir build
 cd build
 cmake ..
