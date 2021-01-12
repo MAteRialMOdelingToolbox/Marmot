@@ -1,8 +1,8 @@
-# marmot
+# Marmot
 
-## What is marmot?
+## What is Marmot?
 
-```marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
+```Marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
 
 ## Gallery
 
@@ -16,15 +16,15 @@ Plane strain compression using a micropolar Drucker-Prager plasticity model
 
 ## Third-party dependencies
 
-If you would like to have the full experience with ```marmot``` the Eigen (>3.3.8) library has to be installed. 
+If you would like to have the full experience with ```Marmot``` the Eigen (>3.3.8) library has to be installed. 
 
 ## How to install marmot
 
-```marmot``` including all submodules can be installed with the following steps:
+```Marmot``` including all submodules can be installed with the following steps:
 
 ```bash
-git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/marmot/ 
-cd marmot
+git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+cd Marmot
 mkdir build
 cd build
 cmake ..
@@ -56,10 +56,20 @@ Contributors are (in alphabetical order):
 * [Peter Gamnitzer](https://www.uibk.ac.at/bft/mitarbeiter/gamnitzer.html.de), University of Innsbruck
 
 ## Publications (selected)
-The results of the following three publications were obtained using ```marmot```. 
-*
-* 
-*
+The results of the following publications were obtained using ```Marmot```:
+
+On discrepancies between time-dependent nonlinear 3D and 2D finite element simulations of deep tunnel advance: A numerical study on the Brenner Base Tunnel.
+M Neuner, M Schreter, P Gamnitzer, G Hofstetter - Computers and Geotechnics, 2020
+[https://doi.org/10.1016/j.compgeo.2019.103355](https://www.sciencedirect.com/science/article/abs/pii/S0266352X19304197)
+
+On the importance of advanced constitutive models in finite element simulations of deep tunnel advance.
+M Schreter, M Neuner, D Unteregger, G Hofstetter - Tunnelling and Underground Space Technology, 2018
+[https://doi.org/10.1016/j.tust.2018.06.008](https://www.sciencedirect.com/science/article/abs/pii/S0886779818301950)
+
+A 3D gradient-enhanced micropolar damage-plasticity approach for modeling quasi-brittle failure of cohesive-frictional materials.
+M Neuner, P Gamnitzer, G Hofstetter - Computers & Structures, 2020
+[https://doi.org/10.1016/j.compstruc.2020.106332](https://www.sciencedirect.com/science/article/pii/S0045794920301358)
+
 <!--
 ## Internal
 
