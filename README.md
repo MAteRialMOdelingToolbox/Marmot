@@ -31,6 +31,26 @@ cmake ..
 make
 sudo make install
 ```
+
+CMake options ```CORE_MODULES```, ```ÈLEMENT_MODULES``` and ```MATERIAL_MODULES``` 
+allow to specify the modules which should be compiled, either by passing a 
+semicolon seperated list, option ```none``` or option ```all``` (default).
+For instance:
+
+```bash
+git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+cd Marmot
+mkdir build
+cd build
+cmake \
+    -DCORE_MODULES='MarmotMechanicsCore;MarmotMicromorphicCore' \
+    -DELEMENT_MODULES='none' \
+    -DMATERIAL_MODULES='all' \
+    ..
+make
+sudo make install
+```
+
 ## How to use Marmot with Abaqus
 
 The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface) allows to use ```Marmot``` in Abaqus simulations.
