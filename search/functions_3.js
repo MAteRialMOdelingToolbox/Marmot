@@ -1,15 +1,11 @@
 var searchData=
 [
-  ['getassignedstatevars_250',['getAssignedStateVars',['../classMarmotMaterial.html#a51c0d19bcb6c80656cabaf81c1cff262',1,'MarmotMaterial']]],
-  ['getdofindicespermutationpattern_251',['getDofIndicesPermutationPattern',['../classMarmotElement.html#acd72c65acb3255effd647085cd2d305a',1,'MarmotElement']]],
-  ['getelementcodefromname_252',['getElementCodeFromName',['../classMarmotLibrary_1_1MarmotElementFactory.html#aee02b1c7959c0c6ae50e76b7a8cd74ef',1,'MarmotLibrary::MarmotElementFactory']]],
-  ['getelementshape_253',['getElementShape',['../classMarmotElement.html#ab38da2001626ad74a3bc4f95ba144a2f',1,'MarmotElement']]],
-  ['getinstance_254',['getInstance',['../classMarmotJournal.html#a4c9e830ce135c4ed9f345a58f286cdbf',1,'MarmotJournal']]],
-  ['getmaterialcodefromname_255',['getMaterialCodeFromName',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#a5a3135eec4bd85e621bb675b7da2994b',1,'MarmotLibrary::MarmotMaterialFactory']]],
-  ['getndofperelement_256',['getNDofPerElement',['../classMarmotElement.html#a17dc4c334219f62511f554133c00579c',1,'MarmotElement']]],
-  ['getnnodes_257',['getNNodes',['../classMarmotElement.html#a99bcebd80c0c31c3e4705df9c37c41e6',1,'MarmotElement']]],
-  ['getnodefields_258',['getNodeFields',['../classMarmotElement.html#a86873cbb2da2cad785bccbead0287d58',1,'MarmotElement']]],
-  ['getnumberofassignedstatevars_259',['getNumberOfAssignedStateVars',['../classMarmotMaterial.html#ac2e855ed98253c5f426735bc251771dd',1,'MarmotMaterial']]],
-  ['getnumberofrequiredstatevars_260',['getNumberOfRequiredStateVars',['../classMarmotElement.html#a7009a873b60e587bcad34151f92f7f4d',1,'MarmotElement::getNumberOfRequiredStateVars()'],['../classMarmotMaterial.html#a16e96c33fdc77ddd5aa98ffbbca1577d',1,'MarmotMaterial::getNumberOfRequiredStateVars()']]],
-  ['getpermanentresultpointer_261',['getPermanentResultPointer',['../classMarmotElement.html#af5726eec4b43a7856091f5a55b171eef',1,'MarmotElement::getPermanentResultPointer()'],['../classMarmotMaterial.html#ad7b0c82b9f164e72603f457ebfe37b37',1,'MarmotMaterial::getPermanentResultPointer()']]]
+  ['e_748',['E',['../namespaceMarmot_1_1ContinuumMechanics.html#aa07c377a433c3d19f15820cd38847ee8',1,'Marmot::ContinuumMechanics::E()'],['../namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a32ce0bfbdc6da5c5b9b6ab60becdd0a5',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::e()']]],
+  ['elementproperties_749',['ElementProperties',['../classElementProperties.html#a9a6ec69288ed5f45249ba0834718d74d',1,'ElementProperties']]],
+  ['evolneg_750',['Evolneg',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ac0a7d171d58c18983edc8ec4ba1fa7be',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['exp_751',['exp',['../namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d',1,'Marmot::Math']]],
+  ['expliciteuler_752',['explicitEuler',['../namespaceMarmot_1_1Math.html#a459bb7440ffa3c6e0af2dc7069973663',1,'Marmot::Math']]],
+  ['expliciteulerrichardson_753',['explicitEulerRichardson',['../namespaceMarmot_1_1Math.html#a50eb2b47c8a8215c8edd2b67a3939183',1,'Marmot::Math']]],
+  ['expliciteulerrichardsonwitherrorestimator_754',['explicitEulerRichardsonWithErrorEstimator',['../namespaceMarmot_1_1Math.html#a51e4374bff385d85a88f12af1deff0ac',1,'Marmot::Math']]],
+  ['extendconsistenttangent_755',['extendConsistentTangent',['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a45844ff44ef2c84bd5bd2f87bae6b8d8',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::extendConsistentTangent()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#aee7b9919219a8ed5677efd85be1daa36',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::extendConsistentTangent(const TangentSizedMatrix &amp;Tangent)'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html#aae9eaf2b50e37019a7e2013e97ff3408',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::extendConsistentTangent(const Matrix6d &amp;CelT)'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html#ae6984bb1edfd72c01f9e6a89b39c7e5b',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::extendConsistentTangent(const Matrix6d &amp;CelT, const TangentSizedMatrix &amp;matTangent)']]]
 ];

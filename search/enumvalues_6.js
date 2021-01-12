@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['linearelastic_396',['LinearElastic',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ab58e46590b9617a1bed9d556da4e2556',1,'MarmotLibrary']]],
-  ['linearelasticnonlocal_397',['LinearElasticNonLocal',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93aaf7b2b13644aef67df5c53795fe88677',1,'MarmotLibrary']]],
-  ['linearelasticsolidificationcreep_398',['LinearElasticSolidificationCreep',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ad150b57942e6d0e01ca6ff68cffd29eb',1,'MarmotLibrary']]]
+  ['hoekbrown_1128',['HoekBrown',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93a97dd53314093a9a11e5e5cd302c83daf',1,'MarmotLibrary']]],
+  ['hydrostaticstress_1129',['HydrostaticStress',['../classMarmotElement.html#a4a399e8339bb2f93d379841bb252461bad98c67ed44a4c287a2f0cc24f9f4b308',1,'MarmotElement']]]
 ];

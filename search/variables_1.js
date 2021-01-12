@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['materialcode_283',['materialCode',['../classMarmotMaterialSection.html#a3e88653c25d2af32e1fcf6928b2a3880',1,'MarmotMaterialSection']]],
-  ['materialfactoryfunctionbycode_284',['materialFactoryFunctionByCode',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#a0aadf70578d8928f33175878c758691a',1,'MarmotLibrary::MarmotMaterialFactory']]],
-  ['materialnametocodeassociation_285',['materialNameToCodeAssociation',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#a6c79a5fb87d290a57545be47ce92bee2',1,'MarmotLibrary::MarmotMaterialFactory']]],
-  ['materialnumber_286',['materialNumber',['../classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd',1,'MarmotMaterial']]],
-  ['materialproperties_287',['materialProperties',['../classMarmotMaterialSection.html#a88b154003a582df45971734b84e62f11',1,'MarmotMaterialSection::materialProperties()'],['../classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960',1,'MarmotMaterial::materialProperties()']]]
+  ['ddeviatoricstress_5fdstress_915',['dDeviatoricStress_dStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a9908746e05cae7137ccbf36453e885bb',1,'Marmot::ContinuumMechanics::CommonTensors']]],
+  ['deps_916',['dEps',['../classHughesWinget.html#a6a2eaff4da847ed6e38274ccda65f3f0',1,'HughesWinget']]],
+  ['discardedduetoerror_917',['discardedDueToError',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4623ffc89ba02065b1da9163e6729177',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit']]],
+  ['domega_918',['dOmega',['../classHughesWinget.html#aa85036a7fe64146ba046cb3b06fb4dad',1,'HughesWinget']]],
+  ['domega_5fdvelocitygradient_919',['dOmega_dVelocityGradient',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#aee97fb6c55a5c93288ae55336b835a86',1,'Marmot::ContinuumMechanics::Kinematics::velocityGradient']]],
+  ['dr_920',['dR',['../classHughesWinget.html#a49d9f1e9512576cc75322032ee0016cb',1,'HughesWinget']]],
+  ['dstretchingrate_5fdvelocitygradient_921',['dStretchingRate_dVelocityGradient',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#af7caca65e3e0bfbd2d1f032352985163',1,'Marmot::ContinuumMechanics::Kinematics::velocityGradient']]]
 ];

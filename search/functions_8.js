@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['registerelement_273',['registerElement',['../classMarmotLibrary_1_1MarmotElementFactory.html#adb3a834aa6152f90134d4562bb32e642',1,'MarmotLibrary::MarmotElementFactory']]],
-  ['registermaterial_274',['registerMaterial',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#acdde874dba7bd353764f8c2f97b42702',1,'MarmotLibrary::MarmotMaterialFactory']]]
+  ['j2_819',['J2',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a629921ca3819abfc22af05fb79b1376f',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['j2strain_820',['J2strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a8a3d3c3cf2969bb2e37c7dc9d9f0fba3',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['j3_821',['J3',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#accdac341ed2d18725184731dba902e4c',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['j3strain_822',['J3strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a32609e347a3bc8dd3948f7dafa2500c7',1,'Marmot::ContinuumMechanics::VoigtNotation']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['materialcode_300',['MaterialCode',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93',1,'MarmotLibrary']]]
+  ['formulation_1031',['Formulation',['../classHughesWinget.html#a5030c78576e2c9cdae47a079d4dd3641',1,'HughesWinget']]]
 ];

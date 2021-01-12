@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['t2d2_432',['T2D2',['../namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabca7d8e1b4599d96e71043eed0c0518e100',1,'MarmotLibrary']]],
-  ['t2d2tl_433',['T2D2TL',['../namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad5552d1b1d826aab97fa88deb63220d2',1,'MarmotLibrary']]],
-  ['transverseisotropiclinearelastic_434',['TransverseIsotropicLinearElastic',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93adfc518c50aeab439a2bf24b13cfa8592',1,'MarmotLibrary']]]
+  ['rockdamageplasticity_1152',['RockDamagePlasticity',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ac29a728fd1597d7853d0169a17e44ae5',1,'MarmotLibrary']]],
+  ['rockdamageplasticitynonlocal_1153',['RockDamagePlasticityNonLocal',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ae36e91c98501c5d8ebcd9a405f5a4aca',1,'MarmotLibrary']]]
 ];

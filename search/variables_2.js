@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['nelementproperties_288',['nElementProperties',['../classElementProperties.html#a15aa37a68f42751ab52325d929a8afb9',1,'ElementProperties']]],
-  ['nmaterialproperties_289',['nMaterialProperties',['../classMarmotMaterialSection.html#acc388351f2d82cd5fe310cd6869c0914',1,'MarmotMaterialSection::nMaterialProperties()'],['../classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a',1,'MarmotMaterial::nMaterialProperties()']]],
-  ['nstatevars_290',['nStateVars',['../classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c',1,'MarmotMaterial']]]
+  ['e_922',['E',['../classLinearElastic.html#a224176719f0121e3e8e12053e8648944',1,'LinearElastic']]],
+  ['elastictangent_923',['elasticTangent',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html#a5f5d66c60d5d12a7e6c5774c63155dca',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepper::elasticTangent()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab681a501b7a852cc9fbd864bf2424cee',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::elasticTangent()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html#afe95cd70e0fd29cdc99ec4d47ad940e4',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::elasticTangent()']]],
+  ['elementfactoryfunctionbycode_924',['elementFactoryFunctionByCode',['../classMarmotLibrary_1_1MarmotElementFactory.html#aa87f9325249db76c1143180a760760d6',1,'MarmotLibrary::MarmotElementFactory']]],
+  ['elementnametocodeassociation_925',['elementNameToCodeAssociation',['../classMarmotLibrary_1_1MarmotElementFactory.html#ac098262f3fc5be1d3afc70da03011d4d',1,'MarmotLibrary::MarmotElementFactory']]],
+  ['elementproperties_926',['elementProperties',['../classElementProperties.html#a811af4427b35e0ea4ed1df7d91633da3',1,'ElementProperties']]]
 ];

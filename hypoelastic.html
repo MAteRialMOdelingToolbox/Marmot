@@ -93,9 +93,29 @@ $(document).ready(function(){initNavTree('hypoelastic.html',''); initResizable()
 <div class="title">Hypoelastic Material Models </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>The documentation of the available hypoelastic material models in Marmot can be found here</p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
+Basic Theory</h1>
+<p><b>Implementation:</b> <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></p>
+<p>Derived abstract base class for elastic materials expressed purely in rate form. In general, the nominal stress rate tensor \( \dot{\boldsymbol{\sigma}} \) can be written as a function of the nominal stress tensor \( \boldsymbol{\sigma} \), the stretching rate tensor \( \dot{\boldsymbol{\varepsilon}} \) and the time \( t \).</p>
+<p class="formulaDsp">
+\[ \displaystyle \dot{\boldsymbol{\sigma}} = f( \boldsymbol{\sigma}, \dot{\boldsymbol{\varepsilon}}, t, ...) \]
+</p>
+<p>In course of numerical time integration, this relation will be formulated incrementally as</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta\boldsymbol{\sigma} = f ( \boldsymbol{\sigma}_n, \Delta\boldsymbol{\varepsilon}, \Delta t, t_n, ...) \]
+</p>
+<p>with</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta\boldsymbol{\varepsilon} = \dot{\boldsymbol{\varepsilon}}\cdot \Delta t \]
+</p>
+<p>and the algorithmic tangent</p>
+<p class="formulaDsp">
+\[ \displaystyle \frac{d \boldsymbol{\sigma}}{d \boldsymbol{\varepsilon}} = \frac{d \Delta \boldsymbol{\sigma}}{d \Delta \boldsymbol{\varepsilon}} \]
+</p>
+<p>This formulation is compatible with an Abaqus interface.</p>
+<p>The documentation of the available hypoelastic material models in Marmot can be found here</p>
 <ul>
-<li>linearelastic </li>
+<li><a class="el" href="linearelastic.html">Linear Elastic</a> </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -104,7 +124,7 @@ $(document).ready(function(){initNavTree('hypoelastic.html',''); initResizable()
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="content.html">Content</a></li><li class="navelem"><a class="el" href="continuummechanics.html">Continuum Mechanics</a></li><li class="navelem"><a class="el" href="mechanicalmaterials.html">Mechanical Material Models</a></li>
-    <li class="footer">Generated on Tue Jan 12 2021 20:48:30 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
+    <li class="footer">Generated on Tue Jan 12 2021 21:09:23 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0 </li>
   </ul>
 </div>
 </body>

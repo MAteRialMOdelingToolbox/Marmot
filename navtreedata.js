@@ -29,7 +29,10 @@ var NAVTREE =
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
+        [ "All", "namespacemembers.html", "namespacemembers_dup" ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ],
         [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
@@ -37,8 +40,9 @@ var NAVTREE =
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ],
@@ -50,7 +54,8 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ]
+        [ "Functions", "globals_func.html", null ],
+        [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -58,8 +63,12 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"MarmotElementProperty_8h.html",
-"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabca01aa61c2be91df019887fc16784fd673"
+"AdaptiveSubstepperExplicit_8h.html",
+"MarmotVoigt_8h.html#a0455a2fd6fa4a49160153b23c12633de",
+"PerezFougetSubstepperTime_8h_source.html",
+"classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html#a54e2cea365c9e9a5bbe82e65cd663817",
+"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcaebe511b5337eb0fb701edb8c2ebf8b77",
+"namespacemembers_j.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
