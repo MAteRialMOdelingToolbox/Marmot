@@ -17,18 +17,22 @@ jobs:
           submodules: true
       - name: test build of Marmot
         run: | 
-             git config --global user.email "marmot@gmail.com"
-             git config --global user.name "Alpine Marmot"
-             git status
              git clone https:://gitlab.com/libeigen/eigen.git
              cd eigen
              mkdir build
              cd build
              cmake ..
-             make install
+             sudo make install
+             pwd
              cd ../..
-             mkdir build
-             cd build
-             cmake ..
-             make
+             git clone --recurse-submodules https://github.com/${{ github.repository }}
+             cd Marmot
+             git fetch origin ${{ github.ref }}                     
+             git checkout FETCH_HEAD                               
+             mkdir build                                            
+             cd build                                               
+             cmake ..                                              
+             make -j
+             sudo make install
+             
            
