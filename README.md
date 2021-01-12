@@ -1,6 +1,6 @@
 # Marmot
 
-[WIP] Note: This project is still in the transfer stage to an open-source project. Thus, many changes will be made in the near future
+:warning: [WIP] Note: This project is still in the transfer stage to an open-source project. Thus, many changes will be made in the near future
 
 ## What is Marmot?
 
