@@ -8,6 +8,6 @@ var searchData=
   ['hugheswinget_2ecpp_238',['HughesWinget.cpp',['../HughesWinget_8cpp.html',1,'']]],
   ['hugheswinget_2eh_239',['HughesWinget.h',['../HughesWinget_8h.html',1,'']]],
   ['hydrostaticstress_240',['HydrostaticStress',['../classMarmotElement.html#a4a399e8339bb2f93d379841bb252461bad98c67ed44a4c287a2f0cc24f9f4b308',1,'MarmotElement']]],
-  ['hyperelastic_20material_20models_241',['Hyperelastic Material Models',['../hyperelastic.html',1,'mechanicalmaterials']]],
-  ['hypoelastic_20material_20models_242',['Hypoelastic Material Models',['../hypoelastic.html',1,'mechanicalmaterials']]]
+  ['hyperelastic_20material_20models_241',['Hyperelastic Material Models',['../hyperelastic.html',1,'']]],
+  ['hypoelastic_20material_20models_242',['Hypoelastic Material Models',['../hypoelastic.html',1,'']]]
 ];

@@ -26,7 +26,11 @@ var NAVTREE =
 [
   [ "Marmot", "index.html", [
     [ "Others", "continuummechanicsothers.html", null ],
-    [ "Mechanical Material Models", "mechanicalmaterials.html", "mechanicalmaterials" ],
+    [ "Mechanical Material Models", "mechanicalmaterials.html", null ],
+    [ "Hypoelastic Material Models", "hypoelastic.html", "hypoelastic" ],
+    [ "Hyperelastic Material Models", "hyperelastic.html", [
+      [ "Basic Theory", "hyperelastic.html#autotoc_md2", null ]
+    ] ],
     [ "Gradient Enhanced Mechanical Material Models", "gradmechanicalmaterials.html", "gradmechanicalmaterials" ],
     [ "Others", "others.html", null ],
     [ "Numerical Algorithms", "numericalalgorithms.html", "numericalalgorithms" ],
