@@ -4,7 +4,7 @@
 
 ## What is Marmot?
 
-```Marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and OpenSees, are ready-to-use available.
+```Marmot``` (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and open source codes like MOOSE or OpenSees, are ready-to-use available.
 
 ## Gallery
 
@@ -65,6 +65,11 @@ sudo make install
 ## How to use Marmot with Abaqus
 
 The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface) allows to use ```Marmot``` in Abaqus simulations.
+
+## How to use Marmot with MOOSE
+
+The [chamois App](https://github.com/matthiasneuner/chamois) allows to use ```Marmot``` directly in [MOOSE](https://github.com/idaholab/moose).
+A singularity container recipe is [available](https://github.com/matthiasneuner/chamois-singularity).
 
 ## Documentation
 
