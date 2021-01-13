@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['hughes_20winget_1164',['Hughes Winget',['../hugheswinget.html',1,'']]],
-  ['hyperelastic_20material_20models_1165',['Hyperelastic Material Models',['../hyperelastic.html',1,'']]],
-  ['hypoelastic_20material_20models_1166',['Hypoelastic Material Models',['../hypoelastic.html',1,'']]]
+  ['gradient_20enhanced_20hypoelastic_20material_20models_1179',['Gradient Enhanced Hypoelastic Material Models',['../gradhypoelastic.html',1,'gradmechanicalmaterials']]],
+  ['gradient_20enhanced_20mechanical_20material_20models_1180',['Gradient Enhanced Mechanical Material Models',['../gradmechanicalmaterials.html',1,'continuummechanics']]]
 ];
