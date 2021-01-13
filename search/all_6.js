@@ -76,9 +76,8 @@ var searchData=
   ['gmcpe8rul_225',['GMCPE8RUL',['../namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad95241a003552bca49a7f35eb6268b59',1,'MarmotLibrary']]],
   ['gmdruckerprager_226',['GMDruckerPrager',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93afe2bd1d90eb9451d0a52b0016971acc0',1,'MarmotLibrary']]],
   ['gmneohooke_227',['GMNeoHooke',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93aa8f6fe62ea3f8ee4337628a0f615c58a',1,'MarmotLibrary']]],
-  ['gradient_20enhanced_20hypoelastic_20material_20models_228',['Gradient Enhanced Hypoelastic Material Models',['../gradhypoelastic.html',1,'gradmechanicalmaterials']]],
+  ['gradient_20enhanced_20hypoelastic_20material_20models_228',['Gradient Enhanced Hypoelastic Material Models',['../gradhypoelastic.html',1,'']]],
   ['gradientenhanceddruckerprager_229',['GradientEnhancedDruckerPrager',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93a931a81b4367b90687653c43bbedaa90b',1,'MarmotLibrary']]],
   ['gradient_20enhanced_20mechanical_20material_20models_230',['Gradient Enhanced Mechanical Material Models',['../gradmechanicalmaterials.html',1,'']]],
-  ['gradmechanicalmaterials_2emd_231',['gradmechanicalmaterials.md',['../gradmechanicalmaterials_8md.html',1,'']]],
-  ['greenlagrange_232',['GreenLagrange',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#aafa2a134652284804654722724282185',1,'Marmot::ContinuumMechanics::Kinematics::strain']]]
+  ['greenlagrange_231',['GreenLagrange',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#aafa2a134652284804654722724282185',1,'Marmot::ContinuumMechanics::Kinematics::strain']]]
 ];
