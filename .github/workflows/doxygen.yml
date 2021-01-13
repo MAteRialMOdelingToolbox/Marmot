@@ -9,18 +9,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-#    - name: checkout repo content and build md-files
-#      uses: actions/checkout@v2 # checkout the repository content to github runner.
-#      with: 
-#          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets :  
-#          submodules: true
-#    - name: setup python
-#      uses: actions/setup-python@v2
-#      with:
-#        python-version: 3.8 #install the python needed
-#    - name: execute py script # run the run.py to get the latest data
-#      run: |
-#           python doc/buildDocumentation.py --skipDoxygen
+    - name: checkout repo content and build md-files
+      uses: actions/checkout@v2 # checkout the repository content to github runner.
+      with: 
+          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets :  
+          submodules: true
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 #install the python needed
+    - name: execute py script # run the run.py to get the latest data
+      run: |
+           python doc/buildDocumentation.py --skipDoxygen
 #           git config --global user.email "marmot@gmail.com"
 #           git config --global user.name "Marmot"
 #           git add .
