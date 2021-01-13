@@ -68,7 +68,7 @@ The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-M
 
 ## Documentation
 
-The documentation can be found under [https://materialmodelingtoolbox.github.io/Marmot/](https://materialmodelingtoolbox.github.io/Marmot/).
+The documentation can be found under [https://materialmodelingtoolbox.github.io/Marmot/](https://materialmodelingtoolbox.github.io/Marmot/){:target="_blank" rel="noopener"}.
 
 ## License
 
