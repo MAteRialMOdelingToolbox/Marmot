@@ -14,12 +14,13 @@ void MarmotMaterialHypoElastic::setCharacteristicElementLength( double length )
 }
 
 void MarmotMaterialHypoElastic::computeStress( double*       stress_,
-                                            double*       dStressDDDeformationGradient_,
-                                            const double* FOld_,
-                                            const double* FNew_,
-                                            const double* timeOld,
-                                            const double  dT,
-                                            double&       pNewDT ) {
+                                               double*       dStressDDDeformationGradient_,
+                                               const double* FOld_,
+                                               const double* FNew_,
+                                               const double* timeOld,
+                                               const double  dT,
+                                               double&       pNewDT )
+{
     // Standard implemenation of the Abaqus like Hughes-Winget algorithm
     // Approximation of the algorithmic tangent in order to
     // facilitate the dCauchy_dStrain tangent provided by
@@ -29,11 +30,12 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
     using namespace Marmot::ContinuumMechanics::TensorUtility;
     using namespace ContinuumMechanics::Kinematics::velocityGradient;
 
-    const Map<const Matrix3d> FOld( FOld_ );
-    const Map<const Matrix3d> FNew( FNew_ );
-    Marmot::mVector6d             stress( stress_ );
+    const Map< const Matrix3d > FOld( FOld_ );
+    const Map< const Matrix3d > FNew( FNew_ );
+    Marmot::mVector6d           stress( stress_ );
 
-    HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
+    Marmot::NumericalAlgorithms::HughesWinget
+        hughesWingetIntegrator( FOld, FNew, Marmot::NumericalAlgorithms::HughesWinget::Formulation::AbaqusLike );
 
     auto dEps = hughesWingetIntegrator.getStrainIncrement();
     stress    = hughesWingetIntegrator.rotateTensor( stress );
@@ -42,28 +44,28 @@ void MarmotMaterialHypoElastic::computeStress( double*       stress_,
 
     computeStress( stress.data(), CJaumann.data(), dEps.data(), timeOld, dT, pNewDT );
 
-    TensorMap<Eigen::Tensor<double, 3>> dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
+    TensorMap< Eigen::Tensor< double, 3 > > dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
 
     dS_dF = hughesWingetIntegrator.compute_dS_dF( stress, FNew.inverse(), CJaumann );
 }
 
 void MarmotMaterialHypoElastic::computePlaneStress( double*       stress_,
-                                                 double*       dStressDDStrain_,
-                                                 double*       dStrain_,
-                                                 const double* timeOld,
-                                                 const double  dT,
-                                                 double&       pNewDT )
+                                                    double*       dStressDDStrain_,
+                                                    double*       dStrain_,
+                                                    const double* timeOld,
+                                                    const double  dT,
+                                                    double&       pNewDT )
 {
     using namespace Marmot;
 
-    Map<Vector6d>  stress( stress_ );
-    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
-    Map<Vector6d>  dStrain( dStrain_ );
-    Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
+    Map< Vector6d > stress( stress_ );
+    Map< Matrix6d > dStressDDStrain( dStressDDStrain_ );
+    Map< Vector6d > dStrain( dStrain_ );
+    Map< VectorXd > stateVars( this->stateVars, this->nStateVars );
 
-    Vector6d  stressTemp;
+    Vector6d stressTemp;
     VectorXd stateVarsOld = stateVars;
-    Vector6d  dStrainTemp  = dStrain;
+    Vector6d dStrainTemp  = dStrain;
 
     // assumption of isochoric deformation for initial guess
     dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );
@@ -104,23 +106,23 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress_,
 }
 
 void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress_,
-                                                    double* dStressDDStrain_,
+                                                       double* dStressDDStrain_,
 
-                                                    double*       dStrain_,
-                                                    const double* timeOld,
-                                                    const double  dT,
-                                                    double&       pNewDT )
+                                                       double*       dStrain_,
+                                                       const double* timeOld,
+                                                       const double  dT,
+                                                       double&       pNewDT )
 {
     using namespace Marmot;
 
-    Map<Vector6d>  stress( stress_ );
-    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
-    Map<Vector6d>  dStrain( dStrain_ );
-    Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
+    Map< Vector6d > stress( stress_ );
+    Map< Matrix6d > dStressDDStrain( dStressDDStrain_ );
+    Map< Vector6d > dStrain( dStrain_ );
+    Map< VectorXd > stateVars( this->stateVars, this->nStateVars );
 
-    Vector6d  stressTemp;
+    Vector6d stressTemp;
     VectorXd stateVarsOld = stateVars;
-    Vector6d  dStrainTemp  = dStrain;
+    Vector6d dStrainTemp  = dStrain;
 
     dStrainTemp( 2 ) = 0.0;
     dStrainTemp( 1 ) = 0.0;
@@ -136,13 +138,14 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress_,
             return;
         }
 
-        const double residual = stressTemp.array().abs().segment(1,2).sum();
+        const double residual = stressTemp.array().abs().segment( 1, 2 ).sum();
 
         if ( residual < 1.e-10 || ( count > 7 && residual < 1e-8 ) ) {
             break;
         }
 
-        dStrainTemp.segment<2>( 1 ) -= dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve( stressTemp.segment<2>( 1 ) );
+        dStrainTemp.segment< 2 >( 1 ) -= dStressDDStrain.block< 2, 2 >( 1, 1 ).colPivHouseholderQr().solve(
+            stressTemp.segment< 2 >( 1 ) );
 
         count += 1;
         if ( count > 13 ) {

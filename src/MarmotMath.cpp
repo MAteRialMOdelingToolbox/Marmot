@@ -1,5 +1,5 @@
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotMath.h"
 #include <cmath>
 #include <math.h>
 
@@ -42,61 +42,60 @@ namespace Marmot {
 
         int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
-	Matrix3d OrthonomCoordSystem(Vector3d& NormVec)
-	{
-	   NormVec.normalize();
-	   Matrix3d Coordsystem = Eigen::MatrixXd::Zero(3,3);
-	   Coordsystem.col(0) = NormVec;
-	  	   	
-	   if (Coordsystem(0,0) == 0 && Coordsystem(1,0) == 0){
-	   	Coordsystem(1,1) = 1.0;
-	   } else{
-	   	Coordsystem(0,1) = -Coordsystem(1,0);
-	   	Coordsystem(1,1) =  Coordsystem(0,0);	
-	   }
-	   
-	   Coordsystem.col(2) = Coordsystem.col(0).cross(Coordsystem.col(1));
-	   Coordsystem.col(2).normalize();
-
-	   return Coordsystem;
-	}
-
-
-        Matrix3d DirCosine(const Matrix3d& LocCoordSys)
+        Matrix3d OrthonomCoordSystem( Vector3d& NormVec )
         {
-	   Vector3d e1 = Eigen::MatrixXd::Zero(3,1);
-	   e1(0) = 1;
-	   
-	   Matrix3d GlobCoordSys = OrthonomCoordSystem(e1);
-	   Matrix3d DirCos;
-	   
-	   for (int i = 0;i<=2;i++){
-	   	for (int j = 0;j<=2;j++){
-	   		DirCos(i,j) = LocCoordSys.col(i).dot(GlobCoordSys.col(j));
-	   	}
-	   }
-	   
-	   return DirCos;
-	   
+            NormVec.normalize();
+            Matrix3d Coordsystem = Eigen::MatrixXd::Zero( 3, 3 );
+            Coordsystem.col( 0 ) = NormVec;
+
+            if ( Coordsystem( 0, 0 ) == 0 && Coordsystem( 1, 0 ) == 0 ) {
+                Coordsystem( 1, 1 ) = 1.0;
+            }
+            else {
+                Coordsystem( 0, 1 ) = -Coordsystem( 1, 0 );
+                Coordsystem( 1, 1 ) = Coordsystem( 0, 0 );
+            }
+
+            Coordsystem.col( 2 ) = Coordsystem.col( 0 ).cross( Coordsystem.col( 1 ) );
+            Coordsystem.col( 2 ).normalize();
+
+            return Coordsystem;
         }
 
-	Matrix3d DyadProdNvec(Vector3d &n)
-	{	
-		Matrix3d phi;
-		for (int i = 0;i<3;i++){
-			for (int j = 0;j<3;j++){
-				phi(i,j) = n(i)*n(j);
-			}
-		}
+        Matrix3d DirCosine( const Matrix3d& LocCoordSys )
+        {
+            Vector3d e1 = Eigen::MatrixXd::Zero( 3, 1 );
+            e1( 0 )     = 1;
 
-		return phi;
-	}
-        //int const kronecker (int i, int j)
+            Matrix3d GlobCoordSys = OrthonomCoordSystem( e1 );
+            Matrix3d DirCos;
+
+            for ( int i = 0; i <= 2; i++ ) {
+                for ( int j = 0; j <= 2; j++ ) {
+                    DirCos( i, j ) = LocCoordSys.col( i ).dot( GlobCoordSys.col( j ) );
+                }
+            }
+
+            return DirCos;
+        }
+
+        Matrix3d DyadProdNvec( Vector3d& n )
+        {
+            Matrix3d phi;
+            for ( int i = 0; i < 3; i++ ) {
+                for ( int j = 0; j < 3; j++ ) {
+                    phi( i, j ) = n( i ) * n( j );
+                }
+            }
+
+            return phi;
+        }
+        // int const kronecker (int i, int j)
         //{
-            //if (i == j)
-                //return 1;
-            //else
-                //return 0;
+        // if (i == j)
+        // return 1;
+        // else
+        // return 0;
         //}
 
     } // namespace Math
