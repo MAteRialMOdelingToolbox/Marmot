@@ -1,26 +1,26 @@
 /* ---------------------------------------------------------------------
- *                                       _   
- *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_ 
+ *                                       _
+ *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
  * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
- * | | | | | | (_| | |  | | | | | | (_) | |_ 
+ * | | | | | | (_| | |  | | | | | | (_) | |_
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
- * 
+ *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck, 
+ * University of Innsbruck,
  * 2020 - today
- * 
+ *
  * festigkeitslehre@uibk.ac.at
- * 
+ *
  * Matthias Neuner matthias.neuner@uibk.ac.at
  * Magdalena Schreter magdalena.schreter@uibk.ac.at
- * 
+ *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * The full text of the license can be found in the file LICENSE.md at
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
@@ -44,17 +44,17 @@ namespace Marmot {
 
         extern const Marmot::Vector6d I;
         extern const Marmot::Vector6d IHyd;
-        extern const Matrix6d      IDev;
+        extern const Matrix6d         IDev;
 
         // Plane Stress handling
-        Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
-        Marmot::Vector6d    planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
+        Eigen::Vector3d  voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
+        Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
 
-        template <int voigtSize>
-        Eigen::Matrix<double, voigtSize, 1> reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
+        template < int voigtSize >
+        Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
         {
             if constexpr ( voigtSize == 1 )
-                return ( Eigen::Matrix<double, 1, 1>() << Voigt3D( 0 ) ).finished();
+                return ( Eigen::Matrix< double, 1, 1 >() << Voigt3D( 0 ) ).finished();
             else if constexpr ( voigtSize == 3 )
                 return voigtToPlaneVoigt( Voigt3D );
             else if constexpr ( voigtSize == 6 )
@@ -63,8 +63,8 @@ namespace Marmot {
                 throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
         }
 
-        template <int voigtSize>
-        Marmot::Vector6d make3DVoigt( const Eigen::Matrix<double, voigtSize, 1>& Voigt )
+        template < int voigtSize >
+        Marmot::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )
         {
             if constexpr ( voigtSize == 1 )
                 return ( Marmot::Vector6d() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
@@ -81,27 +81,27 @@ namespace Marmot {
         Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
         /* Returns the transformation Matrix T which fullfills
          * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
-        Matrix6d                     planeStressTangentTransformationMatrix( const Matrix6d& tangent );
-        Eigen::Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6d& tangent );
-        Eigen::Matrix<double, 3, 6> dStressPlaneStressDStress();
-        Eigen::Matrix<double, 6, 3> dStrainDStrainPlaneStrain();
+        Matrix6d                      planeStressTangentTransformationMatrix( const Matrix6d& tangent );
+        Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent );
+        Eigen::Matrix< double, 3, 6 > dStressPlaneStressDStress();
+        Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStrain();
 
         // function prototypes for  Marmot::Vector6d handling
-        Eigen::Matrix3d voigtToStrain( const Marmot::Vector6d& strainVector );
-        Eigen::Matrix3d voigtToStress( const Marmot::Vector6d& stressVector );
-        Marmot::Vector6d    strainToVoigt( const Eigen::Matrix3d& strainTensor );
-        Marmot::Vector6d    stressToVoigt( const Eigen::Matrix3d& stressTensor );
-        Eigen::Vector3d haighWestergaard( const Marmot::Vector6d& stress );
-        Eigen::Vector3d haighWestergaardStrain( const Marmot::Vector6d& strain );
+        Eigen::Matrix3d  voigtToStrain( const Marmot::Vector6d& strainVector );
+        Eigen::Matrix3d  voigtToStress( const Marmot::Vector6d& stressVector );
+        Marmot::Vector6d strainToVoigt( const Eigen::Matrix3d& strainTensor );
+        Marmot::Vector6d stressToVoigt( const Eigen::Matrix3d& stressTensor );
+        Eigen::Vector3d  haighWestergaard( const Marmot::Vector6d& stress );
+        Eigen::Vector3d  haighWestergaardStrain( const Marmot::Vector6d& strain );
 
-        template <int nDim>
-        Eigen::Matrix<double, nDim, nDim> StressMatrixFromVoigt(
-            const Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>& Voigt )
+        template < int nDim >
+        Eigen::Matrix< double, nDim, nDim > StressMatrixFromVoigt(
+            const Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >& Voigt )
         {
             if constexpr ( nDim == 1 )
-                return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ) ).finished();
+                return ( Eigen::Matrix< double, nDim, nDim >() << Voigt( 0 ) ).finished();
             else if constexpr ( nDim == 2 )
-                return ( Eigen::Matrix<double, nDim, nDim>() << Voigt( 0 ), Voigt( 2 ), Voigt( 2 ), Voigt( 1 ) )
+                return ( Eigen::Matrix< double, nDim, nDim >() << Voigt( 0 ), Voigt( 2 ), Voigt( 2 ), Voigt( 1 ) )
                     .finished();
             else if constexpr ( nDim == 3 )
                 return voigtToStress( Voigt );
@@ -109,14 +109,14 @@ namespace Marmot {
                 throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
         }
 
-        template <int nDim>
-        Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1> VoigtFromStrainMatrix(
-            const Eigen::Matrix<double, nDim, nDim>& strain )
+        template < int nDim >
+        Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 > VoigtFromStrainMatrix(
+            const Eigen::Matrix< double, nDim, nDim >& strain )
         {
             if constexpr ( nDim == 1 )
-                return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ) ).finished();
+                return ( Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >() << strain( 0, 0 ) ).finished();
             else if constexpr ( nDim == 2 )
-                return ( Eigen::Matrix<double, VOIGTFROMDIM( nDim ), 1>() << strain( 0, 0 ),
+                return ( Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >() << strain( 0, 0 ),
                          strain( 1, 1 ),
                          2 * strain( 0, 1 ) )
                     .finished();
@@ -184,47 +184,58 @@ namespace Marmot {
         Marmot::Matrix36 dStressPrincipals_dStress( const Marmot::Vector6d& stress );
 
         // derivatives of plastic strains with respect to strains
-        Eigen::Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Marmot::Vector6d& strain );
+        Eigen::Vector3d  dDeltaEpvneg_dDeltaEpPrincipals( const Marmot::Vector6d& strain );
         Matrix6d         dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
-        RowVector6d     dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
-        Marmot::Matrix36   dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
-        RowVector6d     dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
+        RowVector6d      dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+        Marmot::Matrix36 dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
+        RowVector6d      dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
         // principal values in voigt
-        std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives( const Eigen::Matrix< double, 6, 1 >& S );
+        std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives(
+            const Eigen::Matrix< double, 6, 1 >& S );
 
     } // namespace ContinuumMechanics::VoigtNotation
 
     namespace ContinuumMechanics {
-        template <typename T>
+        template < typename T >
         int sgn( T val )
         {
             return ( T( 0 ) < val ) - ( val < T( 0 ) );
         }
 
-        Matrix6d         Cel( double E, double nu );
-        Matrix6d         CelInverse( double E, double nu );
-	Matrix6d         CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2);
-	Matrix6d	 CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31);
-        Matrix6d         TransEps(const Matrix3d& LocCoordSys);
-        Matrix6d         TransSig(const Matrix3d& LocCoordSys); 
-        Matrix36d        TransStressVec(const Vector3d& n);
-      	Matrix36d	 TransEpsVec(const Vector3d& n);
-	Tensor3333d      P(Vector3d n, double c1, double c2, double c3);
-	Matrix6d         PToPVoigt(Tensor3333d P);
+        Matrix6d                  Cel( double E, double nu );
+        Matrix6d                  CelInverse( double E, double nu );
+        Matrix6d                  CelInverseTransIso( double E1, double E2, double nu1, double nu2, double G2 );
+        Matrix6d                  CelInverseOrtho( double E1,
+                                                   double E2,
+                                                   double E3,
+                                                   double nu12,
+                                                   double nu23,
+                                                   double nu13,
+                                                   double G12,
+                                                   double G23,
+                                                   double G31 );
+        Matrix6d                  TransEps( const Matrix3d& LocCoordSys );
+        Matrix6d                  TransSig( const Matrix3d& LocCoordSys );
+        Matrix36d                 TransStressVec( const Vector3d& n );
+        Matrix36d                 TransEpsVec( const Vector3d& n );
+        EigenTensors::Tensor3333d P( Vector3d n, double c1, double c2, double c3 );
+        Matrix6d                  PToPVoigt( EigenTensors::Tensor3333d P );
 
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
         Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
-        double          getUniaxialStressTangent( const Eigen::Ref<const Matrix6d>& C );
+        double          getUniaxialStressTangent( const Eigen::Ref< const Matrix6d >& C );
         double          E( const double K, const double G );
         double          nu( const double K, const double G );
 
         namespace PlaneStrain {
-            Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
+            EigenTensors::Tensor322d dStressdDeformationGradient(
+                const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
         }
         namespace PlaneStress {
-            Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D );
+            EigenTensors::Tensor322d dStressdDeformationGradient(
+                const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
         }
     } // namespace ContinuumMechanics
 } // namespace Marmot
