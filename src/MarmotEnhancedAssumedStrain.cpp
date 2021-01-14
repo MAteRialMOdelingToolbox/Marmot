@@ -63,7 +63,7 @@ namespace Marmot {
             switch ( type ) {
             case DeBorstEAS2: {
 
-                Matrix<double, 3, 2> E_;
+                Matrix< double, 3, 2 > E_;
 
                 // clang-format off
                         E_ <<   xi[1],      0,
@@ -75,7 +75,7 @@ namespace Marmot {
             }
             case EAS3: {
                 // Not sufficient to avoid volumetric locking, as proven in (de Borst, Groen 1999)
-                Matrix<double, 6, 3> E_ = Matrix<double, 6, 3>::Zero();
+                Matrix< double, 6, 3 > E_ = Matrix< double, 6, 3 >::Zero();
 
                 E_.topLeftCorner( 3, 3 ).diagonal() << xi[0], xi[1], xi[2];
 
@@ -83,7 +83,7 @@ namespace Marmot {
             }
 
             case DeBorstEAS9: {
-                Matrix<double, 6, 9> E_ = Matrix<double, 6, 9>::Zero();
+                Matrix< double, 6, 9 > E_ = Matrix< double, 6, 9 >::Zero();
                 // clang-format off
 
                                        E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
@@ -102,7 +102,7 @@ namespace Marmot {
             }
 
             case DeBorstEAS6b: {
-                Matrix<double, 6, 6> E_ = Matrix<double, 6, 6>::Zero();
+                Matrix< double, 6, 6 > E_ = Matrix< double, 6, 6 >::Zero();
 
                 // clang-format off
                                        E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
@@ -122,7 +122,7 @@ namespace Marmot {
 
             case SimoRifaiEAS5: {
 
-                Matrix<double, 3, 5> E_;
+                Matrix< double, 3, 5 > E_;
                 // clang-format off
 
                         E_ <<   xi[0],      0,      0,      0,      xi[0]*xi[1],
@@ -134,7 +134,7 @@ namespace Marmot {
             }
             case SimoRifaiEAS4: {
 
-                Matrix<double, 3, 4> E_;
+                Matrix< double, 3, 4 > E_;
 
                 // clang-format off
                         E_ <<   xi[0],      0,      0,      0,      

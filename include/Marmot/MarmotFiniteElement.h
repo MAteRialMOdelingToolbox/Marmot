@@ -1,27 +1,27 @@
 /* ---------------------------------------------------------------------
- *                                       _   
- *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_ 
+ *                                       _
+ *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
  * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
- * | | | | | | (_| | |  | | | | | | (_) | |_ 
+ * | | | | | | (_| | |  | | | | | | (_) | |_
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
- * 
+ *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck, 
+ * University of Innsbruck,
  * 2020 - today
- * 
+ *
  * festigkeitslehre@uibk.ac.at
- * 
+ *
  * Peter Gamnitzer peter.gamnitzer@uibk.ac.at
  * Matthias Neuner matthias.neuner@uibk.ac.at
  * Magdalena Schreter magdalena.schreter@uibk.ac.at
- * 
+ *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * The full text of the license can be found in the file LICENSE.md at
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
@@ -50,11 +50,11 @@ namespace Marmot {
         Eigen::MatrixXd NB( const Eigen::VectorXd& N,
                             const int              nDoFPerNode ); // Dynamic version
 
-        template <int nDim, int nNodes>
-        Eigen::Matrix<double, nDim, nDim * nNodes> NB( const Eigen::Matrix<double, 1, nNodes>& N )
+        template < int nDim, int nNodes >
+        Eigen::Matrix< double, nDim, nDim * nNodes > NB( const Eigen::Matrix< double, 1, nNodes >& N )
         {
             // Alternative Templated version of Interpolation operator NBold;
-            Eigen::Matrix<double, nDim, nDim* nNodes> N_ = Eigen::Matrix<double, nDim, nDim * nNodes>::Zero();
+            Eigen::Matrix< double, nDim, nDim* nNodes > N_ = Eigen::Matrix< double, nDim, nDim * nNodes >::Zero();
             for ( int i = 0; i < nNodes; i++ ) {
                 for ( int j = 0; j < nDim; j++ ) {
                     N_( j, nDim * i + j ) = N( i );
@@ -66,13 +66,13 @@ namespace Marmot {
         Eigen::MatrixXd Jacobian( const Eigen::MatrixXd& dN_dXi,
                                   const Eigen::VectorXd& coordinates ); // Dynamic version
 
-        template <int nDim, int nNodes>
-        Eigen::Matrix<double, nDim, nDim> Jacobian( const Eigen::Matrix<double, nDim, nNodes>&     dNdXi,
-                                                    const Eigen::Matrix<double, nDim * nNodes, 1>& coordinates )
+        template < int nDim, int nNodes >
+        Eigen::Matrix< double, nDim, nDim > Jacobian( const Eigen::Matrix< double, nDim, nNodes >&     dNdXi,
+                                                      const Eigen::Matrix< double, nDim * nNodes, 1 >& coordinates )
         {
             // Alternative Templated version of Jacobian for compile time known
             // sizes
-            Eigen::Matrix<double, nDim, nDim> J_ = Eigen::Matrix<double, nDim, nDim>::Zero();
+            Eigen::Matrix< double, nDim, nDim > J_ = Eigen::Matrix< double, nDim, nDim >::Zero();
             for ( int i = 0; i < nDim; i++ )           // loop over global dimensions
                 for ( int j = 0; j < nDim; j++ )       // loop over local dimensions
                     for ( int k = 0; k < nNodes; k++ ) // Loop over nodes
@@ -86,8 +86,8 @@ namespace Marmot {
             namespace Bar2 {
 
                 constexpr int nNodes = 2;
-                using NSized         = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized     = Eigen::Matrix<double, 1, nNodes>;
+                using NSized         = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized     = Eigen::Matrix< double, 1, nNodes >;
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
@@ -96,8 +96,8 @@ namespace Marmot {
             namespace Bar3 {
 
                 constexpr int nNodes = 3;
-                using NSized         = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized     = Eigen::Matrix<double, 1, nNodes>;
+                using NSized         = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized     = Eigen::Matrix< double, 1, nNodes >;
 
                 NSized     N( double xi );
                 dNdXiSized dNdXi( double xi );
@@ -108,12 +108,12 @@ namespace Marmot {
             constexpr int nDim      = 2;
             constexpr int voigtSize = 3;
 
-            template <int nNodes>
-            Eigen::Matrix<double, voigtSize, nNodes * nDim> B( const Eigen::Matrix<double, nDim, nNodes>& dNdX )
+            template < int nNodes >
+            Eigen::Matrix< double, voigtSize, nNodes * nDim > B( const Eigen::Matrix< double, nDim, nNodes >& dNdX )
             {
 
-                Eigen::Matrix<double, voigtSize, nNodes* nDim>
-                    B_ = Eigen::Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Eigen::Matrix< double, voigtSize, nNodes* nDim >
+                    B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, 2 * i )     = dNdX( 0, i );
                     B_( 1, 2 * i + 1 ) = dNdX( 1, i );
@@ -123,14 +123,14 @@ namespace Marmot {
                 return B_;
             }
 
-            template <int nNodes>
-            Eigen::Matrix<double, voigtSize, nNodes * nDim> BGreen( const Eigen::Matrix<double, nDim, nNodes>& dNdX,
-                                                                    const Eigen::Matrix2d&                     F )
+            template < int nNodes >
+            Eigen::Matrix< double, voigtSize, nNodes * nDim > BGreen( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
+                                                                      const Eigen::Matrix2d&                       F )
             {
                 // Green-Lagrange Strain Operator for given dNdX and Deformationgradient F
                 // Belytschko et. al pp. 213
-                Eigen::Matrix<double, voigtSize, nNodes* nDim>
-                    B_ = Eigen::Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Eigen::Matrix< double, voigtSize, nNodes* nDim >
+                    B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, 2 * i )     = dNdX( 0, i ) * F( 0, 0 );
                     B_( 0, 2 * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
@@ -145,9 +145,9 @@ namespace Marmot {
             namespace Quad4 {
                 constexpr int nNodes = 4;
 
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector2d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector2d& xi );
@@ -158,9 +158,9 @@ namespace Marmot {
             namespace Quad8 {
                 constexpr int nNodes = 8;
 
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector2d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector2d& xi );
@@ -174,8 +174,8 @@ namespace Marmot {
             constexpr int nDim      = 3;
             constexpr int voigtSize = 6;
 
-            template <int nNodes>
-            Eigen::Matrix<double, voigtSize, nNodes * nDim> B( const Eigen::Matrix<double, nDim, nNodes>& dNdX )
+            template < int nNodes >
+            Eigen::Matrix< double, voigtSize, nNodes * nDim > B( const Eigen::Matrix< double, nDim, nNodes >& dNdX )
             {
                 // ABAQUS like notation of strain: ( ε11, ε22, ε33, γ12, γ13, γ23 )
                 //   _                                 _
@@ -186,8 +186,8 @@ namespace Marmot {
                 //  |   dN/dx3    0           dN/dx1    |
                 //  |_  0         dN/dx3      dN/dx2   _|
 
-                Eigen::Matrix<double, voigtSize, nNodes* nDim>
-                    B_ = Eigen::Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Eigen::Matrix< double, voigtSize, nNodes* nDim >
+                    B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
 
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, nDim * i )     = dNdX( 0, i );
@@ -204,15 +204,15 @@ namespace Marmot {
                 return B_;
             }
 
-            template <int nNodes>
-            Eigen::Matrix<double, voigtSize, nNodes * nDim> BGreen( const Eigen::Matrix<double, nDim, nNodes>& dNdX,
-                                                                    const Eigen::Matrix3d&                     F )
+            template < int nNodes >
+            Eigen::Matrix< double, voigtSize, nNodes * nDim > BGreen( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
+                                                                      const Eigen::Matrix3d&                       F )
             {
                 // Green-Lagrange Strain Operator for given dNdX and Deformationgradient F
                 // Belytschko et. al pp. 213
 
-                Eigen::Matrix<double, voigtSize, nNodes* nDim>
-                    B_ = Eigen::Matrix<double, voigtSize, nNodes * nDim>::Zero();
+                Eigen::Matrix< double, voigtSize, nNodes* nDim >
+                    B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
                 for ( int i = 0; i < nNodes; i++ ) {
                     B_( 0, nDim * i )     = dNdX( 0, i ) * F( 0, 0 );
                     B_( 0, nDim * i + 1 ) = dNdX( 0, i ) * F( 1, 0 );
@@ -244,9 +244,9 @@ namespace Marmot {
             namespace Tetra4 {
 
                 constexpr int nNodes  = 4;
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
@@ -258,9 +258,9 @@ namespace Marmot {
             namespace Tetra10 {
 
                 constexpr int nNodes  = 10;
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
@@ -271,9 +271,9 @@ namespace Marmot {
 
             namespace Hexa8 {
                 constexpr int nNodes  = 8;
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
@@ -283,9 +283,9 @@ namespace Marmot {
 
             namespace Hexa20 {
                 constexpr int nNodes  = 20;
-                using CoordinateSized = Eigen::Matrix<double, nNodes * nDim, 1>;
-                using NSized          = Eigen::Matrix<double, 1, nNodes>;
-                using dNdXiSized      = Eigen::Matrix<double, nDim, nNodes>;
+                using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >;
+                using NSized          = Eigen::Matrix< double, 1, nNodes >;
+                using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >;
 
                 NSized     N( const Eigen::Vector3d& xi );
                 dNdXiSized dNdXi( const Eigen::Vector3d& xi );
@@ -314,7 +314,7 @@ namespace Marmot {
             int           nNodes;
             int           nParentCoordinates;
 
-            std::vector<BoundaryElementGaussPt> gaussPts;
+            std::vector< BoundaryElementGaussPt > gaussPts;
 
             Eigen::VectorXi boundaryIndicesInParentNodes;
             Eigen::VectorXi boundaryIndicesInParentCoordinates;
@@ -329,9 +329,9 @@ namespace Marmot {
             Eigen::VectorXd computeNormalLoadVector();
             Eigen::MatrixXd computeNormalLoadVectorStiffness();
             Eigen::VectorXd condenseParentToBoundaryVector( const Eigen::VectorXd& parentVector );
-            void            assembleIntoParentVector( const Eigen::VectorXd&      boundaryVector,
-                                                      Eigen::Ref<Eigen::VectorXd> ParentVector );
-            void assembleIntoParentStiffness( const Eigen::MatrixXd& KBoundary, Eigen::Ref<Eigen::MatrixXd> KParent );
+            void            assembleIntoParentVector( const Eigen::VectorXd&        boundaryVector,
+                                                      Eigen::Ref< Eigen::VectorXd > ParentVector );
+            void assembleIntoParentStiffness( const Eigen::MatrixXd& KBoundary, Eigen::Ref< Eigen::MatrixXd > KParent );
         };
     } // namespace FiniteElement
 
@@ -346,8 +346,8 @@ namespace Marmot {
             double          weight;
         };
 
-        const std::vector<GaussPtInfo>& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
-                                                           IntegrationTypes                  integrationType );
+        const std::vector< GaussPtInfo >& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
+                                                             IntegrationTypes                     integrationType );
         int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
 
         namespace Spatial1D {

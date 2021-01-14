@@ -1,25 +1,25 @@
 /* ---------------------------------------------------------------------
- *                                       _   
- *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_ 
+ *                                       _
+ *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
  * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
- * | | | | | | (_| | |  | | | | | | (_) | |_ 
+ * | | | | | | (_| | |  | | | | | | (_) | |_
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
- * 
+ *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck, 
+ * University of Innsbruck,
  * 2020 - today
- * 
+ *
  * festigkeitslehre@uibk.ac.at
- * 
+ *
  * Matthias Neuner matthias.neuner@uibk.ac.at
- * 
+ *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * The full text of the license can be found in the file LICENSE.md at
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
@@ -39,31 +39,31 @@ class MarmotElementSpatialWrapper : public MarmotElement {
      * */
 
   public:
-    const int                               nDim;
-    const int                               nDimChild;
-    const int                               nNodes;
-    const int                               nRhsChild;
-    const Eigen::Map<const Eigen::VectorXi> rhsIndicesToBeProjected;
-    const int                               projectedSize, unprojectedSize;
+    const int                                 nDim;
+    const int                                 nDimChild;
+    const int                                 nNodes;
+    const int                                 nRhsChild;
+    const Eigen::Map< const Eigen::VectorXi > rhsIndicesToBeProjected;
+    const int                                 projectedSize, unprojectedSize;
 
-    std::unique_ptr<MarmotElement> childElement;
-    Eigen::MatrixXd         T;
-    Eigen::MatrixXd         P;
-    Eigen::MatrixXd         projectedCoordinates;
+    std::unique_ptr< MarmotElement > childElement;
+    Eigen::MatrixXd                  T;
+    Eigen::MatrixXd                  P;
+    Eigen::MatrixXd                  projectedCoordinates;
 
-    MarmotElementSpatialWrapper( int                     nDim,
-                          int                     nChildDim,
-                          int                     nNodes,
-                          int                     sizeRhsChild,
-                          const int               rhsIndicesToBeWrapped_[],
-                          int                     nRhsIndicesToBeWrapped,
-                          std::unique_ptr<MarmotElement> childElement );
+    MarmotElementSpatialWrapper( int                              nDim,
+                                 int                              nChildDim,
+                                 int                              nNodes,
+                                 int                              sizeRhsChild,
+                                 const int                        rhsIndicesToBeWrapped_[],
+                                 int                              nRhsIndicesToBeWrapped,
+                                 std::unique_ptr< MarmotElement > childElement );
 
     int getNumberOfRequiredStateVars();
 
-    std::vector<std::vector<std::string>> getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields();
 
-    std::vector<int> getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern();
 
     int getNNodes();
 
@@ -91,16 +91,19 @@ class MarmotElementSpatialWrapper : public MarmotElement {
 
     void computeDistributedLoad( DistributedLoadTypes loadType,
                                  double*              P,
-                            double* K,
+                                 double*              K,
                                  int                  elementFace,
                                  const double*        load,
                                  const double*        QTotal,
                                  const double*        time,
                                  double               dT );
 
-    void computeBodyForce( double* P, 
-                            double* K,
-            const double* load, const double* QTotal, const double* time, double dT );
+    void computeBodyForce( double*       P,
+                           double*       K,
+                           const double* load,
+                           const double* QTotal,
+                           const double* time,
+                           double        dT );
 
-    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt);
+    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt );
 };

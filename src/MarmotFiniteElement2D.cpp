@@ -9,7 +9,7 @@ namespace Marmot {
         namespace Spatial2D {
             namespace Quad4 {
 
-             NSized N( const Vector2d& xi )
+                NSized N( const Vector2d& xi )
                 {
                     /*
                      *   Shape functions
@@ -38,7 +38,7 @@ namespace Marmot {
                     // clang-format off
                     result <<   /*          (0)                 (1)                 (2)                 (3) */
                            /* ,xi1 */ -1./4* (1-xi (1)), +1./4* (1-xi (1)),  +1./4* (1+xi (1)),    -1./4* (1+xi (1)), 
-                           /*, xi2 */ -1./4* (1-xi (0)), -1./4* (1+xi (0)),  +1./4* (1+xi (0)),    +1./4* (1-xi (0)); 
+                           /*, xi2 */ -1./4* (1-xi (0)), -1./4* (1+xi (0)),  +1./4* (1+xi (0)),    +1./4* (1-xi (0));
                     // clang-format on
                     return result;
                 }
@@ -73,7 +73,6 @@ namespace Marmot {
                     }
                 }
 
-
             } // end of namespace Quad4
             namespace Quad8 {
                 NSized N( const Vector2d& xi )
@@ -90,9 +89,9 @@ namespace Marmot {
                      *
                      * */
 
-                    const double              xi0 = xi( 0 );
-                    const double              xi1 = xi( 1 );
-                    Matrix<double, nNodes, 1> N_;
+                    const double                xi0 = xi( 0 );
+                    const double                xi1 = xi( 1 );
+                    Matrix< double, nNodes, 1 > N_;
                     // clang-format off
                     N_ <<   (1.-xi0 ) * (1.-xi1 ) * (-1-xi0-xi1 ) /4,
                             (1.+xi0 ) * (1.-xi1 ) * (-1+xi0-xi1 ) /4,
@@ -110,7 +109,7 @@ namespace Marmot {
                 dNdXiSized dNdXi( const Vector2d& xi )
                 {
 
-                    Matrix<double, nDim, nNodes> result;
+                    Matrix< double, nDim, nNodes > result;
 
                     const double xi0 = xi( 0 );
                     const double xi1 = xi( 1 );

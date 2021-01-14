@@ -59,9 +59,9 @@ namespace Marmot {
             // - dNdXi
             // - Jacobian pp(x,xi)
             // - areaVector
-            for ( const auto& gaussPtInfo :
-                  FiniteElement::Quadrature::getGaussPointInfo( boundaryShape,
-                                                     FiniteElement::Quadrature::IntegrationTypes::FullIntegration ) ) {
+            for ( const auto& gaussPtInfo : FiniteElement::Quadrature::
+                      getGaussPointInfo( boundaryShape,
+                                         FiniteElement::Quadrature::IntegrationTypes::FullIntegration ) ) {
 
                 BoundaryElementGaussPt gpt;
                 gpt.xi     = gaussPtInfo.xi;
@@ -106,13 +106,13 @@ namespace Marmot {
                     // 90deg rotation
                     Vector2d n;
                     n << gpt.J( 1 ), -gpt.J( 0 );
-                    gpt.areaVector    = n;
+                    gpt.areaVector = n;
                 }
                 else {
                     // cross product
-                    typedef Eigen::Ref<const Vector3d> vector3_cr;
-                    Vector3d n          = vector3_cr( gpt.J.col( 0 ) ).cross( vector3_cr( gpt.J.col( 1 ) ) );
-                    gpt.areaVector    = n;
+                    typedef Eigen::Ref< const Vector3d > vector3_cr;
+                    Vector3d n     = vector3_cr( gpt.J.col( 0 ) ).cross( vector3_cr( gpt.J.col( 1 ) ) );
+                    gpt.areaVector = n;
                 }
 
                 gaussPts.push_back( std::move( gpt ) );
@@ -139,7 +139,7 @@ namespace Marmot {
             MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
 
             if ( nDim == 2 ) {
-                //Neuner, November 2018
+                // Neuner, November 2018
                 Matrix2d R;
                 // clang-format off
                 R << 0, 1, 
@@ -149,7 +149,7 @@ namespace Marmot {
                 for ( const auto& gPt : gaussPts )
                     for ( int I = 0; I < nNodes; I++ )
                         for ( int J = 0; J < nNodes; J++ )
-                            K.block<2, 2>( I * 2, J * 2 ) += gPt.N( I ) * gPt.dNdXi( J ) * R * gPt.weight;
+                            K.block< 2, 2 >( I * 2, J * 2 ) += gPt.N( I ) * gPt.dNdXi( J ) * R * gPt.weight;
             }
 
             else if ( nDim == 3 ) {
@@ -170,9 +170,9 @@ namespace Marmot {
 
                     for ( int I = 0; I < nNodes; I++ )
                         for ( int J = 0; J < nNodes; J++ )
-                            K.block<3, 3>( I * 3, J * 3 ) += gPt.N( I ) *
-                                                             ( gPt.dNdXi( 0, J ) * HXi1 - gPt.dNdXi( 1, J ) * HXi0 ) *
-                                                             gPt.weight;
+                            K.block< 3, 3 >( I * 3, J * 3 ) += gPt.N( I ) *
+                                                               ( gPt.dNdXi( 0, J ) * HXi1 - gPt.dNdXi( 1, J ) * HXi0 ) *
+                                                               gPt.weight;
                 }
             }
 
@@ -192,7 +192,8 @@ namespace Marmot {
             return boundaryVector;
         }
 
-        void BoundaryElement::assembleIntoParentVector( const Eigen::VectorXd& boundaryVector, Eigen::Ref<Eigen::VectorXd> parentVector)
+        void BoundaryElement::assembleIntoParentVector( const Eigen::VectorXd&        boundaryVector,
+                                                        Eigen::Ref< Eigen::VectorXd > parentVector )
         {
             /* assemble any boundary vector (e.g. pressure load) into the corresponding parental vector
              * */
@@ -201,8 +202,8 @@ namespace Marmot {
                 parentVector( boundaryIndicesInParentCoordinates( i ) ) += boundaryVector( i );
         }
 
-        void BoundaryElement::assembleIntoParentStiffness( const Eigen::MatrixXd&      KBoundary,
-                                                           Eigen::Ref<Eigen::MatrixXd> KParent )
+        void BoundaryElement::assembleIntoParentStiffness( const Eigen::MatrixXd&        KBoundary,
+                                                           Eigen::Ref< Eigen::MatrixXd > KParent )
         {
             // mind the negative sign for a proper assembly of the residual(!) stiffness !
             for ( int i = 0; i < KBoundary.cols(); i++ )
