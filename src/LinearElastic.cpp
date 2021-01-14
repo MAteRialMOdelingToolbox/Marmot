@@ -1,36 +1,41 @@
 #include "Marmot/LinearElastic.h"
-#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
 
-using namespace Marmot;
-using namespace Eigen;
+namespace Marmot::Materials {
 
-LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
-      E( materialProperties[0] ),
-      nu( materialProperties[1] )
-{
-    assert( nMaterialProperties >= 2 );
-}
+    using namespace Marmot;
+    using namespace Eigen;
 
-void LinearElastic::computeStress( double*       stress,
-                                   double*       dStressDDStrain,
-                                   const double* dStrain,
-                                   const double* timeOld,
-                                   const double  dT,
-                                   double&       pNewDT )
-{
-    mVector6d             S( stress );
-    Map< const Vector6d > dE( dStrain );
-    mMatrix6d             C( dStressDDStrain );
+    LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
+        : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties,
+                                                                nMaterialProperties,
+                                                                materialNumber ),
+          E( materialProperties[0] ),
+          nu( materialProperties[1] )
+    {
+        assert( nMaterialProperties >= 2 );
+    }
 
-    C = ContinuumMechanics::Cel( E, nu );
+    void LinearElastic::computeStress( double*       stress,
+                                       double*       dStressDDStrain,
+                                       const double* dStrain,
+                                       const double* timeOld,
+                                       const double  dT,
+                                       double&       pNewDT )
+    {
+        mVector6d             S( stress );
+        Map< const Vector6d > dE( dStrain );
+        mMatrix6d             C( dStressDDStrain );
 
-    // Zero strain  increment check
-    if ( ( dE.array() == 0 ).all() )
-        return;
+        C = ContinuumMechanics::Cel( E, nu );
 
-    S = S + C * dE;
-}
+        // Zero strain  increment check
+        if ( ( dE.array() == 0 ).all() )
+            return;
+
+        S = S + C * dE;
+    }
+} // namespace Marmot::Materials

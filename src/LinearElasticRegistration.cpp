@@ -1,13 +1,16 @@
 #include "Marmot/LinearElastic.h"
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
 
-namespace LinearElasticRegistration {
+namespace Marmot::Materials {
 
-    using namespace MarmotLibrary;
+    namespace Registration {
 
-    const static bool isRegistered = MarmotMaterialFactory::registerMaterial( MaterialCode::LinearElastic,
-                                                                              "LINEARELASTIC",
-                                                                              makeDefaultMarmotMaterialFactoryFunction<
-                                                                                  class LinearElastic >() );
+        using namespace MarmotLibrary;
 
-} // namespace LinearElasticRegistration
+        const static bool LinearElasticIsRegistered = MarmotMaterialFactory::
+            registerMaterial( MaterialCode::LinearElastic,
+                              "LINEARELASTIC",
+                              makeDefaultMarmotMaterialFactoryFunction< class LinearElastic >() );
+
+    } // namespace Registration
+} // namespace Marmot::Materials

@@ -28,37 +28,40 @@
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include <iostream>
 #include <string>
-/**
- * \brief Implementation of a linear elastic material
- * for 3D stress states.
- *
- * For further information see \ref linearelastic.
- */
-class LinearElastic : public MarmotMaterialHypoElastic {
-  public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
+namespace Marmot::Materials {
+    /**
+     * \brief Implementation of a linear elastic material
+     * for 3D stress states.
+     *
+     * For further information see \ref linearelastic.
+     */
+    class LinearElastic : public MarmotMaterialHypoElastic {
+      public:
+        using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-  protected:
-    /// \brief Young's modulus
-    const double& E;
-    /**< #E represents Young's modulus for isotropic linear elasticity.
-     * It is a reference variable to #materialProperties[0]. */
-    /// \brief Poisson's ratio
-    const double& nu;
-    /**< #nu represents Poisson's ratio for isotropic linear elasticity.
-     * It is a reference variable to #materialProperties[1]. */
+        LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
+      protected:
+        /// \brief Young's modulus
+        const double& E;
+        /**< #E represents Young's modulus for isotropic linear elasticity.
+         * It is a reference variable to #materialProperties[0]. */
+        /// \brief Poisson's ratio
+        const double& nu;
+        /**< #nu represents Poisson's ratio for isotropic linear elasticity.
+         * It is a reference variable to #materialProperties[1]. */
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+        void computeStress( double* stress,
+                            double* dStressDDStrain,
 
-    PermanentResultLocation getPermanentResultPointer( const std::string& result ) { return { nullptr, 0 }; };
+                            const double* dStrain,
+                            const double* timeOld,
+                            const double  dT,
+                            double&       pNewDT );
 
-    int getNumberOfRequiredStateVars() { return 0; }
-};
+        PermanentResultLocation getPermanentResultPointer( const std::string& result ) { return { nullptr, 0 }; };
+
+        int getNumberOfRequiredStateVars() { return 0; }
+    };
+} // namespace Marmot::Materials
