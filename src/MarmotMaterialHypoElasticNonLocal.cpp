@@ -8,18 +8,18 @@
 using namespace Eigen;
 
 void MarmotMaterialGradientEnhancedHypoElastic::computeStress( double*       stress_,
-                                                    double&       K_local,
-                                                    double&       nonLocalRadius,
-                                                    double*       dStressDDDeformationGradient_,
-                                                    double*       dK_localDDeformationGradient_,
-                                                    double*       dStressDK,
-                                                    const double* FOld_,
-                                                    const double* FNew_,
-                                                    const double  KOld,
-                                                    const double  dK,
-                                                    const double* timeOld,
-                                                    const double  dT,
-                                                    double&       pNewDT )
+                                                               double&       K_local,
+                                                               double&       nonLocalRadius,
+                                                               double*       dStressDDDeformationGradient_,
+                                                               double*       dK_localDDeformationGradient_,
+                                                               double*       dStressDK,
+                                                               const double* FOld_,
+                                                               const double* FNew_,
+                                                               const double  KOld,
+                                                               const double  dK,
+                                                               const double* timeOld,
+                                                               const double  dT,
+                                                               double&       pNewDT )
 {
     // Standard implemenation of the Abaqus like Hughes-Winget algorithm
     // Approximation of the algorithmic tangent in order to
@@ -27,14 +27,15 @@ void MarmotMaterialGradientEnhancedHypoElastic::computeStress( double*       str
     // small strain material models
 
     using namespace Marmot;
-    const Map<const Matrix3d> FNew( FNew_ );
-    const Map<const Matrix3d> FOld( FOld_ );
-    Marmot::mVector6d             stress( stress_ );
+    const Map< const Matrix3d > FNew( FNew_ );
+    const Map< const Matrix3d > FOld( FOld_ );
+    Marmot::mVector6d           stress( stress_ );
 
     Matrix6d CJaumann                = Matrix6d::Zero();
     Vector6d dK_LocalDStretchingRate = Vector6d::Zero();
 
-    HughesWinget hughesWingetIntegrator( FOld, FNew, HughesWinget::Formulation::AbaqusLike );
+    Marmot::NumericalAlgorithms::HughesWinget
+        hughesWingetIntegrator( FOld, FNew, Marmot::NumericalAlgorithms::HughesWinget::Formulation::AbaqusLike );
 
     auto dEps = hughesWingetIntegrator.getStrainIncrement();
     stress    = hughesWingetIntegrator.rotateTensor( stress );
@@ -52,8 +53,8 @@ void MarmotMaterialGradientEnhancedHypoElastic::computeStress( double*       str
                    dT,
                    pNewDT );
 
-    TensorMap<Eigen::Tensor<double, 3>> dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
-    Map<Matrix3d>                       dKLocal_dF( dK_localDDeformationGradient_ );
+    TensorMap< Eigen::Tensor< double, 3 > > dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
+    Map< Matrix3d >                         dKLocal_dF( dK_localDDeformationGradient_ );
 
     Matrix3d FInv = FNew.inverse();
     dS_dF         = hughesWingetIntegrator.compute_dS_dF( stress, FInv, CJaumann );
@@ -61,28 +62,28 @@ void MarmotMaterialGradientEnhancedHypoElastic::computeStress( double*       str
 }
 
 void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*       stress_,
-                                                         double&       K_local,
-                                                         double&       nonLocalRadius,
-                                                         double*       dStressDDStrain_,
-                                                         double*       dK_localDDStrain,
-                                                         double*       dStressDK,
-                                                         double*       dStrain_,
-                                                         double        KOld,
-                                                         double        dK,
-                                                         const double* timeOld,
-                                                         const double  dT,
-                                                         double&       pNewDT )
+                                                                    double&       K_local,
+                                                                    double&       nonLocalRadius,
+                                                                    double*       dStressDDStrain_,
+                                                                    double*       dK_localDDStrain,
+                                                                    double*       dStressDK,
+                                                                    double*       dStrain_,
+                                                                    double        KOld,
+                                                                    double        dK,
+                                                                    const double* timeOld,
+                                                                    const double  dT,
+                                                                    double&       pNewDT )
 {
     using namespace Marmot;
 
-    Map<Vector6d>  stress( stress_ );
-    Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
-    Map<Vector6d>  dStrain( dStrain_ );
-    Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
+    Map< Vector6d > stress( stress_ );
+    Map< Matrix6d > dStressDDStrain( dStressDDStrain_ );
+    Map< Vector6d > dStrain( dStrain_ );
+    Map< VectorXd > stateVars( this->stateVars, this->nStateVars );
 
-    Vector6d  stressTemp;
+    Vector6d stressTemp;
     VectorXd stateVarsOld = stateVars;
-    Vector6d  dStrainTemp  = dStrain;
+    Vector6d dStrainTemp  = dStrain;
 
     // assumption of isochoric deformation for initial guess
     dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );
