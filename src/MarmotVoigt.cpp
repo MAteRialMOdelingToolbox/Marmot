@@ -107,24 +107,25 @@ namespace Marmot {
             return R_s;
         }
 
-        Matrix36d TransStressVec(const Vector3d& n)
+	Matrix36d ProjectVoigtStressToPlane(const Vector3d& normalVector)
         {
-            Matrix36d Nvec;
-            Nvec << n(0), 0, 0, n(1), 0, n(2),
+	    const Vector3d& n = normalVector;
+
+            Matrix36d ProjectMatrix;
+            ProjectMatrix << n(0), 0, 0, n(1), 0, n(2),
                 0, n(1), 0, n(0), n(2), 0,
                 0, 0, n(2), 0, n(1), n(0);
 
-            return Nvec; 
+           return ProjectMatrix; 
         }
 
-      	Matrix36d TransEpsVec(const Vector3d& n)
+      	Matrix36d ProjectVoigtStrainToPlane(const Vector3d& normalVector)
         {
-            Matrix36d Nvec;
-            Nvec << n(0), 0, 0, n(1)/2.0, 0, n(2)/2.0,
-                0, n(1), 0, n(0)/2.0, n(2)/2.0, 0,
-                0, 0, n(2), 0, n(1)/2.0, n(0)/2.0;
+	    
+            Matrix36d ProjectMatrix = ProjectVoigtStressToPlane(normalVector);
+	    ProjectMatrix.topRightCorner(3,3) *= 0.5;
 
-            return Nvec; 
+            return ProjectMatrix; 
         }
 
         Matrix3d getPlaneStressTangent( const Matrix6d& C )
@@ -155,26 +156,22 @@ namespace Marmot {
             return CPlaneStrain;
         }
 
-	Tensor3333d P(Vector3d n, double c1, double c2, double c3)
+	Tensor3333d AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3)
 	{
-	    Tensor3333d P_;
-	    Matrix3d kron;
+	    Tensor3333d MappingTensor;
 	    Matrix3d phi;
 
-	    P_.setZero();
+	    MappingTensor.setZero();
+	    
+	    auto kron = [] (int i, int j) -> int { (i==j) ? 1 : 0 };
+	    normalVector = 1/normalVector.norm()*normalVector;
 
-	    kron << 1,0,0,
-	     	    0,1,0,
-	            0,0,1;
-
-	    n = 1/n.norm()*n;
-
-	    phi = Math::DyadProdNvec(n);
+	    phi = Math::DyadicProduct(normalVector, normalVector);
 	    for (int i = 0;i<3;i++){
 		for (int j = 0;j<3;j++){
 		    for (int k = 0;k<3;k++){
 			for (int l = 0;l<3;l++){
-			    P_(i,j,k,l) += c1/2*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
+			    MappingTensor(i,j,k,l) += c1/2*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
 				           c2/2*(phi(i,k)*phi(j,l)+phi(i,l)*phi(j,k))+
 				           c3/4*(kron(i,k)*phi(j,l)+kron(i,l)*phi(j,k)+
 				           phi(i,k)*kron(j,l)+phi(i,l)*kron(j,k));	
@@ -183,10 +180,10 @@ namespace Marmot {
 		}
 	    }
 	
-	    return P_;
+	    return MappingTensor;
 	}
 
-	Matrix6d PToPVoigt(Tensor3333d P){
+	Matrix6d AnisotropicLinearMappingTensorToVoigt(const Tensor3333d& P){
 	Eigen::Matrix<double,9,9> PVoigt;
 	Eigen::Matrix<double,9,6> PVoigtColSym;
 	Matrix6d PVoigtSym;
