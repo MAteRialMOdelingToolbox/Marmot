@@ -141,10 +141,10 @@ namespace Marmot {
             return std::make_tuple( yNew, tauNew);
         }
 
-       	Matrix3d DirCosine(const Matrix3d& LocCoordSys);
-	Matrix3d OrthonomCoordSystem( Vector3d& NormVec);	
+       	Matrix3d DirectionCosLocalToGlobal(const Matrix3d& LocalCoordinateSystem);
+	Matrix3d OrthonormalCoordinateSystem(const Vector3d& normalVector);	
         double Polyfit(const Eigen::Matrix<double,4,1>& Xdata, const Eigen::Matrix<double,4,1>& Ydata, int& angle );
-	Matrix3d DyadProdNvec(Vector3d &n);
+	Eigen::MatrixXi DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2);
 
     } // namespace Math
 } // namespace Marmot
