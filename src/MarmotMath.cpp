@@ -62,35 +62,38 @@ namespace Marmot {
 	}
 
 
-        Matrix3d DirCosine(const Matrix3d& LocCoordSys)
+        Matrix3d DirectionCosLocalToGloabl(const Matrix3d& LocalCoordinateSystem)
         {
-	   Vector3d e1 = Eigen::MatrixXd::Zero(3,1);
-	   e1(0) = 1;
+	   Vector3d UnitVectorX1 = Eigen::MatrixXd::Zero(3,1);
+	   UnitVectorX1(0) = 1;
 	   
-	   Matrix3d GlobCoordSys = OrthonomCoordSystem(e1);
-	   Matrix3d DirCos;
+	   Matrix3d GlobalCoordinateSystem = OrthonormalCoordinateSystem(UnitVectorX1);
+	   Matrix3d DirectionCos;
 	   
 	   for (int i = 0;i<=2;i++){
 	   	for (int j = 0;j<=2;j++){
-	   		DirCos(i,j) = LocCoordSys.col(i).dot(GlobCoordSys.col(j));
+	   		DirectionCos(i,j) = LocalCoordinateSystem.col(i).dot(GlobalCoordinateSystem.col(j));
 	   	}
 	   }
 	   
-	   return DirCos;
+	   return DirectionCos;
 	   
         }
 
-	Matrix3d DyadProdNvec(Vector3d &n)
-	{	
-		Matrix3d phi;
-		for (int i = 0;i<3;i++){
-			for (int j = 0;j<3;j++){
-				phi(i,j) = n(i)*n(j);
+	Eigen::MatrixXi DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2)
+	{
+		Eigen::MatrixXi Dyade;
+
+		for (int i = 0;i<Vector1.rows();i++){
+			for (int j = 0;j<Vector1.rows();j++){
+				Dyade(i,j) = Vector1(i)*Vector2(j);
 			}
 		}
 
-		return phi;
+		return Dyade;
+
 	}
+
         //int const kronecker (int i, int j)
         //{
             //if (i == j)

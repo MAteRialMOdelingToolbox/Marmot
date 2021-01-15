@@ -208,10 +208,10 @@ namespace Marmot {
 	Matrix6d	 CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31);
         Matrix6d         TransEps(const Matrix3d& LocCoordSys);
         Matrix6d         TransSig(const Matrix3d& LocCoordSys); 
-        Matrix36d        TransStressVec(const Vector3d& n);
-      	Matrix36d	 TransEpsVec(const Vector3d& n);
-	Tensor3333d      P(Vector3d n, double c1, double c2, double c3);
-	Matrix6d         PToPVoigt(Tensor3333d P);
+        Matrix36d        ProjectVoigtStressToPlane(const Vector3d& normalVector);
+      	Matrix36d	 ProjectVoigtStrainToPlane(const Vector3d& normalVector);
+	Tensor3333d      AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3);
+	Matrix6d         AnisotropicLinearMappingTensorToVoigt(const Tensor3333d& P);
 
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
