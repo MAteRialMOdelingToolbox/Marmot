@@ -174,6 +174,20 @@ namespace Marmot {
                 throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
             }
 
+	    constexpr std::pair FourthOrderTensorToVoigt(const int& i,const int& j,const int& k, const int& l)
+	    {
+		    constexpr std::pair<int,int> FourthOrderTensorToVoigtIndicesMapping[3][3][3][3] = {{{{(0,0),(0,3),(0,4)},{(0,3),(0,1),(0,5)},{(0,4),(0,5),(0,2)}},
+			    										{{(3,0),(3,3),(3,4)},{(3,3),(3,1),(3,5)},{(3,4),(3,5),(3,2)}},	
+			    										{{(4,0),(4,3),(4,4)},{(4,3),(4,1),(4,5)},{(4,4),(4,5),(4,2)}}},	
+			   									       {{{(3,0),(3,3),(3,4)},{(3,3),(3,1),(3,5)},{(3,4),(3,5),(3,2)}}, 
+			   									        {{(1,0),(1,3),(1,4)},{(1,3),(1,1),(1,5)},{(1,4),(1,5),(1,2)}}, 
+			   									        {{(5,0),(5,3),(5,4)},{(5,3),(5,1),(5,5)},{(5,4),(5,5),(5,2)}}}, 
+			   									       {{{(4,0),(4,3),(4,4)},{(4,3),(4,1),(4,5)},{(4,4),(4,5),(4,2)}}, 
+			   									        {{(5,0),(5,3),(5,4)},{(5,3),(5,1),(5,5)},{(5,4),(5,5),(5,2)}}, 
+			   									        {{(2,0),(2,3),(2,4)},{(2,3),(2,1),(2,5)},{(2,4),(2,5),(2,2)}}}}; 
+		    return FourthOrderTensorToVoigtIndicesMapping[i][j][k][l];
+	    }
+
             template <int nDim>
             Eigen::TensorFixedSize<double, Eigen::Sizes<VOIGTFROMDIM( nDim ), nDim, nDim>> voigtMap()
             {
