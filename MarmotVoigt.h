@@ -210,8 +210,8 @@ namespace Marmot {
         Matrix6d         TransformationMatrixStressVoigt(const Matrix3d& LocalCoordinateSystem); 
         Matrix36d        ProjectVoigtStressToPlane(const Vector3d& normalVector);
       	Matrix36d	 ProjectVoigtStrainToPlane(const Vector3d& normalVector);
-	Tensor3333d      AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3);
-	Matrix6d         AnisotropicLinearMappingTensorToVoigt(const Tensor3333d& P);
+	Matrix6d   	 AnisotropicLinearMappingTensor(Vector3d normalVector,const double& c1,const double& c2,const double& c3);
+//	Matrix6d         AnisotropicLinearMappingTensorToVoigt(const Tensor3333d& P);
 
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
