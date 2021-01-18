@@ -80,9 +80,9 @@ namespace Marmot {
 	   
         }
 
-	Eigen::MatrixXi DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2)
+	Eigen::MatrixXd DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2)
 	{
-		Eigen::MatrixXi Dyade;
+		Eigen::MatrixXd Dyade;
 
 		for (int i = 0;i<Vector1.rows();i++){
 			for (int j = 0;j<Vector1.rows();j++){
