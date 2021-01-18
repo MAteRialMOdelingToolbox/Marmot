@@ -39,7 +39,7 @@ namespace Marmot {
             return CelInv;
         }
 
-     Matrix6d CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2)
+     Matrix6d CelInverseTransverseIsotropic(double E1, double E2, double nu1, double nu2, double G2)
         {
             Matrix6d CelInvTrIs;
             const double G1 = E1/(2*(1+nu1));
@@ -54,7 +54,7 @@ namespace Marmot {
             return CelInvTrIs;
         }
 
-        Matrix6d CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31)
+        Matrix6d CelInverseOrthotropic(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31)
         {
             Matrix6d CelInvOrtho;
             // clang-format off
@@ -68,35 +68,27 @@ namespace Marmot {
             return CelInvOrtho;
         }
 
-        Matrix6d TransEps(const Matrix3d& LocCoordSys) 
+        Matrix6d TransformationMatrixStrainVoigt(const Matrix3d& LocalCoordinateSystem) 
         {
-            Matrix3d N;
-            N = Math::DirCosine(LocCoordSys);
 
-            Matrix6d R_e;
-
-            R_e << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), N(0,0)*N(0,1), N(0,2)*N(0,1), N(0,2)*N(0,0),
-                pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), N(1,0)*N(1,1), N(1,2)*N(1,1), N(1,0)*N(1,2),
-                pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), N(2,0)*N(2,1), N(2,2)*N(2,1), N(2,0)*N(2,2),
-                2*N(0,0)*N(1,0), 2*N(0,1)*N(1,1), 2*N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
-                2*N(1,0)*N(2,0), 2*N(1,1)*N(2,1), 2*N(1,2)*N(2,2), N(1,0)*N(2,1)+N(1,1)*N(2,0), N(1,1)*N(2,2)+N(1,2)*N(2,1), N(1,0)*N(2,2)+N(1,2)*N(2,0),
-                2*N(2,0)*N(0,0), 2*N(2,1)*N(0,1), 2*N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
-            // clang-format on
-
-            return R_e;
+            Matrix6d TranformationMatrix = TransformationMatrixStressVoigt(LocalCoordinateSystem;
+	    TransformationMatrix.topRightCorner(3,3) *= 0.5;
+	    TransformationMatrix.bottomLeftCorner(3,3) *= 2;
+	    
+	    return TransformationMatrix;
         }
 
-        Matrix6d TransSig(const Matrix3d& LocCoordSys)
+        Matrix6d TransformationMatrixStressVoigt(const Matrix3d& LocalCoordinateSystem)
         {
            
             // clang-format on
       
             Matrix3d N;
-            N = Math::DirCosine(LocCoordSys);
+            N = Math::DirectionCosLocalToGlobal(LocalCoordinateSystem);
 
-            Matrix6d R_s;
+            Matrix6d TransformationMatrix;
 
-            R_s << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
+            TransformationMatrix << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
                 pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,2)*N(1,1), 2*N(1,0)*N(1,2),
                 pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,2)*N(2,1), 2*N(2,0)*N(2,2),
                 N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
@@ -104,7 +96,7 @@ namespace Marmot {
                 N(2,0)*N(0,0), N(2,1)*N(0,1), N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
             // clang-format on
 
-            return R_s;
+            return TransformationMatrix;
         }
 
 	Matrix36d ProjectVoigtStressToPlane(const Vector3d& normalVector)
