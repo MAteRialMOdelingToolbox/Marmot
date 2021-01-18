@@ -71,7 +71,7 @@ namespace Marmot {
         Matrix6d TransformationMatrixStrainVoigt(const Matrix3d& LocalCoordinateSystem) 
         {
 
-            Matrix6d TranformationMatrix = TransformationMatrixStressVoigt(LocalCoordinateSystem;
+            Matrix6d TransformationMatrix = TransformationMatrixStressVoigt(LocalCoordinateSystem);
 	    TransformationMatrix.topRightCorner(3,3) *= 0.5;
 	    TransformationMatrix.bottomLeftCorner(3,3) *= 2;
 	    
@@ -148,33 +148,41 @@ namespace Marmot {
             return CPlaneStrain;
         }
 
-	Tensor3333d AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3)
+	Matrix6d AnisotropicLinearMappingTensor( Vector3d normalVector,const double& c1,const double& c2,const double& c3)
 	{
-	    Tensor3333d MappingTensor;
+	    Matrix6d MappingTensorVoigtNotation;
 	    Matrix3d phi;
+	    int IndexRow, IndexCol;
 
-	    MappingTensor.setZero();
+	    MappingTensorVoigtNotation.setZero();
 	    
-	    auto kron = [] (int i, int j) -> int { (i==j) ? 1 : 0 };
-	    normalVector = 1/normalVector.norm()*normalVector;
+	    auto kron = [] (int i, int j) -> int { return (i==j) ? 1 : 0; }; 
+
+	    normalVector /= normalVector.norm();
 
 	    phi = Math::DyadicProduct(normalVector, normalVector);
+
 	    for (int i = 0;i<3;i++){
 		for (int j = 0;j<3;j++){
+		    IndexRow = ContinuumMechanics::TensorUtility::IndexNotation::toVoigt<3>(i,j);
 		    for (int k = 0;k<3;k++){
 			for (int l = 0;l<3;l++){
-			    MappingTensor(i,j,k,l) += c1/2*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
-				           c2/2*(phi(i,k)*phi(j,l)+phi(i,l)*phi(j,k))+
-				           c3/4*(kron(i,k)*phi(j,l)+kron(i,l)*phi(j,k)+
-				           phi(i,k)*kron(j,l)+phi(i,l)*kron(j,k));	
+			    IndexCol = ContinuumMechanics::TensorUtility::IndexNotation::toVoigt<3>(k,l);
+
+			    MappingTensorVoigtNotation(IndexRow,IndexCol) += c1/2.*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
+				           			             c2/2.*(phi(i,k)*phi(j,l)+phi(i,l)*phi(j,k))+
+				           			             c3/4.*(kron(i,k)*phi(j,l)+kron(i,l)*phi(j,k)+
+				           			                    phi(i,k)*kron(j,l)+phi(i,l)*kron(j,k));	
 			}
 		    }
 		}
 	    }
-	
-	    return MappingTensor;
-	}
 
+	    MappingTensorVoigtNotation.bottomLeftCorner(3,6) *= 0.5;
+	
+	    return MappingTensorVoigtNotation;
+	}
+/*
 	Matrix6d AnisotropicLinearMappingTensorToVoigt(const Tensor3333d& P){
 	Eigen::Matrix<double,9,9> PVoigt;
 	Eigen::Matrix<double,9,6> PVoigtColSym;
@@ -213,7 +221,7 @@ namespace Marmot {
 
 	return PVoigtSym;
 	}
-
+*/
         namespace PlaneStrain {
 
             Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D )
