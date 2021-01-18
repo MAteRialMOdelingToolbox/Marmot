@@ -62,7 +62,7 @@ namespace Marmot {
 	}
 
 
-        Matrix3d DirectionCosLocalToGloabl(const Matrix3d& LocalCoordinateSystem)
+        Matrix3d DirectionCosLocabalGlobal(const Matrix3d& LocalCoordinateSystem)
         {
 	   Vector3d UnitVectorX1 = Eigen::MatrixXd::Zero(3,1);
 	   UnitVectorX1(0) = 1;

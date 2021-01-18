@@ -204,10 +204,10 @@ namespace Marmot {
 
         Matrix6d         Cel( double E, double nu );
         Matrix6d         CelInverse( double E, double nu );
-	Matrix6d         CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2);
-	Matrix6d	 CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31);
-        Matrix6d         TransEps(const Matrix3d& LocCoordSys);
-        Matrix6d         TransSig(const Matrix3d& LocCoordSys); 
+	Matrix6d         CelInverseTransverseIsotropic(double E1, double E2, double nu1, double nu2, double G2);
+	Matrix6d	 CelInverseOrthotropic(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31);
+        Matrix6d         TransformationMatrixStrainVoigt(const Matrix3d& LocalCoordinateSystem);
+        Matrix6d         TransformationMatrixStressVoigt(const Matrix3d& LocalCoordinateSystem); 
         Matrix36d        ProjectVoigtStressToPlane(const Vector3d& normalVector);
       	Matrix36d	 ProjectVoigtStrainToPlane(const Vector3d& normalVector);
 	Tensor3333d      AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3);
