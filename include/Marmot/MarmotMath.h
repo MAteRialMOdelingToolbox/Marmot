@@ -142,7 +142,7 @@ namespace Marmot {
         }
 
        	Matrix3d DirectionCosLocalToGlobal(const Matrix3d& LocalCoordinateSystem);
-	Matrix3d OrthonormalCoordinateSystem(const Vector3d& normalVector);	
+	Matrix3d OrthonormalCoordinateSystem(Vector3d& normalVector);	
         double Polyfit(const Eigen::Matrix<double,4,1>& Xdata, const Eigen::Matrix<double,4,1>& Ydata, int& angle );
 	Eigen::MatrixXd DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2);
 

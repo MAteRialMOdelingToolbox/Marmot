@@ -148,7 +148,7 @@ namespace Marmot {
             return CPlaneStrain;
         }
 
-	Matrix6d AnisotropicLinearMappingTensor( Vector3d normalVector,const double& c1,const double& c2,const double& c3)
+	Matrix6d AnisotropicLinearMappingTensor(const Vector3d& normalVector,const double& c1,const double& c2,const double& c3)
 	{
 	    Matrix6d MappingTensorVoigtNotation;
 	    Matrix3d phi;
@@ -157,8 +157,6 @@ namespace Marmot {
 	    MappingTensorVoigtNotation.setZero();
 	    
 	    auto kron = [] (int i, int j) -> int { return (i==j) ? 1 : 0; }; 
-
-	    normalVector /= normalVector.norm();
 
 	    phi = Math::DyadicProduct(normalVector, normalVector);
 

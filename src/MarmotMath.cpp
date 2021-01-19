@@ -42,11 +42,11 @@ namespace Marmot {
 
         int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
-	Matrix3d OrthonomCoordSystem(Vector3d& NormVec)
+	Matrix3d OrthonormalCoordinateSystem(Vector3d& normalVector)
 	{
-	   NormVec.normalize();
+	   normalVector.normalize();
 	   Matrix3d Coordsystem = Eigen::MatrixXd::Zero(3,3);
-	   Coordsystem.col(0) = NormVec;
+	   Coordsystem.col(0) = normalVector;
 	  	   	
 	   if (Coordsystem(0,0) == 0 && Coordsystem(1,0) == 0){
 	   	Coordsystem(1,1) = 1.0;
@@ -62,7 +62,7 @@ namespace Marmot {
 	}
 
 
-        Matrix3d DirectionCosLocabalGlobal(const Matrix3d& LocalCoordinateSystem)
+        Matrix3d DirectionCosLocalToGlobal(const Matrix3d& LocalCoordinateSystem)
         {
 	   Vector3d UnitVectorX1 = Eigen::MatrixXd::Zero(3,1);
 	   UnitVectorX1(0) = 1;
