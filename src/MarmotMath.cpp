@@ -1,5 +1,5 @@
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotMath.h"
 #include <cmath>
 #include <math.h>
 
@@ -42,64 +42,62 @@ namespace Marmot {
 
         int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
-	Matrix3d OrthonormalCoordinateSystem(Vector3d& normalVector)
-	{
-	   normalVector.normalize();
-	   Matrix3d Coordsystem = Eigen::MatrixXd::Zero(3,3);
-	   Coordsystem.col(0) = normalVector;
-	  	   	
-	   if (Coordsystem(0,0) == 0 && Coordsystem(1,0) == 0){
-	   	Coordsystem(1,1) = 1.0;
-	   } else{
-	   	Coordsystem(0,1) = -Coordsystem(1,0);
-	   	Coordsystem(1,1) =  Coordsystem(0,0);	
-	   }
-	   
-	   Coordsystem.col(2) = Coordsystem.col(0).cross(Coordsystem.col(1));
-	   Coordsystem.col(2).normalize();
-
-	   return Coordsystem;
-	}
-
-
-        Matrix3d DirectionCosLocalToGlobal(const Matrix3d& LocalCoordinateSystem)
+        Matrix3d OrthonormalCoordinateSystem( Vector3d& normalVector )
         {
-	   Vector3d UnitVectorX1 = Eigen::MatrixXd::Zero(3,1);
-	   UnitVectorX1(0) = 1;
-	   
-	   Matrix3d GlobalCoordinateSystem = OrthonormalCoordinateSystem(UnitVectorX1);
-	   Matrix3d DirectionCos;
-	   
-	   for (int i = 0;i<=2;i++){
-	   	for (int j = 0;j<=2;j++){
-	   		DirectionCos(i,j) = LocalCoordinateSystem.col(i).dot(GlobalCoordinateSystem.col(j));
-	   	}
-	   }
-	   
-	   return DirectionCos;
-	   
+            normalVector.normalize();
+            Matrix3d Coordsystem = Eigen::MatrixXd::Zero( 3, 3 );
+            Coordsystem.col( 0 ) = normalVector;
+
+            if ( Coordsystem( 0, 0 ) == 0 && Coordsystem( 1, 0 ) == 0 ) {
+                Coordsystem( 1, 1 ) = 1.0;
+            }
+            else {
+                Coordsystem( 0, 1 ) = -Coordsystem( 1, 0 );
+                Coordsystem( 1, 1 ) = Coordsystem( 0, 0 );
+            }
+
+            Coordsystem.col( 2 ) = Coordsystem.col( 0 ).cross( Coordsystem.col( 1 ) );
+            Coordsystem.col( 2 ).normalize();
+
+            return Coordsystem;
         }
 
-	Eigen::MatrixXd DyadicProduct(const Eigen::VectorXd& Vector1, const Eigen::VectorXd& Vector2)
-	{
-		Eigen::MatrixXd Dyade;
+        Matrix3d DirectionCosLocalToGlobal( const Matrix3d& LocalCoordinateSystem )
+        {
+            Vector3d UnitVectorX1 = Eigen::MatrixXd::Zero( 3, 1 );
+            UnitVectorX1( 0 )     = 1;
 
-		for (int i = 0;i<Vector1.rows();i++){
-			for (int j = 0;j<Vector1.rows();j++){
-				Dyade(i,j) = Vector1(i)*Vector2(j);
-			}
-		}
+            Matrix3d GlobalCoordinateSystem = OrthonormalCoordinateSystem( UnitVectorX1 );
+            Matrix3d DirectionCos;
 
-		return Dyade;
+            for ( int i = 0; i <= 2; i++ ) {
+                for ( int j = 0; j <= 2; j++ ) {
+                    DirectionCos( i, j ) = LocalCoordinateSystem.col( i ).dot( GlobalCoordinateSystem.col( j ) );
+                }
+            }
 
-	}
+            return DirectionCos;
+        }
 
-        //int const kronecker (int i, int j)
+        Eigen::Matrix3d DyadicProduct( const Eigen::Vector3d& Vector1, const Eigen::Vector3d& Vector2 )
+        {
+            Eigen::Matrix3d Dyade;
+
+            for ( int i = 0; i < Vector1.rows(); i++ ) {
+                for ( int j = 0; j < Vector1.rows(); j++ ) {
+                    Dyade( i, j ) = Vector1( i ) * Vector2( j );
+                }
+            }
+
+            return Dyade;
+        }
+
+        // int const kronecker (int i, int j)
         //{
-            //if (i == j)
-                //return 1;
-            //else
-                //return 0;
+        // if (i == j)
+        // return 1;
+        // else
+        // return 0;
         //}
 
     } // namespace Math
