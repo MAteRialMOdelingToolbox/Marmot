@@ -78,12 +78,15 @@ if __name__ == "__main__":
 
     '''
 
+    coreModules = searchForDocumentedProjects( 'modules/core' )
+
     # content page
     with open( 'doc/content.md', 'w+') as f:
         f.write( "\page content Content\n" )
-        f.write( "The modules provided by %Marmot can be found here.\n" )
+        f.write( "The content provided by %Marmot can be found here.\n" )
         f.write( " - \subpage continuummechanics\n" )
-        f.write( " - \subpage finiteelementtechnology\n") 
+        if 'MarmotFiniteElementCore' in coreModules:
+            f.write( " - \subpage finiteelementtechnology\n") 
         f.write( " - \subpage numericalalgorithms\n" )
         f.write( " - \subpage others\n" )
     
