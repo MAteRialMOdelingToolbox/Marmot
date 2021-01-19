@@ -76,26 +76,25 @@ namespace Marmot {
             return CelInvOrtho;
         }
 
-        Matrix6d TransformationMatrixStrainVoigt( const Matrix3d& LocalCoordinateSystem )
+        Matrix6d transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem )
         {
 
-            Matrix6d TransformationMatrix = TransformationMatrixStressVoigt( LocalCoordinateSystem );
-            TransformationMatrix.topRightCorner( 3, 3 ) *= 0.5;
-            TransformationMatrix.bottomLeftCorner( 3, 3 ) *= 2;
+            Matrix6d transformationMatrix = transformationMatrixStressVoigt( transformedCoordinateSystem );
+            transformationMatrix.topRightCorner( 3, 3 ) *= 0.5;
+            transformationMatrix.bottomLeftCorner( 3, 3 ) *= 2;
 
-            return TransformationMatrix;
+            return transformationMatrix;
         }
 
-        Matrix6d TransformationMatrixStressVoigt( const Matrix3d& LocalCoordinateSystem )
+        Matrix6d transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem )
         {
 
-            Matrix3d N;
-            N = Math::DirectionCosLocalToGlobal( LocalCoordinateSystem );
+            Matrix3d N = Math::directionCosines( transformedCoordinateSystem );
 
-            Matrix6d TransformationMatrix;
+            Matrix6d transformationMatrix;
 
             // clang-format off
-            TransformationMatrix << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
+            transformationMatrix << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
                 pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,2)*N(1,1), 2*N(1,0)*N(1,2),
                 pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,2)*N(2,1), 2*N(2,0)*N(2,2),
                 N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
@@ -103,7 +102,7 @@ namespace Marmot {
                 N(2,0)*N(0,0), N(2,1)*N(0,1), N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
             // clang-format on
 
-            return TransformationMatrix;
+            return transformationMatrix;
         }
 
         Matrix36d ProjectVoigtStressToPlane( const Vector3d& normalVector )

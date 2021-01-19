@@ -26,7 +26,7 @@ namespace Marmot {
                 for ( int j = 0; j < 3; j++ )
                     for ( int k = 0; k < 3; k++ )
                         for ( int l = 0; l < 3; l++ ) {
-                            Isym(i,j,k,l)      = 0.5 * ( d(i,k)*d(j,l) + d(i,l)*d(j,k)) ;
+                            Isym( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) + d( i, l ) * d( j, k ) );
                         }
             return Isym;
         }
@@ -40,7 +40,7 @@ namespace Marmot {
                 for ( int j = 0; j < 3; j++ )
                     for ( int k = 0; k < 3; k++ )
                         for ( int l = 0; l < 3; l++ ) {
-                            Iskew(i,j,k,l)    = 0.5 * ( d(i,k)*d(j,l) - d(i,l)*d(j,k)) ;
+                            Iskew( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) - d( i, l ) * d( j, k ) );
                         }
             return Iskew;
         }
@@ -54,7 +54,7 @@ namespace Marmot {
                 for ( int j = 0; j < 3; j++ )
                     for ( int k = 0; k < 3; k++ )
                         for ( int l = 0; l < 3; l++ ) {
-                            dsdsigma( i, j, k, l ) = d( i, k ) * d( j, l ) - 1./3 * d(i,j) * d(k,l);
+                            dsdsigma( i, j, k, l ) = d( i, k ) * d( j, l ) - 1. / 3 * d( i, j ) * d( k, l );
                         }
             return dsdsigma;
         }
@@ -92,4 +92,17 @@ namespace Marmot {
         const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
     } // namespace ContinuumMechanics::CommonTensors
+
+    namespace ContinuumMechanics::TensorUtility {
+        Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 )
+        {
+            Eigen::Matrix3d dyade;
+
+            for ( int i = 0; i < vector1.rows(); i++ )
+                for ( int j = 0; j < vector1.rows(); j++ )
+                    dyade( i, j ) = vector1( i ) * vector2( j );
+
+            return dyade;
+        }
+    } // namespace ContinuumMechanics::TensorUtility
 } // namespace Marmot

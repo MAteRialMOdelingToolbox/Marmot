@@ -215,10 +215,10 @@ namespace Marmot {
                                          double G12,
                                          double G23,
                                          double G31 );
-        Matrix6d  TransformationMatrixStrainVoigt( const Matrix3d& LocalCoordinateSystem );
-        Matrix6d  TransformationMatrixStressVoigt( const Matrix3d& LocalCoordinateSystem );
-        Matrix36d ProjectVoigtStressToPlane( const Vector3d& normalVector );
-        Matrix36d ProjectVoigtStrainToPlane( const Vector3d& normalVector );
+        Matrix6d  transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem );
+        Matrix6d  transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem );
+        Matrix36d projectVoigtStressToPlane( const Vector3d& normalVector );
+        Matrix36d projectVoigtStrainToPlane( const Vector3d& normalVector );
 
         Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 

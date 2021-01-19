@@ -134,6 +134,8 @@ namespace Marmot {
                 const Eigen::Matrix< double, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >( t.data() );
         }
 
+        Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 );
+
         namespace IndexNotation {
             template < int nDim >
             constexpr std::pair< int, int > fromVoigt( int ij )

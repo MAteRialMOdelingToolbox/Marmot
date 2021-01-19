@@ -149,12 +149,10 @@ namespace Marmot {
             return std::make_tuple( yNew, tauNew );
         }
 
-        Matrix3d        DirectionCosLocalToGlobal( const Matrix3d& LocalCoordinateSystem );
-        Matrix3d        OrthonormalCoordinateSystem( Vector3d& normalVector );
-        double          Polyfit( const Eigen::Matrix< double, 4, 1 >& Xdata,
-                                 const Eigen::Matrix< double, 4, 1 >& Ydata,
-                                 int&                                 angle );
-        Eigen::Matrix3d DyadicProduct( const Eigen::Vector3d& Vector1, const Eigen::Vector3d& Vector2 );
-
+        Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem );
+        Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector );
+        double   Polyfit( const Eigen::Matrix< double, 4, 1 >& Xdata,
+                          const Eigen::Matrix< double, 4, 1 >& Ydata,
+                          int&                                 angle );
     } // namespace Math
 } // namespace Marmot
