@@ -1,7 +1,7 @@
-#include "Marmot/MarmotVoigt.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -26,7 +26,7 @@ namespace Marmot {
 
         Matrix6d CelInverse( double E, double nu )
         {
-            Matrix6d      CelInv;
+            Matrix6d     CelInv;
             const double G = E / ( 2 * ( 1 + nu ) );
             // clang-format off
             CelInv <<   1./E,   -nu/E,  -nu/E,  0,      0,      0,
@@ -39,10 +39,10 @@ namespace Marmot {
             return CelInv;
         }
 
-     Matrix6d CelInverseTransIso(double E1, double E2, double nu1, double nu2, double G2)
+        Matrix6d CelInverseTransverseIsotropic( double E1, double E2, double nu1, double nu2, double G2 )
         {
-            Matrix6d CelInvTrIs;
-            const double G1 = E1/(2*(1+nu1));
+            Matrix6d     CelInvTrIs;
+            const double G1 = E1 / ( 2 * ( 1 + nu1 ) );
             // clang-format off
             CelInvTrIs <<   1./E1,   -nu1/E1,  -nu2/E2,  0,      0,      0,
                    -nu1/E1,  1./E1,   -nu2/E2,  0,      0,      0,
@@ -54,7 +54,15 @@ namespace Marmot {
             return CelInvTrIs;
         }
 
-        Matrix6d CelInverseOrtho(double E1, double E2, double E3, double nu12, double nu23, double nu13, double G12, double G23, double G31)
+        Matrix6d CelInverseOrthotropic( double E1,
+                                        double E2,
+                                        double E3,
+                                        double nu12,
+                                        double nu23,
+                                        double nu13,
+                                        double G12,
+                                        double G23,
+                                        double G31 )
         {
             Matrix6d CelInvOrtho;
             // clang-format off
@@ -68,35 +76,25 @@ namespace Marmot {
             return CelInvOrtho;
         }
 
-        Matrix6d TransEps(const Matrix3d& LocCoordSys) 
+        Matrix6d transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem )
         {
-            Matrix3d N;
-            N = Math::DirCosine(LocCoordSys);
 
-            Matrix6d R_e;
+            Matrix6d transformationMatrix = transformationMatrixStressVoigt( transformedCoordinateSystem );
+            transformationMatrix.topRightCorner( 3, 3 ) *= 0.5;
+            transformationMatrix.bottomLeftCorner( 3, 3 ) *= 2;
 
-            R_e << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), N(0,0)*N(0,1), N(0,2)*N(0,1), N(0,2)*N(0,0),
-                pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), N(1,0)*N(1,1), N(1,2)*N(1,1), N(1,0)*N(1,2),
-                pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), N(2,0)*N(2,1), N(2,2)*N(2,1), N(2,0)*N(2,2),
-                2*N(0,0)*N(1,0), 2*N(0,1)*N(1,1), 2*N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
-                2*N(1,0)*N(2,0), 2*N(1,1)*N(2,1), 2*N(1,2)*N(2,2), N(1,0)*N(2,1)+N(1,1)*N(2,0), N(1,1)*N(2,2)+N(1,2)*N(2,1), N(1,0)*N(2,2)+N(1,2)*N(2,0),
-                2*N(2,0)*N(0,0), 2*N(2,1)*N(0,1), 2*N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
-            // clang-format on
-
-            return R_e;
+            return transformationMatrix;
         }
 
-        Matrix6d TransSig(const Matrix3d& LocCoordSys)
+        Matrix6d transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem )
         {
-           
-            // clang-format on
-      
-            Matrix3d N;
-            N = Math::DirCosine(LocCoordSys);
 
-            Matrix6d R_s;
+            Matrix3d N = Math::directionCosines( transformedCoordinateSystem );
 
-            R_s << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
+            Matrix6d transformationMatrix;
+
+            // clang-format off
+            transformationMatrix << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
                 pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,2)*N(1,1), 2*N(1,0)*N(1,2),
                 pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,2)*N(2,1), 2*N(2,0)*N(2,2),
                 N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
@@ -104,35 +102,36 @@ namespace Marmot {
                 N(2,0)*N(0,0), N(2,1)*N(0,1), N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
             // clang-format on
 
-            return R_s;
+            return transformationMatrix;
         }
 
-        Matrix36d TransStressVec(const Vector3d& n)
+        Matrix36d ProjectVoigtStressToPlane( const Vector3d& normalVector )
         {
-            Matrix36d Nvec;
-            Nvec << n(0), 0, 0, n(1), 0, n(2),
-                0, n(1), 0, n(0), n(2), 0,
-                0, 0, n(2), 0, n(1), n(0);
+            const Vector3d& n = normalVector;
 
-            return Nvec; 
+            Matrix36d ProjectMatrix;
+            ProjectMatrix << n( 0 ), 0, 0, n( 1 ), 0, n( 2 ), 0, n( 1 ), 0, n( 0 ), n( 2 ), 0, 0, 0, n( 2 ), 0, n( 1 ),
+                n( 0 );
+
+            return ProjectMatrix;
         }
 
-      	Matrix36d TransEpsVec(const Vector3d& n)
+        Matrix36d ProjectVoigtStrainToPlane( const Vector3d& normalVector )
         {
-            Matrix36d Nvec;
-            Nvec << n(0), 0, 0, n(1)/2.0, 0, n(2)/2.0,
-                0, n(1), 0, n(0)/2.0, n(2)/2.0, 0,
-                0, 0, n(2), 0, n(1)/2.0, n(0)/2.0;
 
-            return Nvec; 
+            Matrix36d ProjectMatrix = ProjectVoigtStressToPlane( normalVector );
+            ProjectMatrix.topRightCorner( 3, 3 ) *= 0.5;
+
+            return ProjectMatrix;
         }
 
         Matrix3d getPlaneStressTangent( const Matrix6d& C )
         {
-            return ContinuumMechanics::VoigtNotation::dStressPlaneStressDStress() * C * ContinuumMechanics::VoigtNotation::dStrainDStrainPlaneStress( C );
+            return ContinuumMechanics::VoigtNotation::dStressPlaneStressDStress() * C *
+                   ContinuumMechanics::VoigtNotation::dStrainDStrainPlaneStress( C );
         }
 
-        double getUniaxialStressTangent( const Ref<const Matrix6d>& C )
+        double getUniaxialStressTangent( const Ref< const Matrix6d >& C )
         {
             Vector6d b;
             b << 1, 0, 0, 0, 0, 0;
@@ -149,87 +148,17 @@ namespace Marmot {
             Matrix3d CPlaneStrain              = Matrix3d::Zero();
             CPlaneStrain.topLeftCorner( 2, 2 ) = C.topLeftCorner( 2, 2 );
             CPlaneStrain( 2, 2 )               = C( 3, 3 );
-            CPlaneStrain.block<1, 2>( 2, 0 )   = C.block<1, 2>( 3, 0 );
-            CPlaneStrain.block<2, 1>( 0, 2 )   = C.block<2, 1>( 0, 3 );
+            CPlaneStrain.block< 1, 2 >( 2, 0 ) = C.block< 1, 2 >( 3, 0 );
+            CPlaneStrain.block< 2, 1 >( 0, 2 ) = C.block< 2, 1 >( 0, 3 );
 
             return CPlaneStrain;
         }
-
-	Tensor3333d P(Vector3d n, double c1, double c2, double c3)
-	{
-	    Tensor3333d P_;
-	    Matrix3d kron;
-	    Matrix3d phi;
-
-	    P_.setZero();
-
-	    kron << 1,0,0,
-	     	    0,1,0,
-	            0,0,1;
-
-	    n = 1/n.norm()*n;
-
-	    phi = Math::DyadProdNvec(n);
-	    for (int i = 0;i<3;i++){
-		for (int j = 0;j<3;j++){
-		    for (int k = 0;k<3;k++){
-			for (int l = 0;l<3;l++){
-			    P_(i,j,k,l) += c1/2*(kron(i,k)*kron(j,l)+kron(i,l)*kron(j,k))+
-				           c2/2*(phi(i,k)*phi(j,l)+phi(i,l)*phi(j,k))+
-				           c3/4*(kron(i,k)*phi(j,l)+kron(i,l)*phi(j,k)+
-				           phi(i,k)*kron(j,l)+phi(i,l)*kron(j,k));	
-			}
-		    }
-		}
-	    }
-	
-	    return P_;
-	}
-
-	Matrix6d PToPVoigt(Tensor3333d P){
-	Eigen::Matrix<double,9,9> PVoigt;
-	Eigen::Matrix<double,9,6> PVoigtColSym;
-	Matrix6d PVoigtSym;
-
-	int MoveCol;
-	int MoveRow = 0;
-
-	for (int i = 0;i<=2;i++){
-		for (int j = 0;j<=2;j++){
-			MoveCol = 0;
-			for (int k = 0;k<=2;k++){
-				for (int l = 0;l<=2;l++){
-					PVoigt(j+MoveRow,l+MoveCol) = P(i,j,k,l);
-				}
-				MoveCol += 3;
-			}	
-		}
-
-		MoveRow += 3;
-	}
-
-	PVoigtColSym.col(0) = PVoigt.col(0);
-	PVoigtColSym.col(1) = PVoigt.col(4);
-	PVoigtColSym.col(2) = PVoigt.col(8);
-	PVoigtColSym.col(3) = PVoigt.col(1)*2;
-	PVoigtColSym.col(4) = PVoigt.col(7)*2;
-	PVoigtColSym.col(5) = PVoigt.col(6)*2;
-
-	PVoigtSym.row(0) = PVoigtColSym.row(0);
-	PVoigtSym.row(1) = PVoigtColSym.row(4);
-	PVoigtSym.row(2) = PVoigtColSym.row(8);
-	PVoigtSym.row(3) = PVoigtColSym.row(1);
-	PVoigtSym.row(4) = PVoigtColSym.row(7);
-	PVoigtSym.row(5) = PVoigtColSym.row(6);
-
-	return PVoigtSym;
-	}
 
         namespace PlaneStrain {
 
             Tensor322d dStressdDeformationGradient( const Tensor633d& dStressdDeformationGradient3D )
             {
-                static constexpr int planeVoigtIndices[] = {0, 1, 3};
+                static constexpr int planeVoigtIndices[] = { 0, 1, 3 };
                 Tensor322d           tangent2D;
                 for ( int i = 0; i < 3; i++ )
                     for ( int j = 0; j < 2; j++ )
@@ -295,7 +224,7 @@ namespace Marmot {
         const Vector6d IHyd = ( Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
         const Matrix6d IDev = ( Matrix6d() <<
-                                   // clang-format off
+                                    // clang-format off
                 2./3,    -1./3,   -1./3,    0,  0,  0,
                 -1./3,   2./3,    -1./3,    0,  0,  0,
                 -1./3,   -1./3,   2./3,     0,  0,  0,
@@ -365,7 +294,7 @@ namespace Marmot {
             /*compute E33 for a given strain, to compute the compensation for
              * planeStress = Cel : (strain + compensationStrain) */
             const Vector6d& e                = strain;
-            const double   strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
+            const double    strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
             Vector6d        result;
             result << 0, 0, strainCorrComp33, 0, 0, 0;
             return result;
@@ -377,39 +306,39 @@ namespace Marmot {
              * planeStressIncrement = C : T * strainIncrement
              * for isotropic material behavior only!
              * */
-            Matrix6d      T   = Matrix6d::Identity();
+            Matrix6d     T   = Matrix6d::Identity();
             const double t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
             const double t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
             T.row( 2 ).head( 3 ) << t31, t32, 0.0;
             return T;
         }
 
-        Matrix<double, 6, 3> dStrainDStrainPlaneStress( const Matrix6d& tangent )
+        Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent )
         {
-            Matrix<double, 6, 3> T = Matrix<double, 6, 3>::Zero();
-            T( 0, 0 )              = 1;
-            T( 1, 1 )              = 1;
-            T( 3, 2 )              = 1;
-            T( 2, 0 )              = -tangent( 2, 0 ) / tangent( 2, 2 );
-            T( 2, 1 )              = -tangent( 2, 1 ) / tangent( 2, 2 );
+            Matrix< double, 6, 3 > T = Matrix< double, 6, 3 >::Zero();
+            T( 0, 0 )                = 1;
+            T( 1, 1 )                = 1;
+            T( 3, 2 )                = 1;
+            T( 2, 0 )                = -tangent( 2, 0 ) / tangent( 2, 2 );
+            T( 2, 1 )                = -tangent( 2, 1 ) / tangent( 2, 2 );
             return T;
         }
 
-        Matrix<double, 6, 3> dStrainDStrainPlaneStrain()
+        Matrix< double, 6, 3 > dStrainDStrainPlaneStrain()
         {
-            Matrix<double, 6, 3> T = Matrix<double, 6, 3>::Zero();
-            T( 0, 0 )              = 1;
-            T( 1, 1 )              = 1;
-            T( 3, 2 )              = 1;
+            Matrix< double, 6, 3 > T = Matrix< double, 6, 3 >::Zero();
+            T( 0, 0 )                = 1;
+            T( 1, 1 )                = 1;
+            T( 3, 2 )                = 1;
             return T;
         }
 
-        Matrix<double, 3, 6> dStressPlaneStressDStress()
+        Matrix< double, 3, 6 > dStressPlaneStressDStress()
         {
-            Matrix<double, 3, 6> T = Matrix<double, 3, 6>::Zero();
-            T( 0, 0 )              = 1;
-            T( 1, 1 )              = 1;
-            T( 2, 3 )              = 1;
+            Matrix< double, 3, 6 > T = Matrix< double, 3, 6 >::Zero();
+            T( 0, 0 )                = 1;
+            T( 1, 1 )                = 1;
+            T( 2, 3 )                = 1;
             return T;
         }
 
@@ -466,7 +395,7 @@ namespace Marmot {
 
         Vector3d principalStrains( const Vector6d& voigtStrain )
         {
-            SelfAdjointEigenSolver<Matrix3d> es( voigtToStrain( voigtStrain ) );
+            SelfAdjointEigenSolver< Matrix3d > es( voigtToStrain( voigtStrain ) );
             return es.eigenvalues();
         }
 
@@ -483,14 +412,15 @@ namespace Marmot {
 
         Vector3d principalStresses( const Vector6d& voigtStress )
         {
-            SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
+            SelfAdjointEigenSolver< Matrix3d > es( voigtToStress( voigtStress ) );
             return es.eigenvalues();
         }
         Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& voigtStress )
         {
-            SelfAdjointEigenSolver<Matrix3d> es( voigtToStress( voigtStress ) );
-            Matrix3d Q = es.eigenvectors();  Q.col(2) = Q.col(0).cross(Q.col(1)); // for a clockwise coordinate system
-            return Q; 
+            SelfAdjointEigenSolver< Matrix3d > es( voigtToStress( voigtStress ) );
+            Matrix3d                           Q = es.eigenvectors();
+            Q.col( 2 )                           = Q.col( 0 ).cross( Q.col( 1 ) ); // for a clockwise coordinate system
+            return Q;
         }
         Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6d& voigtStress )
         {
@@ -509,9 +439,15 @@ namespace Marmot {
                               1. / 3. * ( e( 3 ) * e( 3 ) + e( 4 ) * e( 4 ) + e( 5 ) * e( 5 ) ) );
         }
 
-        double normStrain( const Vector6d& strain ) { return ContinuumMechanics::VoigtNotation::voigtToStrain( strain ).norm(); }
+        double normStrain( const Vector6d& strain )
+        {
+            return ContinuumMechanics::VoigtNotation::voigtToStrain( strain ).norm();
+        }
 
-        double normStress( const Vector6d& stress ) { return ContinuumMechanics::VoigtNotation::voigtToStress( stress ).norm(); }
+        double normStress( const Vector6d& stress )
+        {
+            return ContinuumMechanics::VoigtNotation::voigtToStress( stress ).norm();
+        }
 
         double Evolneg( const Vector6d& strain )
         {
@@ -532,7 +468,7 @@ namespace Marmot {
         }
 
         double I2strain( const Vector6d& strain ) // you could also use normal I2, but with epsilon12
-                                                 // instead of 2*epsilon12
+                                                  // instead of 2*epsilon12
         {
             const Vector6d& e = strain;
 
@@ -548,7 +484,7 @@ namespace Marmot {
         }
 
         double I3strain( const Vector6d& strain ) // you could also use normal I3, but with epsilon12
-                                                 // instead of 2*epsilon12
+                                                  // instead of 2*epsilon12
         {
             return voigtToStrain( strain ).determinant();
         }
@@ -781,93 +717,97 @@ namespace Marmot {
                    dEp_dE( CelInv, Cep );
         }
 
-    std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives( const Eigen::Matrix< double, 6, 1 >& S )
-    {
-        // This is a fast implementation of the classical algorithm for determining
-        // the principal components of a symmetric 3x3 Matrix in Voigt notation (off diagonals expected with
-        // factor 1) as well as its respective derivatives
+        std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives(
+            const Eigen::Matrix< double, 6, 1 >& S )
+        {
+            // This is a fast implementation of the classical algorithm for determining
+            // the principal components of a symmetric 3x3 Matrix in Voigt notation (off diagonals expected with
+            // factor 1) as well as its respective derivatives
 
-        using namespace Eigen;
+            using namespace Eigen;
 
-        using Vector6d  = Matrix< double, 6, 1 >;
-        using Matrix36 = Matrix< double, 3, 6 >;
-        using Matrix66 = Matrix< double, 6, 6 >;
+            using Vector6d = Matrix< double, 6, 1 >;
+            using Matrix36 = Matrix< double, 3, 6 >;
+            using Matrix66 = Matrix< double, 6, 6 >;
 
-        const static auto dS0_dS = ( Vector6d() << 1, 0, 0, 0, 0, 0 ).finished();
-        const static auto dS1_dS = ( Vector6d() << 0, 1, 0, 0, 0, 0 ).finished();
-        const static auto dS2_dS = ( Vector6d() << 0, 0, 1, 0, 0, 0 ).finished();
+            const static auto dS0_dS = ( Vector6d() << 1, 0, 0, 0, 0, 0 ).finished();
+            const static auto dS1_dS = ( Vector6d() << 0, 1, 0, 0, 0, 0 ).finished();
+            const static auto dS2_dS = ( Vector6d() << 0, 0, 1, 0, 0, 0 ).finished();
 
-        const double p1 = S( 3 ) * S( 3 ) + S( 4 ) * S( 4 ) + S( 5 ) * S( 5 );
+            const double p1 = S( 3 ) * S( 3 ) + S( 4 ) * S( 4 ) + S( 5 ) * S( 5 );
 
-        if ( p1 <= 1e-16 ) { // matrix is already diagonal
-            // clang-format off
+            if ( p1 <= 1e-16 ) { // matrix is already diagonal
+                // clang-format off
             const static auto dE_dS = ( Matrix36() << 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ).finished();
 
             return { S.head( 3 ), dE_dS };
-            // clang-format on
+                // clang-format on
+            }
+
+            const Vector6d dP1_dS = { 0, 0, 0, 2 * S( 3 ), 2 * S( 4 ), 2 * S( 5 ) };
+
+            const double   q     = S.head( 3 ).sum() / 3;
+            const Vector6d dQ_dS = Marmot::ContinuumMechanics::VoigtNotation::I / 3;
+
+            const double p2 = std::pow( S( 0 ) - q, 2 ) + std::pow( S( 1 ) - q, 2 ) + std::pow( S( 2 ) - q, 2 ) +
+                              2 * p1;
+            const Vector6d dP2_dS = 2 * ( S( 0 ) - q ) * ( dS0_dS - dQ_dS ) + 2 * ( S( 1 ) - q ) * ( dS1_dS - dQ_dS ) +
+                                    2 * ( S( 2 ) - q ) * ( dS2_dS - dQ_dS ) + 2 * dP1_dS;
+
+            const double   p     = std::sqrt( p2 / 6 );
+            const Vector6d dP_dS = 1. / 12 * 1. / p * dP2_dS;
+
+            const Vector6d B     = 1. / p * ( S - q * Marmot::ContinuumMechanics::VoigtNotation::I );
+            const Matrix66 dB_dS = -B * 1. / p * dP_dS.transpose() +
+                                   1. / p *
+                                       ( Matrix66::Identity() -
+                                         Marmot::ContinuumMechanics::VoigtNotation::I * dQ_dS.transpose() );
+
+            const double detB = B( 0 ) * B( 1 ) * B( 2 ) + B( 3 ) * B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * B( 3 ) -
+                                B( 1 ) * B( 4 ) * B( 4 ) - B( 0 ) * B( 5 ) * B( 5 );
+
+            Vector6d dDetB_dB;
+            dDetB_dB( 0 ) = B( 1 ) * B( 2 ) - B( 5 ) * B( 5 );
+            dDetB_dB( 1 ) = B( 0 ) * B( 2 ) - B( 4 ) * B( 4 );
+            dDetB_dB( 2 ) = B( 0 ) * B( 1 ) - B( 3 ) * B( 3 );
+            dDetB_dB( 3 ) = B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * 2;
+            dDetB_dB( 4 ) = B( 3 ) * B( 5 ) * 2 - B( 1 ) * B( 4 ) * 2;
+            dDetB_dB( 5 ) = B( 3 ) * B( 4 ) * 2 - B( 0 ) * B( 5 ) * 2;
+
+            const double   r     = detB * 1. / 2;
+            const Vector6d dR_dS = 1. / 2 * dDetB_dB.transpose() * dB_dS;
+
+            double phi;
+            double dPhi_dR;
+            if ( r <= -1 ) {
+                phi     = Constants::Pi / 3;
+                dPhi_dR = 0.0;
+            }
+            else if ( r >= 1 ) {
+                phi     = 1.0;
+                dPhi_dR = 0.0;
+            }
+            else {
+                phi     = std::acos( r ) / 3;
+                dPhi_dR = 1. / 3 * -1. / ( std::sqrt( 1 - r * r ) );
+            }
+            const Vector6d dPhi_dS = dPhi_dR * dR_dS;
+
+            Vector3d e;
+            Matrix36 dE_dS;
+
+            e( 0 )         = q + 2 * p * std::cos( phi );
+            dE_dS.row( 0 ) = dQ_dS + 2 * ( dP_dS * std::cos( phi ) - p * std::sin( phi ) * dPhi_dS );
+
+            const double phiShifted = phi + ( 2. / 3 * Constants::Pi );
+            e( 2 )                  = q + 2 * p * std::cos( phiShifted );
+            dE_dS.row( 2 ) = dQ_dS + 2 * ( dP_dS * std::cos( phiShifted ) - p * std::sin( phiShifted ) * dPhi_dS );
+
+            e( 1 )         = 3 * q - e( 0 ) - e( 2 );
+            dE_dS.row( 1 ) = 3 * dQ_dS - dE_dS.row( 0 ).transpose() - dE_dS.row( 2 ).transpose();
+
+            return { e, dE_dS };
         }
-
-        const Vector6d dP1_dS = { 0, 0, 0, 2 * S( 3 ), 2 * S( 4 ), 2 * S( 5 ) };
-
-        const double  q     = S.head( 3 ).sum() / 3;
-        const Vector6d dQ_dS = Marmot::ContinuumMechanics::VoigtNotation::I / 3;
-
-        const double  p2     = std::pow( S( 0 ) - q, 2 ) + std::pow( S( 1 ) - q, 2 ) + std::pow( S( 2 ) - q, 2 ) + 2 * p1;
-        const Vector6d dP2_dS = 2 * ( S( 0 ) - q ) * ( dS0_dS - dQ_dS ) + 2 * ( S( 1 ) - q ) * ( dS1_dS - dQ_dS ) +
-                               2 * ( S( 2 ) - q ) * ( dS2_dS - dQ_dS ) + 2 * dP1_dS;
-
-        const double  p     = std::sqrt( p2 / 6 );
-        const Vector6d dP_dS = 1. / 12 * 1. / p * dP2_dS;
-
-        const Vector6d  B     = 1. / p * ( S - q * Marmot::ContinuumMechanics::VoigtNotation::I );
-        const Matrix66 dB_dS = -B * 1. / p * dP_dS.transpose() +
-                               1. / p * ( Matrix66::Identity() - Marmot::ContinuumMechanics::VoigtNotation::I * dQ_dS.transpose() );
-
-        const double detB = B( 0 ) * B( 1 ) * B( 2 ) + B( 3 ) * B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * B( 3 ) -
-                            B( 1 ) * B( 4 ) * B( 4 ) - B( 0 ) * B( 5 ) * B( 5 );
-
-        Vector6d dDetB_dB;
-        dDetB_dB( 0 ) = B( 1 ) * B( 2 ) - B( 5 ) * B( 5 );
-        dDetB_dB( 1 ) = B( 0 ) * B( 2 ) - B( 4 ) * B( 4 );
-        dDetB_dB( 2 ) = B( 0 ) * B( 1 ) - B( 3 ) * B( 3 );
-        dDetB_dB( 3 ) = B( 4 ) * B( 5 ) * 2 - B( 2 ) * B( 3 ) * 2;
-        dDetB_dB( 4 ) = B( 3 ) * B( 5 ) * 2 - B( 1 ) * B( 4 ) * 2;
-        dDetB_dB( 5 ) = B( 3 ) * B( 4 ) * 2 - B( 0 ) * B( 5 ) * 2;
-
-        const double  r     = detB * 1. / 2;
-        const Vector6d dR_dS = 1. / 2 * dDetB_dB.transpose() * dB_dS;
-
-        double phi;
-        double dPhi_dR;
-        if ( r <= -1 ) {
-            phi     = Constants::Pi / 3;
-            dPhi_dR = 0.0;
-        }
-        else if ( r >= 1 ) {
-            phi     = 1.0;
-            dPhi_dR = 0.0;
-        }
-        else {
-            phi     = std::acos( r ) / 3;
-            dPhi_dR = 1. / 3 * -1. / ( std::sqrt( 1 - r * r ) );
-        }
-        const Vector6d dPhi_dS = dPhi_dR * dR_dS;
-
-        Vector3d e;
-        Matrix36 dE_dS;
-
-        e( 0 )         = q + 2 * p * std::cos( phi );
-        dE_dS.row( 0 ) = dQ_dS + 2 * ( dP_dS * std::cos( phi ) - p * std::sin( phi ) * dPhi_dS );
-
-        const double phiShifted = phi + ( 2. / 3 * Constants::Pi );
-        e( 2 )                  = q + 2 * p * std::cos( phiShifted );
-        dE_dS.row( 2 )          = dQ_dS + 2 * ( dP_dS * std::cos( phiShifted ) - p * std::sin( phiShifted ) * dPhi_dS );
-
-        e( 1 )         = 3 * q - e( 0 ) - e( 2 );
-        dE_dS.row( 1 ) = 3 * dQ_dS - dE_dS.row( 0 ).transpose() - dE_dS.row( 2 ).transpose();
-
-        return { e, dE_dS };
-    }
 
     } // namespace ContinuumMechanics::VoigtNotation
 } // namespace Marmot
