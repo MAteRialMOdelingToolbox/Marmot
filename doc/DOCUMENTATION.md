@@ -4,7 +4,7 @@
 
 ## Implementation
 
-The implementation can be found in \ref LinearElastic
+The implementation can be found in \ref Marmot::Materials::LinearElastic
 
 ## Theory 
 
