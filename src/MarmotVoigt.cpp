@@ -39,7 +39,7 @@ namespace Marmot {
             return CelInv;
         }
 
-        Matrix6d CelInverseTransIso( double E1, double E2, double nu1, double nu2, double G2 )
+        Matrix6d CelInverseTransverseIsotropic( double E1, double E2, double nu1, double nu2, double G2 )
         {
             Matrix6d     CelInvTrIs;
             const double G1 = E1 / ( 2 * ( 1 + nu1 ) );
@@ -54,15 +54,15 @@ namespace Marmot {
             return CelInvTrIs;
         }
 
-        Matrix6d CelInverseOrtho( double E1,
-                                  double E2,
-                                  double E3,
-                                  double nu12,
-                                  double nu23,
-                                  double nu13,
-                                  double G12,
-                                  double G23,
-                                  double G31 )
+        Matrix6d CelInverseOrthotropic( double E1,
+                                        double E2,
+                                        double E3,
+                                        double nu12,
+                                        double nu23,
+                                        double nu13,
+                                        double G12,
+                                        double G23,
+                                        double G31 )
         {
             Matrix6d CelInvOrtho;
             // clang-format off
@@ -76,72 +76,53 @@ namespace Marmot {
             return CelInvOrtho;
         }
 
-        Matrix6d TransEps( const Matrix3d& LocCoordSys )
+        Matrix6d transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem )
         {
-            Matrix3d N;
-            N = Math::DirCosine( LocCoordSys );
 
-            Matrix6d R_e;
+            Matrix6d transformationMatrix = transformationMatrixStressVoigt( transformedCoordinateSystem );
+            transformationMatrix.topRightCorner( 3, 3 ) *= 0.5;
+            transformationMatrix.bottomLeftCorner( 3, 3 ) *= 2;
 
-            R_e << pow( N( 0, 0 ), 2 ), pow( N( 0, 1 ), 2 ), pow( N( 0, 2 ), 2 ), N( 0, 0 ) * N( 0, 1 ),
-                N( 0, 2 ) * N( 0, 1 ), N( 0, 2 ) * N( 0, 0 ), pow( N( 1, 0 ), 2 ), pow( N( 1, 1 ), 2 ),
-                pow( N( 1, 2 ), 2 ), N( 1, 0 ) * N( 1, 1 ), N( 1, 2 ) * N( 1, 1 ), N( 1, 0 ) * N( 1, 2 ),
-                pow( N( 2, 0 ), 2 ), pow( N( 2, 1 ), 2 ), pow( N( 2, 2 ), 2 ), N( 2, 0 ) * N( 2, 1 ),
-                N( 2, 2 ) * N( 2, 1 ), N( 2, 0 ) * N( 2, 2 ), 2 * N( 0, 0 ) * N( 1, 0 ), 2 * N( 0, 1 ) * N( 1, 1 ),
-                2 * N( 0, 2 ) * N( 1, 2 ), N( 0, 0 ) * N( 1, 1 ) + N( 0, 1 ) * N( 1, 0 ),
-                N( 0, 1 ) * N( 1, 2 ) + N( 0, 2 ) * N( 1, 1 ), N( 0, 0 ) * N( 1, 2 ) + N( 0, 2 ) * N( 1, 0 ),
-                2 * N( 1, 0 ) * N( 2, 0 ), 2 * N( 1, 1 ) * N( 2, 1 ), 2 * N( 1, 2 ) * N( 2, 2 ),
-                N( 1, 0 ) * N( 2, 1 ) + N( 1, 1 ) * N( 2, 0 ), N( 1, 1 ) * N( 2, 2 ) + N( 1, 2 ) * N( 2, 1 ),
-                N( 1, 0 ) * N( 2, 2 ) + N( 1, 2 ) * N( 2, 0 ), 2 * N( 2, 0 ) * N( 0, 0 ), 2 * N( 2, 1 ) * N( 0, 1 ),
-                2 * N( 2, 2 ) * N( 0, 2 ), N( 2, 0 ) * N( 0, 1 ) + N( 2, 1 ) * N( 0, 0 ),
-                N( 2, 1 ) * N( 0, 2 ) + N( 2, 2 ) * N( 0, 1 ), N( 2, 0 ) * N( 0, 2 ) + N( 2, 2 ) * N( 0, 0 );
-            // clang-format on
-
-            return R_e;
+            return transformationMatrix;
         }
 
-        Matrix6d TransSig( const Matrix3d& LocCoordSys )
+        Matrix6d transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem )
         {
 
+            Matrix3d N = Math::directionCosines( transformedCoordinateSystem );
+
+            Matrix6d transformationMatrix;
+
+            // clang-format off
+            transformationMatrix << pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,1), 2*N(0,2)*N(0,0),
+                pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,2)*N(1,1), 2*N(1,0)*N(1,2),
+                pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,2)*N(2,1), 2*N(2,0)*N(2,2),
+                N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1), N(0,0)*N(1,2)+N(0,2)*N(1,0),
+                N(1,0)*N(2,0), N(1,1)*N(2,1), N(1,2)*N(2,2), N(1,0)*N(2,1)+N(1,1)*N(2,0), N(1,1)*N(2,2)+N(1,2)*N(2,1), N(1,0)*N(2,2)+N(1,2)*N(2,0),
+                N(2,0)*N(0,0), N(2,1)*N(0,1), N(2,2)*N(0,2), N(2,0)*N(0,1)+N(2,1)*N(0,0), N(2,1)*N(0,2)+N(2,2)*N(0,1), N(2,0)*N(0,2)+N(2,2)*N(0,0);
             // clang-format on
 
-            Matrix3d N;
-            N = Math::DirCosine( LocCoordSys );
-
-            Matrix6d R_s;
-
-            R_s << pow( N( 0, 0 ), 2 ), pow( N( 0, 1 ), 2 ), pow( N( 0, 2 ), 2 ), 2 * N( 0, 0 ) * N( 0, 1 ),
-                2 * N( 0, 2 ) * N( 0, 1 ), 2 * N( 0, 2 ) * N( 0, 0 ), pow( N( 1, 0 ), 2 ), pow( N( 1, 1 ), 2 ),
-                pow( N( 1, 2 ), 2 ), 2 * N( 1, 0 ) * N( 1, 1 ), 2 * N( 1, 2 ) * N( 1, 1 ), 2 * N( 1, 0 ) * N( 1, 2 ),
-                pow( N( 2, 0 ), 2 ), pow( N( 2, 1 ), 2 ), pow( N( 2, 2 ), 2 ), 2 * N( 2, 0 ) * N( 2, 1 ),
-                2 * N( 2, 2 ) * N( 2, 1 ), 2 * N( 2, 0 ) * N( 2, 2 ), N( 0, 0 ) * N( 1, 0 ), N( 0, 1 ) * N( 1, 1 ),
-                N( 0, 2 ) * N( 1, 2 ), N( 0, 0 ) * N( 1, 1 ) + N( 0, 1 ) * N( 1, 0 ),
-                N( 0, 1 ) * N( 1, 2 ) + N( 0, 2 ) * N( 1, 1 ), N( 0, 0 ) * N( 1, 2 ) + N( 0, 2 ) * N( 1, 0 ),
-                N( 1, 0 ) * N( 2, 0 ), N( 1, 1 ) * N( 2, 1 ), N( 1, 2 ) * N( 2, 2 ),
-                N( 1, 0 ) * N( 2, 1 ) + N( 1, 1 ) * N( 2, 0 ), N( 1, 1 ) * N( 2, 2 ) + N( 1, 2 ) * N( 2, 1 ),
-                N( 1, 0 ) * N( 2, 2 ) + N( 1, 2 ) * N( 2, 0 ), N( 2, 0 ) * N( 0, 0 ), N( 2, 1 ) * N( 0, 1 ),
-                N( 2, 2 ) * N( 0, 2 ), N( 2, 0 ) * N( 0, 1 ) + N( 2, 1 ) * N( 0, 0 ),
-                N( 2, 1 ) * N( 0, 2 ) + N( 2, 2 ) * N( 0, 1 ), N( 2, 0 ) * N( 0, 2 ) + N( 2, 2 ) * N( 0, 0 );
-            // clang-format on
-
-            return R_s;
+            return transformationMatrix;
         }
 
-        Matrix36d TransStressVec( const Vector3d& n )
+        Matrix36d ProjectVoigtStressToPlane( const Vector3d& normalVector )
         {
-            Matrix36d Nvec;
-            Nvec << n( 0 ), 0, 0, n( 1 ), 0, n( 2 ), 0, n( 1 ), 0, n( 0 ), n( 2 ), 0, 0, 0, n( 2 ), 0, n( 1 ), n( 0 );
+            const Vector3d& n = normalVector;
 
-            return Nvec;
+            Matrix36d ProjectMatrix;
+            ProjectMatrix << n( 0 ), 0, 0, n( 1 ), 0, n( 2 ), 0, n( 1 ), 0, n( 0 ), n( 2 ), 0, 0, 0, n( 2 ), 0, n( 1 ),
+                n( 0 );
+
+            return ProjectMatrix;
         }
 
-        Matrix36d TransEpsVec( const Vector3d& n )
+        Matrix36d ProjectVoigtStrainToPlane( const Vector3d& normalVector )
         {
-            Matrix36d Nvec;
-            Nvec << n( 0 ), 0, 0, n( 1 ) / 2.0, 0, n( 2 ) / 2.0, 0, n( 1 ), 0, n( 0 ) / 2.0, n( 2 ) / 2.0, 0, 0, 0,
-                n( 2 ), 0, n( 1 ) / 2.0, n( 0 ) / 2.0;
 
-            return Nvec;
+            Matrix36d ProjectMatrix = ProjectVoigtStressToPlane( normalVector );
+            ProjectMatrix.topRightCorner( 3, 3 ) *= 0.5;
+
+            return ProjectMatrix;
         }
 
         Matrix3d getPlaneStressTangent( const Matrix6d& C )
@@ -173,83 +154,13 @@ namespace Marmot {
             return CPlaneStrain;
         }
 
-        EigenTensors::Tensor3333d P( Vector3d n, double c1, double c2, double c3 )
-        {
-            EigenTensors::Tensor3333d P_;
-            Matrix3d                  kron;
-            Matrix3d                  phi;
-
-            P_.setZero();
-
-            kron << 1, 0, 0, 0, 1, 0, 0, 0, 1;
-
-            n = 1 / n.norm() * n;
-
-            phi = Math::DyadProdNvec( n );
-            for ( int i = 0; i < 3; i++ ) {
-                for ( int j = 0; j < 3; j++ ) {
-                    for ( int k = 0; k < 3; k++ ) {
-                        for ( int l = 0; l < 3; l++ ) {
-                            P_( i, j, k, l ) += c1 / 2 * ( kron( i, k ) * kron( j, l ) + kron( i, l ) * kron( j, k ) ) +
-                                                c2 / 2 * ( phi( i, k ) * phi( j, l ) + phi( i, l ) * phi( j, k ) ) +
-                                                c3 / 4 *
-                                                    ( kron( i, k ) * phi( j, l ) + kron( i, l ) * phi( j, k ) +
-                                                      phi( i, k ) * kron( j, l ) + phi( i, l ) * kron( j, k ) );
-                        }
-                    }
-                }
-            }
-
-            return P_;
-        }
-
-        Matrix6d PToPVoigt( EigenTensors::Tensor3333d P )
-        {
-            Eigen::Matrix< double, 9, 9 > PVoigt;
-            Eigen::Matrix< double, 9, 6 > PVoigtColSym;
-            Matrix6d                      PVoigtSym;
-
-            int MoveCol;
-            int MoveRow = 0;
-
-            for ( int i = 0; i <= 2; i++ ) {
-                for ( int j = 0; j <= 2; j++ ) {
-                    MoveCol = 0;
-                    for ( int k = 0; k <= 2; k++ ) {
-                        for ( int l = 0; l <= 2; l++ ) {
-                            PVoigt( j + MoveRow, l + MoveCol ) = P( i, j, k, l );
-                        }
-                        MoveCol += 3;
-                    }
-                }
-
-                MoveRow += 3;
-            }
-
-            PVoigtColSym.col( 0 ) = PVoigt.col( 0 );
-            PVoigtColSym.col( 1 ) = PVoigt.col( 4 );
-            PVoigtColSym.col( 2 ) = PVoigt.col( 8 );
-            PVoigtColSym.col( 3 ) = PVoigt.col( 1 ) * 2;
-            PVoigtColSym.col( 4 ) = PVoigt.col( 7 ) * 2;
-            PVoigtColSym.col( 5 ) = PVoigt.col( 6 ) * 2;
-
-            PVoigtSym.row( 0 ) = PVoigtColSym.row( 0 );
-            PVoigtSym.row( 1 ) = PVoigtColSym.row( 4 );
-            PVoigtSym.row( 2 ) = PVoigtColSym.row( 8 );
-            PVoigtSym.row( 3 ) = PVoigtColSym.row( 1 );
-            PVoigtSym.row( 4 ) = PVoigtColSym.row( 7 );
-            PVoigtSym.row( 5 ) = PVoigtColSym.row( 6 );
-
-            return PVoigtSym;
-        }
-
         namespace PlaneStrain {
 
             EigenTensors::Tensor322d dStressdDeformationGradient(
                 const EigenTensors::Tensor633d& dStressdDeformationGradient3D )
             {
-                static constexpr int     planeVoigtIndices[] = { 0, 1, 3 };
-                EigenTensors::Tensor322d tangent2D;
+                static constexpr int planeVoigtIndices[] = { 0, 1, 3 };
+                Tensor322d           tangent2D;
                 for ( int i = 0; i < 3; i++ )
                     for ( int j = 0; j < 2; j++ )
                         for ( int k = 0; k < 2; k++ )
