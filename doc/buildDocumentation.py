@@ -85,6 +85,7 @@ if __name__ == "__main__":
         f.write( " - \subpage continuummechanics\n" )
         f.write( " - \subpage finiteelementtechnology\n") 
         f.write( " - \subpage numericalalgorithms\n" )
+        f.write( " - \subpage interfaces\n" )
         f.write( " - \subpage others\n" )
     
     # continuum mechanics page

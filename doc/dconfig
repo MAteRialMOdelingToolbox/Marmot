@@ -847,6 +847,7 @@ WARN_LOGFILE           =
 
 INPUT                  = include modules 
 INPUT += doc/content.md
+INPUT += doc/interfaces.md
 INPUT += doc/continuummechanics.md
 INPUT += doc/mechanicalmaterials.md
 INPUT += doc/gradmechanicalmaterials.md
