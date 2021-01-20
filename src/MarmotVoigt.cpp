@@ -160,7 +160,7 @@ namespace Marmot {
                 const EigenTensors::Tensor633d& dStressdDeformationGradient3D )
             {
                 static constexpr int planeVoigtIndices[] = { 0, 1, 3 };
-                Tensor322d           tangent2D;
+                EigenTensors::Tensor322d           tangent2D;
                 for ( int i = 0; i < 3; i++ )
                     for ( int j = 0; j < 2; j++ )
                         for ( int k = 0; k < 2; k++ )
