@@ -81,7 +81,7 @@ if __name__ == "__main__":
     coreModules = searchForDocumentedProjects( 'modules/core' )
 
     # content page
-    with open( 'doc/content.md', 'w+') as f:
+    with open( 'doc/input/content.md', 'w+') as f:
         f.write( "\page content Content\n" )
         f.write( "The content provided by %Marmot can be found here.\n" )
         f.write( " - \subpage continuummechanics\n" )
@@ -92,7 +92,7 @@ if __name__ == "__main__":
         f.write( " - \subpage others\n" )
     
     # continuum mechanics page
-    with open( 'doc/continuummechanics.md', 'w+' ) as f:
+    with open( 'doc/input/continuummechanics.md', 'w+' ) as f:
         f.write( "\page continuummechanics Continuum Mechanics\n" )
         f.write( "The following basic types of material models are available in %Marmot.\n" )
         f.write( " - \subpage mechanicalmaterials\n" )
@@ -100,13 +100,13 @@ if __name__ == "__main__":
         f.write( " - \subpage continuummechanicsothers\n" )
     
     # mechanical materials page
-    with open( 'doc/mechanicalmaterials.md', 'w+' ) as f:
+    with open( 'doc/input/mechanicalmaterials.md', 'w+' ) as f:
         f.write( "\page mechanicalmaterials Mechanical Material Models\n" )
         f.write( " - \subpage hypoelastic\n" )
         f.write( " - \subpage hyperelastic\n" )
     
     # gradient enhanced mechanical materials page
-    with open( 'doc/gradmechanicalmaterials.md', 'w+') as f:
+    with open( 'doc/input/gradmechanicalmaterials.md', 'w+') as f:
         f.write( "\page gradmechanicalmaterials Gradient Enhanced Mechanical Material Models\n") 
         f.write( " - \subpage gradhypoelastic\n" )
 
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     hyperelasticmaterials = searchForDocumentedProjects( 'modules/materials', 'MarmotMaterialHyperElastic' )
 
 
-    with open( 'doc/materials.md', 'w+' ) as f:
+    with open( 'doc/input/materials.md', 'w+' ) as f:
         # hypo elastic materials
         f.write( "\page hypoelastic Hypoelastic Material Models\n" )
         f.write( "The documentation of the available hypoelastic material models in %Marmot can be found here\n")
@@ -136,11 +136,11 @@ if __name__ == "__main__":
 
 
     # numerical algorithms page
-    with open( 'doc/numericalalgorithms.md', 'w+' ) as f:
+    with open( 'doc/input/numericalalgorithms.md', 'w+' ) as f:
         f.write( "\page numericalalgorithms Numerical Algorithms\n" )
         f.write( " - \subpage substepper\n" )
         f.write( " - \subpage hugheswinget\n" )
 
     # execute doxygen 
     if not args.skipDoxygen:
-        os.system('doxygen doc/dconfig')
+        os.system('doxygen doc/config/dconfig')
