@@ -62,6 +62,21 @@ make
 sudo make install
 ```
 
+CMake option ```CMAKE_INSTALL_PREFIX``` allows to specify the installation directory.
+For instance:
+
+```bash
+git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+cd Marmot
+mkdir build
+cd build
+cmake \
+    -DCMAKE_INSTALL_PREFIX=/your/special/installationdirectory \
+    ..
+make
+make install
+```
+
 ## How to use Marmot with Abaqus
 
 The [Abaqus-MarmotInterface](https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface) allows to use ```Marmot``` in Abaqus simulations.
