@@ -29,6 +29,8 @@ dictMaterials = { # add material:
                 "HoekBrown":                         ("rock", "c8441146"),        
                 "RockDamagePlasticity":              ("rock", "c8441146"),        
                 "RockDamagePlasticityNonLocal":      ("rock", "c8441146"), 
+                "ORDP":                              ("rock", "c8441192"),
+                "JointedHoekBrown":                  ("rock", "c8441192"),
                 "PorousElastic":                     ("soil", "c8441146"),        
                 "ModifiedCamClay":                   ("soil", "c8441146"),        
                 "Barodesy":                          ("soil", "c8441146"), 
