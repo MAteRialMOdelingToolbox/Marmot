@@ -1,4 +1,5 @@
 #include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
@@ -30,7 +31,7 @@ namespace Marmot::Materials {
         Map< const Vector6d > dE( dStrain );
         mMatrix6d             C( dStressDDStrain );
 
-        C = ContinuumMechanics::Cel( E, nu );
+        C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
         // Zero strain  increment check
         if ( ( dE.array() == 0 ).all() )
