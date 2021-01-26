@@ -27,10 +27,6 @@ jobs:
            # git diff-index --quiet HEAD || git commit -m "update md-files"
            # git status
            # git push
-    - uses: actions/checkout@v2 # checkout the repository content to github runner.        
-      with: 
-        token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets :  
-        submodules: true
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
