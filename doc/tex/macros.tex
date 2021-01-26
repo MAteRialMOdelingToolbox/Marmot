@@ -2,13 +2,15 @@
 \renewcommand{\t}[1]{\textrm{#1}}
 
 
-\newcommand{\eff}{\bar}
+\newcommand{\eff}[1]{\bar{#1}}
 
 \newcommand{\Cel}{\mathbb{C}}
 \newcommand{\CelInv}{{\Cel}^{-1}}
 \newcommand{\CelUnitInv}{{\Cel}_\nu^{-1}}
 
-\newcommand{\sig}{\boldsymbol{\sigma}}
+\newcommand{\sig}{{\boldsymbol{\sigma}}}
+\newcommand{\effSig}{{\eff{\sig}}}
+
 \newcommand{\sigRate}{\dot{\sig}}
 \newcommand{\sigM}{\sigma^{\t{m}}}
 \newcommand{\effSigMean}{{\eff{\sigma}^{\t{m}}}}
@@ -38,7 +40,7 @@
 
 \newcommand{\const}{\t{const.}}
 \newcommand{\shortMinus}{\text{-}}
-\newcommand{\intDomain}[1]{\in_{\Omega}#1\,d\Omega}
+\newcommand{\intDomain}[1]{\int_{\Omega}#1\,d\Omega}
 \newcommand{\fracPartial}[2]{\frac{\partial#1}{\partial#2}}
 \newcommand{\fracPartialSec}[2]{\frac{\partial^2#1}{\partial#2^2}}
 \newcommand{\fracPartialSecMixed}[3]{\frac{\partial^2#1}{\partial#2\,\partial#3}}
@@ -57,7 +59,7 @@
 \newcommand{\gP}{g_\t{p}}
 \newcommand{\gPCutOff}{g_\t{cu}}
 \newcommand{\dGDSigmaEff}{\frac{\partial\gP(\effSig, \qhard(\alphaP))}{\partial\effSig}}
-\newcommand{\dGCuOffDSigmaEff}{\frac{\partial\fPCuOff(\effSig, \qhard(\alphaP))}{\partial\effSig}}
+\newcommand{\dGCutOffDSigmaEff}{\frac{\partial\fPCutOff(\effSig, \qhard(\alphaP))}{\partial\effSig}}
 \newcommand{\xs}{x_\t{s}}
 
 

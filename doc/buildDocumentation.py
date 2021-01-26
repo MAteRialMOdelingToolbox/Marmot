@@ -8,12 +8,12 @@ def searchForDocumentedProjects( directory,
 
     for f in os.scandir( directory ):
        
-        doc = os.path.join( f.path,   'doc/' ) 
-        header = os.path.join( f.path, 'include/Marmot/' + f.name + '.h' )
+        doc = os.path.join( f.path,   "doc/" ) 
+        header = os.path.join( f.path, "include/Marmot/" + f.name + ".h" )
         # check is documentation folder is present
         if os.path.isdir( doc ):
             if motherclass is not None:
-                with open( header, 'r') as g:    
+                with open( header, "r") as g:    
                     # check if header contains given motherclass
                     if motherclass in g.read():
                         modules.append(  str( f.name ) )        
@@ -24,10 +24,10 @@ def searchForDocumentedProjects( directory,
 
 def createListOfSubpages( modules ):
 
-    markdownString = ''
+    markdownString = ""
 
     for module in modules:
-        markdownString += '\n - \subpage ' + module.lower().replace('marmot', '')
+        markdownString += "\n - \subpage " + module.lower().replace("marmot", "")
     
     return markdownString 
 
@@ -35,10 +35,10 @@ def createListOfSubpages( modules ):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser( 
-            description = 'A python tool to build the doxygen documentation automatically' )
+            description = "A python tool to build the doxygen documentation automatically" )
 
-    parser.add_argument( '--skipDoxygen',
-                         action= 'store_true',
+    parser.add_argument( "--skipDoxygen",
+                         action= "store_true",
                         default = False,
                     )
 
@@ -47,10 +47,10 @@ if __name__ == "__main__":
     cwd = os.getcwd()
 
     # move to toplevel Marmot directory
-    if  str( cwd ).endswith('/doc'):
-        os.chdir( '..' )
+    if  str( cwd ).endswith("/doc"):
+        os.chdir( ".." )
 
-    '''
+    """
     Structure of the Documentation
 
         Content
@@ -73,26 +73,26 @@ if __name__ == "__main__":
             |   |
             |   +-Hughes Winget
             |
+            |- Interfacing with Marmot
+            |
             |- Others
+    """
 
-
-    '''
-
-    coreModules = searchForDocumentedProjects( 'modules/core' )
-
+    coreModules = searchForDocumentedProjects( "modules/core" )
+    
     # content page
-    with open( 'doc/input/content.md', 'w+') as f:
+    with open( "doc/markdown/content.md", "w+") as f:
         f.write( "\page content Content\n" )
         f.write( "The content provided by %Marmot can be found here.\n" )
         f.write( " - \subpage continuummechanics\n" )
-        if 'MarmotFiniteElementCore' in coreModules:
+        if "MarmotFiniteElementCore" in coreModules:
             f.write( " - \subpage finiteelementtechnology\n") 
         f.write( " - \subpage numericalalgorithms\n" )
         f.write( " - \subpage interfaces\n" )
         f.write( " - \subpage others\n" )
     
     # continuum mechanics page
-    with open( 'doc/input/continuummechanics.md', 'w+' ) as f:
+    with open( "doc/markdown/continuummechanics.md", "w+" ) as f:
         f.write( "\page continuummechanics Continuum Mechanics\n" )
         f.write( "The following basic types of material models are available in %Marmot.\n" )
         f.write( " - \subpage mechanicalmaterials\n" )
@@ -100,24 +100,24 @@ if __name__ == "__main__":
         f.write( " - \subpage continuummechanicsothers\n" )
     
     # mechanical materials page
-    with open( 'doc/input/mechanicalmaterials.md', 'w+' ) as f:
+    with open( "doc/markdown/mechanicalmaterials.md", "w+" ) as f:
         f.write( "\page mechanicalmaterials Mechanical Material Models\n" )
         f.write( " - \subpage hypoelastic\n" )
         f.write( " - \subpage hyperelastic\n" )
     
     # gradient enhanced mechanical materials page
-    with open( 'doc/input/gradmechanicalmaterials.md', 'w+') as f:
+    with open( "doc/markdown/gradmechanicalmaterials.md", "w+") as f:
         f.write( "\page gradmechanicalmaterials Gradient Enhanced Mechanical Material Models\n") 
         f.write( " - \subpage gradhypoelastic\n" )
 
     # collect and categorize materials   
-    hypoelasticmaterials = searchForDocumentedProjects( 'modules/materials', 'MarmotMaterialHypoElastic' )
-    gradhypoelasticmaterials = searchForDocumentedProjects( 'modules/materials',
-            'MarmotMaterialGradientEnhancedHypoElastic' )
-    hyperelasticmaterials = searchForDocumentedProjects( 'modules/materials', 'MarmotMaterialHyperElastic' )
+    hypoelasticmaterials = searchForDocumentedProjects( "modules/materials", "MarmotMaterialHypoElastic" )
+    gradhypoelasticmaterials = searchForDocumentedProjects( "modules/materials",
+            "MarmotMaterialGradientEnhancedHypoElastic" )
+    hyperelasticmaterials = searchForDocumentedProjects( "modules/materials", "MarmotMaterialHyperElastic" )
 
 
-    with open( 'doc/input/materials.md', 'w+' ) as f:
+    with open( "doc/markdown/materials.md", "w+" ) as f:
         # hypo elastic materials
         f.write( "\page hypoelastic Hypoelastic Material Models\n" )
         f.write( "The documentation of the available hypoelastic material models in %Marmot can be found here\n")
@@ -136,11 +136,14 @@ if __name__ == "__main__":
 
 
     # numerical algorithms page
-    with open( 'doc/input/numericalalgorithms.md', 'w+' ) as f:
+    with open( "doc/markdown/numericalalgorithms.md", "w+" ) as f:
         f.write( "\page numericalalgorithms Numerical Algorithms\n" )
         f.write( " - \subpage substepper\n" )
         f.write( " - \subpage hugheswinget\n" )
 
     # execute doxygen 
     if not args.skipDoxygen:
-        os.system('doxygen doc/config/dconfig')
+        try:
+            os.system("doxygen doc/config/dconfig")
+        except:
+            print( "Doxygen execution failed!" ) 
