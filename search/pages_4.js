@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['numerical_20algorithms_1181',['Numerical Algorithms',['../numericalalgorithms.html',1,'']]]
+  ['others_1178',['Others',['../continuummechanicsothers.html',1,'(Global Namespace)'],['../others.html',1,'(Global Namespace)']]]
 ];

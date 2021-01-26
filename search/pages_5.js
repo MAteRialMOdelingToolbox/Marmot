@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['others_1182',['Others',['../continuummechanicsothers.html',1,'(Global Namespace)'],['../others.html',1,'(Global Namespace)']]]
+  ['substepping_20algorithms_1179',['Substepping Algorithms',['../substepper.html',1,'']]]
 ];

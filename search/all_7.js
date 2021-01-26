@@ -4,7 +4,7 @@ var searchData=
   ['haighwestergaardstrain_237',['haighWestergaardStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ac270a91223bf10e805f0c9c9be717f17',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
   ['heaviside_238',['heaviside',['../namespaceMarmot_1_1Math.html#ae8ee95e46ff59be76f904c15348ba95f',1,'Marmot::Math']]],
   ['hoekbrown_239',['HoekBrown',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93a97dd53314093a9a11e5e5cd302c83daf',1,'MarmotLibrary']]],
-  ['hughes_20winget_240',['Hughes Winget',['../hugheswinget.html',1,'numericalalgorithms']]],
+  ['hughes_20winget_240',['Hughes Winget',['../hugheswinget.html',1,'']]],
   ['hugheswinget_241',['HughesWinget',['../classHughesWinget.html',1,'HughesWinget'],['../classHughesWinget.html#a1f75f62671f7ccffe5199c98984f173f',1,'HughesWinget::HughesWinget()']]],
   ['hugheswinget_2ecpp_242',['HughesWinget.cpp',['../HughesWinget_8cpp.html',1,'']]],
   ['hugheswinget_2eh_243',['HughesWinget.h',['../HughesWinget_8h.html',1,'']]],
