@@ -21,12 +21,12 @@ jobs:
     - name: execute py script # run the run.py to get the latest data
       run: |
            python doc/buildDocumentation.py --skipDoxygen
-           git config --global user.email "marmot@gmail.com"
-           git config --global user.name "Marmot"
-           git add .
-           git diff-index --quiet HEAD || git commit -m "update md-files"
-           git status
-           git push
+           #git config --global user.email "marmot@gmail.com"
+           #git config --global user.name "Marmot"
+           #git add .
+           #git diff-index --quiet HEAD || git commit -m "update md-files"
+           #git status
+           #git push
     - uses: actions/checkout@v2 # checkout the repository content to github runner.        
       with: 
         token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets :  
