@@ -25,7 +25,9 @@
 var NAVTREE =
 [
   [ "Marmot", "index.html", [
-    [ "Content", "content.html", "content" ],
+    [ "Others", "others.html", null ],
+    [ "Continuum Mechanics", "continuummechanics.html", "continuummechanics" ],
+    [ "Numerical Algorithms", "numericalalgorithms.html", "numericalalgorithms" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -67,8 +69,8 @@ var NAVTREEINDEX =
 "MarmotVoigt_8h.html#a0455a2fd6fa4a49160153b23c12633de",
 "PerezFougetSubstepperTime_8h_source.html",
 "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html#a54e2cea365c9e9a5bbe82e65cd663817",
-"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcaebe511b5337eb0fb701edb8c2ebf8b77",
-"namespacemembers_j.html"
+"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcaec21cbaccfed88de0f41c5aaa315aaf6",
+"namespacemembers_l.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
