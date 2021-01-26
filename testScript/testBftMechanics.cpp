@@ -20,7 +20,7 @@ Matrix3d test_PlaneStressTangentAnalytically( double E, double nu )
 
     Matrix6d C = ContinuumMechanics::Cel( E, nu );
     // Test Plane Stress Tangent
-    Matrix3d CPlaneStress = ContinuumMechanics::getPlaneStressTangent( C );
+    Matrix3d CPlaneStress = ContinuumMechanics::PlaneStress::getPlaneStressTangent( C );
 
     std::cout << "PLANE STRESS TANGENT WITH ANALYTIC FORMULAS " << std::endl;
     std::cout << CAnalytic << std::endl;

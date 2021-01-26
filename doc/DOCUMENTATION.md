@@ -24,29 +24,21 @@ Abstract base class for mechanical materials with scalar nonlocal interaction.
 
 **Implementation:** \ref MarmotMaterialHypoElastic
 
-Derived abstract base class for elastic materials expressed purely in rate form. In general, the nominal stress rate tensor \f$ \dot{\boldsymbol{\sigma}} \f$ can be written as a function of the nominal stress tensor \f$ \boldsymbol{\sigma} \f$, the stretching rate tensor \f$ \dot{\boldsymbol{\varepsilon}} \f$ and the time \f$ t \f$.
+Derived abstract base class for elastic materials expressed purely in rate form. In general, the nominal stress rate tensor \f$ \sigRate \f$ can be written as a function of the nominal stress tensor \f$ \sig \f$, the stretching rate tensor \f$ \epsRate \f$ and the time \f$ t \f$.
 
-\f[
-  \displaystyle \dot{\boldsymbol{\sigma}} = f( \boldsymbol{\sigma}, \dot{\boldsymbol{\varepsilon}}, t, ...)
-\f]
+\f[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \f]
 
 In course of numerical time integration, this relation will be formulated incrementally as 
 
-\f[
-  \displaystyle \Delta\boldsymbol{\sigma} = f ( \boldsymbol{\sigma}_n, \Delta\boldsymbol{\varepsilon}, \Delta t, t_n, ...)
-\f]
+\f[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \f]
 
 with 
 
-\f[
-  \displaystyle \Delta\boldsymbol{\varepsilon} =  \dot{\boldsymbol{\varepsilon}}\cdot \Delta t
-\f]
+\f[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \f]
 
 and the algorithmic tangent 
 
-\f[
-  \displaystyle \frac{d \boldsymbol{\sigma}}{d \boldsymbol{\varepsilon}} =  \frac{d \Delta \boldsymbol{\sigma}}{d \Delta \boldsymbol{\varepsilon}}
-\f]
+\f[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \f]
 
 This formulation is compatible with an Abaqus interface.
 
@@ -60,9 +52,7 @@ This formulation is compatible with an Abaqus interface.
 
 Derived abstract base class for _simple_, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor \f$ S \f$ will be derived by
 
-\f[
-  \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}}
-\f]
+\f[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \f]
 
 with the Green - Lagrange strain tensor \f$ \boldsymbol{E} \f$
 
@@ -127,7 +117,7 @@ Perez Fouget Substepper for semi - explicit elastoplastic materials.
 
 \page hugheswinget Hughes Winget
 
-**Implementation:** \ref HughesWinget
+**Implementation:** \ref HughesWinget.h
 
 \page others Others
 
