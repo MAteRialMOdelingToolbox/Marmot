@@ -1,7 +1,4 @@
-#include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMath.h"
-#include <cmath>
-#include <math.h>
 
 namespace Marmot {
     namespace Math {
@@ -33,14 +30,6 @@ namespace Marmot {
             else // number close to 0
                 return 0;
         }
-
-        double radToDeg( const double alpha ) { return alpha * 180 / Marmot::Constants::Pi; }
-
-        double degToRad( const double alpha ) { return alpha / 180 * Marmot::Constants::Pi; }
-
-        double macauly( double scalar ) { return scalar >= 0 ? scalar : 0.0; }
-
-        int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
         Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector )
         {
