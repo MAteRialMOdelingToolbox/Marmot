@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['j2_831',['J2',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a629921ca3819abfc22af05fb79b1376f',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['j2strain_832',['J2strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a8a3d3c3cf2969bb2e37c7dc9d9f0fba3',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['j3_833',['J3',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#accdac341ed2d18725184731dba902e4c',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['j3strain_834',['J3strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a32609e347a3bc8dd3948f7dafa2500c7',1,'Marmot::ContinuumMechanics::VoigtNotation']]]
+  ['j2_855',['J2',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a17575108b622a9cf5ca846218496ae89',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
+  ['j2strain_856',['J2strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a639b6ab8bc05e4ae9688ffd63220ca3c',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
+  ['j3_857',['J3',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a021f1070cdd88caf7b84e3a904fd7bcf',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
+  ['j3strain_858',['J3strain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a36ec9d81fc443c23ab2010f3f386a788',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]]
 ];

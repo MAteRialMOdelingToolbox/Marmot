@@ -1,19 +1,19 @@
 var namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics =
 [
     [ "deformationGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html", [
-      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#a3219e5d7371cecd134485b3fd7170f3d", null ],
-      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#a34938a11ba52648f0fffa6474fb31d72", null ],
-      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#ac1546d11050d026c36a806a614b85d4f", null ],
-      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#abc5a61755a24f655ac85109132c80df9", null ]
+      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#a61f627135b5cbf2a49016d281da198bb", null ],
+      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#a42105e6f63e6452ee9123dd025932a01", null ],
+      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#a07ac31b840f3e0cb89c5f4e04e5ede2d", null ],
+      [ "make3D", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1deformationGradient.html#ab8272c318cd807cdc4e68c293be07d95", null ]
     ] ],
     [ "strain", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html", [
       [ "GreenLagrange", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#aafa2a134652284804654722724282185", null ],
-      [ "dGreenLagrangedDeformationGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#a2f6b13dbfb4693fb9ff79bc9276bf526", null ]
+      [ "dGreenLagrangedDeformationGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#a82aa0f4569e7b593d24476a9fc7aebfb", null ]
     ] ],
     [ "velocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html", [
-      [ "initializeDOmega_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#a1caf9956499c86a7daff8d0cc4d28f2b", null ],
-      [ "initializeDStretchingRate_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#a607142666827a7412852bf80840f3227", null ],
-      [ "dOmega_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#aee97fb6c55a5c93288ae55336b835a86", null ],
-      [ "dStretchingRate_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#af7caca65e3e0bfbd2d1f032352985163", null ]
+      [ "initializeDOmega_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#a541798dd0d0bd1305a97687c7583ad29", null ],
+      [ "initializeDStretchingRate_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#a6a436da0ffce7a7b7086351617dba179", null ],
+      [ "dOmega_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#afb981b2b96e8a98d741515f4dab044db", null ],
+      [ "dStretchingRate_dVelocityGradient", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1velocityGradient.html#a2b6a0afbd792d7aa014ab8c3e2debdfc", null ]
     ] ]
 ];

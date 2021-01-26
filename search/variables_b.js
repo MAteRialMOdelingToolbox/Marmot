@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['theformulation_1001',['theFormulation',['../classHughesWinget.html#a5642b62485934e4e6b6a083fb10e0d5b',1,'HughesWinget']]]
+  ['theformulation_1026',['theFormulation',['../classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html#a25ba24e4640afbbb8f0d55c8d06488dd',1,'Marmot::NumericalAlgorithms::HughesWinget']]]
 ];

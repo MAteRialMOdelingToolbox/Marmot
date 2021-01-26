@@ -1,8 +1,8 @@
 var classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit =
 [
-    [ "TangentSizedMatrix", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16", null ],
-    [ "MatrixStateStrain", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064", null ],
-    [ "IntegrationStateVector", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287", null ],
+    [ "TangentSizedMatrix", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480", null ],
+    [ "MatrixStateStrain", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224", null ],
+    [ "IntegrationStateVector", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3", null ],
     [ "SubsteppingState", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae55a45bc7a4f7bfb0cd441bbd8db97b9", [
       [ "FullStep", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae55a45bc7a4f7bfb0cd441bbd8db97b9ac23fac61657efb24e68f79676aa766d7", null ],
       [ "FirstHalfStep", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae55a45bc7a4f7bfb0cd441bbd8db97b9a681fdd75b0cda3b75a34477f7438b89e", null ],

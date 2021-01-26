@@ -6,9 +6,13 @@ var annotated_dup =
           [ "DuvautLionsViscosity", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity" ]
         ] ]
       ] ],
+      [ "Materials", "namespaceMarmot_1_1Materials.html", [
+        [ "LinearElastic", "classMarmot_1_1Materials_1_1LinearElastic.html", "classMarmot_1_1Materials_1_1LinearElastic" ]
+      ] ],
       [ "NumericalAlgorithms", "namespaceMarmot_1_1NumericalAlgorithms.html", [
         [ "AdaptiveSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper" ],
         [ "AdaptiveSubstepperExplicit", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit" ],
+        [ "HughesWinget", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget" ],
         [ "InnerNewtonIterationChecker", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker.html", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker" ],
         [ "InnerNewtonIterationCheckerMarkII", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII" ],
         [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper" ],
@@ -21,8 +25,6 @@ var annotated_dup =
       [ "MarmotElementFactory", "classMarmotLibrary_1_1MarmotElementFactory.html", "classMarmotLibrary_1_1MarmotElementFactory" ]
     ] ],
     [ "ElementProperties", "classElementProperties.html", "classElementProperties" ],
-    [ "HughesWinget", "classHughesWinget.html", "classHughesWinget" ],
-    [ "LinearElastic", "classLinearElastic.html", "classLinearElastic" ],
     [ "MakeString", "classMakeString.html", "classMakeString" ],
     [ "MarmotElement", "classMarmotElement.html", "classMarmotElement" ],
     [ "MarmotJournal", "classMarmotJournal.html", "classMarmotJournal" ],

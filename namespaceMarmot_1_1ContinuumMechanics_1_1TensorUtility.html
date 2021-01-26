@@ -212,18 +212,20 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ac76ca261b9626ba6a928136181867c65"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#ac76ca261b9626ba6a928136181867c65">d</a> (int a, int b)</td></tr>
 <tr class="separator:ac76ca261b9626ba6a928136181867c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memTemplParams" colspan="2">template&lt;int x, int y, typename T , typename  = std::enable_if&lt;!std::is_const&lt;std::remove_reference&lt;T&gt;&gt;::value&gt;&gt; </td></tr>
+<tr class="memitem:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memTemplParams" colspan="2">template&lt;int x, int y, typename T , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;&gt; </td></tr>
 <tr class="memitem:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#adc57e3526c1cc6da8cf1b38a5126f7e0">as</a> (T &amp;t)</td></tr>
 <tr class="separator:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memTemplParams" colspan="2">template&lt;int x, int y, typename T , typename  = void&gt; </td></tr>
 <tr class="memitem:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#aedbc0e8d8b29d1ed3c4969544a3a205c">as</a> (const T &amp;t)</td></tr>
 <tr class="separator:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename  = std::enable_if&lt;!std::is_const&lt;std::remove_reference&lt;Derived&gt;&gt;::value&gt;&gt; </td></tr>
+<tr class="memitem:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; Derived &gt; &gt;::value &gt;&gt; </td></tr>
 <tr class="memitem:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#ad4d5c816b765ba019bdb1d1118e2f1ea">flatten</a> (Derived &amp;t)</td></tr>
 <tr class="separator:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e1750e4b9a0f970117a71a7beee21f"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename  = void&gt; </td></tr>
 <tr class="memitem:a95e1750e4b9a0f970117a71a7beee21f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#a95e1750e4b9a0f970117a71a7beee21f">flatten</a> (const Derived &amp;t)</td></tr>
 <tr class="separator:a95e1750e4b9a0f970117a71a7beee21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf70bc025ba0714a52d5bd0935a6230"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#a5cf70bc025ba0714a52d5bd0935a6230">dyadicProduct</a> (const Eigen::Vector3d &amp;vector1, const Eigen::Vector3d &amp;vector2)</td></tr>
+<tr class="separator:a5cf70bc025ba0714a52d5bd0935a6230"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ac76ca261b9626ba6a928136181867c65"></a>
@@ -268,7 +270,7 @@ Functions</h2></td></tr>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;int x, int y, typename T , typename  = std::enable_if&lt;!std::is_const&lt;std::remove_reference&lt;T&gt;&gt;::value&gt;&gt; </div>
+template&lt;int x, int y, typename T , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto Marmot::ContinuumMechanics::TensorUtility::as </td>
@@ -308,7 +310,7 @@ template&lt;int x, int y, typename T , typename  = void&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Derived , typename  = std::enable_if&lt;!std::is_const&lt;std::remove_reference&lt;Derived&gt;&gt;::value&gt;&gt; </div>
+template&lt;typename Derived , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; Derived &gt; &gt;::value &gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto Marmot::ContinuumMechanics::TensorUtility::flatten </td>
@@ -342,13 +344,41 @@ template&lt;typename Derived , typename  = void&gt; </div>
 
 </div>
 </div>
+<a id="a5cf70bc025ba0714a52d5bd0935a6230"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf70bc025ba0714a52d5bd0935a6230">&#9670;&nbsp;</a></span>dyadicProduct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::Matrix3d Marmot::ContinuumMechanics::TensorUtility::dyadicProduct </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Vector3d &amp;&#160;</td>
+          <td class="paramname"><em>vector1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::Vector3d &amp;&#160;</td>
+          <td class="paramname"><em>vector2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html">TensorUtility</a></li>
-    <li class="footer">Generated on Tue Jan 26 2021 18:49:31 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jan 26 2021 18:49:43 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

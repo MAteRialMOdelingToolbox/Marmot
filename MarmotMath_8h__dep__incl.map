@@ -1,6 +1,7 @@
 <map id="modules/core/MarmotMechanicsCore/include/Marmot/MarmotMath.h" name="modules/core/MarmotMechanicsCore/include/Marmot/MarmotMath.h">
-<area shape="rect" id="node1" title=" " alt="" coords="239,5,468,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="356,5,585,47"/>
 <area shape="rect" id="node2" href="$PerezFougetSubstepperMarkII_8h.html" title=" " alt="" coords="5,95,224,151"/>
-<area shape="rect" id="node3" href="$MarmotMath_8cpp.html" title=" " alt="" coords="248,102,459,143"/>
-<area shape="rect" id="node4" href="$MarmotVoigt_8cpp.html" title=" " alt="" coords="483,102,693,143"/>
+<area shape="rect" id="node3" href="$HaighWestergaard_8cpp.html" title=" " alt="" coords="248,102,459,143"/>
+<area shape="rect" id="node4" href="$MarmotMath_8cpp.html" title=" " alt="" coords="483,102,693,143"/>
+<area shape="rect" id="node5" href="$MarmotVoigt_8cpp.html" title=" " alt="" coords="717,102,928,143"/>
 </map>

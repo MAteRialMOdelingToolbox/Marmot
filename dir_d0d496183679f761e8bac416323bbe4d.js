@@ -9,8 +9,9 @@ var dir_d0d496183679f761e8bac416323bbe4d =
     [ "DuvautLionsViscosity.h", "DuvautLionsViscosity_8h.html", [
       [ "DuvautLionsViscosity", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity" ]
     ] ],
+    [ "HaighWestergaard.h", "HaighWestergaard_8h.html", "HaighWestergaard_8h" ],
     [ "HughesWinget.h", "HughesWinget_8h.html", [
-      [ "HughesWinget", "classHughesWinget.html", "classHughesWinget" ]
+      [ "HughesWinget", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget" ]
     ] ],
     [ "InnerNewtonIterationChecker.h", "InnerNewtonIterationChecker_8h.html", [
       [ "InnerNewtonIterationChecker", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker.html", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker" ]
@@ -21,6 +22,7 @@ var dir_d0d496183679f761e8bac416323bbe4d =
     [ "MarmotConstants.h", "MarmotConstants_8h.html", "MarmotConstants_8h" ],
     [ "MarmotElasticity.h", "MarmotElasticity_8h.html", "MarmotElasticity_8h" ],
     [ "MarmotKinematics.h", "MarmotKinematics_8h.html", "MarmotKinematics_8h" ],
+    [ "MarmotLowerDimensionalStress.h", "MarmotLowerDimensionalStress_8h.html", "MarmotLowerDimensionalStress_8h" ],
     [ "MarmotMaterialGradientEnhancedHypoElastic.h", "MarmotMaterialGradientEnhancedHypoElastic_8h.html", [
       [ "MarmotMaterialGradientEnhancedHypoElastic", "classMarmotMaterialGradientEnhancedHypoElastic.html", "classMarmotMaterialGradientEnhancedHypoElastic" ]
     ] ],

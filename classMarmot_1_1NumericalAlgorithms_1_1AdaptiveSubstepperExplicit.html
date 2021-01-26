@@ -211,18 +211,18 @@ $(document).ready(function(){initNavTree('classMarmot_1_1NumericalAlgorithms_1_1
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2b051d38066d3d7c8dca989af2806b16"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, materialTangentSize, materialTangentSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a></td></tr>
-<tr class="separator:a2b051d38066d3d7c8dca989af2806b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4657be187a465b89dcfafc94d2965064"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, materialTangentSize, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a></td></tr>
-<tr class="separator:a4657be187a465b89dcfafc94d2965064"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9227fa4028398b6e0e891635b9979287"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a></td></tr>
-<tr class="separator:a9227fa4028398b6e0e891635b9979287"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96a082b1d7c1fc3cf3a674e0d8cc8480"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, materialTangentSize, materialTangentSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a></td></tr>
+<tr class="separator:a96a082b1d7c1fc3cf3a674e0d8cc8480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e757585a1694b5112c152b72641224"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, materialTangentSize, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a></td></tr>
+<tr class="separator:a18e757585a1694b5112c152b72641224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7500cb5b84cedd58fb2e4526f7c92f3"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a></td></tr>
+<tr class="separator:ae7500cb5b84cedd58fb2e4526f7c92f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8d91f379631d3470ccc0e3a83be0eaa7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8d91f379631d3470ccc0e3a83be0eaa7">AdaptiveSubstepperExplicit</a> (double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a1609c9587d364a95bfae3c1cf57b569a">initialStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8131c893168effa6c680c2278311b577">minimumStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a6f7edfab60fc9994b0087668a88e7621">maxScaleUpFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a70fdca9effd945b3a38935bf618b5624">scaleDownFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ab15ef9282e559df2fecd124ad5272b03">integrationErrorTolerance</a>, int <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aadc4b8b54be4c536a309fae0b006ade3">nPassesToIncrease</a>, const <a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> &amp;<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a5eae7b38760044227e8087c4e6c36a7a">Cel</a>)</td></tr>
+<tr class="memitem:a8d91f379631d3470ccc0e3a83be0eaa7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8d91f379631d3470ccc0e3a83be0eaa7">AdaptiveSubstepperExplicit</a> (double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a1609c9587d364a95bfae3c1cf57b569a">initialStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8131c893168effa6c680c2278311b577">minimumStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a6f7edfab60fc9994b0087668a88e7621">maxScaleUpFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a70fdca9effd945b3a38935bf618b5624">scaleDownFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ab15ef9282e559df2fecd124ad5272b03">integrationErrorTolerance</a>, int <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aadc4b8b54be4c536a309fae0b006ade3">nPassesToIncrease</a>, const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a5eae7b38760044227e8087c4e6c36a7a">Cel</a>)</td></tr>
 <tr class="separator:a8d91f379631d3470ccc0e3a83be0eaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67e94909dab57567fc90b9dbdd1a2b2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a67e94909dab57567fc90b9dbdd1a2b2b">setConvergedProgress</a> (const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;stressOld, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;stateVarsOld)</td></tr>
+<tr class="memitem:a67e94909dab57567fc90b9dbdd1a2b2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a67e94909dab57567fc90b9dbdd1a2b2b">setConvergedProgress</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stressOld, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;stateVarsOld)</td></tr>
 <tr class="separator:a67e94909dab57567fc90b9dbdd1a2b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe8273759cc89f396699141dc032e45f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#afe8273759cc89f396699141dc032e45f">isFinished</a> ()</td></tr>
 <tr class="separator:afe8273759cc89f396699141dc032e45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,19 +232,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae041e1ffe1aae505594a441c0b894c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a820809c2dde86e285f02d03aa46e18"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a3a820809c2dde86e285f02d03aa46e18">getNumberDiscardedSubstepsDueToError</a> ()</td></tr>
 <tr class="separator:a3a820809c2dde86e285f02d03aa46e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3e90207057a3302b6b3b1cab8a5c286"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ad3e90207057a3302b6b3b1cab8a5c286">finishSubstep</a> (const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;resultStress, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp;dXdY, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp;dYdXOld, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;stateVars)</td></tr>
+<tr class="memitem:ad3e90207057a3302b6b3b1cab8a5c286"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ad3e90207057a3302b6b3b1cab8a5c286">finishSubstep</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;resultStress, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp;dXdY, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp;dYdXOld, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;stateVars)</td></tr>
 <tr class="separator:ad3e90207057a3302b6b3b1cab8a5c286"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa951f4c37c4f806bd8c520e9d0401335"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aa951f4c37c4f806bd8c520e9d0401335">finishElasticSubstep</a> (const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;resultStress)</td></tr>
+<tr class="memitem:aa951f4c37c4f806bd8c520e9d0401335"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aa951f4c37c4f806bd8c520e9d0401335">finishElasticSubstep</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;resultStress)</td></tr>
 <tr class="separator:aa951f4c37c4f806bd8c520e9d0401335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad48a4cabec5c265a71919669f6e9609f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ad48a4cabec5c265a71919669f6e9609f">discardSubstep</a> ()</td></tr>
 <tr class="separator:ad48a4cabec5c265a71919669f6e9609f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dd502a21030876c82e7a9553aed7d0b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4dd502a21030876c82e7a9553aed7d0b">repeatSubstep</a> (double decrementationFactor)</td></tr>
 <tr class="separator:a4dd502a21030876c82e7a9553aed7d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a021e6ee2771a223b1cd5580be4af9cef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a021e6ee2771a223b1cd5580be4af9cef">getConvergedProgress</a> (<a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;stress, <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;stateVars)</td></tr>
+<tr class="memitem:a021e6ee2771a223b1cd5580be4af9cef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a021e6ee2771a223b1cd5580be4af9cef">getConvergedProgress</a> (<a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stress, <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;stateVars)</td></tr>
 <tr class="separator:a021e6ee2771a223b1cd5580be4af9cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39df4f3b78670b0c39407dcc0714c714"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a39df4f3b78670b0c39407dcc0714c714">getCurrentTangentOperator</a> ()</td></tr>
+<tr class="memitem:a39df4f3b78670b0c39407dcc0714c714"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a39df4f3b78670b0c39407dcc0714c714">getCurrentTangentOperator</a> ()</td></tr>
 <tr class="separator:a39df4f3b78670b0c39407dcc0714c714"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05e1f38f902b6ed3c11ab85c01a67c52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a05e1f38f902b6ed3c11ab85c01a67c52">getResults</a> (<a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;stress, <a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> &amp;consistentTangent, <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;stateVars)</td></tr>
+<tr class="memitem:a05e1f38f902b6ed3c11ab85c01a67c52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a05e1f38f902b6ed3c11ab85c01a67c52">getResults</a> (<a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stress, <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;consistentTangent, <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;stateVars)</td></tr>
 <tr class="separator:a05e1f38f902b6ed3c11ab85c01a67c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
@@ -257,9 +257,9 @@ Private Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a8be3ddca9558bfab339932178a055f62"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8be3ddca9558bfab339932178a055f62">IXX</a> ()</td></tr>
+<tr class="memitem:a8be3ddca9558bfab339932178a055f62"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a8be3ddca9558bfab339932178a055f62">IXX</a> ()</td></tr>
 <tr class="separator:a8be3ddca9558bfab339932178a055f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6319a86418bf4bd799ee2207c4e07fd5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a6319a86418bf4bd799ee2207c4e07fd5">IX6</a> ()</td></tr>
+<tr class="memitem:a6319a86418bf4bd799ee2207c4e07fd5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a6319a86418bf4bd799ee2207c4e07fd5">IX6</a> ()</td></tr>
 <tr class="separator:a6319a86418bf4bd799ee2207c4e07fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ff633691171774063c121f680addfa9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4ff633691171774063c121f680addfa9">acceptSubstepWithFullStepOnly</a> ()</td></tr>
 <tr class="separator:a4ff633691171774063c121f680addfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,7 +282,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aadc4b8b54be4c536a309fae0b006ade3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af17614279095f8351a96edb4c749d470"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#af17614279095f8351a96edb4c749d470">ignoreErrorToleranceOnMinimumStepSize</a></td></tr>
 <tr class="separator:af17614279095f8351a96edb4c749d470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eae7b38760044227e8087c4e6c36a7a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a5eae7b38760044227e8087c4e6c36a7a">Cel</a></td></tr>
+<tr class="memitem:a5eae7b38760044227e8087c4e6c36a7a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a5eae7b38760044227e8087c4e6c36a7a">Cel</a></td></tr>
 <tr class="separator:a5eae7b38760044227e8087c4e6c36a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3f877be1dfd17ce5f0cbfa6d53f93cc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ac3f877be1dfd17ce5f0cbfa6d53f93cc">currentProgress</a></td></tr>
 <tr class="separator:ac3f877be1dfd17ce5f0cbfa6d53f93cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,30 +294,30 @@ Private Attributes</h2></td></tr>
 <tr class="separator:abea210af5f847b3293e1b9377b1e15f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4623ffc89ba02065b1da9163e6729177"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4623ffc89ba02065b1da9163e6729177">discardedDueToError</a></td></tr>
 <tr class="separator:a4623ffc89ba02065b1da9163e6729177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5f1d2f889b673c58482483ec31968b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ab5f1d2f889b673c58482483ec31968b1">stressProgress</a></td></tr>
+<tr class="memitem:ab5f1d2f889b673c58482483ec31968b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ab5f1d2f889b673c58482483ec31968b1">stressProgress</a></td></tr>
 <tr class="separator:ab5f1d2f889b673c58482483ec31968b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbaa60dde4f1df4da1fec91b21dfbd65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#afbaa60dde4f1df4da1fec91b21dfbd65">stateProgress</a></td></tr>
+<tr class="memitem:afbaa60dde4f1df4da1fec91b21dfbd65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#afbaa60dde4f1df4da1fec91b21dfbd65">stateProgress</a></td></tr>
 <tr class="separator:afbaa60dde4f1df4da1fec91b21dfbd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add10f15d7cbe0b26fec08c74930bf642"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#add10f15d7cbe0b26fec08c74930bf642">consistentTangentProgress</a></td></tr>
+<tr class="memitem:add10f15d7cbe0b26fec08c74930bf642"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#add10f15d7cbe0b26fec08c74930bf642">consistentTangentProgress</a></td></tr>
 <tr class="separator:add10f15d7cbe0b26fec08c74930bf642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81aad97c51acc09cf2607f179f267892"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a81aad97c51acc09cf2607f179f267892">stressProgressHalfTemp</a></td></tr>
+<tr class="memitem:a81aad97c51acc09cf2607f179f267892"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a81aad97c51acc09cf2607f179f267892">stressProgressHalfTemp</a></td></tr>
 <tr class="separator:a81aad97c51acc09cf2607f179f267892"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34db0a103644d29a78d6431aced6200c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a34db0a103644d29a78d6431aced6200c">stressProgressFullTemp</a></td></tr>
+<tr class="memitem:a34db0a103644d29a78d6431aced6200c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a34db0a103644d29a78d6431aced6200c">stressProgressFullTemp</a></td></tr>
 <tr class="separator:a34db0a103644d29a78d6431aced6200c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d5da0e0f016eb9c67f196bcefb13402"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a0d5da0e0f016eb9c67f196bcefb13402">stateProgressHalfTemp</a></td></tr>
+<tr class="memitem:a0d5da0e0f016eb9c67f196bcefb13402"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a0d5da0e0f016eb9c67f196bcefb13402">stateProgressHalfTemp</a></td></tr>
 <tr class="separator:a0d5da0e0f016eb9c67f196bcefb13402"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05bd9b581b7bf74db3a33a6631fcb3d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a05bd9b581b7bf74db3a33a6631fcb3d1">stateProgressFullTemp</a></td></tr>
+<tr class="memitem:a05bd9b581b7bf74db3a33a6631fcb3d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a05bd9b581b7bf74db3a33a6631fcb3d1">stateProgressFullTemp</a></td></tr>
 <tr class="separator:a05bd9b581b7bf74db3a33a6631fcb3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa70379e5458513a3694b56ef3d958500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aa70379e5458513a3694b56ef3d958500">consistentTangentProgressHalfTemp</a></td></tr>
+<tr class="memitem:aa70379e5458513a3694b56ef3d958500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#aa70379e5458513a3694b56ef3d958500">consistentTangentProgressHalfTemp</a></td></tr>
 <tr class="separator:aa70379e5458513a3694b56ef3d958500"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4c8d5a3af9b1dc9b68aa785c82e1f21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#af4c8d5a3af9b1dc9b68aa785c82e1f21">consistentTangentProgressFullTemp</a></td></tr>
+<tr class="memitem:af4c8d5a3af9b1dc9b68aa785c82e1f21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#af4c8d5a3af9b1dc9b68aa785c82e1f21">consistentTangentProgressFullTemp</a></td></tr>
 <tr class="separator:af4c8d5a3af9b1dc9b68aa785c82e1f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae41ab06bdb0d7a1e70425b1f4d2c8bfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae55a45bc7a4f7bfb0cd441bbd8db97b9">SubsteppingState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae41ab06bdb0d7a1e70425b1f4d2c8bfe">currentState</a></td></tr>
 <tr class="separator:ae41ab06bdb0d7a1e70425b1f4d2c8bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a2b051d38066d3d7c8dca989af2806b16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b051d38066d3d7c8dca989af2806b16">&#9670;&nbsp;</a></span>TangentSizedMatrix</h2>
+<a id="a96a082b1d7c1fc3cf3a674e0d8cc8480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96a082b1d7c1fc3cf3a674e0d8cc8480">&#9670;&nbsp;</a></span>TangentSizedMatrix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -325,15 +325,15 @@ Private Attributes</h2></td></tr>
 template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, materialTangentSize, materialTangentSize&gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a></td>
+          <td class="memname">typedef Eigen::Matrix&lt; double, materialTangentSize, materialTangentSize &gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a4657be187a465b89dcfafc94d2965064"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4657be187a465b89dcfafc94d2965064">&#9670;&nbsp;</a></span>MatrixStateStrain</h2>
+<a id="a18e757585a1694b5112c152b72641224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18e757585a1694b5112c152b72641224">&#9670;&nbsp;</a></span>MatrixStateStrain</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,15 +341,15 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
 template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, materialTangentSize, 6&gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a></td>
+          <td class="memname">typedef Eigen::Matrix&lt; double, materialTangentSize, 6 &gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a9227fa4028398b6e0e891635b9979287"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9227fa4028398b6e0e891635b9979287">&#9670;&nbsp;</a></span>IntegrationStateVector</h2>
+<a id="ae7500cb5b84cedd58fb2e4526f7c92f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7500cb5b84cedd58fb2e4526f7c92f3">&#9670;&nbsp;</a></span>IntegrationStateVector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -357,7 +357,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
 template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt;double, nIntegrationDependentStateVars, 1&gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a></td>
+          <td class="memname">typedef Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -442,7 +442,7 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td>
           <td class="paramname"><em>Cel</em>&#160;</td>
         </tr>
         <tr>
@@ -467,13 +467,13 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::setConvergedProgress </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
           <td class="paramname"><em>stressOld</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;&#160;</td>
           <td class="paramname"><em>stateVarsOld</em>&#160;</td>
         </tr>
         <tr>
@@ -561,25 +561,25 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::finishSubstep </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
           <td class="paramname"><em>resultStress</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>dXdY</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp;&#160;</td>
           <td class="paramname"><em>dYdXOld</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;&#160;</td>
           <td class="paramname"><em>stateVars</em>&#160;</td>
         </tr>
         <tr>
@@ -603,7 +603,7 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::finishElasticSubstep </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
           <td class="paramname"><em>resultStress</em></td><td>)</td>
           <td></td>
         </tr>
@@ -659,13 +659,13 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::getConvergedProgress </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
           <td class="paramname"><em>stress</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;&#160;</td>
           <td class="paramname"><em>stateVars</em>&#160;</td>
         </tr>
         <tr>
@@ -687,7 +687,7 @@ template&lt;size_t n, size_t nState&gt; </div>
 template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::getCurrentTangentOperator </td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::getCurrentTangentOperator </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -708,19 +708,19 @@ template&lt;size_t n, size_t nState&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::getResults </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
           <td class="paramname"><em>stress</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td>
           <td class="paramname"><em>consistentTangent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> &amp;&#160;</td>
           <td class="paramname"><em>stateVars</em>&#160;</td>
         </tr>
         <tr>
@@ -745,7 +745,7 @@ template&lt;size_t n, size_t nState&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a2b051d38066d3d7c8dca989af2806b16">TangentSizedMatrix</a> &amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::IXX</td>
+          <td class="memname">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480">TangentSizedMatrix</a> &amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::IXX</td>
         </tr>
       </table>
   </td>
@@ -769,7 +769,7 @@ template&lt;size_t n, size_t nState&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a> &amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::IX6</td>
+          <td class="memname">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a> &amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; n, nState &gt;::IX6</td>
         </tr>
       </table>
   </td>
@@ -1010,7 +1010,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespaceMarmot.html#ac4e107364dfc28dd9a6b3d946bc723ad">Matrix6d</a>&amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::Cel</td>
+          <td class="memname">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&amp; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::Cel</td>
         </tr>
       </table>
   </td>
@@ -1154,7 +1154,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgress</td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgress</td>
         </tr>
       </table>
   </td>
@@ -1178,7 +1178,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgress</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgress</td>
         </tr>
       </table>
   </td>
@@ -1202,7 +1202,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgress</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgress</td>
         </tr>
       </table>
   </td>
@@ -1226,7 +1226,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressHalfTemp</td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressHalfTemp</td>
         </tr>
       </table>
   </td>
@@ -1250,7 +1250,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a02142b9b52ce5bc8986866e489768cc9">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressFullTemp</td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressFullTemp</td>
         </tr>
       </table>
   </td>
@@ -1274,7 +1274,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressHalfTemp</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressHalfTemp</td>
         </tr>
       </table>
   </td>
@@ -1298,7 +1298,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a9227fa4028398b6e0e891635b9979287">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressFullTemp</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae7500cb5b84cedd58fb2e4526f7c92f3">IntegrationStateVector</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressFullTemp</td>
         </tr>
       </table>
   </td>
@@ -1322,7 +1322,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressHalfTemp</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressHalfTemp</td>
         </tr>
       </table>
   </td>
@@ -1346,7 +1346,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a4657be187a465b89dcfafc94d2965064">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressFullTemp</td>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224">MatrixStateStrain</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</a>&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressFullTemp</td>
         </tr>
       </table>
   </td>
@@ -1391,7 +1391,7 @@ template&lt;size_t materialTangentSize, size_t nIntegrationDependentStateVars&gt
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1NumericalAlgorithms.html">NumericalAlgorithms</a></li><li class="navelem"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html">AdaptiveSubstepperExplicit</a></li>
-    <li class="footer">Generated on Tue Jan 26 2021 18:49:31 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jan 26 2021 18:49:43 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
