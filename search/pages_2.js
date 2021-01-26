@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['linear_20elastic_1176',['Linear Elastic',['../linearelastic.html',1,'']]]
+  ['hughes_20winget_1190',['Hughes Winget',['../hugheswinget.html',1,'numericalalgorithms']]],
+  ['hyperelastic_20material_20models_1191',['Hyperelastic Material Models',['../hyperelastic.html',1,'mechanicalmaterials']]],
+  ['hypoelastic_20material_20models_1192',['Hypoelastic Material Models',['../hypoelastic.html',1,'mechanicalmaterials']]]
 ];

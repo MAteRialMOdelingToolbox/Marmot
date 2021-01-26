@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['substepping_20algorithms_1179',['Substepping Algorithms',['../substepper.html',1,'']]]
+  ['numerical_20algorithms_1195',['Numerical Algorithms',['../numericalalgorithms.html',1,'content']]]
 ];

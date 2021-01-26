@@ -25,35 +25,7 @@
 var NAVTREE =
 [
   [ "Marmot", "index.html", [
-    [ "Others", "continuummechanicsothers.html", null ],
-    [ "Mechanical Material Models", "mechanicalmaterials.html", null ],
-    [ "Hypoelastic Material Models", "hypoelastic.html", [
-      [ "Basic Theory", "hypoelastic.html#autotoc_md1", null ]
-    ] ],
-    [ "Hyperelastic Material Models", "hyperelastic.html", [
-      [ "Basic Theory", "hyperelastic.html#autotoc_md2", null ]
-    ] ],
-    [ "Gradient Enhanced Mechanical Material Models", "gradmechanicalmaterials.html", null ],
-    [ "Gradient Enhanced Hypoelastic Material Models", "gradhypoelastic.html", [
-      [ "Basic Theory", "gradhypoelastic.html#autotoc_md3", null ]
-    ] ],
-    [ "Substepping Algorithms", "substepper.html", [
-      [ "Adaptive Substepper", "substepper.html#autotoc_md4", [
-        [ "Substepper for Implicit Return Mapping Algorithms", "substepper.html#autotoc_md5", null ],
-        [ "Substepper for Semi - Explicit Return Mapping Algorithms", "substepper.html#autotoc_md6", null ]
-      ] ],
-      [ "Perez Fouget Substepper", "substepper.html#autotoc_md7", [
-        [ "Substepper for Implicit Return Mapping Algorithms", "substepper.html#autotoc_md8", null ],
-        [ "Substepper for Semi - Explicit Return Mapping Algorithms", "substepper.html#autotoc_md9", null ],
-        [ "Modified Version to Consider Time-Variant Elastic Stiffness Tensor", "substepper.html#autotoc_md10", null ]
-      ] ]
-    ] ],
-    [ "Hughes Winget", "hugheswinget.html", null ],
-    [ "Others", "others.html", null ],
-    [ "Linear Elastic", "linearelastic.html", [
-      [ "Implementation", "linearelastic.html#autotoc_md14", null ],
-      [ "Theory", "linearelastic.html#autotoc_md15", null ]
-    ] ],
+    [ "Content", "content.html", "content" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -95,8 +67,8 @@ var NAVTREEINDEX =
 "MarmotVoigt_8h.html#a0455a2fd6fa4a49160153b23c12633de",
 "PerezFougetSubstepperTime_8h_source.html",
 "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html#a54e2cea365c9e9a5bbe82e65cd663817",
-"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcaf3da0a40b9282bf02672fbb9e1d91111",
-"namespacemembers_n.html"
+"namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcaebe511b5337eb0fb701edb8c2ebf8b77",
+"namespacemembers_j.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

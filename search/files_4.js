@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['linearelastic_2ecpp_634',['LinearElastic.cpp',['../LinearElastic_8cpp.html',1,'']]],
-  ['linearelastic_2eh_635',['LinearElastic.h',['../LinearElastic_8h.html',1,'']]],
-  ['linearelasticregistration_2ecpp_636',['LinearElasticRegistration.cpp',['../LinearElasticRegistration_8cpp.html',1,'']]]
+  ['hugheswinget_2ecpp_640',['HughesWinget.cpp',['../HughesWinget_8cpp.html',1,'']]],
+  ['hugheswinget_2eh_641',['HughesWinget.h',['../HughesWinget_8h.html',1,'']]]
 ];
