@@ -36,10 +36,21 @@ namespace Marmot {
         double linearInterpolation( double x, double x0, double x1, double y0, double y1 );
         double exp( double x );
         int    getExponentPowerTen( const double x );
-        double radToDeg( const double alpha );
-        double degToRad( const double alpha );
-        double macauly( double scalar );
-        int    heaviside( double scalar );
+
+        constexpr double radToDeg( const double alpha ) { return alpha * 180 / Marmot::Constants::Pi; }
+
+        constexpr double degToRad( const double alpha ) { return alpha / 180 * Marmot::Constants::Pi; }
+
+        constexpr double macauly( double scalar ) { return scalar >= 0 ? scalar : 0.0; }
+
+        constexpr int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
+
+        template < typename T >
+        constexpr int sgn( T val )
+        {
+            return ( T( 0 ) < val ) - ( val < T( 0 ) );
+        }
+
         template < int nRows, int nCols >
         Eigen::Matrix< double, nRows, nCols > macaulyMatrix( const Eigen::Matrix< double, nRows, nCols >& mat )
         {
