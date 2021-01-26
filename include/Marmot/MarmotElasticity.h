@@ -26,11 +26,16 @@
  */
 
 #pragma once
+#include "Marmot/MarmotVoigt.h"
 
 namespace Marmot {
 
     namespace ContinuumMechanics {
-        namespace Elasticity {
+        namespace Elasticity::Isotropic {
+
+            double constexpr E( const double K, const double G ) { return 9. * K * G / ( 3. * K + G ); }
+
+            double constexpr nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
 
             double constexpr shearModulus( const double E, const double nu ) { return E / ( 2 * ( 1 + nu ) ); }
 
@@ -39,8 +44,24 @@ namespace Marmot {
                 return E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
             }
 
-        } // namespace Elasticity
+            Matrix6d stiffnessTensor( double E, double nu );
+            Matrix6d complianceTensor( double E, double nu ); // Inverse of StiffnessTensor
+
+        } // namespace Elasticity::Isotropic
+
+        namespace Elasticity::Anisotropic {
+            Matrix6d transverseIsotropicComplianceTensor( double E1, double E2, double nu1, double nu2, double G2 );
+            Matrix6d orthotropicComplianceTensor( double E1,
+                                                  double E2,
+                                                  double E3,
+                                                  double nu12,
+                                                  double nu23,
+                                                  double nu13,
+                                                  double G12,
+                                                  double G23,
+                                                  double G31 );
+
+        } // namespace Elasticity::Anisotropic
 
     } // namespace ContinuumMechanics
-
 } // namespace Marmot
