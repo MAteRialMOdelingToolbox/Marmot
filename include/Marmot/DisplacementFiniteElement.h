@@ -37,6 +37,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+#include "Marmot/MarmotLowerDimensionalStress.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -330,7 +331,7 @@ namespace Marmot::Elements {
                 gaussPt.material
                     ->computeUniaxialStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-                C << ContinuumMechanics::getUniaxialStressTangent( C66 );
+                C << ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( C66 );
                 S( 0 ) = gaussPt.stress( 0 );
             }
 
@@ -344,14 +345,14 @@ namespace Marmot::Elements {
                     gaussPt.material
                         ->computePlaneStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-                    C = ContinuumMechanics::getPlaneStressTangent( C66 );
+                    C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( C66 );
                 }
 
                 else if ( sectionType == SectionType::PlaneStrain ) {
 
                     gaussPt.material->computeStress( gaussPt.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-                    C = ContinuumMechanics::getPlaneStrainTangent( C66 );
+                    C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
                 }
 
                 S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( gaussPt.stress );
