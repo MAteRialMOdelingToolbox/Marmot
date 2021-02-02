@@ -33,6 +33,12 @@
 
 namespace Marmot {
     namespace Math {
+        template < typename T >
+        const bool isNaN( T x )
+        {
+            return x != x;
+        }
+
         double linearInterpolation( double x, double x0, double x1, double y0, double y1 );
         double exp( double x );
         int    getExponentPowerTen( const double x );

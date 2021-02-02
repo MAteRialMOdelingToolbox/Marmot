@@ -32,12 +32,13 @@
 
 namespace Marmot {
     namespace ContinuumMechanics::HaighWestergaard {
+      struct HaighWestergaardCoordinates
+      {
+        double xi, rho, theta;
+      };
 
-        Eigen::Vector3d haighWestergaard( const Marmot::Vector6d& stress );
-        Eigen::Vector3d haighWestergaardStrain( const Marmot::Vector6d& strain );
-
-        // principal strains calculated from haigh westergaard strains ( sorted --> e1 > e2 > e3 )
-        Eigen::Vector3d principalStrainsHW( const Marmot::Vector6d& strain );
+      HaighWestergaardCoordinates haighWestergaard( const Marmot::Vector6d& stress );
+      HaighWestergaardCoordinates haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 
     } // namespace ContinuumMechanics::HaighWestergaard
 } // namespace Marmot

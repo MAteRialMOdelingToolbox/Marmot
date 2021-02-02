@@ -1,8 +1,8 @@
-#include "Marmot/MarmotVoigt.h"
 #include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -109,6 +109,19 @@ namespace Marmot {
                 SelfAdjointEigenSolver< Matrix3d > es( voigtToStress( voigtStress ) );
                 return es.eigenvalues();
             }
+
+            Vector3d sortedPrincipalStrains( const Vector6d& voigtStrain )
+            {
+                HaighWestergaardCoordinates hw = haighWestergaardFromStrain( voigtStrain );
+                Vector3d strainPrinc;
+
+                strainPrinc << hw.xi / sqrt3 + sqrt2_3 * hw.rho * std::cos( hw.theta ),
+                    hw.xi / sqrt3 + sqrt2_3 * hw.rho * ( -std::sin( Constants::Pi / 6. - hw.theta ) ),
+                    hw.xi / sqrt3 + sqrt2_3 * hw.rho * ( -std::sin( Constants::Pi / 6. + hw.theta ) );
+
+                return strainPrinc;
+            }
+
             Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& voigtStress )
             {
                 SelfAdjointEigenSolver< Matrix3d > es( voigtToStress( voigtStress ) );
@@ -117,7 +130,7 @@ namespace Marmot {
                 return Q;
             }
 
-            std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives(
+            std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalValuesAndDerivatives(
                 const Eigen::Matrix< double, 6, 1 >& S )
             {
                 // This is a fast implementation of the classical algorithm for determining
@@ -229,7 +242,7 @@ namespace Marmot {
                 return ContinuumMechanics::VoigtNotation::voigtToStress( stress ).norm();
             }
 
-            double Evolneg( const Vector6d& strain )
+            double StrainVolumetricNegative( const Vector6d& strain )
             {
                 Vector3d dEpPrincipal = principalStrains( strain );
 
@@ -247,7 +260,7 @@ namespace Marmot {
                        s( 5 ) * s( 5 );
             }
 
-            double I2strain( const Vector6d& strain ) // you could also use normal I2, but with epsilon12
+            double I2Strain( const Vector6d& strain ) // you could also use normal I2, but with epsilon12
                                                       // instead of 2*epsilon12
             {
                 const Vector6d& e = strain;
@@ -263,7 +276,7 @@ namespace Marmot {
                        s( 1 ) * s( 4 ) * s( 4 ) - s( 2 ) * s( 3 ) * s( 3 );
             }
 
-            double I3strain( const Vector6d& strain ) // you could also use normal I3, but with epsilon12
+            double I3Strain( const Vector6d& strain ) // you could also use normal I3, but with epsilon12
                                                       // instead of 2*epsilon12
             {
                 return voigtToStrain( strain ).determinant();
@@ -277,9 +290,9 @@ namespace Marmot {
                 return res >= 0 ? res : 0.0;
             }
 
-            double J2strain( const Vector6d& strain )
+            double J2Strain( const Vector6d& strain )
             {
-                const double res = 1. / 3. * std::pow( I1( strain ), 2. ) - I2strain( strain );
+                const double res = 1. / 3. * std::pow( I1( strain ), 2. ) - I2Strain( strain );
                 return res > 0 ? res : 0;
             }
 
@@ -292,7 +305,7 @@ namespace Marmot {
                 return ( 2. / 27 ) * pow( I1_, 3 ) - ( 1. / 3 ) * I1_ * I2_ + I3_;
             }
 
-            double J3strain( const Vector6d& strain ) // determinant of the deviatoric strain tensor
+            double J3Strain( const Vector6d& strain ) // determinant of the deviatoric strain tensor
             {
                 return voigtToStrain( IDev * strain ).determinant();
             }
@@ -301,9 +314,9 @@ namespace Marmot {
         namespace Derivatives {
             using namespace Invariants;
 
-            Vector6d dSigmaMdSigma() { return 1. / 3 * I; }
+            Vector6d dStressMean_dStress() { return 1. / 3 * I; }
 
-            Vector6d dRhodSigma( double rho, const Vector6d& stress )
+            Vector6d dRho_dStress( double rho, const Vector6d& stress )
             {
 
                 if ( rho <= 1e-16 )
@@ -314,7 +327,7 @@ namespace Marmot {
                 return 1. / rho * P.array() * s.array();
             }
 
-            Vector6d dThetadSigma( double theta, const Vector6d& stress )
+            Vector6d dTheta_dStress( double theta, const Vector6d& stress )
             {
                 if ( theta <= 1e-15 || theta >= Pi / 3 - 1e-15 )
                     return Vector6d::Zero();
@@ -325,7 +338,7 @@ namespace Marmot {
                 const double dThetadJ2 = dTheta_dJ2( stress );
                 const double dThetadJ3 = dTheta_dJ3( stress );
 
-                if ( isNaN( dThetadJ2 ) || isNaN( dThetadJ3 ) )
+                if ( Math::isNaN( dThetadJ2 ) || Math::isNaN( dThetadJ3 ) )
                     return Vector6d::Zero();
 
                 return dThetadJ2 * dJ2_dStress( stress ) + dThetadJ3 * dJ3_dStress( stress );
@@ -333,8 +346,8 @@ namespace Marmot {
 
             double dTheta_dJ2( const Vector6d& stress )
             {
-                const Vector3d hw    = haighWestergaard( stress );
-                const double&  theta = hw( 2 );
+                const HaighWestergaardCoordinates hw    = haighWestergaard( stress );
+                const double&  theta = hw.theta;
 
                 if ( theta <= 1e-14 || theta >= Pi / 3 - 1e-14 )
                     return 1e16;
@@ -350,8 +363,8 @@ namespace Marmot {
 
             double dTheta_dJ3( const Vector6d& stress )
             {
-                const Vector3d hw    = haighWestergaard( stress );
-                const double&  theta = hw( 2 );
+                const HaighWestergaardCoordinates hw    = haighWestergaard( stress );
+                const double&  theta = hw.theta;
 
                 if ( theta <= 1e-14 || theta >= Pi / 3 - 1e-14 )
                     return -1e16;
@@ -364,29 +377,29 @@ namespace Marmot {
                 return dThetadJ3;
             }
 
-            double dThetaE_dJ2E( const Vector6d& strain )
+            double dThetaStrain_dJ2Strain( const Vector6d& strain )
             {
-                const Vector3d hw    = haighWestergaardStrain( strain );
-                const double   theta = hw( 2 );
+                const HaighWestergaardCoordinates hw    = haighWestergaardFromStrain( strain );
+                const double   theta = hw.theta;
 
                 if ( theta <= 1e-15 || theta >= Pi / 3 - 1e-15 )
                     return 1e16;
                 else
-                    return 3. * std::sqrt( 3. ) / 4. * J3strain( strain ) /
-                           ( std::pow( J2strain( strain ), 5. / 2 ) *
+                    return 3. * std::sqrt( 3. ) / 4. * J3Strain( strain ) /
+                           ( std::pow( J2Strain( strain ), 5. / 2 ) *
                              std::sqrt( 1. - std::pow( std::cos( 3. * theta ), 2. ) ) );
             }
 
-            double dThetaE_dJ3E( const Vector6d& strain )
+            double dThetaStrain_dJ3Strain( const Vector6d& strain )
             {
-                const Vector3d hw    = haighWestergaardStrain( strain );
-                const double&  theta = hw( 2 );
+                const HaighWestergaardCoordinates hw    = haighWestergaardFromStrain( strain );
+                const double&  theta = hw.theta;
 
                 if ( theta <= 1e-15 || theta >= Pi / 3 - 1e-15 )
                     return -1e16;
                 else
                     return -std::sqrt( 3. ) / 2. * 1. /
-                           ( std::pow( J2strain( strain ), 3. / 2 ) *
+                           ( std::pow( J2Strain( strain ), 3. / 2 ) *
                              std::sqrt( 1. - std::pow( std::cos( 3. * theta ), 2. ) ) );
             }
 
@@ -399,19 +412,20 @@ namespace Marmot {
                        2. / 3. * J2( stress ) * I;
             }
 
-            Vector6d dJ2E_dE( const Vector6d& strain ) { return PInv.array() * ( IDev * strain ).array(); }
+            Vector6d dJ2Strain_dStrain( const Vector6d& strain ) { return PInv.array() * ( IDev * strain ).array(); }
 
-            Vector6d dJ3E_dE( const Vector6d& strain )
+            Vector6d dJ3Strain_dStrain( const Vector6d& strain )
             {
                 Vector6d e = IDev * strain;
                 return ( PInv.array() * strainToVoigt( voigtToStrain( e ) * voigtToStrain( e ) ).array() ).matrix() -
-                       2. / 3. * J2strain( strain ) * I;
+                       2. / 3. * J2Strain( strain ) * I;
             }
 
-            Vector6d dThetaE_dE( const Vector6d& strain )
+            Vector6d dThetaStrain_dStrain( const Vector6d& strain )
 
             {
-                return dThetaE_dJ2E( strain ) * dJ2E_dE( strain ) + dThetaE_dJ3E( strain ) * dJ3E_dE( strain );
+                return dThetaStrain_dJ2Strain( strain ) * dJ2Strain_dStrain( strain ) +
+                       dThetaStrain_dJ3Strain( strain ) * dJ3Strain_dStrain( strain );
             }
 
             Matrix36 dStressPrincipals_dStress( const Vector6d& stress ) // derivative when principal stresses are
@@ -434,10 +448,10 @@ namespace Marmot {
                 return J;
             }
 
-            Vector3d dDeltaEpvneg_dDeltaEpPrincipals( const Vector6d& strain )
+            Vector3d dStrainVolumetricNegative_dStrainPrincipal( const Vector6d& strain )
             {
                 Vector3d       dEvdEpPrinc  = Vector3d::Zero();
-                const Vector3d deltaEpPrinc = principalStrainsHW( strain );
+                const Vector3d deltaEpPrinc = Invariants::sortedPrincipalStrains( strain );
 
                 for ( int i = 0; i < dEvdEpPrinc.size(); i++ )
                     dEvdEpPrinc( i ) = -Math::heaviside( -deltaEpPrinc( i ) );
@@ -455,7 +469,7 @@ namespace Marmot {
                 return I.transpose() * ( Matrix6d::Identity() - CelInv * Cep );
             }
 
-            Matrix36 dDeltaEpPrincipals_dDeltaEp(
+            Matrix36 dSortedStrainPrincipal_dStrain(
                 const Vector6d& dEp ) // equations from page 218-219 PhD Thesis David Unteregger
             {
                 Vector3d dEpPrinc_dEpvol   = Vector3d::Zero();
@@ -463,19 +477,19 @@ namespace Marmot {
                 Vector3d dEPprinc_dEptheta = Vector3d::Zero();
 
                 const double   sqrt2_3 = std::sqrt( 2. / 3. );
-                const Vector3d hw      = haighWestergaardStrain( dEp );
+                const HaighWestergaardCoordinates hw      = haighWestergaardFromStrain( dEp );
                 // const double& epsM =		hw(0);
-                const double& rhoE = hw( 1 );
+                const double& rhoE = hw.rho;
                 // const double& thetaE =		hw(2);
 
                 dEpPrinc_dEpvol = 1. / 3. * Vector3d::Ones();
-                dEpPrinc_dEprho << sqrt2_3 * std::cos( hw( 2 ) ),
-                    sqrt2_3 * std::cos( hw( 2 ) - 2. * Constants::Pi / 3. ),
-                    sqrt2_3 * std::cos( hw( 2 ) + 2. * Constants::Pi / 3. );
+                dEpPrinc_dEprho << sqrt2_3 * std::cos( hw.theta ),
+                    sqrt2_3 * std::cos( hw.theta - 2. * Constants::Pi / 3. ),
+                    sqrt2_3 * std::cos( hw.theta + 2. * Constants::Pi / 3. );
 
-                dEPprinc_dEptheta << -sqrt2_3 * hw( 1 ) * std::sin( hw( 2 ) ),
-                    -sqrt2_3 * hw( 1 ) * std::sin( hw( 2 ) - 2. * Constants::Pi / 3. ),
-                    -sqrt2_3 * hw( 1 ) * std::sin( hw( 2 ) + 2. * Constants::Pi / 3. );
+                dEPprinc_dEptheta << -sqrt2_3 * hw.rho * std::sin( hw.theta ),
+                    -sqrt2_3 * hw.rho * std::sin( hw.theta - 2. * Constants::Pi / 3. ),
+                    -sqrt2_3 * hw.rho * std::sin( hw.theta + 2. * Constants::Pi / 3. );
 
                 RowVector6d dEpvol_dEp   = RowVector6d::Zero();
                 dEpvol_dEp               = I;
@@ -483,9 +497,9 @@ namespace Marmot {
                 RowVector6d dEptheta_dEp = RowVector6d::Zero();
 
                 if ( std::abs( rhoE ) > 1e-16 ) {
-                    dEprho_dEp   = 1. / rhoE * dJ2E_dE( dEp ).transpose();
-                    dEptheta_dEp = ( dThetaE_dJ2E( dEp ) * dJ2E_dE( dEp ).transpose() ) +
-                                   ( dThetaE_dJ3E( dEp ) * dJ3E_dE( dEp ).transpose() );
+                    dEprho_dEp   = 1. / rhoE * dJ2Strain_dStrain( dEp ).transpose();
+                    dEptheta_dEp = ( dThetaStrain_dJ2Strain( dEp ) * dJ2Strain_dStrain( dEp ).transpose() ) +
+                                   ( dThetaStrain_dJ3Strain( dEp ) * dJ3Strain_dStrain( dEp ).transpose() );
                 }
                 else {
                     dEprho_dEp << 1.e16, 1.e16, 1.e16, 1.e16, 1.e16,
@@ -502,8 +516,8 @@ namespace Marmot {
 
             RowVector6d dDeltaEpvneg_dE( const Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep )
             {
-                return dDeltaEpvneg_dDeltaEpPrincipals( dEp ).transpose() * dDeltaEpPrincipals_dDeltaEp( dEp ) *
-                       dEp_dE( CelInv, Cep );
+                return dStrainVolumetricNegative_dStrainPrincipal( dEp ).transpose() *
+                       dSortedStrainPrincipal_dStrain( dEp ) * dEp_dE( CelInv, Cep );
             }
 
         } // namespace Derivatives
@@ -557,7 +571,7 @@ namespace Marmot {
                 return projectMatrix;
             }
 
-            Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6d& voigtStress )
+            Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& voigtStress )
             {
                 const Matrix3d& T  = voigtToStress( voigtStress );
                 const Matrix3d& TR = Q * T * Q.transpose();

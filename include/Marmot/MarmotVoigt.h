@@ -30,14 +30,12 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 
-#define isNaN( x ) ( x != x )
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
 namespace Marmot {
     namespace ContinuumMechanics::VoigtNotation {
 
-        // TODO: Remove, only valid for 3D!
-        const int VoigtSize = 6;
+        constexpr int VoigtSize = 6;
 
         extern const Marmot::Vector6d P;
         extern const Marmot::Vector6d PInv;
@@ -83,7 +81,7 @@ namespace Marmot {
         Marmot::Vector6d stressToVoigt( const Eigen::Matrix3d& stressTensor );
 
         template < int nDim >
-        Eigen::Matrix< double, nDim, nDim > StressMatrixFromVoigt(
+        Eigen::Matrix< double, nDim, nDim > stressMatrixFromVoigt(
             const Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >& Voigt )
         {
             if constexpr ( nDim == 1 )
@@ -98,7 +96,7 @@ namespace Marmot {
         }
 
         template < int nDim >
-        Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 > VoigtFromStrainMatrix(
+        Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 > voigtFromStrainMatrix(
             const Eigen::Matrix< double, nDim, nDim >& strain )
         {
             if constexpr ( nDim == 1 )
@@ -120,6 +118,8 @@ namespace Marmot {
             Eigen::Vector3d principalStrains( const Marmot::Vector6d& strain );
             // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
             Eigen::Vector3d principalStresses( const Marmot::Vector6d& stress );
+            // principal strains calculated from haigh westergaard strains ( sorted --> e1 > e2 > e3 )
+            Eigen::Vector3d sortedPrincipalStrains( const Marmot::Vector6d& strain );
             // principal stressDirections calculated by solving eigenvalue problem ( !NOT sorted! )
             Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& stress );
 
@@ -132,23 +132,23 @@ namespace Marmot {
             // Euclidian norm of stress
             double normStress( const Marmot::Vector6d& stress );
             // Trace of compressive strains
-            double Evolneg( const Marmot::Vector6d& strain );
+            double StrainVolumetricNegative( const Marmot::Vector6d& strain );
 
             // Invariants - keep atention: different for stress/strain tensor
             double I1( const Marmot::Vector6d& stress );
             double I2( const Marmot::Vector6d& stress );
-            double I2strain( const Marmot::Vector6d& strain );
+            double I2Strain( const Marmot::Vector6d& strain );
             double I3( const Marmot::Vector6d& stress );
-            double I3strain( const Marmot::Vector6d& strain );
+            double I3Strain( const Marmot::Vector6d& strain );
 
             // Invariants of the deviatoric part of the stress/strain tensor
             double J2( const Marmot::Vector6d& stress );
-            double J2strain( const Marmot::Vector6d& strain );
+            double J2Strain( const Marmot::Vector6d& strain );
             double J3( const Marmot::Vector6d& stress );
-            double J3strain( const Marmot::Vector6d& strain );
+            double J3Strain( const Marmot::Vector6d& strain );
 
             // principal values in voigt
-            std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalsOfVoigtAndDerivatives(
+            std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalValuesAndDerivatives(
                 const Eigen::Matrix< double, 6, 1 >& S );
 
         } // namespace Invariants
@@ -156,32 +156,32 @@ namespace Marmot {
         namespace Derivatives {
 
             // derivatives of Haigh Westergaard stresses with respect to cauchy stress in eng. notation
-            Marmot::Vector6d dSigmaMdSigma();
-            Marmot::Vector6d dRhodSigma( double rho, const Marmot::Vector6d& stress );
-            Marmot::Vector6d dThetadSigma( double theta, const Marmot::Vector6d& stress );
+            Marmot::Vector6d dStressMean_dStress();
+            Marmot::Vector6d dRho_dStress( double rho, const Marmot::Vector6d& stress );
+            Marmot::Vector6d dTheta_dStress( double theta, const Marmot::Vector6d& stress );
             // derivatives of Haigh Westergaard stresses with respect to deviatoric invariants
             double dTheta_dJ2( const Marmot::Vector6d& stress );
             double dTheta_dJ3( const Marmot::Vector6d& stress );
             // derivatives of Haigh Westergaard strains with respect to deviatoric invariants
-            double dThetaE_dJ2E( const Marmot::Vector6d& strain );
-            double dThetaE_dJ3E( const Marmot::Vector6d& strain );
+            double dThetaStrain_dJ2Strain( const Marmot::Vector6d& strain );
+            double dThetaStrain_dJ3Strain( const Marmot::Vector6d& strain );
             // derivatives of deviatoric invariants with respect to eng. stresses
             Marmot::Vector6d dJ2_dStress( const Marmot::Vector6d& stress );
             Marmot::Vector6d dJ3_dStress( const Marmot::Vector6d& stress );
             // derivatives of deviatoric invariants with respect to eng. strains
-            Marmot::Vector6d dJ2E_dE( const Marmot::Vector6d& strain );
-            Marmot::Vector6d dJ3E_dE( const Marmot::Vector6d& strain );
+            Marmot::Vector6d dJ2Strain_dStrain( const Marmot::Vector6d& strain );
+            Marmot::Vector6d dJ3Strain_dStrain( const Marmot::Vector6d& strain );
             // derivatives of Haigh Westergaard strains with respect to eng. strains
-            Marmot::Vector6d dThetaE_dE( const Marmot::Vector6d& strain );
+            Marmot::Vector6d dThetaStrain_dStrain( const Marmot::Vector6d& strain );
 
             // derivatives of principalStess with respect to stress
             Marmot::Matrix36 dStressPrincipals_dStress( const Marmot::Vector6d& stress );
 
             // derivatives of plastic strains with respect to strains
-            Eigen::Vector3d  dDeltaEpvneg_dDeltaEpPrincipals( const Marmot::Vector6d& strain );
+            Eigen::Vector3d  dStrainVolumetricNegative_dStrainPrincipal( const Marmot::Vector6d& strain );
             Matrix6d         dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
             RowVector6d      dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
-            Marmot::Matrix36 dDeltaEpPrincipals_dDeltaEp( const Marmot::Vector6d& dEp );
+            Marmot::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Vector6d& dEp );
             RowVector6d dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
         } // namespace Derivatives
@@ -193,7 +193,7 @@ namespace Marmot {
             Matrix36d projectVoigtStressToPlane( const Vector3d& normalVector );
             Matrix36d projectVoigtStrainToPlane( const Vector3d& normalVector );
             /// rotate a 2nd order tensor T in voigt notation by : T' = Q * T * Q^T
-            Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d Q, const Marmot::Vector6d& stress );
+            Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
 
         } // namespace Transformations
 

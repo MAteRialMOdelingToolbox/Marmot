@@ -15,7 +15,7 @@ namespace Marmot::NumericalAlgorithms {
 
         Matrix3d dEps_ = 0.5 * ( l + l.transpose() ); // actually d * dT
         dOmega         = 0.5 * ( l - l.transpose() ); // actually omega * dT
-        dEps           = Marmot::ContinuumMechanics::VoigtNotation::VoigtFromStrainMatrix( dEps_ );
+        dEps           = Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix( dEps_ );
         dR             = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
     }
 
@@ -42,7 +42,7 @@ namespace Marmot::NumericalAlgorithms {
         EigenTensors::Tensor633d dS_dF;
         EigenTensors::Tensor633d dStressRotational_dl;
         EigenTensors::Tensor633d dStressJaumann_dl;
-        auto                     stressNew = ContinuumMechanics::VoigtNotation::StressMatrixFromVoigt< 3 >( stress );
+        auto                     stressNew = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( stress );
 
         dStressRotational_dl.setZero();
         for ( int ij = 0; ij < 6; ij++ ) {
