@@ -28,6 +28,8 @@
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include <iostream>
 #include <string>
+#include <vector>
+#include "Marmot/MarmotTypedefs.h"
 
 namespace Marmot::Materials {
     /**
@@ -44,13 +46,26 @@ namespace Marmot::Materials {
 
       protected:
         /// \brief Young's modulus
-        const double& E;
         /**< #E represents Young's modulus for isotropic linear elasticity.
          * It is a reference variable to #materialProperties[0]. */
         /// \brief Poisson's ratio
-        const double& nu;
         /**< #nu represents Poisson's ratio for isotropic linear elasticity.
          * It is a reference variable to #materialProperties[1]. */
+	//std::vector<double> materialProps;
+ 	
+	enum class Type {Isotropic = 2 , TransverseIsotropic = 8 , Orthotropic = 12} anisotropicType; 
+
+     	const double& E1;
+     	const double& E2;
+     	const double& E3;
+     	const double& nu12;
+     	const double& nu23;
+     	const double& nu13;
+     	const double G12;
+     	const double G23;
+     	const double& G13;
+
+	Matrix6d C;
 
         void computeStress( double* stress,
                             double* dStressDDStrain,
