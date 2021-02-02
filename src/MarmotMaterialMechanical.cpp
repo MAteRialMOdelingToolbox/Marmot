@@ -1,5 +1,6 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialMechanical.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
@@ -64,7 +65,7 @@ void MarmotMaterialMechanical::computePlaneStress( double*       stress_,
         const double dS33_dF33 = dStressDDDeformationGradient( 2, 8 );
 
         double tangentCompliance = 1. / dS33_dF33;
-        if ( isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
+        if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
             tangentCompliance = 1e10;
 
         FNewTemp(2,2) -= tangentCompliance * stressTemp(2);

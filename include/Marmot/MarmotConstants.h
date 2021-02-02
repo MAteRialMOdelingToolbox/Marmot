@@ -27,15 +27,23 @@
  */
 
 #pragma once
+#include <cmath>
 
 namespace Marmot {
     namespace Constants {
         constexpr double    Pi         = 3.141592653589793238463;
         constexpr double    numZeroPos = 1e-16;
-        double              cubicRootEps();
-        double              squareRootEps();
-        extern const double CubicRootEps;
-        extern const double SquareRootEps;
+        constexpr double cubicRootEps()
+        {
+            return std::pow( std::numeric_limits<double>::epsilon(), 1. / 3 );
+        }
+        constexpr double squareRootEps()
+        {
+            return std::pow( std::numeric_limits<double>::epsilon(), 0.5 );
+        }
+
+        constexpr double SquareRootEps = squareRootEps();
+        constexpr double CubicRootEps = cubicRootEps();
         constexpr double    sqrt3_8 = 0.61237243569579452454932101867647;
         constexpr double    sqrt2_3 = 0.8164965809277260327324280249019;
         constexpr double    sqrt3_2 = 1.2247448713915890490986420373529;
