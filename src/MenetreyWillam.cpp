@@ -6,7 +6,7 @@
 namespace Marmot {
     namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
         using namespace Constants;
-        double r( double theta, double e, double& numerator, double& denominator )
+        double r( const double theta, const double e, double& numerator, double& denominator )
         {
             // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
             // position (theta) the numerator and denominator are stored for performance reasons, as
@@ -28,7 +28,7 @@ namespace Marmot {
             return numerator / denominator;
         }
 
-        double dRdTheta( double theta, double e, double rNumerator, double rDenominator )
+        double dRdTheta( const double theta, const double e, double rNumerator, double rDenominator )
         {
             // computes the derivate for a given r (defined by its numerator, denominator,
             // calculated by r()),
@@ -51,21 +51,21 @@ namespace Marmot {
                                       ( 2 * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
             return b * dadTheta + a * dbdTheta;
         }
-        double e( double fc, double ft ) { return ( fc + 2 * ft ) / ( 2 * fc + ft ); }
+        double e( const double fc, const double ft ) { return ( fc + 2 * ft ) / ( 2 * fc + ft ); }
 
-        double c( double fc, double ft )
+        double c( const double fc, const double ft )
         {
             const double phi_ = phi( fc, ft );
             return ft * ( 1 + std::sin( phi_ ) ) / ( 2 + std::cos( phi_ ) );
         }
 
-        double phi( double fc, double ft ) { return std::asin( ( fc - ft ) / ( fc + ft ) ); }
+        double phi( const double fc, const double ft ) { return std::asin( ( fc - ft ) / ( fc + ft ) ); }
 
-        double ft( double c, double phi ) { return 2 * c * std::cos( phi ) / ( 1 + std::sin( phi ) ); }
+        double ft( const double c, const double phi ) { return 2 * c * std::cos( phi ) / ( 1 + std::sin( phi ) ); }
 
-        double fc( double c, double phi ) { return 2 * c * std::cos( phi ) / ( 1 - std::sin( phi ) ); }
+        double fc( const double c, const double phi ) { return 2 * c * std::cos( phi ) / ( 1 - std::sin( phi ) ); }
 
-        double f( double Af, double Bf, double Cf, double m, double e, double xi, double rho, double theta )
+        double f( const double Af, const double Bf, const double Cf, const double m, const double e, const double xi, const double rho, const double theta )
         {
             double num = 0;
             double den = 0;
@@ -75,14 +75,14 @@ namespace Marmot {
         void dFdHaighWestergaard( double& dFdXi,
                                   double& dFdRho,
                                   double& dFdTheta,
-                                  double  Af,
-                                  double  Bf,
-                                  double  Cf,
-                                  double  m,
-                                  double  e,
-                                  double  xi,
-                                  double  rho,
-                                  double  theta )
+                                  const double  Af,
+                                  const double  Bf,
+                                  const double  Cf,
+                                  const double  m,
+                                  const double  e,
+                                  const double  xi,
+                                  const double  rho,
+                                  const double  theta )
         {
             double       rNum = 0, rDen = 0;
             const double r_        = r( theta, e, rNum, rDen );
@@ -93,22 +93,22 @@ namespace Marmot {
             dFdTheta = m * Bf * rho * dRdTheta_;
         }
 
-        double fRounded( double Af,
-                         double Bf,
-                         double Cf,
-                         double m,
-                         double e,
-                         double xi,
-                         double rho,
-                         double theta,
-                         double varEps )
+        double fRounded( const double Af,
+                         const double Bf,
+                         const double Cf,
+                         const double m,
+                         const double e,
+                         const double xi,
+                         const double rho,
+                         const double theta,
+                         const double varEps )
         {
             double       rNum = 0, rDen = 0;
             const double r_ = r( theta, e, rNum, rDen );
             return Af * Af * rho * rho +
                    m * ( std::sqrt( Bf * rho * r_ * Bf * rho * r_ + varEps * varEps ) + Cf * xi ) - 1;
         }
-        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( double varEps, double psi )
+        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi )
         {
             return varEps * 2 * std::sin( psi );
         }
@@ -116,15 +116,15 @@ namespace Marmot {
         void dFRoundeddHaighWestergaard( double& dFdXi,
                                          double& dFdRho,
                                          double& dFdTheta,
-                                         double  Af,
-                                         double  Bf,
-                                         double  Cf,
-                                         double  m,
-                                         double  e,
-                                         double  xi,
-                                         double  rho,
-                                         double  theta,
-                                         double  varEps )
+                                         const double  Af,
+                                         const double  Bf,
+                                         const double  Cf,
+                                         const double  m,
+                                         const double  e,
+                                         const double  xi,
+                                         const double  rho,
+                                         const double  theta,
+                                         const double  varEps )
         {
             double       rNum = 0, rDen = 0;
             const double r_        = r( theta, e, rNum, rDen );
@@ -140,7 +140,7 @@ namespace Marmot {
             dFdTheta = auxTerm1 * rho * dRdTheta_;
         }
 
-        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc )
+        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
         {
             Af = 0;
             Bf = 1. / ( sqrt6 * ft );
@@ -149,7 +149,7 @@ namespace Marmot {
             e  = 0.51;
         }
 
-        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc )
+        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
         {
             Af = 0;
             Bf = sqrt3_2 / ft;
@@ -158,7 +158,7 @@ namespace Marmot {
             e  = 1;
         }
 
-        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc )
+        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
         {
             Af = 0;
             Bf = sqrt3_8 * ( fc + ft ) / ( fc * ft );
@@ -166,7 +166,7 @@ namespace Marmot {
             m  = 1;
             e  = 1;
         }
-        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc )
+        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
         {
             Af = 0.;
             Bf = 1. / sqrt6 * ( fc + 2. * ft ) / ( fc * ft );

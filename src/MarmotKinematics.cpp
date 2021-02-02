@@ -51,7 +51,7 @@ namespace Marmot {
             Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F )
             {
                 Eigen::Matrix3d H = F - Eigen::Matrix3d::Identity();
-                return Marmot::ContinuumMechanics::VoigtNotation::VoigtFromStrainMatrix< 3 >(
+                return Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >(
                     0.5 * ( H + H.transpose() + H.transpose() * H ) );
             }
 
