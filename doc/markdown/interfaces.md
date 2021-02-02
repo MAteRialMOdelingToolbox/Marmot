@@ -34,7 +34,7 @@ For instance, the hypoelastic material MarmotMaterialHypoElastic (computes stres
 Instances of MarmotMaterial are casted down to their specialization.
 For instance, following procedure may be employed to create an instance of a Marmot::Materials::LinearElastic material model,
 which belongs to the class of MarmotMaterialHypoElastic materials, and compute the current stress state:
-```
+```cpp
 // Get the unique material ID of the registered material "LINEARELASTIC"
 const auto materialCode = MarmotMaterialFactory::getMaterialCodeFromName( "LINEARELASTIC" );
 
@@ -61,7 +61,7 @@ Those Factory functions are used by Marmot to create specific instances of the m
 providing a custom element number (MarmotElement) or a material number and a set of material properties (MarmotMaterial).
 
 For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as
-```
+```cpp
 template < class T,
            Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
            typename T::SectionType                             sectionType >
@@ -79,7 +79,7 @@ MarmotElementFactory:: registerElement( "CPE4",
 making use of an auxiliary factory function generator.
 
 Creating the specific instance and computing the kernel is easy as
-```
+```cpp
 const auto elementCode = Marmot::getElementCodeFromName( "CPE4" );
 
 int elementNumber = 1;

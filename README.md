@@ -43,7 +43,7 @@ make
 sudo make install
 ```
 
-CMake options ```CORE_MODULES```, ```ÈLEMENT_MODULES``` and ```MATERIAL_MODULES``` 
+CMake options ```CORE_MODULES```, ```ELEMENT_MODULES``` and ```MATERIAL_MODULES``` 
 allow to specify the modules which should be compiled, either by passing a 
 ```semicolon seperated list```, option ```none``` or option ```all``` (default).
 For instance:
@@ -88,7 +88,7 @@ A singularity container recipe is [available](https://github.com/matthiasneuner/
 
 ## Documentation
 
-The documentation can be found under https://materialmodelingtoolbox.github.io/Marmot/.
+The documentation can be found under [https://materialmodelingtoolbox.github.io/Marmot/](https://materialmodelingtoolbox.github.io/Marmot/).
 
 ## License
 
