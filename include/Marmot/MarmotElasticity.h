@@ -12,6 +12,8 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Thomas Mader thomas.mader@uibk.ac.at
+ * Magdalena Schreter magdalena.schreter@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -44,24 +46,26 @@ namespace Marmot {
                 return E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
             }
 
-            Matrix6d stiffnessTensor( double E, double nu );
-            Matrix6d complianceTensor( double E, double nu ); // Inverse of StiffnessTensor
+            Matrix6d stiffnessTensor( const double E, const double nu );
+            Matrix6d complianceTensor( const double E, const double nu ); // Inverse of StiffnessTensor
 
         } // namespace Elasticity::Isotropic
 
-        namespace Elasticity::Anisotropic {
-            Matrix6d transverseIsotropicComplianceTensor( double E1, double E2, double nu1, double nu2, double G2 );
-            Matrix6d orthotropicComplianceTensor( double E1,
-                                                  double E2,
-                                                  double E3,
-                                                  double nu12,
-                                                  double nu23,
-                                                  double nu13,
-                                                  double G12,
-                                                  double G23,
-                                                  double G31 );
+        namespace Elasticity::TransverseIsotropic {
+            Matrix6d complianceTensor( const double E1, const double E2, const double nu12, const double nu23, const double G12 );
+        } // namespace Elasticity::TransverseIsotropic
 
-        } // namespace Elasticity::Anisotropic
+        namespace Elasticity::Orthotropic {
+            Matrix6d complianceTensor( const double E1,
+                                       const double E2,
+                                       const double E3,
+                                       const double nu12,
+                                       const double nu23,
+                                       const double nu13,
+                                       const double G12,
+                                       const double G23,
+                                       const double G31 );
 
-    } // namespace ContinuumMechanics
+        } // namespace Elasticity::Orthotropic
+    }     // namespace ContinuumMechanics
 } // namespace Marmot

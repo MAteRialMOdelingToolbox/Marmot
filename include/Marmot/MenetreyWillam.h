@@ -31,66 +31,66 @@
 namespace Marmot {
     namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
 
-        double r( double theta, double e, double& numerator, double& denominator );
+        double r( const double theta, const double e, double& numerator, double& denominator );
 
-        double dRdTheta( double theta, double e, double rNumerator, double rDenominator );
+        double dRdTheta( const double theta, const double e, const double rNumerator, const double rDenominator );
 
-        double e( double fc, double ft );
+        double e( const double fc, const double ft );
 
-        double c( double fc, double ft );
+        double c( const double fc, const double ft );
 
-        double phi( double fc, double ft );
+        double phi( const double fc, const double ft );
 
-        double fc( double c, double phi );
+        double fc( const double c, const double phi );
 
-        double ft( double c, double phi );
+        double ft( const double c, const double phi );
 
-        double f( double Af, double Bf, double Cf, double m, double e, double xi, double rho, double theta );
+        double f( const double Af, const double Bf, const double Cf, const double m, const double e, const double xi, const double rho, const double theta );
 
         void dFdHaighWestergaard( double& dFdXi,
                                   double& dFdRho,
                                   double& dFdTheta,
-                                  double  Af,
-                                  double  Bf,
-                                  double  Cf,
-                                  double  m,
-                                  double  e,
-                                  double  xi,
-                                  double  rho,
-                                  double  theta );
+                                  const double  Af,
+                                  const double  Bf,
+                                  const double  Cf,
+                                  const double  m,
+                                  const double  e,
+                                  const double  xi,
+                                  const double  rho,
+                                  const double  theta );
 
-        double fRounded( double Af,
-                         double Bf,
-                         double Cf,
-                         double m,
-                         double e,
-                         double xi,
-                         double rho,
-                         double theta,
-                         double varEps );
+        double fRounded( const double Af,
+                         const double Bf,
+                         const double Cf,
+                         const double m,
+                         const double e,
+                         const double xi,
+                         const double rho,
+                         const double theta,
+                         const double varEps );
 
         void dFRoundeddHaighWestergaard( double& dFdXi,
                                          double& dFdRho,
                                          double& dFdTheta,
-                                         double  Af,
-                                         double  Bf,
-                                         double  Cf,
-                                         double  m,
-                                         double  e,
-                                         double  xi,
-                                         double  rho,
-                                         double  theta,
-                                         double  varEps );
+                                         const double  Af,
+                                         const double  Bf,
+                                         const double  Cf,
+                                         const double  m,
+                                         const double  e,
+                                         const double  xi,
+                                         const double  rho,
+                                         const double  theta,
+                                         const double  varEps );
 
-        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( double varEps, double psi );
+        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi );
 
-        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc = 0 );
+        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc = 0 );
 
-        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc = 0 );
+        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc = 0 );
 
-        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc );
+        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc );
 
-        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, double ft, double fc );
+        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc );
 
     } // namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam
 } // namespace Marmot

@@ -2,6 +2,7 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotKinematics.h"
 #include "Marmot/MarmotMaterialGradientEnhancedHypoElastic.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
@@ -117,7 +118,7 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
         }
 
         double tangentCompliance = 1. / dStressDDStrain( 2, 2 );
-        if ( isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
+        if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
             tangentCompliance = 1e10;
 
         dStrainTemp[2] -= tangentCompliance * stressTemp[2];
