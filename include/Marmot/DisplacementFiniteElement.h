@@ -152,20 +152,20 @@ namespace Marmot::Elements {
                               double        dT,
                               double&       pNewdT );
 
-        PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt )
+        StateView getStateView( const std::string& stateName, int gaussPt )
         {
-            if ( resultName == "stress" ) {
+            if ( stateName == "stress" ) {
                 return { gaussPts[gaussPt].stress.data(), 6 };
             }
-            else if ( resultName == "strain" ) {
+            else if ( stateName == "strain" ) {
                 return { gaussPts[gaussPt].strain.data(), 6 };
             }
-            else if ( resultName == "sdv" ) {
+            else if ( stateName == "sdv" ) {
                 return { gaussPts[gaussPt].material->getAssignedStateVars(),
                          gaussPts[gaussPt].material->getNumberOfAssignedStateVars() };
             }
             else
-                return this->gaussPts[gaussPt].material->getPermanentResultPointer( resultName );
+                return this->gaussPts[gaussPt].material->getStateView( stateName );
         }
     };
 
