@@ -105,5 +105,5 @@ class MarmotElementSpatialWrapper : public MarmotElement {
                            const double* time,
                            double        dT );
 
-    PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt );
+    StateView getStateView( const std::string& stateName, int gaussPt );
 };

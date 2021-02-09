@@ -221,12 +221,12 @@ void MarmotElementSpatialWrapper::computeBodyForce( double*       P_,
     Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-PermanentResultLocation MarmotElementSpatialWrapper::getPermanentResultPointer( const std::string& resultName,
+StateView MarmotElementSpatialWrapper::getStateView( const std::string& stateName,
                                                                                 int                gaussPt )
 {
-    if ( resultName == "MarmotElementSpatialWrapper.T" ) {
+    if ( stateName == "MarmotElementSpatialWrapper.T" ) {
         return { T.data(), T.size() };
     }
 
-    return childElement->getPermanentResultPointer( resultName, gaussPt );
+    return childElement->getStateView( stateName, gaussPt );
 }
