@@ -136,6 +136,8 @@ namespace Marmot {
         using mjL  = Fastor::Index< m_, j_, L_ >;
 
         using IJKL = Fastor::Index< I_, J_, K_, L_ >;
+        using LI = Fastor::Index< L_, I_ >;
+        using JK = Fastor::Index< J_, K_ >;
         using iK   = Fastor::Index< i_, K_ >;
         using iKjL = Fastor::Index< i_, K_, j_, L_ >;
         using im   = Fastor::Index< i_, m_ >;
