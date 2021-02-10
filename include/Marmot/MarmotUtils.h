@@ -26,9 +26,9 @@
  */
 #pragma once
 
-struct PermanentResultLocation
+struct StateView
 {
-    const double* resultLocation;
-    int resultLength;
+    double* stateLocation;
+    int stateSize;
 };
 

@@ -50,9 +50,9 @@ class MarmotMaterial {
 
     virtual void assignStateVars( double* stateVars, int nStateVars );
 
-    virtual PermanentResultLocation getPermanentResultPointer( const std::string& resultName ) = 0;
+    virtual StateView getStateView( const std::string& stateName ) = 0;
 
-    const double* getAssignedStateVars();
+    double* getAssignedStateVars();
 
     int getNumberOfAssignedStateVars();
 };
