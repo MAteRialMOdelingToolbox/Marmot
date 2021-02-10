@@ -63,9 +63,11 @@ if __name__ == "__main__":
             |   |   +- Hyper Elastic Material Models
             |   |   
             |   +- Gradient Enhanced Mechanical Material Models
-            |       |
-            |       +- Gradient Enhanced Hypo Elastic Material Models
-            |    
+            |   |   |
+            |   |   +- Gradient Enhanced Hypo Elastic Material Models
+            |   |
+            |   +- Voigt Notation 
+            |  
             |- Finite Elements
             |- Numerical Algorithms
             |   |
@@ -89,7 +91,7 @@ if __name__ == "__main__":
             f.write( " - \subpage finiteelementtechnology\n") 
         f.write( " - \subpage numericalalgorithms\n" )
         f.write( " - \subpage interfaces\n" )
-        f.write( " - \subpage others\n" )
+        #f.write( " - \subpage others\n" )
     
     # continuum mechanics page
     with open( "doc/markdown/continuummechanics.md", "w+" ) as f:
@@ -97,6 +99,7 @@ if __name__ == "__main__":
         f.write( "The following basic types of material models are available in %Marmot.\n" )
         f.write( " - \subpage mechanicalmaterials\n" )
         f.write( " - \subpage gradmechanicalmaterials\n" )
+        f.write( " - \subpage voigtnotation\n" )
         f.write( " - \subpage continuummechanicsothers\n" )
     
     # mechanical materials page

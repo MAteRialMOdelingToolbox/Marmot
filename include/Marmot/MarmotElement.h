@@ -90,5 +90,5 @@ class MarmotElement {
                                    const double* time,
                                    double        dT ) = 0;
 
-    virtual PermanentResultLocation getPermanentResultPointer( const std::string& resultName, int gaussPt) = 0;
+    virtual StateView getStateView( const std::string& stateName, int gaussPt) = 0;
 };
