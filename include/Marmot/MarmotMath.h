@@ -34,7 +34,7 @@
 namespace Marmot {
     namespace Math {
         template < typename T >
-        const bool isNaN( T x )
+        bool isNaN( T x )
         {
             return x != x;
         }

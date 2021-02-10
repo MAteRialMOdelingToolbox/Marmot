@@ -46,13 +46,22 @@ namespace Marmot {
                 return E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
             }
 
+            Matrix6d complianceTensor( const double E, const double nu );
             Matrix6d stiffnessTensor( const double E, const double nu );
-            Matrix6d complianceTensor( const double E, const double nu ); // Inverse of StiffnessTensor
 
         } // namespace Elasticity::Isotropic
 
         namespace Elasticity::TransverseIsotropic {
-            Matrix6d complianceTensor( const double E1, const double E2, const double nu12, const double nu23, const double G12 );
+            Matrix6d complianceTensor( const double E1,
+                                       const double E2,
+                                       const double nu12,
+                                       const double nu23,
+                                       const double G12 );
+            Matrix6d stiffnessTensor( const double E1,
+                                      const double E2,
+                                      const double nu12,
+                                      const double nu23,
+                                      const double G12 );
         } // namespace Elasticity::TransverseIsotropic
 
         namespace Elasticity::Orthotropic {
@@ -65,6 +74,15 @@ namespace Marmot {
                                        const double G12,
                                        const double G23,
                                        const double G31 );
+            Matrix6d stiffnessTensor( const double E1,
+                                      const double E2,
+                                      const double E3,
+                                      const double nu12,
+                                      const double nu23,
+                                      const double nu13,
+                                      const double G12,
+                                      const double G23,
+                                      const double G31 );
 
         } // namespace Elasticity::Orthotropic
     }     // namespace ContinuumMechanics
