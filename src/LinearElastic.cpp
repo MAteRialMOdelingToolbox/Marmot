@@ -51,11 +51,11 @@ namespace Marmot::Materials {
 
             switch ( anisotropicType ) {
             case Type::TransverseIsotropic:
-                localStiffnessTensor = TransverseIsotropic::complianceTensor( E1, E2, nu12, nu23, G12 ).inverse();
+                localStiffnessTensor = TransverseIsotropic::stiffnessTensor( E1, E2, nu12, nu23, G12 );
                 break;
             case Type::Orthotropic:
-                localStiffnessTensor = Orthotropic::complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 )
-                                           .inverse();
+                localStiffnessTensor = Orthotropic::stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
+                                 
                 break;
             };
 
