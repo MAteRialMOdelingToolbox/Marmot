@@ -34,7 +34,7 @@ namespace Marmot {
                 double norm = 0.0;
                 for ( n = 2; n < maxIterations; ++n ) {
                     facN *= n;
-                    tensorPower         = tensorPower % theTensor;
+                    tensorPower           = tensorPower % theTensor;
                     const TensorNN series = 1. / facN * tensorPower;
                     theExponential += series;
                     norm = Fastor::norm( series );
