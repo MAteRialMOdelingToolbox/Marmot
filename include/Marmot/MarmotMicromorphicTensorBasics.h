@@ -20,13 +20,17 @@ namespace Marmot {
         namespace Spatial3D {
 
             inline const Tensor33d
-                                     I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
+                I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                Fastor::ColumnMajor );
-            inline const Tensor333d  LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D.data(),
+            inline const Tensor333d  LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D
+                                                                 .data(),
                                                              Fastor::ColumnMajor );
-            inline const Tensor3333d IHyd       = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::I2xI2.data(), Fastor::ColumnMajor );
-            inline const Tensor3333d ISymm      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Isym.data(), Fastor::ColumnMajor );
-            inline const Tensor3333d ISkew      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Iskew.data(), Fastor::ColumnMajor );
+            inline const Tensor3333d IHyd       = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::I2xI2.data(),
+                                                         Fastor::ColumnMajor );
+            inline const Tensor3333d ISymm      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Isym.data(),
+                                                          Fastor::ColumnMajor );
+            inline const Tensor3333d ISkew      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Iskew.data(),
+                                                          Fastor::ColumnMajor );
 
         } // namespace Spatial3D
 
@@ -136,8 +140,8 @@ namespace Marmot {
         using mjL  = Fastor::Index< m_, j_, L_ >;
 
         using IJKL = Fastor::Index< I_, J_, K_, L_ >;
-        using LI = Fastor::Index< L_, I_ >;
-        using JK = Fastor::Index< J_, K_ >;
+        using LI   = Fastor::Index< L_, I_ >;
+        using JK   = Fastor::Index< J_, K_ >;
         using iK   = Fastor::Index< i_, K_ >;
         using iKjL = Fastor::Index< i_, K_, j_, L_ >;
         using im   = Fastor::Index< i_, m_ >;
