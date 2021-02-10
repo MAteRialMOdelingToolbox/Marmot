@@ -1,16 +1,23 @@
-### MechanicsCore
+## MechanicsCore
+
 \page continuummechanicsothers Others
 
-#### Additional implementations for Material Models based on Plasticity Theory
+### Additional implementations for Material Models based on Plasticity Theory
 
-##### Duvaut Lions Viscosity
+#### Duvaut Lions Viscosity
 
 **Implementation:** \ref DuvautLionsViscosity.h
 
-##### Menetrey Willam Yield Surfaces
+#### Menetrey Willam Yield Surfaces
 
 **Implementation:** \ref MenetreyWillam.h
 
+
+#### Yield Surface Combination Manager
+
+Necessary for multisurface plasticity material models.
+
+**Implementation:** \ref YieldSurfaceCombinationManager.h
 
 \page mechanicalmaterials Mechanical Material Models
 
@@ -20,11 +27,13 @@ Abstract base class for mechanical materials with scalar nonlocal interaction.
 
 \page hypoelastic Hypoelastic Material Models
 
-## Basic Theory 
-
 **Implementation:** \ref MarmotMaterialHypoElastic
 
-Derived abstract base class for elastic materials expressed purely in rate form. In general, the nominal stress rate tensor \f$ \sigRate \f$ can be written as a function of the nominal stress tensor \f$ \sig \f$, the stretching rate tensor \f$ \epsRate \f$ and the time \f$ t \f$.
+Derived abstract base class for elastic materials expressed purely in rate form. 
+
+## Basic Theory 
+
+In general, the nominal stress rate tensor \f$ \sigRate \f$ can be written as a function of the nominal stress tensor \f$ \sig \f$, the stretching rate tensor \f$ \epsRate \f$ and the time \f$ t \f$.
 
 \f[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \f]
 
@@ -119,15 +128,88 @@ Perez Fouget Substepper for semi - explicit elastoplastic materials.
 
 **Implementation:** \ref HughesWinget.h
 
-\page others Others
 
-### Voigt Notation
+
+\page voigtnotation Voigt Notation
+
+In %Marmot, Voigt notation is used to simplify tensorial operations including second order tensors like stress and strain and fourth order tensors like stiffness and compliance.
+For instance, tensor products are written as vector matrix products.
+
+**Namespace:** \ref Marmot::ContinuumMechanics::VoigtNotation
 
 **Implementation:** \ref MarmotVoigt.h
 
+### Cauchy stress tensor
 
-### Yield Surface Combination Manager
+\f[\displaystyle
+    \sig =
+    \begin{bmatrix}
+        \sigma_{11} & \sigma_{12} & \sigma_{13}\\ 
+        \sigma_{21} & \sigma_{22} & \sigma_{23}\\ 
+        \sigma_{31} & \sigma_{32} & \sigma_{33} 
+    \end{bmatrix}
+    \rightarrow
+    \begin{bmatrix}
+        \sigma_{11}\\
+        \sigma_{22}\\
+        \sigma_{33}\\
+        \sigma_{12}\\
+        \sigma_{23}\\
+        \sigma_{31}\\
+    \end{bmatrix}
+\f]
 
-Necessary for multisurface plasticity material models.
+### Linearized strain tensor
 
-**Implementation:** \ref YieldSurfaceCombinationManager.h
+\f[\displaystyle
+    \eps =
+    \begin{bmatrix}
+        \varepsilon_{11} & \varepsilon_{12} & \varepsilon_{13}\\ 
+        \varepsilon_{21} & \varepsilon_{22} & \varepsilon_{23}\\ 
+        \varepsilon_{31} & \varepsilon_{32} & \varepsilon_{33} 
+    \end{bmatrix}
+    \rightarrow
+    \begin{bmatrix}
+        \varepsilon_{11}\\
+        \varepsilon_{22}\\
+        \varepsilon_{33}\\
+        2\,\varepsilon_{12}\\
+        2\,\varepsilon_{23}\\
+        2\,\varepsilon_{31}\\
+    \end{bmatrix}
+\f]
+
+
+### Generalized Hooke's law
+
+\f[
+    \sig = \Cel : \eps = \mathbb{D}^{-1} : \eps \rightarrow  
+    \begin{bmatrix}
+        \sigma_{11}\\
+        \sigma_{22}\\
+        \sigma_{33}\\
+        \sigma_{12}\\
+        \sigma_{23}\\
+        \sigma_{31}\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    D_{1111} & D_{1122} & D_{1133} & D_{1112} & D_{1123} & D_{1131} \\
+    D_{2211} & D_{2222} & D_{2233} & D_{2212} & D_{2223} & D_{2231} \\
+    D_{3311} & D_{3322} & D_{3333} & D_{3312} & D_{3323} & D_{3331} \\
+    D_{1211} & D_{1222} & D_{1233} & D_{1212} & D_{1223} & D_{1231} \\
+    D_{2311} & D_{2322} & D_{2333} & D_{2312} & D_{2323} & D_{2331} \\
+    D_{3111} & D_{3122} & D_{3133} & D_{3112} & D_{3123} & D_{3131} \\
+    \end{bmatrix}^{-1}
+    \begin{bmatrix}
+        \varepsilon_{11}\\
+        \varepsilon_{22}\\
+        \varepsilon_{33}\\
+        2\,\varepsilon_{12}\\
+        2\,\varepsilon_{23}\\
+        2\,\varepsilon_{31}\\
+    \end{bmatrix}
+\f]
+
+
+
