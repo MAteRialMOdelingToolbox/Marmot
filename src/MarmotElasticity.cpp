@@ -40,7 +40,11 @@ namespace Marmot {
 
         namespace Elasticity::TransverseIsotropic {
 
-            Matrix6d complianceTensor( const double E1, const double E2, const double nu12, const double nu23, const double G12 )
+            Matrix6d complianceTensor( const double E1,
+                                       const double E2,
+                                       const double nu12,
+                                       const double nu23,
+                                       const double G12 )
             {
                 Matrix6d     CInv;
                 const double G23 = E2 / ( 2 * ( 1 + nu23 ) );
@@ -54,6 +58,23 @@ namespace Marmot {
                 // clang-format on
                 return CInv;
             }
+
+            Matrix6d stiffnessTensor( const double E1,
+                                      const double E2,
+                                      const double nu12,
+                                      const double nu23,
+                                      const double G12 )
+            {
+                Matrix6d C = Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::complianceTensor( E1,
+                                                                                                            E2,
+                                                                                                            nu12,
+                                                                                                            nu23,
+                                                                                                            G12 )
+                                 .inverse();
+
+                return C;
+            }
+
         } // namespace Elasticity::TransverseIsotropic
 
         namespace Elasticity::Orthotropic {
@@ -76,8 +97,31 @@ namespace Marmot {
            	                  0,        0,        0, 1./G12,      0,      0,
            	              	  0,        0,        0,      0, 1./G23,      0,
            	              	  0,        0,        0,      0,      0, 1./G31;
-                   // clang-format on
+                // clang-format on
                 return CInv;
+            }
+
+            Matrix6d stiffnessTensor( const double E1,
+                                      const double E2,
+                                      const double E3,
+                                      const double nu12,
+                                      const double nu23,
+                                      const double nu13,
+                                      const double G12,
+                                      const double G23,
+                                      const double G31 )
+            {
+                Matrix6d C = Marmot::ContinuumMechanics::Elasticity::Orthotropic::complianceTensor( E1,
+                                                                                                    E2,
+                                                                                                    E3,
+                                                                                                    nu12,
+                                                                                                    nu23,
+                                                                                                    nu13,
+                                                                                                    G12,
+                                                                                                    G23,
+                                                                                                    G31 )
+                                 .inverse();
+                return C;
             }
         } // namespace Elasticity::Orthotropic
     }     // namespace ContinuumMechanics
