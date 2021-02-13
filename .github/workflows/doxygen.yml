@@ -21,10 +21,6 @@ jobs:
     - name: execute py script # run the run.py to get the latest data
       run: |
            python doc/buildDocumentation.py --skipDoxygen
-<<<<<<< HEAD
-           ls -l doc/markdown
-=======
->>>>>>> d879ba1c17fb586d9e5cf7793971fc325547bccd
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
