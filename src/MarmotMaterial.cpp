@@ -16,7 +16,7 @@ void MarmotMaterial::assignStateVars( double* stateVars, int nStateVars )
     this->nStateVars = nStateVars;
 }
 
-const double* MarmotMaterial::getAssignedStateVars()
+double* MarmotMaterial::getAssignedStateVars()
 {
     return stateVars;
 }
