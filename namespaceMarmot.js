@@ -1,14 +1,12 @@
 var namespaceMarmot =
 [
-    [ "Voigt Notation", "others.html#autotoc_md11", null ],
-    [ "Yield Surface Combination Manager", "others.html#autotoc_md12", null ],
     [ "Constants", "namespaceMarmot_1_1Constants.html", [
-      [ "cubicRootEps", "namespaceMarmot_1_1Constants.html#adfd6ebb7d1c2c663dd34d8cafe5f3164", null ],
-      [ "squareRootEps", "namespaceMarmot_1_1Constants.html#ae09746c02b102a9d2fc9b82b4226042e", null ],
+      [ "cubicRootEps", "namespaceMarmot_1_1Constants.html#a9fdddcca583e482201ea37e23dfb741b", null ],
+      [ "squareRootEps", "namespaceMarmot_1_1Constants.html#a542e2265061f8712008631a4dfe43fd2", null ],
       [ "Pi", "namespaceMarmot_1_1Constants.html#ae565cccf603a560e0f36d2a3dc9c23dc", null ],
       [ "numZeroPos", "namespaceMarmot_1_1Constants.html#a5cd71819cd49e3a72955efe735d0f42f", null ],
-      [ "CubicRootEps", "namespaceMarmot_1_1Constants.html#a7937bdbef7a0742b796ff1b863b3af71", null ],
-      [ "SquareRootEps", "namespaceMarmot_1_1Constants.html#aaa827cc20ee315713a3c40614f14ea34", null ],
+      [ "SquareRootEps", "namespaceMarmot_1_1Constants.html#a691a3d8f0ac55041ab56590edbbf192e", null ],
+      [ "CubicRootEps", "namespaceMarmot_1_1Constants.html#ab82413838540c20a8914ec386f0b83dd", null ],
       [ "sqrt3_8", "namespaceMarmot_1_1Constants.html#af9ce92f9b8538c7cae5386c1502e9017", null ],
       [ "sqrt2_3", "namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc", null ],
       [ "sqrt3_2", "namespaceMarmot_1_1Constants.html#af949a37ecd57fa12162d8e8326f4a271", null ],
@@ -30,6 +28,7 @@ var namespaceMarmot =
     ] ],
     [ "Materials", "namespaceMarmot_1_1Materials.html", "namespaceMarmot_1_1Materials" ],
     [ "Math", "namespaceMarmot_1_1Math.html", [
+      [ "isNaN", "namespaceMarmot_1_1Math.html#ad3a65166e9b849eb54ccef942368b6e6", null ],
       [ "linearInterpolation", "namespaceMarmot_1_1Math.html#aa14a646adfd201e379c86f6bd85d942a", null ],
       [ "exp", "namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d", null ],
       [ "getExponentPowerTen", "namespaceMarmot_1_1Math.html#ae070a2cdcdf4ae5cb71899ba67edc62e", null ],

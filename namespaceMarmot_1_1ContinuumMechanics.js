@@ -19,11 +19,7 @@ var namespaceMarmot_1_1ContinuumMechanics =
       [ "LeviCivita2D", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ad015d8c33b0fa498d7d134ff5eef088c", null ]
     ] ],
     [ "Elasticity", "namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity.html", "namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity" ],
-    [ "HaighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html", [
-      [ "haighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a74d313c614d3cd29d6a5e4e9af596f80", null ],
-      [ "haighWestergaardStrain", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a18a17bf4cbcc85e53869af5a0b50c273", null ],
-      [ "principalStrainsHW", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a3af1c16635a67070f11ffdd5c96f8d5f", null ]
-    ] ],
+    [ "HaighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard" ],
     [ "Kinematics", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics.html", "namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics" ],
     [ "PlaneStrain", "namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html", [
       [ "getPlaneStrainTangent", "namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a2df9f7d96132dffdb710950d88e7ff8d", null ],

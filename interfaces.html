@@ -200,74 +200,82 @@ $(document).ready(function(){initNavTree('interfaces.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>There are several conventient ways to interface with <a class="el" href="namespaceMarmot.html">Marmot</a>. If you want to use <a class="el" href="namespaceMarmot.html">Marmot</a> in a finite element framework, you may want to try one of the existing available interfaces.</p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 How to use Marmot with Abaqus</h1>
 <p>The <a href="https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface">Abaqus-MarmotInterface</a> allows to use <code><a class="el" href="namespaceMarmot.html">Marmot</a></code> in Abaqus simulations.</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 How to use Marmot with MOOSE</h1>
 <p>The <a href="https://github.com/matthiasneuner/chamois">chamois App</a> allows to use <code><a class="el" href="namespaceMarmot.html">Marmot</a></code> directly in <a href="https://github.com/idaholab/moose">MOOSE</a>. A singularity container recipe is <a href="https://github.com/matthiasneuner/chamois-singularity">available</a>.</p>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Create your custom interface</h1>
 <p>To create your custom interface to <a class="el" href="namespaceMarmot.html">Marmot</a>, you can leverage the <a class="el" href="classMarmotLibrary_1_1MarmotMaterialFactory.html">MarmotLibrary::MarmotMaterialFactory</a> and <a class="el" href="classMarmotLibrary_1_1MarmotElementFactory.html">MarmotLibrary::MarmotElementFactory</a> factories to create instances of registered material models and finite elements. In general, specialized <a class="el" href="namespaceMarmot.html">Marmot</a> materials are derived from the general parent class <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>, and <a class="el" href="namespaceMarmot.html">Marmot</a> finite elements are derived from the general parent class <a class="el" href="classMarmotElement.html">MarmotElement</a>. In particular for <a class="el" href="namespaceMarmot.html">Marmot</a> materials, <a class="el" href="namespaceMarmot.html">Marmot</a> strongly makes use of inheritance to specialize on specific continuum theories, e.g., <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> for hypoelastic materials.</p>
 <p>Base classes <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> and <a class="el" href="classMarmotElement.html">MarmotElement</a> are considered the most general description of materials and finite elements. In particular, <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> essentially is only defined by a a identification number, a set of material properties and an internal state (represented by a set of state variables) and may describe any material, e.g., a mechanical, a thermal or a couple thermo-mechanical material. Similarly, <a class="el" href="classMarmotElement.html">MarmotElement</a> makes no assumption on the actual physics described by the finite element, but may represent any finite element.</p>
 <p>For materials, physical interpretation is introduced by derivation and specialization of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>. For instance, the hypoelastic material <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> (computes stresses in rate form) is derived from the more general <a class="el" href="classMarmotMaterialMechanical.html">MarmotMaterialMechanical</a> (computes stresses from a deformation state), which itself is a specialization of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> (reads material properties and may have an internal state).</p>
-<p>Instances of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> are casted down to their specialization. For instance, following procedure may be employed to create an instance of a <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states.">Marmot::Materials::LinearElastic</a> material model, which belongs to the class of <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> materials, and compute the current stress state: </p><div class="fragment"><div class="line">// Get the unique material ID of the registered material &quot;LINEARELASTIC&quot;</div>
-<div class="line">const auto materialCode = MarmotMaterialFactory::getMaterialCodeFromName( &quot;LINEARELASTIC&quot; );</div>
+<p>Instances of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> are casted down to their specialization. For instance, following procedure may be employed to create an instance of a <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states.">Marmot::Materials::LinearElastic</a> material model, which belongs to the class of <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> materials, and compute the current stress state: </p><div class="fragment"><div class="line"><span class="comment">// Get the unique material ID of the registered material &quot;LINEARELASTIC&quot;</span></div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> materialCode = MarmotMaterialFactory::getMaterialCodeFromName( <span class="stringliteral">&quot;LINEARELASTIC&quot;</span> );</div>
 <div class="line"> </div>
-<div class="line">// Create the instance and cast to a hypoelastic material</div>
-<div class="line">auto material = std::unique_ptr&lt;MarmotMaterialHypoElastic&gt; (</div>
-<div class="line">        dynamic_cast&lt;MarmotMaterialHypoElastic*&gt; (</div>
-<div class="line">            MarmotLibrary::MarmotMaterialFactory::createMaterial( materialCode, materialProperties, nMaterialProperties, anArbitraryIdentificationCode )));</div>
+<div class="line"><span class="comment">// Create the instance and cast to a hypoelastic material</span></div>
+<div class="line"><span class="keyword">auto</span> material = std::unique_ptr&lt;MarmotMaterialHypoElastic&gt; (</div>
+<div class="line">        <span class="keyword">dynamic_cast&lt;</span><a class="code" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a>*<span class="keyword">&gt;</span> (</div>
+<div class="line">            <a class="code" href="classMarmotLibrary_1_1MarmotMaterialFactory.html#aa47443df4fafe9224ac0b8b25238106a">MarmotLibrary::MarmotMaterialFactory::createMaterial</a>( materialCode, materialProperties, nMaterialProperties, anArbitraryIdentificationCode )));</div>
 <div class="line"> </div>
-<div class="line">// assign a set of state vars</div>
+<div class="line"><span class="comment">// assign a set of state vars</span></div>
 <div class="line">material-&gt;assignStateVars(stateVars, nStateVars);</div>
 <div class="line"> </div>
-<div class="line">// assign a characteristic length parameter (specific to hypoelastic materials)</div>
+<div class="line"><span class="comment">// assign a characteristic length parameter (specific to hypoelastic materials)</span></div>
 <div class="line">material-&gt;setCharacteristicElementLength(theCharacteristicElementLength);</div>
 <div class="line"> </div>
-<div class="line">// compute stresses</div>
+<div class="line"><span class="comment">// compute stresses</span></div>
 <div class="line">material-&gt;computeStress(stress_in_and_out, dstress_dstrain_out,  dstrain_in, time_in, dtime_in, pNewDT_in_and_out);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md20"></a>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotMaterialFactory_html_aa47443df4fafe9224ac0b8b25238106a"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotMaterialFactory.html#aa47443df4fafe9224ac0b8b25238106a">MarmotLibrary::MarmotMaterialFactory::createMaterial</a></div><div class="ttdeci">static MarmotMaterial * createMaterial(MaterialCode material, const double *materialProperties, int nMaterialProperties, int materialNumber)</div></div>
+<div class="ttc" id="aclassMarmotMaterialHypoElastic_html"><div class="ttname"><a href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialHypoElastic.h:31</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md22"></a>
 Registering a material or finite element</h1>
 <p>Materials and finite elements are registered using the MarmotMaterialFactory::registerMaterial and MarmotElementFactory::registerElement interfaces. Both functions take a unique name (a string chosen by the user), a unique integer identifier (chosen by the user), and factory functions. Those Factory functions are used by <a class="el" href="namespaceMarmot.html">Marmot</a> to create specific instances of the material or element, providing a custom element number (<a class="el" href="classMarmotElement.html">MarmotElement</a>) or a material number and a set of material properties (<a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>).</p>
-<p>For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as </p><div class="fragment"><div class="line">template &lt; class T,</div>
+<p>For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as </p><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class </span>T,</div>
 <div class="line">           Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,</div>
-<div class="line">           typename T::SectionType                             sectionType &gt;</div>
-<div class="line">MarmotLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()</div>
+<div class="line">           <span class="keyword">typename</span> T::SectionType                             sectionType &gt;</div>
+<div class="line"><a class="code" href="classMarmotLibrary_1_1MarmotElementFactory.html#ae394656803a0a24bf0d28d30b71e7835">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</a> makeFactoryFunction()</div>
 <div class="line">{</div>
-<div class="line">    return []( int elementID ) -&gt; MarmotElement* { return new T( elementID, integrationType, sectionType ); };</div>
+<div class="line">    <span class="keywordflow">return</span> []( <span class="keywordtype">int</span> elementID ) -&gt; <a class="code" href="classMarmotElement.html">MarmotElement</a>* { <span class="keywordflow">return</span> <span class="keyword">new</span> T( elementID, integrationType, sectionType ); };</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line">MarmotElementFactory:: registerElement( &quot;CPE4&quot;,</div>
-<div class="line">                         MarmotLibrary::ElementCode::CPE4,</div>
+<div class="line">MarmotElementFactory:: registerElement( <span class="stringliteral">&quot;CPE4&quot;</span>,</div>
+<div class="line">                         <a class="code" href="namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03">MarmotLibrary::ElementCode::CPE4</a>,</div>
 <div class="line">                         makeFactoryFunction&lt; DisplacementFiniteElement&lt; 2, 4 &gt;,</div>
 <div class="line">                                              FullIntegration,</div>
 <div class="line">                                              DisplacementFiniteElement&lt; 2, 4 &gt;::PlaneStrain &gt;() );</div>
+<div class="ttc" id="aclassMarmotElement_html"><div class="ttname"><a href="classMarmotElement.html">MarmotElement</a></div><div class="ttdef"><b>Definition:</b> MarmotElement.h:34</div></div>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotElementFactory_html_ae394656803a0a24bf0d28d30b71e7835"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotElementFactory.html#ae394656803a0a24bf0d28d30b71e7835">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</a></div><div class="ttdeci">MarmotElement *(*)(int elementNumber) elementFactoryFunction</div><div class="ttdef"><b>Definition:</b> Marmot.h:277</div></div>
+<div class="ttc" id="anamespaceMarmotLibrary_html_a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03"><div class="ttname"><a href="namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03">MarmotLibrary::CPE4</a></div><div class="ttdeci">@ CPE4</div><div class="ttdef"><b>Definition:</b> Marmot.h:133</div></div>
 </div><!-- fragment --><p> making use of an auxiliary factory function generator.</p>
-<p>Creating the specific instance and computing the kernel is easy as </p><div class="fragment"><div class="line">const auto elementCode = Marmot::getElementCodeFromName( &quot;CPE4&quot; );</div>
+<p>Creating the specific instance and computing the kernel is easy as </p><div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> elementCode = Marmot::getElementCodeFromName( <span class="stringliteral">&quot;CPE4&quot;</span> );</div>
 <div class="line"> </div>
-<div class="line">int elementNumber = 1;</div>
+<div class="line"><span class="keywordtype">int</span> elementNumber = 1;</div>
 <div class="line"> </div>
-<div class="line">// create the instance</div>
-<div class="line">auto theElement = std::unique_ptr&lt;MarmotElement&gt; ( MarmotLibrary::MarmotElementFactory::createElement(elementCode,  elementNumber) );</div>
+<div class="line"><span class="comment">// create the instance</span></div>
+<div class="line"><span class="keyword">auto</span> theElement = std::unique_ptr&lt;MarmotElement&gt; ( <a class="code" href="classMarmotLibrary_1_1MarmotElementFactory.html#a6993afa90390482b599f49103d01766e">MarmotLibrary::MarmotElementFactory::createElement</a>(elementCode,  elementNumber) );</div>
 <div class="line"> </div>
-<div class="line">// assign properties (e.g, thickness)</div>
-<div class="line">theElement-&gt;assignProperty( ElementProperties( propertiesElement, nPropertiesElement ) );</div>
+<div class="line"><span class="comment">// assign properties (e.g, thickness)</span></div>
+<div class="line">theElement-&gt;assignProperty( <a class="code" href="classElementProperties.html">ElementProperties</a>( propertiesElement, nPropertiesElement ) );</div>
 <div class="line"> </div>
-<div class="line">// assign a material section</div>
-<div class="line">// in the present case: a MarmotMaterial setion</div>
-<div class="line">// MarmotElement takes care to create the required instances of MarmotMaterial</div>
-<div class="line">theElement-&gt;assignProperty( MarmotMaterialSection( materialID, propertiesMaterial, nPropertiesMaterial) );</div>
+<div class="line"><span class="comment">// assign a material section</span></div>
+<div class="line"><span class="comment">// in the present case: a MarmotMaterial setion</span></div>
+<div class="line"><span class="comment">// MarmotElement takes care to create the required instances of MarmotMaterial</span></div>
+<div class="line">theElement-&gt;assignProperty( <a class="code" href="classMarmotMaterialSection.html">MarmotMaterialSection</a>( materialID, propertiesMaterial, nPropertiesMaterial) );</div>
 <div class="line"> </div>
-<div class="line">// assign state vars to the element</div>
-<div class="line">// MarmotElement automatically assigns the state vars also to MarmotMaterial instances</div>
+<div class="line"><span class="comment">// assign state vars to the element</span></div>
+<div class="line"><span class="comment">// MarmotElement automatically assigns the state vars also to MarmotMaterial instances</span></div>
 <div class="line">theElement-&gt;assignStateVars(stateVars, nStateVars);</div>
 <div class="line"> </div>
-<div class="line">// initialization</div>
+<div class="line"><span class="comment">// initialization</span></div>
 <div class="line">theElement-&gt;initializeYourself(coordinates);</div>
 <div class="line"> </div>
-<div class="line">// compute the kernel</div>
+<div class="line"><span class="comment">// compute the kernel</span></div>
 <div class="line">theElement-&gt;computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); </div>
+<div class="ttc" id="aclassElementProperties_html"><div class="ttname"><a href="classElementProperties.html">ElementProperties</a></div><div class="ttdef"><b>Definition:</b> MarmotElementProperty.h:48</div></div>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotElementFactory_html_a6993afa90390482b599f49103d01766e"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotElementFactory.html#a6993afa90390482b599f49103d01766e">MarmotLibrary::MarmotElementFactory::createElement</a></div><div class="ttdeci">static MarmotElement * createElement(ElementCode elementCode, int elementNumber)</div></div>
+<div class="ttc" id="aclassMarmotMaterialSection_html"><div class="ttname"><a href="classMarmotMaterialSection.html">MarmotMaterialSection</a></div><div class="ttdef"><b>Definition:</b> MarmotElementProperty.h:34</div></div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
@@ -275,7 +283,7 @@ Registering a material or finite element</h1>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="content.html">Content</a></li>
-    <li class="footer">Generated on Tue Jan 26 2021 18:59:52 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Feb 13 2021 10:07:57 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

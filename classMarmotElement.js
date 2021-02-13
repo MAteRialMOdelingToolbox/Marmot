@@ -29,5 +29,5 @@ var classMarmotElement =
     [ "computeYourself", "classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493", null ],
     [ "computeDistributedLoad", "classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004", null ],
     [ "computeBodyForce", "classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5", null ],
-    [ "getPermanentResultPointer", "classMarmotElement.html#af5726eec4b43a7856091f5a55b171eef", null ]
+    [ "getStateView", "classMarmotElement.html#a678a3f3fadf5a4de7269ada199ab5b2c", null ]
 ];

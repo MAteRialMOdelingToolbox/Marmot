@@ -17,9 +17,9 @@ var dir_6a0efcfc33c579c580af4998f714f1d6 =
     ] ],
     [ "MarmotMaterialRegistrationHelper.h", "MarmotMaterialRegistrationHelper_8h.html", "MarmotMaterialRegistrationHelper_8h" ],
     [ "MarmotUtils.h", "MarmotUtils_8h.html", [
-      [ "PermanentResultLocation", "MarmotUtils_8h.html#structPermanentResultLocation", [
-        [ "resultLocation", "MarmotUtils_8h.html#aaa823740de497b5833b3899f0d647137", null ],
-        [ "resultLength", "MarmotUtils_8h.html#a2d42d3ef4b6fbeb3b06850f53afd0b24", null ]
+      [ "StateView", "MarmotUtils_8h.html#structStateView", [
+        [ "stateLocation", "MarmotUtils_8h.html#a36a36a4b042dd08eae9bbdc1071f4abb", null ],
+        [ "stateSize", "MarmotUtils_8h.html#aba92824616071cea7209bb5181cd55e0", null ]
       ] ]
     ] ]
 ];

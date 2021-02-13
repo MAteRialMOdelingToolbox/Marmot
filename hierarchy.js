@@ -4,6 +4,7 @@ var hierarchy =
     [ "Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit< materialTangentSize, nIntegrationDependentStateVars >", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html", null ],
     [ "Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity< nMatTangentSize >", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", null ],
     [ "ElementProperties", "classElementProperties.html", null ],
+    [ "Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates", null ],
     [ "Marmot::NumericalAlgorithms::HughesWinget", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html", null ],
     [ "Marmot::NumericalAlgorithms::InnerNewtonIterationChecker", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker.html", null ],
     [ "Marmot::NumericalAlgorithms::InnerNewtonIterationCheckerMarkII", "classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html", null ],
@@ -26,6 +27,6 @@ var hierarchy =
     [ "MarmotMaterialSection", "classMarmotMaterialSection.html", null ],
     [ "Marmot::NumericalAlgorithms::PerezFougetSubstepper< nSizeMatTangent >", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html", null ],
     [ "Marmot::NumericalAlgorithms::PerezFougetSubstepperTime< nSizeTangent >", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html", null ],
-    [ "PermanentResultLocation", "MarmotUtils_8h.html#structPermanentResultLocation", null ],
+    [ "StateView", "MarmotUtils_8h.html#structStateView", null ],
     [ "Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager< nYieldSurfaces >", "classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html", null ]
 ];

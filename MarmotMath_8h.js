@@ -1,5 +1,6 @@
 var MarmotMath_8h =
 [
+    [ "isNaN", "MarmotMath_8h.html#ad3a65166e9b849eb54ccef942368b6e6", null ],
     [ "linearInterpolation", "MarmotMath_8h.html#aa14a646adfd201e379c86f6bd85d942a", null ],
     [ "exp", "MarmotMath_8h.html#a20088570076b71e5f4f0bb08fa7ba44d", null ],
     [ "getExponentPowerTen", "MarmotMath_8h.html#ae070a2cdcdf4ae5cb71899ba67edc62e", null ],

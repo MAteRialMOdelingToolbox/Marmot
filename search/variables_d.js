@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['yieldsurfacecombinations_1029',['yieldSurfaceCombinations',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a7b3ee364c216aabb55ddec085b0fb7fd',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]]
+  ['theformulation_1052',['theFormulation',['../classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html#a25ba24e4640afbbb8f0d55c8d06488dd',1,'Marmot::NumericalAlgorithms::HughesWinget']]],
+  ['theta_1053',['theta',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ad4e957d5055cb6e6ea29e371d1bc4d1c',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates']]]
 ];

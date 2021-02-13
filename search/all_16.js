@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['_7emarmotelement_602',['~MarmotElement',['../classMarmotElement.html#ae852bc0749f00720d9d07b6432bc77ab',1,'MarmotElement']]],
-  ['_7emarmotmaterial_603',['~MarmotMaterial',['../classMarmotMaterial.html#a33fd1c89a919e8b0d396eb846614c815',1,'MarmotMaterial']]]
+  ['yieldsurfacecombinationmanager_614',['YieldSurfaceCombinationManager',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; nYieldSurfaces &gt;'],['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a36ab7d695a33acb31494bbb359c271ba',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::YieldSurfaceCombinationManager()']]],
+  ['yieldsurfacecombinationmanager_2eh_615',['YieldSurfaceCombinationManager.h',['../YieldSurfaceCombinationManager_8h.html',1,'']]],
+  ['yieldsurfacecombinations_616',['yieldSurfaceCombinations',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a7b3ee364c216aabb55ddec085b0fb7fd',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]],
+  ['yieldsurfflagarr_617',['YieldSurfFlagArr',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a44699f1f8fa22f1cf9311acb7c7e5250',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]],
+  ['yieldsurfresarr_618',['YieldSurfResArr',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a4c08c14f06a50c1dbf99327644af0e4b',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]]
 ];

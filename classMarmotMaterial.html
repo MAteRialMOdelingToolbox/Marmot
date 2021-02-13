@@ -223,10 +223,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a16e96c33fdc77ddd5aa98ffbbca1577d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9644446a593632d0da2462bdeb43e25c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9644446a593632d0da2462bdeb43e25c">assignStateVars</a> (double *<a class="el" href="classMarmotMaterial.html#a3153122a8c7819cc306d6d35378cf414">stateVars</a>, int <a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a>)</td></tr>
 <tr class="separator:a9644446a593632d0da2462bdeb43e25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7b0c82b9f164e72603f457ebfe37b37"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structPermanentResultLocation">PermanentResultLocation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#ad7b0c82b9f164e72603f457ebfe37b37">getPermanentResultPointer</a> (const std::string &amp;resultName)=0</td></tr>
-<tr class="separator:ad7b0c82b9f164e72603f457ebfe37b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51c0d19bcb6c80656cabaf81c1cff262"><td class="memItemLeft" align="right" valign="top">const double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a51c0d19bcb6c80656cabaf81c1cff262">getAssignedStateVars</a> ()</td></tr>
-<tr class="separator:a51c0d19bcb6c80656cabaf81c1cff262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc7dfa70f71415b2c9b562a9fafe64d1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#acc7dfa70f71415b2c9b562a9fafe64d1">getStateView</a> (const std::string &amp;stateName)=0</td></tr>
+<tr class="separator:acc7dfa70f71415b2c9b562a9fafe64d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6cfeb1fbd2990b1c38433bdb12b762"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a3a6cfeb1fbd2990b1c38433bdb12b762">getAssignedStateVars</a> ()</td></tr>
+<tr class="separator:a3a6cfeb1fbd2990b1c38433bdb12b762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e855ed98253c5f426735bc251771dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#ac2e855ed98253c5f426735bc251771dd">getNumberOfAssignedStateVars</a> ()</td></tr>
 <tr class="separator:ac2e855ed98253c5f426735bc251771dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -370,8 +370,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad7b0c82b9f164e72603f457ebfe37b37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7b0c82b9f164e72603f457ebfe37b37">&#9670;&nbsp;</a></span>getPermanentResultPointer()</h2>
+<a id="acc7dfa70f71415b2c9b562a9fafe64d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc7dfa70f71415b2c9b562a9fafe64d1">&#9670;&nbsp;</a></span>getStateView()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,10 +380,10 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="MarmotUtils_8h.html#structPermanentResultLocation">PermanentResultLocation</a> MarmotMaterial::getPermanentResultPointer </td>
+          <td class="memname">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a> MarmotMaterial::getStateView </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>resultName</em></td><td>)</td>
+          <td class="paramname"><em>stateName</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -394,18 +394,18 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#af24351f6f9eb65f7e081ec1ac81be8ee">Marmot::Materials::LinearElastic</a>.</p>
+<p>Implemented in <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#aa9e54614a9d9d56c3bcd0b8e76bcc9fc">Marmot::Materials::LinearElastic</a>.</p>
 
 </div>
 </div>
-<a id="a51c0d19bcb6c80656cabaf81c1cff262"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51c0d19bcb6c80656cabaf81c1cff262">&#9670;&nbsp;</a></span>getAssignedStateVars()</h2>
+<a id="a3a6cfeb1fbd2990b1c38433bdb12b762"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a6cfeb1fbd2990b1c38433bdb12b762">&#9670;&nbsp;</a></span>getAssignedStateVars()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const double* MarmotMaterial::getAssignedStateVars </td>
+          <td class="memname">double* MarmotMaterial::getAssignedStateVars </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -544,7 +544,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></li>
-    <li class="footer">Generated on Tue Jan 26 2021 18:59:52 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Feb 13 2021 10:07:57 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

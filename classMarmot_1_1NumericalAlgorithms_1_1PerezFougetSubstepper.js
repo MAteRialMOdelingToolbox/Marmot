@@ -1,24 +1,16 @@
 var classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper =
 [
     [ "TangentSizedMatrix", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a", null ],
-    [ "TangentSizedMatrix", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a", null ],
     [ "MatrixStateStrain", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44", null ],
     [ "TangentSizedMatrix", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a", null ],
     [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a7c6b5868526644f901d726266ff009cc", null ],
     [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a1efc6ebb4b030b6f8d53050590f4fd76", null ],
-    [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a1efc6ebb4b030b6f8d53050590f4fd76", null ],
     [ "isFinished", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab79e7997a4c056372aa793abe3edb331", null ],
     [ "getNextSubstep", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab9e4415b529945859a03232c6675e56a", null ],
     [ "decreaseSubstepSize", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a675949cac7e8de8b343000c7c4b91ef8", null ],
-    [ "extendConsistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a45844ff44ef2c84bd5bd2f87bae6b8d8", null ],
-    [ "extendConsistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#aee7b9919219a8ed5677efd85be1daa36", null ],
-    [ "consistentStiffness", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a17135fceb4273dc853477269e69c7cec", null ],
-    [ "isFinished", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a4cba185352e9312a12a53b9468ae4d91", null ],
-    [ "getNextSubstep", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a5e7732ab00c07a65c3e283b156e2a538", null ],
-    [ "decreaseSubstepSize", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abd4ac1b1512db9667e15a190e7e2047e", null ],
     [ "finishElasticSubstep", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a27d20da83471ab632ed120d0b05253cc", null ],
     [ "finishSubstep", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a46be9234ccca03554a2ed06ee13c84e6", null ],
-    [ "consistentStiffness", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#aaebc5a982bb9825d3488ae3f3789fa18", null ],
+    [ "consistentStiffness", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a17135fceb4273dc853477269e69c7cec", null ],
     [ "isFinished", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a4cba185352e9312a12a53b9468ae4d91", null ],
     [ "getNextSubstep", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a5e7732ab00c07a65c3e283b156e2a538", null ],
     [ "decreaseSubstepSize", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abd4ac1b1512db9667e15a190e7e2047e", null ],
@@ -34,9 +26,8 @@ var classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper =
     [ "currentSubstepSize", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a12d313ee1b5010d70770ae7526e3f155", null ],
     [ "passedSubsteps", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a2dfbac2e6378980dbe2f9f23adc680f4", null ],
     [ "Cel", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a3a478439f8ee26ef699077239f6f544f", null ],
-    [ "elasticTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab681a501b7a852cc9fbd864bf2424cee", null ],
-    [ "consistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab24aa3c3d0470c7851f721c8fb646a89", null ],
     [ "I76", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a774e7268d9ced3aa61f246d10e727c1e", null ],
     [ "I77", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a096fce47b630dec49c4fa386242303cc", null ],
-    [ "consistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a993666eaf7fb10e8baee6e21e060feac", null ]
+    [ "consistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a993666eaf7fb10e8baee6e21e060feac", null ],
+    [ "consistentTangent", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab24aa3c3d0470c7851f721c8fb646a89", null ]
 ];

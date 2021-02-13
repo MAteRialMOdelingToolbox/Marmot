@@ -205,12 +205,10 @@ $(document).ready(function(){initNavTree('classMarmot_1_1NumericalAlgorithms_1_1
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="PerezFougetSubstepper_8h_source.html">PerezFougetSubstepper.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="PerezFougetSubstepperExplicitMarkII_8h_source.html">PerezFougetSubstepperExplicitMarkII.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a07cb6783734291b38b62c49bfd7a5e6a"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a></td></tr>
-<tr class="separator:a07cb6783734291b38b62c49bfd7a5e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07cb6783734291b38b62c49bfd7a5e6a"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a></td></tr>
 <tr class="separator:a07cb6783734291b38b62c49bfd7a5e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abce7ed899992c189a9a233ad0eef0e44"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nSizeMatTangent, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44">MatrixStateStrain</a></td></tr>
@@ -228,26 +226,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab9e4415b529945859a03232c6675e56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a675949cac7e8de8b343000c7c4b91ef8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a675949cac7e8de8b343000c7c4b91ef8">decreaseSubstepSize</a> ()</td></tr>
 <tr class="separator:a675949cac7e8de8b343000c7c4b91ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45844ff44ef2c84bd5bd2f87bae6b8d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a45844ff44ef2c84bd5bd2f87bae6b8d8">extendConsistentTangent</a> ()</td></tr>
-<tr class="separator:a45844ff44ef2c84bd5bd2f87bae6b8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee7b9919219a8ed5677efd85be1daa36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#aee7b9919219a8ed5677efd85be1daa36">extendConsistentTangent</a> (const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> &amp;Tangent)</td></tr>
-<tr class="separator:aee7b9919219a8ed5677efd85be1daa36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17135fceb4273dc853477269e69c7cec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a17135fceb4273dc853477269e69c7cec">consistentStiffness</a> ()</td></tr>
-<tr class="separator:a17135fceb4273dc853477269e69c7cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1efc6ebb4b030b6f8d53050590f4fd76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a1efc6ebb4b030b6f8d53050590f4fd76">PerezFougetSubstepper</a> (double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a6a77df643fc3d9b6fa89aed8d134ef95">initialStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#adf08d8d200ad249f7adc96a458eef2b3">minimumStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab6e8fa58fef203d923abe32c30745359">scaleUpFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a92d0782a57869d64f02f63584c6f6d3f">scaleDownFactor</a>, int <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a31aa1abea64f53637d58b3541fc04692">nPassesToIncrease</a>, const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a3a478439f8ee26ef699077239f6f544f">Cel</a>)</td></tr>
-<tr class="separator:a1efc6ebb4b030b6f8d53050590f4fd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cba185352e9312a12a53b9468ae4d91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a4cba185352e9312a12a53b9468ae4d91">isFinished</a> ()</td></tr>
-<tr class="separator:a4cba185352e9312a12a53b9468ae4d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e7732ab00c07a65c3e283b156e2a538"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a5e7732ab00c07a65c3e283b156e2a538">getNextSubstep</a> ()</td></tr>
-<tr class="separator:a5e7732ab00c07a65c3e283b156e2a538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd4ac1b1512db9667e15a190e7e2047e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abd4ac1b1512db9667e15a190e7e2047e">decreaseSubstepSize</a> ()</td></tr>
-<tr class="separator:abd4ac1b1512db9667e15a190e7e2047e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27d20da83471ab632ed120d0b05253cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a27d20da83471ab632ed120d0b05253cc">finishElasticSubstep</a> ()</td></tr>
 <tr class="separator:a27d20da83471ab632ed120d0b05253cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46be9234ccca03554a2ed06ee13c84e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a46be9234ccca03554a2ed06ee13c84e6">finishSubstep</a> (const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> &amp;dXdY, const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> &amp;dYdXOld)</td></tr>
 <tr class="separator:a46be9234ccca03554a2ed06ee13c84e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaebc5a982bb9825d3488ae3f3789fa18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#aaebc5a982bb9825d3488ae3f3789fa18">consistentStiffness</a> ()</td></tr>
-<tr class="separator:aaebc5a982bb9825d3488ae3f3789fa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17135fceb4273dc853477269e69c7cec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a17135fceb4273dc853477269e69c7cec">consistentStiffness</a> ()</td></tr>
+<tr class="separator:a17135fceb4273dc853477269e69c7cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1efc6ebb4b030b6f8d53050590f4fd76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a1efc6ebb4b030b6f8d53050590f4fd76">PerezFougetSubstepper</a> (double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a6a77df643fc3d9b6fa89aed8d134ef95">initialStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#adf08d8d200ad249f7adc96a458eef2b3">minimumStepSize</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab6e8fa58fef203d923abe32c30745359">scaleUpFactor</a>, double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a92d0782a57869d64f02f63584c6f6d3f">scaleDownFactor</a>, int <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a31aa1abea64f53637d58b3541fc04692">nPassesToIncrease</a>, const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a3a478439f8ee26ef699077239f6f544f">Cel</a>)</td></tr>
 <tr class="separator:a1efc6ebb4b030b6f8d53050590f4fd76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cba185352e9312a12a53b9468ae4d91"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a4cba185352e9312a12a53b9468ae4d91">isFinished</a> ()</td></tr>
@@ -283,36 +267,18 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a2dfbac2e6378980dbe2f9f23adc680f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a478439f8ee26ef699077239f6f544f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a3a478439f8ee26ef699077239f6f544f">Cel</a></td></tr>
 <tr class="separator:a3a478439f8ee26ef699077239f6f544f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab681a501b7a852cc9fbd864bf2424cee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab681a501b7a852cc9fbd864bf2424cee">elasticTangent</a></td></tr>
-<tr class="separator:ab681a501b7a852cc9fbd864bf2424cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab24aa3c3d0470c7851f721c8fb646a89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab24aa3c3d0470c7851f721c8fb646a89">consistentTangent</a></td></tr>
-<tr class="separator:ab24aa3c3d0470c7851f721c8fb646a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a774e7268d9ced3aa61f246d10e727c1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a774e7268d9ced3aa61f246d10e727c1e">I76</a></td></tr>
 <tr class="separator:a774e7268d9ced3aa61f246d10e727c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a096fce47b630dec49c4fa386242303cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a096fce47b630dec49c4fa386242303cc">I77</a></td></tr>
 <tr class="separator:a096fce47b630dec49c4fa386242303cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a993666eaf7fb10e8baee6e21e060feac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44">MatrixStateStrain</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a993666eaf7fb10e8baee6e21e060feac">consistentTangent</a></td></tr>
 <tr class="separator:a993666eaf7fb10e8baee6e21e060feac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab24aa3c3d0470c7851f721c8fb646a89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#ab24aa3c3d0470c7851f721c8fb646a89">consistentTangent</a></td></tr>
+<tr class="separator:ab24aa3c3d0470c7851f721c8fb646a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a07cb6783734291b38b62c49bfd7a5e6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cb6783734291b38b62c49bfd7a5e6a">&#9670;&nbsp;</a></span>TangentSizedMatrix <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt; <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a07cb6783734291b38b62c49bfd7a5e6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cb6783734291b38b62c49bfd7a5e6a">&#9670;&nbsp;</a></span>TangentSizedMatrix <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a07cb6783734291b38b62c49bfd7a5e6a">&#9670;&nbsp;</a></span>TangentSizedMatrix <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,7 +310,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 </div>
 <a id="a07cb6783734291b38b62c49bfd7a5e6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cb6783734291b38b62c49bfd7a5e6a">&#9670;&nbsp;</a></span>TangentSizedMatrix <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a07cb6783734291b38b62c49bfd7a5e6a">&#9670;&nbsp;</a></span>TangentSizedMatrix <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -361,7 +327,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7c6b5868526644f901d726266ff009cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c6b5868526644f901d726266ff009cc">&#9670;&nbsp;</a></span>PerezFougetSubstepper() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c6b5868526644f901d726266ff009cc">&#9670;&nbsp;</a></span>PerezFougetSubstepper() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -415,61 +381,7 @@ template&lt;int n&gt; </div>
 </div>
 </div>
 <a id="a1efc6ebb4b030b6f8d53050590f4fd76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1efc6ebb4b030b6f8d53050590f4fd76">&#9670;&nbsp;</a></span>PerezFougetSubstepper() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::<a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">PerezFougetSubstepper</a> </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>initialStepSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>minimumStepSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>scaleUpFactor</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>scaleDownFactor</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nPassesToIncrease</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td>
-          <td class="paramname"><em>Cel</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1efc6ebb4b030b6f8d53050590f4fd76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1efc6ebb4b030b6f8d53050590f4fd76">&#9670;&nbsp;</a></span>PerezFougetSubstepper() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1efc6ebb4b030b6f8d53050590f4fd76">&#9670;&nbsp;</a></span>PerezFougetSubstepper() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -524,7 +436,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab79e7997a4c056372aa793abe3edb331"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab79e7997a4c056372aa793abe3edb331">&#9670;&nbsp;</a></span>isFinished() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab79e7997a4c056372aa793abe3edb331">&#9670;&nbsp;</a></span>isFinished() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +452,7 @@ template&lt;int n&gt; </div>
 </div>
 </div>
 <a id="ab9e4415b529945859a03232c6675e56a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9e4415b529945859a03232c6675e56a">&#9670;&nbsp;</a></span>getNextSubstep() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9e4415b529945859a03232c6675e56a">&#9670;&nbsp;</a></span>getNextSubstep() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -556,7 +468,7 @@ template&lt;int n&gt; </div>
 </div>
 </div>
 <a id="a675949cac7e8de8b343000c7c4b91ef8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a675949cac7e8de8b343000c7c4b91ef8">&#9670;&nbsp;</a></span>decreaseSubstepSize() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a675949cac7e8de8b343000c7c4b91ef8">&#9670;&nbsp;</a></span>decreaseSubstepSize() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -565,115 +477,6 @@ template&lt;int n&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; n &gt;::decreaseSubstepSize</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a45844ff44ef2c84bd5bd2f87bae6b8d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45844ff44ef2c84bd5bd2f87bae6b8d8">&#9670;&nbsp;</a></span>extendConsistentTangent() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int n&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; n &gt;::extendConsistentTangent</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aee7b9919219a8ed5677efd85be1daa36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee7b9919219a8ed5677efd85be1daa36">&#9670;&nbsp;</a></span>extendConsistentTangent() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int n&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; n &gt;::extendConsistentTangent </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> &amp;&#160;</td>
-          <td class="paramname"><em>Tangent</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a17135fceb4273dc853477269e69c7cec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17135fceb4273dc853477269e69c7cec">&#9670;&nbsp;</a></span>consistentStiffness() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int n&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; n &gt;::consistentStiffness</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4cba185352e9312a12a53b9468ae4d91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cba185352e9312a12a53b9468ae4d91">&#9670;&nbsp;</a></span>isFinished() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::isFinished </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5e7732ab00c07a65c3e283b156e2a538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e7732ab00c07a65c3e283b156e2a538">&#9670;&nbsp;</a></span>getNextSubstep() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::getNextSubstep </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="abd4ac1b1512db9667e15a190e7e2047e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd4ac1b1512db9667e15a190e7e2047e">&#9670;&nbsp;</a></span>decreaseSubstepSize() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::decreaseSubstepSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -726,19 +529,16 @@ template&lt;int n&gt; </div>
 
 </div>
 </div>
-<a id="aaebc5a982bb9825d3488ae3f3789fa18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebc5a982bb9825d3488ae3f3789fa18">&#9670;&nbsp;</a></span>consistentStiffness() <span class="overload">[2/3]</span></h2>
+<a id="a17135fceb4273dc853477269e69c7cec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17135fceb4273dc853477269e69c7cec">&#9670;&nbsp;</a></span>consistentStiffness() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
+template&lt;int n&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::consistentStiffness </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; n &gt;::consistentStiffness</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -746,7 +546,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 </div>
 <a id="a4cba185352e9312a12a53b9468ae4d91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cba185352e9312a12a53b9468ae4d91">&#9670;&nbsp;</a></span>isFinished() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cba185352e9312a12a53b9468ae4d91">&#9670;&nbsp;</a></span>isFinished() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -765,7 +565,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 </div>
 <a id="a5e7732ab00c07a65c3e283b156e2a538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e7732ab00c07a65c3e283b156e2a538">&#9670;&nbsp;</a></span>getNextSubstep() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e7732ab00c07a65c3e283b156e2a538">&#9670;&nbsp;</a></span>getNextSubstep() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -784,7 +584,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 </div>
 <a id="abd4ac1b1512db9667e15a190e7e2047e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd4ac1b1512db9667e15a190e7e2047e">&#9670;&nbsp;</a></span>decreaseSubstepSize() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abd4ac1b1512db9667e15a190e7e2047e">&#9670;&nbsp;</a></span>decreaseSubstepSize() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -842,7 +642,7 @@ template&lt;int n&gt; </div>
 </div>
 </div>
 <a id="aaebc5a982bb9825d3488ae3f3789fa18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaebc5a982bb9825d3488ae3f3789fa18">&#9670;&nbsp;</a></span>consistentStiffness() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaebc5a982bb9825d3488ae3f3789fa18">&#9670;&nbsp;</a></span>consistentStiffness() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1077,54 +877,6 @@ template&lt;int nSizeMatTangent&gt; </div>
 
 </div>
 </div>
-<a id="ab681a501b7a852cc9fbd864bf2424cee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab681a501b7a852cc9fbd864bf2424cee">&#9670;&nbsp;</a></span>elasticTangent</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::elasticTangent</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab24aa3c3d0470c7851f721c8fb646a89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab24aa3c3d0470c7851f721c8fb646a89">&#9670;&nbsp;</a></span>consistentTangent <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nSizeMatTangent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::consistentTangent</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a774e7268d9ced3aa61f246d10e727c1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a774e7268d9ced3aa61f246d10e727c1e">&#9670;&nbsp;</a></span>I76</h2>
 
@@ -1174,7 +926,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 </div>
 </div>
 <a id="a993666eaf7fb10e8baee6e21e060feac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a993666eaf7fb10e8baee6e21e060feac">&#9670;&nbsp;</a></span>consistentTangent <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a993666eaf7fb10e8baee6e21e060feac">&#9670;&nbsp;</a></span>consistentTangent <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1197,8 +949,31 @@ template&lt;int nSizeMatTangent&gt; </div>
 
 </div>
 </div>
+<a id="ab24aa3c3d0470c7851f721c8fb646a89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab24aa3c3d0470c7851f721c8fb646a89">&#9670;&nbsp;</a></span>consistentTangent <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int nSizeMatTangent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a">TangentSizedMatrix</a> <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">Marmot::NumericalAlgorithms::PerezFougetSubstepper</a>&lt; nSizeMatTangent &gt;::consistentTangent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>modules/core/MarmotMechanicsCore/include/Marmot/<a class="el" href="PerezFougetSubstepper_8h_source.html">PerezFougetSubstepper.h</a></li>
 <li>modules/core/MarmotMechanicsCore/include/Marmot/<a class="el" href="PerezFougetSubstepperExplicitMarkII_8h_source.html">PerezFougetSubstepperExplicitMarkII.h</a></li>
 <li>modules/core/MarmotMechanicsCore/include/Marmot/<a class="el" href="PerezFougetSubstepperMarkII_8h_source.html">PerezFougetSubstepperMarkII.h</a></li>
 </ul>
@@ -1208,7 +983,7 @@ template&lt;int nSizeMatTangent&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1NumericalAlgorithms.html">NumericalAlgorithms</a></li><li class="navelem"><a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html">PerezFougetSubstepper</a></li>
-    <li class="footer">Generated on Tue Jan 26 2021 18:59:52 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Feb 13 2021 10:07:58 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

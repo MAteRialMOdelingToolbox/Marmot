@@ -4,7 +4,6 @@ var dir_44fa5c34dc4af4cf8679eba293af8a34 =
     [ "HughesWinget.cpp", "HughesWinget_8cpp.html", null ],
     [ "InnerNewtonIterationChecker.cpp", "InnerNewtonIterationChecker_8cpp.html", null ],
     [ "InnerNewtonIterationCheckerMarkII.cpp", "InnerNewtonIterationCheckerMarkII_8cpp.html", null ],
-    [ "MarmotConstants.cpp", "MarmotConstants_8cpp.html", "MarmotConstants_8cpp" ],
     [ "MarmotElasticity.cpp", "MarmotElasticity_8cpp.html", "MarmotElasticity_8cpp" ],
     [ "MarmotKinematics.cpp", "MarmotKinematics_8cpp.html", "MarmotKinematics_8cpp" ],
     [ "MarmotLowerDimensionalStress.cpp", "MarmotLowerDimensionalStress_8cpp.html", "MarmotLowerDimensionalStress_8cpp" ],

@@ -44,9 +44,6 @@ var dir_d0d496183679f761e8bac416323bbe4d =
     [ "MarmotUtility.h", "MarmotUtility_8h.html", "MarmotUtility_8h" ],
     [ "MarmotVoigt.h", "MarmotVoigt_8h.html", "MarmotVoigt_8h" ],
     [ "MenetreyWillam.h", "MenetreyWillam_8h.html", "MenetreyWillam_8h" ],
-    [ "PerezFougetSubstepper.h", "PerezFougetSubstepper_8h.html", [
-      [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper" ]
-    ] ],
     [ "PerezFougetSubstepperExplicitMarkII.h", "PerezFougetSubstepperExplicitMarkII_8h.html", [
       [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper" ]
     ] ],

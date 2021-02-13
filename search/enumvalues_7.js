@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['jointedhoekbrown_1167',['JointedHoekBrown',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ae1572f530ed149cc2a4098bdd7392ed7',1,'MarmotLibrary']]],
-  ['jointedrock_1168',['JointedRock',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ac70f53bd92a8793c514fa0ca7fd09503',1,'MarmotLibrary']]]
+  ['isotropic_1196',['Isotropic',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5a14b5edf8fb82e568afeb4413c67fa479',1,'Marmot::Materials::LinearElastic']]]
 ];

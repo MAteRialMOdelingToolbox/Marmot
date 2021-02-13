@@ -4,6 +4,9 @@ var annotated_dup =
       [ "ContinuumMechanics", "namespaceMarmot_1_1ContinuumMechanics.html", [
         [ "CommonConstitutiveModels", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels.html", [
           [ "DuvautLionsViscosity", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity" ]
+        ] ],
+        [ "HaighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html", [
+          [ "HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_dup" ]
         ] ]
       ] ],
       [ "Materials", "namespaceMarmot_1_1Materials.html", [
@@ -35,5 +38,5 @@ var annotated_dup =
     [ "MarmotMaterialHypoElastic", "classMarmotMaterialHypoElastic.html", "classMarmotMaterialHypoElastic" ],
     [ "MarmotMaterialMechanical", "classMarmotMaterialMechanical.html", "classMarmotMaterialMechanical" ],
     [ "MarmotMaterialSection", "classMarmotMaterialSection.html", "classMarmotMaterialSection" ],
-    [ "PermanentResultLocation", "MarmotUtils_8h.html#structPermanentResultLocation", "MarmotUtils_8h_structPermanentResultLocation" ]
+    [ "StateView", "MarmotUtils_8h.html#structStateView", "MarmotUtils_8h_structStateView" ]
 ];
