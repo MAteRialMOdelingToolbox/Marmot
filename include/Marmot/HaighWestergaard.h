@@ -31,14 +31,13 @@
 #include "Marmot/MarmotTypedefs.h"
 
 namespace Marmot {
-    namespace ContinuumMechanics::HaighWestergaard {
-      struct HaighWestergaardCoordinates
-      {
-        double xi, rho, theta;
-      };
+  namespace ContinuumMechanics::HaighWestergaard {
+    struct HaighWestergaardCoordinates {
+      double xi, rho, theta;
+    };
 
-      HaighWestergaardCoordinates haighWestergaard( const Marmot::Vector6d& stress );
-      HaighWestergaardCoordinates haighWestergaardFromStrain( const Marmot::Vector6d& strain );
+    HaighWestergaardCoordinates haighWestergaard( const Marmot::Vector6d& stress );
+    HaighWestergaardCoordinates haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 
-    } // namespace ContinuumMechanics::HaighWestergaard
+  } // namespace ContinuumMechanics::HaighWestergaard
 } // namespace Marmot

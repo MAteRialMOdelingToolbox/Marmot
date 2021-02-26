@@ -3,106 +3,135 @@
 using namespace Marmot::ContinuumMechanics::TensorUtility;
 
 namespace Marmot {
-    namespace ContinuumMechanics::CommonTensors {
-        auto Initialize_I2xI2()
-        {
-            EigenTensors::Tensor3333d I2xI2;
+  namespace ContinuumMechanics::CommonTensors {
 
-            for ( int i = 0; i < 3; i++ )
-                for ( int j = 0; j < 3; j++ )
-                    for ( int k = 0; k < 3; k++ )
-                        for ( int l = 0; l < 3; l++ ) {
-                            I2xI2( i, j, k, l ) = d( i, j ) * d( k, l );
-                        }
-            return I2xI2;
-        }
-        const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
+    auto Initialize_IFourthOrder()
+    {
+      EigenTensors::Tensor3333d I;
 
-        auto Initialize_Isym()
-        {
-            EigenTensors::Tensor3333d Isym;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              I( i, j, k, l ) = d( i, k ) * d( j, l );
+            }
+      return I;
+    }
+    const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
-            for ( int i = 0; i < 3; i++ )
-                for ( int j = 0; j < 3; j++ )
-                    for ( int k = 0; k < 3; k++ )
-                        for ( int l = 0; l < 3; l++ ) {
-                            Isym( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) + d( i, l ) * d( j, k ) );
-                        }
-            return Isym;
-        }
-        const EigenTensors::Tensor3333d Isym = Initialize_Isym();
+    auto Initialize_IFourthOrderTranspose()
+    {
+      EigenTensors::Tensor3333d IT;
 
-        auto Initialize_Iskew()
-        {
-            EigenTensors::Tensor3333d Iskew;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              IT( i, j, k, l ) = d( i, l ) * d( j, k );
+            }
+      return IT;
+    }
+    const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
-            for ( int i = 0; i < 3; i++ )
-                for ( int j = 0; j < 3; j++ )
-                    for ( int k = 0; k < 3; k++ )
-                        for ( int l = 0; l < 3; l++ ) {
-                            Iskew( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) - d( i, l ) * d( j, k ) );
-                        }
-            return Iskew;
-        }
-        const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
+    auto Initialize_I2xI2()
+    {
+      EigenTensors::Tensor3333d I2xI2;
 
-        auto Initialize_dDeviatoricStress_dStress()
-        {
-            EigenTensors::Tensor3333d dsdsigma;
-            dsdsigma.setZero();
-            for ( int i = 0; i < 3; i++ )
-                for ( int j = 0; j < 3; j++ )
-                    for ( int k = 0; k < 3; k++ )
-                        for ( int l = 0; l < 3; l++ ) {
-                            dsdsigma( i, j, k, l ) = d( i, k ) * d( j, l ) - 1. / 3 * d( i, j ) * d( k, l );
-                        }
-            return dsdsigma;
-        }
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              I2xI2( i, j, k, l ) = d( i, j ) * d( k, l );
+            }
+      return I2xI2;
+    }
+    const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
-        const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
+    auto Initialize_Isym()
+    {
+      EigenTensors::Tensor3333d Isym;
 
-        EigenTensors::Tensor333d Initialize_LeviCivita3D()
-        {
-            EigenTensors::Tensor333d e;
-            e.setConstant( 0.0 );
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              Isym( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) + d( i, l ) * d( j, k ) );
+            }
+      return Isym;
+    }
+    const EigenTensors::Tensor3333d Isym = Initialize_Isym();
 
-            e( 0, 1, 2 ) = 1.0;
-            e( 1, 2, 0 ) = 1.0;
-            e( 2, 0, 1 ) = 1.0;
+    auto Initialize_Iskew()
+    {
+      EigenTensors::Tensor3333d Iskew;
 
-            e( 2, 1, 0 ) = -1.0;
-            e( 0, 2, 1 ) = -1.0;
-            e( 1, 0, 2 ) = -1.0;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              Iskew( i, j, k, l ) = 0.5 * ( d( i, k ) * d( j, l ) - d( i, l ) * d( j, k ) );
+            }
+      return Iskew;
+    }
+    const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
 
-            return e;
-        }
+    auto Initialize_dDeviatoricStress_dStress()
+    {
+      EigenTensors::Tensor3333d dsdsigma;
+      dsdsigma.setZero();
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              dsdsigma( i, j, k, l ) = d( i, k ) * d( j, l ) - 1. / 3 * d( i, j ) * d( k, l );
+            }
+      return dsdsigma;
+    }
 
-        EigenTensors::Tensor122d Initialize_LeviCivita2D()
-        {
-            EigenTensors::Tensor122d e;
-            e.setConstant( 0.0 );
+    const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
 
-            e( 0, 0, 1 ) = 1.0;
-            e( 0, 1, 0 ) = -1.0;
+    EigenTensors::Tensor333d Initialize_LeviCivita3D()
+    {
+      EigenTensors::Tensor333d e;
+      e.setConstant( 0.0 );
 
-            return e;
-        }
+      e( 0, 1, 2 ) = 1.0;
+      e( 1, 2, 0 ) = 1.0;
+      e( 2, 0, 1 ) = 1.0;
 
-        const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
-        const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
+      e( 2, 1, 0 ) = -1.0;
+      e( 0, 2, 1 ) = -1.0;
+      e( 1, 0, 2 ) = -1.0;
 
-    } // namespace ContinuumMechanics::CommonTensors
+      return e;
+    }
 
-    namespace ContinuumMechanics::TensorUtility {
-        Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 )
-        {
-            Eigen::Matrix3d dyade;
+    EigenTensors::Tensor122d Initialize_LeviCivita2D()
+    {
+      EigenTensors::Tensor122d e;
+      e.setConstant( 0.0 );
 
-            for ( int i = 0; i < vector1.rows(); i++ )
-                for ( int j = 0; j < vector1.rows(); j++ )
-                    dyade( i, j ) = vector1( i ) * vector2( j );
+      e( 0, 0, 1 ) = 1.0;
+      e( 0, 1, 0 ) = -1.0;
 
-            return dyade;
-        }
-    } // namespace ContinuumMechanics::TensorUtility
+      return e;
+    }
+
+    const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
+    const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
+
+  } // namespace ContinuumMechanics::CommonTensors
+
+  namespace ContinuumMechanics::TensorUtility {
+    Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 )
+    {
+      Eigen::Matrix3d dyade;
+
+      for ( int i = 0; i < vector1.rows(); i++ )
+        for ( int j = 0; j < vector1.rows(); j++ )
+          dyade( i, j ) = vector1( i ) * vector2( j );
+
+      return dyade;
+    }
+  } // namespace ContinuumMechanics::TensorUtility
 } // namespace Marmot
