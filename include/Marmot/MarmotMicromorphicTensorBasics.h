@@ -22,19 +22,39 @@ namespace Marmot {
             inline const Tensor33d
                 I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                Fastor::ColumnMajor );
+
             inline const Tensor333d  LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D
                                                                  .data(),
                                                              Fastor::ColumnMajor );
+
             inline const Tensor3333d IHyd       = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::I2xI2.data(),
                                                          Fastor::ColumnMajor );
+
             inline const Tensor3333d ISymm      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Isym.data(),
                                                           Fastor::ColumnMajor );
+
             inline const Tensor3333d ISkew      = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Iskew.data(),
                                                           Fastor::ColumnMajor );
+
+            inline const Tensor3333d I4         = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::IFourthOrder.data(),
+                                                          Fastor::ColumnMajor );
+
+            inline const Tensor3333d ITranspose = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose.data(),
+                                                          Fastor::ColumnMajor );
+
+            inline const Tensor3333d Deviatoric =  I4 - 1./3 * IHyd;
+
+            inline const Tensor3333d DeviatoricTranspose = Fastor::transpose( DeviatoricTranspose );
 
         } // namespace Spatial3D
 
     } // namespace FastorStandardTensors
+
+    namespace ContinuumMechanics::Micropolar::GeneralizedInvariants{
+    
+        FastorStandardTensors::Tensor3333d d2J2_dStress_dStress(double a1, double a2);
+
+    }
 
     namespace FastorIndices {
         enum { i_, j_, k_, l_, m_, n_, A_, B_, I_, J_, K_, L_, M_, N_, P_ };
@@ -55,6 +75,7 @@ namespace Marmot {
         using iAkB = Fastor::Index< i_, A_, k_, B_ >;
         using iB   = Fastor::Index< i_, B_ >;
         using ji   = Fastor::Index< j_, i_ >;
+        using jl   = Fastor::Index< j_, l_ >;
         using jin  = Fastor::Index< j_, i_, n_ >;
         using jkl  = Fastor::Index< j_, k_, l_ >;
         using jA   = Fastor::Index< j_, A_ >;
