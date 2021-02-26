@@ -1,28 +1,27 @@
 #include "Marmot/MarmotMaterial.h"
 
-MarmotMaterial::MarmotMaterial( const double*materialProperties_, int nMaterialProperties_, int materialNumber_ )
-    : 
-      materialProperties( materialProperties_ ),
-      nMaterialProperties ( nMaterialProperties_ ),
-      stateVars( nullptr ),
-      nStateVars( 0 ),
-      materialNumber ( materialNumber_ )
-{}
-
+MarmotMaterial::MarmotMaterial( const double* materialProperties_, int nMaterialProperties_, int materialNumber_ )
+  : materialProperties( materialProperties_ ),
+    nMaterialProperties( nMaterialProperties_ ),
+    stateVars( nullptr ),
+    nStateVars( 0 ),
+    materialNumber( materialNumber_ )
+{
+}
 
 void MarmotMaterial::assignStateVars( double* stateVars, int nStateVars )
 {
-    this->stateVars = stateVars;
-    this->nStateVars = nStateVars;
+  this->stateVars  = stateVars;
+  this->nStateVars = nStateVars;
 }
 
 double* MarmotMaterial::getAssignedStateVars()
 {
-    return stateVars;
+  return stateVars;
 }
 int MarmotMaterial::getNumberOfAssignedStateVars()
 {
-    return nStateVars;
+  return nStateVars;
 }
 
-MarmotMaterial::~MarmotMaterial(){}
+MarmotMaterial::~MarmotMaterial() {}
