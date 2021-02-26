@@ -232,10 +232,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae852bc0749f00720d9d07b6432bc77ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7009a873b60e587bcad34151f92f7f4d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a7009a873b60e587bcad34151f92f7f4d">getNumberOfRequiredStateVars</a> ()=0</td></tr>
 <tr class="separator:a7009a873b60e587bcad34151f92f7f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86873cbb2da2cad785bccbead0287d58"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a86873cbb2da2cad785bccbead0287d58">getNodeFields</a> ()=0</td></tr>
-<tr class="separator:a86873cbb2da2cad785bccbead0287d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd72c65acb3255effd647085cd2d305a"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#acd72c65acb3255effd647085cd2d305a">getDofIndicesPermutationPattern</a> ()=0</td></tr>
-<tr class="separator:acd72c65acb3255effd647085cd2d305a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d009fe01070ba3eb7709a900584da11"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a2d009fe01070ba3eb7709a900584da11">getNodeFields</a> ()=0</td></tr>
+<tr class="separator:a2d009fe01070ba3eb7709a900584da11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63cb2bc783e871569531909f68649ebe"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a63cb2bc783e871569531909f68649ebe">getDofIndicesPermutationPattern</a> ()=0</td></tr>
+<tr class="separator:a63cb2bc783e871569531909f68649ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99bcebd80c0c31c3e4705df9c37c41e6"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a99bcebd80c0c31c3e4705df9c37c41e6">getNNodes</a> ()=0</td></tr>
 <tr class="separator:a99bcebd80c0c31c3e4705df9c37c41e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17dc4c334219f62511f554133c00579c"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a17dc4c334219f62511f554133c00579c">getNDofPerElement</a> ()=0</td></tr>
@@ -258,8 +258,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac68956668d34ac2ddac545ff2ce56004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ef25e441523e4d36b748e83a4270b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">computeBodyForce</a> (double *Pext, double *K, const double *load, const double *QTotal, const double *time, double dT)=0</td></tr>
 <tr class="separator:aa0ef25e441523e4d36b748e83a4270b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a678a3f3fadf5a4de7269ada199ab5b2c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a678a3f3fadf5a4de7269ada199ab5b2c">getStateView</a> (const std::string &amp;stateName, int gaussPt)=0</td></tr>
-<tr class="separator:a678a3f3fadf5a4de7269ada199ab5b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</a> (const std::string &amp;stateName, int quadraturePoint)=0</td></tr>
+<tr class="separator:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a4a399e8339bb2f93d379841bb252461b"></a>
@@ -356,8 +356,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a86873cbb2da2cad785bccbead0287d58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86873cbb2da2cad785bccbead0287d58">&#9670;&nbsp;</a></span>getNodeFields()</h2>
+<a id="a2d009fe01070ba3eb7709a900584da11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d009fe01070ba3eb7709a900584da11">&#9670;&nbsp;</a></span>getNodeFields()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +366,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt;std::vector&lt;std::string&gt; &gt; MarmotElement::getNodeFields </td>
+          <td class="memname">virtual std::vector&lt; std::vector&lt; std::string &gt; &gt; MarmotElement::getNodeFields </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -381,8 +381,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acd72c65acb3255effd647085cd2d305a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd72c65acb3255effd647085cd2d305a">&#9670;&nbsp;</a></span>getDofIndicesPermutationPattern()</h2>
+<a id="a63cb2bc783e871569531909f68649ebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63cb2bc783e871569531909f68649ebe">&#9670;&nbsp;</a></span>getDofIndicesPermutationPattern()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +391,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt;int&gt; MarmotElement::getDofIndicesPermutationPattern </td>
+          <td class="memname">virtual std::vector&lt; int &gt; MarmotElement::getDofIndicesPermutationPattern </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -829,8 +829,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a678a3f3fadf5a4de7269ada199ab5b2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a678a3f3fadf5a4de7269ada199ab5b2c">&#9670;&nbsp;</a></span>getStateView()</h2>
+<a id="a37cadc2b9f7d4a1dcaec9830409acaa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37cadc2b9f7d4a1dcaec9830409acaa6">&#9670;&nbsp;</a></span>getStateView()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -848,7 +848,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>gaussPt</em>&#160;</td>
+          <td class="paramname"><em>quadraturePoint</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -874,7 +874,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classMarmotElement.html">MarmotElement</a></li>
-    <li class="footer">Generated on Sat Feb 13 2021 10:07:57 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Fri Feb 26 2021 14:26:24 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

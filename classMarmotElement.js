@@ -16,8 +16,8 @@ var classMarmotElement =
     ] ],
     [ "~MarmotElement", "classMarmotElement.html#ae852bc0749f00720d9d07b6432bc77ab", null ],
     [ "getNumberOfRequiredStateVars", "classMarmotElement.html#a7009a873b60e587bcad34151f92f7f4d", null ],
-    [ "getNodeFields", "classMarmotElement.html#a86873cbb2da2cad785bccbead0287d58", null ],
-    [ "getDofIndicesPermutationPattern", "classMarmotElement.html#acd72c65acb3255effd647085cd2d305a", null ],
+    [ "getNodeFields", "classMarmotElement.html#a2d009fe01070ba3eb7709a900584da11", null ],
+    [ "getDofIndicesPermutationPattern", "classMarmotElement.html#a63cb2bc783e871569531909f68649ebe", null ],
     [ "getNNodes", "classMarmotElement.html#a99bcebd80c0c31c3e4705df9c37c41e6", null ],
     [ "getNDofPerElement", "classMarmotElement.html#a17dc4c334219f62511f554133c00579c", null ],
     [ "getElementShape", "classMarmotElement.html#ab38da2001626ad74a3bc4f95ba144a2f", null ],
@@ -29,5 +29,5 @@ var classMarmotElement =
     [ "computeYourself", "classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493", null ],
     [ "computeDistributedLoad", "classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004", null ],
     [ "computeBodyForce", "classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5", null ],
-    [ "getStateView", "classMarmotElement.html#a678a3f3fadf5a4de7269ada199ab5b2c", null ]
+    [ "getStateView", "classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6", null ]
 ];
