@@ -41,123 +41,123 @@ modifications:
 
 namespace Marmot::NumericalAlgorithms {
 
-    template < int nSizeTangent >
-    class PerezFougetSubstepperTime {
+  template < int nSizeTangent >
+  class PerezFougetSubstepperTime {
 
-      public:
-        typedef Eigen::Matrix< double, nSizeTangent, nSizeTangent > TangentSizedMatrix;
+  public:
+    typedef Eigen::Matrix< double, nSizeTangent, nSizeTangent > TangentSizedMatrix;
 
-        PerezFougetSubstepperTime( double initialStepSize,
-                                   double minimumStepSize,
-                                   double scaleUpFactor,
-                                   double scaleDownFactor,
-                                   int    nPassesToIncrease );
-        bool   isFinished();
-        double getNextSubstep();
-        double getFinishedProgress();
-        bool   decreaseSubstepSize();
+    PerezFougetSubstepperTime( double initialStepSize,
+                               double minimumStepSize,
+                               double scaleUpFactor,
+                               double scaleDownFactor,
+                               int    nPassesToIncrease );
+    bool   isFinished();
+    double getNextSubstep();
+    double getFinishedProgress();
+    bool   decreaseSubstepSize();
 
-        void     extendConsistentTangent( const Matrix6d& CelT );
-        void     extendConsistentTangent( const Matrix6d& CelT, const TangentSizedMatrix& matTangent );
-        Matrix6d consistentStiffness();
+    void     extendConsistentTangent( const Matrix6d& CelT );
+    void     extendConsistentTangent( const Matrix6d& CelT, const TangentSizedMatrix& matTangent );
+    Matrix6d consistentStiffness();
 
-      private:
-        const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
-        const int    nPassesToIncrease;
+  private:
+    const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
+    const int    nPassesToIncrease;
 
-        double currentProgress;
-        double currentSubstepSize;
-        int    passedSubsteps;
+    double currentProgress;
+    double currentSubstepSize;
+    int    passedSubsteps;
 
-        TangentSizedMatrix elasticTangent;
-        TangentSizedMatrix consistentTangent;
-    };
+    TangentSizedMatrix elasticTangent;
+    TangentSizedMatrix consistentTangent;
+  };
 } // namespace Marmot::NumericalAlgorithms
 
 #include "Marmot/MarmotJournal.h"
 
 namespace Marmot::NumericalAlgorithms {
-    template < int s >
-    PerezFougetSubstepperTime< s >::PerezFougetSubstepperTime( double initialStepSize,
-                                                               double minimumStepSize,
-                                                               double scaleUpFactor,
-                                                               double scaleDownFactor,
-                                                               int    nPassesToIncrease )
-        : initialStepSize( initialStepSize ),
-          minimumStepSize( minimumStepSize ),
-          scaleUpFactor( scaleUpFactor ),
-          scaleDownFactor( scaleDownFactor ),
-          nPassesToIncrease( nPassesToIncrease ),
-          currentProgress( 0.0 ),
-          currentSubstepSize( initialStepSize ),
-          passedSubsteps( 0 )
+  template < int s >
+  PerezFougetSubstepperTime< s >::PerezFougetSubstepperTime( double initialStepSize,
+                                                             double minimumStepSize,
+                                                             double scaleUpFactor,
+                                                             double scaleDownFactor,
+                                                             int    nPassesToIncrease )
+    : initialStepSize( initialStepSize ),
+      minimumStepSize( minimumStepSize ),
+      scaleUpFactor( scaleUpFactor ),
+      scaleDownFactor( scaleDownFactor ),
+      nPassesToIncrease( nPassesToIncrease ),
+      currentProgress( 0.0 ),
+      currentSubstepSize( initialStepSize ),
+      passedSubsteps( 0 )
 
-    {
-        elasticTangent    = TangentSizedMatrix::Identity();
-        consistentTangent = TangentSizedMatrix::Zero();
-    }
+  {
+    elasticTangent    = TangentSizedMatrix::Identity();
+    consistentTangent = TangentSizedMatrix::Zero();
+  }
 
-    template < int s >
-    bool PerezFougetSubstepperTime< s >::isFinished()
-    {
-        return currentProgress >= 1.0;
-    }
+  template < int s >
+  bool PerezFougetSubstepperTime< s >::isFinished()
+  {
+    return currentProgress >= 1.0;
+  }
 
-    template < int s >
-    double PerezFougetSubstepperTime< s >::getNextSubstep()
-    {
-        if ( passedSubsteps >= nPassesToIncrease )
-            currentSubstepSize *= scaleUpFactor;
+  template < int s >
+  double PerezFougetSubstepperTime< s >::getNextSubstep()
+  {
+    if ( passedSubsteps >= nPassesToIncrease )
+      currentSubstepSize *= scaleUpFactor;
 
-        const double remainingProgress = 1.0 - currentProgress;
-        if ( remainingProgress < currentSubstepSize )
-            currentSubstepSize = remainingProgress;
+    const double remainingProgress = 1.0 - currentProgress;
+    if ( remainingProgress < currentSubstepSize )
+      currentSubstepSize = remainingProgress;
 
-        passedSubsteps++;
-        currentProgress += currentSubstepSize;
+    passedSubsteps++;
+    currentProgress += currentSubstepSize;
 
-        return currentSubstepSize;
-    }
+    return currentSubstepSize;
+  }
 
-    template < int s >
-    double PerezFougetSubstepperTime< s >::getFinishedProgress()
-    {
-        return currentProgress - currentSubstepSize;
-    }
+  template < int s >
+  double PerezFougetSubstepperTime< s >::getFinishedProgress()
+  {
+    return currentProgress - currentSubstepSize;
+  }
 
-    template < int s >
-    bool PerezFougetSubstepperTime< s >::decreaseSubstepSize()
-    {
-        currentProgress -= currentSubstepSize;
-        passedSubsteps = 0;
+  template < int s >
+  bool PerezFougetSubstepperTime< s >::decreaseSubstepSize()
+  {
+    currentProgress -= currentSubstepSize;
+    passedSubsteps = 0;
 
-        currentSubstepSize *= scaleDownFactor;
+    currentSubstepSize *= scaleDownFactor;
 
-        if ( currentSubstepSize < minimumStepSize )
-            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
-        else
-            return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
-    }
+    if ( currentSubstepSize < minimumStepSize )
+      return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+    else
+      return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+  }
 
-    template < int s >
-    void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d& CelT )
-    {
+  template < int s >
+  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d& CelT )
+  {
 
-        elasticTangent.topLeftCorner( 6, 6 ) = CelT;
-        consistentTangent += currentSubstepSize * elasticTangent;
-    }
+    elasticTangent.topLeftCorner( 6, 6 ) = CelT;
+    consistentTangent += currentSubstepSize * elasticTangent;
+  }
 
-    template < int s >
-    void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d&           CelT,
-                                                                  const TangentSizedMatrix& matTangent )
-    {
-        extendConsistentTangent( CelT );
-        consistentTangent.applyOnTheLeft( matTangent );
-    }
+  template < int s >
+  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d&           CelT,
+                                                                const TangentSizedMatrix& matTangent )
+  {
+    extendConsistentTangent( CelT );
+    consistentTangent.applyOnTheLeft( matTangent );
+  }
 
-    template < int s >
-    Matrix6d PerezFougetSubstepperTime< s >::consistentStiffness()
-    {
-        return consistentTangent.topLeftCorner( 6, 6 );
-    }
+  template < int s >
+  Matrix6d PerezFougetSubstepperTime< s >::consistentStiffness()
+  {
+    return consistentTangent.topLeftCorner( 6, 6 );
+  }
 } // namespace Marmot::NumericalAlgorithms
