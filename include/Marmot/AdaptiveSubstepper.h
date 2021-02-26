@@ -1,25 +1,25 @@
 /* ---------------------------------------------------------------------
- *                                       _   
- *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_ 
+ *                                       _
+ *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
  * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
- * | | | | | | (_| | |  | | | | | | (_) | |_ 
+ * | | | | | | (_| | |  | | | | | | (_) | |_
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
- * 
+ *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck, 
+ * University of Innsbruck,
  * 2020 - today
- * 
+ *
  * festigkeitslehre@uibk.ac.at
- * 
+ *
  * Matthias Neuner matthias.neuner@uibk.ac.at
- * 
+ *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * The full text of the license can be found in the file LICENSE.md at
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
@@ -37,354 +37,355 @@
 
 namespace Marmot::NumericalAlgorithms {
 
-    template <size_t materialTangentSize, size_t nIntegrationDependentStateVars>
-    class AdaptiveSubstepper {
-      public:
-        typedef Eigen::Matrix<double, materialTangentSize, materialTangentSize> TangentSizedMatrix;
-        typedef Eigen::Matrix<double, nIntegrationDependentStateVars, 1>        IntegrationStateVector;
+  template < size_t materialTangentSize, size_t nIntegrationDependentStateVars >
+  class AdaptiveSubstepper {
+  public:
+    typedef Eigen::Matrix< double, materialTangentSize, materialTangentSize > TangentSizedMatrix;
+    typedef Eigen::Matrix< double, nIntegrationDependentStateVars, 1 >        IntegrationStateVector;
 
-        AdaptiveSubstepper( double         initialStepSize,
-                            double         minimumStepSize,
-                            double         maxScaleUpFactor,
-                            double         scaleDownFactor,
-                            double         integrationErrorTolerance,
-                            int            nPassesToIncrease,
-                            const Matrix6d& Cel );
-        void   setConvergedProgress( const Marmot::Vector6d& stressOld, const IntegrationStateVector& stateVarsOld );
-        bool   isFinished();
-        double getNextSubstep();
-        int    getNumberOfSubsteps();
-        bool   finishSubstep( const Marmot::Vector6d&           resultStress,
-                              const TangentSizedMatrix&     dXdY,
-                              const IntegrationStateVector& stateVars );
-        void   finishElasticSubstep( const Marmot::Vector6d& resultStress );
-        bool   discardSubstep();
-        bool   repeatSubstep( double decrementationFactor );
+    AdaptiveSubstepper( double          initialStepSize,
+                        double          minimumStepSize,
+                        double          maxScaleUpFactor,
+                        double          scaleDownFactor,
+                        double          integrationErrorTolerance,
+                        int             nPassesToIncrease,
+                        const Matrix6d& Cel );
+    void   setConvergedProgress( const Marmot::Vector6d& stressOld, const IntegrationStateVector& stateVarsOld );
+    bool   isFinished();
+    double getNextSubstep();
+    int    getNumberOfSubsteps();
+    bool   finishSubstep( const Marmot::Vector6d&       resultStress,
+                          const TangentSizedMatrix&     dXdY,
+                          const IntegrationStateVector& stateVars );
+    void   finishElasticSubstep( const Marmot::Vector6d& resultStress );
+    bool   discardSubstep();
+    bool   repeatSubstep( double decrementationFactor );
 
-        void    getConvergedProgress( Marmot::Vector6d& stress, IntegrationStateVector& stateVars );
-        Matrix6d getCurrentTangentOperator();
-        void    getResults( Marmot::Vector6d& stress, Matrix6d& consistentTangent, IntegrationStateVector& stateVars );
+    void     getConvergedProgress( Marmot::Vector6d& stress, IntegrationStateVector& stateVars );
+    Matrix6d getCurrentTangentOperator();
+    void     getResults( Marmot::Vector6d& stress, Matrix6d& consistentTangent, IntegrationStateVector& stateVars );
 
-      private:
-        const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
-        const int    nPassesToIncrease;
-        const bool   ignoreErrorToleranceOnMinimumStepSize;
+  private:
+    const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
+    const int    nPassesToIncrease;
+    const bool   ignoreErrorToleranceOnMinimumStepSize;
 
-        double currentProgress;
-        double currentSubstepSize;
-        int    passedSubsteps;
-        int    substepIndex;
+    double currentProgress;
+    double currentSubstepSize;
+    int    passedSubsteps;
+    int    substepIndex;
 
-        // internal storages for the progress of the total increment
-        Marmot::Vector6d           stressProgress;
-        IntegrationStateVector stateProgress;
-        TangentSizedMatrix     consistentTangentProgress;
+    // internal storages for the progress of the total increment
+    Marmot::Vector6d       stressProgress;
+    IntegrationStateVector stateProgress;
+    TangentSizedMatrix     consistentTangentProgress;
 
-        // temporal storages, which are used until a cycle full/half/half has finished successfully
-        Marmot::Vector6d           stressProgressHalfTemp, stressProgressFullTemp;
-        IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
-        TangentSizedMatrix     consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
+    // temporal storages, which are used until a cycle full/half/half has finished successfully
+    Marmot::Vector6d       stressProgressHalfTemp, stressProgressFullTemp;
+    IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
+    TangentSizedMatrix     consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
-        TangentSizedMatrix elasticTangent;
+    TangentSizedMatrix elasticTangent;
 
-        enum SubsteppingState { FullStep, FirstHalfStep, SecondHalfStep };
-        SubsteppingState currentState;
+    enum SubsteppingState { FullStep, FirstHalfStep, SecondHalfStep };
+    SubsteppingState currentState;
 
-        bool acceptSubstepWithFullStepOnly();
-        bool splitCurrentSubstep();
-    };
+    bool acceptSubstepWithFullStepOnly();
+    bool splitCurrentSubstep();
+  };
 } // namespace Marmot::NumericalAlgorithms
 
 namespace Marmot::NumericalAlgorithms {
-    template <size_t n, size_t nState>
-    AdaptiveSubstepper<n, nState>::AdaptiveSubstepper( double         initialStepSize,
-                                                       double         minimumStepSize,
-                                                       double         maxScaleUpFactor,
-                                                       double         scaleDownFactor,
-                                                       double         integrationErrorTolerance,
-                                                       int            nPassesToIncrease,
+  template < size_t n, size_t nState >
+  AdaptiveSubstepper< n, nState >::AdaptiveSubstepper( double          initialStepSize,
+                                                       double          minimumStepSize,
+                                                       double          maxScaleUpFactor,
+                                                       double          scaleDownFactor,
+                                                       double          integrationErrorTolerance,
+                                                       int             nPassesToIncrease,
                                                        const Matrix6d& Cel )
-        : initialStepSize( initialStepSize ),
-          minimumStepSize( minimumStepSize ),
-          maxScaleUpFactor( maxScaleUpFactor ),
-          scaleDownFactor( scaleDownFactor ),
-          integrationErrorTolerance( integrationErrorTolerance ),
-          nPassesToIncrease( nPassesToIncrease ),
-          ignoreErrorToleranceOnMinimumStepSize( true ),
-          currentProgress( 0.0 ),
-          currentSubstepSize( initialStepSize ),
-          passedSubsteps( 0 ),
-          substepIndex( -1 )
-    {
-        elasticTangent                       = TangentSizedMatrix::Identity();
-        elasticTangent.topLeftCorner( 6, 6 ) = Cel;
+    : initialStepSize( initialStepSize ),
+      minimumStepSize( minimumStepSize ),
+      maxScaleUpFactor( maxScaleUpFactor ),
+      scaleDownFactor( scaleDownFactor ),
+      integrationErrorTolerance( integrationErrorTolerance ),
+      nPassesToIncrease( nPassesToIncrease ),
+      ignoreErrorToleranceOnMinimumStepSize( true ),
+      currentProgress( 0.0 ),
+      currentSubstepSize( initialStepSize ),
+      passedSubsteps( 0 ),
+      substepIndex( -1 )
+  {
+    elasticTangent                       = TangentSizedMatrix::Identity();
+    elasticTangent.topLeftCorner( 6, 6 ) = Cel;
 
-        consistentTangentProgress         = TangentSizedMatrix::Zero();
-        consistentTangentProgressFullTemp = TangentSizedMatrix::Zero();
-        consistentTangentProgressHalfTemp = TangentSizedMatrix::Zero();
+    consistentTangentProgress         = TangentSizedMatrix::Zero();
+    consistentTangentProgressFullTemp = TangentSizedMatrix::Zero();
+    consistentTangentProgressHalfTemp = TangentSizedMatrix::Zero();
 
-        stressProgressHalfTemp.setZero();
-        stressProgressFullTemp.setZero();
-        stateProgressHalfTemp.setZero();
-        stateProgressFullTemp.setZero();
-        consistentTangentProgressHalfTemp.setZero();
-        consistentTangentProgressFullTemp.setZero();
+    stressProgressHalfTemp.setZero();
+    stressProgressFullTemp.setZero();
+    stateProgressHalfTemp.setZero();
+    stateProgressFullTemp.setZero();
+    consistentTangentProgressHalfTemp.setZero();
+    consistentTangentProgressFullTemp.setZero();
 
-        currentState = FullStep;
-    }
+    currentState = FullStep;
+  }
 
-    template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::setConvergedProgress( const Marmot::Vector6d&           stressOld,
+  template < size_t n, size_t nState >
+  void AdaptiveSubstepper< n, nState >::setConvergedProgress( const Marmot::Vector6d&       stressOld,
                                                               const IntegrationStateVector& stateVarsOld )
-    {
-        stressProgress = stressOld;
-        stateProgress  = stateVarsOld;
+  {
+    stressProgress = stressOld;
+    stateProgress  = stateVarsOld;
+  }
+
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::isFinished()
+  {
+    return ( ( 1.0 - currentProgress ) <= 2e-16 && currentState == FullStep );
+  }
+
+  template < size_t n, size_t nState >
+  double AdaptiveSubstepper< n, nState >::getNextSubstep()
+  {
+    switch ( currentState ) {
+    case FullStep: {
+      const double remainingProgress = 1.0 - currentProgress;
+      if ( remainingProgress < currentSubstepSize )
+        currentSubstepSize = remainingProgress;
+      substepIndex++;
+      return currentSubstepSize;
+      break;
+    }
+    case FirstHalfStep: {
+      return 0.5 * currentSubstepSize;
+      break;
+    }
+    case SecondHalfStep: {
+      return 0.5 * currentSubstepSize;
+      break;
+    }
+    default: return -1.0;
+    }
+  }
+  template < size_t n, size_t nState >
+  void AdaptiveSubstepper< n, nState >::getConvergedProgress( Marmot::Vector6d&       stress,
+                                                              IntegrationStateVector& stateVars )
+  {
+    switch ( currentState ) {
+    case FullStep: {
+      stress    = stressProgress;
+      stateVars = stateProgress;
+      break;
+    }
+    case FirstHalfStep: {
+      stress    = stressProgress;
+      stateVars = stateProgress;
+      break;
+    }
+    case SecondHalfStep: {
+      stress    = stressProgressHalfTemp;
+      stateVars = stateProgressHalfTemp;
+      break;
+    }
+    }
+  }
+
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::discardSubstep()
+  {
+    passedSubsteps = 0;
+    switch ( currentState ) {
+    case FullStep: {
+      currentSubstepSize *= scaleDownFactor; // we use the scale factor only here
+      break;
+    }
+    // these cases should actually never happen, as the full step has already converged!
+    case FirstHalfStep:
+      MarmotJournal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
+                                   "converged full step" );
+      return acceptSubstepWithFullStepOnly();
+
+    case SecondHalfStep:
+      MarmotJournal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
+                                   "converged full step" );
+      return acceptSubstepWithFullStepOnly();
     }
 
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::isFinished()
-    {
-        return ( ( 1.0 - currentProgress ) <= 2e-16 && currentState == FullStep );
-    }
+    currentState = FullStep;
 
-    template <size_t n, size_t nState>
-    double AdaptiveSubstepper<n, nState>::getNextSubstep()
-    {
-        switch ( currentState ) {
-        case FullStep: {
-            const double remainingProgress = 1.0 - currentProgress;
-            if ( remainingProgress < currentSubstepSize )
-                currentSubstepSize = remainingProgress;
-            substepIndex++;
-            return currentSubstepSize;
-            break;
-        }
-        case FirstHalfStep: {
-            return 0.5 * currentSubstepSize;
-            break;
-        }
-        case SecondHalfStep: {
-            return 0.5 * currentSubstepSize;
-            break;
-        }
-        default: return -1.0;
-        }
-    }
-    template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getConvergedProgress( Marmot::Vector6d& stress, IntegrationStateVector& stateVars )
-    {
-        switch ( currentState ) {
-        case FullStep: {
-            stress    = stressProgress;
-            stateVars = stateProgress;
-            break;
-        }
-        case FirstHalfStep: {
-            stress    = stressProgress;
-            stateVars = stateProgress;
-            break;
-        }
-        case SecondHalfStep: {
-            stress    = stressProgressHalfTemp;
-            stateVars = stateProgressHalfTemp;
-            break;
-        }
-        }
-    }
+    if ( currentSubstepSize < minimumStepSize )
+      return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+    else
+      return true;
+  }
 
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::discardSubstep()
-    {
-        passedSubsteps = 0;
-        switch ( currentState ) {
-        case FullStep: {
-            currentSubstepSize *= scaleDownFactor; // we use the scale factor only here
-            break;
-        }
-        // these cases should actually never happen, as the full step has already converged!
-        case FirstHalfStep:
-            MarmotJournal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
-                          "converged full step" );
-            return acceptSubstepWithFullStepOnly();
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::repeatSubstep( double factorNew )
+  {
+    currentState   = FullStep;
+    passedSubsteps = 0;
 
-        case SecondHalfStep:
-            MarmotJournal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
-                          "converged full step" );
-            return acceptSubstepWithFullStepOnly();
-        }
+    currentSubstepSize *= factorNew; // we use the scale factor only here
 
-        currentState = FullStep;
+    if ( currentSubstepSize < minimumStepSize )
+      return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+    else
+      return true;
+  }
 
-        if ( currentSubstepSize < minimumStepSize )
-            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
-        else
-            return true;
-    }
-
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::repeatSubstep( double factorNew )
-    {
-        currentState   = FullStep;
-        passedSubsteps = 0;
-
-        currentSubstepSize *= factorNew; // we use the scale factor only here
-
-        if ( currentSubstepSize < minimumStepSize )
-            return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
-        else
-            return true;
-    }
-
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::finishSubstep( const Marmot::Vector6d&           resultStress,
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::finishSubstep( const Marmot::Vector6d&       resultStress,
                                                        const TangentSizedMatrix&     dXdY,
                                                        const IntegrationStateVector& stateVars )
-    {
-        if ( currentState == FullStep ) {
-            stressProgressFullTemp            = resultStress;
-            stateProgressFullTemp             = stateVars;
-            consistentTangentProgressFullTemp = consistentTangentProgress;
-            consistentTangentProgressFullTemp += currentSubstepSize * elasticTangent;
-            consistentTangentProgressFullTemp.applyOnTheLeft( dXdY );
-            currentState = FirstHalfStep;
-            return true;
-        }
-        else if ( currentState == FirstHalfStep ) {
+  {
+    if ( currentState == FullStep ) {
+      stressProgressFullTemp            = resultStress;
+      stateProgressFullTemp             = stateVars;
+      consistentTangentProgressFullTemp = consistentTangentProgress;
+      consistentTangentProgressFullTemp += currentSubstepSize * elasticTangent;
+      consistentTangentProgressFullTemp.applyOnTheLeft( dXdY );
+      currentState = FirstHalfStep;
+      return true;
+    }
+    else if ( currentState == FirstHalfStep ) {
 
-            stressProgressHalfTemp            = resultStress;
-            stateProgressHalfTemp             = stateVars;
-            consistentTangentProgressHalfTemp = consistentTangentProgress;
-            consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
-            consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
-            currentState = SecondHalfStep;
-            return true;
-        }
-
-        else if ( currentState == SecondHalfStep ) {
-            // error Estimation
-
-            currentState             = FullStep;
-            const double error       = ( resultStress - stressProgressFullTemp ).norm();
-            const double errorRatio  = error / integrationErrorTolerance;
-            double       scaleFactor = 1.0;
-            if ( errorRatio > 1e-10 )
-                scaleFactor = 0.9 * std::sqrt( 1. / errorRatio );
-
-            // saturations
-            if ( scaleFactor < 1e-1 )
-                scaleFactor = 1e-1;
-            if ( scaleFactor * currentSubstepSize < minimumStepSize )
-                scaleFactor = minimumStepSize / currentSubstepSize;
-            if ( scaleFactor > maxScaleUpFactor )
-                scaleFactor = maxScaleUpFactor;
-            if ( scaleFactor > 10 )
-                scaleFactor = 10;
-
-            // Error large than tolerance?
-            if ( error > integrationErrorTolerance ) {
-                passedSubsteps = 0;
-                if ( errorRatio < 2 ) {
-                    return splitCurrentSubstep();
-                }
-                else {
-                    return repeatSubstep( scaleFactor );
-                }
-            }
-            else {
-                stressProgressHalfTemp = resultStress;
-                stateProgressHalfTemp  = stateVars;
-                consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
-                consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
-
-                consistentTangentProgress = 2 * consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
-                stressProgress            = 2 * stressProgressHalfTemp - stressProgressFullTemp;
-                stateProgress             = 2 * stateProgressHalfTemp - stateProgressFullTemp;
-
-                currentProgress += currentSubstepSize;
-
-                passedSubsteps++;
-                currentSubstepSize *= scaleFactor;
-
-                return true;
-            }
-        }
-        else
-            return false;
+      stressProgressHalfTemp            = resultStress;
+      stateProgressHalfTemp             = stateVars;
+      consistentTangentProgressHalfTemp = consistentTangentProgress;
+      consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
+      consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
+      currentState = SecondHalfStep;
+      return true;
     }
 
-    template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::finishElasticSubstep( const Marmot::Vector6d& newStress )
-    {
-        switch ( currentState ) {
-        case FullStep: {
-            // this means, that the complete current cycle is already successfull,
-            // as the two half steps must also be elastic!
-            consistentTangentProgress += currentSubstepSize * elasticTangent;
-            stressProgress = newStress;
-            // no need for two half steps if full step was already elastic
-            currentProgress += currentSubstepSize;
-            currentState = FullStep;
-            passedSubsteps++;
-            break;
-        }
+    else if ( currentState == SecondHalfStep ) {
+      // error Estimation
 
-        case FirstHalfStep: {
-            consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
-            stressProgressHalfTemp = newStress;
-            currentState           = SecondHalfStep;
-            break;
-        }
-        case SecondHalfStep: {
-            acceptSubstepWithFullStepOnly();
-            break;
-        }
-        }
-    }
+      currentState             = FullStep;
+      const double error       = ( resultStress - stressProgressFullTemp ).norm();
+      const double errorRatio  = error / integrationErrorTolerance;
+      double       scaleFactor = 1.0;
+      if ( errorRatio > 1e-10 )
+        scaleFactor = 0.9 * std::sqrt( 1. / errorRatio );
 
-    template <size_t n, size_t nState>
-    void AdaptiveSubstepper<n, nState>::getResults( Marmot::Vector6d&           stress,
-                                                    Matrix6d&                consistentTangentOperator,
-                                                    IntegrationStateVector& stateVars )
-    {
-        stress                    = stressProgress;
-        stateVars                 = stateProgress;
-        consistentTangentOperator = consistentTangentProgress.topLeftCorner( 6, 6 );
-    }
+      // saturations
+      if ( scaleFactor < 1e-1 )
+        scaleFactor = 1e-1;
+      if ( scaleFactor * currentSubstepSize < minimumStepSize )
+        scaleFactor = minimumStepSize / currentSubstepSize;
+      if ( scaleFactor > maxScaleUpFactor )
+        scaleFactor = maxScaleUpFactor;
+      if ( scaleFactor > 10 )
+        scaleFactor = 10;
 
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::acceptSubstepWithFullStepOnly()
-    {
-        consistentTangentProgress = consistentTangentProgressFullTemp;
-        stressProgress            = stressProgressFullTemp;
-        stateProgress             = stateProgressFullTemp;
+      // Error large than tolerance?
+      if ( error > integrationErrorTolerance ) {
+        passedSubsteps = 0;
+        if ( errorRatio < 2 ) {
+          return splitCurrentSubstep();
+        }
+        else {
+          return repeatSubstep( scaleFactor );
+        }
+      }
+      else {
+        stressProgressHalfTemp = resultStress;
+        stateProgressHalfTemp  = stateVars;
+        consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
+        consistentTangentProgressHalfTemp.applyOnTheLeft( dXdY );
+
+        consistentTangentProgress = 2 * consistentTangentProgressHalfTemp - consistentTangentProgressFullTemp;
+        stressProgress            = 2 * stressProgressHalfTemp - stressProgressFullTemp;
+        stateProgress             = 2 * stateProgressHalfTemp - stateProgressFullTemp;
 
         currentProgress += currentSubstepSize;
-        currentState = FullStep;
+
+        passedSubsteps++;
+        currentSubstepSize *= scaleFactor;
 
         return true;
+      }
+    }
+    else
+      return false;
+  }
+
+  template < size_t n, size_t nState >
+  void AdaptiveSubstepper< n, nState >::finishElasticSubstep( const Marmot::Vector6d& newStress )
+  {
+    switch ( currentState ) {
+    case FullStep: {
+      // this means, that the complete current cycle is already successfull,
+      // as the two half steps must also be elastic!
+      consistentTangentProgress += currentSubstepSize * elasticTangent;
+      stressProgress = newStress;
+      // no need for two half steps if full step was already elastic
+      currentProgress += currentSubstepSize;
+      currentState = FullStep;
+      passedSubsteps++;
+      break;
     }
 
-    template <size_t n, size_t nState>
-    bool AdaptiveSubstepper<n, nState>::splitCurrentSubstep()
-    {
-        if ( currentSubstepSize < 2 * minimumStepSize ) {
-            if ( ignoreErrorToleranceOnMinimumStepSize )
-                return acceptSubstepWithFullStepOnly();
-            else
-                return false;
-        }
-
-        consistentTangentProgressFullTemp = consistentTangentProgressHalfTemp;
-        stressProgressFullTemp            = stressProgressHalfTemp;
-        stateProgressFullTemp             = stateProgressHalfTemp;
-        currentSubstepSize *= 0.5;
-        currentState = FirstHalfStep;
-
-        return true;
+    case FirstHalfStep: {
+      consistentTangentProgressHalfTemp += 0.5 * currentSubstepSize * elasticTangent;
+      stressProgressHalfTemp = newStress;
+      currentState           = SecondHalfStep;
+      break;
     }
-    template <size_t n, size_t nState>
-    int AdaptiveSubstepper<n, nState>::getNumberOfSubsteps()
-    {
-        return substepIndex;
+    case SecondHalfStep: {
+      acceptSubstepWithFullStepOnly();
+      break;
     }
+    }
+  }
+
+  template < size_t n, size_t nState >
+  void AdaptiveSubstepper< n, nState >::getResults( Marmot::Vector6d&       stress,
+                                                    Matrix6d&               consistentTangentOperator,
+                                                    IntegrationStateVector& stateVars )
+  {
+    stress                    = stressProgress;
+    stateVars                 = stateProgress;
+    consistentTangentOperator = consistentTangentProgress.topLeftCorner( 6, 6 );
+  }
+
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::acceptSubstepWithFullStepOnly()
+  {
+    consistentTangentProgress = consistentTangentProgressFullTemp;
+    stressProgress            = stressProgressFullTemp;
+    stateProgress             = stateProgressFullTemp;
+
+    currentProgress += currentSubstepSize;
+    currentState = FullStep;
+
+    return true;
+  }
+
+  template < size_t n, size_t nState >
+  bool AdaptiveSubstepper< n, nState >::splitCurrentSubstep()
+  {
+    if ( currentSubstepSize < 2 * minimumStepSize ) {
+      if ( ignoreErrorToleranceOnMinimumStepSize )
+        return acceptSubstepWithFullStepOnly();
+      else
+        return false;
+    }
+
+    consistentTangentProgressFullTemp = consistentTangentProgressHalfTemp;
+    stressProgressFullTemp            = stressProgressHalfTemp;
+    stateProgressFullTemp             = stateProgressHalfTemp;
+    currentSubstepSize *= 0.5;
+    currentState = FirstHalfStep;
+
+    return true;
+  }
+  template < size_t n, size_t nState >
+  int AdaptiveSubstepper< n, nState >::getNumberOfSubsteps()
+  {
+    return substepIndex;
+  }
 } // namespace Marmot::NumericalAlgorithms

@@ -29,35 +29,35 @@
 
 namespace Marmot::ContinuumMechanics {
 
-    namespace UniaxialStress {
-        double getUniaxialStressTangent( const Eigen::Ref< const Matrix6d >& C );
-    }
+  namespace UniaxialStress {
+    double getUniaxialStressTangent( const Eigen::Ref< const Matrix6d >& C );
+  }
 
-    namespace PlaneStrain {
+  namespace PlaneStrain {
 
-        Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
+    Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
 
-        EigenTensors::Tensor322d dStressdDeformationGradient(
-            const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
+    EigenTensors::Tensor322d dStressdDeformationGradient(
+      const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
 
-        Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStrain();
-    } // namespace PlaneStrain
+    Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStrain();
+  } // namespace PlaneStrain
 
-    namespace PlaneStress {
+  namespace PlaneStress {
 
-        Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
+    Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
-        EigenTensors::Tensor322d dStressdDeformationGradient(
-            const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
+    EigenTensors::Tensor322d dStressdDeformationGradient(
+      const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
 
-        /*compute E33 for a given elastic strain, to compute the compensation for
-         * planeStress = Cel : (elasticStrain + compensationStrain) */
-        Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
-        /* Returns the transformation Matrix T which fullfills
-         * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
-        Matrix6d                      planeStressTangentTransformationMatrix( const Matrix6d& tangent );
-        Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent );
-        Eigen::Matrix< double, 3, 6 > dStressPlaneStressDStress();
-    } // namespace PlaneStress
+    /*compute E33 for a given elastic strain, to compute the compensation for
+     * planeStress = Cel : (elasticStrain + compensationStrain) */
+    Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
+    /* Returns the transformation Matrix T which fullfills
+     * planeStressIncrement = C : (T : arbitraryStrainIncrement) */
+    Matrix6d                      planeStressTangentTransformationMatrix( const Matrix6d& tangent );
+    Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent );
+    Eigen::Matrix< double, 3, 6 > dStressPlaneStressDStress();
+  } // namespace PlaneStress
 
 } // namespace Marmot::ContinuumMechanics

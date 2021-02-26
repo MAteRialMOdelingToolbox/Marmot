@@ -1,178 +1,155 @@
-#include "Marmot/MarmotConstants.h"
 #include "Marmot/MenetreyWillam.h"
+#include "Marmot/MarmotConstants.h"
 #include <cmath>
 #include <sstream>
 
 namespace Marmot {
-    namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
-        using namespace Constants;
-        double r( const double theta, const double e, double& numerator, double& denominator )
-        {
-            // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
-            // position (theta) the numerator and denominator are stored for performance reasons, as
-            // they are also needed for the derivative dRdTheta
-            if ( e >= 1.0 ) {
-                numerator   = 1;
-                denominator = 1;
-                return 1;
-            }
+  namespace ContinuumMechanics::CommonConstitutiveModels {
+    using namespace Constants;
+    using namespace ContinuumMechanics::HaighWestergaard;
 
-            const double e2        = e * e;
-            const double cosTheta  = std::cos( theta );
-            const double cos2Theta = cosTheta * cosTheta;
+    MenetreyWillam::MenetreyWillam( const double ft, const MenetreyWillamType& type, const double fc )
+    {
+      setParameters( ft, fc, type );
+    }
 
-            numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
-            denominator = ( 2 * ( 1 - e2 ) * cosTheta +
-                            ( 2 * e - 1 ) * std::sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
+    void MenetreyWillam::setParameters( const double ft, const double fc, const MenetreyWillamType& type )
+    {
+      switch ( type ) {
+      case MenetreyWillamType::Mises:
+        param.Af = 0;
+        param.Bf = sqrt3_2 / ft;
+        param.Cf = 0;
+        param.m  = 1;
+        param.e  = 1;
+        break;
+      case MenetreyWillamType::Rankine:
+        param.Af = 0;
+        param.Bf = 1. / ( sqrt6 * ft );
+        param.Cf = 1. / ( sqrt3 * ft );
+        param.m  = 1;
+        param.e  = 0.51;
+        break;
+      case MenetreyWillamType::DruckerPrager:
+        param.Af = 0;
+        param.Bf = sqrt3_8 * ( fc + ft ) / ( fc * ft );
+        param.Cf = 3. / 2 * ( fc - ft ) / ( fc * ft );
+        param.m  = 1;
+        param.e  = 1;
+        break;
+      case MenetreyWillamType::MohrCoulomb:
+        param.Af = 0;
+        param.Bf = 1. / sqrt6 * ( fc + 2. * ft ) / ( fc * ft );
+        param.Cf = 1. / sqrt3 * ( fc - ft ) / ( fc * ft );
+        param.m  = 1.;
+        param.e  = ( fc + 2 * ft ) / ( 2 * fc + ft );
+        break;
+      default: throw std::invalid_argument( "Requested MenetreyWillamType not found." );
+      }
+    }
 
-            return numerator / denominator;
-        }
+    double MenetreyWillam::polarRadius( const double& theta ) const { return polarRadius( theta, param.e ); }
 
-        double dRdTheta( const double theta, const double e, double rNumerator, double rDenominator )
-        {
-            // computes the derivate for a given r (defined by its numerator, denominator,
-            // calculated by r()),
+    double MenetreyWillam::polarRadius( const double& theta, const double& e )
+    {
+      // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
+      // position (theta) the numerator and denominator are stored for performance reasons, as
+      // they are also needed for the derivative dRdTheta
+      if ( e >= 1.0 )
+        return 1;
 
-            if ( e >= 1.0 )
-                return 0;
+      const double e2        = e * e;
+      const double cosTheta  = std::cos( theta );
+      const double cos2Theta = cosTheta * cosTheta;
 
-            const double cosTheta  = std::cos( theta );
-            const double cos2Theta = cosTheta * cosTheta;
-            const double sinTheta  = std::sin( theta );
-            const double e2        = e * e;
+      const double numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
+      const double denominator = ( 2 * ( 1 - e2 ) * cosTheta +
+                                   ( 2 * e - 1 ) * std::sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
 
-            const double a          = rNumerator;
-            const double b          = 1. / rDenominator;
-            const double aux        = 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e;
-            const double dAuxdTheta = 4 * ( 1 - e2 ) * 2 * cosTheta * -sinTheta;
-            const double dadTheta   = 2 * cosTheta * ( -sinTheta ) * 4 * ( 1 - e2 );
-            const double dbdTheta   = -pow( rDenominator, -2 ) *
-                                    ( 2 * ( 1 - e2 ) * -sinTheta +
-                                      ( 2 * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
-            return b * dadTheta + a * dbdTheta;
-        }
-        double e( const double fc, const double ft ) { return ( fc + 2 * ft ) / ( 2 * fc + ft ); }
+      return numerator / denominator;
+    }
 
-        double c( const double fc, const double ft )
-        {
-            const double phi_ = phi( fc, ft );
-            return ft * ( 1 + std::sin( phi_ ) ) / ( 2 + std::cos( phi_ ) );
-        }
+    std::pair< double, double > MenetreyWillam::dPolarRadius_dTheta( const double& theta ) const
+    {
+      return dPolarRadius_dTheta( theta, param.e );
+    }
 
-        double phi( const double fc, const double ft ) { return std::asin( ( fc - ft ) / ( fc + ft ) ); }
+    std::pair< double, double > MenetreyWillam::dPolarRadius_dTheta( const double& theta, const double& e )
+    {
+      //
+      // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
+      // position (theta) the numerator and denominator are stored for performance reasons, as
+      // they are also needed for the derivative dRdTheta
+      double r, dRdTheta;
 
-        double ft( const double c, const double phi ) { return 2 * c * std::cos( phi ) / ( 1 + std::sin( phi ) ); }
+      if ( e >= 1.0 ) {
+        r        = 1;
+        dRdTheta = 0;
+        return std::make_pair( r, dRdTheta );
+      }
 
-        double fc( const double c, const double phi ) { return 2 * c * std::cos( phi ) / ( 1 - std::sin( phi ) ); }
+      const double e2        = e * e;
+      const double cosTheta  = std::cos( theta );
+      const double cos2Theta = cosTheta * cosTheta;
 
-        double f( const double Af, const double Bf, const double Cf, const double m, const double e, const double xi, const double rho, const double theta )
-        {
-            double num = 0;
-            double den = 0;
-            return ( Af * rho ) * ( Af * rho ) + m * ( Bf * rho * r( theta, e, num, den ) + Cf * xi ) - 1;
-        }
+      double numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
+      double denominator = ( 2 * ( 1 - e2 ) * cosTheta +
+                             ( 2 * e - 1 ) * std::sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
 
-        void dFdHaighWestergaard( double& dFdXi,
-                                  double& dFdRho,
-                                  double& dFdTheta,
-                                  const double  Af,
-                                  const double  Bf,
-                                  const double  Cf,
-                                  const double  m,
-                                  const double  e,
-                                  const double  xi,
-                                  const double  rho,
-                                  const double  theta )
-        {
-            double       rNum = 0, rDen = 0;
-            const double r_        = r( theta, e, rNum, rDen );
-            const double dRdTheta_ = dRdTheta( theta, e, rNum, rDen );
+      r = numerator / denominator;
 
-            dFdXi    = m * Cf;
-            dFdRho   = 2 * Af * rho * Af + m * Bf * r_;
-            dFdTheta = m * Bf * rho * dRdTheta_;
-        }
+      // compute the derivative
+      const double sinTheta = std::sin( theta );
 
-        double fRounded( const double Af,
-                         const double Bf,
-                         const double Cf,
-                         const double m,
-                         const double e,
-                         const double xi,
-                         const double rho,
-                         const double theta,
-                         const double varEps )
-        {
-            double       rNum = 0, rDen = 0;
-            const double r_ = r( theta, e, rNum, rDen );
-            return Af * Af * rho * rho +
-                   m * ( std::sqrt( Bf * rho * r_ * Bf * rho * r_ + varEps * varEps ) + Cf * xi ) - 1;
-        }
-        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi )
-        {
-            return varEps * 2 * std::sin( psi );
-        }
+      const double a          = numerator;
+      const double b          = 1. / denominator;
+      const double aux        = 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e;
+      const double dAuxdTheta = 4 * ( 1 - e2 ) * 2 * cosTheta * -sinTheta;
+      const double dadTheta   = 2 * cosTheta * ( -sinTheta ) * 4 * ( 1 - e2 );
+      const double dbdTheta   = -pow( denominator, -2 ) * ( 2 * ( 1 - e2 ) * -sinTheta +
+                                                          ( 2 * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
+      dRdTheta                = b * dadTheta + a * dbdTheta;
 
-        void dFRoundeddHaighWestergaard( double& dFdXi,
-                                         double& dFdRho,
-                                         double& dFdTheta,
-                                         const double  Af,
-                                         const double  Bf,
-                                         const double  Cf,
-                                         const double  m,
-                                         const double  e,
-                                         const double  xi,
-                                         const double  rho,
-                                         const double  theta,
-                                         const double  varEps )
-        {
-            double       rNum = 0, rDen = 0;
-            const double r_        = r( theta, e, rNum, rDen );
-            const double dRdTheta_ = dRdTheta( theta, e, rNum, rDen );
+      return { r, dRdTheta };
+    }
 
-            const double auxTerm1 = m * 1. / 2 * std::pow( Bf * Bf * rho * rho * r_ * r_ + varEps * varEps, -1. / 2 ) *
-                                    2 * Bf * rho * r_ * Bf;
+    double MenetreyWillam::yieldFunction( const HaighWestergaardCoordinates& hw, const double varEps ) const
+    {
+      const double r_ = polarRadius( hw.theta, param.e );
+      if ( varEps == 0 )
+        return ( param.Af * hw.rho ) * ( param.Af * hw.rho ) + param.m * ( param.Bf * hw.rho * r_ + param.Cf * hw.xi ) -
+               1;
+      else
+        return param.Af * param.Af * hw.rho * hw.rho +
+               param.m *
+                 ( std::sqrt( param.Bf * hw.rho * r_ * param.Bf * hw.rho * r_ + varEps * varEps ) + param.Cf * hw.xi ) -
+               1;
+    }
 
-            dFdXi = m * Cf;
+    std::tuple< double, double, double > MenetreyWillam::dYieldFunction_dHaighWestergaard(
+      const HaighWestergaardCoordinates& hw,
+      const double                       varEps ) const
+    {
+      const auto [r_, dRdTheta_] = dPolarRadius_dTheta( hw.theta, param.e );
 
-            dFdRho = Af * Af * 2 * rho + auxTerm1 * r_;
+      double dFdXi, dFdRho, dFdTheta;
+      dFdXi = param.m * param.Cf;
 
-            dFdTheta = auxTerm1 * rho * dRdTheta_;
-        }
+      if ( varEps == 0.0 ) {
+        dFdRho   = 2 * param.Af * hw.rho * param.Af + param.m * param.Bf * r_;
+        dFdTheta = param.m * param.Bf * hw.rho * dRdTheta_;
+      }
+      else {
+        const double auxTerm1 = param.m * 0.5 *
+                                std::pow( param.Bf * param.Bf * hw.rho * hw.rho * r_ * r_ + varEps * varEps, -0.5 ) *
+                                2 * param.Bf * hw.rho * r_ * param.Bf;
 
-        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
-        {
-            Af = 0;
-            Bf = 1. / ( sqrt6 * ft );
-            Cf = 1. / ( sqrt3 * ft );
-            m  = 1;
-            e  = 0.51;
-        }
+        dFdRho   = param.Af * param.Af * 2 * hw.rho + auxTerm1 * r_;
+        dFdTheta = auxTerm1 * hw.rho * dRdTheta_;
+      }
 
-        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
-        {
-            Af = 0;
-            Bf = sqrt3_2 / ft;
-            Cf = 0;
-            m  = 1;
-            e  = 1;
-        }
+      return { dFdXi, dFdRho, dFdTheta };
+    }
 
-        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
-        {
-            Af = 0;
-            Bf = sqrt3_8 * ( fc + ft ) / ( fc * ft );
-            Cf = 3. / 2 * ( fc - ft ) / ( fc * ft );
-            m  = 1;
-            e  = 1;
-        }
-        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc )
-        {
-            Af = 0.;
-            Bf = 1. / sqrt6 * ( fc + 2. * ft ) / ( fc * ft );
-            Cf = 1. / sqrt3 * ( fc - ft ) / ( fc * ft );
-            m  = 1.;
-            e  = ( fc + 2 * ft ) / ( 2 * fc + ft );
-        }
-    } // namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam
+  } // namespace ContinuumMechanics::CommonConstitutiveModels
 } // namespace Marmot

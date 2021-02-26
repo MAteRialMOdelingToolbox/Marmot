@@ -27,70 +27,67 @@
  */
 
 #pragma once
+#include "Marmot/HaighWestergaard.h"
+#include <utility>
 
 namespace Marmot {
-    namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam {
+  namespace ContinuumMechanics::CommonConstitutiveModels {
 
-        double r( const double theta, const double e, double& numerator, double& denominator );
+    class MenetreyWillam {
+    public:
+      struct MenetreyWillamParameters {
+        double Af, Bf, Cf, m, e;
+      } param;
 
-        double dRdTheta( const double theta, const double e, const double rNumerator, const double rDenominator );
+      enum class MenetreyWillamType { Mises, Rankine, DruckerPrager, MohrCoulomb };
 
-        double e( const double fc, const double ft );
+      MenetreyWillam( const double              ft,
+                      const MenetreyWillamType& type = MenetreyWillamType::Rankine,
+                      const double              fc   = 0 );
 
-        double c( const double fc, const double ft );
+      void setParameters( const double ft, const double fc, const MenetreyWillamType& type );
 
-        double phi( const double fc, const double ft );
+      double        polarRadius( const double& theta ) const;
+      static double polarRadius( const double& theta, const double& e );
 
-        double fc( const double c, const double phi );
+      std::pair< double, double >        dPolarRadius_dTheta( const double& theta ) const;
+      static std::pair< double, double > dPolarRadius_dTheta( const double& theta, const double& e );
 
-        double ft( const double c, const double phi );
+      double yieldFunction( const HaighWestergaard::HaighWestergaardCoordinates& hw, const double varEps = 0.0 ) const;
 
-        double f( const double Af, const double Bf, const double Cf, const double m, const double e, const double xi, const double rho, const double theta );
+      std::tuple< double, double, double > dYieldFunction_dHaighWestergaard(
+        const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates& hw,
+        const double                                                             varEps = 0.0 ) const;
 
-        void dFdHaighWestergaard( double& dFdXi,
-                                  double& dFdRho,
-                                  double& dFdTheta,
-                                  const double  Af,
-                                  const double  Bf,
-                                  const double  Cf,
-                                  const double  m,
-                                  const double  e,
-                                  const double  xi,
-                                  const double  rho,
-                                  const double  theta );
+      /*
+       * Inline functions
+       */
 
-        double fRounded( const double Af,
-                         const double Bf,
-                         const double Cf,
-                         const double m,
-                         const double e,
-                         const double xi,
-                         const double rho,
-                         const double theta,
-                         const double varEps );
+      static inline double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi )
+      {
+        return varEps * 2 * std::sin( psi );
+      }
 
-        void dFRoundeddHaighWestergaard( double& dFdXi,
-                                         double& dFdRho,
-                                         double& dFdTheta,
-                                         const double  Af,
-                                         const double  Bf,
-                                         const double  Cf,
-                                         const double  m,
-                                         const double  e,
-                                         const double  xi,
-                                         const double  rho,
-                                         const double  theta,
-                                         const double  varEps );
+      static inline double e( const double fc, const double ft ) { return ( fc + 2 * ft ) / ( 2 * fc + ft ); }
 
-        double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi );
+      static inline double c( const double fc, const double ft )
+      {
+        const double phi_ = phi( fc, ft );
+        return ft * ( 1 + std::sin( phi_ ) ) / ( 2 + std::cos( phi_ ) );
+      }
 
-        void RankineParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc = 0 );
+      static inline double phi( const double fc, const double ft ) { return std::asin( ( fc - ft ) / ( fc + ft ) ); }
 
-        void MisesParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc = 0 );
+      static inline double ft( const double c, const double phi )
+      {
+        return 2 * c * std::cos( phi ) / ( 1 + std::sin( phi ) );
+      }
 
-        void DruckerPragerParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc );
+      static inline double fc( const double c, const double phi )
+      {
+        return 2 * c * std::cos( phi ) / ( 1 - std::sin( phi ) );
+      }
+    };
 
-        void MohrCoulombParameters( double& Af, double& Bf, double& Cf, double& m, double& e, const double ft, const double fc );
-
-    } // namespace ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam
+  } // namespace ContinuumMechanics::CommonConstitutiveModels
 } // namespace Marmot
