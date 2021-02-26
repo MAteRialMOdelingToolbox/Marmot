@@ -2,6 +2,6 @@
 
 MarmotElement::~MarmotElement() {}
 
-void MarmotElement::assignProperty( const ElementProperties& property ){}
+void MarmotElement::assignProperty( const ElementProperties& property ) {}
 
-void MarmotElement::assignProperty( const MarmotMaterialSection& property ){}
+void MarmotElement::assignProperty( const MarmotMaterialSection& property ) {}
