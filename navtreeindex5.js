@@ -1,9 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"namespaceMarmot_1_1Math.html#aa70f058118d023378595a10df1872291":[1,0,0,4,11],
-"namespaceMarmot_1_1Math.html#aabc6dcb6af42136caacd1b79a1750b54":[1,0,0,4,5],
-"namespaceMarmot_1_1Math.html#ad3a65166e9b849eb54ccef942368b6e6":[1,0,0,4,0],
-"namespaceMarmot_1_1Math.html#ad3ad1d152a8910ba18d583323a662a9c":[1,0,0,4,15],
 "namespaceMarmot_1_1Math.html#ad861b558690269c75c17369af0cd0f07":[1,0,0,4,8],
 "namespaceMarmot_1_1Math.html#ada75db8be0817cafc16df2b9d6a722b3":[1,0,0,4,17],
 "namespaceMarmot_1_1Math.html#ae070a2cdcdf4ae5cb71899ba67edc62e":[1,0,0,4,3],

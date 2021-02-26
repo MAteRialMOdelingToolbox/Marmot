@@ -3,7 +3,8 @@ var annotated_dup =
     [ "Marmot", "namespaceMarmot.html", [
       [ "ContinuumMechanics", "namespaceMarmot_1_1ContinuumMechanics.html", [
         [ "CommonConstitutiveModels", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels.html", [
-          [ "DuvautLionsViscosity", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity" ]
+          [ "DuvautLionsViscosity", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity" ],
+          [ "MenetreyWillam", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam" ]
         ] ],
         [ "HaighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html", [
           [ "HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_dup" ]
