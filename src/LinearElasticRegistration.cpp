@@ -3,14 +3,14 @@
 
 namespace Marmot::Materials {
 
-    namespace Registration {
+  namespace Registration {
 
-        using namespace MarmotLibrary;
+    using namespace MarmotLibrary;
 
-        const static bool LinearElasticIsRegistered = MarmotMaterialFactory::
-            registerMaterial( MaterialCode::LinearElastic,
-                              "LINEARELASTIC",
-                              makeDefaultMarmotMaterialFactoryFunction< class LinearElastic >() );
+    const static bool LinearElasticIsRegistered = MarmotMaterialFactory::
+      registerMaterial( MaterialCode::LinearElastic,
+                        "LINEARELASTIC",
+                        makeDefaultMarmotMaterialFactoryFunction< class LinearElastic >() );
 
-    } // namespace Registration
+  } // namespace Registration
 } // namespace Marmot::Materials
