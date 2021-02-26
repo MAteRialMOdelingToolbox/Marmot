@@ -1,88 +1,94 @@
-#include "Marmot/MarmotElement.h"
-#include "Marmot/MarmotMaterial.h"
 #include "Marmot/Marmot.h"
+#include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotJournal.h"
-#include <unordered_map>
+#include "Marmot/MarmotMaterial.h"
+#include <cassert>
 #include <string>
 #include <tuple>
-#include <cassert>
+#include <unordered_map>
 
 namespace MarmotLibrary {
 
-    // MaterialFactory
+  // MaterialFactory
 
-    std::unordered_map<std::string, MaterialCode> MarmotMaterialFactory::materialNameToCodeAssociation;
-    std::unordered_map<MaterialCode, MarmotMaterialFactory::materialFactoryFunction> MarmotMaterialFactory::materialFactoryFunctionByCode;
+  std::unordered_map< std::string, MaterialCode > MarmotMaterialFactory::materialNameToCodeAssociation;
+  std::unordered_map< MaterialCode, MarmotMaterialFactory::materialFactoryFunction >
+    MarmotMaterialFactory::materialFactoryFunctionByCode;
 
-    bool MarmotMaterialFactory::registerMaterial( MaterialCode            materialCode,
-                                               const std::string&      materialName,
-                                               materialFactoryFunction factoryFunction )
-    {
-        assert( materialNameToCodeAssociation.find( materialName ) == materialNameToCodeAssociation.end() );
-        assert( materialFactoryFunctionByCode.find( materialCode ) == materialFactoryFunctionByCode.end() );
+  bool MarmotMaterialFactory::registerMaterial( MaterialCode            materialCode,
+                                                const std::string&      materialName,
+                                                materialFactoryFunction factoryFunction )
+  {
+    assert( materialNameToCodeAssociation.find( materialName ) == materialNameToCodeAssociation.end() );
+    assert( materialFactoryFunctionByCode.find( materialCode ) == materialFactoryFunctionByCode.end() );
 
-        materialNameToCodeAssociation[materialName] = materialCode;
-        materialFactoryFunctionByCode[materialCode] = factoryFunction;
+    materialNameToCodeAssociation[materialName] = materialCode;
+    materialFactoryFunctionByCode[materialCode] = factoryFunction;
 
-        return true;
+    return true;
+  }
+
+  MaterialCode MarmotMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
+  {
+    try {
+      return materialNameToCodeAssociation.at( materialName );
     }
-
-    MaterialCode MarmotMaterialFactory::getMaterialCodeFromName( const std::string& materialName )
-    {
-        try {
-            return materialNameToCodeAssociation.at( materialName );
-        }
-        catch ( const std::out_of_range& e ) {
-            throw std::invalid_argument( MakeString() << "Invalid material " << materialName << " requested!" );
-        }
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString() << "Invalid material " << materialName << " requested!" );
     }
+  }
 
-    MarmotMaterial* MarmotMaterialFactory::createMaterial( MaterialCode materialCode, const double* materialProperties, int nMaterialProperties, int materialNumber)
-    {
-        try {
-            return materialFactoryFunctionByCode.at( materialCode )( materialProperties, nMaterialProperties, materialNumber );
-        }
-        catch ( const std::out_of_range& e ) {
-            throw std::invalid_argument( MakeString() << "Invalid material " << materialCode << " requested!" );
-        }
+  MarmotMaterial* MarmotMaterialFactory::createMaterial( MaterialCode  materialCode,
+                                                         const double* materialProperties,
+                                                         int           nMaterialProperties,
+                                                         int           materialNumber )
+  {
+    try {
+      return materialFactoryFunctionByCode.at(
+        materialCode )( materialProperties, nMaterialProperties, materialNumber );
     }
-
-    // ElementFactory
-
-    std::unordered_map<std::string, ElementCode>                               MarmotElementFactory::elementNameToCodeAssociation;
-    std::unordered_map<ElementCode, MarmotElementFactory::elementFactoryFunction> MarmotElementFactory::elementFactoryFunctionByCode;
-
-    bool MarmotElementFactory::registerElement( const std::string&     elementName,
-                                             ElementCode            elementCode,
-                                             elementFactoryFunction factoryFunction )
-    {
-        assert( elementNameToCodeAssociation.find( elementName ) == elementNameToCodeAssociation.end() );
-        assert( elementFactoryFunctionByCode.find( elementCode ) == elementFactoryFunctionByCode.end() );
-
-        elementNameToCodeAssociation[elementName] = elementCode;
-        elementFactoryFunctionByCode[elementCode] = factoryFunction;
-
-        return true;
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString() << "Invalid material " << materialCode << " requested!" );
     }
+  }
 
-    ElementCode MarmotElementFactory::getElementCodeFromName( const std::string& elementName )
-    {
-        try {
-            return elementNameToCodeAssociation.at( elementName );
-        }
-        catch ( const std::out_of_range& e ) {
-            throw std::invalid_argument( MakeString() << "Invalid element " << elementName << " requested!" );
-        }
-    }
+  // ElementFactory
 
-    MarmotElement* MarmotElementFactory::createElement( ElementCode elementCode, int elementNumber )
-    {
-        try {
-            return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
-        }
-        catch ( const std::out_of_range& e ) {
-            throw std::invalid_argument( MakeString() << "Invalid element " << elementCode << " requested!" );
-        }
+  std::unordered_map< std::string, ElementCode > MarmotElementFactory::elementNameToCodeAssociation;
+  std::unordered_map< ElementCode, MarmotElementFactory::elementFactoryFunction >
+    MarmotElementFactory::elementFactoryFunctionByCode;
+
+  bool MarmotElementFactory::registerElement( const std::string&     elementName,
+                                              ElementCode            elementCode,
+                                              elementFactoryFunction factoryFunction )
+  {
+    assert( elementNameToCodeAssociation.find( elementName ) == elementNameToCodeAssociation.end() );
+    assert( elementFactoryFunctionByCode.find( elementCode ) == elementFactoryFunctionByCode.end() );
+
+    elementNameToCodeAssociation[elementName] = elementCode;
+    elementFactoryFunctionByCode[elementCode] = factoryFunction;
+
+    return true;
+  }
+
+  ElementCode MarmotElementFactory::getElementCodeFromName( const std::string& elementName )
+  {
+    try {
+      return elementNameToCodeAssociation.at( elementName );
     }
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString() << "Invalid element " << elementName << " requested!" );
+    }
+  }
+
+  MarmotElement* MarmotElementFactory::createElement( ElementCode elementCode, int elementNumber )
+  {
+    try {
+      return elementFactoryFunctionByCode.at( elementCode )( elementNumber );
+    }
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString() << "Invalid element " << elementCode << " requested!" );
+    }
+  }
 
 } // namespace MarmotLibrary

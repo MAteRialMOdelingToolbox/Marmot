@@ -66,7 +66,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     # only activate if you know what you are doing:
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++20")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
     # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
@@ -117,7 +117,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         CosseratDruckerPrager
         DiffuseMicroCracking
         DruckerPrager 
-        DruckerPragerMD
+        #DruckerPragerMD
         GMCDP
         GMCDPFiniteStrain
         GMBiotElastic
@@ -152,7 +152,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         SCDPV3NonLocal
         SchaedlichSchweiger
         ShotLeon
-        ShotLeonV2
+        #ShotLeonV2
         ShotLeonNonLocal
         ShotLeonV2NonLocal
         ShotcreteSolidificationCreep
