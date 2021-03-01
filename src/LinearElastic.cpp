@@ -48,6 +48,7 @@ namespace Marmot::Materials {
       normalVector << materialProperties[i++], materialProperties[i++], materialProperties[i++];
 
       switch ( anisotropicType ) {
+      case Type::Isotropic: break;
       case Type::TransverseIsotropic:
         localStiffnessTensor = TransverseIsotropic::stiffnessTensor( E1, E2, nu12, nu23, G12 );
         break;
