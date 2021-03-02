@@ -45,7 +45,7 @@ namespace Marmot::Materials {
       Vector3d normalVector;
 
       int i = nMaterialProperties - 3;
-      normalVector << materialProperties[i++], materialProperties[i++], materialProperties[i++];
+      normalVector << materialProperties[i], materialProperties[i+1], materialProperties[i+2];
 
       switch ( anisotropicType ) {
       case Type::Isotropic: break;
