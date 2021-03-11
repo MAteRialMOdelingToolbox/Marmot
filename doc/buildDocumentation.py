@@ -96,7 +96,7 @@ if __name__ == "__main__":
     # continuum mechanics page
     with open( "doc/markdown/continuummechanics.md", "w+" ) as f:
         f.write( "\page continuummechanics Continuum Mechanics\n" )
-        f.write( "The following basic types of material models are available in %Marmot.\n" )
+        f.write( "The following content concerning Continuum Mechanics is available in %Marmot.\n" )
         f.write( " - \subpage mechanicalmaterials\n" )
         f.write( " - \subpage gradmechanicalmaterials\n" )
         f.write( " - \subpage voigtnotation\n" )
