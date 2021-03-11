@@ -154,8 +154,8 @@ For instance, tensor products are written as vector matrix products.
         \sigma_{22}\\
         \sigma_{33}\\
         \sigma_{12}\\
+        \sigma_{13}\\
         \sigma_{23}\\
-        \sigma_{31}\\
     \end{bmatrix}
 \f]
 
@@ -174,8 +174,8 @@ For instance, tensor products are written as vector matrix products.
         \varepsilon_{22}\\
         \varepsilon_{33}\\
         2\,\varepsilon_{12}\\
+        2\,\varepsilon_{13}\\
         2\,\varepsilon_{23}\\
-        2\,\varepsilon_{31}\\
     \end{bmatrix}
 \f]
 
@@ -189,25 +189,25 @@ For instance, tensor products are written as vector matrix products.
         \sigma_{22}\\
         \sigma_{33}\\
         \sigma_{12}\\
+        \sigma_{13}\\
         \sigma_{23}\\
-        \sigma_{31}\\
     \end{bmatrix}
     =
     \begin{bmatrix}
-    D_{1111} & D_{1122} & D_{1133} & D_{1112} & D_{1123} & D_{1131} \\
-    D_{2211} & D_{2222} & D_{2233} & D_{2212} & D_{2223} & D_{2231} \\
-    D_{3311} & D_{3322} & D_{3333} & D_{3312} & D_{3323} & D_{3331} \\
-    D_{1211} & D_{1222} & D_{1233} & D_{1212} & D_{1223} & D_{1231} \\
-    D_{2311} & D_{2322} & D_{2333} & D_{2312} & D_{2323} & D_{2331} \\
-    D_{3111} & D_{3122} & D_{3133} & D_{3112} & D_{3123} & D_{3131} \\
+    D_{1111} & D_{1122} & D_{1133} & 2\,D_{1112} & xD_{1113} & D_{1123} \\
+    D_{2211} & D_{2222} & D_{2233} & 2\,D_{2212} & D_{2213} & D_{2223} \\
+    D_{3311} & D_{3322} & D_{3333} & 2\,D_{3312} & D_{3313} & D_{3323} \\
+    2\,D_{1211} & 2\,D_{1222} & 2\,D_{1233} & 4\,D_{1212} & 2\,D_{1213} & 2\,D_{1223} \\
+    2\,D_{1311} & 2\,D_{1322} & 2\,D_{1333} & 2\,D_{1312} & 4\,D_{1313} & 2\,D_{1323} \\
+    2\,D_{2311} & 2\,D_{2322} & 2\,D_{2333} & 2\,D_{2312} & 2\,D_{2313} & 4\,D_{2323} \\
     \end{bmatrix}^{-1}
     \begin{bmatrix}
         \varepsilon_{11}\\
         \varepsilon_{22}\\
         \varepsilon_{33}\\
         2\,\varepsilon_{12}\\
+        2\,\varepsilon_{13}\\
         2\,\varepsilon_{23}\\
-        2\,\varepsilon_{31}\\
     \end{bmatrix}
 \f]
 
