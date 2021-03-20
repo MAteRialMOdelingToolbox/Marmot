@@ -32,11 +32,42 @@
 
 namespace Marmot {
   namespace ContinuumMechanics::HaighWestergaard {
+
+    /**
+     * Aggregate of the Haigh-Westergaard coordinates (invariants) \f$\xi\f$,
+     * \f$\rho\f$, \f$\theta\f$.
+     */
     struct HaighWestergaardCoordinates {
-      double xi, rho, theta;
+
+      /// Hydrostatic component \f$\xi\f$
+      double xi;
+      ///  Deviatoric radius \f$\rho\f$
+      double rho;
+      /// Lode angle \f$\theta\f$ specified in radian
+      double theta;
     };
 
+    /**
+     * Computes the stress coordinates in the Haigh-Westergaard space.
+     *
+     * \note The stress coordinates are computed from the invariants \f$I_1,\,J_2,\,J_3\f$ of the stress tensor as
+     * follows:
+     *
+     * \f[\xi=I_1/\sqrt{3}\f]
+     * \f[\rho=\sqrt{2\,J_2}\f]
+     * \f[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\f]
+     *
+     * @param stress Stress tensor \f$\sig\f$ given in \ref voigtnotation "Voigt notation".
+     */
     HaighWestergaardCoordinates haighWestergaard( const Marmot::Vector6d& stress );
+    /**
+     * Computes the strain coordinates in the Haigh-Westergaard space.
+     *
+     * \note The computation is equal to @ref haighWestergaard by replacing the stress invariants with the strain
+     * invariants.
+     *
+     * @param strain Strain tensor \f$\eps\f$ given in \ref voignotation "Voigt notation".
+     */
     HaighWestergaardCoordinates haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 
   } // namespace ContinuumMechanics::HaighWestergaard
