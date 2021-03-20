@@ -207,6 +207,9 @@ $(document).ready(function(){initNavTree('classMarmot_1_1ContinuumMechanics_1_1C
 </div><!--header-->
 <div class="contents">
 
+<p>Generalized failure criterion proposed by Menétrey and Willam.  
+ <a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="MenetreyWillam_8h_source.html">MenetreyWillam.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -262,7 +265,42 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a2e382a19d9516b3569857a142b88151a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters">Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a2e382a19d9516b3569857a142b88151a">param</a></td></tr>
 <tr class="separator:a2e382a19d9516b3569857a142b88151a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Class Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Generalized failure criterion proposed by Menétrey and Willam. </p>
+<p>Implementation of the generalized failure criterion proposed by Menétrey and Willam  </p><p class="formulaDsp">
+\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1 \]
+</p>
+<p>with the Haigh-Westergaard coordinates \(\xi,\,\rho,\,\theta\) and the parameters \(A_f,\,B_f,\,C_f,\,m,\,e\) which are automatically evaluated dependent on the desired formulation (supported types see <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aee31f28f31786081f5eed39684e0d13e">MenetreyWillamType</a>).</p>
+<div class="image">
+<img src="yieldSurfaceDeviatoric_MenetreyWillam.png" alt="" width="75%"/>
+</div>
+ <h1><a class="anchor" id="autotoc_md15"></a>
+Example</h1>
+<p>For a given pair of principal stress components in the Haigh-Westergaard stress space, evaluate the Mohr-Coulomb failure criterion: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="MenetreyWillam_8h.html">Marmot/MenetreyWillam.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="HaighWestergaard_8h.html">Marmot/HaighWestergaard.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceMarmot.html">Marmot</a>;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> <a class="code" href="testBftMechanics_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>()</div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> = 1.0;</div>
+<div class="line">  <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> = 10.0;</div>
+<div class="line">  <span class="keyword">auto</span> mw = <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a8ee143cb61db234593e2eeec70748bf7">MenetreyWillam</a>( <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> , <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f">MenetreyWillamType::MohrCoulomb</a>, <a class="code" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> );</div>
+<div class="line">  <span class="keyword">const</span> HaighWestergaard::HaighWestergaardCoordinates hw = { 1.0, -10, 0 };</div>
+<div class="line">  <span class="keywordflow">if</span> ( mw.yieldCriterion( hw ) &gt;= 0 ) </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Material is yielding!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">  <span class="keywordflow">else</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Material is elastic!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+<div class="ttc" id="aHaighWestergaard_8h_html"><div class="ttname"><a href="HaighWestergaard_8h.html">HaighWestergaard.h</a></div></div>
+<div class="ttc" id="aMenetreyWillam_8h_html"><div class="ttname"><a href="MenetreyWillam_8h.html">MenetreyWillam.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_html_a5515f9b917927018cefd5515c8877dff"><div class="ttname"><a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::ft</a></div><div class="ttdeci">static double ft(const double c, const double phi)</div><div class="ttdef"><b>Definition:</b> MenetreyWillam.h:215</div></div>
+<div class="ttc" id="aclassMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_html_a8ee143cb61db234593e2eeec70748bf7"><div class="ttname"><a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a8ee143cb61db234593e2eeec70748bf7">Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillam</a></div><div class="ttdeci">MenetreyWillam(const double ft, const MenetreyWillamType &amp;type=MenetreyWillamType::Rankine, const double fc=0)</div><div class="ttdef"><b>Definition:</b> MenetreyWillam.cpp:11</div></div>
+<div class="ttc" id="aclassMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_html_ab2a1ca168ea4b5b2570220349548cfa1"><div class="ttname"><a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::fc</a></div><div class="ttdeci">static double fc(const double c, const double phi)</div><div class="ttdef"><b>Definition:</b> MenetreyWillam.h:223</div></div>
+<div class="ttc" id="aclassMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_html_aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f"><div class="ttname"><a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f">Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamType::MohrCoulomb</a></div><div class="ttdeci">@ MohrCoulomb</div></div>
+<div class="ttc" id="anamespaceMarmot_html"><div class="ttname"><a href="namespaceMarmot.html">Marmot</a></div><div class="ttdef"><b>Definition:</b> AdaptiveSubstepper.h:38</div></div>
+<div class="ttc" id="atestBftMechanics_8cpp_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="testBftMechanics_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition:</b> testBftMechanics.cpp:40</div></div>
+</div><!-- fragment --> </div><hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters" id="structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters">&#9670;&nbsp;</a></span>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</h2>
 
@@ -274,37 +312,43 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p>Aggregate of the parameters for the generalized strength criterion proposed by Menétrey and Willam. </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
 <a id="aff38ed242edbdb66c5160a122d6d4e38"></a>double</td>
 <td class="fieldname">
 Af</td>
 <td class="fielddoc">
+<p>additional parameter to capture the influence of the deviatoric stress invariant \(\rho\) </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="aea58c0f33280a7cb9b98f1c7ae560960"></a>double</td>
 <td class="fieldname">
 Bf</td>
 <td class="fielddoc">
+<p>addditional parameter to capture the influence of the deviatoric stress invariant \(\rho\) and the lode angle </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a503531748cf305e6c3cde0132cb69509"></a>double</td>
 <td class="fieldname">
 Cf</td>
 <td class="fielddoc">
+<p>addditional parameter to capture the influence of the hydrostatic stress invariant \(\xi\) </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a39fa28871a18188b43ba0028e23cd381"></a>double</td>
 <td class="fieldname">
 m</td>
 <td class="fielddoc">
+<p>Friction parameter \(m\) </p>
 </td></tr>
 <tr><td class="fieldtype">
 <a id="a401a2118a507a313abc8fdc932d6fff0"></a>double</td>
 <td class="fieldname">
 e</td>
 <td class="fielddoc">
+<p>Eccentricity parameter \(e\); to obtain a smooth and convex surface $e$ has to be in the range of \(0.5\leq e \leq 1\) </p>
 </td></tr>
 </table>
 
@@ -331,10 +375,14 @@ e</td>
 </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13ea49cb105243e7fdf66099714c60355f90"></a>Mises&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13ea22ebae77a156b83cd52c31ffe36659e4"></a>Rankine&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13eab8e760502ad9eed0d63818e060313ad0"></a>DruckerPrager&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f"></a>MohrCoulomb&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13ea49cb105243e7fdf66099714c60355f90"></a>Mises&#160;</td><td class="fielddoc"><p>von-Mises failure criterion; only the tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> has to be specified. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13ea22ebae77a156b83cd52c31ffe36659e4"></a>Rankine&#160;</td><td class="fielddoc"><p>Rankine failure criterion; only the tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> has to be specified. </p><dl class="section note"><dt>Note</dt><dd>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter \(e\)). </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13eab8e760502ad9eed0d63818e060313ad0"></a>DruckerPrager&#160;</td><td class="fielddoc"><p>Drucker-Prager failure criterion; both the tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> as well as the compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> have to be specified. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f"></a>MohrCoulomb&#160;</td><td class="fielddoc"><p>Drucker-Prager failure criterion; both the tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> as well as the compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> have to be specified. </p><dl class="section note"><dt>Note</dt><dd>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter \(e\)). </dd></dl>
+</td></tr>
 </table>
 
 </div>
@@ -371,6 +419,7 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Constructor that takes the uniaxial tensile strength \(f_t\) and two optional arguments consisting of the specific type of failure criterion <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aee31f28f31786081f5eed39684e0d13e">MenetreyWillamType</a> and the uniaxial compressive strength \(f_c\). The call of the constructor automatically fills the corresponding Menetrey-Willam <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a2e382a19d9516b3569857a142b88151a">param</a>. </p>
 
 </div>
 </div>
@@ -406,6 +455,7 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>This function can be used to reset the type of the specified failure criterion by entering the uniaxial compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a>, the uniaxial tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a> and the <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aee31f28f31786081f5eed39684e0d13e">MenetreyWillamType</a>. </p>
 
 </div>
 </div>
@@ -424,6 +474,7 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Compute the polar radius \(r\) from the Lode angle \(\theta\). The eccentricity parameter will be used from the chosen Menetrey-Willam parameters <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a2e382a19d9516b3569857a142b88151a">param</a>. </p>
 
 </div>
 </div>
@@ -460,6 +511,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Static version for computing the polar radius \(r\) from the Lode angle \(\theta\) and a specified value for the eccentricity parameter \(e\). </p>
 
 </div>
 </div>
@@ -478,6 +530,7 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Compute the polar radius \(r\) and its derivative \(\frac{dr}{d\theta}\) from the Lode angle \(\theta\). The eccentricity parameter will be used from the <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a2e382a19d9516b3569857a142b88151a">param</a> struct. </p>
 
 </div>
 </div>
@@ -514,6 +567,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Static version for computing the polar radius \(r$\) and its derivative \(\frac{dr}{d\theta}\) from the Lode angle \(\theta\) and a specified value for the eccentricity parameter \(e\). </p>
 
 </div>
 </div>
@@ -542,6 +596,8 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Evaluate the yield function \(f\) depending on the Haigh-Westergaard stress coordinates hw. \(f&lt;0\) means no yielding while \(f\geq0\) means yielding. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</p>
+<dl class="section note"><dt>Note</dt><dd>The yield function can be also used as plastic potential function if needed. </dd></dl>
 
 </div>
 </div>
@@ -570,6 +626,7 @@ e</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. \(df/d\xi,\,df/d\rho,\,df/d\theta\). When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </p>
 
 </div>
 </div>
@@ -606,6 +663,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as Abaqus does. This parameter is only relevant in the case of the Drucker-Prager or the Mohr-Coulomb criterion. The calculated smoothing value can then be used as the optional input argument varEps in <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a7fe54a8cb60c1c6000d498dbf7d406ee">yieldFunction</a> and <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ac74654627956955f135fea281acce5bf">dYieldFunction_dHaighWestergaard</a>. </p>
 
 </div>
 </div>
@@ -642,6 +700,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute the eccentricity parameter based on a given compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> and tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a>. </p>
 
 </div>
 </div>
@@ -678,6 +737,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute the cohesion based on a given compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> and tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a>. </p>
 
 </div>
 </div>
@@ -714,6 +774,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute the friction angle in radian based on a given compressive strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ab2a1ca168ea4b5b2570220349548cfa1">fc</a> and tensile strength <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a5515f9b917927018cefd5515c8877dff">ft</a>. </p>
 
 </div>
 </div>
@@ -750,6 +811,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute the tensile strength based on a given cohesion <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#abd3d40fc494ae13b2c49ddc1070d6290">c</a> and a friction angle <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a4804c0380beab98aba8dbd67789ed1ea">phi</a>. </p>
 
 </div>
 </div>
@@ -786,6 +848,7 @@ e</td>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Compute the compressive strength based on a given cohesion <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#abd3d40fc494ae13b2c49ddc1070d6290">c</a> and a friction angle <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a4804c0380beab98aba8dbd67789ed1ea">phi</a>. </p>
 
 </div>
 </div>
@@ -814,7 +877,7 @@ e</td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels.html">CommonConstitutiveModels</a></li><li class="navelem"><a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html">MenetreyWillam</a></li>
-    <li class="footer">Generated on Sat Mar 20 2021 12:33:27 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Mar 20 2021 12:34:02 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -199,17 +199,17 @@ $(document).ready(function(){initNavTree('linearelastic.html',''); initResizable
 <div class="title">Linear Elastic </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md16"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md17"></a>
 Implementation</h1>
 <p>The implementation can be found in <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html">Marmot::Materials::LinearElastic</a></p>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 Theory</h1>
 <p>The constitutive law is given in total form as</p>
 <p class="formulaDsp">
 \[ \displaystyle \boldsymbol{ \sigma } = \mathbb{ C } : \boldsymbol{ \varepsilon }, \]
 </p>
 <p>relating the nominal stress tensor \( \boldsymbol{ \sigma } \) to the linearized strain tensor \( \boldsymbol{ \varepsilon } \) with the fourth order stiffness tensor \( \mathbb{ C } \). The latter is implemented in <a class="el" href="MarmotElasticity_8h.html">MarmotElasticity.h</a> and can be specified for isotropic, transversely isotropic or orthotropic material behavior as follows:</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Isotropic Behavior</h2>
 <p>Number of independent material parameters: 2 </p><p class="formulaDsp">
 \[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix} \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G} \end{bmatrix} \]
@@ -218,7 +218,7 @@ Isotropic Behavior</h2>
 <p class="formulaDsp">
 \[ \displaystyle G = \frac{E}{2\,(1 + \nu)} \]
 </p>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Transversely Isotropic Behavior</h2>
 <p>In case of transversely isotropic behavior, the user defined normal vector specifies the \( x_1 \) - axis of a local coordinate system, representing the principal material directions in which the material stiffness tensor is formulated. The isotropic plane is implementend with respect to the local \( x_2 \) and \( x_3 \) axes.</p>
 <p>Number of independent material parameters: 5</p>
@@ -229,7 +229,7 @@ Transversely Isotropic Behavior</h2>
 <p class="formulaDsp">
 \[ \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})} \]
 </p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Orthotropic Behavior</h2>
 <p>In case of orthotropic behavior, the user defined normal vector defines the \( x_1 \) - axis of a local coordinate system, representing the principal material directions in which the material stiffness tensor is formulated</p>
 <p>Number of independent material parameters: 9</p>
@@ -243,7 +243,7 @@ Orthotropic Behavior</h2>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="content.html">Content</a></li><li class="navelem"><a class="el" href="continuummechanics.html">Continuum Mechanics</a></li><li class="navelem"><a class="el" href="mechanicalmaterials.html">Mechanical Material Models</a></li><li class="navelem"><a class="el" href="hypoelastic.html">Hypoelastic Material Models</a></li>
-    <li class="footer">Generated on Sat Mar 20 2021 12:33:27 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Mar 20 2021 12:34:02 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -227,26 +227,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"><p>Aggregate of the Haigh-Westergaard coordinates (invariants) \(\xi\), \(\rho\), \(\theta\). </p>
+</div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
 <a id="ab14d7ed506cc207b7996fd344231f216"></a>double</td>
 <td class="fieldname">
 xi</td>
 <td class="fielddoc">
-</td></tr>
+Hydrostatic component \(\xi\). </td></tr>
 <tr><td class="fieldtype">
 <a id="aa112009a778c185aa3d6ba2425c266d3"></a>double</td>
 <td class="fieldname">
 rho</td>
 <td class="fielddoc">
-</td></tr>
+Deviatoric radius \(\rho\). </td></tr>
 <tr><td class="fieldtype">
 <a id="ad4e957d5055cb6e6ea29e371d1bc4d1c"></a>double</td>
 <td class="fieldname">
 theta</td>
 <td class="fielddoc">
-</td></tr>
+Lode angle \(\theta\) specified in radian. </td></tr>
 </table>
 
 </div>
@@ -267,6 +268,23 @@ theta</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Computes the stress coordinates in the Haigh-Westergaard space.</p>
+<dl class="section note"><dt>Note</dt><dd>The stress coordinates are computed from the invariants \(I_1,\,J_2,\,J_3\) of the stress tensor as follows:</dd></dl>
+<p class="formulaDsp">
+\[\xi=I_1/\sqrt{3}\]
+</p>
+ <p class="formulaDsp">
+\[\rho=\sqrt{2\,J_2}\]
+</p>
+ <p class="formulaDsp">
+\[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stress</td><td>Stress tensor \(\sig\) given in <a class="el" href="voigtnotation.html">Voigt notation</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -285,6 +303,14 @@ theta</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Computes the strain coordinates in the Haigh-Westergaard space.</p>
+<dl class="section note"><dt>Note</dt><dd>The computation is equal to <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ad68274dce79bce89b59065101d4c705f">haighWestergaard</a> by replacing the stress invariants with the strain invariants.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strain</td><td>Strain tensor \(\eps\) given in Voigt notation. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -294,7 +320,7 @@ theta</td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html">HaighWestergaard</a></li>
-    <li class="footer">Generated on Sat Mar 20 2021 12:33:27 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Mar 20 2021 12:34:02 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

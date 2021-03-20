@@ -246,8 +246,6 @@ Functions</h2></td></tr>
 <tr class="separator:ad3ad1d152a8910ba18d583323a662a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af414d1d24c08314c9d16d36bc5a33ed4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Matrix3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#af414d1d24c08314c9d16d36bc5a33ed4">orthonormalCoordinateSystem</a> (<a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;normalVector)</td></tr>
 <tr class="separator:af414d1d24c08314c9d16d36bc5a33ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada75db8be0817cafc16df2b9d6a722b3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#ada75db8be0817cafc16df2b9d6a722b3">Polyfit</a> (const Eigen::Matrix&lt; double, 4, 1 &gt; &amp;Xdata, const Eigen::Matrix&lt; double, 4, 1 &gt; &amp;Ydata, int &amp;angle)</td></tr>
-<tr class="separator:ada75db8be0817cafc16df2b9d6a722b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ad3a65166e9b849eb54ccef942368b6e6"></a>
@@ -267,6 +265,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Check if value x is a valid floating point number </p>
 
 </div>
 </div>
@@ -313,6 +312,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Linear interpolation at location x between two points (x0|y0) and (x1|y1) </p>
 
 </div>
 </div>
@@ -331,6 +331,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>exponential of value x with numerical limits check </p>
 
 </div>
 </div>
@@ -349,6 +350,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>compute the exponent to the power of ten of an expression, e.g., 5*10^5 --&gt; return 5 </p>
 
 </div>
 </div>
@@ -375,6 +377,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>convert angle alpha in radiant to degree </p>
 
 </div>
 </div>
@@ -401,6 +404,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>convert angle alpha in degree to radiant </p>
 
 </div>
 </div>
@@ -427,6 +431,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Macaulay function applied to scalar </p>
 
 </div>
 </div>
@@ -453,6 +458,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Heaviside function applied to scalar </p>
 
 </div>
 </div>
@@ -481,6 +487,7 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Extract sign of value val </p>
 
 </div>
 </div>
@@ -501,6 +508,7 @@ template&lt;int nRows, int nCols&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>apply Macaulay function to a matrix </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>: Can be replaced easily with Eigen's array() functionality ??? </dd></dl>
 
 </div>
 </div>
@@ -543,6 +551,7 @@ template&lt;typename functionType , typename yType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Explicit Euler integration of function fRate taking arguments fRateArgs and initial value a yN </p>
 
 </div>
 </div>
@@ -585,6 +594,9 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Semi-implicit Euler integration of function fRate taking arguments fRateArgs and initial value yN using central difference scheme for computing </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><p class="startdd">: Replace inverse bei solving equation system? </p>
+<p class="enddd">: Use external central difference function? </p>
+</dd></dl>
 
 </div>
 </div>
@@ -615,6 +627,7 @@ template&lt;int nRows, int nCols, typename functionType &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>returns central numerical differentiation of a vector-valued function f with respect to vector X --&gt; use std::bind to create function f(x) from function with multiple arguments </p>
 
 </div>
 </div>
@@ -657,6 +670,7 @@ template&lt;typename functionType , typename yType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Explicit Euler integration with Richardson extrapolation of function fRate taking arguments fRateArgs and initial value yN </p>
 
 </div>
 </div>
@@ -705,6 +719,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Explicit Euler integration with error estimation based on Richardson extrapolation of function fRate taking arguments fRateArgs and initial value yN . </p>
 
 </div>
 </div>
@@ -723,6 +738,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Computes the directional cosines between a transformed and the global cartesian coordinate system. </p>
 
 </div>
 </div>
@@ -741,40 +757,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="ada75db8be0817cafc16df2b9d6a722b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada75db8be0817cafc16df2b9d6a722b3">&#9670;&nbsp;</a></span>Polyfit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Marmot::Math::Polyfit </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::Matrix&lt; double, 4, 1 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Xdata</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Matrix&lt; double, 4, 1 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Ydata</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>angle</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Computes an orthonormal coordinate system from an unit normal vector as \( x_1 \) - axis. </p>
 
 </div>
 </div>
@@ -784,7 +767,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1Math.html">Math</a></li>
-    <li class="footer">Generated on Sat Mar 20 2021 12:33:27 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Sat Mar 20 2021 12:34:02 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

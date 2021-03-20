@@ -16,6 +16,5 @@ var MarmotMath_8h =
     [ "explicitEulerRichardson", "MarmotMath_8h.html#a50eb2b47c8a8215c8edd2b67a3939183", null ],
     [ "explicitEulerRichardsonWithErrorEstimator", "MarmotMath_8h.html#ae0bc2ac83263a20489572132640c80e5", null ],
     [ "directionCosines", "MarmotMath_8h.html#ad3ad1d152a8910ba18d583323a662a9c", null ],
-    [ "orthonormalCoordinateSystem", "MarmotMath_8h.html#af414d1d24c08314c9d16d36bc5a33ed4", null ],
-    [ "Polyfit", "MarmotMath_8h.html#ada75db8be0817cafc16df2b9d6a722b3", null ]
+    [ "orthonormalCoordinateSystem", "MarmotMath_8h.html#af414d1d24c08314c9d16d36bc5a33ed4", null ]
 ];

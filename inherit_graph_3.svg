@@ -12,7 +12,7 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html" target="_top" xlink:title=" ">
+<g id="a_node1"><a xlink:href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html" target="_top" xlink:title="Generalized failure criterion proposed by Menétrey and Willam.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-41.5 148,-41.5 148,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">Marmot::ContinuumMechanics</text>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">::CommonConstitutiveModels</text>
