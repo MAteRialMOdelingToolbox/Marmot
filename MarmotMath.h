@@ -33,30 +33,53 @@
 
 namespace Marmot {
   namespace Math {
+    /**
+     * Check if value \ref x is a valid floating point number */
     template < typename T >
     bool isNaN( T x )
     {
       return x != x;
     }
 
+    /**
+     * Linear interpolation at location \ref x between two points (\ref x0|\ref y0) and (\ref x1|\ref y1) */
     double linearInterpolation( double x, double x0, double x1, double y0, double y1 );
+
+    /**
+     * exponential of value \ref x with numerical limits check */
     double exp( double x );
+
+    /**
+     * compute the exponent to the power of ten of an expression, e.g., 5*10^5 --> return 5 */
     int    getExponentPowerTen( const double x );
 
+    /**
+     * convert angle \ref alpha in radiant to degree */
     constexpr double radToDeg( const double alpha ) { return alpha * 180 / Marmot::Constants::Pi; }
 
+    /**
+     * convert angle \ref alpha in degree to radiant */
     constexpr double degToRad( const double alpha ) { return alpha / 180 * Marmot::Constants::Pi; }
 
+    /**
+     * Macaulay function applied to \ref scalar */
     constexpr double macauly( double scalar ) { return scalar >= 0 ? scalar : 0.0; }
 
+    /**
+     * Heaviside function applied to \ref scalar */
     constexpr int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
 
+    /**
+     * Extract sign of value \ref val*/
     template < typename T >
     constexpr int sgn( T val )
     {
       return ( T( 0 ) < val ) - ( val < T( 0 ) );
     }
 
+    /**
+     * apply Macaulay function to a matrix
+     * @todo: Can be replaced easily with Eigen's array() functionality ??? */
     template < int nRows, int nCols >
     Eigen::Matrix< double, nRows, nCols > macaulyMatrix( const Eigen::Matrix< double, nRows, nCols >& mat )
     {
@@ -69,12 +92,19 @@ namespace Marmot {
       return positivePart;
     }
 
+    /**
+     * Explicit Euler integration of function \ref fRate taking arguments \ref fRateArgs and initial value \ref a yN*/
     template < typename functionType, typename yType, typename... Args >
     yType explicitEuler( yType yN, const double dt, functionType fRate, Args&&... fRateArgs )
     {
       return yN + fRate( yN, fRateArgs... ) * dt;
     }
 
+    /**
+     * Semi-implicit Euler integration of function \ref fRate taking arguments \ref fRateArgs and initial value \ref yN
+     * using central difference scheme for computing
+     * @todo: Replace inverse bei solving equation system?
+     * @todo: Use external central difference function? */
     template < int ySize, typename functionType, typename... Args >
     Eigen::Matrix< double, ySize, 1 > semiImplicitEuler( Eigen::Matrix< double, ySize, 1 > yN,
                                                          const double                      dt,
@@ -99,8 +129,9 @@ namespace Marmot {
       return yN + ( Iy - dt * fS ).inverse() * dt * fRate( yN, fRateArgs... );
     }
 
-    // returns central numerical differentiation of a vector-valued function f(x) with respect to vector x
-    // --> use std::bind to create function f(x) from function with multiple arguments
+    /**
+     * returns central numerical differentiation of a vector-valued function \ref f with respect to vector \ref X
+     * --> use std::bind to create function f(x) from function with multiple arguments */
     template < int nRows, int nCols, typename functionType >
     Eigen::Matrix< double, nRows, nCols > centralDiff( functionType f, const Eigen::Matrix< double, nCols, 1 >& X )
     {
@@ -121,6 +152,10 @@ namespace Marmot {
       return dXdY;
     }
 
+    /**
+     *  Explicit Euler integration with Richardson extrapolation of function \ref fRate taking arguments \ref fRateArgs
+     * and initial value \ref yN
+     * */
     template < typename functionType, typename yType, typename... Args >
     yType explicitEulerRichardson( yType yN, const double dt, functionType fRate, Args&&... fRateArgs )
     {
@@ -132,6 +167,10 @@ namespace Marmot {
       return 2. * w - u;
     }
 
+    /**
+     *  Explicit Euler integration with error estimation based on Richardson extrapolation of function \ref fRate taking arguments \ref fRateArgs
+     * and initial value \ref yN .
+     * */
     template < int ySize, typename functionType, typename... Args >
     std::tuple< Eigen::Matrix< double, ySize, 1 >, double > explicitEulerRichardsonWithErrorEstimator(
       Eigen::Matrix< double, ySize, 1 > yN,
@@ -166,10 +205,14 @@ namespace Marmot {
       return std::make_tuple( yNew, tauNew );
     }
 
+    /**
+     * Computes the directional cosines between a transformed and the global cartesian coordinate system.
+     */
     Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem );
+
+    /**
+     * Computes an orthonormal coordinate system from an unit normal vector as \f$ x_1 \f$ - axis.
+     */
     Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector );
-    double   Polyfit( const Eigen::Matrix< double, 4, 1 >& Xdata,
-                      const Eigen::Matrix< double, 4, 1 >& Ydata,
-                      int&                                 angle );
   } // namespace Math
 } // namespace Marmot

@@ -30,19 +30,37 @@
 
 namespace Marmot {
   namespace ContinuumMechanics::CommonConstitutiveModels {
+      /**
+       * \brief Implementation of Duvaut-Lions viscosity for a material with \ref nMatTangentSize internal degrees of
+       * freedom
+       * @todo: Update member names to more descriptive ones
+       */
     template < int nMatTangentSize >
     class DuvautLionsViscosity {
     private:
+      /*
+       * Viscosity parameter for Duvault-Lions viscosity*/
       const double viscosity;
 
     public:
       typedef Eigen::Matrix< double, nMatTangentSize, nMatTangentSize > TangentSizedMatrix;
 
       DuvautLionsViscosity( double viscosity );
-      double             applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
-      Marmot::Vector6d   applyViscosityOnStress( const Marmot::Vector6d& trialStress,
-                                                 const Marmot::Vector6d& stressInf,
-                                                 double                  dT );
+
+      /**
+       * Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and
+       * t=\f$\infty\f$, and timestep dt */
+      double applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
+      /**
+       * Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and
+       * t=\f$\infty\f$, and timestep dt */
+      Marmot::Vector6d applyViscosityOnStress( const Marmot::Vector6d& trialStress,
+                                               const Marmot::Vector6d& stressInf,
+                                               double                  dT );
+      /**
+       * Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0
+       * (trialState) and t=\f$\infty\f$, and timestep dt 
+       * @todo: Check if application to inverse can be replaced by application to non-inverse in general*/
       TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
     };
   } // namespace ContinuumMechanics::CommonConstitutiveModels
