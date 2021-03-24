@@ -70,5 +70,14 @@ namespace Marmot {
      */
     HaighWestergaardCoordinates haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 
-  } // namespace ContinuumMechanics::HaighWestergaard
+    namespace Complex {
+
+      struct HaighWestergaardCoordinates {
+        Marmot::complexDouble xi, rho, theta;
+      };
+
+      HaighWestergaardCoordinates haighWestergaard( const Marmot::Vector6cd& stress );
+
+    } // namespace Complex
+  }   // namespace ContinuumMechanics::HaighWestergaard
 } // namespace Marmot
