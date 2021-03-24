@@ -55,6 +55,11 @@ namespace Marmot {
   typedef Eigen::Matrix< double, 6, 3 > Matrix63d;
   typedef Eigen::Matrix< double, 9, 9 > Matrix9d;
 
+  // complex matrix definitions
+  typedef std::complex< double > complexDouble;
+
+  typedef Eigen::Matrix< complexDouble, 6, 1 > Vector6cd;
+
   namespace EigenTensors {
 
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > >    Tensor633d;

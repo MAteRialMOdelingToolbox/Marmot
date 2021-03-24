@@ -65,5 +65,38 @@ namespace Marmot {
       return hw;
     }
 
+    namespace Complex {
+
+      // implementation for complex data types
+      using namespace Constants;
+      using namespace ContinuumMechanics::VoigtNotation::Invariants::Complex;
+
+      HaighWestergaardCoordinates haighWestergaard( const Vector6cd& stress )
+      {
+        HaighWestergaardCoordinates hw;
+        const complexDouble         J2_ = J2( stress );
+        hw.xi                           = I1( stress ) / sqrt3;
+        hw.rho                          = sqrt( 2. * J2_ );
+
+        if ( hw.rho.real() != 0. ) {
+          const complexDouble J3_       = J3( stress );
+          const complexDouble cos3Theta = ( 3. * ( sqrt3 / 2. ) * J3_ / ( pow( J2_, 3. / 2 ) ) );
+          if ( cos3Theta.real() < -1 )
+            hw.theta = 1. / 3 * Pi;
+          else if ( cos3Theta.real() > 1 )
+            hw.theta = 0.;
+          else if ( cos3Theta != cos3Theta )
+            hw.theta = 1. / 3 * Pi;
+          else
+            hw.theta = 1. / 3 * acos( cos3Theta );
+        }
+        else
+          hw.theta = 0.;
+
+        return hw;
+      }
+
+    } // namespace Complex
+
   } // namespace ContinuumMechanics::HaighWestergaard
 } // namespace Marmot

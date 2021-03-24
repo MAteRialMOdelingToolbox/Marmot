@@ -13,6 +13,7 @@
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
  * Magdalena Schreter magdalena.schreter@uibk.ac.at
+ * Alexander Dummer alexander.dummer@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -30,6 +31,7 @@
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
+#include <complex>
 
 namespace Marmot {
   namespace Math {
@@ -72,10 +74,13 @@ namespace Marmot {
     /**
      * Extract sign of value \ref val*/
     template < typename T >
-    constexpr int sgn( T val )
+    constexpr T sgn( T val )
     {
-      return ( T( 0 ) < val ) - ( val < T( 0 ) );
+      return val / std::abs( val );
     }
+
+    double makeReal( const double& value );
+    double makeReal( const complexDouble& value );
 
     /**
      * apply Macaulay function to a matrix
