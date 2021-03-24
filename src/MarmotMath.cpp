@@ -20,6 +20,10 @@ namespace Marmot {
       return std::exp( x );
     }
 
+    double makeReal( const complexDouble& value ) { return std::real( value ); }
+
+    double makeReal( const double& value ) { return value; }
+
     // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
     int getExponentPowerTen( const double x )
     {

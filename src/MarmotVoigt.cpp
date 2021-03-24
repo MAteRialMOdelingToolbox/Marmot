@@ -1,8 +1,9 @@
-#include "Marmot/MarmotVoigt.h"
 #include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
 using namespace Eigen;
@@ -10,7 +11,6 @@ using namespace Eigen;
 namespace Marmot {
   namespace ContinuumMechanics::VoigtNotation {
     using namespace Constants;
-    using namespace ContinuumMechanics::HaighWestergaard;
     using namespace ContinuumMechanics::HaighWestergaard;
 
     const Vector6d P    = ( Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
@@ -135,8 +135,8 @@ namespace Marmot {
         const Eigen::Matrix< double, 6, 1 >& S )
       {
         // This is a fast implementation of the classical algorithm for determining
-        // the principal components of a symmetric 3x3 Matrix in Voigt notation (off diagonals expected with
-        // factor 1) as well as its respective derivatives
+        // the principal components of a symmetric 3x3 Matrix in Voigt notation (off
+        // diagonals expected with factor 1) as well as its respective derivatives
 
         using namespace Eigen;
 
@@ -259,8 +259,8 @@ namespace Marmot {
                s( 5 ) * s( 5 );
       }
 
-      double I2Strain( const Vector6d& strain ) // you could also use normal I2, but with epsilon12
-                                                // instead of 2*epsilon12
+      double I2Strain( const Vector6d& strain ) // you could also use normal I2, but
+                                                // with epsilon12 instead of 2*epsilon12
       {
         const Vector6d& e = strain;
 
@@ -275,8 +275,8 @@ namespace Marmot {
                s( 1 ) * s( 4 ) * s( 4 ) - s( 2 ) * s( 3 ) * s( 3 );
       }
 
-      double I3Strain( const Vector6d& strain ) // you could also use normal I3, but with epsilon12
-                                                // instead of 2*epsilon12
+      double I3Strain( const Vector6d& strain ) // you could also use normal I3, but
+                                                // with epsilon12 instead of 2*epsilon12
       {
         return voigtToStrain( strain ).determinant();
       }
@@ -308,7 +308,46 @@ namespace Marmot {
       {
         return voigtToStrain( IDev * strain ).determinant();
       }
-    } // namespace Invariants
+
+      namespace Complex {
+        using namespace Marmot;
+
+        complexDouble I1( const Vector6cd& stress ) { return stress.head( 3 ).sum(); }
+
+        complexDouble I2( const Vector6cd& stress )
+        {
+          const Vector6cd& s = stress;
+
+          return s( 0 ) * s( 1 ) + s( 1 ) * s( 2 ) + s( 2 ) * s( 0 ) - s( 3 ) * s( 3 ) - s( 4 ) * s( 4 ) -
+                 s( 5 ) * s( 5 );
+        }
+
+        complexDouble I3( const Vector6cd& stress )
+        {
+          const Vector6cd& s = stress;
+          return s( 0 ) * s( 1 ) * s( 2 ) + 2. * s( 3 ) * s( 4 ) * s( 5 ) - s( 0 ) * s( 5 ) * s( 5 ) -
+                 s( 1 ) * s( 4 ) * s( 4 ) - s( 2 ) * s( 3 ) * s( 3 );
+        }
+
+        complexDouble J2( const Vector6cd& stress )
+        {
+          const complexDouble I1_ = I1( stress );
+          const complexDouble I2_ = I2( stress );
+          const complexDouble res = ( 1. / 3 ) * I1_ * I1_ - I2_;
+
+          return res;
+        }
+
+        complexDouble J3( const Vector6cd& stress )
+        {
+          complexDouble I1_ = I1( stress );
+          complexDouble I2_ = I2( stress );
+          complexDouble I3_ = I3( stress );
+
+          return ( 2. / 27 ) * pow( I1_, 3 ) - ( 1. / 3 ) * I1_ * I2_ + I3_;
+        }
+      } // namespace Complex
+    }   // namespace Invariants
 
     namespace Derivatives {
       using namespace Invariants;
@@ -495,7 +534,8 @@ namespace Marmot {
         }
         else {
           dEprho_dEp << 1.e16, 1.e16, 1.e16, 1.e16, 1.e16,
-            1.e16; // 1e16 from Code David (Line 67, D_2_Umatsub_damage3_derivatives)
+            1.e16; // 1e16 from Code David (Line 67,
+                   // D_2_Umatsub_damage3_derivatives)
           dEptheta_dEp << 0., 0., 0., 0., 0., 0.;
         }
 
@@ -511,6 +551,21 @@ namespace Marmot {
         return dStrainVolumetricNegative_dStrainPrincipal( dEp ).transpose() * dSortedStrainPrincipal_dStrain( dEp ) *
                dEp_dE( CelInv, Cep );
       }
+
+      namespace Complex {
+
+        Vector6cd dStressMean_dStress() { return Vector6cd( 1. / 3. * I ); }
+
+        Vector6cd dRho_dStress( complexDouble rho, const Vector6cd& stress )
+        {
+          if ( rho.real() <= 1e-16 )
+            return Vector6cd::Zero();
+
+          Vector6cd s = IDev * stress;
+
+          return 1. / rho * P.array() * s.array();
+        }
+      } // namespace Complex
 
     } // namespace Derivatives
     namespace Transformations {

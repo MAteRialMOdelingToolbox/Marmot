@@ -13,6 +13,7 @@
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
  * Magdalena Schreter magdalena.schreter@uibk.ac.at
+ * Alexander Dummer alexander.dummer@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -150,6 +151,18 @@ namespace Marmot {
       std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalValuesAndDerivatives(
         const Eigen::Matrix< double, 6, 1 >& S );
 
+      namespace Complex {
+        // Invariants of the stress tensor with complex doubles
+        complexDouble I1( const Vector6cd& stress );
+        complexDouble I2( const Vector6cd& stress );
+        complexDouble I3( const Vector6cd& stresss );
+
+        // Invariants of the deviatoric part of the stress tensor with complex doubles
+        complexDouble J2( const Vector6cd& stress );
+        complexDouble J3( const Vector6cd& stress );
+
+      } // namespace Complex
+
     } // namespace Invariants
 
     namespace Derivatives {
@@ -182,6 +195,12 @@ namespace Marmot {
       RowVector6d      dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
       Marmot::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Vector6d& dEp );
       RowVector6d      dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
+
+      namespace Complex {
+        // derivatives of complex valued Haigh-Westergaard stresses with respect to Cauchy stress in eng. notation
+        Vector6cd dStressMean_dStress();
+        Vector6cd dRho_dStress( const complexDouble rho, const Vector6cd& stress );
+      } // namespace Complex
 
     } // namespace Derivatives
 
