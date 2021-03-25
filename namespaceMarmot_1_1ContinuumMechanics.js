@@ -5,8 +5,6 @@ var namespaceMarmot_1_1ContinuumMechanics =
       [ "getNumberOfDofForRotation", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a5229823769d5624c62579865562937de", null ],
       [ "makeIndexSwapTensor", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aa1b9d6687449fa026f2afd3256e57d8f", null ],
       [ "getReferenceToCorrectLeviCivita", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aef29bdf819cca92a9f9793a80343fa11", null ],
-      [ "Initialize_IFourthOrder", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a37c2b15cbb845959874d5371a2e4c0b5", null ],
-      [ "Initialize_IFourthOrderTranspose", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a735a8e55a2eebe06d71c1fea72ba2f44", null ],
       [ "Initialize_I2xI2", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aef3502b2faab294334dcf64338d277eb", null ],
       [ "Initialize_Isym", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a15d1edbcaf28566431b52b36a38e41bc", null ],
       [ "Initialize_Iskew", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a1484432f5a49ed9a075b59134dc5f1c1", null ],
@@ -16,8 +14,6 @@ var namespaceMarmot_1_1ContinuumMechanics =
       [ "I2xI2", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a19e903c99f721cb9a86a8613f35794a0", null ],
       [ "Isym", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aad74cf6891e87ab6df1f6db6ee2ccb86", null ],
       [ "Iskew", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a39e22eecd0896eb7b3c4158fdb25340e", null ],
-      [ "IFourthOrder", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab12fa46f0ae9374c111d07cfd88e44d6", null ],
-      [ "IFourthOrderTranspose", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a488003e8a0f1a7cc17e2d27346b4aaea", null ],
       [ "dDeviatoricStress_dStress", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab61d497f8e353bb4bc27882c95128e9a", null ],
       [ "LeviCivita3D", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a127950653ef345e8a45df1e68393c6f1", null ],
       [ "LeviCivita2D", "namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ad015d8c33b0fa498d7d134ff5eef088c", null ]

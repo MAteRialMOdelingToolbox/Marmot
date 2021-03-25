@@ -20,8 +20,6 @@ var MarmotTypedefs_8h =
     [ "Matrix36", "MarmotTypedefs_8h.html#aafff432cf7a4c6a916c625aa3f69a278", null ],
     [ "Matrix63d", "MarmotTypedefs_8h.html#a397580baed2ffbfc7230416de736742e", null ],
     [ "Matrix9d", "MarmotTypedefs_8h.html#a92e92658ec8f3b5f376dde69375da320", null ],
-    [ "complexDouble", "MarmotTypedefs_8h.html#a6381919ddfb218b0b24594f833bc97b6", null ],
-    [ "Vector6cd", "MarmotTypedefs_8h.html#affa6bc20e2333a803af3a115ce67eed5", null ],
     [ "Tensor633d", "MarmotTypedefs_8h.html#a5330da689df6e18d1d88c3de1d1cc420", null ],
     [ "Tensor322d", "MarmotTypedefs_8h.html#ad319c58ffb037313735f71b7306d981f", null ],
     [ "Tensor3333d", "MarmotTypedefs_8h.html#aa4563649c16ed3f59d5f08265ab511f4", null ],

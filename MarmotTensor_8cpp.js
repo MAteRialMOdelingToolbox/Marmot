@@ -1,7 +1,5 @@
 var MarmotTensor_8cpp =
 [
-    [ "Initialize_IFourthOrder", "MarmotTensor_8cpp.html#a37c2b15cbb845959874d5371a2e4c0b5", null ],
-    [ "Initialize_IFourthOrderTranspose", "MarmotTensor_8cpp.html#a735a8e55a2eebe06d71c1fea72ba2f44", null ],
     [ "Initialize_I2xI2", "MarmotTensor_8cpp.html#aef3502b2faab294334dcf64338d277eb", null ],
     [ "Initialize_Isym", "MarmotTensor_8cpp.html#a15d1edbcaf28566431b52b36a38e41bc", null ],
     [ "Initialize_Iskew", "MarmotTensor_8cpp.html#a1484432f5a49ed9a075b59134dc5f1c1", null ],

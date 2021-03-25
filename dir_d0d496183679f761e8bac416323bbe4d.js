@@ -43,17 +43,7 @@ var dir_d0d496183679f761e8bac416323bbe4d =
     [ "MarmotTypedefs.h", "MarmotTypedefs_8h.html", "MarmotTypedefs_8h" ],
     [ "MarmotUtility.h", "MarmotUtility_8h.html", "MarmotUtility_8h" ],
     [ "MarmotVoigt.h", "MarmotVoigt_8h.html", "MarmotVoigt_8h" ],
-    [ "MenetreyWillam.h", "MenetreyWillam_8h.html", [
-      [ "MenetreyWillam", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam" ],
-      [ "MenetreyWillamParameters", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters", [
-        [ "Af", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aff38ed242edbdb66c5160a122d6d4e38", null ],
-        [ "Bf", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#aea58c0f33280a7cb9b98f1c7ae560960", null ],
-        [ "Cf", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a503531748cf305e6c3cde0132cb69509", null ],
-        [ "m", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a39fa28871a18188b43ba0028e23cd381", null ],
-        [ "e", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#a401a2118a507a313abc8fdc932d6fff0", null ]
-      ] ]
-    ] ],
-    [ "NumericalDifferentiation.h", "NumericalDifferentiation_8h.html", "NumericalDifferentiation_8h" ],
+    [ "MenetreyWillam.h", "MenetreyWillam_8h.html", "MenetreyWillam_8h" ],
     [ "PerezFougetSubstepperExplicitMarkII.h", "PerezFougetSubstepperExplicitMarkII_8h.html", [
       [ "PerezFougetSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper" ]
     ] ],

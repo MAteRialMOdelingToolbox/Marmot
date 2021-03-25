@@ -1,6 +1,5 @@
 var namespaceMarmot_1_1NumericalAlgorithms =
 [
-    [ "Differentiation", "namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation.html", "namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation" ],
     [ "AdaptiveSubstepper", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper" ],
     [ "AdaptiveSubstepperExplicit", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html", "classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit" ],
     [ "HughesWinget", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html", "classMarmot_1_1NumericalAlgorithms_1_1HughesWinget" ],
