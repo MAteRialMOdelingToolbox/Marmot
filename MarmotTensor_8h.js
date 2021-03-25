@@ -15,6 +15,8 @@ var MarmotTensor_8h =
     [ "I2xI2", "MarmotTensor_8h.html#a19e903c99f721cb9a86a8613f35794a0", null ],
     [ "Isym", "MarmotTensor_8h.html#aad74cf6891e87ab6df1f6db6ee2ccb86", null ],
     [ "Iskew", "MarmotTensor_8h.html#a39e22eecd0896eb7b3c4158fdb25340e", null ],
+    [ "IFourthOrder", "MarmotTensor_8h.html#ab12fa46f0ae9374c111d07cfd88e44d6", null ],
+    [ "IFourthOrderTranspose", "MarmotTensor_8h.html#a488003e8a0f1a7cc17e2d27346b4aaea", null ],
     [ "dDeviatoricStress_dStress", "MarmotTensor_8h.html#ab61d497f8e353bb4bc27882c95128e9a", null ],
     [ "LeviCivita3D", "MarmotTensor_8h.html#a127950653ef345e8a45df1e68393c6f1", null ],
     [ "LeviCivita2D", "MarmotTensor_8h.html#ad015d8c33b0fa498d7d134ff5eef088c", null ]

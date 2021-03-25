@@ -15,5 +15,6 @@ var dir_44fa5c34dc4af4cf8679eba293af8a34 =
     [ "MarmotTensor.cpp", "MarmotTensor_8cpp.html", "MarmotTensor_8cpp" ],
     [ "MarmotUtility.cpp", "MarmotUtility_8cpp.html", "MarmotUtility_8cpp" ],
     [ "MarmotVoigt.cpp", "MarmotVoigt_8cpp.html", "MarmotVoigt_8cpp" ],
-    [ "MenetreyWillam.cpp", "MenetreyWillam_8cpp.html", "MenetreyWillam_8cpp" ]
+    [ "MenetreyWillam.cpp", "MenetreyWillam_8cpp.html", null ],
+    [ "NumericalDifferentiation.cpp", "NumericalDifferentiation_8cpp.html", "NumericalDifferentiation_8cpp" ]
 ];

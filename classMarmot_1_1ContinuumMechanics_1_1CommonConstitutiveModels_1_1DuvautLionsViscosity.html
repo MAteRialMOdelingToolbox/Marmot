@@ -205,6 +205,9 @@ $(document).ready(function(){initNavTree('classMarmot_1_1ContinuumMechanics_1_1C
 </div><!--header-->
 <div class="contents">
 
+<p>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom.  
+ <a href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="DuvautLionsViscosity_8h_source.html">DuvautLionsViscosity.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -228,7 +231,13 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a5bcf1ffacecee603485ae64c97cd0a1b"><td class="memItemLeft" align="right" valign="top">const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html#a5bcf1ffacecee603485ae64c97cd0a1b">viscosity</a></td></tr>
 <tr class="separator:a5bcf1ffacecee603485ae64c97cd0a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;int nMatTangentSize&gt;<br />
+class Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;</h3>
+
+<p>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>: Update member names to more descriptive ones </dd></dl>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ae2af85711baa602eae4d1900f62a5332"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2af85711baa602eae4d1900f62a5332">&#9670;&nbsp;</a></span>TangentSizedMatrix</h2>
 
@@ -300,6 +309,7 @@ template&lt;int s&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= \(\infty\), and timestep dt </p>
 
 </div>
 </div>
@@ -336,6 +346,7 @@ template&lt;int s&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= \(\infty\), and timestep dt </p>
 
 </div>
 </div>
@@ -366,6 +377,7 @@ template&lt;int s&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= \(\infty\), and timestep dt </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>: Check if application to inverse can be replaced by application to non-inverse in general </dd></dl>
 
 </div>
 </div>
@@ -404,7 +416,7 @@ template&lt;int nMatTangentSize&gt; </div>
 			<ul>
 				<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels.html">CommonConstitutiveModels</a></li><li class="navelem"><a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html">DuvautLionsViscosity</a></li>
 				<li class="footer">
-					Generated on Thu Mar 25 2021 17:27:22 for Marmot by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Mar 25 2021 17:27:49 for Marmot by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"
                      onerror="this.onerror=null;this.src='doxygen.svg';"/></a> 1.9.1.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.

@@ -201,6 +201,9 @@ $(document).ready(function(){initNavTree('namespaceMarmot_1_1ContinuumMechanics_
 <div class="title">Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implementations of functions for the description of transversely isotropic elastic behavior.  
+<a href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -209,7 +212,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a68f0e46e202ca9545127a6fe44da3fde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#a68f0e46e202ca9545127a6fe44da3fde">stiffnessTensor</a> (const double E1, const double E2, const double nu12, const double nu23, const double G12)</td></tr>
 <tr class="separator:a68f0e46e202ca9545127a6fe44da3fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementations of functions for the description of transversely isotropic elastic behavior. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="adea9e7ebcebd0d27958acf869671d177"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adea9e7ebcebd0d27958acf869671d177">&#9670;&nbsp;</a></span>complianceTensor()</h2>
 
@@ -253,7 +258,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<p>Compute the transversely isotropic compliance tensor: </p><p class="formulaDsp">
+\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix} \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}} \end{bmatrix} \]
+</p>
+<p> The isotropic plane is defined with respect to the \( x_2 \) and \( x_3 \) axes of a local coordinate system. It is computed from the young's modulus \( E_1 \), the shear modulus \( G_{12} \) and poisson's ratio \( \nu_{12} *\) effective out of the isotropic plane and the in - plane young's modulus \( E_2 \) and poisson's ratio \( *\nu_{23} \).</p>
+<p>The in - plane shear modulus \( G_{23} \) can be expressed by</p>
+<p class="formulaDsp">
+\[ \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})} \]
+</p>
+ 
 </div>
 </div>
 <a id="a68f0e46e202ca9545127a6fe44da3fde"></a>
@@ -299,6 +312,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Compute the transversely isotropic stiffness tensor \( \mathbb{C} \) as inverse of the transversely isotropic compliance tensor \( \mathbb{C}^{-1} \). </p>
 
 </div>
 </div>
@@ -309,7 +323,7 @@ Functions</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity.html">Elasticity</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html">TransverseIsotropic</a></li>
 				<li class="footer">
-					Generated on Thu Mar 25 2021 17:27:22 for Marmot by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Mar 25 2021 17:27:49 for Marmot by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"
                      onerror="this.onerror=null;this.src='doxygen.svg';"/></a> 1.9.1.
 					Dark theme by <a href="http://majerle.eu" target="_new">Tilen Majerle</a>. All rights reserved.
