@@ -1,13 +1,13 @@
 body {
         background-color: white; 
-        color: black;
+        color: #003361;
         margin: 0;
 }
 
 div.contents {
         margin-bottom: 0px;
         margin-top: 0px;
-        margin-left: 0px;
+        margin-left: auto;
         padding: 12px;
         margin-right: auto;
         max-width: 900px;
