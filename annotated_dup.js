@@ -7,6 +7,9 @@ var annotated_dup =
           [ "MenetreyWillam", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html", "classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam" ]
         ] ],
         [ "HaighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html", [
+          [ "Complex", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html", [
+            [ "HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_1_1HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_1_1HaighWestergaardCoordinates_dup" ]
+          ] ],
           [ "HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_dup" ]
         ] ]
       ] ],

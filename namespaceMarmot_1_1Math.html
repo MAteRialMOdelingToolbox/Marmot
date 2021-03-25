@@ -222,9 +222,13 @@ Functions</h2></td></tr>
 <tr class="separator:a6df59eeb030f379b61b830c7bd115fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a057c092d86779e08ca193ccc04f41901"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a057c092d86779e08ca193ccc04f41901">heaviside</a> (double scalar)</td></tr>
 <tr class="separator:a057c092d86779e08ca193ccc04f41901"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad861b558690269c75c17369af0cd0f07"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad861b558690269c75c17369af0cd0f07"><td class="memTemplItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#ad861b558690269c75c17369af0cd0f07">sgn</a> (T val)</td></tr>
-<tr class="separator:ad861b558690269c75c17369af0cd0f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a315076a1c31bdb4ae6f7f5c1794d45e2">sgn</a> (T val)</td></tr>
+<tr class="separator:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a335a5f714ab10341744d8fea021e08dd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a335a5f714ab10341744d8fea021e08dd">makeReal</a> (const double &amp;value)</td></tr>
+<tr class="separator:a335a5f714ab10341744d8fea021e08dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c8993c45b83b35c424ff4306f6db491"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a5c8993c45b83b35c424ff4306f6db491">makeReal</a> (const <a class="el" href="namespaceMarmot.html#a6381919ddfb218b0b24594f833bc97b6">complexDouble</a> &amp;value)</td></tr>
+<tr class="separator:a5c8993c45b83b35c424ff4306f6db491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17783b288ece1a97c5a43490744c98c2"><td class="memTemplParams" colspan="2">template&lt;int nRows, int nCols&gt; </td></tr>
 <tr class="memitem:a17783b288ece1a97c5a43490744c98c2"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, nRows, nCols &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a17783b288ece1a97c5a43490744c98c2">macaulyMatrix</a> (const Eigen::Matrix&lt; double, nRows, nCols &gt; &amp;mat)</td></tr>
 <tr class="separator:a17783b288ece1a97c5a43490744c98c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -463,8 +467,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ad861b558690269c75c17369af0cd0f07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad861b558690269c75c17369af0cd0f07">&#9670;&nbsp;</a></span>sgn()</h2>
+<a id="a315076a1c31bdb4ae6f7f5c1794d45e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315076a1c31bdb4ae6f7f5c1794d45e2">&#9670;&nbsp;</a></span>sgn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,7 +479,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr int Marmot::Math::sgn </td>
+          <td class="memname">constexpr T Marmot::Math::sgn </td>
           <td>(</td>
           <td class="paramtype">T&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
@@ -489,6 +493,42 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Extract sign of value val </p>
+
+</div>
+</div>
+<a id="a335a5f714ab10341744d8fea021e08dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a335a5f714ab10341744d8fea021e08dd">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Marmot::Math::makeReal </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c8993c45b83b35c424ff4306f6db491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c8993c45b83b35c424ff4306f6db491">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Marmot::Math::makeReal </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a6381919ddfb218b0b24594f833bc97b6">complexDouble</a> &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -768,7 +808,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1Math.html">Math</a></li>
-    <li class="footer">Generated on Thu Mar 25 2021 06:49:52 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Thu Mar 25 2021 06:50:19 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

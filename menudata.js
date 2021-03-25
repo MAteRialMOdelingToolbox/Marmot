@@ -69,7 +69,13 @@ var menudata={children:[
 {text:"t",url:"namespacemembers_func.html#index_t"},
 {text:"v",url:"namespacemembers_func.html#index_v"}]},
 {text:"Variables",url:"namespacemembers_vars.html"},
-{text:"Typedefs",url:"namespacemembers_type.html"},
+{text:"Typedefs",url:"namespacemembers_type.html",children:[
+{text:"c",url:"namespacemembers_type.html#index_c"},
+{text:"f",url:"namespacemembers_type.html#index_f"},
+{text:"m",url:"namespacemembers_type.html#index_m"},
+{text:"r",url:"namespacemembers_type.html#index_r"},
+{text:"t",url:"namespacemembers_type.html#index_t"},
+{text:"v",url:"namespacemembers_type.html#index_v"}]},
 {text:"Enumerations",url:"namespacemembers_enum.html"},
 {text:"Enumerator",url:"namespacemembers_eval.html",children:[
 {text:"b",url:"namespacemembers_eval.html#index_b"},

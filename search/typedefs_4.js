@@ -1,13 +1,18 @@
 var searchData=
 [
-  ['tangentsizedmatrix_1090',['TangentSizedMatrix',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html#a586e986d4cc9a228232e4e27b4cc175a',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepper::TangentSizedMatrix()'],['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a96a082b1d7c1fc3cf3a674e0d8cc8480',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::TangentSizedMatrix()'],['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html#ae2af85711baa602eae4d1900f62a5332',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a07cb6783734291b38b62c49bfd7a5e6a',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html#a4a188eb9694fdce99e0869aab8c62782',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::TangentSizedMatrix()']]],
-  ['tensor122d_1091',['Tensor122d',['../namespaceMarmot_1_1EigenTensors.html#ae6396a012eda000f83593b9c567ad9f0',1,'Marmot::EigenTensors']]],
-  ['tensor2112d_1092',['Tensor2112d',['../namespaceMarmot_1_1EigenTensors.html#a29a7b7546e5edee3186863f5aeed1f01',1,'Marmot::EigenTensors']]],
-  ['tensor2122d_1093',['Tensor2122d',['../namespaceMarmot_1_1EigenTensors.html#aaed30d6bcb9e565663baa1830bc6162d',1,'Marmot::EigenTensors']]],
-  ['tensor2212d_1094',['Tensor2212d',['../namespaceMarmot_1_1EigenTensors.html#a9d21573525e2f87a5a3a05aefd18302c',1,'Marmot::EigenTensors']]],
-  ['tensor2222d_1095',['Tensor2222d',['../namespaceMarmot_1_1EigenTensors.html#a909b68b65ae333fe4f71e27158ce14a9',1,'Marmot::EigenTensors']]],
-  ['tensor322d_1096',['Tensor322d',['../namespaceMarmot_1_1EigenTensors.html#ad319c58ffb037313735f71b7306d981f',1,'Marmot::EigenTensors']]],
-  ['tensor3333d_1097',['Tensor3333d',['../namespaceMarmot_1_1EigenTensors.html#aa4563649c16ed3f59d5f08265ab511f4',1,'Marmot::EigenTensors']]],
-  ['tensor333d_1098',['Tensor333d',['../namespaceMarmot_1_1EigenTensors.html#aafbb4d0fece119819f27bbf68b1f76b2',1,'Marmot::EigenTensors']]],
-  ['tensor633d_1099',['Tensor633d',['../namespaceMarmot_1_1EigenTensors.html#a5330da689df6e18d1d88c3de1d1cc420',1,'Marmot::EigenTensors']]]
+  ['materialfactoryfunction_1097',['materialFactoryFunction',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#af816b8c7c13946dc11dc6a4d77c799cc',1,'MarmotLibrary::MarmotMaterialFactory']]],
+  ['matrix34d_1098',['Matrix34d',['../namespaceMarmot.html#ad86d1ce5512561af7c3acc09ad35174f',1,'Marmot']]],
+  ['matrix36_1099',['Matrix36',['../namespaceMarmot.html#aafff432cf7a4c6a916c625aa3f69a278',1,'Marmot']]],
+  ['matrix36d_1100',['Matrix36d',['../namespaceMarmot.html#a69a44de0a03fcbdf397fa8e951889154',1,'Marmot']]],
+  ['matrix3d_1101',['Matrix3d',['../namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3',1,'Marmot']]],
+  ['matrix63d_1102',['Matrix63d',['../namespaceMarmot.html#a397580baed2ffbfc7230416de736742e',1,'Marmot']]],
+  ['matrix69d_1103',['Matrix69d',['../namespaceMarmot.html#a0a2344556757165684203dfbb2e0ca1d',1,'Marmot']]],
+  ['matrix6d_1104',['Matrix6d',['../namespaceMarmot.html#a48144b7616079807fd550c92d142e9da',1,'Marmot']]],
+  ['matrix99d_1105',['Matrix99d',['../namespaceMarmot.html#af33f8a23557bad80e7029e08e8a71591',1,'Marmot']]],
+  ['matrix9d_1106',['Matrix9d',['../namespaceMarmot.html#a92e92658ec8f3b5f376dde69375da320',1,'Marmot']]],
+  ['matrixstatestrain_1107',['MatrixStateStrain',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::MatrixStateStrain()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain()']]],
+  ['mconstvector6d_1108',['mConstVector6d',['../namespaceMarmot.html#aab67dc8984f8afd2a802dce3128dd464',1,'Marmot']]],
+  ['mmatrix6d_1109',['mMatrix6d',['../namespaceMarmot.html#a42cce1f9189e52b4cad0caef7ace17d2',1,'Marmot']]],
+  ['mvector6d_1110',['mVector6d',['../namespaceMarmot.html#a4e78d5e4bb006cdfd319f06ae686312f',1,'Marmot']]],
+  ['mvectorxd_1111',['mVectorXd',['../namespaceMarmot.html#a5e77b34ec4d5628dc4a164a359a4fd22',1,'Marmot']]]
 ];

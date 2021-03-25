@@ -36,7 +36,9 @@ var namespaceMarmot =
       [ "degToRad", "namespaceMarmot_1_1Math.html#aabc6dcb6af42136caacd1b79a1750b54", null ],
       [ "macauly", "namespaceMarmot_1_1Math.html#a6df59eeb030f379b61b830c7bd115fe7", null ],
       [ "heaviside", "namespaceMarmot_1_1Math.html#a057c092d86779e08ca193ccc04f41901", null ],
-      [ "sgn", "namespaceMarmot_1_1Math.html#ad861b558690269c75c17369af0cd0f07", null ],
+      [ "sgn", "namespaceMarmot_1_1Math.html#a315076a1c31bdb4ae6f7f5c1794d45e2", null ],
+      [ "makeReal", "namespaceMarmot_1_1Math.html#a335a5f714ab10341744d8fea021e08dd", null ],
+      [ "makeReal", "namespaceMarmot_1_1Math.html#a5c8993c45b83b35c424ff4306f6db491", null ],
       [ "macaulyMatrix", "namespaceMarmot_1_1Math.html#a17783b288ece1a97c5a43490744c98c2", null ],
       [ "explicitEuler", "namespaceMarmot_1_1Math.html#a459bb7440ffa3c6e0af2dc7069973663", null ],
       [ "semiImplicitEuler", "namespaceMarmot_1_1Math.html#aa70f058118d023378595a10df1872291", null ],
@@ -67,5 +69,7 @@ var namespaceMarmot =
     [ "Matrix36", "namespaceMarmot.html#aafff432cf7a4c6a916c625aa3f69a278", null ],
     [ "Matrix63d", "namespaceMarmot.html#a397580baed2ffbfc7230416de736742e", null ],
     [ "Matrix9d", "namespaceMarmot.html#a92e92658ec8f3b5f376dde69375da320", null ],
+    [ "complexDouble", "namespaceMarmot.html#a6381919ddfb218b0b24594f833bc97b6", null ],
+    [ "Vector6cd", "namespaceMarmot.html#affa6bc20e2333a803af3a115ce67eed5", null ],
     [ "discardTheIncrement", "namespaceMarmot.html#a252d6a7dd503dee472f2d47ae9782b83", null ]
 ];
