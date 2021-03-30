@@ -1,3 +1,29 @@
+/* ---------------------------------------------------------------------
+ *                                       _
+ *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
+ * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
+ * | | | | | | (_| | |  | | | | | | (_) | |_
+ * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
+ *
+ * Unit of Strength of Materials and Structural Analysis
+ * University of Innsbruck,
+ * 2020 - today
+ *
+ * festigkeitslehre@uibk.ac.at
+ *
+ * Matthias Neuner matthias.neuner@uibk.ac.at
+ *
+ * This file is part of the MAteRialMOdellingToolbox (marmot).
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * The full text of the license can be found in the file LICENSE.md at
+ * the top level directory of marmot.
+ * ---------------------------------------------------------------------
+ */
 #pragma once
 #include "Eigen/Core"
 #include "Fastor/Fastor.h"
@@ -133,9 +159,10 @@ namespace Marmot {
     using ijnm    = Fastor::Index< i_, j_, n_, m_ >;
     using ik      = Fastor::Index< i_, k_ >;
     using im      = Fastor::Index< i_, m_ >;
+    using imk     = Fastor::Index< i_, m_, k_ >;
+    using imkl    = Fastor::Index< i_, m_, k_, l_ >;
     using imL     = Fastor::Index< i_, m_, L_ >;
     using imLk    = Fastor::Index< i_, m_, L_, k_ >;
-    using imk     = Fastor::Index< i_, m_, k_ >;
     using in      = Fastor::Index< i_, n_ >;
     using inB     = Fastor::Index< i_, n_, B_ >;
     using inkB    = Fastor::Index< i_, n_, k_, B_ >;
@@ -164,6 +191,7 @@ namespace Marmot {
     using km      = Fastor::Index< k_, m_ >;
     using l       = Fastor::Index< l_ >;
     using lB      = Fastor::Index< l_, B_ >;
+    using lm      = Fastor::Index< l_, m_ >;
     using m       = Fastor::Index< m_ >;
     using mK      = Fastor::Index< m_, K_ >;
     using mLl     = Fastor::Index< m_, L_, l_ >;
@@ -191,6 +219,7 @@ namespace Marmot {
     using to_ijk  = Fastor::OIndex< i_, j_, k_ >;
     using to_ijkK = Fastor::OIndex< i_, j_, k_, K_ >;
     using to_ijkL = Fastor::OIndex< i_, j_, k_, L_ >;
+    using to_ijKl = Fastor::OIndex< i_, j_, K_, l_ >;
     using to_ijkl = Fastor::OIndex< i_, j_, k_, l_ >;
     using to_ijm  = Fastor::OIndex< i_, j_, m_ >;
     using to_ijmM = Fastor::OIndex< i_, j_, m_, M_ >;
