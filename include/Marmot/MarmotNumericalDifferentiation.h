@@ -38,6 +38,7 @@ namespace Marmot {
     namespace Complex {
 
       using function_type_complex = std::function< Eigen::VectorXcd( Eigen::VectorXcd& X ) >;
+
       Eigen::MatrixXd forwardDifference( const function_type_complex& F, const Eigen::VectorXd& X );
 
       Eigen::MatrixXd centralDifference( const function_type_complex& F, const Eigen::VectorXd& X );
