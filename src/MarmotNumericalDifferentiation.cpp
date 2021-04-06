@@ -1,5 +1,5 @@
 #include "Marmot/MarmotConstants.h"
-#include "Marmot/NumericalDifferentiation.h"
+#include "Marmot/MarmotNumericalDifferentiation.h"
 #include <complex>
 
 using namespace Eigen;
@@ -43,7 +43,9 @@ namespace Marmot {
        *
        */
 
-      using namespace std::complex_literals;
+      const static std::complex< double > imaginaryUnit = { 0, 1 };
+      const static std::complex< double > complexUnit   = { 1, 1 };
+      const static std::complex< double > i_            = Marmot::Constants::sqrt2 / 2. * complexUnit;
 
       MatrixXd forwardDifference( const function_type_complex& F, const VectorXd& X )
       {
@@ -58,7 +60,7 @@ namespace Marmot {
         for ( auto i = 0; i < xSize; i++ ) {
           double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
           rightX   = X;
-          rightX( i ) += h * 1i;
+          rightX( i ) += h * imaginaryUnit;
 
           J.col( i ) = F( rightX ).imag() / h;
         }
@@ -77,7 +79,7 @@ namespace Marmot {
         VectorXcd  rightX( xSize );
         VectorXcd  leftX( xSize );
 
-        complexDouble i_ = Marmot::Constants::sqrt2 / 2. * ( 1. + 1i );
+        complexDouble i_ = Marmot::Constants::sqrt2 / 2. * complexUnit;
 
         for ( auto i = 0; i < xSize; i++ ) {
           double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
@@ -118,12 +120,12 @@ namespace Marmot {
         for ( auto i = 0; i < xSize; i++ ) {
           double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
           e.setZero();
-          e( i ) = h * Marmot::Constants::sqrt2 / 2. * ( 1. + 1i );
+          e( i ) = 1.;
 
-          x1_ = complex_X + e / 2.;
-          x2_ = complex_X - e / 2.;
-          x3_ = complex_X + e;
-          x4_ = complex_X - e;
+          x1_ = complex_X + e / 2. * i_ * h;
+          x2_ = complex_X - e / 2. * i_ * h;
+          x3_ = complex_X + e * i_ * h;
+          x4_ = complex_X - e * i_ * h;
 
           // clang-format off
           J.col( i ) = ( 8.* ( F( x1_ ) - F( x2_ ) ) 
