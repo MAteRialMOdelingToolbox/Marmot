@@ -47,7 +47,7 @@ public:
   inline double& find( const std::string& name ) const { return theStateVars[theLayout.entries.at( name ).index]; }
 
   /// check if the entry with name is managed 
-  inline bool contains ( const std::string& name ) const { return theLayout.entries.contains( name ); }
+  inline bool contains ( const std::string& name ) const { return theLayout.entries.count( name ); }
 
 protected:
   struct StateVarEntryDefinition {
