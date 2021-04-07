@@ -132,6 +132,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         OrthotropicLinearElastic
         LinearElasticNonLocal
         LinearElasticSolidificationCreep
+        LinearElasticShrinkage
         MCDP
         ModifiedCamClay
         ModLeon

@@ -86,7 +86,8 @@ namespace MarmotLibrary {
     OrthotropicLinearElastic           = 48,
     JointedHoekBrown                   = 49,
     ORDP                               = 50,
-    SCDPV3NonLocal                     = 51
+    SCDPV3NonLocal                     = 51,
+    LinearElasticShrinkage             = 52,
   };
 
   enum ElementCode {
