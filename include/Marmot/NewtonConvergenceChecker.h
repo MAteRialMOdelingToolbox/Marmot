@@ -29,24 +29,24 @@
 #include "Marmot/MarmotTypedefs.h"
 
 namespace Marmot::NumericalAlgorithms {
-  class InnerNewtonIterationChecker {
+  class NewtonConvergenceChecker {
 
-    const Eigen::MatrixXd& residualScaleMatrix;
-    const int              nMaxInnerNewtonCycles;
-    const int              nMaxInnerNewtonCyclesAlt;
-    const double           innerNewtonTol;
-    const double           innerNewtonRTol;
-    const double           innerNewtonTolAlt;
-    const double           innerNewtonRTolAlt;
+    const Eigen::VectorXd residualScaleVector;
+    const int             nMaxNewtonCycles;
+    const int             nMaxNewtonCyclesAlt;
+    const double          newtonTol;
+    const double          newtonRTol;
+    const double          newtonTolAlt;
+    const double          newtonRTolAlt;
 
   public:
-    InnerNewtonIterationChecker( const Eigen::MatrixXd& residualScaleMatrix,
-                                 int                    nMaxInnerNewtonCycles,
-                                 int                    nMaxInnerNewtonCyclesAlt,
-                                 double                 innerNewtonTol,
-                                 double                 innerNewtonRTol,
-                                 double                 innerNewtonTolAlt,
-                                 double                 innerNewtonRTolAlt );
+    NewtonConvergenceChecker( const Eigen::VectorXd& residualScaleVector,
+                              int                    nMaxNewtonCycles,
+                              int                    nMaxNewtonCyclesAlt,
+                              double                 newtonTol,
+                              double                 newtonRTol,
+                              double                 newtonTolAlt,
+                              double                 newtonRTolAlt );
 
     double relativeNorm( const Eigen::VectorXd& increment, const Eigen::VectorXd& reference );
 
