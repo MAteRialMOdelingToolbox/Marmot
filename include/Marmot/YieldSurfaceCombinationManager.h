@@ -28,25 +28,30 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-/* Manager for yield surface combinations for multisurface plasticity
- * Matthias Neuner (2015)
- * */
-
 namespace Marmot {
   namespace NumericalAlgorithms {
+    /** Manager for yield surface combinations for multisurface plasticity:
+     * Try different yield surface combinations and track already used combinations
+     * */
     template < int nYieldSurfaces >
     class YieldSurfaceCombinationManager {
+      /// Column in the YieldSurfFlagArr for marking a combination as used
       const int idxUsedFlag;
 
     public:
+      /// An array which contains every possible (reasonable) combination of yield surfaces
       Eigen::Array< bool, ( 1 << nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 ) > yieldSurfaceCombinations;
-      typedef Eigen::Array< bool, 1, nYieldSurfaces >                           YieldSurfFlagArr;
-      typedef Eigen::Array< double, 1, nYieldSurfaces >                         YieldSurfResArr;
+      /// An array to carry active/nonactive states of yield surfaces
+      typedef Eigen::Array< bool, 1, nYieldSurfaces > YieldSurfFlagArr;
+      /// An array to carry values of yield functions
+      typedef Eigen::Array< double, 1, nYieldSurfaces > YieldSurfResArr;
 
       YieldSurfaceCombinationManager();
-      void initYieldFlagCombinations();
+      /// get another unused combination of yield surfaces
       bool getAnotherYieldFlagCombination( YieldSurfFlagArr& activeSurfaces );
+      /// set the current combination as used
       void markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces );
+      /// reset all yieldsurfaces as unused
       void resetUsedYieldFlagCombinations();
     };
   } // namespace NumericalAlgorithms

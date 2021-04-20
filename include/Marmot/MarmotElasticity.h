@@ -35,12 +35,12 @@ namespace Marmot {
   namespace ContinuumMechanics {
    
      /**
-      * \brief Implementations of functions for the description of isotropic elastic behavior
+      * \brief Functions for the description of isotropic elastic behavior
       */
     namespace Elasticity::Isotropic {
 
       /**
-       * Compute the isotropic young's modulus E from the compression modulus K and shear modulus G
+       * Computes the isotropic young's modulus E from the compression modulus K and shear modulus G
        *\f[
           \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
         \f]
@@ -48,7 +48,7 @@ namespace Marmot {
       double constexpr E( const double K, const double G ) { return 9. * K * G / ( 3. * K + G ); }
 
       /**
-       * Compute the isotropic poisson's ratio \f$ \nu \f$ from the compression modulus K and shear modulus G
+       * Computes the isotropic poisson's ratio \f$ \nu \f$ from the compression modulus K and shear modulus G
        *\f[
          \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
         \f]
@@ -56,7 +56,7 @@ namespace Marmot {
       double constexpr nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
 
       /**
-       * Compute the isotropic shear modulus G from the young's modulus E and poisson's ratio \f$ \nu \f$.
+       * Computes the isotropic shear modulus G from the young's modulus E and poisson's ratio \f$ \nu \f$.
        *\f[
          \displaystyle G = \frac{E}{2\,(1 + \nu)}
         \f]
@@ -64,7 +64,7 @@ namespace Marmot {
       double constexpr shearModulus( const double E, const double nu ) { return E / ( 2 * ( 1 + nu ) ); }
 
       /**
-       * Compute the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu \f$
+       * Computes the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu \f$
        *\f[
          \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
         \f]
@@ -75,7 +75,7 @@ namespace Marmot {
       }
 
       /**
-       *Compute the isotropic compliance tensor:
+       *Computes the isotropic compliance tensor:
        *\f[
          \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
               					\frac{1}{E} & \frac{-\nu}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
@@ -96,7 +96,7 @@ namespace Marmot {
       Matrix6d complianceTensor( const double E, const double nu );
 
       /**
-       *Compute the isotropic stiffness tensor:
+       *Computes the isotropic stiffness tensor:
        *\f[
      	 \displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
           							 	             1 & \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
@@ -115,12 +115,12 @@ namespace Marmot {
     } // namespace Elasticity::Isotropic
 
      /**
-      * \brief Implementations of functions for the description of transversely isotropic elastic behavior
+      * \brief Functions for the description of transversely isotropic elastic behavior
       */
     namespace Elasticity::TransverseIsotropic {
 
       /**
-       *Compute the transversely isotropic compliance tensor:
+       *Computes the transversely isotropic compliance tensor:
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
          				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & 0 & 0 & 0 \\
@@ -132,9 +132,9 @@ namespace Marmot {
                              	            \end{bmatrix}
        \f]
        *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate system.
-       *It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio \f$ \nu_{12}
-       *\f$ effective out of the isotropic plane and the in - plane young's modulus \f$ E_2 \f$ and poisson's ratio \f$
-       *\nu_{23} \f$.
+       It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio \f$ \nu_{12}
+       \f$ effective out of the isotropic plane and the in - plane young's modulus \f$ E_2 \f$ and poisson's ratio \f$
+       \nu_{23} \f$.
        *
        *The in - plane shear modulus \f$ G_{23} \f$ can be expressed by
    
@@ -148,7 +148,7 @@ namespace Marmot {
                                  const double nu23,
                                  const double G12 );
       /**
-       * Compute the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
+       * Computes the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
        * isotropic compliance tensor \f$ \mathbb{C}^{-1} \f$.
        */
       Matrix6d stiffnessTensor( const double E1,
@@ -159,11 +159,11 @@ namespace Marmot {
     } // namespace Elasticity::TransverseIsotropic
 
      /**
-      * \brief Implementations of functions for the description of orthotropic elastic behavior
+      * \brief Functions for the description of orthotropic elastic behavior
       */
     namespace Elasticity::Orthotropic {
       /**
-       *Compute the orthotropic compliance tensor defined in the principal directions of the material \f$ x_1 \f$, \f$ x_2 \f$ and \f$ x_3 \f$ :
+       *Computes the orthotropic compliance tensor defined in the principal directions of the material \f$ x_1 \f$, \f$ x_2 \f$ and \f$ x_3 \f$ :
        *\f[
       	  \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                					 \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{13}}{E_3} & 0 & 0 & 0 \\
@@ -198,7 +198,7 @@ namespace Marmot {
                                  const double G23,
                                  const double G31 );
       /**
-       * Compute the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance tensor
+       * Computes the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance tensor
        * \f$ \mathbb{C}^{-1} \f$.
        */
       Matrix6d stiffnessTensor( const double E1,

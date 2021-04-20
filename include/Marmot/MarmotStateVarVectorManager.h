@@ -50,16 +50,19 @@ public:
   inline bool contains ( const std::string& name ) const { return theLayout.entries.count( name ); }
 
 protected:
+  /// An entry in the statevar vector consists of the name and a certain length
   struct StateVarEntryDefinition {
     std::string name;
     int         length;
   };
 
+  /// The location in the statevar vector consists of the index and its certain length
   struct StateVarEntryLocation {
     int index;
     int length;
   };
 
+  /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar vector
   struct StateVarVectorLayout {
     std::unordered_map< std::string, StateVarEntryLocation > entries;
     int                                                      nRequiredStateVars;
@@ -78,7 +81,10 @@ protected:
     return { theMap, sizeOccupied };
   }
 
+  /// pointer to the first element in the statevar vector
   double*                     theStateVars;
+
+  /// a const reference to the respective layout
   const StateVarVectorLayout& theLayout;
 
   MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )

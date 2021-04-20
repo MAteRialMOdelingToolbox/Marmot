@@ -28,33 +28,36 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-/*
-11-22-2015 matthias neuner:
-Modified Version of the Perez-Fouget Substepper,
-to account for time-variant elastic Stiffness Tensor Cel(t_n+1)
-NO changes in algorithmic formulation!
-
-modifications:
-(*) elastic substep consistent tangent matrix update needs current Cel(t) for update
-(*) No need for Cel for object construction anymore
-*/
-
 namespace Marmot::NumericalAlgorithms {
+  /**
+  * Modified Version of the Perez-Fouget Substepper,
+  * to account for time-variant elastic Stiffness Tensor Cel(t_n+1)
+  * NO changes in algorithmic formulation!
 
-  template < int nSizeTangent >
+  * modifications:
+  * - elastic substep consistent tangent matrix update needs current Cel(t) for update
+  * - No need for Cel for object construction anymore
+  */
+
+  template < int sizeMaterialState >
   class PerezFougetSubstepperTime {
 
   public:
-    typedef Eigen::Matrix< double, nSizeTangent, nSizeTangent > TangentSizedMatrix;
+    /// Matrix to carry the Jacobian of a material state
+    typedef Eigen::Matrix< double, sizeMaterialState, sizeMaterialState > TangentSizedMatrix;
 
     PerezFougetSubstepperTime( double initialStepSize,
                                double minimumStepSize,
                                double scaleUpFactor,
                                double scaleDownFactor,
                                int    nPassesToIncrease );
+    /// Check if the subincrementation has finished
     bool   isFinished();
+    /// get the next subincrement size
     double getNextSubstep();
+    /// get the total finished progress of the subincrementation process
     double getFinishedProgress();
+    /// decrease the next subincrement
     bool   decreaseSubstepSize();
 
     void     extendConsistentTangent( const Matrix6d& CelT );
