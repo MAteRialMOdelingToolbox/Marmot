@@ -52,6 +52,13 @@ namespace Marmot {
         return 3;
     }
 
+    /**
+     * Auxiliary matrix, which helps to swap indices in Eigen::Matrices abused as higher order tensors by multiplication
+     *\f[
+     	 \displaystyle T_{ijkl} \cdot S_{kllk} = T_{ijlk}
+      \f]
+     * defining S as index swapping tensor.
+     */
     template < int sizeI, int sizeJ >
     Eigen::Matrix< double, sizeI * sizeJ, sizeI * sizeJ > makeIndexSwapTensor()
     {
@@ -87,6 +94,9 @@ namespace Marmot {
       return P;
     }
 
+    /**
+     * Returns the number of degrees of freedom needed for a rotation (LeviCivita)
+     */
     template < int nDim >
     constexpr Eigen::TensorFixedSize< double, Eigen::Sizes< getNumberOfDofForRotation( nDim ), nDim, nDim > > getReferenceToCorrectLeviCivita()
     // template <int nDim>

@@ -29,17 +29,17 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 
+namespace Marmot::NumericalAlgorithms {
+
+  template < size_t materialTangentSize, size_t nIntegrationDependentStateVars >
+  class AdaptiveSubstepperExplicit {
 /* Adaptive Substepper, employing an error estimation and
  * Richardson Extrapolation for an (semi)-Explicit Return  Mapping algorithm
  *
  * Matthias Neuner (2016), developed within the DK-CIM collaboration
  * */
-
-namespace Marmot::NumericalAlgorithms {
-
-  template < size_t materialTangentSize, size_t nIntegrationDependentStateVars >
-  class AdaptiveSubstepperExplicit {
   public:
+    /// Matrix for describing the nonlinear equation system of the return mapping algorithm
     typedef Eigen::Matrix< double, materialTangentSize, materialTangentSize > TangentSizedMatrix;
     typedef Eigen::Matrix< double, materialTangentSize, 6 >                   MatrixStateStrain;
     typedef Eigen::Matrix< double, nIntegrationDependentStateVars, 1 >        IntegrationStateVector;
@@ -51,22 +51,33 @@ namespace Marmot::NumericalAlgorithms {
                                 double          integrationErrorTolerance,
                                 int             nPassesToIncrease,
                                 const Matrix6d& Cel );
+    /// Set the current converged state
     void   setConvergedProgress( const Marmot::Vector6d& stressOld, const IntegrationStateVector& stateVarsOld );
+    /// Check if the subincrementation is finished
     bool   isFinished();
+    /// get the next subincrement size
     double getNextSubstep();
+    /// get the finished number of subincrements
     int    getNumberOfSubsteps();
+    /// get the number of discarded subincrements
     int    getNumberDiscardedSubstepsDueToError();
+    /// finish a subincrement with plasticity
     bool   finishSubstep( const Marmot::Vector6d&       resultStress,
                           const TangentSizedMatrix&     dXdY,
                           const TangentSizedMatrix&     dYdXOld,
                           const IntegrationStateVector& stateVars );
-
+    /// finish a subincrement with elasticity only
     void finishElasticSubstep( const Marmot::Vector6d& resultStress );
+    /// discard the current subincrement
     bool discardSubstep();
+    /// repeat the current subincrement with a smaller step
     bool repeatSubstep( double decrementationFactor );
 
+    /// get the last converged state
     void     getConvergedProgress( Marmot::Vector6d& stress, IntegrationStateVector& stateVars );
+    /// get the algorithmic tangent for the current state
     Matrix6d getCurrentTangentOperator();
+    /// Write the current results
     void     getResults( Marmot::Vector6d& stress, Matrix6d& consistentTangent, IntegrationStateVector& stateVars );
 
   private:
@@ -81,14 +92,18 @@ namespace Marmot::NumericalAlgorithms {
     int             substepIndex;
     int             discardedDueToError;
 
-    // internal storages for the progress of the total increment
+    /// internal storages for the progress of the total increment
     Marmot::Vector6d       stressProgress;
+    /// internal storages for the progress of the total increment
     IntegrationStateVector stateProgress;
+    /// internal storages for the progress of the total increment
     MatrixStateStrain      consistentTangentProgress;
 
-    // temporal storages, which are used until a cycle full/half/half has finished successfully
+    /// temporal storages, which are used until a cycle full/half/half has finished successfully
     Marmot::Vector6d       stressProgressHalfTemp, stressProgressFullTemp;
+    /// temporal storages, which are used until a cycle full/half/half has finished successfully
     IntegrationStateVector stateProgressHalfTemp, stateProgressFullTemp;
+    /// temporal storages, which are used until a cycle full/half/half has finished successfully
     MatrixStateStrain      consistentTangentProgressHalfTemp, consistentTangentProgressFullTemp;
 
     const TangentSizedMatrix& IXX();

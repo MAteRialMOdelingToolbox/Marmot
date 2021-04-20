@@ -29,12 +29,10 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 
-/* Substepper for semi-explicit elastoplastic materials
- * Matthias Neuner (2016)
- * */
-
 namespace Marmot::NumericalAlgorithms {
 
+/** Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version
+ * */
   template < int nSizeMatTangent >
   class PerezFougetSubstepper {
 
@@ -47,12 +45,23 @@ namespace Marmot::NumericalAlgorithms {
                            double          scaleDownFactor,
                            int             nPassesToIncrease,
                            const Matrix6d& Cel );
+
+    /// check if subincrementation process has finished
     bool   isFinished();
+    /// get the next subincrement size
     double getNextSubstep();
+    /// decrease the next subincrement
     bool   decreaseSubstepSize();
 
+    /// finish an elastic only subincrement
     void     finishElasticSubstep();
+
+    /// finish an elastoplastic subincremnt
+    /// \param dXdY inverse of the material tangent
+    /// \param dXdYOld inverse of the previous material tangent
     void     finishSubstep( const TangentSizedMatrix& dXdY, const TangentSizedMatrix& dYdXOld );
+
+    /// get the consistent algorithmic tangent
     Matrix6d consistentStiffness();
 
   private:

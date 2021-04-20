@@ -29,6 +29,10 @@
 #include "Marmot/MarmotTypedefs.h"
 
 namespace Marmot::NumericalAlgorithms {
+    /** A simple convergence check for the Newton scheme within the return mapping algorithm
+     * It allows to provide two different set of tolerances, depending on the current number of iterations
+     * Residuals can be scaling using a scale vector
+     */
   class InnerNewtonIterationCheckerMarkII {
 
     const Eigen::VectorXd residualScaleVector;
@@ -48,15 +52,19 @@ namespace Marmot::NumericalAlgorithms {
                                        double                 innerNewtonTolAlt,
                                        double                 innerNewtonRTolAlt );
 
+    /// compute the relative norm of the current increment w.r.t. the reference solution vector
     double relativeNorm( const Eigen::VectorXd& increment, const Eigen::VectorXd& reference );
 
+    /// compute the norm of a residual vector, using the sclae vector
     double residualNorm( const Eigen::VectorXd& Residual );
 
+    /// check if the iteration scheme has finished (either due to convergence or due to exceed max. iterations)
     bool iterationFinished( const Eigen::VectorXd& residual,
                             const Eigen::VectorXd& X,
                             const Eigen::VectorXd& dX,
                             int                    numberOfIterations );
 
+    /// check if the Newton scheme has converged
     bool isConverged( const Eigen::VectorXd& residual,
                       const Eigen::VectorXd& X,
                       const Eigen::VectorXd& dX,

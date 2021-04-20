@@ -32,7 +32,9 @@
 #include "Marmot/MarmotTypedefs.h"
 
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
-
+/** 
+ * \brief This file includes functions needed for calculations with stress and strain tensors written in voigt notation.
+ */
 namespace Marmot {
   namespace ContinuumMechanics::VoigtNotation {
 
@@ -46,9 +48,63 @@ namespace Marmot {
     extern const Matrix6d         IDev;
 
     // Plane Stress handling
+
+    /**
+     * Converts a 3D voigt notated vector to a plane stress vector. 
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+				\sigma_{11}\\
+				\sigma_{22}\\
+				\sigma_{33} = 0\\
+				\sigma_{12}\\
+				\sigma_{13} = 0\\
+				\sigma_{23} = 0
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+										\sigma_{11}\\
+										\sigma_{22}\\
+										\sigma_{12}
+		       							     \end{bmatrix}      
+      \f]
+     */
     Eigen::Vector3d  voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
+
+    /**
+     * Converts a voigt notated plane stress vector to a 3D vector. 
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+				\sigma_{11}\\
+				\sigma_{22}\\
+				\sigma_{12}
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+										\sigma_{11}\\
+										\sigma_{22}\\
+										0\\
+										\sigma_{12}\\
+										0\\
+										0
+		       							     \end{bmatrix}
+      \f]
+     */
     Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
 
+    /**
+     * Reduces a 3D voigt notated vector to a lower dimension defined by the template parameter 'voigtSize'.
+     *
+     * Considered cases:
+     * 	- voigtSize \f$ = 1 \f$: 
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+				\sigma_{11}\\
+				\sigma_{22} = 0\\
+				\sigma_{33} = 0\\
+				\sigma_{12} = 0\\
+				\sigma_{13} = 0\\
+				\sigma_{23} = 0
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \sigma_{11}
+      \f]
+     * 	- voigtSize \f$ = 3 \f$: Calls function voigtToPlaneVoigt().
+     * 	- voigtSize \f$ = 6 \f$: Returns the input vector
+     */
     template < int voigtSize >
     Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
     {
@@ -61,6 +117,25 @@ namespace Marmot {
       else
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
+
+    /**
+     * Computes a 3D voigt notated vector from a vector of lower dimension defined by the template parameter 'voigtSize'.
+     *
+     * Considered cases:
+     * 	- voigtSize \f$ = 1 \f$: 
+     *\f[
+     	\displaystyle	\sigma_{11} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+										\sigma_{11}\\
+										0\\
+										0\\
+										0\\
+										0\\
+										0
+		       							    \end{bmatrix}       
+      \f]
+     * 	- voigtSize \f$ = 3 \f$: Calls function planeVoigtToVoigt().
+     * 	- voigtSize \f$ = 6 \f$: Returns the input vector
+     */
 
     template < int voigtSize >
     Marmot::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )
@@ -76,9 +151,81 @@ namespace Marmot {
     }
 
     // function prototypes for  Marmot::Vector6d handling
+
+    /**
+     * Converts a voigt notated strain vector to its corresponding strain tensor
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+				\varepsilon_{11}\\
+				\varepsilon_{22}\\
+				\varepsilon_{33}\\
+				\gamma_{12}\\
+				\gamma_{13}\\
+				\gamma_{23}
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+		       \varepsilon_{11} & \gamma_{12}/2 & \gamma_{13}/2 \\
+		       \gamma_{12}/2 & \varepsilon_{22} & \gamma_{23}/2 \\
+		       \gamma_{13}/2 & \gamma_{23}/2 & \varepsilon_{33} \\
+		 \end{bmatrix}
+      \f]
+     */
     Eigen::Matrix3d  voigtToStrain( const Marmot::Vector6d& strainVector );
+
+    /**
+     * Converts a voigt notated stress vector to its corresponding stress tensor
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+				\sigma_{11}\\
+				\sigma_{22}\\
+				\sigma_{33}\\
+				\sigma_{12}\\
+				\sigma_{13}\\
+				\sigma_{23}
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+		       \sigma_{11} & \sigma_{12} & \sigma_{13} \\
+		       \sigma_{12} & \sigma_{22} & \sigma_{23} \\
+		       \sigma_{13} & \sigma_{23} & \sigma_{33} \\
+		 \end{bmatrix}
+      \f]
+     */
     Eigen::Matrix3d  voigtToStress( const Marmot::Vector6d& stressVector );
+
+    /**
+     * Converts a strain tensor to its corresponding voigt notated strain vector
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+		       		\varepsilon_{11} & \varepsilon_{12} & \varepsilon_{13}\\
+		       		\varepsilon_{21} & \varepsilon_{22} & \varepsilon_{23} \\
+		       		\varepsilon_{31} & \varepsilon_{32} & \varepsilon_{33} \\
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+										\varepsilon_{11}\\
+										\varepsilon_{22}\\
+										\varepsilon_{33}\\
+										2\,\varepsilon_{12}\\
+										2\,\varepsilon_{13}\\
+										2\,\varepsilon_{23}
+		       							     \end{bmatrix}
+      \f]
+     */
     Marmot::Vector6d strainToVoigt( const Eigen::Matrix3d& strainTensor );
+
+    /**
+     * Converts a stress tensor to its corresponding voigt notated stress vector
+     *\f[
+     	\displaystyle  \begin{bmatrix}
+		       		\sigma_{11} & \sigma_{12} & \sigma_{13}\\
+		       		\sigma_{21} & \sigma_{22} & \sigma_{23} \\
+		       		\sigma_{31} & \sigma_{32} & \sigma_{33} \\
+		       \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+										\sigma_{11}\\
+										\sigma_{22}\\
+										\sigma_{33}\\
+										\sigma_{12}\\
+										\sigma_{13}\\
+										\sigma_{23}
+		       							     \end{bmatrix}
+      \f]
+     */
     Marmot::Vector6d stressToVoigt( const Eigen::Matrix3d& stressTensor );
 
     template < int nDim >
@@ -114,37 +261,142 @@ namespace Marmot {
 
     namespace Invariants {
 
-      // principal strains calculated by solving eigenvalue problem ( !NOT sorted! )
+      /** Computes the principal strains by solving the eigenvalue problem.
+       *\f[ 
+       	   \displaystyle |\varepsilon_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+	   \lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm} \varepsilon_1,\, \varepsilon_2,\, \varepsilon_3		
+        \f] 
+       * The resulting principal strains are NOT sorted.
+       */
       Eigen::Vector3d principalStrains( const Marmot::Vector6d& strain );
-      // principal stresses calculated by solving eigenvalue problem ( !NOT sorted! )
+
+      /** Computes the principal stresses by solving the eigenvalue problem.
+       *\f[ 
+       	   \displaystyle |\sigma_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+	   \lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm}\sigma_1,\, \sigma_2,\, \sigma_3		
+        \f] 
+       * The resulting principal stresses are NOT sorted.
+       */
       Eigen::Vector3d principalStresses( const Marmot::Vector6d& stress );
       // principal strains calculated from haigh westergaard strains ( sorted --> e1 > e2 > e3 )
+
+      /** Calculates the principal strains from its corresponding haigh westergaard coordinates.
+       *\f[
+       	  \displaystyle \begin{bmatrix} 
+	  			\varepsilon_{1}\\
+				\varepsilon_{2}\\
+				\varepsilon_{3}
+			\end{bmatrix} = \frac{1}{\sqrt{3}} \begin{bmatrix}
+							   	\xi\\
+								\xi\\
+								\xi
+							   \end{bmatrix} + \sqrt{\frac{2}{3}}\,\rho\,\begin{bmatrix}
+							   					     	\cos(\theta)\\
+													-\sin\left(\frac{\pi}{6} - \theta\right)\\
+													-\sin\left(\frac{\pi}{6} + \theta\right)
+												     \end{bmatrix}
+        \f]
+       *The computation of \f$ \xi\f$ ,\ \f$ \rho\f$ and \f$\theta\f$ can be found in haighWestergaardFromStrain()
+       */
       Eigen::Vector3d sortedPrincipalStrains( const Marmot::Vector6d& strain );
       // principal stressDirections calculated by solving eigenvalue problem ( !NOT sorted! )
+
+      /** Computes the principal stress directions \f$\boldsymbol{x}^{(k)}\f$ of the eigenvalues \f$ \sigma_k \f$ by solving
+       *\f[ 
+       	   \displaystyle \left(\boldsymbol{\sigma} - \sigma_k \cdot \boldsymbol{I}\right) \cdot \boldsymbol{x}^{(k)}  = 0 
+        \f] 
+       * The resulting principal stress directions are NOT sorted.
+       */
       Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& stress );
 
-      // equivalent von Mises stress
+      /** Computes the equivalent von Mises stress.
+       *\f[ 
+       	   \displaystyle \sigma^{(eq)} = \sqrt{3 \cdot J_2}
+        \f] 
+       * Wherein \f$ J_2 \f$ denotes the second invariant of the deviator stress tensor (see J2()).
+       */
       double vonMisesEquivalentStress( const Marmot::Vector6d& stress );
-      // equivalent von Mises strain
+
+      /** Computes the equivalent von Mises strain from deviatoric part of the strain tensor \f$ e_{ij} \f$
+       *\f[ 
+       	   \displaystyle \varepsilon^{(eq)} = \sqrt{ \frac{2}{3} \cdot e_{ij}\,e_{ij}}
+        \f] 
+       */
       double vonMisesEquivalentStrain( const Marmot::Vector6d& strain );
-      // Euclidian norm of strain
+
+      /** Computes the euclidian norm of the strain tensor \f$ ||\boldsymbol{\varepsilon}|| \f$
+       */
       double normStrain( const Marmot::Vector6d& strain );
-      // Euclidian norm of stress
+
+      /** Computes the euclidian norm of the stress tensor \f$ ||\boldsymbol{\sigma}|| \f$
+       */
       double normStress( const Marmot::Vector6d& stress );
       // Trace of compressive strains
+
+      /** Computes the volumetric plastic strains in compression 
+       *\f[ 
+       	   \displaystyle \varepsilon^{vol}_{\ominus} = \sum^{3}_{i = 1} \left\langle -\varepsilon_i \right\rangle 
+        \f]  
+       * using the Macaulay brackets \f$ \left\langle \bullet \right\rangle \f$ and the principal values of the strain tensor \f$\varepsilon_i \f$	
+       */
       double StrainVolumetricNegative( const Marmot::Vector6d& strain );
 
-      // Invariants - keep atention: different for stress/strain tensor
+      /** Computes the first invariant \f$ I_1 \f$ of the stress tensor \f$ \boldsymbol{\sigma} \f$.
+       *\f[ 
+       	   \displaystyle I_1 = tr(\boldsymbol{\sigma})
+        \f] 
+       */
       double I1( const Marmot::Vector6d& stress );
+
+      /** Computes the second invariant \f$ I_2 \f$ of the stress tensor \f$ \boldsymbol{\sigma} \f$.
+       *\f[ 
+       	   \displaystyle I_2 = \frac{1}{2} \left(tr(\boldsymbol{\sigma})^2 - tr(\boldsymbol{\sigma}^2)\right)
+        \f] 
+       */
       double I2( const Marmot::Vector6d& stress );
+
+      /** Computes the second invariant \f$ I^{(\varepsilon)}_2 \f$ from a voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$.
+       *\f[ 
+       	   \displaystyle I^{(\varepsilon)}_2 = \varepsilon_{11}\,\varepsilon_{22} + \varepsilon_{22}\,\varepsilon_{33} + \varepsilon_{11}\,\varepsilon_{33} - \frac{1}{4}(\gamma^2_{12}  - \gamma^2_{13}  - \gamma^2_{23})
+	\f] 
+       */
       double I2Strain( const Marmot::Vector6d& strain );
+
+      /** Computes the third invariant \f$ I_3 \f$ of the stress tensor \f$ \boldsymbol{\sigma} \f$.
+       *\f[ 
+       	   \displaystyle I_3 = det(\boldsymbol{\sigma})
+        \f] 
+       */
       double I3( const Marmot::Vector6d& stress );
+
+      /** Computes the third invariant \f$ I^{(\varepsilon)}_3 \f$ from a voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$ by calling voigtToStrain() and calculating the determinant.  
+       */
       double I3Strain( const Marmot::Vector6d& strain );
 
-      // Invariants of the deviatoric part of the stress/strain tensor
+      /** Computes the second invariant \f$ J_2 \f$ of the deviatoric part of the stress tensor \f$ \boldsymbol{s} \f$.
+       *\f[ 
+       	   \displaystyle J_2 = \frac{1}{3} I^2_1 - I_2
+        \f] 
+       */
       double J2( const Marmot::Vector6d& stress );
+      	
+      /** Computes the second invariant \f$ J^{(\varepsilon)}_2 \f$ of the deviatoric part of the strain tensor \f$ \boldsymbol{\varepsilon} \f$.
+       *\f[ 
+       	   \displaystyle J^{(\varepsilon)}_2 = \frac{1}{3} I^{(\varepsilon) 2}_1 - I^{(\varepsilon)}_2
+        \f] 
+       */
+
       double J2Strain( const Marmot::Vector6d& strain );
+
+      /** Computes the third invariant \f$ J_3 \f$ of the deviatoric part of the stress tensor \f$ \boldsymbol{s} \f$.
+       *\f[ 
+       	   \displaystyle J_3 = \frac{2}{27} I^3_1 - \frac{1}{3} I_1\cdot I_2\cdot I_3
+        \f] 
+       */
       double J3( const Marmot::Vector6d& stress );
+
+      /** Computes the third invariant \f$ J^{(\varepsilon)}_3 \f$ of a voigt notated deviatoric strain vector \f$ \boldsymbol{e} \f$ by calling voigtToStrain() and calculating the determinant.
+       */
       double J3Strain( const Marmot::Vector6d& strain );
 
       // principal values in voigt
@@ -168,32 +420,105 @@ namespace Marmot {
     namespace Derivatives {
 
       // derivatives of Haigh Westergaard stresses with respect to cauchy stress in eng. notation
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \sigma_m}{d\, \boldsymbol{\sigma}} \f$ of the mean stress \f$ \sigma_m \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$
+       */
       Marmot::Vector6d dStressMean_dStress();
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \rho}{d\, \boldsymbol{\sigma}}\f$ of the haigh westergaard coordinate \f$ \rho \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$
+       */
       Marmot::Vector6d dRho_dStress( double rho, const Marmot::Vector6d& stress );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta}{d\, \boldsymbol{\sigma}}\f$ of the haigh westergaard coordinate \f$ \theta \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$
+       */
       Marmot::Vector6d dTheta_dStress( double theta, const Marmot::Vector6d& stress );
-      // derivatives of Haigh Westergaard stresses with respect to deviatoric invariants
+     
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta}{d\, J_2}\f$ of the haigh westergaard coordinate \f$ \theta \f$ with respect to the second deviatoric invariant \f$ J_2 \f$
+       */
       double dTheta_dJ2( const Marmot::Vector6d& stress );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta}{d\, J_3}\f$ of the haigh westergaard coordinate \f$ \theta \f$ with respect to the third deviatoric invariant \f$ J_3 \f$
+       */
       double dTheta_dJ3( const Marmot::Vector6d& stress );
-      // derivatives of Haigh Westergaard strains with respect to deviatoric invariants
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_2}\f$ of the haigh westergaard coordinate \f$ \theta^{(\varepsilon)} \f$ with respect to the second deviatoric invariant \f$ J^{(\varepsilon)}_2 \f$.
+       */
       double dThetaStrain_dJ2Strain( const Marmot::Vector6d& strain );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_3}\f$ of the haigh westergaard coordinate \f$ \theta^{(\varepsilon)} \f$ with respect to the third deviatoric invariant \f$ J^{(\varepsilon)}_3 \f$.
+       */
       double dThetaStrain_dJ3Strain( const Marmot::Vector6d& strain );
-      // derivatives of deviatoric invariants with respect to eng. stresses
+
+      /**
+       * Computes the derivative \f$ \frac{d\, J_2}{d\, \boldsymbol{\sigma}}\f$ of the second deviatoric invariant \f$ J_2 \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$.
+       */
       Marmot::Vector6d dJ2_dStress( const Marmot::Vector6d& stress );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, J_3}{d\, \boldsymbol{\sigma}}\f$ of the third deviatoric invariant \f$ J_3 \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$.
+       */
       Marmot::Vector6d dJ3_dStress( const Marmot::Vector6d& stress );
-      // derivatives of deviatoric invariants with respect to eng. strains
+
+      /**
+       * Computes the derivative \f$ \frac{d\, J^{(\varepsilon)}_2}{d\, \boldsymbol{\sigma}}\f$ of the second deviatoric invariant \f$ J^{(\varepsilon)}_2 \f$ with respect to the voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$.
+       */
       Marmot::Vector6d dJ2Strain_dStrain( const Marmot::Vector6d& strain );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, J^{(\varepsilon)}_3}{d\, \boldsymbol{\sigma}}\f$ of the third deviatoric invariant \f$ J^{(\varepsilon)}_3 \f$ with respect to the voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$.
+       */
       Marmot::Vector6d dJ3Strain_dStrain( const Marmot::Vector6d& strain );
-      // derivatives of Haigh Westergaard strains with respect to eng. strains
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \theta^{(\varepsilon)}}{d\, \boldsymbol{\varepsilon}}\f$ of the haigh westergaard coordinate \f$ \theta^{(\varepsilon)} \f$ with respect to the voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$
+       */
       Marmot::Vector6d dThetaStrain_dStrain( const Marmot::Vector6d& strain );
 
       // derivatives of principalStess with respect to stress
+      
+      /**
+       * Computes the derivative \f$ \frac{d\, \sigma_I}{d\, \boldsymbol{\sigma}}\f$ of the principal stresses  \f$ \sigma_I \f$ with respect to the voigt notated stress vector \f$ \boldsymbol{\sigma} \f$
+       */
       Marmot::Matrix36 dStressPrincipals_dStress( const Marmot::Vector6d& stress );
 
       // derivatives of plastic strains with respect to strains
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \varepsilon^{vol}_{\ominus}}{d\, \varepsilon_I}\f$ of the volumetric strains in compression  \f$ \varepsilon^{vol}_{\ominus} \f$ with respect to the principal strains  \f$ \varepsilon_I \f$
+       */
       Eigen::Vector3d  dStrainVolumetricNegative_dStrainPrincipal( const Marmot::Vector6d& strain );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}}\f$ of the voigt notated plastic strain vector \f$ \boldsymbol{\varepsilon}^{p} \f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       *
+       *\f[ 
+       	   \displaystyle \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}} = \boldsymbol{I} - \mathbb{C}^{-1}\,\mathbb{C}^{(ep)}
+        \f] 
+
+       *using the elastic compliance tensor \f$ \mathbb{C}^{-1} \f$ and the elastoplastic stiffness tensor \f$ \mathbb{C}^{(ep)} \f$ 
+       */
       Matrix6d         dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}}{d\, \boldsymbol{\varepsilon}}\f$ of the volumetric plastic strain increment \f$ \Delta\, \varepsilon^{p, vol}\f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       */
       RowVector6d      dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \varepsilon_I}{d\, \boldsymbol{\varepsilon}}\f$ of the principal strains \f$ \varepsilon_I \f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       */
       Marmot::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Vector6d& dEp );
+
+      /**
+       * Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}_{\ominus}}{d\, \boldsymbol{\varepsilon}}\f$ of the volumetric plastic strain increment in compression \f$ \Delta\, \varepsilon^{p, vol}_{\ominus}\f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       */
       RowVector6d      dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
       namespace Complex {
@@ -206,11 +531,35 @@ namespace Marmot {
 
     namespace Transformations {
 
+      /**
+       * Computes the transformation matrix \f$ R_{\varepsilon} \f$ to transform a voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$ to another cartesian coordinate system 
+       */
       Matrix6d  transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem );
+
+      /**
+       * Computes the transformation matrix \f$ R_{\sigma} \f$ to transform a voigt notated stress vector \f$ \boldsymbol{\sigma} \f$  to another cartesian coordinate system 
+       */
       Matrix6d  transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem );
+
+      /**
+       * Returns the projection matrix to calculate the stress vector \f$ \boldsymbol{t}^{(n)} \f$ effective on a plane orientated with the normal vector \f$ \boldsymbol{n} \f$ from a voigt notated stress vector following cauchy's formula.
+       *\f[
+	   \displaystyle t^{(n)}_i = \sigma_{ij}\,n_j
+        \f]
+       */
       Matrix36d projectVoigtStressToPlane( const Vector3d& normalVector );
+
+      /**
+       * Returns the projection matrix to calculate the strain vector \f$ \boldsymbol{\varepsilon}^{(n)} \f$ effective on a plane orientated with the normal vector \f$ \boldsymbol{n} \f$ from a voigt notated strain vector (see projectVoigtStressToPlane())).
+       */
       Matrix36d projectVoigtStrainToPlane( const Vector3d& normalVector );
-      /// rotate a 2nd order tensor T in voigt notation by : T' = Q * T * Q^T
+      
+     /**
+      * Rotates a stress tensor \f$ \boldsymbol{\sigma} \f$ applying a rotation matrix \f$ \boldsymbol{Q} \f$ in voigt notation.
+      *\f[
+	  \displaystyle \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \cdot \boldsymbol{\sigma} \cdot \boldsymbol{Q}^{T} 
+       \f]
+       */
       Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
 
     } // namespace Transformations
