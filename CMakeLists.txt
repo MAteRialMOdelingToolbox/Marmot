@@ -125,11 +125,9 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         GMNeoHooke
         GradientEnhancedDruckerPrager
         HoekBrown
-        JointedRock
+	#JointedRock
         JointedHoekBrown
         LinearElastic
-        transverseisotropiclinearelastic
-        OrthotropicLinearElastic
         LinearElasticNonLocal
         LinearElasticSolidificationCreep
         LinearElasticShrinkage
