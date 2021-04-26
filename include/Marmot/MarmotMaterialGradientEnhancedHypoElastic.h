@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Magdalena Schreter magdalena.schreter@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -28,12 +29,62 @@
 #pragma once
 #include "Marmot/MarmotMaterialGradientEnhancedMechanical.h"
 
+/**
+ *
+ * Derived abstract base class for gradient-enhanced hypo-elastic materials expressed purely in rate form.
+ *
+ * In general, the nominal stress rate tensor \f$ \sigRate \f$ can be written as a function of the nominal stress tensor
+ * \f$ \sig \f$, the stretching rate tensor \f$ \epsRate \f$ the local variable \f$\kappa\f$, the nonlocal variable
+ * \f$\bar{\kappa}\f$, internal variables \f$\boldsymbol{x}\f$ and the time \f$ t \f$
+ *
+ * \f[  \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \f]
+ *
+ * In course of numerical time integration, this relation will be formulated incrementally as
+ *
+ * \f[  \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t,
+ * t_n, ...) \f]
+ *
+ * with
+ *
+ * \f[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \f]
+ * \f[  \displaystyle \Delta\bar{\kappa} =   \dot{\bar{\kappa}}\, \Delta t \f]
+ *
+ * and the algorithmic tangents
+ *
+ * \f[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \f]
+ * \f[ \displaystyle \frac{d \sig }{d \bar{\kappa}} =  \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \f]
+ * \f[ \displaystyle \frac{d \kappa }{d \eps }=  \frac{d \Delta \kappa }{d \Delta \eps } \f]
+ * \f[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}=  \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} =
+ * l_{\text{nonlocal}} \f]
+ *
+ */
 class MarmotMaterialGradientEnhancedHypoElastic : public MarmotMaterialGradientEnhancedMechanical {
 
 public:
   using MarmotMaterialGradientEnhancedMechanical::MarmotMaterialGradientEnhancedMechanical;
 
-  // Abstract methods
+  /**
+   * For a given deformation gradient and a nonlocal variable at the old and the current time,
+   * compute the Cauchy stress and the local variable and the algorithmic tangents.
+   *
+   * @param[in,out]	stress Cauchy stress
+   * @param[in,out]	K_local local variable
+   * @param[in,out]	nonLocalRadius nonlocal radius representing the tangent \f$\frac{d \Delta \kappa }{d \Delta
+   * \bar{\kappa}}\f$
+   * @param[in,out]	dStressDDDeformationGradient Derivative of the Cauchy stress tensor with respect to
+   * the deformation gradient \f$\boldsymbol{F}\f$
+   * @param[in,out]	dK_localDDeformationGradient Derivative of the local variable with respect to
+   * the deformation gradient \f$\boldsymbol{F}\f$
+   * @param[in,out]	dStressDK Derivative of the Cauchy stress tensor with respect to
+   * the nonlocal variable
+   * @param[in]	FOld	Deformation gradient at the old (pseudo-)time
+   * @param[in]	FNew	Deformation gradient at the current (pseudo-)time
+   * @param[in]	KOld	Local variable  at the old (pseudo-)time
+   * @param[in]	dK Increment of the local variable
+   * @param[in]	timeOld	Old (pseudo-)time
+   * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]	pNewDT	Suggestion for a new time increment
+   */
   virtual void computeStress( double*       stress,
                               double&       K_local,
                               double&       nonLocalRadius,
@@ -48,7 +99,26 @@ public:
                               const double  dT,
                               double&       pNewDT ) override;
 
-  // Abstract methods
+  /**
+   * For a given deformation gradient and a nonlocal variable at the old and the current time,
+   * compute the Cauchy stress and the local variable and the algorithmic tangents.
+   *
+   * @param[in,out]	stress Cauchy stress
+   * @param[in,out]	K_local local variable
+   * @param[in,out]	nonLocalRadius nonlocal radius representing the tangent \f$\frac{d \Delta \kappa }{d \Delta
+   * \bar{\kappa}}\f$
+   * @param[in,out]	dStressDDstrain	Algorithmic tangent representing the derivative of the Cauchy stress tensor with
+   * respect to the linearized strain
+   * @param[in,out]	dK_localDDStrain Derivative of the local variable with respect to
+   * the linearized strain
+   * @param[in,out]	dStressDK Derivative of the Cauchy stress tensor with respect to
+   * the nonlocal variable
+   * @param[in]	KOld	Local variable  at the old (pseudo-)time
+   * @param[in]	dK Increment of the local variable
+   * @param[in]	timeOld	Old (pseudo-)time
+   * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]	pNewDT	Suggestion for a new time increment
+   */
   virtual void computeStress( double*       stress,
                               double&       K_local,
                               double&       nonLocalRadius,
@@ -62,7 +132,17 @@ public:
                               const double  dT,
                               double&       pNewDT ) = 0;
 
+  /**
+   * Plane stress implementation of @ref computeStress.
+   *
+   * @todo why is dStrain an in-out parameter?
+   */
   using MarmotMaterialGradientEnhancedMechanical::computePlaneStress;
+  /**
+   * Plane stress implementation of @ref computeStress.
+   *
+   * @todo why is dStrain an in-out parameter?
+   */
   virtual void computePlaneStress( double*       stress,
                                    double&       K_local,
                                    double&       nonLocalRadius,
