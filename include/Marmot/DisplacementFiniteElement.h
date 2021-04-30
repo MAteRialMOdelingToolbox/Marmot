@@ -36,6 +36,7 @@
 #include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
@@ -76,31 +77,63 @@ namespace Marmot::Elements {
     const SectionType     sectionType;
 
     struct QuadraturePoint {
-      static constexpr int nRequiredStateVars = 6 + 6;
 
       const XiSized xi;
       const double  weight;
 
-      std::unique_ptr< MarmotMaterialHypoElastic > material;
-      mVector6d                                    stress;
-      mVector6d                                    strain;
+      double detJ;
+      double J0xW;
+      BSized B;
 
-      struct Geometry {
-        JacobianSized J;
-        JacobianSized JInv;
-        double        detJ;
-        dNdXiSized    dNdXi;
-        dNdXiSized    dNdX;
-        BSized        B;
-        double        intVol;
+      class QPStateVarManager : public MarmotStateVarVectorManager {
+
+        inline const static auto layout = makeLayout( {
+          { .name = "stress", .length = 6 },
+          { .name = "strain", .length = 6 },
+          { .name = "begin of material state", .length = 0 },
+        } );
+
+      public:
+        mVector6d                     stress;
+        mVector6d                     strain;
+        Eigen::Map< Eigen::VectorXd > materialStateVars;
+
+        static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
+
+        QPStateVarManager( double* theStateVarVector, int nStateVars )
+          : MarmotStateVarVectorManager( theStateVarVector, layout ),
+            stress( &find( "stress" ) ),
+            strain( &find( "strain" ) ),
+            materialStateVars( &find( "begin of material state" ),
+                               nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
       };
 
-      std::unique_ptr< Geometry > geometry;
+      std::unique_ptr< QPStateVarManager > managedStateVars;
 
-      QuadraturePoint( XiSized xi, double weight ) : xi( xi ), weight( weight ), stress( nullptr ), strain( nullptr ){};
+      std::unique_ptr< MarmotMaterialHypoElastic > material;
+
+      int getNumberOfRequiredStateVarsQuadraturePointOnly()
+      {
+        return QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly();
+      };
+
+      int getNumberOfRequiredStateVars()
+      {
+        return getNumberOfRequiredStateVarsQuadraturePointOnly() + material->getNumberOfRequiredStateVars();
+      };
+
+      void assignStateVars( double* stateVars, int nStateVars )
+      {
+        managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
+        material->assignStateVars( managedStateVars->materialStateVars.data(),
+                                   managedStateVars->materialStateVars.size() );
+      }
+
+      QuadraturePoint( XiSized xi, double weight )
+        : xi( xi ), weight( weight ), detJ( 0.0 ), J0xW( 0.0 ), B( BSized::Zero() ){};
     };
 
-    std::vector< QuadraturePoint > quadraturePoints;
+    std::vector< QuadraturePoint > qps;
 
     DisplacementFiniteElement( int                                         elementID,
                                FiniteElement::Quadrature::IntegrationTypes integrationType,
@@ -152,20 +185,21 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
-    StateView getStateView( const std::string& stateName, int quadraturePoint )
+    StateView getStateView( const std::string& stateName, int qpNumber )
     {
-      if ( stateName == "stress" ) {
-        return { quadraturePoints[quadraturePoint].stress.data(), 6 };
+      const auto& qp = qps[qpNumber];
+
+      if ( stateName == "sdv" ) {
+        /* std::cout<< __PRETTY_FUNCTION__ << " on 'sdv' is discouraged and deprecated, please use precise state name"; */
+        return { qp.managedStateVars->materialStateVars.data(), static_cast<int>(qp.managedStateVars->materialStateVars.size() ) };
       }
-      else if ( stateName == "strain" ) {
-        return { quadraturePoints[quadraturePoint].strain.data(), 6 };
+
+      if ( qp.managedStateVars->contains( stateName ) ) {
+        return qp.managedStateVars->getStateView( stateName );
       }
-      else if ( stateName == "sdv" ) {
-        return { quadraturePoints[quadraturePoint].material->getAssignedStateVars(),
-                 quadraturePoints[quadraturePoint].material->getNumberOfAssignedStateVars() };
+      else {
+        return qp.material->getStateView( stateName );
       }
-      else
-        return this->quadraturePoints[quadraturePoint].material->getStateView( stateName );
     }
   };
 
@@ -179,18 +213,16 @@ namespace Marmot::Elements {
       elLabel( elementID ),
       sectionType( sectionType )
   {
-    for ( const auto& quadraturePointInfo :
-          FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
-      QuadraturePoint qp( quadraturePointInfo.xi, quadraturePointInfo.weight );
-      quadraturePoints.push_back( std::move( qp ) );
+    for ( const auto& qpInfo : FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+      QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
+      qps.push_back( std::move( qp ) );
     }
   }
 
   template < int nDim, int nNodes >
   int DisplacementFiniteElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return ( quadraturePoints[0].material->getNumberOfRequiredStateVars() + QuadraturePoint::nRequiredStateVars ) *
-           quadraturePoints.size();
+    return qps[0].getNumberOfRequiredStateVars() * qps.size();
   }
 
   template < int nDim, int nNodes >
@@ -222,26 +254,12 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::assignStateVars( double* stateVars, int nStateVars )
   {
-    /* we provide as many statevars to the material as we can (some materials store addition debugging infos if
-     * possible alternatively: int nStateVarsMaterial =
-     * quadraturePoints[0].material->getNumberOfRequiredStateVars();
-     * */
-    int nStateVarsMaterial = ( nStateVars / quadraturePoints.size() ) - QuadraturePoint::nRequiredStateVars;
+    const int nQpStateVars = nStateVars / qps.size();
 
-    for ( size_t i = 0; i < quadraturePoints.size(); i++ ) {
-
-      QuadraturePoint& qp = quadraturePoints[i];
-      qp.material->assignStateVars( stateVars + i * ( nStateVarsMaterial + QuadraturePoint::nRequiredStateVars ),
-                                    nStateVarsMaterial );
-
-      // assign stress, strain state vars using the 'placement new' operator
-      new ( &qp.stress )
-        mVector6d( stateVars + nStateVarsMaterial + i * ( nStateVarsMaterial + QuadraturePoint::nRequiredStateVars ),
-                   6 );
-
-      new ( &qp.strain ) mVector6d( stateVars + nStateVarsMaterial +
-                                      i * ( nStateVarsMaterial + QuadraturePoint::nRequiredStateVars ) + 6,
-                                    6 );
+    for ( size_t i = 0; i < qps.size(); i++ ) {
+      auto&   qp          = qps[i];
+      double* qpStateVars = stateVars + ( i * nQpStateVars );
+      qp.assignStateVars( qpStateVars, nQpStateVars );
     }
   }
 
@@ -255,14 +273,12 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
-    for ( size_t i = 0; i < quadraturePoints.size(); i++ ) {
-      QuadraturePoint& qp = quadraturePoints[i];
-      qp.material         = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
+    for ( auto& qp : qps )
+      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
         MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
                                                               section.materialProperties,
                                                               section.nMaterialProperties,
                                                               elLabel ) ) );
-    }
   }
 
   template < int nDim, int nNodes >
@@ -270,35 +286,33 @@ namespace Marmot::Elements {
   {
     ParentGeometryElement::initializeYourself( coordinates );
 
-    for ( QuadraturePoint& qp : quadraturePoints ) {
+    for ( QuadraturePoint& qp : qps ) {
 
-      qp.geometry = std::make_unique< typename QuadraturePoint::Geometry >();
-
-      qp.geometry->dNdXi = this->dNdXi( qp.xi );
-      qp.geometry->J     = this->Jacobian( qp.geometry->dNdXi );
-      qp.geometry->JInv  = qp.geometry->J.inverse();
-      qp.geometry->detJ  = qp.geometry->J.determinant();
-      qp.geometry->dNdX  = this->dNdX( qp.geometry->dNdXi, qp.geometry->JInv );
-      qp.geometry->B     = this->B( qp.geometry->dNdX );
+      const dNdXiSized    dNdXi = this->dNdXi( qp.xi );
+      const JacobianSized J     = this->Jacobian( dNdXi );
+      const JacobianSized JInv  = J.inverse();
+      const dNdXiSized    dNdX  = this->dNdX( dNdXi, JInv );
+      qp.detJ                   = J.determinant();
+      qp.B                      = this->B( dNdX );
 
       if ( sectionType == SectionType::Solid ) {
 
-        qp.geometry->intVol = qp.weight * qp.geometry->detJ;
-        qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.geometry->detJ ) );
+        qp.J0xW = qp.weight * qp.detJ;
+        qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
       }
 
       else if ( sectionType == SectionType::PlaneStrain || sectionType == SectionType::PlaneStress ) {
 
         const double& thickness = elementProperties[0];
-        qp.geometry->intVol     = qp.weight * qp.geometry->detJ * thickness;
-        qp.material->setCharacteristicElementLength( std::sqrt( 4 * qp.geometry->detJ ) );
+        qp.J0xW                 = qp.weight * qp.detJ * thickness;
+        qp.material->setCharacteristicElementLength( std::sqrt( 4 * qp.detJ ) );
       }
 
       else if ( sectionType == SectionType::UniaxialStress ) {
 
         const double& crossSection = elementProperties[0];
-        qp.geometry->intVol        = qp.weight * qp.geometry->detJ * crossSection;
-        qp.material->setCharacteristicElementLength( 2 * qp.geometry->detJ );
+        qp.J0xW                    = qp.weight * qp.detJ * crossSection;
+        qp.material->setCharacteristicElementLength( 2 * qp.detJ );
       }
     }
   }
@@ -322,20 +336,20 @@ namespace Marmot::Elements {
     Voigt  S, dE;
     CSized C;
 
-    for ( QuadraturePoint& quadraturePoint : quadraturePoints ) {
+    for ( QuadraturePoint& qp : qps ) {
 
-      const BSized& B = quadraturePoint.geometry->B;
+      const BSized& B = qp.B;
 
       dE = B * dQ;
 
       if constexpr ( nDim == 1 ) {
         Vector6d dE6 = ( Vector6d() << dE, 0, 0, 0, 0, 0 ).finished();
         Matrix6d C66;
-        quadraturePoint.material
-          ->computeUniaxialStress( quadraturePoint.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
+        qp.material
+          ->computeUniaxialStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
         C << ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( C66 );
-        S( 0 ) = quadraturePoint.stress( 0 );
+        S( 0 ) = qp.managedStateVars->stress( 0 );
       }
 
       else if constexpr ( nDim == 2 ) {
@@ -345,41 +359,38 @@ namespace Marmot::Elements {
 
         if ( sectionType == SectionType::PlaneStress ) {
 
-          quadraturePoint.material
-            ->computePlaneStress( quadraturePoint.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
+          qp.material
+            ->computePlaneStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
           C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( C66 );
         }
 
         else if ( sectionType == SectionType::PlaneStrain ) {
 
-          quadraturePoint.material
-            ->computeStress( quadraturePoint.stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
+          qp.material->computeStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
           C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
         }
 
-        S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( quadraturePoint.stress );
-        quadraturePoint.strain += dE6;
+        S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( qp.managedStateVars->stress );
+        qp.managedStateVars->strain += dE6;
       }
 
       else if constexpr ( nDim == 3 ) {
 
         if ( sectionType == SectionType::Solid ) {
-
-          quadraturePoint.material
-            ->computeStress( quadraturePoint.stress.data(), C.data(), dE.data(), time, dT, pNewDT );
+          qp.material->computeStress( qp.managedStateVars->stress.data(), C.data(), dE.data(), time, dT, pNewDT );
         }
 
-        S = quadraturePoint.stress;
-        quadraturePoint.strain += dE;
+        S = qp.managedStateVars->stress;
+        qp.managedStateVars->strain += dE;
       }
 
       if ( pNewDT < 1.0 )
         return;
 
-      Ke += B.transpose() * C * B * quadraturePoint.geometry->intVol;
-      Pe -= B.transpose() * S * quadraturePoint.geometry->intVol;
+      Ke += B.transpose() * C * B * qp.J0xW;
+      Pe -= B.transpose() * S * qp.J0xW;
     }
   }
 
@@ -389,9 +400,9 @@ namespace Marmot::Elements {
     switch ( state ) {
     case MarmotElement::GeostaticStress: {
       if constexpr ( nDim == 3 ) {
-        for ( QuadraturePoint& quadraturePoint : quadraturePoints ) {
+        for ( QuadraturePoint& qp : qps ) {
 
-          XiSized coordAtGauss = this->NB( this->N( quadraturePoint.xi ) ) * this->coordinates;
+          XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
 
           const double sigY1 = values[0];
           const double sigY2 = values[2];
@@ -399,20 +410,15 @@ namespace Marmot::Elements {
           const double y2    = values[3];
 
           using namespace Math;
-          quadraturePoint.stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
-          quadraturePoint.stress( 0 ) = values[4] * quadraturePoint.stress( 1 );                      // sigma_x
-          quadraturePoint.stress( 2 ) = values[5] * quadraturePoint.stress( 1 );
+          qp.managedStateVars->stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
+          qp.managedStateVars->stress( 0 ) = values[4] * qp.managedStateVars->stress( 1 );                 // sigma_x
+          qp.managedStateVars->stress( 2 ) = values[5] * qp.managedStateVars->stress( 1 );
         }
       }
       break;
     }
     case MarmotElement::MarmotMaterialStateVars: {
       throw std::invalid_argument( "Please use initializeStateVars directly on material" );
-      /* for ( QuadraturePoint& qp : qps ) */
-      /*     qp.material->stateVars[static_cast<int>( values[0] )] = values[1]; */
-      /* for ( QuadraturePoint& quadraturePoint : quadraturePoints ) */
-      /*     quadraturePoint.material->stateVars[static_cast<int>(values[0])] = values[1]; */
-      /* break; */
     }
     default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     }
@@ -464,7 +470,7 @@ namespace Marmot::Elements {
     Map< RhsSized >                              Pe( P_ );
     const Map< const Matrix< double, nDim, 1 > > f( load );
 
-    for ( const auto& qp : quadraturePoints )
-      Pe += this->NB( this->N( qp.xi ) ).transpose() * f * qp.geometry->intVol;
+    for ( const auto& qp : qps )
+      Pe += this->NB( this->N( qp.xi ) ).transpose() * f * qp.J0xW;
   }
 } // namespace Marmot::Elements
