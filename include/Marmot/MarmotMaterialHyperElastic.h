@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Magdalena Schreter magdalena.schreter@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -28,23 +29,47 @@
 #pragma once
 #include "Marmot/MarmotMaterialMechanical.h"
 
-class MarmotMaterialHyperElastic : public MarmotMaterialMechanical {
+/**
+ * Derived abstract base class for _simple_, purely hyperelastic materials to be used for finite elements based on the
+ * total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor \f$ S \f$ will be
+ * derived by
+ *
+ * \f[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \f]
+ *
+ * with the Green - Lagrange strain tensor \f$ \boldsymbol{E} \f$
+ *
+ * \f[
+ *   \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
+ * \f]
+ *
+ * as work conjugated measure and the variable \f$ \boldsymbol{F} \f$ denoting the deformation gradient.
+ * The algorithmic tangent will be calculated by
+ *
+ * \f[
+ *   \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
+ * \f]
+ */
 
-  // Derived abstract base class for a _simple_, purely hyperelastic material to be used within TL elements
-  //
-  // stress measure: Piola - Kirchhoff II .. S
-  // strain measure for algorithmic tangent: Green - Lagrange .. E = 1/2 ( F^T * F - I )
-  //
-  //      ∂ f( E, t )
-  // S =  -----------
-  //      ∂    E
-  //
-  // Algorithmic tangent: dS/dE
+class MarmotMaterialHyperElastic : public MarmotMaterialMechanical {
 
 public:
   using MarmotMaterialMechanical::MarmotMaterialMechanical;
-
-  // Default implementation provided
+  /**
+   *
+   * For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the
+   * algorithmic tangent \f$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\f$.
+   *
+   * @todo A default implementation is provided.
+   *
+   * @param[in,out]	S	2nd Piola-Kirchhoff stress
+   * @param[in,out]	dSdE	Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with
+   * respect to the Green-Lagrange strain tensor \f$\boldsymbol{E}\f$.
+   * @param[in]	FOld	Deformation gradient at the old (pseudo-)time
+   * @param[in]	FNew	Deformation gradient at the current (pseudo-)time
+   * @param[in]	timeOld	Old (pseudo-)time
+   * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]	pNewDT	Suggestion for a new time increment
+   */
   virtual void computeStress( double*       S,    // PK2
                               double*       dSdE, // d PK2 d GL_E
                               const double* FOld,
@@ -53,14 +78,30 @@ public:
                               const double  dT,
                               double&       pNewDT ) override;
 
-  // Abstract methods
-  virtual void computeStressPK2( double*       S,    // PK2
-                                 double*       dSdE, // d PK2 d GL_E
+  /**
+   * For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent
+   * \f$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\f$.
+   *
+   * @todo Should we use function overloading in this case and simple also use computeStress for the function name?
+   *
+   * @param[in,out]	S	2nd Piola-Kirchhoff stress
+   * @param[in,out]	dSdE	Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with
+   * respect to the Green-Lagrange strain tensor \f$\boldsymbol{E}\f$.
+   * @param[in]	deltaE Green-Lagrange strain increment
+   * @param[in]	timeOld	Old (pseudo-)time
+   * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]	pNewDT	Suggestion for a new time increment
+   */
+  virtual void computeStressPK2( double*       S,
+                                 double*       dSdE,
                                  const double* E,
                                  const double* timeOld,
                                  const double  dT,
                                  double&       pNewDT ) = 0;
 
+  /**
+   * Plane stress implementation of @ref computeStressPK2.
+   */
   virtual void computePlaneStressPK2( double*       S,
                                       double*       dSdE,
                                       double*       E,
@@ -68,6 +109,9 @@ public:
                                       const double  dT,
                                       double&       pNewDT );
 
+  /**
+   * Uniaxial stress implementation of @ref computeStressPK2.
+   */
   virtual void computeUniaxialStressPK2( double*       S,
                                          double*       dSdE,
                                          double*       E,
