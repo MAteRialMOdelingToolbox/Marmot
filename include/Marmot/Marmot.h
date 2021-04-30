@@ -88,6 +88,7 @@ namespace MarmotLibrary {
     ORDP                               = 50,
     SCDPV3NonLocal                     = 51,
     LinearElasticShrinkage             = 52,
+    GCSCDP                             = 53,
   };
 
   enum ElementCode {

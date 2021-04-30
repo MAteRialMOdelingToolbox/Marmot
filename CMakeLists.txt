@@ -98,6 +98,7 @@ set(MODULES_DIR "modules/")
 
 if(NOT CORE_MODULES OR CORE_MODULES STREQUAL "all")
     set(CORE_MODULES
+        MarmotMathCore
         MarmotMechanicsCore
         MarmotFiniteElementCore
         MarmotCosseratCore
@@ -118,6 +119,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         DiffuseMicroCracking
         DruckerPrager 
         #DruckerPragerMD
+        GCSCDP
         GMCDP
         GMCDPFiniteStrain
         GMBiotElastic
@@ -151,7 +153,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         SCDPV3NonLocal
         SchaedlichSchweiger
         ShotLeon
-        #ShotLeonV2
+        ShotLeonV2
         ShotLeonNonLocal
         ShotLeonV2NonLocal
         ShotcreteSolidificationCreep
