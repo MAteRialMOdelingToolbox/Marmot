@@ -110,8 +110,6 @@ namespace Marmot::ContinuumMechanics {
 
     Vector6d planeStressCompensationStrain( const Vector6d& strain, double nu )
     {
-      /*compute E33 for a given strain, to compute the compensation for
-       * planeStress = Cel : (strain + compensationStrain) */
       const Vector6d& e                = strain;
       const double    strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
       Vector6d        result;
