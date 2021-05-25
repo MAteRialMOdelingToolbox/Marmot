@@ -187,18 +187,18 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Implementations of functions for the description of transversely isotropic elastic behavior.  
+<p>Functions for the description of transversely isotropic elastic behavior.  
 <a href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adea9e7ebcebd0d27958acf869671d177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#adea9e7ebcebd0d27958acf869671d177">complianceTensor</a> (const double E1, const double E2, const double nu12, const double nu23, const double G12)</td></tr>
+<tr class="memitem:adea9e7ebcebd0d27958acf869671d177"><td class="memItemLeft" align="right" valign="top">Matrix6d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#adea9e7ebcebd0d27958acf869671d177">complianceTensor</a> (const double E1, const double E2, const double nu12, const double nu23, const double G12)</td></tr>
 <tr class="separator:adea9e7ebcebd0d27958acf869671d177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68f0e46e202ca9545127a6fe44da3fde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#a68f0e46e202ca9545127a6fe44da3fde">stiffnessTensor</a> (const double E1, const double E2, const double nu12, const double nu23, const double G12)</td></tr>
+<tr class="memitem:a68f0e46e202ca9545127a6fe44da3fde"><td class="memItemLeft" align="right" valign="top">Matrix6d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic.html#a68f0e46e202ca9545127a6fe44da3fde">stiffnessTensor</a> (const double E1, const double E2, const double nu12, const double nu23, const double G12)</td></tr>
 <tr class="separator:a68f0e46e202ca9545127a6fe44da3fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementations of functions for the description of transversely isotropic elastic behavior. </p>
+<div class="textblock"><p>Functions for the description of transversely isotropic elastic behavior. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="adea9e7ebcebd0d27958acf869671d177"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adea9e7ebcebd0d27958acf869671d177">&#9670;&nbsp;</a></span>complianceTensor()</h2>
@@ -207,7 +207,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::complianceTensor </td>
+          <td class="memname">Matrix6d Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::complianceTensor </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>E1</em>, </td>
@@ -243,10 +243,10 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Compute the transversely isotropic compliance tensor: </p><p class="formulaDsp">
+<p>Computes the transversely isotropic compliance tensor: </p><p class="formulaDsp">
 \[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix} \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}} \end{bmatrix} \]
 </p>
-<p> The isotropic plane is defined with respect to the \( x_2 \) and \( x_3 \) axes of a local coordinate system. It is computed from the young's modulus \( E_1 \), the shear modulus \( G_{12} \) and poisson's ratio \( \nu_{12} *\) effective out of the isotropic plane and the in - plane young's modulus \( E_2 \) and poisson's ratio \( *\nu_{23} \).</p>
+<p> The isotropic plane is defined with respect to the \( x_2 \) and \( x_3 \) axes of a local coordinate system. It is computed from the young's modulus \( E_1 \), the shear modulus \( G_{12} \) and poisson's ratio \( \nu_{12} \) effective out of the isotropic plane and the in - plane young's modulus \( E_2 \) and poisson's ratio \( \nu_{23} \).</p>
 <p>The in - plane shear modulus \( G_{23} \) can be expressed by</p>
 <p class="formulaDsp">
 \[ \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})} \]
@@ -261,7 +261,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::stiffnessTensor </td>
+          <td class="memname">Matrix6d Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::stiffnessTensor </td>
           <td>(</td>
           <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>E1</em>, </td>
@@ -297,7 +297,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Compute the transversely isotropic stiffness tensor \( \mathbb{C} \) as inverse of the transversely isotropic compliance tensor \( \mathbb{C}^{-1} \). </p>
+<p>Computes the transversely isotropic stiffness tensor \( \mathbb{C} \) as inverse of the transversely isotropic compliance tensor \( \mathbb{C}^{-1} \). </p>
 
 </div>
 </div>

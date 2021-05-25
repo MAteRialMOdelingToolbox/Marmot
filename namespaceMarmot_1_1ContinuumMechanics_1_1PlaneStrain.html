@@ -189,9 +189,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2df9f7d96132dffdb710950d88e7ff8d"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a2df9f7d96132dffdb710950d88e7ff8d">getPlaneStrainTangent</a> (const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;C)</td></tr>
+<tr class="memitem:a2df9f7d96132dffdb710950d88e7ff8d"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a2df9f7d96132dffdb710950d88e7ff8d">getPlaneStrainTangent</a> (const Matrix6d &amp;C)</td></tr>
 <tr class="separator:a2df9f7d96132dffdb710950d88e7ff8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a100766a8a96b6aceac96ca46aefeebd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1EigenTensors.html#ad319c58ffb037313735f71b7306d981f">EigenTensors::Tensor322d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a100766a8a96b6aceac96ca46aefeebd7">dStressdDeformationGradient</a> (const <a class="el" href="namespaceMarmot_1_1EigenTensors.html#a5330da689df6e18d1d88c3de1d1cc420">EigenTensors::Tensor633d</a> &amp;dStressdDeformationGradient3D)</td></tr>
+<tr class="memitem:a100766a8a96b6aceac96ca46aefeebd7"><td class="memItemLeft" align="right" valign="top">EigenTensors::Tensor322d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a100766a8a96b6aceac96ca46aefeebd7">dStressdDeformationGradient</a> (const EigenTensors::Tensor633d &amp;dStressdDeformationGradient3D)</td></tr>
 <tr class="separator:a100766a8a96b6aceac96ca46aefeebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a988043140973fa784ebbf58602a5a4db"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a988043140973fa784ebbf58602a5a4db">dStrainDStrainPlaneStrain</a> ()</td></tr>
 <tr class="separator:a988043140973fa784ebbf58602a5a4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,14 +204,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Matrix3d</a> Marmot::ContinuumMechanics::PlaneStrain::getPlaneStrainTangent </td>
+          <td class="memname">Matrix3d Marmot::ContinuumMechanics::PlaneStrain::getPlaneStrainTangent </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &amp;&#160;</td>
+          <td class="paramtype">const Matrix6d &amp;&#160;</td>
           <td class="paramname"><em>C</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Extract the plane strain stiffness matrix from a given three-dimensional stiffness matrix.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">C</td><td>3D stiffness matrix \(\mathbb{C}\) given in <a class="el" href="voigtnotation.html">Voigt notation</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -222,14 +229,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot_1_1EigenTensors.html#ad319c58ffb037313735f71b7306d981f">EigenTensors::Tensor322d</a> Marmot::ContinuumMechanics::PlaneStrain::dStressdDeformationGradient </td>
+          <td class="memname">EigenTensors::Tensor322d Marmot::ContinuumMechanics::PlaneStrain::dStressdDeformationGradient </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1EigenTensors.html#a5330da689df6e18d1d88c3de1d1cc420">EigenTensors::Tensor633d</a> &amp;&#160;</td>
+          <td class="paramtype">const EigenTensors::Tensor633d &amp;&#160;</td>
           <td class="paramname"><em>dStressdDeformationGradient3D</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Extract the plane strain derivitive of the stress in Voigt notation with respect to the deformation gradient \(F_{ij}\) from the corresponding derivative in a 3d setting. </p>
 
 </div>
 </div>
@@ -247,6 +255,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Compute the derivative of the three-dimensional strain tensor with respect to the plane strain tensor. </p>
 
 </div>
 </div>

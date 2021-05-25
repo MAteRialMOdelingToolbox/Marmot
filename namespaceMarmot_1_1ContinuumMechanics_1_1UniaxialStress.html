@@ -189,9 +189,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad85ade68dbdb13a6679a15de717a8b75"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ad85ade68dbdb13a6679a15de717a8b75">getUniaxialStressTangent</a> (const Eigen::Ref&lt; const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &gt; &amp;C)</td></tr>
+<tr class="memitem:ad85ade68dbdb13a6679a15de717a8b75"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ad85ade68dbdb13a6679a15de717a8b75">getUniaxialStressTangent</a> (const Eigen::Ref&lt; const Matrix6d &gt; &amp;C)</td></tr>
 <tr class="separator:ad85ade68dbdb13a6679a15de717a8b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7e18d4633571f75f66f1ec74df85bba"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ac7e18d4633571f75f66f1ec74df85bba">getUniaxialStressTangent</a> (const Ref&lt; const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &gt; &amp;C)</td></tr>
+<tr class="memitem:ac7e18d4633571f75f66f1ec74df85bba"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ac7e18d4633571f75f66f1ec74df85bba">getUniaxialStressTangent</a> (const Ref&lt; const Matrix6d &gt; &amp;C)</td></tr>
 <tr class="separator:ac7e18d4633571f75f66f1ec74df85bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -204,12 +204,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">double Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent </td>
           <td>(</td>
-          <td class="paramtype">const Eigen::Ref&lt; const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Ref&lt; const Matrix6d &gt; &amp;&#160;</td>
           <td class="paramname"><em>C</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Extract the uniaxial stress-strain tangent \(\frac{\partial\sigma}{\partial\varepsilon}\) from a given three-dimensional stiffness matrix.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">C</td><td>3D stiffness matrix \(\mathbb{C}\) given in <a class="el" href="voigtnotation.html">Voigt notation</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -222,7 +229,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">double Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent </td>
           <td>(</td>
-          <td class="paramtype">const Ref&lt; const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const Ref&lt; const Matrix6d &gt; &amp;&#160;</td>
           <td class="paramname"><em>C</em></td><td>)</td>
           <td></td>
         </tr>

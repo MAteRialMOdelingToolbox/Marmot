@@ -233,7 +233,11 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a></td></tr>
 <tr class="separator:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstract basic class for Mechanical materials with scalar nonlocal interaction.</p>
+<p>Formulated incrementally as σ_np, K_local_np = f (σ_n, dxdX_n, dxdX_np, Δt, t_n, , Kn, ΔK, K_local_n.. )</p>
+<p>Algorithmic tangents: dσdF = d σ_np d (dxdX_np) dK_LocaldF = d K_local_np d (dxdX_np) dσdK = d σ_np d ΔK </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac157115118e42ceba1d5b2644b5f6a8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac157115118e42ceba1d5b2644b5f6a8f">&#9670;&nbsp;</a></span>computeStress()</h2>
 

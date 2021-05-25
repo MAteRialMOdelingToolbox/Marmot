@@ -212,7 +212,7 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotMaterialHypoElastic_8h.html">Marmot/MarmotMaterialHypoElastic.h</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotTypedefs_8h.html">Marmot/MarmotTypedefs.h</a>&quot;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;Marmot/MarmotTypedefs.h&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
@@ -259,7 +259,7 @@ $(function() {
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">  146</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span>&amp; <a class="code" href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">G13</a>;</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">  152</a></span>&#160;    <a class="code" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> <a class="code" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">C</a>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">  152</a></span>&#160;    Matrix6d <a class="code" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">C</a>;</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classMarmot_1_1Materials_1_1LinearElastic.html#a3064926e24dbba5f5bf00cf05b190caa">computeStress</a>( <span class="keywordtype">double</span>* stress,</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                        <span class="keywordtype">double</span>* dStressDDStrain,</div>
@@ -275,9 +275,8 @@ $(function() {
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  };</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;} <span class="comment">// namespace Marmot::Materials</span></div>
 <div class="ttc" id="aMarmotMaterialHypoElastic_8h_html"><div class="ttname"><a href="MarmotMaterialHypoElastic_8h.html">MarmotMaterialHypoElastic.h</a></div></div>
-<div class="ttc" id="aMarmotTypedefs_8h_html"><div class="ttname"><a href="MarmotTypedefs_8h.html">MarmotTypedefs.h</a></div></div>
 <div class="ttc" id="aMarmotUtils_8h_html_structStateView"><div class="ttname"><a href="MarmotUtils_8h.html#structStateView">StateView</a></div><div class="ttdef"><b>Definition:</b> MarmotUtils.h:29</div></div>
-<div class="ttc" id="aclassMarmotMaterialHypoElastic_html"><div class="ttname"><a href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialHypoElastic.h:31</div></div>
+<div class="ttc" id="aclassMarmotMaterialHypoElastic_html"><div class="ttname"><a href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialHypoElastic.h:54</div></div>
 <div class="ttc" id="aclassMarmotMaterial_html_a0b6c5faf3cb8abd50c67146dad8c175a"><div class="ttname"><a href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">MarmotMaterial::nMaterialProperties</a></div><div class="ttdeci">const int nMaterialProperties</div><div class="ttdef"><b>Definition:</b> MarmotMaterial.h:36</div></div>
 <div class="ttc" id="aclassMarmotMaterial_html_a0f631d6ec14531146ec683712a085960"><div class="ttname"><a href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">MarmotMaterial::materialProperties</a></div><div class="ttdeci">const double * materialProperties</div><div class="ttdef"><b>Definition:</b> MarmotMaterial.h:35</div></div>
 <div class="ttc" id="aclassMarmotMaterial_html_a31bc9f9283f984f5d78685d82e764edd"><div class="ttname"><a href="classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd">MarmotMaterial::materialNumber</a></div><div class="ttdeci">const int materialNumber</div><div class="ttdef"><b>Definition:</b> MarmotMaterial.h:42</div></div>
@@ -302,7 +301,6 @@ $(function() {
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_ae66bc606b4413c2ccac88852bf3bbc6b"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#ae66bc606b4413c2ccac88852bf3bbc6b">Marmot::Materials::LinearElastic::G23</a></div><div class="ttdeci">const double G23</div><div class="ttdoc">Shear modulus between axis x2 and x3.</div><div class="ttdef"><b>Definition:</b> LinearElastic.h:138</div></div>
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_af46634fe3a8acddf636945e5fb3f0c9e"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#af46634fe3a8acddf636945e5fb3f0c9e">Marmot::Materials::LinearElastic::nu13</a></div><div class="ttdeci">const double &amp; nu13</div><div class="ttdoc">Poisson's ratio between axis x1 and x3.</div><div class="ttdef"><b>Definition:</b> LinearElastic.h:119</div></div>
 <div class="ttc" id="anamespaceMarmot_1_1Materials_html"><div class="ttname"><a href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a></div><div class="ttdef"><b>Definition:</b> LinearElastic.h:34</div></div>
-<div class="ttc" id="anamespaceMarmot_html_a48144b7616079807fd550c92d142e9da"><div class="ttname"><a href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 6, 6 &gt; Matrix6d</div><div class="ttdef"><b>Definition:</b> MarmotTypedefs.h:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 		<script src="custom.js"></script>

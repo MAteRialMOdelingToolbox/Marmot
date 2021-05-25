@@ -253,7 +253,26 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a></td></tr>
 <tr class="separator:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Derived abstract base class for elastic materials expressed purely in rate form.</p>
+<p>In general, the nominal stress rate tensor \( \sigRate \) can be written as a function of the nominal stress tensor \( \sig \), the stretching rate tensor \( \epsRate \) and the time \( t \).</p>
+<p class="formulaDsp">
+\[ \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]
+</p>
+<p>In course of numerical time integration, this relation will be formulated incrementally as</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]
+</p>
+<p>with</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta\eps = \epsRate\, \Delta t \]
+</p>
+<p>and the algorithmic tangent</p>
+<p class="formulaDsp">
+\[ \displaystyle \frac{d \sig }{d \eps } = \frac{d \Delta \sig }{d \Delta \eps } \]
+</p>
+<p>This formulation is compatible with an Abaqus interface. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aee2d34ac568027969f668999154b4b20"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aee2d34ac568027969f668999154b4b20">&#9670;&nbsp;</a></span>setCharacteristicElementLength()</h2>
 
@@ -269,6 +288,13 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Set the characteristic element length at the considered quadrature point. It is needed for the regularization of materials with softening behavior based on the mesh-adjusted softening modulus.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>characteristic length; will be assigned to <a class="el" href="classMarmotMaterialHypoElastic.html#af526ea494a3ba4d70de3be5d2d55b5a0">characteristicElementLength</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -335,6 +361,20 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given deformation gradient at the old and the current time, compute the Cauchy stress and the algorithmic tangent \(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{F}^{(n+1)}}\).</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>A default implementation is provided.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dSdE</td><td>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the deformation gradient \(\boldsymbol{F}\) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FOld</td><td>Deformation gradient at the old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FNew</td><td>Deformation gradient at the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="classMarmotMaterialMechanical.html#acce6cbd09fb65dc5b5f7c8f2af8bde47">MarmotMaterialMechanical</a>.</p>
 
@@ -397,6 +437,18 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given linearized strain increment \(\Delta\boldsymbol{\varepsilon}\) at the old and the current time, compute the Cauchy stress and the algorithmic tangent \(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDDstrain</td><td>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dStrain</td><td>linearized strain increment </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a3064926e24dbba5f5bf00cf05b190caa">Marmot::Materials::LinearElastic</a>.</p>
 
@@ -533,6 +585,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Plane stress implementation of <a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">computeStress</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>why is dStrain an in-out parameter? </dd></dl>
 
 </div>
 </div>
@@ -547,6 +601,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Uniaxial stress implementation of <a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">computeStress</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>why is dStrain an in-out parameter? </dd></dl>
 
 </div>
 </div>
@@ -564,7 +620,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Characteristic element length. </p>
-<p>#charactersisticElementLength represents the characteristic length of a finite element. It is needed for the regularization of materials with softening behavior to assure mesh independent results. </p>
 
 </div>
 </div>

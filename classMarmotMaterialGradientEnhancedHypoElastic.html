@@ -240,7 +240,37 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a></td></tr>
 <tr class="separator:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Derived abstract base class for gradient-enhanced hypo-elastic materials expressed purely in rate form.</p>
+<p>In general, the nominal stress rate tensor \( \sigRate \) can be written as a function of the nominal stress tensor \( \sig \), the stretching rate tensor \( \epsRate \) the local variable \(\kappa\), the nonlocal variable \(\bar{\kappa}\), internal variables \(\boldsymbol{x}\) and the time \( t \)</p>
+<p class="formulaDsp">
+\[ \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \]
+</p>
+<p>In course of numerical time integration, this relation will be formulated incrementally as</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t, t_n, ...) \]
+</p>
+<p>with</p>
+<p class="formulaDsp">
+\[ \displaystyle \Delta\eps = \epsRate\, \Delta t \]
+</p>
+ <p class="formulaDsp">
+\[ \displaystyle \Delta\bar{\kappa} = \dot{\bar{\kappa}}\, \Delta t \]
+</p>
+<p>and the algorithmic tangents</p>
+<p class="formulaDsp">
+\[ \displaystyle \frac{d \sig }{d \eps } = \frac{d \Delta \sig }{d \Delta \eps } \]
+</p>
+ <p class="formulaDsp">
+\[ \displaystyle \frac{d \sig }{d \bar{\kappa}} = \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \]
+</p>
+ <p class="formulaDsp">
+\[ \displaystyle \frac{d \kappa }{d \eps }= \frac{d \Delta \kappa }{d \Delta \eps } \]
+</p>
+ <p class="formulaDsp">
+\[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}= \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} = l_{\text{nonlocal}} \]
+</p>
+ </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac4c9fc1968dead0bf650c1ffbf080b78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac4c9fc1968dead0bf650c1ffbf080b78">&#9670;&nbsp;</a></span>computeStress() <span class="overload">[1/2]</span></h2>
 
@@ -340,6 +370,25 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given deformation gradient and a nonlocal variable at the old and the current time, compute the Cauchy stress and the local variable and the algorithmic tangents.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">K_local</td><td>local variable </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">nonLocalRadius</td><td>nonlocal radius representing the tangent \(\frac{d \Delta \kappa }{d \Delta \bar{\kappa}}\) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDDDeformationGradient</td><td>Derivative of the Cauchy stress tensor with respect to the deformation gradient \(\boldsymbol{F}\) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dK_localDDeformationGradient</td><td>Derivative of the local variable with respect to the deformation gradient \(\boldsymbol{F}\) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDK</td><td>Derivative of the Cauchy stress tensor with respect to the nonlocal variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FOld</td><td>Deformation gradient at the old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">FNew</td><td>Deformation gradient at the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">KOld</td><td>Local variable at the old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dK</td><td>Increment of the local variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="classMarmotMaterialGradientEnhancedMechanical.html#ac157115118e42ceba1d5b2644b5f6a8f">MarmotMaterialGradientEnhancedMechanical</a>.</p>
 
@@ -438,6 +487,23 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given deformation gradient and a nonlocal variable at the old and the current time, compute the Cauchy stress and the local variable and the algorithmic tangents.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">K_local</td><td>local variable </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">nonLocalRadius</td><td>nonlocal radius representing the tangent \(\frac{d \Delta \kappa }{d \Delta \bar{\kappa}}\) </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDDstrain</td><td>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dK_localDDStrain</td><td>Derivative of the local variable with respect to the linearized strain </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDK</td><td>Derivative of the Cauchy stress tensor with respect to the nonlocal variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">KOld</td><td>Local variable at the old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dK</td><td>Increment of the local variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -534,6 +600,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Plane stress implementation of <a class="el" href="classMarmotMaterialGradientEnhancedHypoElastic.html#ac4c9fc1968dead0bf650c1ffbf080b78">computeStress</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>why is dStrain an in-out parameter? </dd></dl>
 
 </div>
 </div>
@@ -556,6 +624,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Plane stress implementation of <a class="el" href="classMarmotMaterialGradientEnhancedHypoElastic.html#ac4c9fc1968dead0bf650c1ffbf080b78">computeStress</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>why is dStrain an in-out parameter? </dd></dl>
 
 </div>
 </div>

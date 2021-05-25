@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['function_5ftype_1096',['function_type',['../namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation.html#ae09264253e5b0f51a9b04f549d39f77a',1,'Marmot::NumericalAlgorithms::Differentiation']]],
-  ['function_5ftype_5fcomplex_1097',['function_type_complex',['../namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex.html#a2a5ac8bd59fa1fd307dfb5598dc1214b',1,'Marmot::NumericalAlgorithms::Differentiation::Complex']]]
+  ['materialfactoryfunction_907',['materialFactoryFunction',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#af816b8c7c13946dc11dc6a4d77c799cc',1,'MarmotLibrary::MarmotMaterialFactory']]],
+  ['matrixstatestrain_908',['MatrixStateStrain',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::MatrixStateStrain()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain()']]]
 ];

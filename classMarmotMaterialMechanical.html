@@ -233,7 +233,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a></td></tr>
 <tr class="separator:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstract basic class for Mechanical materials. 'Mechanical' is meant in the 'most general sense', i.e., any material which describes a mechanical (cauchy) stress - deformation relationship (e.g, hyperelastic, hypoelastic, elasto-plastic, visco-elastic materials)</p>
+<p>σ = f (σ, dxdX, t, .. ),</p>
+<p>formulated incrementally as σ_np = f (σ_n, dxdX_n, dxdX_np, Δt, t_n, .. )</p>
+<p>Algorithmic tangent: dσdF = d σ_np d (dxdX_np)</p>
+<p>Format:</p>
+<p>/ d σ_11 d F_00, d σ_11 d F_10, d σ_11 d F_20, d σ_11 d F_01, \ | d σ_22 d F_00, | | d σ_33 d F_00, | | ... | | ... | \ ... /</p>
+<p>such that it can be interpreted as a column major 6x3x3 tensor (4th order, left voigt tensor) </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acce6cbd09fb65dc5b5f7c8f2af8bde47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acce6cbd09fb65dc5b5f7c8f2af8bde47">&#9670;&nbsp;</a></span>computeStress()</h2>
 

@@ -287,7 +287,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">G13</a></td></tr>
 <tr class="memdesc:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shear modulus between axis x1 and x3.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">More...</a><br /></td></tr>
 <tr class="separator:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60956291f9addd9bc595a16699c6e651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">C</a></td></tr>
+<tr class="memitem:a60956291f9addd9bc595a16699c6e651"><td class="memItemLeft" align="right" valign="top">Matrix6d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">C</a></td></tr>
 <tr class="memdesc:a60956291f9addd9bc595a16699c6e651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Material stiffness tensor.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">More...</a><br /></td></tr>
 <tr class="separator:a60956291f9addd9bc595a16699c6e651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
@@ -440,6 +440,18 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>For a given linearized strain increment \(\Delta\boldsymbol{\varepsilon}\) at the old and the current time, compute the Cauchy stress and the algorithmic tangent \(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDDstrain</td><td>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dStrain</td><td>linearized strain increment </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="classMarmotMaterialHypoElastic.html#a4751feeb33fc3205fc5c2b75fdc0d30c">MarmotMaterialHypoElastic</a>.</p>
 
@@ -772,7 +784,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::Materials::LinearElastic::C</td>
+          <td class="memname">Matrix6d Marmot::Materials::LinearElastic::C</td>
         </tr>
       </table>
   </td>
