@@ -1,6 +1,9 @@
 <map id="modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" name="modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h">
-<area shape="rect" id="node1" title=" " alt="" coords="47,5,295,47"/>
-<area shape="rect" id="node2" href="$HaighWestergaard_8h.html" title=" " alt="" coords="5,95,192,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="217,95,269,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="10,169,187,196"/>
+<area shape="rect" id="node1" title=" " alt="" coords="111,5,359,47"/>
+<area shape="rect" id="node2" href="$HaighWestergaard_8h.html" title=" " alt="" coords="69,95,256,121"/>
+<area shape="rect" id="node7" title=" " alt="" coords="281,95,333,121"/>
+<area shape="rect" id="node3" href="$MarmotTypedefs_8h.html" title=" " alt="" coords="74,169,251,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,251,91,278"/>
+<area shape="rect" id="node5" title=" " alt="" coords="115,251,210,278"/>
+<area shape="rect" id="node6" title=" " alt="" coords="234,244,409,285"/>
 </map>

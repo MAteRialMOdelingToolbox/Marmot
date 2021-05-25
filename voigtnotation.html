@@ -187,17 +187,17 @@ $(function() {
 <div class="textblock"><p>In Marmot, Voigt notation is used to simplify tensorial operations including second order tensors like stress and strain and fourth order tensors like stiffness and compliance. For instance, tensor products are written as vector matrix products.</p>
 <p><b>Namespace:</b> <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html">Marmot::ContinuumMechanics::VoigtNotation</a></p>
 <p><b>Implementation:</b> <a class="el" href="MarmotVoigt_8h.html">MarmotVoigt.h</a></p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Cauchy stress tensor</h2>
 <p class="formulaDsp">
 \[\displaystyle \sig = \begin{bmatrix} \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13}\\ \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23}\\ \sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33} \end{bmatrix} \rightarrow \begin{bmatrix} \sigma_{11}\\ \sigma_{22}\\ \sigma_{33}\\ \sigma_{12}\\ \sigma_{13}\\ \sigma_{23}\\ \end{bmatrix} \]
 </p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Linearized strain tensor</h2>
 <p class="formulaDsp">
 \[\displaystyle \eps = \begin{bmatrix} \varepsilon_{11} &amp; \varepsilon_{12} &amp; \varepsilon_{13}\\ \varepsilon_{21} &amp; \varepsilon_{22} &amp; \varepsilon_{23}\\ \varepsilon_{31} &amp; \varepsilon_{32} &amp; \varepsilon_{33} \end{bmatrix} \rightarrow \begin{bmatrix} \varepsilon_{11}\\ \varepsilon_{22}\\ \varepsilon_{33}\\ 2\,\varepsilon_{12}\\ 2\,\varepsilon_{13}\\ 2\,\varepsilon_{23}\\ \end{bmatrix} \]
 </p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Generalized Hooke's law</h2>
 <p class="formulaDsp">
 \[ \sig = \Cel : \eps = \mathbb{D}^{-1} : \eps \rightarrow \begin{bmatrix} \sigma_{11}\\ \sigma_{22}\\ \sigma_{33}\\ \sigma_{12}\\ \sigma_{13}\\ \sigma_{23}\\ \end{bmatrix} = \begin{bmatrix} D_{1111} &amp; D_{1122} &amp; D_{1133} &amp; 2\,D_{1112} &amp; xD_{1113} &amp; D_{1123} \\ D_{2211} &amp; D_{2222} &amp; D_{2233} &amp; 2\,D_{2212} &amp; D_{2213} &amp; D_{2223} \\ D_{3311} &amp; D_{3322} &amp; D_{3333} &amp; 2\,D_{3312} &amp; D_{3313} &amp; D_{3323} \\ 2\,D_{1211} &amp; 2\,D_{1222} &amp; 2\,D_{1233} &amp; 4\,D_{1212} &amp; 2\,D_{1213} &amp; 2\,D_{1223} \\ 2\,D_{1311} &amp; 2\,D_{1322} &amp; 2\,D_{1333} &amp; 2\,D_{1312} &amp; 4\,D_{1313} &amp; 2\,D_{1323} \\ 2\,D_{2311} &amp; 2\,D_{2322} &amp; 2\,D_{2333} &amp; 2\,D_{2312} &amp; 2\,D_{2313} &amp; 4\,D_{2323} \\ \end{bmatrix}^{-1} \begin{bmatrix} \varepsilon_{11}\\ \varepsilon_{22}\\ \varepsilon_{33}\\ 2\,\varepsilon_{12}\\ 2\,\varepsilon_{13}\\ 2\,\varepsilon_{23}\\ \end{bmatrix} \]

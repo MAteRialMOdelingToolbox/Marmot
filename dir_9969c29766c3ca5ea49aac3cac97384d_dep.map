@@ -1,12 +1,17 @@
 <map id="modules/core/MarmotMechanicsCore" name="modules/core/MarmotMechanicsCore">
-<area shape="rect" id="node2" href="dir_f1b1db24a065556929791500418aeb43.html" title="doc" alt="" coords="237,63,309,111"/>
-<area shape="rect" id="node3" href="dir_7d9e0bddc3df5047c06a16b0d057f1c8.html" title="include" alt="" coords="104,159,176,207"/>
-<area shape="rect" id="node6" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="140,255,212,303"/>
-<area shape="rect" id="edge3-headlabel" href="dir_000011_000002.html" title="10" alt="" coords="161,227,176,242"/>
-<area shape="rect" id="node4" href="dir_44fa5c34dc4af4cf8679eba293af8a34.html" title="src" alt="" coords="141,63,213,111"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000013_000011.html" title="27" alt="" coords="156,138,171,152"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000013_000002.html" title="5" alt="" coords="191,231,199,246"/>
-<area shape="rect" id="node5" href="dir_416960a058739096120dd0e909285a2b.html" title="testScript" alt="" coords="38,63,117,111"/>
+<area shape="rect" id="node1" href="dir_39413a3592d49ba1372e049fbfe3e31f.html" title="MarmotMathCore" alt="" coords="512,159,635,207"/>
+<area shape="rect" id="node4" href="dir_7d9e0bddc3df5047c06a16b0d057f1c8.html" title="include" alt="" coords="416,159,488,207"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000006_000016.html" title="1" alt="" coords="502,184,510,198"/>
+<area shape="rect" id="node7" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="537,255,609,303"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000006_000002.html" title="1" alt="" coords="578,229,586,244"/>
+<area shape="rect" id="node3" href="dir_f1b1db24a065556929791500418aeb43.html" title="doc" alt="" coords="237,63,309,111"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000016_000006.html" title="12" alt="" coords="486,167,501,182"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000016_000002.html" title="10" alt="" coords="519,234,534,249"/>
+<area shape="rect" id="node5" href="dir_44fa5c34dc4af4cf8679eba293af8a34.html" title="src" alt="" coords="141,63,213,111"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000018_000006.html" title="20" alt="" coords="489,140,503,155"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000018_000016.html" title="27" alt="" coords="393,151,408,166"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000018_000002.html" title="5" alt="" coords="625,255,633,270"/>
+<area shape="rect" id="node6" href="dir_416960a058739096120dd0e909285a2b.html" title="testScript" alt="" coords="38,63,117,111"/>
 <area shape="rect" id="clust2" href="dir_9969c29766c3ca5ea49aac3cac97384d.html" alt="" coords="27,52,501,217"/>
-<area shape="rect" id="clust1" href="dir_6d4da112a1331882b0b6514a341190a0.html" title="core" alt="" coords="16,16,512,228"/>
+<area shape="rect" id="clust1" href="dir_6d4da112a1331882b0b6514a341190a0.html" title="core" alt="" coords="16,16,645,228"/>
 </map>

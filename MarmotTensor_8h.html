@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.9.1"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h File Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="dir_6d4da112a1331882b0b6514a341190a0.html">core</a></li><li class="navelem"><a class="el" href="dir_39413a3592d49ba1372e049fbfe3e31f.html">MarmotMathCore</a></li><li class="navelem"><a class="el" href="dir_30dc539d7f9137a8c9255c38053dcb4a.html">include</a></li><li class="navelem"><a class="el" href="dir_31b2eb882efef22caa0966fb4f2fb905.html">Marmot</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">MarmotTensor.h File Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="MarmotJournal_8h_source.html">Marmot/MarmotJournal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MarmotTypedefs_8h_source.html">Marmot/MarmotTypedefs.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MarmotVoigt_8h_source.html">Marmot/MarmotVoigt.h</a>&quot;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for MarmotTensor.h:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MarmotTensor_8h__incl.svg" width="100%" height="518"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MarmotTensor_8h__dep__incl.svg" width="100%" height="417"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+</div>
+<p><a href="MarmotTensor_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceMarmot"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html">Marmot</a></td></tr>
+<tr class="memdesc:namespaceMarmot"><td class="mdescLeft">&#160;</td><td class="mdescRight">This file includes functions needed for calculations with stress and strain tensors written in voigt notation. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1ContinuumMechanics"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">Marmot::ContinuumMechanics</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html">Marmot::ContinuumMechanics::CommonTensors</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html">Marmot::ContinuumMechanics::TensorUtility</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html">Marmot::ContinuumMechanics::TensorUtility::IndexNotation</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5229823769d5624c62579865562937de"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a5229823769d5624c62579865562937de">Marmot::ContinuumMechanics::CommonTensors::getNumberOfDofForRotation</a> (int nDim)</td></tr>
+<tr class="separator:a5229823769d5624c62579865562937de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b9d6687449fa026f2afd3256e57d8f"><td class="memTemplParams" colspan="2">template&lt;int sizeI, int sizeJ&gt; </td></tr>
+<tr class="memitem:aa1b9d6687449fa026f2afd3256e57d8f"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, sizeI *sizeJ, sizeI *sizeJ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aa1b9d6687449fa026f2afd3256e57d8f">Marmot::ContinuumMechanics::CommonTensors::makeIndexSwapTensor</a> ()</td></tr>
+<tr class="separator:aa1b9d6687449fa026f2afd3256e57d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef29bdf819cca92a9f9793a80343fa11"><td class="memTemplParams" colspan="2">template&lt;int nDim&gt; </td></tr>
+<tr class="memitem:aef29bdf819cca92a9f9793a80343fa11"><td class="memTemplItemLeft" align="right" valign="top">constexpr Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; getNumberOfDofForRotation(nDim), nDim, nDim &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aef29bdf819cca92a9f9793a80343fa11">Marmot::ContinuumMechanics::CommonTensors::getReferenceToCorrectLeviCivita</a> ()</td></tr>
+<tr class="separator:aef29bdf819cca92a9f9793a80343fa11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac76ca261b9626ba6a928136181867c65"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#ac76ca261b9626ba6a928136181867c65">Marmot::ContinuumMechanics::TensorUtility::d</a> (int a, int b)</td></tr>
+<tr class="separator:ac76ca261b9626ba6a928136181867c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memTemplParams" colspan="2">template&lt;int x, int y, typename T , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;&gt; </td></tr>
+<tr class="memitem:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#adc57e3526c1cc6da8cf1b38a5126f7e0">Marmot::ContinuumMechanics::TensorUtility::as</a> (T &amp;t)</td></tr>
+<tr class="separator:adc57e3526c1cc6da8cf1b38a5126f7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memTemplParams" colspan="2">template&lt;int x, int y, typename T , typename  = void&gt; </td></tr>
+<tr class="memitem:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#aedbc0e8d8b29d1ed3c4969544a3a205c">Marmot::ContinuumMechanics::TensorUtility::as</a> (const T &amp;t)</td></tr>
+<tr class="separator:aedbc0e8d8b29d1ed3c4969544a3a205c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; Derived &gt; &gt;::value &gt;&gt; </td></tr>
+<tr class="memitem:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#ad4d5c816b765ba019bdb1d1118e2f1ea">Marmot::ContinuumMechanics::TensorUtility::flatten</a> (Derived &amp;t)</td></tr>
+<tr class="separator:ad4d5c816b765ba019bdb1d1118e2f1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e1750e4b9a0f970117a71a7beee21f"><td class="memTemplParams" colspan="2">template&lt;typename Derived , typename  = void&gt; </td></tr>
+<tr class="memitem:a95e1750e4b9a0f970117a71a7beee21f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#a95e1750e4b9a0f970117a71a7beee21f">Marmot::ContinuumMechanics::TensorUtility::flatten</a> (const Derived &amp;t)</td></tr>
+<tr class="separator:a95e1750e4b9a0f970117a71a7beee21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf70bc025ba0714a52d5bd0935a6230"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#a5cf70bc025ba0714a52d5bd0935a6230">Marmot::ContinuumMechanics::TensorUtility::dyadicProduct</a> (const Eigen::Vector3d &amp;vector1, const Eigen::Vector3d &amp;vector2)</td></tr>
+<tr class="separator:a5cf70bc025ba0714a52d5bd0935a6230"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e7c0348949da50ad0055ea5e2aea72c"><td class="memTemplParams" colspan="2">template&lt;int nDim&gt; </td></tr>
+<tr class="memitem:a0e7c0348949da50ad0055ea5e2aea72c"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::pair&lt; int, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a0e7c0348949da50ad0055ea5e2aea72c">Marmot::ContinuumMechanics::TensorUtility::IndexNotation::fromVoigt</a> (int ij)</td></tr>
+<tr class="separator:a0e7c0348949da50ad0055ea5e2aea72c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a930cfeffbe0dc8d4266f80cacae0e1da"><td class="memTemplParams" colspan="2">template&lt;int nDim&gt; </td></tr>
+<tr class="memitem:a930cfeffbe0dc8d4266f80cacae0e1da"><td class="memTemplItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a930cfeffbe0dc8d4266f80cacae0e1da">Marmot::ContinuumMechanics::TensorUtility::IndexNotation::toVoigt</a> (int i, int j)</td></tr>
+<tr class="separator:a930cfeffbe0dc8d4266f80cacae0e1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ddc1f00f3679253f9bba7bbca7d6ae5"><td class="memTemplParams" colspan="2">template&lt;int nDim&gt; </td></tr>
+<tr class="memitem:a4ddc1f00f3679253f9bba7bbca7d6ae5"><td class="memTemplItemLeft" align="right" valign="top">Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; <a class="el" href="MarmotVoigt_8h.html#ab05a2676268f62bf9214105a0fe8e614">VOIGTFROMDIM</a>(nDim), nDim, nDim &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a4ddc1f00f3679253f9bba7bbca7d6ae5">Marmot::ContinuumMechanics::TensorUtility::IndexNotation::voigtMap</a> ()</td></tr>
+<tr class="separator:a4ddc1f00f3679253f9bba7bbca7d6ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a19e903c99f721cb9a86a8613f35794a0"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a19e903c99f721cb9a86a8613f35794a0">Marmot::ContinuumMechanics::CommonTensors::I2xI2</a> = Initialize_I2xI2()</td></tr>
+<tr class="separator:a19e903c99f721cb9a86a8613f35794a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad74cf6891e87ab6df1f6db6ee2ccb86"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aad74cf6891e87ab6df1f6db6ee2ccb86">Marmot::ContinuumMechanics::CommonTensors::Isym</a> = Initialize_Isym()</td></tr>
+<tr class="separator:aad74cf6891e87ab6df1f6db6ee2ccb86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e22eecd0896eb7b3c4158fdb25340e"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a39e22eecd0896eb7b3c4158fdb25340e">Marmot::ContinuumMechanics::CommonTensors::Iskew</a> = Initialize_Iskew()</td></tr>
+<tr class="separator:a39e22eecd0896eb7b3c4158fdb25340e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab12fa46f0ae9374c111d07cfd88e44d6"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab12fa46f0ae9374c111d07cfd88e44d6">Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</a> = Initialize_IFourthOrder()</td></tr>
+<tr class="separator:ab12fa46f0ae9374c111d07cfd88e44d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488003e8a0f1a7cc17e2d27346b4aaea"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a488003e8a0f1a7cc17e2d27346b4aaea">Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</a> = Initialize_IFourthOrderTranspose()</td></tr>
+<tr class="separator:a488003e8a0f1a7cc17e2d27346b4aaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61d497f8e353bb4bc27882c95128e9a"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor3333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab61d497f8e353bb4bc27882c95128e9a">Marmot::ContinuumMechanics::CommonTensors::dDeviatoricStress_dStress</a> = Initialize_dDeviatoricStress_dStress()</td></tr>
+<tr class="separator:ab61d497f8e353bb4bc27882c95128e9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127950653ef345e8a45df1e68393c6f1"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor333d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a127950653ef345e8a45df1e68393c6f1">Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</a> = Initialize_LeviCivita3D()</td></tr>
+<tr class="separator:a127950653ef345e8a45df1e68393c6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad015d8c33b0fa498d7d134ff5eef088c"><td class="memItemLeft" align="right" valign="top">const EigenTensors::Tensor122d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ad015d8c33b0fa498d7d134ff5eef088c">Marmot::ContinuumMechanics::CommonTensors::LeviCivita2D</a> = Initialize_LeviCivita2D()</td></tr>
+<tr class="separator:ad015d8c33b0fa498d7d134ff5eef088c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>
