@@ -52,7 +52,7 @@ PROJECT_BRIEF          =
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = share/marmot_logo_small.png
+PROJECT_LOGO           = share/marmot_logo_schrift_small.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -1138,14 +1138,14 @@ VERBATIM_HEADERS       = YES
 # classes, structs, unions or interfaces.
 # The default value is: YES.
 
-ALPHABETICAL_INDEX     = YES
+ALPHABETICAL_INDEX     = NO
 
 # The COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns in
 # which the alphabetical index list will be split.
 # Minimum value: 1, maximum value: 20, default value: 5.
 # This tag requires that the tag ALPHABETICAL_INDEX is set to YES.
 
-COLS_IN_ALPHA_INDEX    = 5
+COLS_IN_ALPHA_INDEX    = 1
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1256,7 +1256,7 @@ HTML_EXTRA_FILES       =
 # Minimum value: 0, maximum value: 359, default value: 220.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_HUE    = 36
+HTML_COLORSTYLE_HUE    = 208
 
 # The HTML_COLORSTYLE_SAT tag controls the purity (or saturation) of the colors
 # in the HTML output. For a value of 0 the output will use grayscales only. A
@@ -1532,7 +1532,7 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = YES
+GENERATE_TREEVIEW      = NO
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
@@ -2344,7 +2344,6 @@ DOT_FONTPATH           =
 # This tag requires that the tag HAVE_DOT is set to YES.
 
 CLASS_GRAPH            = YES
-
 # If the COLLABORATION_GRAPH tag is set to YES then doxygen will generate a
 # graph for each documented class showing the direct and indirect implementation
 # dependencies (inheritance, containment, and class references variables) of the
