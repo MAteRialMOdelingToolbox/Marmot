@@ -5,3 +5,6 @@
 [submodule "modules/MarmotMechanicsCore"]
 	path = modules/core/MarmotMechanicsCore
 	url = https://github.com/MAteRialMOdelingToolbox/MarmotMechanicsCore
+[submodule "modules/core/MarmotMathCore"]
+	path = modules/core/MarmotMathCore
+	url = https://github.com/MAteRialMOdelingToolbox/MarmotMathCore
