@@ -1,5 +1,0 @@
-var namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex =
-[
-    [ "HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_1_1HaighWestergaardCoordinates", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_1_1HaighWestergaardCoordinates_dup" ],
-    [ "haighWestergaard", "namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#ac1e5a965e7476fced43d4310136082d2", null ]
-];

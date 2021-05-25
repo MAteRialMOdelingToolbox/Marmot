@@ -55,25 +55,29 @@
     /* Member table */
     --mem-title-bg: #003361;
     --mem-title-font: white;
-    --mem-subtitle-bg: #e3f0ff;
+    --mem-subtitle-bg: #ffe6c2;
     --mem-subtitle-font: #003361;
     --mem-subtitle-font-hover: #f39200;
-    --mem-content-bg: #e3f0ff;
+    --mem-content-bg: #ffe6c2;
     --mem-content-font: #003361;
-    --mem-content-border: #003361;
   }
 
-body, table, div, p, dl {
+body, table, div {
 	color: var(--bgfont);
     background-color: var(--bgcolor);
     line-height: 150%;
     font: 14px/22px, Roboto, Arial;
 }
-
+dl {
+ 	color: var(--bgfont);
+    background-color: var(--mem-content-bg);
+    line-height: 150%;
+    font: 14px/22px, Roboto, Arial;
+}
 div.contents{
     margin-bottom: 0px;
     margin-top: 0px;
-    margin-left: auto;
+    margin-left: 30px;
     padding: 12px;
     margin-right: auto;
     max-width: 900px;
@@ -207,14 +211,14 @@ body.SRPage, body.SRPage *{
 
 
 #main-menu > li > ul li a, #main-menu > li > ul li{
-    background-color: var(--bgcolor);
-    color: var(--bgfont);
+    background-color: var(--bg2color);
+    color: var(--bgcolor);
     background-image: none;
 }
 
 #main-menu > li > ul li a:hover, #main-menu > li > ul li:hover{
     background-color: var(--bg2-hover-bg);
-    color: var(--bgfont);
+    color: var(--bg2-hover-font);
 }
 
 /***********************************/
@@ -262,8 +266,8 @@ a:hover, .contents a:hover, body.SRPage a:hover {
 }
 
 #nav-path, #nav-path *{
-    color: var(--bg3font2);
-    background-color: var(--bg3color);
+    color: var(--bg3color);
+    background-color: var(--bg3font2);
     border: none;    
     font-family: Arial;
 } 
@@ -429,7 +433,7 @@ span.lineno a:hover{
 }
 
 .arrow {
-    color: #7d7d7d;
+    color: #f39200;
 }
 
 .icona {
@@ -519,7 +523,7 @@ hr.footer {
 
 .memItemLeft, .memItemRight{
     padding: 15px 30px;
-    background-color: inherit;
+    background-color: var(--mem-subtitle-bg);
 }
 
 .mdescRight{
