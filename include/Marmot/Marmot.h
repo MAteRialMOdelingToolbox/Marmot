@@ -89,6 +89,7 @@ namespace MarmotLibrary {
     SCDPV3NonLocal                     = 51,
     LinearElasticShrinkage             = 52,
     GCSCDP                             = 53,
+    MenegottoPinto                     = 54,
   };
 
   enum ElementCode {

@@ -134,6 +134,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         LinearElasticSolidificationCreep
         LinearElasticShrinkage
         MCDP
+        MenegottoPinto 
         ModifiedCamClay
         ModLeon
         ModLeonSemiExplicit
