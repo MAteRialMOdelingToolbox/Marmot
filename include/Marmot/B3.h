@@ -63,18 +63,15 @@ namespace Marmot::Materials {
       inline const static auto layout = makeLayout( {
         { .name = "EStatic", .length = 1 },
         { .name = "kelvinStateVars", .length = 0 },
-        { .name = "dryingCreepStateVars", .length = 0 },
       } );
 
       double&                               EStatic;
       Solidification::mKelvinStateVarMatrix kelvinStateVars;
-      Solidification::mKelvinStateVarMatrix dryingCreepStateVars;
 
       B3StateVarManager( double* theStateVarVector, int nKelvinUnits )
         : MarmotStateVarVectorManager( theStateVarVector, layout ),
           EStatic( find( "EStatic" ) ),
-          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ),
-          dryingCreepStateVars( &find( "dryingCreepStateVars" ), 6, nKelvinUnits ){};
+          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits){};
     };
     std::unique_ptr< B3StateVarManager > stateVarManager;
 

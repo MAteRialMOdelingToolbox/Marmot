@@ -25,14 +25,13 @@ namespace Marmot::Materials {
         
         const double b = 8. * ( 1. - hEnv );
 
-
         switch ( approximationOrder ) {
 
         case ApproximationOrder::firstOrder:
 
           auto L1 = [&]( dualDouble tau ) {
             double val = tau.val * autodiff::forward::derivative( phi, autodiff::forward::wrt( tau ), autodiff::forward::at( tau, b, xiZero ) );
-            std::cout << val << std::endl;
+            //std::cout << val << std::endl;
             return val;
           };
 

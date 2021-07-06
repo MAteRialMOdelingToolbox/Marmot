@@ -8,6 +8,7 @@
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/Solidification.h"
 #include <iostream>
+#include <locale>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -71,7 +72,8 @@ namespace Marmot::Materials {
     }
 
     double&                               EStatic = stateVarManager->EStatic;
-    Solidification::mKelvinStateVarMatrix kelvinStateVars( stateVarManager->kelvinStateVars );
+    Eigen::Ref< Solidification::mKelvinStateVarMatrix > kelvinStateVars( ( stateVarManager->kelvinStateVars ).leftCols( numberOfKelvinUnits ) );
+    Eigen::Ref< Solidification::mKelvinStateVarMatrix > dryingCreepStateVars( ( stateVarManager->kelvinStateVars ).rightCols( numberOfKelvinUnits )   );
 
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( timeOld[1] - castTime ) * timeToDays;
@@ -92,7 +94,6 @@ namespace Marmot::Materials {
                                                            1.0 );
 
     // compute drying creep strains and compliance
-
     Solidification::KelvinProperties dryingCreepElasticModuli( numberOfKelvinUnits );
     Solidification::KelvinProperties dryingCreepRetardationTimes = SpectrumApproximation::DryingCreepB3::
       generateRetardationTimes( minimalRetardationTime, numberOfKelvinUnits );
@@ -101,20 +102,39 @@ namespace Marmot::Materials {
                             dryingCreepRetardationTimes,
                             hEnv,
                             dT / 2. / shrinkageHalfTime,
-                            ( castTime - ( timeOld[1] ) ) / shrinkageHalfTime,
+                            ( castTime - ( timeOld[1] + dT / 2 ) ) / shrinkageHalfTime,
                             SpectrumApproximation::DryingCreepB3::ApproximationOrder::firstOrder );
 
-    // std::cout << "dECreep = " << dECreep << std::endl;
+    Vector6d dEDryingCreep;
+    dEDryingCreep.setZero();
+    double invE = 0;
+
+    for ( int i = 0; i < dryingCreepRetardationTimes.size(); i++ ) {
+
+      double&       tau = dryingCreepRetardationTimes( i );
+      const double& D   = dryingCreepElasticModuli( i );
+
+      double lambda, beta;
+      solidification.computeLambdaAndBeta( dT, tau, lambda, beta );
+      invE +=  q5 / exp( 4 ) * ( 1 - lambda ) / D;
+
+      dEDryingCreep += q5 / exp( 4 ) * ( 1 - beta ) * dryingCreepStateVars.col( i );
+    }
+    invE *= 1e-6;
+    dEDryingCreep *= 1e-6;
+
+    //                               std::cout << "dECreep = " << dECreep << std::endl;
     /// 3. Calculate the increment of the stress tensor as \f$ \Delta\boldsymbol{\sigma} = \mathbb{C} :
     /// \Delta\boldsymbol{\varepsilon}^{\scriptsize\mbox{el}} \f$.
-    C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
-    Vector6d deltaStress = C * ( dE - dECreep );
+    C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / ( 1. / E + invE ), nu );
+    Vector6d deltaStress = C * ( dE - dECreep - dEDryingCreep );
     nomStress            = nomStress + deltaStress;
 
     //    std::cout << "nominal stress = " << nomStress << std::endl;
 
     /// 4. Update the state variables of the solidifying Kelvin chain.
     solidification.updateCreepStateVars( tStartDays, dTimeDays, CelUnitInv, deltaStress, kelvinStateVars );
+    solidification.updateCreepStateVars( tStartDays, dTimeDays, CelUnitInv, deltaStress, dryingCreepStateVars );
     return;
   }
 
@@ -123,7 +143,7 @@ namespace Marmot::Materials {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, numberOfKelvinUnits );
+    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, 2 * numberOfKelvinUnits );
 
     MarmotMaterial::assignStateVars( stateVars_, nStateVars );
   }
@@ -132,6 +152,6 @@ namespace Marmot::Materials {
 
   int B3::getNumberOfRequiredStateVars()
   {
-    return B3StateVarManager::layout.nRequiredStateVars + numberOfKelvinUnits * 6;
+    return B3StateVarManager::layout.nRequiredStateVars + numberOfKelvinUnits * 6 * 2;
   }
 } // namespace Marmot::Materials
