@@ -34,9 +34,12 @@ namespace Marmot::Materials {
       m                       ( materialProperties[10] ),
       numberOfKelvinUnits     ( static_cast< size_t > ( materialProperties[11] ) ),
       minimalRetardationTime  ( materialProperties[12] ),
-      dTStatic                ( materialProperties[13] ),
-      timeToDays              ( materialProperties[14] ),
-      castTime                ( materialProperties[15] ),
+      numberOfKelvinUnitsDrying( static_cast< size_t > ( materialProperties[13] ) ),
+      minimalRetardationTimeDrying  ( materialProperties[14] ),
+      dryingStart             ( materialProperties[15] ),
+      dTStatic                ( materialProperties[16] ),
+      timeToDays              ( materialProperties[17] ),
+      castTime                ( materialProperties[18] ),
       basicCreepMaterialParameters { q1, q2, q3, q4, n, m }
   // clang-format on
   {
@@ -71,9 +74,11 @@ namespace Marmot::Materials {
       return;
     }
 
-    double&                               EStatic = stateVarManager->EStatic;
-    Eigen::Ref< Solidification::mKelvinStateVarMatrix > kelvinStateVars( ( stateVarManager->kelvinStateVars ).leftCols( numberOfKelvinUnits ) );
-    Eigen::Ref< Solidification::mKelvinStateVarMatrix > dryingCreepStateVars( ( stateVarManager->kelvinStateVars ).rightCols( numberOfKelvinUnits )   );
+    double&                                             EStatic = stateVarManager->EStatic;
+    Eigen::Ref< Solidification::mKelvinStateVarMatrix > kelvinStateVars(
+      ( stateVarManager->kelvinStateVars ).leftCols( numberOfKelvinUnits ) );
+    Eigen::Ref< Solidification::mKelvinStateVarMatrix > dryingCreepStateVars(
+      ( stateVarManager->kelvinStateVars ).rightCols( numberOfKelvinUnitsDrying ) );
 
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( timeOld[1] - castTime ) * timeToDays;
@@ -94,16 +99,16 @@ namespace Marmot::Materials {
                                                            1.0 );
 
     // compute drying creep strains and compliance
-    Solidification::KelvinProperties dryingCreepElasticModuli( numberOfKelvinUnits );
+    Solidification::KelvinProperties dryingCreepElasticModuli( numberOfKelvinUnitsDrying );
     Solidification::KelvinProperties dryingCreepRetardationTimes = SpectrumApproximation::DryingCreepB3::
-      generateRetardationTimes( minimalRetardationTime, numberOfKelvinUnits );
+      generateRetardationTimes( minimalRetardationTimeDrying, numberOfKelvinUnitsDrying );
     SpectrumApproximation::DryingCreepB3::
       computeApproximation( dryingCreepElasticModuli,
                             dryingCreepRetardationTimes,
                             hEnv,
                             dT / 2. / shrinkageHalfTime,
-                            ( castTime - ( timeOld[1] + dT / 2 ) ) / shrinkageHalfTime,
-                            SpectrumApproximation::DryingCreepB3::ApproximationOrder::firstOrder );
+                            std::min( -1e-12, ( dryingStart - timeOld[1]  ) / shrinkageHalfTime ),
+                            SpectrumApproximation::DryingCreepB3::ApproximationOrder::secondOrder );
 
     Vector6d dEDryingCreep;
     dEDryingCreep.setZero();
@@ -115,8 +120,8 @@ namespace Marmot::Materials {
       const double& D   = dryingCreepElasticModuli( i );
 
       double lambda, beta;
-      solidification.computeLambdaAndBeta( dT, tau, lambda, beta );
-      invE +=  q5 / exp( 4 ) * ( 1 - lambda ) / D;
+      solidification.computeLambdaAndBeta( dTimeDays, tau, lambda, beta );
+      invE += q5 / exp( 4 ) * ( 1 - lambda ) / D;
 
       dEDryingCreep += q5 / exp( 4 ) * ( 1 - beta ) * dryingCreepStateVars.col( i );
     }
@@ -134,7 +139,20 @@ namespace Marmot::Materials {
 
     /// 4. Update the state variables of the solidifying Kelvin chain.
     solidification.updateCreepStateVars( tStartDays, dTimeDays, CelUnitInv, deltaStress, kelvinStateVars );
-    solidification.updateCreepStateVars( tStartDays, dTimeDays, CelUnitInv, deltaStress, dryingCreepStateVars );
+    
+    if ( dT > 1e-14 ) {
+      for ( int i = 0; i < dryingCreepRetardationTimes.size(); i++ ) {
+        const double& tau = dryingCreepRetardationTimes( i );
+        const double& D   = dryingCreepElasticModuli( i );
+        double        lambda, beta;
+        solidification.computeLambdaAndBeta( dTimeDays, tau, lambda, beta );
+        dryingCreepStateVars.col( i ) = ( lambda / D ) * CelUnitInv * deltaStress +
+                                        beta * dryingCreepStateVars.col( i );
+      }
+    }
+    // std::cout << dryingCreepStateVars << std::endl;
+    // std::cout << kelvinStateVars << std::endl;
+    // std::cout << stateVarManager->kelvinStateVars << std::endl;
     return;
   }
 
@@ -143,7 +161,7 @@ namespace Marmot::Materials {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, 2 * numberOfKelvinUnits );
+    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, numberOfKelvinUnits + numberOfKelvinUnitsDrying );
 
     MarmotMaterial::assignStateVars( stateVars_, nStateVars );
   }

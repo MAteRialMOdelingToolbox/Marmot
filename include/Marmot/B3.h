@@ -50,6 +50,9 @@ namespace Marmot::Materials {
     const double& m;
     const size_t  numberOfKelvinUnits;
     const double& minimalRetardationTime;
+    const size_t  numberOfKelvinUnitsDrying;
+    const double& minimalRetardationTimeDrying;
+    const double& dryingStart;
     const double& dTStatic;
     const double& timeToDays;
     const double& castTime;

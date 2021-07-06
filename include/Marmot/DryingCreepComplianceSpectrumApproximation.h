@@ -34,7 +34,7 @@ namespace Marmot::Materials {
 
     namespace DryingCreepB3 {
 
-      enum class ApproximationOrder : int { firstOrder = 1 };
+      enum class ApproximationOrder : int { firstOrder = 1, secondOrder = 2, fourthOrder = 7 };
 
       void computeApproximation( Eigen::Ref< Solidification::KelvinProperties > kelvinElasticModuli,
                                  Eigen::Ref< Solidification::KelvinProperties > kelvinRetardationTimes,
@@ -45,13 +45,23 @@ namespace Marmot::Materials {
 
       Solidification::KelvinProperties generateRetardationTimes( double minTime, int numUnits );
 
-      dualDouble phi( dualDouble xi, double b, double xiZero );
-      
-      dualDouble T( dualDouble eta );
+      template<typename T_>
+      T_ phi( T_ xi, double b, double xiZero ){
 
-      dualDouble S( dualDouble xi );
+        return sqrt( f<T_>( xi - xiZero, b ) - f<T_>(  -xiZero, b  ) );
+      }
+     
+      template<typename T_>
+      T_ T( T_ eta ) { return tanh( eta ); }
 
-      dualDouble f( dualDouble xi, double b );
+      template<typename T_>
+      T_ S( T_ xi ) { return T( T_( sqrt( xi ) ) ) ; }
+
+      template< typename T_ >
+      T_ f( T_ xi, double b ) { return exp( b * S( xi ) ); }
+
+      int factorial( int n );
+
       
     } // namespace DryingCreepB3
   }   // namespace SpectrumApproximation
