@@ -25,8 +25,8 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/Solidification.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/Solidification.h"
 
 namespace Marmot::Materials {
 
@@ -34,7 +34,7 @@ namespace Marmot::Materials {
 
     namespace DryingCreepB3 {
 
-      enum class ApproximationOrder : int { firstOrder = 1, secondOrder = 2, fourthOrder = 7 };
+      enum class ApproximationOrder : int { firstOrder = 1, secondOrder = 2, thirdOrder = 3 };
 
       void computeApproximation( Eigen::Ref< Solidification::KelvinProperties > kelvinElasticModuli,
                                  Eigen::Ref< Solidification::KelvinProperties > kelvinRetardationTimes,
@@ -45,24 +45,53 @@ namespace Marmot::Materials {
 
       Solidification::KelvinProperties generateRetardationTimes( double minTime, int numUnits );
 
-      template<typename T_>
-      T_ phi( T_ xi, double b, double xiZero ){
+      template < int N >
+      struct Factorial {
+        enum { value = N * Factorial< N - 1 >::value };
+      };
 
-        return sqrt( f<T_>( xi - xiZero, b ) - f<T_>(  -xiZero, b  ) );
+      template <>
+      struct Factorial< 0 >{
+        enum { value = 1 };
+      };
+
+      template < typename T_ >
+      T_ phi( T_ xi, double b, double xiZero )
+      {
+
+        return sqrt( f< T_ >( xi - xiZero, b ) - f< T_ >( -xiZero, b ) );
       }
-     
-      template<typename T_>
-      T_ T( T_ eta ) { return tanh( eta ); }
 
-      template<typename T_>
-      T_ S( T_ xi ) { return T( T_( sqrt( xi ) ) ) ; }
+      template < typename T_ >
+      T_ T( T_ eta )
+      {
+        return tanh( eta );
+      }
 
-      template< typename T_ >
-      T_ f( T_ xi, double b ) { return exp( b * S( xi ) ); }
+      template < typename T_ >
+      T_ S( T_ xi )
+      {
+        return T( T_( sqrt( xi ) ) );
+      }
 
-      int factorial( int n );
+      template < typename T_ >
+      T_ f( T_ xi, double b )
+      {
+        return exp( b * S( xi ) );
+      }
+      template < int k = 1 >
+      double computeSpectrum( double tau, double b, double xiZero )
+      {
+        typedef autodiff::forward::HigherOrderDual< k > currType;
+        currType                                        tau_ = k * tau;
 
-      
+        double val = -pow( -double( tau_.val ), k ) / Factorial< k - 1 >::value;
+        val *= autodiff::forward::derivative( phi< currType >,
+                                              autodiff::forward::wrt< k >( tau_ ),
+                                              autodiff::forward::at( tau_, b, xiZero ) );
+        return val;
+      }
+
     } // namespace DryingCreepB3
   }   // namespace SpectrumApproximation
 } // namespace Marmot::Materials
