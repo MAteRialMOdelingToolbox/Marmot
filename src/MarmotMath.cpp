@@ -48,6 +48,7 @@ namespace Marmot {
         coordinateSystem( 0, 1 ) = -coordinateSystem( 1, 0 );
         coordinateSystem( 1, 1 ) = coordinateSystem( 0, 0 );
       }
+      coordinateSystem.col(1).normalize();
 
       coordinateSystem.col( 2 ) = coordinateSystem.col( 0 ).cross( coordinateSystem.col( 1 ) );
       coordinateSystem.col( 2 ).normalize();
