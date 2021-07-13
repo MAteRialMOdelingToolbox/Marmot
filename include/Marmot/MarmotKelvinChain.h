@@ -51,23 +51,20 @@ namespace Marmot::Materials {
     };
 
     template < int k >
-    double evaluatePostWidderFormula(
-      std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-      double                                                                            tau )
+    double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
+                                      double                                                                      tau )
     {
 
       autodiff::Real< k, double > tau_( tau * k );
 
-
-      double val = -pow( - tau_, k ) / double( Factorial< k - 1 >::value );
+      double val = -pow( -tau_, k ) / double( Factorial< k - 1 >::value );
       val *= autodiff::derivatives( phi, autodiff::along( 1.0 ), autodiff::at( tau_ ) )[k];
       return val;
     }
 
     template < int k >
-    Properties computeElasticModuli(
-      std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-      Properties                                                                        retardationTimes )
+    Properties computeElasticModuli( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
+                                     Properties retardationTimes )
     {
       Properties elasticModuli( retardationTimes.size() );
       double     spacing = log( retardationTimes( 1 ) / retardationTimes( 0 ) );
@@ -94,7 +91,8 @@ namespace Marmot::Materials {
                               Properties        retardationTimes,
                               StateVarMatrix    stateVars,
                               double&           uniaxialCompliance,
-                              Marmot::Vector6d& dStrain );
+                              Marmot::Vector6d& dStrain,
+                              const double      factor );
 
     void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta );
 

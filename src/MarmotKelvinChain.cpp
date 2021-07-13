@@ -20,7 +20,8 @@ namespace Marmot::Materials {
                               Properties     retardationTimes,
                               StateVarMatrix stateVars,
                               double&        uniaxialCompliance,
-                              Vector6d&      dStrain )
+                              Vector6d&      dStrain,
+                              const double   factor )
     {
 
       for ( int i = 0; i < retardationTimes.size(); i++ ) {
@@ -29,8 +30,8 @@ namespace Marmot::Materials {
 
         double lambda, beta;
         computeLambdaAndBeta( dT, tau, lambda, beta );
-        uniaxialCompliance += ( 1. - lambda ) / D;
-        dStrain += ( 1. - beta ) * stateVars.col( i );
+        uniaxialCompliance += ( 1. - lambda ) / D * factor;
+        dStrain += ( 1. - beta ) * stateVars.col( i ) * factor;
       }
     }
 
