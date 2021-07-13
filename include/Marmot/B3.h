@@ -26,10 +26,10 @@
  */
 
 #pragma once
-#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotKelvinChain.h"
+#include "Marmot/MarmotSolidification.h"
+#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/Solidification.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -49,33 +49,27 @@ namespace Marmot::Materials {
     const double& ultimateShrinkageStrain;
     const double& n;
     const double& m;
-    const size_t  numberOfKelvinUnits;
-    const double& minimalRetardationTime;
-    const size_t  numberOfKelvinUnitsDrying;
-    const double& minimalRetardationTimeDrying;
+    const size_t  nKelvinBasic;
+    const double& minTauBasic;
+    const size_t  nKelvinDrying;
+    const double& minTauDrying;
     const double& dryingStart;
     const double& dTStatic;
     const double& timeToDays;
     const double& castTime;
 
-    Solidification::MaterialParameters    basicCreepMaterialParameters;
-    Solidification::KelvinChainProperties kelvinChainProperties;
-
     class B3StateVarManager : public MarmotStateVarVectorManager {
 
     public:
       inline const static auto layout = makeLayout( {
-        { .name = "EStatic", .length = 1 },
         { .name = "kelvinStateVars", .length = 0 },
       } );
 
-      double&                               EStatic;
-      Solidification::mKelvinStateVarMatrix kelvinStateVars;
+      KelvinChain::mapStateVarMatrix kelvinStateVars;
 
       B3StateVarManager( double* theStateVarVector, int nKelvinUnits )
         : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          EStatic( find( "EStatic" ) ),
-          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits){};
+          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ){};
     };
     std::unique_ptr< B3StateVarManager > stateVarManager;
 
@@ -99,13 +93,20 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
+    SolidificationTheory::Parameters solidificationParameters;
+    SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
+    
+    KelvinChain::Properties basicCreepElasticModuli;
+    KelvinChain::Properties basicCreepRetardationTimes;
 
-      template < typename T_ >
-      T_ phi( T_ xi, double b, double xiZero )
-      {
-        T_ val = sqrt( exp( tanh( sqrt( xi - xiZero ) ) * b )  - exp( tanh( sqrt( -xiZero ) ) * b ) );
-        return val;
-      }
+    static constexpr int dryingCreepComplianceApproximationOrder = 5;
+    static constexpr int basicCreepComplianceApproximationOrder  = 3;
 
+    template < typename T_ >
+    T_ phi( T_ xi, double b, double xiZero )
+    {
+      T_ val = sqrt( exp( tanh( sqrt( xi - xiZero ) ) * b ) - exp( tanh( sqrt( -xiZero ) ) * b ) );
+      return val;
+    }
   };
 } // namespace Marmot::Materials
