@@ -27,6 +27,7 @@
 
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/Solidification.h"
 #include <iostream>
@@ -96,5 +97,15 @@ namespace Marmot::Materials {
     void assignStateVars( double* stateVars_, int nStateVars );
 
     StateView getStateView( const std::string& stateName );
+
+  private:
+
+      template < typename T_ >
+      T_ phi( T_ xi, double b, double xiZero )
+      {
+        T_ val = sqrt( exp( tanh( sqrt( xi - xiZero ) ) * b )  - exp( tanh( sqrt( -xiZero ) ) * b ) );
+        return val;
+      }
+
   };
 } // namespace Marmot::Materials

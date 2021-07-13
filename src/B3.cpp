@@ -1,12 +1,13 @@
 #include "Marmot/B3.h"
-#include "Marmot/DryingCreepComplianceSpectrumApproximation.h"
 #include "Marmot/LogPowerLawSpectrumApproximation.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/Solidification.h"
+#include "autodiff/forward.hpp"
 #include <iostream>
 #include <locale>
 #include <map>
@@ -99,34 +100,33 @@ namespace Marmot::Materials {
                                                            1.0 );
 
     // compute drying creep strains and compliance
-    Solidification::KelvinProperties dryingCreepElasticModuli( numberOfKelvinUnitsDrying );
-    Solidification::KelvinProperties dryingCreepRetardationTimes = SpectrumApproximation::DryingCreepB3::
-      generateRetardationTimes( minimalRetardationTimeDrying, numberOfKelvinUnitsDrying );
-    SpectrumApproximation::DryingCreepB3::
-      computeApproximation( dryingCreepElasticModuli,
-                            dryingCreepRetardationTimes,
-                            hEnv,
-                            dT / 2. / shrinkageHalfTime,
-                            std::min( -1e-12, ( dryingStart - timeOld[1]  ) / shrinkageHalfTime ),
-                            SpectrumApproximation::DryingCreepB3::ApproximationOrder::secondOrder );
+    double spacing = std::sqrt( 10. );
+    KelvinChain::Properties
+              dryingCreepRetardationTimes = KelvinChain::generateRetardationTimes( numberOfKelvinUnitsDrying,
+                                                                           minimalRetardationTimeDrying,
+                                                                           spacing );
+    double    b                           = 8. * ( 1. - hEnv );
+    double    xiZero = std::min( -1e-16, ( dryingStart - timeOld[1] - dT / 2. ) / shrinkageHalfTime );
+    const int order  = 5;
+
+    auto phi_ = [&]( autodiff::Real< order, double > tau ) { return phi( tau, b, xiZero ); };
+
+    KelvinChain::Properties
+      dryingCreepElasticModuli = KelvinChain::computeElasticModuli< order >( phi_, dryingCreepRetardationTimes );
 
     Vector6d dEDryingCreep;
     dEDryingCreep.setZero();
     double invE = 0;
 
-    for ( int i = 0; i < dryingCreepRetardationTimes.size(); i++ ) {
+    KelvinChain::evaluateKelvinChain( dTimeDays,
+                                      dryingCreepElasticModuli,
+                                      dryingCreepRetardationTimes,
+                                      dryingCreepStateVars,
+                                      invE,
+                                      dEDryingCreep );
 
-      double&       tau = dryingCreepRetardationTimes( i );
-      const double& D   = dryingCreepElasticModuli( i );
-
-      double lambda, beta;
-      solidification.computeLambdaAndBeta( dTimeDays, tau, lambda, beta );
-      invE += q5 / exp( 4 ) * ( 1 - lambda ) / D;
-
-      dEDryingCreep += q5 / exp( 4 ) * ( 1 - beta ) * dryingCreepStateVars.col( i );
-    }
-    invE *= 1e-6;
-    dEDryingCreep *= 1e-6;
+    invE *= 1e-6 * q5 / exp( 4 );
+    dEDryingCreep *= 1e-6 * q5 / exp( 4 );
 
     //                               std::cout << "dECreep = " << dECreep << std::endl;
     /// 3. Calculate the increment of the stress tensor as \f$ \Delta\boldsymbol{\sigma} = \mathbb{C} :
@@ -139,17 +139,14 @@ namespace Marmot::Materials {
 
     /// 4. Update the state variables of the solidifying Kelvin chain.
     solidification.updateCreepStateVars( tStartDays, dTimeDays, CelUnitInv, deltaStress, kelvinStateVars );
-    
-    if ( dT > 1e-14 ) {
-      for ( int i = 0; i < dryingCreepRetardationTimes.size(); i++ ) {
-        const double& tau = dryingCreepRetardationTimes( i );
-        const double& D   = dryingCreepElasticModuli( i );
-        double        lambda, beta;
-        solidification.computeLambdaAndBeta( dTimeDays, tau, lambda, beta );
-        dryingCreepStateVars.col( i ) = ( lambda / D ) * CelUnitInv * deltaStress +
-                                        beta * dryingCreepStateVars.col( i );
-      }
-    }
+
+    KelvinChain::updateStateVarMatrix( dTimeDays,
+                                       dryingCreepElasticModuli,
+                                       dryingCreepRetardationTimes,
+                                       dryingCreepStateVars,
+                                       deltaStress,
+                                       CelUnitInv );
+
     // std::cout << dryingCreepStateVars << std::endl;
     // std::cout << kelvinStateVars << std::endl;
     // std::cout << stateVarManager->kelvinStateVars << std::endl;
@@ -161,7 +158,8 @@ namespace Marmot::Materials {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, numberOfKelvinUnits + numberOfKelvinUnitsDrying );
+    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_,
+                                                                   numberOfKelvinUnits + numberOfKelvinUnitsDrying );
 
     MarmotMaterial::assignStateVars( stateVars_, nStateVars );
   }
@@ -170,6 +168,6 @@ namespace Marmot::Materials {
 
   int B3::getNumberOfRequiredStateVars()
   {
-    return B3StateVarManager::layout.nRequiredStateVars + numberOfKelvinUnits * 6 * 2;
+    return B3StateVarManager::layout.nRequiredStateVars + ( numberOfKelvinUnits + numberOfKelvinUnitsDrying ) * 6;
   }
 } // namespace Marmot::Materials
