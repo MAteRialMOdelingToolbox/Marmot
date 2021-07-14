@@ -71,9 +71,9 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Ref< Solidification::mKelvinStateVarMatrix > basicCreepStateVars(
+    Eigen::Ref< KelvinChain::mapStateVarMatrix > basicCreepStateVars(
       ( stateVarManager->kelvinStateVars ).leftCols( nKelvinBasic ) );
-    Eigen::Ref< Solidification::mKelvinStateVarMatrix > dryingCreepStateVars(
+    Eigen::Ref< KelvinChain::mapStateVarMatrix > dryingCreepStateVars(
       ( stateVarManager->kelvinStateVars ).rightCols( nKelvinDrying ) );
 
     const double dTimeDays  = dT * timeToDays;
