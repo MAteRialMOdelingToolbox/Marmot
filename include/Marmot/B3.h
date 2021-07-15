@@ -27,8 +27,8 @@
 
 #pragma once
 #include "Marmot/MarmotKelvinChain.h"
-#include "Marmot/MarmotSolidification.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotSolidification.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include <iostream>
 #include <string>
@@ -43,18 +43,17 @@ namespace Marmot::Materials {
     const double& q2;
     const double& q3;
     const double& q4;
-    const double& q5;
-    const double& hEnv;
-    const double& shrinkageHalfTime;
-    const double& ultimateShrinkageStrain;
     const double& n;
     const double& m;
     const size_t  nKelvinBasic;
     const double& minTauBasic;
+    const double& shrinkageHalfTime;
+    const double& ultimateShrinkageStrain;
+    const double& dryingStart;
+    const double& q5;
+    const double& hEnv;
     const size_t  nKelvinDrying;
     const double& minTauDrying;
-    const double& dryingStart;
-    const double& dTStatic;
     const double& timeToDays;
     const double& castTime;
 
@@ -93,9 +92,9 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
-    SolidificationTheory::Parameters solidificationParameters;
+    SolidificationTheory::Parameters            solidificationParameters;
     SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
-    
+
     KelvinChain::Properties basicCreepElasticModuli;
     KelvinChain::Properties basicCreepRetardationTimes;
 
