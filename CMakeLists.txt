@@ -119,6 +119,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         DiffuseMicroCracking
         DruckerPrager 
         #DruckerPragerMD
+        GCDP
         GCSCDP
         GMCDP
         GMCDPFiniteStrain

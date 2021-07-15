@@ -90,6 +90,7 @@ namespace MarmotLibrary {
     LinearElasticShrinkage             = 52,
     GCSCDP                             = 53,
     MenegottoPinto                     = 54,
+    GCDP                               = 55,
   };
 
   enum ElementCode {
