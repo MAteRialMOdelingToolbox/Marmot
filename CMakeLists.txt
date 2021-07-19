@@ -108,6 +108,7 @@ endif()
 
 if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
     set (MATERIAL_MODULES
+        B3
         Barodesy
         BarodesyGradientVoid
         CDP
@@ -128,7 +129,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         GMNeoHooke
         GradientEnhancedDruckerPrager
         HoekBrown
-	#JointedRock
+	      #JointedRock
         JointedHoekBrown
         LinearElastic
         LinearElasticNonLocal

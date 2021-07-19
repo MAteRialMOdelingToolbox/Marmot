@@ -91,6 +91,7 @@ namespace MarmotLibrary {
     GCSCDP                             = 53,
     MenegottoPinto                     = 54,
     GCDP                               = 55,
+    B3                                 = 56,
   };
 
   enum ElementCode {
