@@ -86,11 +86,11 @@ public:
    * @param[in,out]	pNewDT	Suggestion for a new time increment
    */
   virtual void computeStress( double*       stress,
-                              double&       K_local,
+                              double&       KLocal,
                               double&       nonLocalRadius,
-                              double*       dStressDDDeformationGradient,
-                              double*       dK_localDDeformationGradient,
-                              double*       dStressDK,
+                              double*       dStress_dDeformationGradient,
+                              double*       dKLocal_dDeformationGradient,
+                              double*       dStress_dK,
                               const double* FOld,
                               const double* FNew,
                               const double  KOld,
@@ -141,15 +141,14 @@ public:
   /**
    * Plane stress implementation of @ref computeStress.
    *
-   * @todo why is dStrain an in-out parameter?
    */
-  virtual void computePlaneStress( double*       stress,
-                                   double&       K_local,
+  virtual void computePlaneStress( double*       stress2D,
+                                   double&       KLocal2D,
                                    double&       nonLocalRadius,
-                                   double*       dStressDDStrain,
-                                   double*       dK_localDDStrain,
-                                   double*       dStressDK,
-                                   double*       dStrain,
+                                   double*       dStress_DStrain2D,
+                                   double*       dKLocal_dStrain2D,
+                                   double*       dStress_dK2D,
+                                   const double* dStrain2D,
                                    double        KOld,
                                    double        dK,
                                    const double* timeOld,

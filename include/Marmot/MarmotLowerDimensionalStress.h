@@ -53,7 +53,7 @@ namespace Marmot::ContinuumMechanics {
      * Extract the plane strain derivitive of the stress in Voigt notation with respect to the
      * deformation gradient \f$F_{ij}\f$ from the corresponding derivative in a 3d setting.
      */
-    EigenTensors::Tensor322d dStressdDeformationGradient(
+    EigenTensors::Tensor322d reduce3D_dStress_dDeformationGradient(
       const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
 
     /**
@@ -76,7 +76,7 @@ namespace Marmot::ContinuumMechanics {
      * Extract the plane stress derivitive of the stress in Voigt notation with respect to the
      * deformation gradient \f$F_{ij}\f$ from the corresponding derivative in a 3d setting.
      */
-    EigenTensors::Tensor322d dStressdDeformationGradient(
+    EigenTensors::Tensor322d compute_dStress_dDeformationGradient(
       const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
 
     /**

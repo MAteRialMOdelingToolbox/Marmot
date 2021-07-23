@@ -32,13 +32,22 @@
 #include "Marmot/MarmotTypedefs.h"
 
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
+
+
 /** 
  * \brief This file includes functions needed for calculations with stress and strain tensors written in voigt notation.
  */
 namespace Marmot {
   namespace ContinuumMechanics::VoigtNotation {
 
-    constexpr int VoigtSize = 6;
+    /* constexpr int VoigtSize = 6; */
+
+    enum VoigtSize  { OneD = 1, TwoD =3, ThreeD=6, Axial=4};
+
+    constexpr VoigtSize voigtSizeFromDimension ( int x) 
+    {
+        return (VoigtSize ) ( ( ( x * x ) + x ) >> 1 );
+    }
 
     extern const Marmot::Vector6d P;
     extern const Marmot::Vector6d PInv;
@@ -105,14 +114,15 @@ namespace Marmot {
      * 	- voigtSize \f$ = 3 \f$: Calls function voigtToPlaneVoigt().
      * 	- voigtSize \f$ = 6 \f$: Returns the input vector
      */
-    template < int voigtSize >
-    Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
+
+    template < enum VoigtSize voigtSize >
+    Eigen::Matrix< double,  voigtSize , 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
     {
-      if constexpr ( voigtSize == 1 )
+      if constexpr ( voigtSize == OneD )
         return ( Eigen::Matrix< double, 1, 1 >() << Voigt3D( 0 ) ).finished();
-      else if constexpr ( voigtSize == 3 )
+      else if constexpr ( voigtSize == TwoD )
         return voigtToPlaneVoigt( Voigt3D );
-      else if constexpr ( voigtSize == 6 )
+      else if constexpr ( voigtSize == ThreeD )
         return Voigt3D;
       else
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
@@ -137,14 +147,14 @@ namespace Marmot {
      * 	- voigtSize \f$ = 6 \f$: Returns the input vector
      */
 
-    template < int voigtSize >
+    template < enum VoigtSize voigtSize >
     Marmot::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )
     {
-      if constexpr ( voigtSize == 1 )
+      if constexpr ( voigtSize == OneD )
         return ( Marmot::Vector6d() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
-      else if constexpr ( voigtSize == 3 )
+      else if constexpr ( voigtSize == TwoD )
         return planeVoigtToVoigt( Voigt );
-      else if constexpr ( voigtSize == 6 )
+      else if constexpr ( voigtSize == ThreeD )
         return Voigt;
       else
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );

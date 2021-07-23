@@ -1,7 +1,7 @@
-#include "Marmot/MarmotMaterialHyperElastic.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotKinematics.h"
+#include "Marmot/MarmotMaterialHyperElastic.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
@@ -23,7 +23,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
   Map< Vector6d >               Cauchy( Cauchy_ );
   Map< Matrix< double, 6, 9 > > dCauchy_d_F_np( dCauchy_d_F_np_ );
   const Map< const Matrix3d >   F_np( F_np_ );
-  Vector6d                      E = ContinuumMechanics::Kinematics::strain::GreenLagrange( F_np );
+  Vector6d                      E = ContinuumMechanics::Kinematics::Strain::GreenLagrange( F_np );
 
   Matrix6d dSdE;
   Vector6d S;
@@ -44,7 +44,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
 
   EigenTensors::Tensor633d dSdF;
   dSdF.setZero();
-  EigenTensors::Tensor633d dEdF = Marmot::ContinuumMechanics::Kinematics::strain::dGreenLagrangedDeformationGradient(
+  EigenTensors::Tensor633d dEdF = Marmot::ContinuumMechanics::Kinematics::Strain::dGreenLagrangedDeformationGradient(
     F_np );
 
   for ( int IJ = 0; IJ < 6; IJ++ )
@@ -69,108 +69,23 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
   }
 }
 
-void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S,
-                                                        double*       dSdE,
-                                                        double*       E,
+void MarmotMaterialHyperElastic::computePlaneStressPK2( double*       S2D,
+                                                        double*       dSdE2D,
+                                                        const double* E2D,
                                                         const double* timeOld,
                                                         const double  dT,
                                                         double&       pNewDT )
 
 {
-  // using namespace Marmot;
-
-  // Map<Vector6d>  stress( stress_ );
-  // Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
-  // Map<Vector6d>  dStrain( dStrain_ );
-  // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
-
-  // Vector6d  stressTemp;
-  // VectorXd stateVarsOld = stateVars;
-  // Vector6d  dStrainTemp  = dStrain;
-
-  //// assumption of isochoric deformation for initial guess
-  // dStrainTemp( 2 ) = ( -dStrain( 0 ) - dStrain( 1 ) );
-
-  // int planeStressCount = 1;
-  // while ( true ) {
-  // stressTemp = stress;
-  // stateVars  = stateVarsOld;
-
-  // if ( pNewDT < 1.0 ) {
-  // return;
-  //}
-
-  // double residual = stressTemp.array().abs()[2];
-
-  // if ( residual < 1.e-10 || ( planeStressCount > 7 && residual < 1e-8 ) ) {
-  // break;
-  //}
-
-  // double tangentCompliance = 1. / dStressDDStrain( 2, 2 );
-  // if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
-  // tangentCompliance = 1e10;
-
-  // dStrainTemp[2] -= tangentCompliance * stressTemp[2];
-
-  // planeStressCount += 1;
-  // if ( planeStressCount > 13 ) {
-  // pNewDT = 0.25;
-  // MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
-  // return;
-  //}
-  //}
-
-  // dStrain = dStrainTemp;
-  // stress  = stressTemp;
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
 }
 
-void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S,
-                                                           double*       dSdE,
-                                                           double*       E,
+void MarmotMaterialHyperElastic::computeUniaxialStressPK2( double*       S1D,
+                                                           double*       dSdE1D,
+                                                           const double* E1D,
                                                            const double* timeOld,
                                                            const double  dT,
                                                            double&       pNewDT )
 {
-  // using namespace Marmot;
-
-  // Map<Vector6d>  stress( stress_ );
-  // Map<Matrix6d>  dStressDDStrain( dStressDDStrain_ );
-  // Map<Vector6d>  dStrain( dStrain_ );
-  // Map<VectorXd> stateVars( this->stateVars, this->nStateVars );
-
-  // Vector6d  stressTemp;
-  // VectorXd stateVarsOld = stateVars;
-  // Vector6d  dStrainTemp  = dStrain;
-
-  // dStrainTemp( 2 ) = 0.0;
-  // dStrainTemp( 1 ) = 0.0;
-
-  // int count = 1;
-  // while ( true ) {
-  // stressTemp = stress;
-  // stateVars  = stateVarsOld;
-
-  // if ( pNewDT < 1.0 ) {
-  // return;
-  //}
-
-  // double residual = stressTemp.array().abs()[1] + stressTemp.array().abs()[2];
-
-  // if ( residual < 1.e-10 || ( count > 7 && residual < 1e-8 ) ) {
-  // break;
-  //}
-
-  // dStrainTemp.segment<2>( 1 ) -= dStressDDStrain.block<2, 2>( 1, 1 ).colPivHouseholderQr().solve(
-  // stressTemp.segment<2>( 1 ) );
-
-  // count += 1;
-  // if ( count > 13 ) {
-  // pNewDT = 0.25;
-  // MarmotJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
-  // return;
-  //}
-  //}
-
-  // dStrain = dStrainTemp;
-  // stress  = stressTemp;
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
 }
