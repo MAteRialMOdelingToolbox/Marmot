@@ -56,25 +56,25 @@ public:
   using MarmotMaterial::MarmotMaterial;
 
   virtual void computeStress( double*       stress,
-                              double*       dStressDDFNew,
+                              double*       dStress_dFNew,
                               const double* FOld,
                               const double* FNew,
                               const double* timeOld,
                               const double  dT,
                               double&       pNewDT ) = 0;
 
-  virtual void computePlaneStress( double*       stress,
-                                   double*       dStressDDFNew,
-                                   const double* FOld,
-                                   double*       FNew,
+  virtual void computePlaneStress( double*       stress2D,
+                                   double*       dStress_dF2DNew,
+                                   const double* FOld2D,
+                                   const double* FNew2D,
                                    const double* timeOld,
                                    const double  dT,
                                    double&       pNewDT );
 
-  virtual void computeUniaxialStress( double*       stress,
-                                      double*       dStressDDFNew,
-                                      const double* FOld,
-                                      double*       FNew,
+  virtual void computeUniaxialStress( double*       stress1D,
+                                      double*       dStress1D_dF1DNew,
+                                      const double* F1DOld,
+                                      const double* F1DNew,
                                       const double* timeOld,
                                       const double  dT,
                                       double&       pNewDT );

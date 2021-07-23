@@ -102,9 +102,9 @@ public:
   /**
    * Plane stress implementation of @ref computeStressPK2.
    */
-  virtual void computePlaneStressPK2( double*       S,
-                                      double*       dSdE,
-                                      double*       E,
+  virtual void computePlaneStressPK2( double*       S2D,
+                                      double*       dSdE2D,
+                                      const double* E2D,
                                       const double* timeOld,
                                       const double  dT,
                                       double&       pNewDT );
@@ -112,9 +112,9 @@ public:
   /**
    * Uniaxial stress implementation of @ref computeStressPK2.
    */
-  virtual void computeUniaxialStressPK2( double*       S,
-                                         double*       dSdE,
-                                         double*       E,
+  virtual void computeUniaxialStressPK2( double*       S1D,
+                                         double*       dSdE1D,
+                                         const double* E1D,
                                          const double* timeOld,
                                          const double  dT,
                                          double&       pNewDT );

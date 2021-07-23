@@ -112,26 +112,22 @@ public:
 
   /**
    * Plane stress implementation of @ref computeStress.
-   *
-   * @todo why is dStrain an in-out parameter?
    */
   using MarmotMaterialMechanical::computePlaneStress;
-  virtual void computePlaneStress( double*       stress,
-                                   double*       dStressDDStrain,
-                                   double*       dStrain,
+  virtual void computePlaneStress( double*       stress2D,
+                                   double*       dStress_dStrain2D,
+                                   const double* dStrain2D,
                                    const double* timeOld,
                                    const double  dT,
                                    double&       pNewDT );
 
   /**
    * Uniaxial stress implementation of @ref computeStress.
-   *
-   * @todo why is dStrain an in-out parameter?
    */
   using MarmotMaterialMechanical::computeUniaxialStress;
-  virtual void computeUniaxialStress( double*       stress,
-                                      double*       dStressDDStrain,
-                                      double*       dStrain,
+  virtual void computeUniaxialStress( double*       stress1D,
+                                      double*       dStress_dStrain1D,
+                                      const double* dStrain,
                                       const double* timeOld,
                                       const double  dT,
                                       double&       pNewDT );
