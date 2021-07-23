@@ -28,6 +28,7 @@
 #pragma once
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotVoigt.h"
 #include <iostream>
 #include <map>
 
@@ -45,7 +46,8 @@ class MarmotGeometryElement {
 
 public:
   /*Typedefs*/
-  static constexpr int VoigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 );
+  /* static constexpr VoigtSize voigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 ); */
+  static constexpr Marmot::ContinuumMechanics::VoigtNotation::VoigtSize voigtSize = Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension ( nDim );
 
   typedef Eigen::Matrix< double, nDim, 1 >                  XiSized;
   typedef Eigen::Matrix< double, nDim * nNodes, 1 >         CoordinateVector;
@@ -53,7 +55,7 @@ public:
   typedef Eigen::Matrix< double, 1, nNodes >                NSized;
   typedef Eigen::Matrix< double, nDim, nNodes * nDim >      NBSized;
   typedef Eigen::Matrix< double, nDim, nNodes >             dNdXiSized;
-  typedef Eigen::Matrix< double, VoigtSize, nNodes * nDim > BSized;
+  typedef Eigen::Matrix< double, voigtSize, nNodes * nDim > BSized;
 
   /*Properties*/
   Eigen::Map< const CoordinateVector >       coordinates;
