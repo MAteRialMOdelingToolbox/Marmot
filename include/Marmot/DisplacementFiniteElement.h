@@ -69,8 +69,8 @@ namespace Marmot::Elements {
     using XiSized               = typename ParentGeometryElement::XiSized;
     using RhsSized              = Matrix< double, sizeLoadVector, 1 >;
     using KeSizedMatrix         = Matrix< double, sizeLoadVector, sizeLoadVector >;
-    using CSized                = Matrix< double, ParentGeometryElement::VoigtSize, ParentGeometryElement::VoigtSize >;
-    using Voigt                 = Matrix< double, ParentGeometryElement::VoigtSize, 1 >;
+    using CSized                = Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
+    using Voigt                 = Matrix< double, ParentGeometryElement::voigtSize, 1 >;
 
     Map< const VectorXd > elementProperties;
     const int             elLabel;
@@ -189,14 +189,16 @@ namespace Marmot::Elements {
     {
       const auto& qp = qps[qpNumber];
 
-      if ( stateName == "sdv" ) {
-        /* std::cout<< __PRETTY_FUNCTION__ << " on 'sdv' is discouraged and deprecated, please use precise state name"; */
-        return { qp.managedStateVars->materialStateVars.data(), static_cast<int>(qp.managedStateVars->materialStateVars.size() ) };
-      }
-
       if ( qp.managedStateVars->contains( stateName ) ) {
         return qp.managedStateVars->getStateView( stateName );
       }
+
+      if ( stateName == "sdv" ) {
+        std::cout << __PRETTY_FUNCTION__ << " on 'sdv' is discouraged and deprecated, please use precise state name";
+        return { qp.managedStateVars->materialStateVars.data(),
+                 static_cast< int >( qp.managedStateVars->materialStateVars.size() ) };
+      }
+
       else {
         return qp.material->getStateView( stateName );
       }
@@ -327,6 +329,7 @@ namespace Marmot::Elements {
                                                                    double&       pNewDT )
   {
     using namespace Marmot;
+    using namespace ContinuumMechanics::VoigtNotation;
 
     Map< const RhsSized > QTotal( QTotal_ );
     Map< const RhsSized > dQ( dQ_ );
@@ -339,52 +342,49 @@ namespace Marmot::Elements {
     for ( QuadraturePoint& qp : qps ) {
 
       const BSized& B = qp.B;
-
-      dE = B * dQ;
+      dE              = B * dQ;
 
       if constexpr ( nDim == 1 ) {
-        Vector6d dE6 = ( Vector6d() << dE, 0, 0, 0, 0, 0 ).finished();
-        Matrix6d C66;
-        qp.material
-          ->computeUniaxialStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
 
-        C << ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( C66 );
-        S( 0 ) = qp.managedStateVars->stress( 0 );
+        S = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
+        qp.material->computeUniaxialStress( S.data(), C.data(), dE.data(), time, dT, pNewDT );
+        qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( S );
       }
 
       else if constexpr ( nDim == 2 ) {
 
-        Vector6d dE6 = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
-        Matrix6d C66;
-
         if ( sectionType == SectionType::PlaneStress ) {
 
-          qp.material
-            ->computePlaneStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
-
-          C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( C66 );
+          S = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
+          qp.material->computePlaneStress( S.data(), C.data(), dE.data(), time, dT, pNewDT );
+          qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( S );
         }
 
         else if ( sectionType == SectionType::PlaneStrain ) {
 
-          qp.material->computeStress( qp.managedStateVars->stress.data(), C66.data(), dE6.data(), time, dT, pNewDT );
+          Vector6d dE6 = planeVoigtToVoigt( dE );
+          Matrix6d C66;
 
+          Vector6d S6  = qp.managedStateVars->stress;
+          qp.material->computeStress( S6.data(), C66.data(), dE6.data(), time, dT, pNewDT );
+          qp.managedStateVars->stress = S6;
+
+          S = reduce3DVoigt< ParentGeometryElement::voigtSize >( S6 );
           C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
-        }
 
-        S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( qp.managedStateVars->stress );
-        qp.managedStateVars->strain += dE6;
+        }
       }
 
       else if constexpr ( nDim == 3 ) {
-
         if ( sectionType == SectionType::Solid ) {
-          qp.material->computeStress( qp.managedStateVars->stress.data(), C.data(), dE.data(), time, dT, pNewDT );
-        }
 
-        S = qp.managedStateVars->stress;
-        qp.managedStateVars->strain += dE;
+          S = qp.managedStateVars->stress;
+          qp.material->computeStress( S.data(), C.data(), dE.data(), time, dT, pNewDT );
+          qp.managedStateVars->stress = S;
+        }
       }
+
+      qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
 
       if ( pNewDT < 1.0 )
         return;
