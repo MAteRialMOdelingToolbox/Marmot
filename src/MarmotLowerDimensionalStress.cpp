@@ -21,7 +21,7 @@ namespace Marmot::ContinuumMechanics {
 
   namespace PlaneStrain {
 
-    EigenTensors::Tensor322d dStressdDeformationGradient(
+    EigenTensors::Tensor322d reduce3D_dStress_dDeformationGradient(
       const EigenTensors::Tensor633d& dStressdDeformationGradient3D )
     {
       static constexpr int     planeVoigtIndices[] = { 0, 1, 3 };
@@ -58,7 +58,7 @@ namespace Marmot::ContinuumMechanics {
 
   namespace PlaneStress {
 
-    EigenTensors::Tensor322d dStressdDeformationGradient( const EigenTensors::Tensor633d& dS_dF_3D )
+    EigenTensors::Tensor322d compute_dStress_dDeformationGradient( const EigenTensors::Tensor633d& dS_dF_3D )
     {
       /*  dS^PS    dS^PS    dS    dF^Comp
        *  ----- == ----- * ---- * -------
@@ -77,7 +77,7 @@ namespace Marmot::ContinuumMechanics {
        * */
 
       // projection to plane
-      EigenTensors::Tensor322d dS_dF = PlaneStrain::dStressdDeformationGradient( dS_dF_3D );
+      EigenTensors::Tensor322d dS_dF = PlaneStrain::reduce3D_dStress_dDeformationGradient( dS_dF_3D );
 
       using namespace ContinuumMechanics::TensorUtility::IndexNotation;
 

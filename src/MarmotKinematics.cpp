@@ -6,7 +6,7 @@ using namespace Eigen;
 namespace Marmot {
   namespace ContinuumMechanics::Kinematics {
 
-    namespace velocityGradient {
+    namespace VelocityGradient {
 
       EigenTensors::Tensor3333d initializeDOmega_dVelocityGradient()
       {
@@ -44,7 +44,7 @@ namespace Marmot {
 
     } // namespace velocityGradient
 
-    namespace strain {
+    namespace Strain {
 
       Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F )
       {
@@ -70,7 +70,7 @@ namespace Marmot {
       }
 
     } // namespace strain
-    namespace deformationGradient {
+    namespace DeformationGradient {
       template <>
       Eigen::Matrix3d make3D( const Eigen::Ref< const Eigen::Matrix< double, 1, 1 > >& tensor )
       {
