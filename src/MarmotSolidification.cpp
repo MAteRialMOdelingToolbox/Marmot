@@ -12,12 +12,12 @@ namespace Marmot::Materials {
     double computeZerothElasticModul( double tauMin, double n, int order )
     {
 
-      const double tau0 = tauMin / sqrt( 10. );
+      const double tau0 = tauMin / std::sqrt( 10. );
       double       E0;
       switch ( order ) {
       case 1: E0 = 1. / ( log( 1. + pow( tau0, n ) ) ); break;
       case 2:
-        E0 = 1. / ( log( 1. + pow( 2. * tau0, n ) ) - n * pow( 2. * tau0, n ) / ( 1. + pow( 2. * tau0, n ) ) );
+        E0 = 1. / ( std::log( 1. + std::pow( 2. * tau0, n ) ) - n * std::pow( 2. * tau0, n ) / ( 1. + std::pow( 2. * tau0, n ) ) );
         break;
       case 3: E0 = 1. / ( ( 1. - n ) * log( 1. + pow( 3. * tau0, n ) ) ); break;
       default: throw std::invalid_argument( "Invalid approximation order requested" ); break;
