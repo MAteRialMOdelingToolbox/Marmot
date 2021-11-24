@@ -251,6 +251,8 @@ namespace Marmot {
 
       double I1( const Vector6d& stress ) { return stress.head( 3 ).sum(); }
 
+      double I1Strain( const Vector6d& strain ) { return strain.head( 3 ).sum(); }
+
       double I2( const Vector6d& stress )
       {
         const Vector6d& s = stress;
