@@ -92,6 +92,8 @@ namespace MarmotLibrary {
     MenegottoPinto                     = 54,
     GCDP                               = 55,
     B3                                 = 56,
+    GosfordSandstone                   = 57,
+    GMDamagedShearNeoHooke             = 58,
   };
 
   enum ElementCode {
