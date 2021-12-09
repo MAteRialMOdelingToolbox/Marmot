@@ -358,6 +358,13 @@ namespace Marmot {
        */
       double I1( const Marmot::Vector6d& stress );
 
+      /** Computes the first invariant \f$ I^{(\varepsilon)}_1 \f$ of the strain tensor \f$ \boldsymbol{\varepsilon} \f$.
+       *\f[ 
+       	   \displaystyle I^{(\varepsilon)}_1 = tr(\boldsymbol{\varepsilon})
+        \f] 
+       */
+      double I1Strain( const Marmot::Vector6d& strain ); //
+
       /** Computes the second invariant \f$ I_2 \f$ of the stress tensor \f$ \boldsymbol{\sigma} \f$.
        *\f[ 
        	   \displaystyle I_2 = \frac{1}{2} \left(tr(\boldsymbol{\sigma})^2 - tr(\boldsymbol{\sigma}^2)\right)
