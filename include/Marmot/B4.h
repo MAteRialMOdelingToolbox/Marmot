@@ -36,7 +36,7 @@
 
 namespace Marmot::Materials {
 
-  class B3 : public MarmotMaterialHypoElastic {
+  class B4 : public MarmotMaterialHypoElastic {
 
     // elasticity
     const double& nu;
@@ -72,7 +72,7 @@ namespace Marmot::Materials {
     const double& timeToDays;
     const double& castTime;
 
-    class B3StateVarManager : public MarmotStateVarVectorManager {
+    class B4StateVarManager : public MarmotStateVarVectorManager {
 
     public:
       inline const static auto layout = makeLayout( {
@@ -81,16 +81,16 @@ namespace Marmot::Materials {
 
       KelvinChain::mapStateVarMatrix kelvinStateVars;
 
-      B3StateVarManager( double* theStateVarVector, int nKelvinUnits )
+      B4StateVarManager( double* theStateVarVector, int nKelvinUnits )
         : MarmotStateVarVectorManager( theStateVarVector, layout ),
           kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ){};
     };
-    std::unique_ptr< B3StateVarManager > stateVarManager;
+    std::unique_ptr< B4StateVarManager > stateVarManager;
 
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    B3( const double* materialProperties, int nMaterialProperties, int materialLabel );
+    B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
     void computeStress( double* stress,
                         double* dStressDDStrain,

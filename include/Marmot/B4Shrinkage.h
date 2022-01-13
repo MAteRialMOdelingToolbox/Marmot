@@ -2,7 +2,7 @@
 
 namespace Marmot::Materials {
   namespace Shrinkage {
-    namespace B3 {
+    namespace B4 {
 
       Marmot::Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                                         const double dTDays,

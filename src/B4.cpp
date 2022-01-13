@@ -1,5 +1,5 @@
-#include "Marmot/B3.h"
-#include "Marmot/B3Shrinkage.h"
+#include "Marmot/B4.h"
+#include "Marmot/B4Shrinkage.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -15,7 +15,7 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
-  B3::B3( const double* materialProperties, int nMaterialProperties, int materialLabel )
+  B4::B4( const double* materialProperties, int nMaterialProperties, int materialLabel )
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
@@ -29,12 +29,12 @@ namespace Marmot::Materials {
       m                                 ( materialProperties[6] ),
       nKelvinBasic                      ( static_cast< size_t > ( materialProperties[7] ) ),
       minTauBasic                       ( materialProperties[8] ),
-      // shrinkage parameters
+      // autogenous shrinkage parameters
       autogenousShrinkageHalfTime       ( materialProperties[9] ),
       ultimateAutogenousShrinkageStrain ( materialProperties[10] ),
       alpha                             ( materialProperties[11] ),
       rt                                ( materialProperties[12] ),
-      // shrinkage parameters
+      // drying shrinkage parameters
       dryingShrinkageHalfTime           ( materialProperties[13] ),
       ultimateDryingShrinkageStrain     ( materialProperties[14] ),
       dryingStart                       ( materialProperties[15] ),
@@ -62,12 +62,9 @@ namespace Marmot::Materials {
 
     solidificationKelvinProperties
       .E0 = SolidificationTheory::computeZerothElasticModul( minTauBasic, n, basicCreepComplianceApproximationOrder );
-
-    std::cout << "E0 = " << solidificationKelvinProperties.E0 << std::endl;
-    std::cout << "E_mu = " << solidificationKelvinProperties.elasticModuli << std::endl;
   }
 
-  void B3::computeStress( double*       stress,
+  void B4::computeStress( double*       stress,
                           double*       dStressDDStrain,
                           const double* dStrain,
                           const double* timeOld,
@@ -136,7 +133,7 @@ namespace Marmot::Materials {
 
     // compute shrinkage strain increment
     Vector6d
-      shrinkageStrainIncrement = Shrinkage::B3::computeShrinkageStrainIncrement( tStartDays,
+      shrinkageStrainIncrement = Shrinkage::B4::computeShrinkageStrainIncrement( tStartDays,
                                                                                  dTimeDays,
                                                                                  ultimateAutogenousShrinkageStrain,
                                                                                  autogenousShrinkageHalfTime,
@@ -168,20 +165,20 @@ namespace Marmot::Materials {
     return;
   }
 
-  void B3::assignStateVars( double* stateVars_, int nStateVars )
+  void B4::assignStateVars( double* stateVars_, int nStateVars )
   {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    this->stateVarManager = std::make_unique< B3StateVarManager >( stateVars_, nKelvinBasic + nKelvinDrying );
+    this->stateVarManager = std::make_unique< B4StateVarManager >( stateVars_, nKelvinBasic + nKelvinDrying );
 
     MarmotMaterial::assignStateVars( stateVars_, nStateVars );
   }
 
-  StateView B3::getStateView( const std::string& stateName ) { return stateVarManager->getStateView( stateName ); }
+  StateView B4::getStateView( const std::string& stateName ) { return stateVarManager->getStateView( stateName ); }
 
-  int B3::getNumberOfRequiredStateVars()
+  int B4::getNumberOfRequiredStateVars()
   {
-    return B3StateVarManager::layout.nRequiredStateVars + ( nKelvinBasic + nKelvinDrying ) * 6;
+    return B4StateVarManager::layout.nRequiredStateVars + ( nKelvinBasic + nKelvinDrying ) * 6;
   }
 } // namespace Marmot::Materials

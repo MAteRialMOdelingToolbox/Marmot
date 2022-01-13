@@ -1,4 +1,4 @@
-#include "Marmot/B3Shrinkage.h"
+#include "Marmot/B4Shrinkage.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
@@ -9,7 +9,7 @@ using namespace Marmot;
 using namespace std;
 
 namespace Marmot::Materials {
-  namespace Shrinkage::B3 {
+  namespace Shrinkage::B4 {
     Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                               const double dTDays,
                                               const double ultimateAutogenousShrinkageStrain,
@@ -47,5 +47,5 @@ namespace Marmot::Materials {
       return ContinuumMechanics::VoigtNotation::I * ( ultimateAutogenousShrinkageStrain * deltaAutogenous +
                                                       ultimateDryingShrinkageStrain * kHum * deltaDrying );
     }
-  } // namespace Shrinkage::B3
+  } // namespace Shrinkage::B4
 } // namespace Marmot::Materials
