@@ -163,7 +163,8 @@ namespace Marmot {
        *
        * \note The yield function can be also used as plastic potential function if needed.
        */
-      double yieldFunction( const HaighWestergaard::HaighWestergaardCoordinates& hw, const double varEps = 0.0 ) const;
+      double yieldFunction( const HaighWestergaard::HaighWestergaardCoordinates<>& hw,
+                            const double                                           varEps = 0.0 ) const;
 
       /**
        * Evaluate the derivatives of the yield function with respect to the
@@ -173,8 +174,8 @@ namespace Marmot {
        * can be calculated uniquely.
        */
       std::tuple< double, double, double > dYieldFunction_dHaighWestergaard(
-        const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates& hw,
-        const double                                                             varEps = 0.0 ) const;
+        const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates<>& hw,
+        const double                                                               varEps = 0.0 ) const;
 
       /**
        * Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as
