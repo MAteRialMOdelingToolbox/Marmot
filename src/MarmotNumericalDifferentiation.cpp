@@ -7,6 +7,29 @@ using namespace Eigen;
 namespace Marmot {
   namespace NumericalAlgorithms::Differentiation {
 
+    MatrixXd forwardDifference( const function_type& F, const VectorXd& X )
+    {
+
+      const auto xSize = X.rows();
+      MatrixXd   J( xSize, xSize );
+
+      VectorXd rightX( xSize );
+
+      for ( auto i = 0; i < xSize; i++ ) {
+        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
+        // clang-format off
+        rightX = X;
+        rightX( i ) += h;
+
+        J.col( i ) = (  F( rightX )  - F( X  ) )
+            / //------------------------------------
+                            ( 1. * h );
+        // clang-format on
+      }
+
+      return J;
+    }
+
     MatrixXd centralDifference( const function_type& F, const VectorXd& X )
     {
 
@@ -58,7 +81,7 @@ namespace Marmot {
         VectorXcd  rightX( xSize );
 
         for ( auto i = 0; i < xSize; i++ ) {
-          double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
+          double h = std::max( 1.0, std::abs( X( i ) ) ) * 1e-16;
           rightX   = X;
           rightX( i ) += h * imaginaryUnit;
 
