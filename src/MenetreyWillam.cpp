@@ -1,5 +1,5 @@
-#include "Marmot/MenetreyWillam.h"
 #include "Marmot/MarmotConstants.h"
+#include "Marmot/MenetreyWillam.h"
 #include <cmath>
 #include <sstream>
 
@@ -113,7 +113,7 @@ namespace Marmot {
       return { r, dRdTheta };
     }
 
-    double MenetreyWillam::yieldFunction( const HaighWestergaardCoordinates& hw, const double varEps ) const
+    double MenetreyWillam::yieldFunction( const HaighWestergaardCoordinates<>& hw, const double varEps ) const
     {
       const double r_ = polarRadius( hw.theta, param.e );
       if ( varEps == 0 )
@@ -127,8 +127,8 @@ namespace Marmot {
     }
 
     std::tuple< double, double, double > MenetreyWillam::dYieldFunction_dHaighWestergaard(
-      const HaighWestergaardCoordinates& hw,
-      const double                       varEps ) const
+      const HaighWestergaardCoordinates<>& hw,
+      const double                         varEps ) const
     {
       const auto [r_, dRdTheta_] = dPolarRadius_dTheta( hw.theta, param.e );
 
