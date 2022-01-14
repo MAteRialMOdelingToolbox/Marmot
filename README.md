@@ -38,7 +38,7 @@ git clone https://github.com/autodiff/autodiff.git
 cd autodiff
 mkdir build
 cd build
-cmake ..
+cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
 sudo make install
 ```
 
