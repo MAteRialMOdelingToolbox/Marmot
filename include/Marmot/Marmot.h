@@ -86,14 +86,15 @@ namespace MarmotLibrary {
     OrthotropicLinearElastic           = 48,
     JointedHoekBrown                   = 49,
     ORDP                               = 50,
-    SCDPV3NonLocal                     = 51,
+    B4                                 = 51,
     LinearElasticShrinkage             = 52,
     GCSCDP                             = 53,
     MenegottoPinto                     = 54,
     GCDP                               = 55,
-    B3                                 = 56,
-    GosfordSandstone                   = 57,
-    GMDamagedShearNeoHooke             = 58,
+    GosfordSandstone                   = 56,
+    GMDamagedShearNeoHooke             = 57,
+    SolidificationCDP                  = 58,
+    SolidificationModLeon              = 59,
   };
 
   enum ElementCode {
