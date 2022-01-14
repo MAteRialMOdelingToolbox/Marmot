@@ -22,6 +22,9 @@ namespace Marmot {
 
     double makeReal( const complexDouble& value ) { return std::real( value ); }
 
+    double makeReal( const autodiff::real& value ) { return double( value ); }
+    double makeReal( const autodiff::dual& value ) { return double( value ); }
+
     double makeReal( const double& value ) { return value; }
 
     // return the exponent to the power of ten of an expression like 5*10^5 --> return 5

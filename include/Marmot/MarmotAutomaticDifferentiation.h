@@ -26,26 +26,15 @@
  */
 
 #pragma once
-#include "Marmot/MarmotTypedefs.h"
+#include "autodiff/forward/dual.hpp"
+#include "autodiff/forward/dual/eigen.hpp"
 #include <functional>
 
 namespace Marmot {
-  namespace NumericalAlgorithms::Differentiation {
+  namespace AutomaticDifferentiation {
+    using function_type = std::function< autodiff::VectorXdual( const autodiff::VectorXdual& X ) >;
+    Eigen::MatrixXd forwardMode( const function_type& F, const Eigen::VectorXd& X );
 
-    using function_type = std::function< Eigen::VectorXd( const Eigen::VectorXd& X ) >;
-    Eigen::MatrixXd forwardDifference( const function_type& F, const Eigen::VectorXd& X );
-    Eigen::MatrixXd centralDifference( const function_type& F, const Eigen::VectorXd& X );
+  } // namespace AutomaticDifferentiation
 
-    namespace Complex {
-
-      using function_type_complex = std::function< Eigen::VectorXcd( const Eigen::VectorXcd& X ) >;
-
-      Eigen::MatrixXd forwardDifference( const function_type_complex& F, const Eigen::VectorXd& X );
-
-      Eigen::MatrixXd centralDifference( const function_type_complex& F, const Eigen::VectorXd& X );
-
-      Eigen::MatrixXd fourthOrderAccurateDerivative( const function_type_complex& F, const Eigen::VectorXd& X );
-
-    } // namespace ComplexStep
-  }   // namespace NumericalAlgorithms::Differentiation
 } // namespace Marmot

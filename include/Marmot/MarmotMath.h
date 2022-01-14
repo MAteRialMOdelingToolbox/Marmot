@@ -30,6 +30,8 @@
 #pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "autodiff/forward/dual.hpp"
+#include "autodiff/forward/real.hpp"
 #include <algorithm>
 #include <complex>
 
@@ -53,7 +55,7 @@ namespace Marmot {
 
     /**
      * compute the exponent to the power of ten of an expression, e.g., 5*10^5 --> return 5 */
-    int    getExponentPowerTen( const double x );
+    int getExponentPowerTen( const double x );
 
     /**
      * convert angle \ref alpha in radiant to degree */
@@ -81,6 +83,8 @@ namespace Marmot {
 
     double makeReal( const double& value );
     double makeReal( const complexDouble& value );
+    double makeReal( const autodiff::real& value );
+    double makeReal( const autodiff::dual& value );
 
     /**
      * apply Macaulay function to a matrix
@@ -173,8 +177,8 @@ namespace Marmot {
     }
 
     /**
-     *  Explicit Euler integration with error estimation based on Richardson extrapolation of function \ref fRate taking arguments \ref fRateArgs
-     * and initial value \ref yN .
+     *  Explicit Euler integration with error estimation based on Richardson extrapolation of function \ref fRate taking
+     * arguments \ref fRateArgs and initial value \ref yN .
      * */
     template < int ySize, typename functionType, typename... Args >
     std::tuple< Eigen::Matrix< double, ySize, 1 >, double > explicitEulerRichardsonWithErrorEstimator(
