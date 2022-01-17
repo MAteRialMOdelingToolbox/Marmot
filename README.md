@@ -22,7 +22,7 @@ Triaxial compression using an orthotropic jointed rock plasticity model
 
 ## Third-party dependencies
 
-If you would like to have the full experience with ```Marmot``` the Eigen (>3.3.8) and the autodiff (>0.6.0) libraries have to be installed. 
+```Marmot``` requires the Eigen (>3.3.8) and the autodiff (>0.6.0) libraries:
 
 ```bash
 git clone https://gitlab.com/libeigen/eigen.git
@@ -41,6 +41,8 @@ cd build
 cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
 sudo make install
 ```
+
+For ```anaconda``` users, those libraries can also be installed from the channels.
 
 ## How to install Marmot
 
