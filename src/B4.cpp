@@ -30,22 +30,22 @@ namespace Marmot::Materials {
       nKelvinBasic                      ( static_cast< size_t > ( materialProperties[7] ) ),
       minTauBasic                       ( materialProperties[8] ),
       // autogenous shrinkage parameters
-      autogenousShrinkageHalfTime       ( materialProperties[9] ),
-      ultimateAutogenousShrinkageStrain ( materialProperties[10] ),
+      ultimateAutogenousShrinkageStrain ( materialProperties[9] ),
+      autogenousShrinkageHalfTime       ( materialProperties[10] ),
       alpha                             ( materialProperties[11] ),
       rt                                ( materialProperties[12] ),
       // drying shrinkage parameters
-      dryingShrinkageHalfTime           ( materialProperties[13] ),
-      ultimateDryingShrinkageStrain     ( materialProperties[14] ),
+      ultimateDryingShrinkageStrain     ( materialProperties[13] ),
+      dryingShrinkageHalfTime           ( materialProperties[14] ),
       dryingStart                       ( materialProperties[15] ),
+      hEnv                              ( materialProperties[16] ),
       // drying creep paramters
-      q5                                ( materialProperties[16] ),
-      hEnv                              ( materialProperties[17] ),
+      q5                                ( materialProperties[17] ),
       nKelvinDrying                     ( static_cast< size_t > ( materialProperties[18] ) ),
       minTauDrying                      ( materialProperties[19] ),
       // additional parameters
-      timeToDays                        ( materialProperties[20] ),
-      castTime                          ( materialProperties[21] ),
+      castTime                          ( materialProperties[20] ),
+      timeToDays                        ( materialProperties[21] ),
       solidificationParameters          ( { q1, q2, q3, q4, n, m } )
   // clang-format on
   {

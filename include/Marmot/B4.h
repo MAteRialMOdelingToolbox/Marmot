@@ -52,25 +52,25 @@ namespace Marmot::Materials {
     const double& minTauBasic;
 
     // autogenous shrinkage
-    const double& autogenousShrinkageHalfTime;
     const double& ultimateAutogenousShrinkageStrain;
+    const double& autogenousShrinkageHalfTime;
     const double& alpha;
     const double& rt;
 
     // drying shrinkage
-    const double& dryingShrinkageHalfTime;
     const double& ultimateDryingShrinkageStrain;
+    const double& dryingShrinkageHalfTime;
     const double& dryingStart;
+    const double& hEnv;
 
     // drying creep
     const double& q5;
-    const double& hEnv;
     const size_t  nKelvinDrying;
     const double& minTauDrying;
 
     // time parameters
-    const double& timeToDays;
     const double& castTime;
+    const double& timeToDays;
 
     class B4StateVarManager : public MarmotStateVarVectorManager {
 
