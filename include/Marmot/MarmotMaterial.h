@@ -54,4 +54,6 @@ public:
   double* getAssignedStateVars();
 
   int getNumberOfAssignedStateVars();
+
+  virtual void initializeYourself();
 };

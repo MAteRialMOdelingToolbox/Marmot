@@ -19,9 +19,16 @@ double* MarmotMaterial::getAssignedStateVars()
 {
   return stateVars;
 }
+
 int MarmotMaterial::getNumberOfAssignedStateVars()
 {
   return nStateVars;
+}
+
+void MarmotMaterial::initializeYourself()
+{
+  for ( auto i = 0; i < this->getNumberOfAssignedStateVars(); i++ )
+    this->stateVars[i] = 0;
 }
 
 MarmotMaterial::~MarmotMaterial() {}
