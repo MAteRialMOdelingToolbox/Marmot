@@ -1,0 +1,8 @@
+image: continuumio/miniconda3:latest
+
+testbuild :
+  stage: build
+  script:
+    - conda create --name test_env
+    - source activate test_env
+    - conda install eigen autodiff
