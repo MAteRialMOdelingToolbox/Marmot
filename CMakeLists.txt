@@ -137,7 +137,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         GosfordSandstone
         HoekBrown
 	      #JointedRock
-        JointedHoekBrown
+          #JointedHoekBrown
         LinearElastic
         LinearElasticNonLocal
         LinearElasticSolidificationCreep
@@ -158,6 +158,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         RockDamagePlasticity
         RockDamagePlasticityNonLocal
         ORDP
+        ORDPNonLocal
         SandHypo
         SandHypoMicropolar
         SchaedlichSchweiger
