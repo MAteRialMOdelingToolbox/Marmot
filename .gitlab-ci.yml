@@ -5,4 +5,4 @@ testbuild :
   script:
     - conda create --name test_env
     - source activate test_env
-    - conda install eigen autodiff
+    - conda install eigen conda-forge::autodiff
