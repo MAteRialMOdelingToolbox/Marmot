@@ -249,6 +249,8 @@ namespace Marmot {
                Math::macauly( -dEpPrincipal( 2 ) );
       }
 
+      double I1Strain( const Vector6d& strain ) { return strain.head( 3 ).sum(); }
+
       double I2Strain( const Vector6d& strain ) // you could also use normal I2, but
                                                 // with epsilon12 instead of 2*epsilon12
       {
