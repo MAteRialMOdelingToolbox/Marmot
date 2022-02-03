@@ -112,6 +112,11 @@ namespace Marmot {
       */
       Matrix6d stiffnessTensor( const double E, const double nu );
 
+      /**
+       *Computes the isotropic stiffness tensor \mathbb{ C } from the bulk modulus K and the shear modulus G.
+      */
+      Matrix6d stiffnessTensorKG( const double K, const double G );
+
     } // namespace Elasticity::Isotropic
 
      /**

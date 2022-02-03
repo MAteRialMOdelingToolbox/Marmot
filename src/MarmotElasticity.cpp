@@ -22,6 +22,13 @@ namespace Marmot {
         return C;
       }
 
+      Matrix6d stiffnessTensorKG( const double K, const double G )
+      {
+        const double E_  = E( K, G );
+        const double nu_ = nu( K, G );
+        return stiffnessTensor( E_, nu_ );
+      }
+
       Matrix6d complianceTensor( const double E, const double nu )
       {
         Matrix6d     CInv;
