@@ -365,13 +365,12 @@ namespace Marmot::Elements {
           Vector6d dE6 = planeVoigtToVoigt( dE );
           Matrix6d C66;
 
-          Vector6d S6  = qp.managedStateVars->stress;
+          Vector6d S6 = qp.managedStateVars->stress;
           qp.material->computeStress( S6.data(), C66.data(), dE6.data(), time, dT, pNewDT );
           qp.managedStateVars->stress = S6;
 
           S = reduce3DVoigt< ParentGeometryElement::voigtSize >( S6 );
           C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
-
         }
       }
 
@@ -398,22 +397,25 @@ namespace Marmot::Elements {
   void DisplacementFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
   {
     switch ( state ) {
+    case MarmotElement::MarmotMaterialInitialization: {
+      for ( QuadraturePoint& qp : qps ) {
+        qp.material->initializeYourself();
+      }
+      break;
+    }
     case MarmotElement::GeostaticStress: {
-      if constexpr ( nDim == 3 ) {
-        for ( QuadraturePoint& qp : qps ) {
+      for ( QuadraturePoint& qp : qps ) {
+        XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
 
-          XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
+        const double sigY1 = values[0];
+        const double sigY2 = values[2];
+        const double y1    = values[1];
+        const double y2    = values[3];
 
-          const double sigY1 = values[0];
-          const double sigY2 = values[2];
-          const double y1    = values[1];
-          const double y2    = values[3];
-
-          using namespace Math;
-          qp.managedStateVars->stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
-          qp.managedStateVars->stress( 0 ) = values[4] * qp.managedStateVars->stress( 1 );                 // sigma_x
-          qp.managedStateVars->stress( 2 ) = values[5] * qp.managedStateVars->stress( 1 );
-        }
+        using namespace Math;
+        qp.managedStateVars->stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
+        qp.managedStateVars->stress( 0 ) = values[4] * qp.managedStateVars->stress( 1 );                 // sigma_x
+        qp.managedStateVars->stress( 2 ) = values[5] * qp.managedStateVars->stress( 1 );
       }
       break;
     }
