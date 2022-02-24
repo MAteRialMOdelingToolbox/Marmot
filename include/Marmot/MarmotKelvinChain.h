@@ -57,7 +57,7 @@ namespace Marmot::Materials {
 
       autodiff::Real< k, double > tau_( tau * k );
 
-      double val = -pow( -tau_, k ) / double( Factorial< k - 1 >::value );
+      double val = -pow( -tau * k, k ) / double( Factorial< k - 1 >::value );
       val *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
       return val;
     }
