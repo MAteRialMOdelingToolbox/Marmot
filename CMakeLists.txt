@@ -122,6 +122,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         BarodesyGradientDeformationModulus
         CosseratLinearElastic
         CosseratDruckerPrager
+        CosseratHoekBrown
         DiffuseMicroCracking
         DruckerPrager 
         #DruckerPragerMD

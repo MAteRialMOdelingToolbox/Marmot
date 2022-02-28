@@ -95,7 +95,8 @@ namespace MarmotLibrary {
     GMDamagedShearNeoHooke             = 57,
     SolidificationCDP                  = 58,
     SolidificationModLeon              = 59,
-    ORDPNonLocal                       = 60
+    ORDPNonLocal                       = 60,
+    CosseratHoekBrown                  = 61,
   };
 
   enum ElementCode {
