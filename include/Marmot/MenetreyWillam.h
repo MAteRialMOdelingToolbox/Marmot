@@ -132,28 +132,91 @@ namespace Marmot {
        * Compute the polar radius \f$r\f$ from the Lode angle \f$\theta\f$. The
        * eccentricity parameter will be used from the chosen Menetrey-Willam parameters \ref param.
        */
-      double polarRadius( const double& theta ) const;
+      template < typename T >
+      T polarRadius( const double& theta ) const
+      {
+        return polarRadius( theta, param.e );
+      }
 
       /**
        * Static version for computing the polar radius \f$r\f$ from the Lode angle
        * \f$\theta\f$ and a specified value for the eccentricity parameter
        * \f$e\f$.
        */
-      static double polarRadius( const double& theta, const double& e );
+      template < typename T >
+      static T polarRadius( const T& theta, const double& e )
+      {
+        // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
+        // position (theta) the numerator and denominator are stored for performance reasons, as
+        // they are also needed for the derivative dRdTheta
+        if ( e >= 1.0 )
+          return 1;
 
+        const double e2        = e * e;
+        const T      cosTheta  = cos( theta );
+        const T      cos2Theta = cosTheta * cosTheta;
+
+        const T numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
+        const T denominator = ( 2 * ( 1 - e2 ) * cosTheta +
+                                ( 2 * e - 1 ) * sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
+
+        return numerator / denominator;
+      }
       /**
        * Compute the polar radius \f$r\f$ and its derivative
        * \f$\frac{dr}{d\theta}\f$ from the Lode angle \f$\theta\f$. The
        * eccentricity parameter will be used from the @ref param struct.
        */
-      std::pair< double, double > dPolarRadius_dTheta( const double& theta ) const;
+      template < typename T >
+      std::pair< T, T > dPolarRadius_dTheta( const T& theta ) const
+      {
+        return dPolarRadius_dTheta( theta, param.e );
+      }
 
       /**
        * Static version for computing the polar radius \f$r$\f$  and its
        * derivative \f$\frac{dr}{d\theta}\f$ from the Lode angle \f$\theta\f$
        * and a specified value for the eccentricity parameter \f$e\f$.
        */
-      static std::pair< double, double > dPolarRadius_dTheta( const double& theta, const double& e );
+      template < typename T >
+      static std::pair< T, T > dPolarRadius_dTheta( const T& theta, const double& e )
+      {
+        //
+        // computes the deviatoric shape roundness for a given eccentricity (e) at a certain
+        // position (theta) the numerator and denominator are stored for performance reasons, as
+        // they are also needed for the derivative dRdTheta
+        T r, dRdTheta;
+
+        if ( e >= 1.0 ) {
+          r        = 1;
+          dRdTheta = 0;
+          return std::make_pair( r, dRdTheta );
+        }
+
+        const double e2        = e * e;
+        const T      cosTheta  = cos( theta );
+        const T      cos2Theta = cosTheta * cosTheta;
+
+        T numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
+        T denominator = ( 2 * ( 1 - e2 ) * cosTheta +
+                          ( 2 * e - 1 ) * sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
+
+        r = numerator / denominator;
+
+        // compute the derivative
+        const T sinTheta = sin( theta );
+
+        const T a          = numerator;
+        const T b          = 1. / denominator;
+        const T aux        = 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e;
+        const T dAuxdTheta = 4 * ( 1 - e2 ) * 2 * cosTheta * -sinTheta;
+        const T dadTheta   = 2 * cosTheta * ( -sinTheta ) * 4 * ( 1 - e2 );
+        const T dbdTheta   = -pow( denominator, -2 ) *
+                           ( 2 * ( 1 - e2 ) * -sinTheta + ( 2 * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
+        dRdTheta = b * dadTheta + a * dbdTheta;
+
+        return { r, dRdTheta };
+      }
 
       /**
        * Evaluate the yield function \f$f\f$ depending on the Haigh-Westergaard stress
@@ -163,8 +226,20 @@ namespace Marmot {
        *
        * \note The yield function can be also used as plastic potential function if needed.
        */
-      double yieldFunction( const HaighWestergaard::HaighWestergaardCoordinates<>& hw,
-                            const double                                           varEps = 0.0 ) const;
+      template < typename T >
+      T yieldFunction( const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
+                       const double varEps = 0.0 ) const
+      {
+        const T r_ = polarRadius( hw.theta, param.e );
+        if ( varEps == 0 )
+          return ( param.Af * hw.rho ) * ( param.Af * hw.rho ) +
+                 param.m * ( param.Bf * hw.rho * r_ + param.Cf * hw.xi ) - 1;
+        else
+          return param.Af * param.Af * hw.rho * hw.rho +
+                 param.m * ( std::sqrt( param.Bf * hw.rho * r_ * param.Bf * hw.rho * r_ + varEps * varEps ) +
+                             param.Cf * hw.xi ) -
+                 1;
+      }
 
       /**
        * Evaluate the derivatives of the yield function with respect to the
@@ -173,9 +248,31 @@ namespace Marmot {
        * vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives
        * can be calculated uniquely.
        */
-      std::tuple< double, double, double > dYieldFunction_dHaighWestergaard(
-        const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates<>& hw,
-        const double                                                               varEps = 0.0 ) const;
+      template < typename T >
+      std::tuple< T, T, T > dYieldFunction_dHaighWestergaard(
+        const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
+        const double                                                                  varEps = 0.0 ) const
+      {
+        const auto [r_, dRdTheta_] = dPolarRadius_dTheta( hw.theta, param.e );
+
+        T dFdXi, dFdRho, dFdTheta;
+        dFdXi = param.m * param.Cf;
+
+        if ( varEps == 0.0 ) {
+          dFdRho   = 2 * param.Af * hw.rho * param.Af + param.m * param.Bf * r_;
+          dFdTheta = param.m * param.Bf * hw.rho * dRdTheta_;
+        }
+        else {
+          const T auxTerm1 = param.m * 0.5 *
+                             pow( param.Bf * param.Bf * hw.rho * hw.rho * r_ * r_ + varEps * varEps, -0.5 ) * 2 *
+                             param.Bf * hw.rho * r_ * param.Bf;
+
+          dFdRho   = param.Af * param.Af * 2 * hw.rho + auxTerm1 * r_;
+          dFdTheta = auxTerm1 * hw.rho * dRdTheta_;
+        }
+
+        return { dFdXi, dFdRho, dFdTheta };
+      }
 
       /**
        * Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as

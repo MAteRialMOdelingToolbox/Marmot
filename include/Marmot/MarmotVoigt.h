@@ -34,8 +34,7 @@
 
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
-
-/** 
+/**
  * \brief This file includes functions needed for calculations with stress and strain tensors written in voigt notation.
  */
 namespace Marmot {
@@ -43,12 +42,9 @@ namespace Marmot {
 
     /* constexpr int VoigtSize = 6; */
 
-    enum VoigtSize  { OneD = 1, TwoD =3, ThreeD=6, Axial=4};
+    enum VoigtSize { OneD = 1, TwoD = 3, ThreeD = 6, Axial = 4 };
 
-    constexpr VoigtSize voigtSizeFromDimension ( int x) 
-    {
-        return (VoigtSize ) ( ( ( x * x ) + x ) >> 1 );
-    }
+    constexpr VoigtSize voigtSizeFromDimension( int x ) { return (VoigtSize)( ( ( x * x ) + x ) >> 1 ); }
 
     extern const Marmot::Vector6d P;
     extern const Marmot::Vector6d PInv;
@@ -117,7 +113,7 @@ namespace Marmot {
      */
 
     template < enum VoigtSize voigtSize >
-    Eigen::Matrix< double,  voigtSize , 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
+    Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
     {
       if constexpr ( voigtSize == OneD )
         return ( Eigen::Matrix< double, 1, 1 >() << Voigt3D( 0 ) ).finished();
@@ -238,7 +234,20 @@ namespace Marmot {
                              \end{bmatrix}
       \f]
      */
-    Marmot::Vector6d stressToVoigt( const Eigen::Matrix3d& stressTensor );
+    template < typename T = double >
+    Eigen::Matrix< T, 6, 1 > stressToVoigt( const Eigen::Matrix< T, 3, 3 >& stressTensor )
+    {
+      Eigen::Matrix< T, 6, 1 > stress;
+      // clang-format off
+            stress << stressTensor( 0, 0 ), 
+                      stressTensor( 1, 1 ), 
+                      stressTensor( 2, 2 ), 
+                      stressTensor( 0, 1 ),
+                      stressTensor( 0, 2 ), 
+                      stressTensor( 1, 2 );
+      // clang-format on
+      return stress;
+    }
 
     template < int nDim >
     Eigen::Matrix< double, nDim, nDim > stressMatrixFromVoigt(
@@ -366,10 +375,11 @@ namespace Marmot {
         return stress( 0 ) + stress( 1 ) + stress( 2 );
       }
 
-      /** Computes the first invariant \f$ I^{(\varepsilon)}_1 \f$ of the strain tensor \f$ \boldsymbol{\varepsilon} \f$.
-       *\f[ 
-       	   \displaystyle I^{(\varepsilon)}_1 = tr(\boldsymbol{\varepsilon})
-        \f] 
+      /** Computes the first invariant \f$ I^{(\varepsilon)}_1 \f$ of the strain tensor \f$ \boldsymbol{\varepsilon}
+       \f$.
+       *\f[
+           \displaystyle I^{(\varepsilon)}_1 = tr(\boldsymbol{\varepsilon})
+        \f]
        */
       double I1Strain( const Marmot::Vector6d& strain ); //
 

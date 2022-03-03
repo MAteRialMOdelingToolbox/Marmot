@@ -34,7 +34,7 @@ void MarmotMaterialHyperElastic::computeStress( double*       Cauchy_,
 
   Matrix3d S_ = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( S );
 
-  Cauchy = Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt( 1. / J * F_np * S_ * F_np.transpose() );
+  Cauchy = Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt<double>( 1. / J * F_np * S_ * F_np.transpose() );
 
   TensorMap< Tensor< double, 3 > > dCauchydF( dCauchy_d_F_np_, 6, 3, 3 );
   dCauchydF.setZero();
