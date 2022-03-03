@@ -62,20 +62,6 @@ namespace Marmot {
       return strain;
     }
 
-    Vector6d stressToVoigt( const Matrix3d& stressTensor )
-    {
-      Vector6d stress;
-      // clang-format off
-            stress << stressTensor( 0, 0 ), 
-                      stressTensor( 1, 1 ), 
-                      stressTensor( 2, 2 ), 
-                      stressTensor( 0, 1 ),
-                      stressTensor( 0, 2 ), 
-                      stressTensor( 1, 2 );
-      // clang-format on
-      return stress;
-    }
-
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
     {
       /* converts a 6d voigt Vector with Abaqus notation
@@ -362,7 +348,7 @@ namespace Marmot {
       Vector6d dJ3_dStress( const Vector6d& stress )
       {
         Vector6d s = IDev * stress;
-        return ( P.array() * stressToVoigt( voigtToStress( s ) * voigtToStress( s ) ).array() ).matrix() -
+        return ( P.array() * stressToVoigt< double >( voigtToStress( s ) * voigtToStress( s ) ).array() ).matrix() -
                2. / 3. * J2( stress ) * I;
       }
 

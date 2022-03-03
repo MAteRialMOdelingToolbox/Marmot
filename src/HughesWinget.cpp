@@ -26,7 +26,7 @@ namespace Marmot::NumericalAlgorithms {
   Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )
   {
 
-    return Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt(
+    return Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt< double >(
       dR * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( tensor ) * dR.transpose() );
   }
 
