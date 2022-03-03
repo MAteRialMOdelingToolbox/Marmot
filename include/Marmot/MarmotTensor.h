@@ -112,27 +112,29 @@ namespace Marmot {
                typename = std::enable_if< !std::is_const< std::remove_reference< T > >::value > >
     auto as( T& t )
     {
-      return Eigen::Map< Eigen::Matrix< double, x, y > >( t.data() );
+      return Eigen::Map< Eigen::Matrix< typename T::Scalar, x, y > >( t.data() );
     }
 
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )
     {
-      return Eigen::Map< const Eigen::Matrix< double, x, y > >( t.data() );
+      return Eigen::Map< const Eigen::Matrix< typename T::Scalar, x, y > >( t.data() );
     }
 
     template < typename Derived,
                typename = std::enable_if< !std::is_const< std::remove_reference< Derived > >::value > >
     auto flatten( Derived& t )
     {
-      return Eigen::Map< Eigen::Matrix< double, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >(
+      return Eigen::Map<
+        Eigen::Matrix< typename Derived::Scalar, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >(
         t.data() );
     }
 
     template < typename Derived, typename = void >
     auto flatten( const Derived& t )
     {
-      return Eigen::Map< const Eigen::Matrix< double, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >(
+      return Eigen::Map<
+        const Eigen::Matrix< typename Derived::Scalar, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >(
         t.data() );
     }
 
