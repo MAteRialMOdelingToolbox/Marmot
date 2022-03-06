@@ -97,6 +97,7 @@ namespace MarmotLibrary {
     SolidificationModLeon              = 59,
     ORDPNonLocal                       = 60,
     CosseratHoekBrown                  = 61,
+    BulkMetallicGlass                  = 62,
   };
 
   enum ElementCode {
@@ -249,6 +250,10 @@ namespace MarmotLibrary {
     GMCPE8RUL,
     GMC3D8UL,
     GMC3D20RUL,
+
+    CHMCPE4UL,
+    CHMCPE8RUL,
+    CHMC3D20RUL,
   };
 
   // MaterialFactory

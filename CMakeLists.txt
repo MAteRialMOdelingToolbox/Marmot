@@ -116,6 +116,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         B4
         Barodesy
         BarodesyGradientVoid
+        BulkMetallicGlass
         CDP
         CDPFibreReinforced
         CDPM2
@@ -125,7 +126,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         CosseratHoekBrown
         DiffuseMicroCracking
         DruckerPrager 
-        #DruckerPragerMD
+        DruckerPragerMD
         GCDP
         GCSCDP
         GMCDP
@@ -192,6 +193,7 @@ if(NOT ELEMENT_MODULES OR ELEMENT_MODULES STREQUAL "all")
         GradientEnhancedCosseratFiniteElement
         GradientEnhancedMicropolarFiniteElement
         GradientEnhancedMicropolarULFiniteElement
+        CahnHilliardMicropolarULFiniteElement
         )
 endif()
 
