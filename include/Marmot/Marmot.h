@@ -95,6 +95,7 @@ namespace MarmotLibrary {
     GMDamagedShearNeoHooke             = 57,
     SolidificationCDP                  = 58,
     SolidificationModLeon              = 59,
+    BulkMetallicGlass                  = 60,
   };
 
   enum ElementCode {
@@ -247,6 +248,10 @@ namespace MarmotLibrary {
     GMCPE8RUL,
     GMC3D8UL,
     GMC3D20RUL,
+
+    CHMCPE4UL,
+    CHMCPE8RUL,
+    CHMC3D20RUL,
   };
 
   // MaterialFactory
