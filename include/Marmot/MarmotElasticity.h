@@ -128,9 +128,9 @@ namespace Marmot {
        *Computes the transversely isotropic compliance tensor:
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-         				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
+         				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
+                			       \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
+                			       \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
            				       0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
            				       0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
            				       0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
