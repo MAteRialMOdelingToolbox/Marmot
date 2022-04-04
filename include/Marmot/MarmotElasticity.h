@@ -129,13 +129,13 @@ namespace Marmot {
        *Computes the transversely isotropic compliance tensor:
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-                       \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & 0 & 0 & 0 \\
-                             \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
-                             \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
-                         0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
-                         0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
-                         0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
-                                          \end{bmatrix}
+         				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
+                			       \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
+                			       \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
+           				       0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
+           				       0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
+           				       0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
+                             	            \end{bmatrix}
        \f]
        *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate
        system. It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio
