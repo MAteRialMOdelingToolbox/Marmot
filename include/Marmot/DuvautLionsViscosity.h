@@ -30,11 +30,11 @@
 
 namespace Marmot {
   namespace ContinuumMechanics::CommonConstitutiveModels {
-      /**
-       * \brief Implementation of Duvaut-Lions viscosity for a material with \ref nMatTangentSize internal degrees of
-       * freedom
-       * @todo: Update member names to more descriptive ones
-       */
+    /**
+     * \brief Implementation of Duvaut-Lions viscosity for a material with \ref nMatTangentSize internal degrees of
+     * freedom
+     * @todo: Update member names to more descriptive ones
+     */
     template < int nMatTangentSize >
     class DuvautLionsViscosity {
     private:
@@ -59,7 +59,7 @@ namespace Marmot {
                                                double                  dT );
       /**
        * Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0
-       * (trialState) and t=\f$\infty\f$, and timestep dt 
+       * (trialState) and t=\f$\infty\f$, and timestep dt
        * @todo: Check if application to inverse can be replaced by application to non-inverse in general*/
       TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
     };

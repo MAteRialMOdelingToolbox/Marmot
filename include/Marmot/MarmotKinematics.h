@@ -35,13 +35,13 @@ namespace Marmot {
     namespace Strain {
       Marmot::Vector6d                 GreenLagrange( const Eigen::Matrix3d& F );
       Marmot::EigenTensors::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F );
-    } // namespace strain
+    } // namespace Strain
 
     namespace VelocityGradient {
       extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > dOmega_dVelocityGradient;
 
       extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > dStretchingRate_dVelocityGradient;
-    } // namespace velocityGradient
+    } // namespace VelocityGradient
 
     namespace DeformationGradient {
       template < int nDim >

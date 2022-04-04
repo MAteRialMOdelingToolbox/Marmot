@@ -31,12 +31,12 @@
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot {
-  
+
   namespace ContinuumMechanics {
-   
-     /**
-      * \brief Functions for the description of isotropic elastic behavior
-      */
+
+    /**
+     * \brief Functions for the description of isotropic elastic behavior
+     */
     namespace Elasticity::Isotropic {
 
       /**
@@ -64,7 +64,8 @@ namespace Marmot {
       double constexpr shearModulus( const double E, const double nu ) { return E / ( 2 * ( 1 + nu ) ); }
 
       /**
-       * Computes the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu \f$
+       * Computes the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu
+       \f$
        *\f[
          \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
         \f]
@@ -78,13 +79,13 @@ namespace Marmot {
        *Computes the isotropic compliance tensor:
        *\f[
          \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-              					\frac{1}{E} & \frac{-\nu}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
-              					\frac{-\nu}{E} & \frac{1}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
-              					\frac{-\nu}{E} & \frac{-\nu}{E} & \frac{1}{E} & 0 & 0 & 0 \\
-         					0 & 0 & 0 & \frac{1}{G} & 0 & 0 \\
-         					0 & 0 & 0 & 0 & \frac{1}{G} & 0 \\
-         					0 & 0 & 0 & 0 & 0 & \frac{1}{G}
-         				   \end{bmatrix}
+                        \frac{1}{E} & \frac{-\nu}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
+                        \frac{-\nu}{E} & \frac{1}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
+                        \frac{-\nu}{E} & \frac{-\nu}{E} & \frac{1}{E} & 0 & 0 & 0 \\
+                  0 & 0 & 0 & \frac{1}{G} & 0 & 0 \\
+                  0 & 0 & 0 & 0 & \frac{1}{G} & 0 \\
+                  0 & 0 & 0 & 0 & 0 & \frac{1}{G}
+                   \end{bmatrix}
         \f]
 
         from the young's modulus E and the poisson's ratio \f$ \nu \f$ with
@@ -98,14 +99,14 @@ namespace Marmot {
       /**
        *Computes the isotropic stiffness tensor:
        *\f[
-     	 \displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
-          							 	             1 & \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
-          			              				             \frac{\nu}{1-\nu} & 1 & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
-          							                     \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 1 & 0 & 0 & 0 \\
-          							          	     0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)} & 0 & 0 \\
-          							                     0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)} & 0 \\
-          							                     0 & 0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)}
-                         						    \end{bmatrix}
+       \displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
+                                       1 & \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
+                                                   \frac{\nu}{1-\nu} & 1 & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
+                                             \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 1 & 0 & 0 & 0 \\
+                                         0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)} & 0 & 0 \\
+                                             0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)} & 0 \\
+                                             0 & 0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2\,(1-\nu)}
+                                        \end{bmatrix}
         \f]
 
        from the young's modulus E and the poisson's ratio \f$ \nu \f$.
@@ -114,35 +115,35 @@ namespace Marmot {
 
       /**
        *Computes the isotropic stiffness tensor \mathbb{ C } from the bulk modulus K and the shear modulus G.
-      */
+       */
       Matrix6d stiffnessTensorKG( const double K, const double G );
 
     } // namespace Elasticity::Isotropic
 
-     /**
-      * \brief Functions for the description of transversely isotropic elastic behavior
-      */
+    /**
+     * \brief Functions for the description of transversely isotropic elastic behavior
+     */
     namespace Elasticity::TransverseIsotropic {
 
       /**
        *Computes the transversely isotropic compliance tensor:
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-         				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
-           				       0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
-           				       0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
-           				       0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
-                             	            \end{bmatrix}
+                       \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & 0 & 0 & 0 \\
+                             \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
+                             \frac{-\nu_{12}}{E_2} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
+                         0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
+                         0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
+                         0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
+                                          \end{bmatrix}
        \f]
-       *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate system.
-       It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio \f$ \nu_{12}
-       \f$ effective out of the isotropic plane and the in - plane young's modulus \f$ E_2 \f$ and poisson's ratio \f$
-       \nu_{23} \f$.
+       *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate
+       system. It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio
+       \f$ \nu_{12} \f$ effective out of the isotropic plane and the in - plane young's modulus \f$ E_2 \f$ and
+       poisson's ratio \f$ \nu_{23} \f$.
        *
        *The in - plane shear modulus \f$ G_{23} \f$ can be expressed by
-   
+
        \f[
          \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
        \f]
@@ -163,21 +164,22 @@ namespace Marmot {
                                 const double G12 );
     } // namespace Elasticity::TransverseIsotropic
 
-     /**
-      * \brief Functions for the description of orthotropic elastic behavior
-      */
+    /**
+     * \brief Functions for the description of orthotropic elastic behavior
+     */
     namespace Elasticity::Orthotropic {
       /**
-       *Computes the orthotropic compliance tensor defined in the principal directions of the material \f$ x_1 \f$, \f$ x_2 \f$ and \f$ x_3 \f$ :
+       *Computes the orthotropic compliance tensor defined in the principal directions of the material \f$ x_1 \f$, \f$
+       x_2 \f$ and \f$ x_3 \f$ :
        *\f[
-      	  \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-               					 \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{13}}{E_3} & 0 & 0 & 0 \\
-               					 \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_3} & 0 & 0 & 0 \\
-               					 \frac{-\nu_{13}}{E_3} & \frac{-\nu_{23}}{E_3} & \frac{1}{E_3} & 0 & 0 & 0 \\
-            					 0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
-            					 0 & 0 & 0 & 0 & \frac{1}{G_{13}} & 0 \\
-            					 0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
-                			   \end{bmatrix}
+          \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+                         \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{13}}{E_3} & 0 & 0 & 0 \\
+                         \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_3} & 0 & 0 & 0 \\
+                         \frac{-\nu_{13}}{E_3} & \frac{-\nu_{23}}{E_3} & \frac{1}{E_3} & 0 & 0 & 0 \\
+                       0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
+                       0 & 0 & 0 & 0 & \frac{1}{G_{13}} & 0 \\
+                       0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
+                         \end{bmatrix}
         \f]
        *from the following independent parameters:
        *<table>

@@ -46,8 +46,8 @@ public:
   /// get the reference to the first array element of an entry in the statevar vector
   inline double& find( const std::string& name ) const { return theStateVars[theLayout.entries.at( name ).index]; }
 
-  /// check if the entry with name is managed 
-  inline bool contains ( const std::string& name ) const { return theLayout.entries.count( name ); }
+  /// check if the entry with name is managed
+  inline bool contains( const std::string& name ) const { return theLayout.entries.count( name ); }
 
 protected:
   /// An entry in the statevar vector consists of the name and a certain length
@@ -62,7 +62,8 @@ protected:
     int length;
   };
 
-  /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar vector
+  /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar
+  /// vector
   struct StateVarVectorLayout {
     std::unordered_map< std::string, StateVarEntryLocation > entries;
     int                                                      nRequiredStateVars;
@@ -82,12 +83,11 @@ protected:
   }
 
   /// pointer to the first element in the statevar vector
-  double*                     theStateVars;
+  double* theStateVars;
 
   /// a const reference to the respective layout
   const StateVarVectorLayout& theLayout;
 
   MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
     : theStateVars( theStateVars ), theLayout( theLayout_ ){};
-
 };

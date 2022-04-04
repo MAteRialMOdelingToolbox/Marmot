@@ -31,8 +31,8 @@
 
 namespace Marmot::NumericalAlgorithms {
 
-/** Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version
- * */
+  /** Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version
+   * */
   template < int nSizeMatTangent >
   class PerezFougetSubstepper {
 
@@ -47,19 +47,19 @@ namespace Marmot::NumericalAlgorithms {
                            const Matrix6d& Cel );
 
     /// check if subincrementation process has finished
-    bool   isFinished();
+    bool isFinished();
     /// get the next subincrement size
     double getNextSubstep();
     /// decrease the next subincrement
-    bool   decreaseSubstepSize();
+    bool decreaseSubstepSize();
 
     /// finish an elastic only subincrement
-    void     finishElasticSubstep();
+    void finishElasticSubstep();
 
     /// finish an elastoplastic subincremnt
     /// \param dXdY inverse of the material tangent
     /// \param dXdYOld inverse of the previous material tangent
-    void     finishSubstep( const TangentSizedMatrix& dXdY, const TangentSizedMatrix& dYdXOld );
+    void finishSubstep( const TangentSizedMatrix& dXdY, const TangentSizedMatrix& dYdXOld );
 
     /// get the consistent algorithmic tangent
     Matrix6d consistentStiffness();

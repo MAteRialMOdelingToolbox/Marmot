@@ -52,13 +52,13 @@ namespace Marmot::NumericalAlgorithms {
                                double scaleDownFactor,
                                int    nPassesToIncrease );
     /// Check if the subincrementation has finished
-    bool   isFinished();
+    bool isFinished();
     /// get the next subincrement size
     double getNextSubstep();
     /// get the total finished progress of the subincrementation process
     double getFinishedProgress();
     /// decrease the next subincrement
-    bool   decreaseSubstepSize();
+    bool decreaseSubstepSize();
 
     void     extendConsistentTangent( const Matrix6d& CelT );
     void     extendConsistentTangent( const Matrix6d& CelT, const TangentSizedMatrix& matTangent );
