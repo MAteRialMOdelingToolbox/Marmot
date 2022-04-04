@@ -46,6 +46,6 @@ namespace Marmot {
 
       Eigen::MatrixXd fourthOrderAccurateDerivative( const function_type_complex& F, const Eigen::VectorXd& X );
 
-    } // namespace ComplexStep
+    } // namespace Complex
   }   // namespace NumericalAlgorithms::Differentiation
 } // namespace Marmot
