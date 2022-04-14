@@ -4,6 +4,10 @@ variables:
     value: ""
     description: "override the default branch for each Marmot module"
 
+  override_edelweiss_branch:
+    value: ""
+    description: "override the default branch for EdelweissFE"
+
   # number of columns in the module definition matrix
   marmot_module_defintion_matrix_col_size: 3
 
@@ -96,6 +100,10 @@ build and test:
     #
     - git clone $EdelweissFE_Repo
     - cd EdelweissFE 
+    - if [ ! -z "$override_edelweiss_branch" ]; then
+          echo "trying to check out branch $override_edelweiss_branch" ;
+          git checkout $override_edelweiss_branch || echo "branch $module_branch not available for EdelweissFE" ;
+      fi; }
     - python setup.py build_ext -i
     - python run_tests.py
 
