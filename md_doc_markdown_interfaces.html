@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.3"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Marmot: Interfacing with Marm</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="customStyles.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Marmot
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_doc_markdown_interfaces.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Interfacing with Marm </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p ><a class="anchor" id="interfaces"></a>t</p>
+<p >There are several conventient ways to interface with <a class="el" href="namespaceMarmot.html">Marmot</a>. If you want to use <a class="el" href="namespaceMarmot.html">Marmot</a> in a finite element framework, you may want to try one of the existing available interfaces.</p>
+<h1><a class="anchor" id="autotoc_md19"></a>
+How to use Marmot with Abaqus</h1>
+<p >The <a href="https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface">Abaqus-MarmotInterface</a> allows to use <code><a class="el" href="namespaceMarmot.html">Marmot</a></code> in Abaqus simulations.</p>
+<h1><a class="anchor" id="autotoc_md20"></a>
+How to use Marmot with MOOSE</h1>
+<p >The <a href="https://github.com/matthiasneuner/chamois">chamois App</a> allows to use <code><a class="el" href="namespaceMarmot.html">Marmot</a></code> directly in <a href="https://github.com/idaholab/moose">MOOSE</a>. A singularity container recipe is <a href="https://github.com/matthiasneuner/chamois-singularity">available</a>.</p>
+<h1><a class="anchor" id="autotoc_md21"></a>
+Create your custom interface</h1>
+<p >To create your custom interface to <a class="el" href="namespaceMarmot.html">Marmot</a>, you can leverage the <a class="el" href="classMarmotLibrary_1_1MarmotMaterialFactory.html">MarmotLibrary::MarmotMaterialFactory</a> and <a class="el" href="classMarmotLibrary_1_1MarmotElementFactory.html">MarmotLibrary::MarmotElementFactory</a> factories to create instances of registered material models and finite elements. In general, specialized <a class="el" href="namespaceMarmot.html">Marmot</a> materials are derived from the general parent class <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>, and <a class="el" href="namespaceMarmot.html">Marmot</a> finite elements are derived from the general parent class <a class="el" href="classMarmotElement.html">MarmotElement</a>. In particular for <a class="el" href="namespaceMarmot.html">Marmot</a> materials, <a class="el" href="namespaceMarmot.html">Marmot</a> strongly makes use of inheritance to specialize on specific continuum theories, e.g., <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> for hypoelastic materials.</p>
+<p >Base classes <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> and <a class="el" href="classMarmotElement.html">MarmotElement</a> are considered the most general description of materials and finite elements. In particular, <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> essentially is only defined by a a identification number, a set of material properties and an internal state (represented by a set of state variables) and may describe any material, e.g., a mechanical, a thermal or a couple thermo-mechanical material. Similarly, <a class="el" href="classMarmotElement.html">MarmotElement</a> makes no assumption on the actual physics described by the finite element, but may represent any finite element.</p>
+<p >For materials, physical interpretation is introduced by derivation and specialization of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>. For instance, the hypoelastic material <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> (computes stresses in rate form) is derived from the more general <a class="el" href="classMarmotMaterialMechanical.html">MarmotMaterialMechanical</a> (computes stresses from a deformation state), which itself is a specialization of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> (reads material properties and may have an internal state).</p>
+<p >Instances of <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a> are casted down to their specialization. For instance, following procedure may be employed to create an instance of a <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states.">Marmot::Materials::LinearElastic</a> material model, which belongs to the class of <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> materials, and compute the current stress state: </p><div class="fragment"><div class="line"><span class="comment">// Get the unique material ID of the registered material &quot;LINEARELASTIC&quot;</span></div>
+<div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> materialCode = MarmotMaterialFactory::getMaterialCodeFromName( <span class="stringliteral">&quot;LINEARELASTIC&quot;</span> );</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Create the instance and cast to a hypoelastic material</span></div>
+<div class="line"><span class="keyword">auto</span> material = std::unique_ptr&lt;MarmotMaterialHypoElastic&gt; (</div>
+<div class="line">        <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a>*<span class="keyword">&gt;</span> (</div>
+<div class="line">            <a class="code hl_function" href="classMarmotLibrary_1_1MarmotMaterialFactory.html#ac94f74b9bf960d0893ea6a718074cd59">MarmotLibrary::MarmotMaterialFactory::createMaterial</a>( materialCode, materialProperties, nMaterialProperties, anArbitraryIdentificationCode )));</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// assign a set of state vars</span></div>
+<div class="line">material-&gt;assignStateVars(stateVars, nStateVars);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// assign a characteristic length parameter (specific to hypoelastic materials)</span></div>
+<div class="line">material-&gt;setCharacteristicElementLength(theCharacteristicElementLength);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// compute stresses</span></div>
+<div class="line">material-&gt;computeStress(stress_in_and_out, dstress_dstrain_out,  dstrain_in, time_in, dtime_in, pNewDT_in_and_out);</div>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotMaterialFactory_html_ac94f74b9bf960d0893ea6a718074cd59"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotMaterialFactory.html#ac94f74b9bf960d0893ea6a718074cd59">MarmotLibrary::MarmotMaterialFactory::createMaterial</a></div><div class="ttdeci">static MarmotMaterial * createMaterial(MaterialCode material, const double *materialProperties, int nMaterialProperties, int materialNumber)</div></div>
+<div class="ttc" id="aclassMarmotMaterialHypoElastic_html"><div class="ttname"><a href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialHypoElastic.h:31</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md22"></a>
+Registering a material or finite element</h1>
+<p >Materials and finite elements are registered using the MarmotMaterialFactory::registerMaterial and MarmotElementFactory::registerElement interfaces. Both functions take a unique name (a string chosen by the user), a unique integer identifier (chosen by the user), and factory functions. Those Factory functions are used by <a class="el" href="namespaceMarmot.html">Marmot</a> to create specific instances of the material or element, providing a custom element number (<a class="el" href="classMarmotElement.html">MarmotElement</a>) or a material number and a set of material properties (<a class="el" href="classMarmotMaterial.html">MarmotMaterial</a>).</p>
+<p >For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as </p><div class="fragment"><div class="line"><span class="keyword">template</span> &lt; <span class="keyword">class </span>T,</div>
+<div class="line">           Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,</div>
+<div class="line">           <span class="keyword">typename</span> T::SectionType                             sectionType &gt;</div>
+<div class="line"><a class="code hl_typedef" href="classMarmotLibrary_1_1MarmotElementFactory.html#ae394656803a0a24bf0d28d30b71e7835">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</a> makeFactoryFunction()</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordflow">return</span> []( <span class="keywordtype">int</span> elementID ) -&gt; <a class="code hl_class" href="classMarmotElement.html">MarmotElement</a>* { <span class="keywordflow">return</span> <span class="keyword">new</span> T( elementID, integrationType, sectionType ); };</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">MarmotElementFactory:: registerElement( <span class="stringliteral">&quot;CPE4&quot;</span>,</div>
+<div class="line">                         <a class="code hl_enumvalue" href="namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03">MarmotLibrary::ElementCode::CPE4</a>,</div>
+<div class="line">                         makeFactoryFunction&lt; DisplacementFiniteElement&lt; 2, 4 &gt;,</div>
+<div class="line">                                              FullIntegration,</div>
+<div class="line">                                              DisplacementFiniteElement&lt; 2, 4 &gt;::PlaneStrain &gt;() );</div>
+<div class="ttc" id="aclassMarmotElement_html"><div class="ttname"><a href="classMarmotElement.html">MarmotElement</a></div><div class="ttdef"><b>Definition:</b> MarmotElement.h:34</div></div>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotElementFactory_html_ae394656803a0a24bf0d28d30b71e7835"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotElementFactory.html#ae394656803a0a24bf0d28d30b71e7835">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</a></div><div class="ttdeci">MarmotElement *(*)(int elementNumber) elementFactoryFunction</div><div class="ttdef"><b>Definition:</b> Marmot.h:277</div></div>
+<div class="ttc" id="anamespaceMarmotLibrary_html_a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03"><div class="ttname"><a href="namespaceMarmotLibrary.html#a993708ebfbbbf667100eb0f55c1edabcad5e169737f98d8c977853507998d0c03">MarmotLibrary::CPE4</a></div><div class="ttdeci">@ CPE4</div><div class="ttdef"><b>Definition:</b> Marmot.h:133</div></div>
+</div><!-- fragment --><p> making use of an auxiliary factory function generator.</p>
+<p >Creating the specific instance and computing the kernel is easy as </p><div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keyword">auto</span> elementCode = Marmot::getElementCodeFromName( <span class="stringliteral">&quot;CPE4&quot;</span> );</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> elementNumber = 1;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// create the instance</span></div>
+<div class="line"><span class="keyword">auto</span> theElement = std::unique_ptr&lt;MarmotElement&gt; ( <a class="code hl_function" href="classMarmotLibrary_1_1MarmotElementFactory.html#a965be7fecad866a8efbe407f3aa60aff">MarmotLibrary::MarmotElementFactory::createElement</a>(elementCode,  elementNumber) );</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// assign properties (e.g, thickness)</span></div>
+<div class="line">theElement-&gt;assignProperty( <a class="code hl_class" href="classElementProperties.html">ElementProperties</a>( propertiesElement, nPropertiesElement ) );</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// assign a material section</span></div>
+<div class="line"><span class="comment">// in the present case: a MarmotMaterial setion</span></div>
+<div class="line"><span class="comment">// MarmotElement takes care to create the required instances of MarmotMaterial</span></div>
+<div class="line">theElement-&gt;assignProperty( <a class="code hl_class" href="classMarmotMaterialSection.html">MarmotMaterialSection</a>( materialID, propertiesMaterial, nPropertiesMaterial) );</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// assign state vars to the element</span></div>
+<div class="line"><span class="comment">// MarmotElement automatically assigns the state vars also to MarmotMaterial instances</span></div>
+<div class="line">theElement-&gt;assignStateVars(stateVars, nStateVars);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// initialization</span></div>
+<div class="line">theElement-&gt;initializeYourself(coordinates);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// compute the kernel</span></div>
+<div class="line">theElement-&gt;computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); </div>
+<div class="ttc" id="aclassElementProperties_html"><div class="ttname"><a href="classElementProperties.html">ElementProperties</a></div><div class="ttdef"><b>Definition:</b> MarmotElementProperty.h:48</div></div>
+<div class="ttc" id="aclassMarmotLibrary_1_1MarmotElementFactory_html_a965be7fecad866a8efbe407f3aa60aff"><div class="ttname"><a href="classMarmotLibrary_1_1MarmotElementFactory.html#a965be7fecad866a8efbe407f3aa60aff">MarmotLibrary::MarmotElementFactory::createElement</a></div><div class="ttdeci">static MarmotElement * createElement(ElementCode elementCode, int elementNumber)</div></div>
+<div class="ttc" id="aclassMarmotMaterialSection_html"><div class="ttname"><a href="classMarmotMaterialSection.html">MarmotMaterialSection</a></div><div class="ttdef"><b>Definition:</b> MarmotElementProperty.h:34</div></div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Thu Apr 14 2022 09:32:51 for Marmot by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
+  </ul>
+</div>
+</body>
+</html>

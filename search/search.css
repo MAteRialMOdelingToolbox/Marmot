@@ -17,7 +17,7 @@
 #MSearchSelect {
     display: inline-block;
     vertical-align: middle;
-    height: 1.4em;
+    height: 19px;
     padding: 0 0 0 0.3em;
     margin: 0;
 }
@@ -26,7 +26,7 @@
     display: inline-block;
     vertical-align: middle;
     width: 7.5em;
-    height: 1.1em;
+    height: 19px;
     margin: 0 0.15em;
     padding: 0;
     line-height: 1em;
@@ -39,6 +39,12 @@
     background: none;
 }
 
+@media(hover: none) {
+    /* to avoid zooming on iOS */
+    #MSearchField {
+        font-size: 16px;
+    }
+}
 
 #MSearchBox .right {
     display: inline-block;
@@ -83,8 +89,8 @@
     display: none;
     position: absolute;
     left: 0; top: 0;
-    border: 1px solid #325573;
-    background-color: #EEF3F7;
+    border: 1px solid #0065FD;
+    background-color: #F0F6FE;
     z-index: 10001;
     padding-top: 4px;
     padding-bottom: 4px;
@@ -128,7 +134,7 @@ a.SelectItem:active {
 
 a.SelectItem:hover {
     color: #FFFFFF;
-    background-color: #091015;
+    background-color: #002359;
     outline-style: none;
     text-decoration: none;
     cursor: pointer;
@@ -138,7 +144,7 @@ a.SelectItem:hover {
 /*---------------- Search results window */
 
 iframe#MSearchResults {
-    width: 60ex;
+    /*width: 60ex;*/
     height: 15em;
 }
 
@@ -147,7 +153,7 @@ iframe#MSearchResults {
     position: absolute;
     left: 0; top: 0;
     border: 1px solid #000;
-    background-color: #CEDDEA;
+    background-color: #D2E4FF;
     z-index:10000;
 }
 
@@ -183,7 +189,7 @@ body.SRPage {
 
 .SRSymbol {
     font-weight: bold; 
-    color: #0C141B;
+    color: #002967;
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
     outline: none;
@@ -191,7 +197,7 @@ body.SRPage {
 
 a.SRScope {
     display: block;
-    color: #0C141B; 
+    color: #002967; 
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
     outline: none;
@@ -226,7 +232,7 @@ div.searchresults {
 /*---------------- External search page results */
 
 .searchresult {
-    background-color: #D5E1EC;
+    background-color: #D8E7FF;
 }
 
 .pages b {

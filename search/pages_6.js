@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['numerical_20algorithms_1328',['Numerical Algorithms',['../numericalalgorithms.html',1,'content']]]
+  ['numerical_20algorithms_0',['Numerical Algorithms',['../md_doc_markdown_numericalalgorithms.html',1,'']]]
 ];
