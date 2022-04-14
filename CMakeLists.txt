@@ -94,6 +94,11 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 # include_directories(${EIGEN3_INCLUDE_DIR})
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
+## find autodiff library (https://autodiff.github.io/)
+find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED NO_MODULE)
+include_directories(${AUTODIFF_INCLUDE_DIR})
+message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
+
 set(MODULES_DIR "modules/")
 
 if(NOT CORE_MODULES OR CORE_MODULES STREQUAL "all")
@@ -108,32 +113,39 @@ endif()
 
 if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
     set (MATERIAL_MODULES
+        B4
         Barodesy
         BarodesyGradientVoid
+        BulkMetallicGlass
         CDP
         CDPFibreReinforced
         CDPM2
         BarodesyGradientDeformationModulus
         CosseratLinearElastic
         CosseratDruckerPrager
+        CosseratHoekBrown
         DiffuseMicroCracking
         DruckerPrager 
-        #DruckerPragerMD
+        DruckerPragerMD
+        GCDP
         GCSCDP
         GMCDP
         GMCDPFiniteStrain
         GMBiotElastic
         GMDruckerPrager
         GMNeoHooke
+        GMDamagedShearNeoHooke
         GradientEnhancedDruckerPrager
+        GosfordSandstone
         HoekBrown
-	#JointedRock
-        JointedHoekBrown
+	      #JointedRock
+          #JointedHoekBrown
         LinearElastic
         LinearElasticNonLocal
         LinearElasticSolidificationCreep
         LinearElasticShrinkage
         MCDP
+        MenegottoPinto 
         ModifiedCamClay
         ModLeon
         ModLeonSemiExplicit
@@ -148,9 +160,9 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         RockDamagePlasticity
         RockDamagePlasticityNonLocal
         ORDP
+        ORDPNonLocal
         SandHypo
         SandHypoMicropolar
-        SCDPV3NonLocal
         SchaedlichSchweiger
         ShotLeon
         ShotLeonV2
@@ -159,6 +171,8 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         ShotcreteSolidificationCreep
         ShotcreteHydration
         SolidificationCreep
+        SolidificationCDP
+        SolidificationModLeon
         StVenantKirchhoffIsotropic
         UntereggerRockMassPlaxis
         )
@@ -179,6 +193,7 @@ if(NOT ELEMENT_MODULES OR ELEMENT_MODULES STREQUAL "all")
         GradientEnhancedCosseratFiniteElement
         GradientEnhancedMicropolarFiniteElement
         GradientEnhancedMicropolarULFiniteElement
+        CahnHilliardMicropolarULFiniteElement
         )
 endif()
 

@@ -1,0 +1,110 @@
+variables:
+
+  override_module_branch:
+    value: ""
+    description: "override the default branch for each Marmot module"
+
+  # number of columns in the module definition matrix
+  marmot_module_defintion_matrix_col_size: 3
+
+  # core libraries
+  CoreModules:
+      # repo name                 secret repo url                       default branch
+    value: |
+      MarmotMechanicsCore         $MarmotMechanicsCore_Repo             master
+      MarmotFiniteElementCore     $MarmotFiniteElementCore_Repo         master  
+      MarmotMathCore              $MarmotMathCore_Repo                  master  
+
+  # element libraries
+  ElementModules:
+      # repo name                 secret repo url                       default branch
+    value: |
+      DisplacementFiniteElement   $DisplacementFiniteElement_Repo       master
+
+  # material libraries
+  MaterialModules:
+      # repo name                 secret repo url                       default branch
+    value: |
+      LinearElastic               $LinearElastic_Repo                   master
+    
+build and test:
+  stage: build
+  image: continuumio/miniconda3:latest
+  script:
+    
+    - function install_marmot_module(){
+        repo_name=$1;
+        repo_url=$2;
+        repo_default_branch=$3;
+
+        echo "installing module $repo_name with branch $repo_default_branch";
+
+        rm -rf $repo_name;
+        git clone --branch $repo_default_branch   $repo_url   $repo_name;
+
+        if [ ! -z "$override_module_branch" ]; then
+          echo "trying to check out branch $override_module_branch" ;
+          cd $repo_name;
+          git checkout $override_module_branch || echo "branch $module_branch not available for $repo_name" ;
+          cd ../ ;
+        fi; }
+
+    - function install_marmot_modules(){
+        modules=("$@");
+        for (( i=0; i<${#modules[@]}; i+=(($marmot_module_defintion_matrix_col_size)) ));
+        do
+          install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
+        done; }
+        
+    - conda create --name test_env
+    - source activate test_env
+    - conda config --add channels conda-forge 
+    - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy
+
+    - git clone https://gitlab.com/libeigen/eigen.git
+    - cd eigen 
+    - mkdir build
+    - cd build 
+    - cmake -DBUILD_TESTING=OFF  -DINCLUDE_INSTALL_DIR=$(python -c "import sys; print(sys.prefix)")/include -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - make install
+    - cd ../..
+
+    - git clone https://github.com/autodiff/autodiff.git
+    - cd autodiff
+    - mkdir build
+    - cd build
+    - cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - make install
+    - cd ../..
+    
+    - cd modules/core
+    - install_marmot_modules ${CoreModules[@]}
+    - cd ../..
+
+    - cd modules/elements
+    - install_marmot_modules ${ElementModules[@]}  
+    - cd ../..
+
+    - cd modules/materials
+    - install_marmot_modules ${MaterialModules[@]}
+    - cd ../..
+
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
+    - make install
+    #
+    - git clone $EdelweissFE_Repo
+    - cd EdelweissFE 
+    - python setup.py build_ext -i
+    - python run_tests.py
+
+format:
+  stage: test
+  image: nexus.lumiplan.com:8443/toolchain/clang-format:13
+  needs: []
+  script:
+    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-13 --Werror -n --verbose
+  only:
+    - merge_requests
+
