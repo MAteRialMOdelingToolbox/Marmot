@@ -1,5 +1,8 @@
 <map id="modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" name="modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h">
-<area shape="rect" id="node1" title=" " alt="" coords="70,5,259,61"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,109,183,136"/>
-<area shape="rect" id="node3" title=" " alt="" coords="207,109,266,136"/>
+<area shape="rect" id="node1" title=" " alt="" coords="139,5,328,61"/>
+<area shape="rect" id="node2" href="$MarmotTypedefs_8h.html" title=" " alt="" coords="74,109,251,136"/>
+<area shape="rect" id="node6" title=" " alt="" coords="276,109,335,136"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,191,91,218"/>
+<area shape="rect" id="node4" title=" " alt="" coords="115,191,210,218"/>
+<area shape="rect" id="node5" title=" " alt="" coords="234,184,409,225"/>
 </map>

@@ -14,7 +14,6 @@ var searchData=
   ['gausspointlist3x3x3_11',['gaussPointList3x3x3',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature_1_1Spatial3D.html#a79863b6c68ef34bbea1b16a33196726c',1,'Marmot::FiniteElement::Quadrature::Spatial3D']]],
   ['gausspointlisttetra10_12',['gaussPointListTetra10',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature_1_1Spatial3D.html#adec22aca90d64b847662d4eaa9610238',1,'Marmot::FiniteElement::Quadrature::Spatial3D']]],
   ['gausspointlisttetra4_13',['gaussPointListTetra4',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature_1_1Spatial3D.html#a1780303fead6d721dac665fcde2fc523',1,'Marmot::FiniteElement::Quadrature::Spatial3D']]],
-  ['geometry_14',['geometry',['../structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint.html#a1f97c63ffb76f266739794c13927cae8',1,'Marmot::Elements::DisplacementFiniteElement::QuadraturePoint']]],
-  ['gp2_15',['gp2',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#a5069b1a95836b4cc9d5098ed4aafd315',1,'Marmot::FiniteElement::Quadrature']]],
-  ['gp3_16',['gp3',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#ab9b6183986556ec9bec1f6797c4fcd95',1,'Marmot::FiniteElement::Quadrature']]]
+  ['gp2_14',['gp2',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#a5069b1a95836b4cc9d5098ed4aafd315',1,'Marmot::FiniteElement::Quadrature']]],
+  ['gp3_15',['gp3',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#ab9b6183986556ec9bec1f6797c4fcd95',1,'Marmot::FiniteElement::Quadrature']]]
 ];

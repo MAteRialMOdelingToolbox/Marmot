@@ -22,12 +22,14 @@ var searchData=
   ['theformulation_19',['theFormulation',['../classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html#a25ba24e4640afbbb8f0d55c8d06488dd',1,'Marmot::NumericalAlgorithms::HughesWinget']]],
   ['thelayout_20',['theLayout',['../classMarmotStateVarVectorManager.html#a979b9f2881a9a9f70b3894960a654058',1,'MarmotStateVarVectorManager']]],
   ['thestatevars_21',['theStateVars',['../classMarmotStateVarVectorManager.html#ae1e781d5051d5c858692be57f9a1277e',1,'MarmotStateVarVectorManager']]],
-  ['theta_22',['theta',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#a79fc4f3b17a4755e3646de115e809f34',1,'Marmot::ContinuumMechanics::HaighWestergaard::Complex::HaighWestergaardCoordinates::theta()'],['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ad4e957d5055cb6e6ea29e371d1bc4d1c',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::theta()']]],
-  ['todo_20list_23',['Todo List',['../todo.html',1,'']]],
-  ['tovoigt_24',['toVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a930cfeffbe0dc8d4266f80cacae0e1da',1,'Marmot::ContinuumMechanics::TensorUtility::IndexNotation']]],
-  ['transformationmatrixstrainvoigt_25',['transformationMatrixStrainVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#a919cdeaa2f260cbaa188d1903beccac9',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]],
-  ['transformationmatrixstressvoigt_26',['transformationMatrixStressVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#a1f238e3059305fef27abab60129da6f8',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]],
-  ['transverseisotropic_27',['TransverseIsotropic',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e',1,'Marmot::Materials::LinearElastic']]],
-  ['transverseisotropiclinearelastic_28',['TransverseIsotropicLinearElastic',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93adfc518c50aeab439a2bf24b13cfa8592',1,'MarmotLibrary']]],
-  ['type_29',['Type',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5',1,'Marmot::Materials::LinearElastic']]]
+  ['theta_22',['theta',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a479e94338e0892442f3864812d85165b',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates']]],
+  ['threed_23',['ThreeD',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35a8375e843d49cef703da0de814e6dffe9',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['todo_20list_24',['Todo List',['../todo.html',1,'']]],
+  ['tovoigt_25',['toVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a930cfeffbe0dc8d4266f80cacae0e1da',1,'Marmot::ContinuumMechanics::TensorUtility::IndexNotation']]],
+  ['transformationmatrixstrainvoigt_26',['transformationMatrixStrainVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#a919cdeaa2f260cbaa188d1903beccac9',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]],
+  ['transformationmatrixstressvoigt_27',['transformationMatrixStressVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#a1f238e3059305fef27abab60129da6f8',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]],
+  ['transverseisotropic_28',['TransverseIsotropic',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e',1,'Marmot::Materials::LinearElastic']]],
+  ['transverseisotropiclinearelastic_29',['TransverseIsotropicLinearElastic',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93adfc518c50aeab439a2bf24b13cfa8592',1,'MarmotLibrary']]],
+  ['twod_30',['TwoD',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35a5796253cd75835a97f51da8153d8b6c1',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['type_31',['Type',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5',1,'Marmot::Materials::LinearElastic']]]
 ];

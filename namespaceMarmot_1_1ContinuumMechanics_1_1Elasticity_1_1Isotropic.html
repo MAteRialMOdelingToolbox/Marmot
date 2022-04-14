@@ -200,6 +200,8 @@ Functions</h2></td></tr>
 <tr class="separator:a90fdc11919333788a03f41babbf21afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c6fc02e9c8552d1be0bf5135e5cab1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Isotropic.html#a8c6fc02e9c8552d1be0bf5135e5cab1f">stiffnessTensor</a> (const double <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Isotropic.html#a207668a6ab28d4375b6a96ce4557d1b6">E</a>, const double <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Isotropic.html#a9816087f223afacacbc1361ae03ef2a2">nu</a>)</td></tr>
 <tr class="separator:a8c6fc02e9c8552d1be0bf5135e5cab1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f29e67538be4839905b21b9678ab01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Isotropic.html#a77f29e67538be4839905b21b9678ab01">stiffnessTensorKG</a> (const double K, const double G)</td></tr>
+<tr class="separator:a77f29e67538be4839905b21b9678ab01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Functions for the description of isotropic elastic behavior. </p>
@@ -424,6 +426,35 @@ Functions</h2></td></tr>
 \[ \displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix} 1 &amp; \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\ \frac{\nu}{1-\nu} &amp; 1 &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\ \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; \frac{1-2\,\nu}{2\,(1-\nu)} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1-2\,\nu}{2\,(1-\nu)} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1-2\,\nu}{2\,(1-\nu)} \end{bmatrix} \]
 </p>
 <p >from the young's modulus E and the poisson's ratio \( \nu \). </p>
+
+</div>
+</div>
+<a id="a77f29e67538be4839905b21b9678ab01" name="a77f29e67538be4839905b21b9678ab01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f29e67538be4839905b21b9678ab01">&#9670;&nbsp;</a></span>stiffnessTensorKG()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensorKG </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>K</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>G</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Computes the isotropic stiffness tensor \mathbb{ C } from the bulk modulus K and the shear modulus G. </p>
 
 </div>
 </div>

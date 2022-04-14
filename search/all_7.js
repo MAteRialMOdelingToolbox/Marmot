@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['haighwestergaard_0',['haighWestergaard',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#ac1e5a965e7476fced43d4310136082d2',1,'Marmot::ContinuumMechanics::HaighWestergaard::Complex::haighWestergaard()'],['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ad68274dce79bce89b59065101d4c705f',1,'Marmot::ContinuumMechanics::HaighWestergaard::haighWestergaard()']]],
+  ['haighwestergaard_0',['haighWestergaard',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a3fbea908311f240aaaf3e552357f5fc8',1,'Marmot::ContinuumMechanics::HaighWestergaard']]],
   ['haighwestergaard_2ecpp_1',['HaighWestergaard.cpp',['../HaighWestergaard_8cpp.html',1,'']]],
   ['haighwestergaard_2eh_2',['HaighWestergaard.h',['../HaighWestergaard_8h.html',1,'']]],
-  ['haighwestergaardcoordinates_3',['HaighWestergaardCoordinates',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex_1_1HaighWestergaardCoordinates',1,'Marmot::ContinuumMechanics::HaighWestergaard::Complex::HaighWestergaardCoordinates'],['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates']]],
-  ['haighwestergaardfromstrain_4',['haighWestergaardFromStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#a8361517ad636a502d4b1199c44eb6865',1,'Marmot::ContinuumMechanics::HaighWestergaard']]],
+  ['haighwestergaardcoordinates_3',['HaighWestergaardCoordinates',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates',1,'Marmot::ContinuumMechanics::HaighWestergaard']]],
+  ['haighwestergaardfromstrain_4',['haighWestergaardFromStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#aba76e1eed469a8f4fd743397df312257',1,'Marmot::ContinuumMechanics::HaighWestergaard']]],
   ['heaviside_5',['heaviside',['../namespaceMarmot_1_1Math.html#a057c092d86779e08ca193ccc04f41901',1,'Marmot::Math']]],
   ['hexa20_6',['Hexa20',['../namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17afaa8e5d14e31451e845c4fa72393ef25',1,'Marmot::FiniteElement']]],
   ['hexa8_7',['Hexa8',['../namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17a30e93914eaf9b412fc5004e979bf7603',1,'Marmot::FiniteElement']]],

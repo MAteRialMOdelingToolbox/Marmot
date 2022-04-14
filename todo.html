@@ -182,17 +182,18 @@ $(function() {
 <dt>Member <a class="el" href="classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html#a616ad6bb6d38671744209ca9dd0435e9">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;::applyViscosityOnMatTangent</a>  (const TangentSizedMatrix &amp;matTangentInv, double dT)</dt>
 <dd><a class="anchor" id="_todo000004"></a>: Check if application to inverse can be replaced by application to non-inverse in general  </dd>
 <dt>Member <a class="el" href="namespaceMarmot_1_1Math.html#a17783b288ece1a97c5a43490744c98c2">Marmot::Math::macaulyMatrix</a>  (const Eigen::Matrix&lt; double, nRows, nCols &gt; &amp;mat)</dt>
-<dd><p class="startdd"><a class="anchor" id="_todo000001"></a>: Can be replaced easily with Eigen's array() functionality ??? </p>
-<p class="enddd"><a class="anchor" id="_todo000005"></a>: Can be replaced easily with Eigen's array() functionality ???  </p>
-</dd>
+<dd><a class="anchor" id="_todo000001"></a>: Can be replaced easily with Eigen's array() functionality ???  </dd>
 <dt>Member <a class="el" href="namespaceMarmot_1_1Math.html#aa70f058118d023378595a10df1872291">Marmot::Math::semiImplicitEuler</a>  (Eigen::Matrix&lt; double, ySize, 1 &gt; yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</dt>
 <dd><p class="startdd"><a class="anchor" id="_todo000002"></a>: Replace inverse bei solving equation system? </p>
 <p class="interdd"></p>
-<p class="interdd">: Use external central difference function? </p>
-<p class="interdd"><a class="anchor" id="_todo000006"></a>: Replace inverse bei solving equation system? </p>
-<p class="interdd"></p>
-<p class="enddd">: Use external central difference function? </p>
+<p class="enddd">: Use external central difference function?  </p>
 </dd>
+<dt>Member <a class="el" href="classMarmotMaterialHyperElastic.html#aaffc377bb0b49799a709f37ac01e3754">MarmotMaterialHyperElastic::computeStress</a>  (double *S, double *dSdE, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</dt>
+<dd><a class="anchor" id="_todo000006"></a>A default implementation is provided. </dd>
+<dt>Member <a class="el" href="classMarmotMaterialHyperElastic.html#aab2db47ca209a86cfca449e456a1c8ee">MarmotMaterialHyperElastic::computeStressPK2</a>  (double *S, double *dSdE, const double *E, const double *timeOld, const double dT, double &amp;pNewDT)=0</dt>
+<dd><a class="anchor" id="_todo000007"></a>Should we use function overloading in this case and simple also use computeStress for the function name? </dd>
+<dt>Member <a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">MarmotMaterialHypoElastic::computeStress</a>  (double *stress, double *dStressDDStrain, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</dt>
+<dd><a class="anchor" id="_todo000008"></a>A default implementation is provided.</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

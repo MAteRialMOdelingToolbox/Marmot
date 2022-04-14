@@ -1,11 +1,14 @@
 <map id="modules/materials/LinearElastic/include/Marmot/LinearElastic.h" name="modules/materials/LinearElastic/include/Marmot/LinearElastic.h">
 <area shape="rect" id="node1" title=" " alt="" coords="321,5,489,61"/>
 <area shape="rect" id="node2" href="$MarmotMaterialHypoElastic_8h.html" title=" " alt="" coords="39,109,229,151"/>
-<area shape="rect" id="node6" title=" " alt="" coords="244,348,299,375"/>
-<area shape="rect" id="node7" title=" " alt="" coords="316,117,493,143"/>
-<area shape="rect" id="node8" title=" " alt="" coords="518,117,590,143"/>
-<area shape="rect" id="node9" title=" " alt="" coords="614,117,673,143"/>
-<area shape="rect" id="node3" href="$MarmotMaterialMechanical_8h.html" title=" " alt="" coords="5,199,241,225"/>
-<area shape="rect" id="node4" href="$MarmotMaterial_8h.html" title=" " alt="" coords="46,273,217,300"/>
-<area shape="rect" id="node5" href="$MarmotUtils_8h.html" title=" " alt="" coords="56,348,207,375"/>
+<area shape="rect" id="node6" title=" " alt="" coords="244,363,299,389"/>
+<area shape="rect" id="node7" href="$MarmotTypedefs_8h.html" title=" " alt="" coords="316,117,493,143"/>
+<area shape="rect" id="node11" title=" " alt="" coords="518,117,590,143"/>
+<area shape="rect" id="node12" title=" " alt="" coords="614,117,673,143"/>
+<area shape="rect" id="node3" href="$MarmotMaterialMechanical_8h.html" title=" " alt="" coords="5,206,241,233"/>
+<area shape="rect" id="node4" href="$MarmotMaterial_8h.html" title=" " alt="" coords="46,288,217,315"/>
+<area shape="rect" id="node5" href="$MarmotUtils_8h.html" title=" " alt="" coords="56,363,207,389"/>
+<area shape="rect" id="node8" title=" " alt="" coords="315,206,401,233"/>
+<area shape="rect" id="node9" title=" " alt="" coords="425,206,520,233"/>
+<area shape="rect" id="node10" title=" " alt="" coords="544,199,719,240"/>
 </map>

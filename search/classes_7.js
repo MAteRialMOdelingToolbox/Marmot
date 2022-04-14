@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['linearelastic_0',['LinearElastic',['../classMarmot_1_1Materials_1_1LinearElastic.html',1,'Marmot::Materials']]]
+  ['newtonconvergencechecker_0',['NewtonConvergenceChecker',['../classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker.html',1,'Marmot::NumericalAlgorithms']]]
 ];

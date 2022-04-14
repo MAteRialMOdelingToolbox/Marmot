@@ -205,8 +205,8 @@ Public Types</h2></td></tr>
 <tr class="separator:afd772f275f4f47447b7dc79511457c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72ffb6e31fe3aa68d05721f60d86bf44"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, nDim, nNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a></td></tr>
 <tr class="separator:a72ffb6e31fe3aa68d05721f60d86bf44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7663f31924cd0d74a85fe0b19e5ffa4b"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, <a class="el" href="classMarmotGeometryElement.html#a89026d06b900fa3339db7340ee26f368">VoigtSize</a>, nNodes *nDim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">BSized</a></td></tr>
-<tr class="separator:a7663f31924cd0d74a85fe0b19e5ffa4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72aa85677e3478f670188650735c450e"><td class="memItemLeft" align="right" valign="top">typedef Eigen::Matrix&lt; double, <a class="el" href="classMarmotGeometryElement.html#af573006ded976c7f3a7df763df72440f">voigtSize</a>, nNodes *nDim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">BSized</a></td></tr>
+<tr class="separator:a72aa85677e3478f670188650735c450e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -220,9 +220,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a208bea3c2ed6f3d5704652e6685b2ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4b4ad5ff34a268d1ee3720abc866621"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#aa4b4ad5ff34a268d1ee3720abc866621">dNdXi</a> (const <a class="el" href="classMarmotGeometryElement.html#a3e07541a98fa50fd0185a1eaa7de944b">XiSized</a> &amp;xi)</td></tr>
 <tr class="separator:aa4b4ad5ff34a268d1ee3720abc866621"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0964fa81032fc6598c1d3ff957dd176e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a0964fa81032fc6598c1d3ff957dd176e">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:a0964fa81032fc6598c1d3ff957dd176e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a0964fa81032fc6598c1d3ff957dd176e">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:a0964fa81032fc6598c1d3ff957dd176e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c6bfdb724c2eb4f469fccf95d3df84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a98c6bfdb724c2eb4f469fccf95d3df84">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:a98c6bfdb724c2eb4f469fccf95d3df84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a98c6bfdb724c2eb4f469fccf95d3df84">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:a98c6bfdb724c2eb4f469fccf95d3df84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaec5dc13a0439667e49362ee56624a5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html#afd772f275f4f47447b7dc79511457c2d">NBSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#aaec5dc13a0439667e49362ee56624a5f">NB</a> (const <a class="el" href="classMarmotGeometryElement.html#a7faa14b0ae0f2f84ff34f90a2708f25f">NSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a208bea3c2ed6f3d5704652e6685b2ff6">N</a>)</td></tr>
 <tr class="separator:aaec5dc13a0439667e49362ee56624a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,33 +260,33 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a66ab9f722cdbc2063e150557d3a2b340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29ffe38d89c03a9d8bb060b149d5170e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">::dNdXiSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a29ffe38d89c03a9d8bb060b149d5170e">dNdXi</a> (const <a class="el" href="classMarmotGeometryElement.html#a3e07541a98fa50fd0185a1eaa7de944b">XiSized</a> &amp;xi)</td></tr>
 <tr class="separator:a29ffe38d89c03a9d8bb060b149d5170e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4af248b82c3cfba52189d0e76b5e6b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ab4af248b82c3cfba52189d0e76b5e6b1">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:ab4af248b82c3cfba52189d0e76b5e6b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ab4af248b82c3cfba52189d0e76b5e6b1">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:ab4af248b82c3cfba52189d0e76b5e6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0e7b5cc79c26dd245fed082c345a249"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#af0e7b5cc79c26dd245fed082c345a249">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:af0e7b5cc79c26dd245fed082c345a249"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#af0e7b5cc79c26dd245fed082c345a249">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:af0e7b5cc79c26dd245fed082c345a249"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35921cb0c955e9b8bf58a56a66b6b1e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a35921cb0c955e9b8bf58a56a66b6b1e4">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:a35921cb0c955e9b8bf58a56a66b6b1e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a35921cb0c955e9b8bf58a56a66b6b1e4">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:a35921cb0c955e9b8bf58a56a66b6b1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7ea83b652373d315bcf9c9ea8d23d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ad7ea83b652373d315bcf9c9ea8d23d93">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:ad7ea83b652373d315bcf9c9ea8d23d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ad7ea83b652373d315bcf9c9ea8d23d93">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:ad7ea83b652373d315bcf9c9ea8d23d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb57c23da7f57d12fdd1b736507dd7ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#acb57c23da7f57d12fdd1b736507dd7ab">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:acb57c23da7f57d12fdd1b736507dd7ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#acb57c23da7f57d12fdd1b736507dd7ab">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:acb57c23da7f57d12fdd1b736507dd7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b8b87edc9006467541fe150f21f5375"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a2b8b87edc9006467541fe150f21f5375">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:a2b8b87edc9006467541fe150f21f5375"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a2b8b87edc9006467541fe150f21f5375">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:a2b8b87edc9006467541fe150f21f5375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e2aa8a9ec2beff02b70248779c90c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a29e2aa8a9ec2beff02b70248779c90c9">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
+<tr class="memitem:a29e2aa8a9ec2beff02b70248779c90c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a29e2aa8a9ec2beff02b70248779c90c9">B</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>)</td></tr>
 <tr class="separator:a29e2aa8a9ec2beff02b70248779c90c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b68f82f50f74998ee91f03729253e89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a6b68f82f50f74998ee91f03729253e89">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:a6b68f82f50f74998ee91f03729253e89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a6b68f82f50f74998ee91f03729253e89">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:a6b68f82f50f74998ee91f03729253e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e83bed308d633c9b76a27abb5001e88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a5e83bed308d633c9b76a27abb5001e88">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:a5e83bed308d633c9b76a27abb5001e88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a5e83bed308d633c9b76a27abb5001e88">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:a5e83bed308d633c9b76a27abb5001e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af59bc62c6d286a9318564f1397b9a169"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#af59bc62c6d286a9318564f1397b9a169">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:af59bc62c6d286a9318564f1397b9a169"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#af59bc62c6d286a9318564f1397b9a169">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:af59bc62c6d286a9318564f1397b9a169"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3a7578e60e220dcba0ca68d6bad9549"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ad3a7578e60e220dcba0ca68d6bad9549">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:ad3a7578e60e220dcba0ca68d6bad9549"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#ad3a7578e60e220dcba0ca68d6bad9549">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:ad3a7578e60e220dcba0ca68d6bad9549"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27c4bdc88a1c1a4aa8ff5670bf1b3a7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a27c4bdc88a1c1a4aa8ff5670bf1b3a7b">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:a27c4bdc88a1c1a4aa8ff5670bf1b3a7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a27c4bdc88a1c1a4aa8ff5670bf1b3a7b">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:a27c4bdc88a1c1a4aa8ff5670bf1b3a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa51317526c0d811bd1b2dd0037649509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#aa51317526c0d811bd1b2dd0037649509">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:aa51317526c0d811bd1b2dd0037649509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#aa51317526c0d811bd1b2dd0037649509">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:aa51317526c0d811bd1b2dd0037649509"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add92d1925fec29f92b49fef1d938b329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#add92d1925fec29f92b49fef1d938b329">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
+<tr class="memitem:add92d1925fec29f92b49fef1d938b329"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#add92d1925fec29f92b49fef1d938b329">BGreen</a> (const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#a01aae40518703ff42c3bbf36a0cd9dcb">dNdX</a>, const <a class="el" href="classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d">JacobianSized</a> &amp;<a class="el" href="classMarmotGeometryElement.html#aec5fa53dbbab1a9d4e4493a83fa30058">F</a>)</td></tr>
 <tr class="separator:add92d1925fec29f92b49fef1d938b329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -298,8 +298,8 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a89026d06b900fa3339db7340ee26f368"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#a89026d06b900fa3339db7340ee26f368">VoigtSize</a> = ( ( ( nDim * nDim ) + nDim ) / 2 )</td></tr>
-<tr class="separator:a89026d06b900fa3339db7340ee26f368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af573006ded976c7f3a7df763df72440f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35">Marmot::ContinuumMechanics::VoigtNotation::VoigtSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotGeometryElement.html#af573006ded976c7f3a7df763df72440f">voigtSize</a> = <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a43f9254e1161e4f4209858acbddca1ff">Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension</a> ( nDim )</td></tr>
+<tr class="separator:af573006ded976c7f3a7df763df72440f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a3e07541a98fa50fd0185a1eaa7de944b" name="a3e07541a98fa50fd0185a1eaa7de944b"></a>
@@ -398,8 +398,8 @@ template&lt;int nDim, int nNodes&gt; </div>
 
 </div>
 </div>
-<a id="a7663f31924cd0d74a85fe0b19e5ffa4b" name="a7663f31924cd0d74a85fe0b19e5ffa4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7663f31924cd0d74a85fe0b19e5ffa4b">&#9670;&nbsp;</a></span>BSized</h2>
+<a id="a72aa85677e3478f670188650735c450e" name="a72aa85677e3478f670188650735c450e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72aa85677e3478f670188650735c450e">&#9670;&nbsp;</a></span>BSized</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -407,7 +407,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 template&lt;int nDim, int nNodes&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef Eigen::Matrix&lt; double, <a class="el" href="classMarmotGeometryElement.html#a89026d06b900fa3339db7340ee26f368">VoigtSize</a>, nNodes * nDim &gt; <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::BSized</td>
+          <td class="memname">typedef Eigen::Matrix&lt; double, <a class="el" href="classMarmotGeometryElement.html#af573006ded976c7f3a7df763df72440f">voigtSize</a>, nNodes * nDim &gt; <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::BSized</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -547,7 +547,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 template&lt;int nDim, int nNodes&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -567,7 +567,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 template&lt;int nDim, int nNodes&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -979,7 +979,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -997,7 +997,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1015,7 +1015,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1033,7 +1033,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1051,7 +1051,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1069,7 +1069,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1087,7 +1087,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;::B </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;::B </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em></td><td>)</td>
@@ -1105,7 +1105,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 1, 2 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1133,7 +1133,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 4 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1161,7 +1161,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 2, 8 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1189,7 +1189,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 4 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1217,7 +1217,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 10 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1245,7 +1245,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 8 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1273,7 +1273,7 @@ template&lt;int nDim, int nNodes&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;::BGreen </td>
+          <td class="memname"><a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;<a class="el" href="classMarmotGeometryElement.html#a72aa85677e3478f670188650735c450e">::BSized</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; 3, 20 &gt;::BGreen </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44">dNdXiSized</a> &amp;&#160;</td>
           <td class="paramname"><em>dNdX</em>, </td>
@@ -1295,8 +1295,8 @@ template&lt;int nDim, int nNodes&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a89026d06b900fa3339db7340ee26f368" name="a89026d06b900fa3339db7340ee26f368"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89026d06b900fa3339db7340ee26f368">&#9670;&nbsp;</a></span>VoigtSize</h2>
+<a id="af573006ded976c7f3a7df763df72440f" name="af573006ded976c7f3a7df763df72440f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af573006ded976c7f3a7df763df72440f">&#9670;&nbsp;</a></span>voigtSize</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1307,7 +1307,7 @@ template&lt;int nDim, int nNodes&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr int <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::VoigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 )</td>
+          <td class="memname">constexpr <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35">Marmot::ContinuumMechanics::VoigtNotation::VoigtSize</a> <a class="el" href="classMarmotGeometryElement.html">MarmotGeometryElement</a>&lt; nDim, nNodes &gt;::voigtSize = <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a43f9254e1161e4f4209858acbddca1ff">Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension</a> ( nDim )</td>
         </tr>
       </table>
   </td>
