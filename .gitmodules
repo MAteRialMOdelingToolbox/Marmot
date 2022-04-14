@@ -8,3 +8,9 @@
 [submodule "modules/core/MarmotMathCore"]
 	path = modules/core/MarmotMathCore
 	url = https://github.com/MAteRialMOdelingToolbox/MarmotMathCore
+[submodule "modules/core/MarmotFiniteElementCore"]
+	path = modules/core/MarmotFiniteElementCore
+	url = https://github.com/MAteRialMOdelingToolbox/MarmotFiniteElementCore
+[submodule "modules/elements/DisplacementFiniteElement"]
+	path = modules/elements/DisplacementFiniteElement
+	url = https://github.com/MAteRialMOdelingToolbox/DisplacementFiniteElement
