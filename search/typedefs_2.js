@@ -1,18 +1,4 @@
 var searchData=
 [
-  ['materialfactoryfunction_0',['materialFactoryFunction',['../classMarmotLibrary_1_1MarmotMaterialFactory.html#af816b8c7c13946dc11dc6a4d77c799cc',1,'MarmotLibrary::MarmotMaterialFactory']]],
-  ['matrix34d_1',['Matrix34d',['../namespaceMarmot.html#ad86d1ce5512561af7c3acc09ad35174f',1,'Marmot']]],
-  ['matrix36_2',['Matrix36',['../namespaceMarmot.html#aafff432cf7a4c6a916c625aa3f69a278',1,'Marmot']]],
-  ['matrix36d_3',['Matrix36d',['../namespaceMarmot.html#a69a44de0a03fcbdf397fa8e951889154',1,'Marmot']]],
-  ['matrix3d_4',['Matrix3d',['../namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3',1,'Marmot']]],
-  ['matrix63d_5',['Matrix63d',['../namespaceMarmot.html#a397580baed2ffbfc7230416de736742e',1,'Marmot']]],
-  ['matrix69d_6',['Matrix69d',['../namespaceMarmot.html#a0a2344556757165684203dfbb2e0ca1d',1,'Marmot']]],
-  ['matrix6d_7',['Matrix6d',['../namespaceMarmot.html#a48144b7616079807fd550c92d142e9da',1,'Marmot']]],
-  ['matrix99d_8',['Matrix99d',['../namespaceMarmot.html#af33f8a23557bad80e7029e08e8a71591',1,'Marmot']]],
-  ['matrix9d_9',['Matrix9d',['../namespaceMarmot.html#a92e92658ec8f3b5f376dde69375da320',1,'Marmot']]],
-  ['matrixstatestrain_10',['MatrixStateStrain',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#a18e757585a1694b5112c152b72641224',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::MatrixStateStrain()'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#abce7ed899992c189a9a233ad0eef0e44',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain()']]],
-  ['mconstvector6d_11',['mConstVector6d',['../namespaceMarmot.html#aab67dc8984f8afd2a802dce3128dd464',1,'Marmot']]],
-  ['mmatrix6d_12',['mMatrix6d',['../namespaceMarmot.html#a42cce1f9189e52b4cad0caef7ace17d2',1,'Marmot']]],
-  ['mvector6d_13',['mVector6d',['../namespaceMarmot.html#a4e78d5e4bb006cdfd319f06ae686312f',1,'Marmot']]],
-  ['mvectorxd_14',['mVectorXd',['../namespaceMarmot.html#a5e77b34ec4d5628dc4a164a359a4fd22',1,'Marmot']]]
+  ['dndxisized_0',['dNdXiSized',['../classMarmotGeometryElement.html#a72ffb6e31fe3aa68d05721f60d86bf44',1,'MarmotGeometryElement::dNdXiSized()'],['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a84dbc08696994b6ddd94295f3f0e2c88',1,'Marmot::Elements::DisplacementFiniteElement::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar2.html#a8ebc0613f90b6b9dbed0759c8fa8681e',1,'Marmot::FiniteElement::Spatial1D::Bar2::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar3.html#ac87b03a1233a4f9f58ed25a2bd09d01f',1,'Marmot::FiniteElement::Spatial1D::Bar3::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad4.html#a8a5b2217e57abd8c9785d2697e6c66f2',1,'Marmot::FiniteElement::Spatial2D::Quad4::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad8.html#a55b5b559faa9939a3510899d0e27ee10',1,'Marmot::FiniteElement::Spatial2D::Quad8::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4.html#a674a3d48933d3e1d8b0ad2091e74315c',1,'Marmot::FiniteElement::Spatial3D::Tetra4::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra10.html#a46a1c812d276be3ee7947ef594a31e76',1,'Marmot::FiniteElement::Spatial3D::Tetra10::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa8.html#a4e4bb656eaf7ebf5efe16d54a7ee8996',1,'Marmot::FiniteElement::Spatial3D::Hexa8::dNdXiSized()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa20.html#a9acafbffabd0493f4a2da02532a3248c',1,'Marmot::FiniteElement::Spatial3D::Hexa20::dNdXiSized()']]]
 ];

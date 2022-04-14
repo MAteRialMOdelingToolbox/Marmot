@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['innernewtoniterationchecker_0',['InnerNewtonIterationChecker',['../classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationChecker.html',1,'Marmot::NumericalAlgorithms']]],
-  ['innernewtoniterationcheckermarkii_1',['InnerNewtonIterationCheckerMarkII',['../classMarmot_1_1NumericalAlgorithms_1_1InnerNewtonIterationCheckerMarkII.html',1,'Marmot::NumericalAlgorithms']]]
+  ['geometry_0',['Geometry',['../structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint.html#structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1Geometry',1,'Marmot::Elements::DisplacementFiniteElement::QuadraturePoint']]]
 ];

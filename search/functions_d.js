@@ -1,16 +1,7 @@
 var searchData=
 [
-  ['perezfougetsubstepper_0',['PerezFougetSubstepper',['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a7c6b5868526644f901d726266ff009cc',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::PerezFougetSubstepper(double initialStepSize, double minimumStepSize, double scaleUpFactor, double scaleDownFactor, int nPassesToIncrease, const Matrix6d &amp;Cel)'],['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a1efc6ebb4b030b6f8d53050590f4fd76',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepper::PerezFougetSubstepper(double initialStepSize, double minimumStepSize, double scaleUpFactor, double scaleDownFactor, int nPassesToIncrease, const Matrix6d &amp;Cel)']]],
-  ['perezfougetsubsteppertime_1',['PerezFougetSubstepperTime',['../classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepperTime.html#a00bf02f8bcb5d0606b87af3580ae2e23',1,'Marmot::NumericalAlgorithms::PerezFougetSubstepperTime']]],
-  ['phi_2',['phi',['../namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#ad0acd0ae982bc911dcce4bd20badba9b',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam']]],
-  ['planestresscompensationstrain_3',['planeStressCompensationStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress.html#a27fc86667b6a74285f9ed063f47f78a6',1,'Marmot::ContinuumMechanics::PlaneStress']]],
-  ['planestresstangenttransformationmatrix_4',['planeStressTangentTransformationMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress.html#a676139dcddec2c89c78fc2fe0ae81308',1,'Marmot::ContinuumMechanics::PlaneStress']]],
-  ['planevoigttovoigt_5',['planeVoigtToVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ab3ceb10ac45895af2d82391eae901810',1,'Marmot::ContinuumMechanics::VoigtNotation::planeVoigtToVoigt(const Eigen::Vector3d &amp;voigtPlane)'],['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a8d8b88d753ae30ef5154c1289d81e0dc',1,'Marmot::ContinuumMechanics::VoigtNotation::planeVoigtToVoigt(const Vector3d &amp;voigtPlane)']]],
-  ['polyfit_6',['Polyfit',['../namespaceMarmot_1_1Math.html#ada75db8be0817cafc16df2b9d6a722b3',1,'Marmot::Math']]],
-  ['principalstrains_7',['principalStrains',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af393980739a0364f587818331254942b',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['principalstresses_8',['principalStresses',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a4691083df95c77ec82ec0c83e8b5d067',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['principalstressesdirections_9',['principalStressesDirections',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a5d8c2f6f1a341f2d9e29bf6fec3ca204',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['principalvaluesandderivatives_10',['principalValuesAndDerivatives',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ab252b71e58c195a80087b23a0aacd4d9',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['projectvoigtstraintoplane_11',['projectVoigtStrainToPlane',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#ab366f2ee9f7cc0234e023a0c5efdf50c',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]],
-  ['projectvoigtstresstoplane_12',['projectVoigtStressToPlane',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Transformations.html#af2463878e51e212c756a4f649679ebdb',1,'Marmot::ContinuumMechanics::VoigtNotation::Transformations']]]
+  ['operator_3c_3c_0',['operator&lt;&lt;',['../classMakeString.html#a0bed086d03acc5a34ab06324b39d0dfd',1,'MakeString']]],
+  ['operator_3d_1',['operator=',['../classMarmotJournal.html#a146bd889594dd2d9408beed1259ae2a5',1,'MarmotJournal']]],
+  ['orthonormalcoordinatesystem_2',['orthonormalCoordinateSystem',['../namespaceMarmot_1_1Math.html#af414d1d24c08314c9d16d36bc5a33ed4',1,'Marmot::Math']]],
+  ['string_3',['string',['../classMakeString.html#afcf4c7d21e62074820cad078d6b2b449',1,'MakeString']]]
 ];

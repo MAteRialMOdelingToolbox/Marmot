@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.9.3"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Namespace Members</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>d()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#ac76ca261b9626ba6a928136181867c65">Marmot::ContinuumMechanics::TensorUtility</a></li>
+<li>dDeltaEpv_dE()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a2a2df9d5bd64a9a36ab1cc273b903cfc">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dDeltaEpvneg_dE()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#ad21af03e3faa72f38e1e39e07cf5aa4f">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>degToRad()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1Math.html#aabc6dcb6af42136caacd1b79a1750b54">Marmot::Math</a></li>
+<li>dEp_dE()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a7e58d97abe0747e53f88d9f61b94a729">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dGreenLagrangedDeformationGradient()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1strain.html#a82aa0f4569e7b593d24476a9fc7aebfb">Marmot::ContinuumMechanics::Kinematics::strain</a></li>
+<li>directionCosines()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1Math.html#ad3ad1d152a8910ba18d583323a662a9c">Marmot::Math</a></li>
+<li>discardTheIncrement()&#160;:&#160;<a class="el" href="namespaceMarmot.html#a252d6a7dd503dee472f2d47ae9782b83">Marmot</a></li>
+<li>dJ2_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#ae563839720e177725d0a0c51c6b8c014">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dJ2Strain_dStrain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a54dc26de20347c575ef550620973b4ad">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dJ3_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a4b9947aeebb25d8c6d587f2ba2c67105">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dJ3Strain_dStrain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#ac5170ddab2b32d62610d1c0565ae13a8">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dNdXi()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar2.html#a1c15d7c8a1608a7944b967fc40f547ff">Marmot::FiniteElement::Spatial1D::Bar2</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar3.html#abd942b146fc4887aec1386f224517a7e">Marmot::FiniteElement::Spatial1D::Bar3</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad4.html#a4792fb78d565c443a8faa0609c13215b">Marmot::FiniteElement::Spatial2D::Quad4</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad8.html#aa87b75492a4f77536a093ff04446aa9e">Marmot::FiniteElement::Spatial2D::Quad8</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa20.html#af732008e532cffc9fc24ba77170ced74">Marmot::FiniteElement::Spatial3D::Hexa20</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa8.html#abcc74f713bfe55de59c4ce065a28dc9b">Marmot::FiniteElement::Spatial3D::Hexa8</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra10.html#a9e54ae4e5432162afb9199a9bd9eca45">Marmot::FiniteElement::Spatial3D::Tetra10</a>, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4.html#a05bb0d5d05107287980a90bc7aa76250">Marmot::FiniteElement::Spatial3D::Tetra4</a></li>
+<li>dRho_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives_1_1Complex.html#a1d07d64cd00dfd3d92cf5e1dcbf32e7f">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::Complex</a>, <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a83631f885ea1336bda3387f7af484552">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dSortedStrainPrincipal_dStrain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a4d0676164eea0fe29c96a79a624cab89">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dStrainDStrainPlaneStrain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a988043140973fa784ebbf58602a5a4db">Marmot::ContinuumMechanics::PlaneStrain</a></li>
+<li>dStrainDStrainPlaneStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress.html#a0d0cebc5336b54f7f20a11e9a0ffff40">Marmot::ContinuumMechanics::PlaneStress</a></li>
+<li>dStrainVolumetricNegative_dStrainPrincipal()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#af9055fb0feb1af269973c3e98fb506c1">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dStressdDeformationGradient()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain.html#a100766a8a96b6aceac96ca46aefeebd7">Marmot::ContinuumMechanics::PlaneStrain</a>, <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress.html#aa02a4d49ec49048a8d196960ea51b0f2">Marmot::ContinuumMechanics::PlaneStress</a></li>
+<li>dStressMean_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives_1_1Complex.html#a0d9b92892e90c47ef3f115fa4e34e435">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::Complex</a>, <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a41acc2721fe56820734fe87999014552">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dStressPlaneStressDStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress.html#a0d00b22260298d4266ee7dc66e541ab8">Marmot::ContinuumMechanics::PlaneStress</a></li>
+<li>dStressPrincipals_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a328540373c9dc5dbc85cb7984b2d292b">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dTheta_dJ2()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#aaf4858d1cc1fcb49df97ff628bfca2d0">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dTheta_dJ3()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#ae3245e5bf0245bc6cec29bd8fd4a41d6">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dTheta_dStress()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#ac1ffbd582a0ccf3f9960eaa986010ccc">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dThetaStrain_dJ2Strain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#af1e45032518a82b57a4270f9a025053f">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dThetaStrain_dJ3Strain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a707baebe1eaa4dd7cd1434bb174dbcc1">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dThetaStrain_dStrain()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Derivatives.html#a64bc417f42eec0f642f66a3776a2c2c5">Marmot::ContinuumMechanics::VoigtNotation::Derivatives</a></li>
+<li>dyadicProduct()&#160;:&#160;<a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility.html#a5cf70bc025ba0714a52d5bd0935a6230">Marmot::ContinuumMechanics::TensorUtility</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

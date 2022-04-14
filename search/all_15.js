@@ -1,4 +1,25 @@
 var searchData=
 [
-  ['xi_0',['xi',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ab14d7ed506cc207b7996fd344231f216',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates']]]
+  ['vector3d_0',['Vector3d',['../namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97',1,'Marmot']]],
+  ['vector6cd_1',['Vector6cd',['../namespaceMarmot.html#affa6bc20e2333a803af3a115ce67eed5',1,'Marmot']]],
+  ['vector6d_2',['Vector6d',['../namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8',1,'Marmot']]],
+  ['vector7d_3',['Vector7d',['../namespaceMarmot.html#a4ce7e7ee86e03692367287b279753666',1,'Marmot']]],
+  ['vector8d_4',['Vector8d',['../namespaceMarmot.html#a628000a746eba1efd2097c3ee0f1254c',1,'Marmot']]],
+  ['vector8i_5',['Vector8i',['../namespaceMarmot.html#a36f845f22e27f753cf817c3fc6d7f355',1,'Marmot']]],
+  ['vector9d_6',['Vector9d',['../namespaceMarmot.html#a5e282d7f6d57c953f0aefc3f93409d7e',1,'Marmot']]],
+  ['viscoplasticshotcretemodel_7',['ViscoPlasticShotcreteModel',['../namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93afb0230e0b56baeec681f6daba1c35776',1,'MarmotLibrary']]],
+  ['viscosity_8',['viscosity',['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html#a5bcf1ffacecee603485ae64c97cd0a1b',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity']]],
+  ['voigt_9',['Voigt',['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#aedf4231f927ae05eb28f127cfc850ab6',1,'Marmot::Elements::DisplacementFiniteElement']]],
+  ['voigt_20notation_10',['Voigt Notation',['../voigtnotation.html',1,'md_doc_markdown_continuummechanics']]],
+  ['voigtfromdim_11',['VOIGTFROMDIM',['../MarmotVoigt_8h.html#ab05a2676268f62bf9214105a0fe8e614',1,'MarmotVoigt.h']]],
+  ['voigtfromstrainmatrix_12',['voigtFromStrainMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae8eac19a17822352de1d8c2bc2775b86',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigtmap_13',['voigtMap',['../namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a033d62bc36b10a471ec07373704850cc',1,'Marmot::ContinuumMechanics::TensorUtility::IndexNotation']]],
+  ['voigtsize_14',['VoigtSize',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a0e6ebcd828489dd3aa42848f71b20587',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigtsize_15',['voigtSize',['../namespaceMarmot_1_1FiniteElement_1_1Spatial2D.html#aaea872d5192dd06913ff5dc8285bbb31',1,'Marmot::FiniteElement::Spatial2D::voigtSize()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D.html#a8769feab1f624cdad299fec1ce3ce871',1,'Marmot::FiniteElement::Spatial3D::voigtSize()']]],
+  ['voigtsize_16',['VoigtSize',['../classMarmotGeometryElement.html#a89026d06b900fa3339db7340ee26f368',1,'MarmotGeometryElement']]],
+  ['voigttoplanevoigt_17',['voigtToPlaneVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae6aafe38fa41600a041daf106f615787',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigttostrain_18',['voigtToStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigttostress_19',['voigtToStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a5c73d9ab097dcfcda4b5f208457c9b52',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['vonmisesequivalentstrain_20',['vonMisesEquivalentStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
+  ['vonmisesequivalentstress_21',['vonMisesEquivalentStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a2edc962186bf90e55cd2acee21d1a61c',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]]
 ];

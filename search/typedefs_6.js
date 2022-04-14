@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['yieldsurfflagarr_0',['YieldSurfFlagArr',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a44699f1f8fa22f1cf9311acb7c7e5250',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]],
-  ['yieldsurfresarr_1',['YieldSurfResArr',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html#a4c08c14f06a50c1dbf99327644af0e4b',1,'Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager']]]
+  ['jacobiansized_0',['JacobianSized',['../classMarmotGeometryElement.html#ac56ffe4ec2075db94537960b7527bd9d',1,'MarmotGeometryElement::JacobianSized()'],['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ad71e0a1e26b5e81294ea0e74b8bcd067',1,'Marmot::Elements::DisplacementFiniteElement::JacobianSized()']]]
 ];

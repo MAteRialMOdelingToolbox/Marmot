@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['_7emarmotelement_0',['~MarmotElement',['../classMarmotElement.html#ae852bc0749f00720d9d07b6432bc77ab',1,'MarmotElement']]],
-  ['_7emarmotmaterial_1',['~MarmotMaterial',['../classMarmotMaterial.html#a33fd1c89a919e8b0d396eb846614c815',1,'MarmotMaterial']]]
+  ['xi_0',['xi',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a31257f6719d8c43cd1208ec6622e8f1a',1,'Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::xi()'],['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#a22fbd2e6d2633d4036e140e59638435c',1,'Marmot::FiniteElement::Quadrature::QuadraturePointInfo::xi()'],['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ab14d7ed506cc207b7996fd344231f216',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::xi()'],['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1Complex.html#a57d702352d47f6bb4f93154e78fc017a',1,'Marmot::ContinuumMechanics::HaighWestergaard::Complex::HaighWestergaardCoordinates::xi()'],['../structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint.html#aff36adc97700ff275b6173a15d490119',1,'Marmot::Elements::DisplacementFiniteElement::QuadraturePoint::xi()']]],
+  ['xisized_1',['XiSized',['../classMarmotGeometryElement.html#a3e07541a98fa50fd0185a1eaa7de944b',1,'MarmotGeometryElement::XiSized()'],['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a614e8e0990c6cdc2eb8cfe612b96c9f2',1,'Marmot::Elements::DisplacementFiniteElement::XiSized()']]]
 ];

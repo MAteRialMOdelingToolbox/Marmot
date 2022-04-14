@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['type_0',['Type',['../classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5',1,'Marmot::Materials::LinearElastic']]]
+  ['sectiontype_0',['SectionType',['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#abc9550701c39e91da02eb22efdd69e3d',1,'Marmot::Elements::DisplacementFiniteElement']]],
+  ['statetypes_1',['StateTypes',['../classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b',1,'MarmotElement']]],
+  ['substeppingstate_2',['SubsteppingState',['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html#ae329ee6fb835483510c2d0894fc36e35',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepper::SubsteppingState()'],['../classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepperExplicit.html#ae55a45bc7a4f7bfb0cd441bbd8db97b9',1,'Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::SubsteppingState()']]]
 ];

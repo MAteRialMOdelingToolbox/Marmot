@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elementfactoryfunction_0',['elementFactoryFunction',['../classMarmotLibrary_1_1MarmotElementFactory.html#ae394656803a0a24bf0d28d30b71e7835',1,'MarmotLibrary::MarmotElementFactory']]]
+  ['bsized_0',['BSized',['../classMarmotGeometryElement.html#a7663f31924cd0d74a85fe0b19e5ffa4b',1,'MarmotGeometryElement::BSized()'],['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a9c2c17e4946091c2f711a79e4b88737e',1,'Marmot::Elements::DisplacementFiniteElement::BSized()']]]
 ];

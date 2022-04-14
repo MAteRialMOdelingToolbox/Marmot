@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['theformulation_0',['theFormulation',['../classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html#a25ba24e4640afbbb8f0d55c8d06488dd',1,'Marmot::NumericalAlgorithms::HughesWinget']]],
-  ['theta_1',['theta',['../namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard.html#ad4e957d5055cb6e6ea29e371d1bc4d1c',1,'Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates']]]
+  ['quadraturepoints_0',['quadraturePoints',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a2b1fb7fafe58eccb2cb530022098d645',1,'Marmot::FiniteElement::BoundaryElement::quadraturePoints()'],['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a8ff95e1d9567d69f5ee329b86438dd08',1,'Marmot::Elements::DisplacementFiniteElement::quadraturePoints()']]]
 ];

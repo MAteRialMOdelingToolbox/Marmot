@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['othe_0',['Othe',['../md_modules_core_MarmotMechanicsCore_doc_DOCUMENTATION.html',1,'']]]
+  ['numerical_20algorithms_0',['Numerical Algorithms',['../md_doc_markdown_numericalalgorithms.html',1,'']]]
 ];

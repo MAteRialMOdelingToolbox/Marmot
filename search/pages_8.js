@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['substepping_20algorithms_0',['Substepping Algorithms',['../substepper.html',1,'md_doc_markdown_numericalalgorithms']]]
+  ['othe_0',['Othe',['../md_modules_core_MarmotMechanicsCore_doc_DOCUMENTATION.html',1,'']]]
 ];

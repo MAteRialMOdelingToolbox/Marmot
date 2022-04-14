@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.9.3"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Marmot::FiniteElement::EAS Namespace Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1FiniteElement.html">FiniteElement</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html">EAS</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">Marmot::FiniteElement::EAS Namespace Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a5c4676500200a84f62767fb4740717aa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">EASType</a> { <br />
+&#160;&#160;<a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa45e87b443695fcbc23e8e263c8d0dfb2">DeBorstEAS2</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa003c169fbc28861440f42b86dfa2b9cc">DeBorstEAS2_P2</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa4cc34969ce70913c057d79a1c32818e9">EAS3</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa6d6ce5305b0579297e21d4e3cf9a6813">DeBorstEAS6b</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa412d959ecbb9dff7a805da769fafdcac">DeBorstEAS9</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaaa7d782b8cb14ecead7584e6ad346e0b2">SimoRifaiEAS5</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aaa241c74b8c56ddd47c46fc03b3feb7cf3">SimoRifaiEAS4</a>
+<br />
+ }</td></tr>
+<tr class="separator:a5c4676500200a84f62767fb4740717aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a8849b2e477cdf62cfca5cf2614256c91"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a8849b2e477cdf62cfca5cf2614256c91">F</a> (const Eigen::MatrixXd &amp;J)</td></tr>
+<tr class="separator:a8849b2e477cdf62cfca5cf2614256c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988a8476619b95f92db9654db98ed7e9"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a988a8476619b95f92db9654db98ed7e9">EASInterpolation</a> (<a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">EASType</a> type, const Eigen::VectorXd &amp;xi)</td></tr>
+<tr class="separator:a988a8476619b95f92db9654db98ed7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a249e10a4fc5dc0abc97e1b5a5a45f"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#ab2a249e10a4fc5dc0abc97e1b5a5a45f">F</a> (const MatrixXd &amp;J)</td></tr>
+<tr class="separator:ab2a249e10a4fc5dc0abc97e1b5a5a45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60ac42c5954873aa66d63fa5db94b3a4"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a60ac42c5954873aa66d63fa5db94b3a4">EASInterpolation</a> (<a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">EASType</a> type, const VectorXd &amp;xi)</td></tr>
+<tr class="separator:a60ac42c5954873aa66d63fa5db94b3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a5c4676500200a84f62767fb4740717aa" name="a5c4676500200a84f62767fb4740717aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c4676500200a84f62767fb4740717aa">&#9670;&nbsp;</a></span>EASType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">Marmot::FiniteElement::EAS::EASType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa45e87b443695fcbc23e8e263c8d0dfb2" name="a5c4676500200a84f62767fb4740717aaa45e87b443695fcbc23e8e263c8d0dfb2"></a>DeBorstEAS2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa003c169fbc28861440f42b86dfa2b9cc" name="a5c4676500200a84f62767fb4740717aaa003c169fbc28861440f42b86dfa2b9cc"></a>DeBorstEAS2_P2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa4cc34969ce70913c057d79a1c32818e9" name="a5c4676500200a84f62767fb4740717aaa4cc34969ce70913c057d79a1c32818e9"></a>EAS3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa6d6ce5305b0579297e21d4e3cf9a6813" name="a5c4676500200a84f62767fb4740717aaa6d6ce5305b0579297e21d4e3cf9a6813"></a>DeBorstEAS6b&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa412d959ecbb9dff7a805da769fafdcac" name="a5c4676500200a84f62767fb4740717aaa412d959ecbb9dff7a805da769fafdcac"></a>DeBorstEAS9&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaaa7d782b8cb14ecead7584e6ad346e0b2" name="a5c4676500200a84f62767fb4740717aaaa7d782b8cb14ecead7584e6ad346e0b2"></a>SimoRifaiEAS5&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5c4676500200a84f62767fb4740717aaa241c74b8c56ddd47c46fc03b3feb7cf3" name="a5c4676500200a84f62767fb4740717aaa241c74b8c56ddd47c46fc03b3feb7cf3"></a>SimoRifaiEAS4&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a8849b2e477cdf62cfca5cf2614256c91" name="a8849b2e477cdf62cfca5cf2614256c91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8849b2e477cdf62cfca5cf2614256c91">&#9670;&nbsp;</a></span>F() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::MatrixXd Marmot::FiniteElement::EAS::F </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>J</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a988a8476619b95f92db9654db98ed7e9" name="a988a8476619b95f92db9654db98ed7e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a988a8476619b95f92db9654db98ed7e9">&#9670;&nbsp;</a></span>EASInterpolation() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::MatrixXd Marmot::FiniteElement::EAS::EASInterpolation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">EASType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>xi</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2a249e10a4fc5dc0abc97e1b5a5a45f" name="ab2a249e10a4fc5dc0abc97e1b5a5a45f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a249e10a4fc5dc0abc97e1b5a5a45f">&#9670;&nbsp;</a></span>F() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixXd Marmot::FiniteElement::EAS::F </td>
+          <td>(</td>
+          <td class="paramtype">const MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>J</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60ac42c5954873aa66d63fa5db94b3a4" name="a60ac42c5954873aa66d63fa5db94b3a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60ac42c5954873aa66d63fa5db94b3a4">&#9670;&nbsp;</a></span>EASInterpolation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixXd Marmot::FiniteElement::EAS::EASInterpolation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot_1_1FiniteElement_1_1EAS.html#a5c4676500200a84f62767fb4740717aa">EASType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>xi</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

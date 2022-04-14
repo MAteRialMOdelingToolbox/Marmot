@@ -1,0 +1,619 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.9.3"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Marmot::FiniteElement::BoundaryElement Class Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.9.3 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1FiniteElement.html">FiniteElement</a></li><li class="navelem"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html">BoundaryElement</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="classMarmot_1_1FiniteElement_1_1BoundaryElement-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">Marmot::FiniteElement::BoundaryElement Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="MarmotFiniteElement_8h_source.html">MarmotFiniteElement.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint">BoundaryElementQuadraturePoint</a></td></tr>
+<tr class="separator:structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac1c066c66f3e466257fc89a34fcd94ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ac1c066c66f3e466257fc89a34fcd94ae">BoundaryElement</a> (<a class="el" href="namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17">ElementShapes</a> parentShape, int <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a8dda0af5aec133d09f28d411ed5f124e">nDim</a>, int parentFaceNumber, const Eigen::VectorXd &amp;parentCoordinates)</td></tr>
+<tr class="separator:ac1c066c66f3e466257fc89a34fcd94ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf57179e0229481031d991c09ea37450"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#abf57179e0229481031d991c09ea37450">computeNormalLoadVector</a> ()</td></tr>
+<tr class="separator:abf57179e0229481031d991c09ea37450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a421cb88cfb1ab12e630c51de1d2a348a"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a421cb88cfb1ab12e630c51de1d2a348a">computeNormalLoadVectorStiffness</a> ()</td></tr>
+<tr class="separator:a421cb88cfb1ab12e630c51de1d2a348a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121c552d277a20e5c00d5f342099bd2b"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a121c552d277a20e5c00d5f342099bd2b">condenseParentToBoundaryVector</a> (const Eigen::VectorXd &amp;parentVector)</td></tr>
+<tr class="separator:a121c552d277a20e5c00d5f342099bd2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab237179dc06f8aa8bc8942f686eec7a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ab237179dc06f8aa8bc8942f686eec7a9">assembleIntoParentVector</a> (const Eigen::VectorXd &amp;boundaryVector, Eigen::Ref&lt; Eigen::VectorXd &gt; ParentVector)</td></tr>
+<tr class="separator:ab237179dc06f8aa8bc8942f686eec7a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124c6d9fca26a985561a3393e8a8c469"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a124c6d9fca26a985561a3393e8a8c469">assembleIntoParentStiffness</a> (const Eigen::MatrixXd &amp;KBoundary, Eigen::Ref&lt; Eigen::MatrixXd &gt; KParent)</td></tr>
+<tr class="separator:a124c6d9fca26a985561a3393e8a8c469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8dda0af5aec133d09f28d411ed5f124e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a8dda0af5aec133d09f28d411ed5f124e">nDim</a></td></tr>
+<tr class="separator:a8dda0af5aec133d09f28d411ed5f124e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a043703a45c47d7457e0963c512e51291"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17">ElementShapes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a043703a45c47d7457e0963c512e51291">boundaryShape</a></td></tr>
+<tr class="separator:a043703a45c47d7457e0963c512e51291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac840443b0c8e70446cbd898db889f34d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ac840443b0c8e70446cbd898db889f34d">nNodes</a></td></tr>
+<tr class="separator:ac840443b0c8e70446cbd898db889f34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a371e802538a2e7562d173670002604c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a371e802538a2e7562d173670002604c9">nParentCoordinates</a></td></tr>
+<tr class="separator:a371e802538a2e7562d173670002604c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1fb7fafe58eccb2cb530022098d645"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint">BoundaryElementQuadraturePoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a2b1fb7fafe58eccb2cb530022098d645">quadraturePoints</a></td></tr>
+<tr class="separator:a2b1fb7fafe58eccb2cb530022098d645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af65df8c75328d21f56554cfaf98aaa49"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXi&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#af65df8c75328d21f56554cfaf98aaa49">boundaryIndicesInParentNodes</a></td></tr>
+<tr class="separator:af65df8c75328d21f56554cfaf98aaa49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23f52fc460ed53e511dc2b635ab550aa"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXi&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a23f52fc460ed53e511dc2b635ab550aa">boundaryIndicesInParentCoordinates</a></td></tr>
+<tr class="separator:a23f52fc460ed53e511dc2b635ab550aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4607da5bd7b562d6131612b99c3fc18d"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a4607da5bd7b562d6131612b99c3fc18d">coordinates</a></td></tr>
+<tr class="separator:a4607da5bd7b562d6131612b99c3fc18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/><h2 class="groupheader">Class Documentation</h2>
+<a name="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint">&#9670;&nbsp;</a></span>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"></div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="aed89fe9298679403fb69d544393b363b" name="aed89fe9298679403fb69d544393b363b"></a>double</td>
+<td class="fieldname">
+weight</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a31257f6719d8c43cd1208ec6622e8f1a" name="a31257f6719d8c43cd1208ec6622e8f1a"></a>VectorXd</td>
+<td class="fieldname">
+xi</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ae81676de78db8d5e9d2cb153d89c5296" name="ae81676de78db8d5e9d2cb153d89c5296"></a>VectorXd</td>
+<td class="fieldname">
+N</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a7fda593baa4431f9b65fcb737a75326e" name="a7fda593baa4431f9b65fcb737a75326e"></a>MatrixXd</td>
+<td class="fieldname">
+dNdXi</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a64cbe624958c5107f3eaf9d0e130b352" name="a64cbe624958c5107f3eaf9d0e130b352"></a>MatrixXd</td>
+<td class="fieldname">
+J</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ab5d310350848233eaa7e700f9daaea54" name="ab5d310350848233eaa7e700f9daaea54"></a>VectorXd</td>
+<td class="fieldname">
+areaVector</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac1c066c66f3e466257fc89a34fcd94ae" name="ac1c066c66f3e466257fc89a34fcd94ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1c066c66f3e466257fc89a34fcd94ae">&#9670;&nbsp;</a></span>BoundaryElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Marmot::FiniteElement::BoundaryElement::BoundaryElement </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17">ElementShapes</a>&#160;</td>
+          <td class="paramname"><em>parentShape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nDim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>parentFaceNumber</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>parentCoordinates</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abf57179e0229481031d991c09ea37450" name="abf57179e0229481031d991c09ea37450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf57179e0229481031d991c09ea37450">&#9670;&nbsp;</a></span>computeNormalLoadVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VectorXd Marmot::FiniteElement::BoundaryElement::computeNormalLoadVector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a421cb88cfb1ab12e630c51de1d2a348a" name="a421cb88cfb1ab12e630c51de1d2a348a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a421cb88cfb1ab12e630c51de1d2a348a">&#9670;&nbsp;</a></span>computeNormalLoadVectorStiffness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">MatrixXd Marmot::FiniteElement::BoundaryElement::computeNormalLoadVectorStiffness </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a121c552d277a20e5c00d5f342099bd2b" name="a121c552d277a20e5c00d5f342099bd2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121c552d277a20e5c00d5f342099bd2b">&#9670;&nbsp;</a></span>condenseParentToBoundaryVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">VectorXd Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryVector </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>parentVector</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab237179dc06f8aa8bc8942f686eec7a9" name="ab237179dc06f8aa8bc8942f686eec7a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab237179dc06f8aa8bc8942f686eec7a9">&#9670;&nbsp;</a></span>assembleIntoParentVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::FiniteElement::BoundaryElement::assembleIntoParentVector </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::VectorXd &amp;&#160;</td>
+          <td class="paramname"><em>boundaryVector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Ref&lt; Eigen::VectorXd &gt;&#160;</td>
+          <td class="paramname"><em>ParentVector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a124c6d9fca26a985561a3393e8a8c469" name="a124c6d9fca26a985561a3393e8a8c469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a124c6d9fca26a985561a3393e8a8c469">&#9670;&nbsp;</a></span>assembleIntoParentStiffness()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::FiniteElement::BoundaryElement::assembleIntoParentStiffness </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
+          <td class="paramname"><em>KBoundary</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Eigen::Ref&lt; Eigen::MatrixXd &gt;&#160;</td>
+          <td class="paramname"><em>KParent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8dda0af5aec133d09f28d411ed5f124e" name="a8dda0af5aec133d09f28d411ed5f124e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dda0af5aec133d09f28d411ed5f124e">&#9670;&nbsp;</a></span>nDim</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int Marmot::FiniteElement::BoundaryElement::nDim</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a043703a45c47d7457e0963c512e51291" name="a043703a45c47d7457e0963c512e51291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a043703a45c47d7457e0963c512e51291">&#9670;&nbsp;</a></span>boundaryShape</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17">ElementShapes</a> Marmot::FiniteElement::BoundaryElement::boundaryShape</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac840443b0c8e70446cbd898db889f34d" name="ac840443b0c8e70446cbd898db889f34d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac840443b0c8e70446cbd898db889f34d">&#9670;&nbsp;</a></span>nNodes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Marmot::FiniteElement::BoundaryElement::nNodes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a371e802538a2e7562d173670002604c9" name="a371e802538a2e7562d173670002604c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a371e802538a2e7562d173670002604c9">&#9670;&nbsp;</a></span>nParentCoordinates</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Marmot::FiniteElement::BoundaryElement::nParentCoordinates</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2b1fb7fafe58eccb2cb530022098d645" name="a2b1fb7fafe58eccb2cb530022098d645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b1fb7fafe58eccb2cb530022098d645">&#9670;&nbsp;</a></span>quadraturePoints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint">BoundaryElementQuadraturePoint</a> &gt; Marmot::FiniteElement::BoundaryElement::quadraturePoints</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af65df8c75328d21f56554cfaf98aaa49" name="af65df8c75328d21f56554cfaf98aaa49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af65df8c75328d21f56554cfaf98aaa49">&#9670;&nbsp;</a></span>boundaryIndicesInParentNodes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::VectorXi Marmot::FiniteElement::BoundaryElement::boundaryIndicesInParentNodes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a23f52fc460ed53e511dc2b635ab550aa" name="a23f52fc460ed53e511dc2b635ab550aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23f52fc460ed53e511dc2b635ab550aa">&#9670;&nbsp;</a></span>boundaryIndicesInParentCoordinates</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::VectorXi Marmot::FiniteElement::BoundaryElement::boundaryIndicesInParentCoordinates</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4607da5bd7b562d6131612b99c3fc18d" name="a4607da5bd7b562d6131612b99c3fc18d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4607da5bd7b562d6131612b99c3fc18d">&#9670;&nbsp;</a></span>coordinates</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::VectorXd Marmot::FiniteElement::BoundaryElement::coordinates</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>modules/core/MarmotFiniteElementCore/include/Marmot/<a class="el" href="MarmotFiniteElement_8h_source.html">MarmotFiniteElement.h</a></li>
+<li>modules/core/MarmotFiniteElementCore/src/<a class="el" href="MarmotFiniteElementBoundary_8cpp.html">MarmotFiniteElementBoundary.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>
