@@ -14,13 +14,12 @@ var searchData=
   ['voigtfromdim_11',['VOIGTFROMDIM',['../MarmotVoigt_8h.html#ab05a2676268f62bf9214105a0fe8e614',1,'MarmotVoigt.h']]],
   ['voigtfromstrainmatrix_12',['voigtFromStrainMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae8eac19a17822352de1d8c2bc2775b86',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
   ['voigtmap_13',['voigtMap',['../namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a033d62bc36b10a471ec07373704850cc',1,'Marmot::ContinuumMechanics::TensorUtility::IndexNotation']]],
-  ['voigtsize_14',['voigtSize',['../namespaceMarmot_1_1FiniteElement_1_1Spatial2D.html#aaea872d5192dd06913ff5dc8285bbb31',1,'Marmot::FiniteElement::Spatial2D::voigtSize()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D.html#a8769feab1f624cdad299fec1ce3ce871',1,'Marmot::FiniteElement::Spatial3D::voigtSize()']]],
-  ['voigtsize_15',['VoigtSize',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigtsize_16',['voigtSize',['../classMarmotGeometryElement.html#af573006ded976c7f3a7df763df72440f',1,'MarmotGeometryElement']]],
-  ['voigtsizefromdimension_17',['voigtSizeFromDimension',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a43f9254e1161e4f4209858acbddca1ff',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttoplanevoigt_18',['voigtToPlaneVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae6aafe38fa41600a041daf106f615787',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttostrain_19',['voigtToStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttostress_20',['voigtToStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a5c73d9ab097dcfcda4b5f208457c9b52',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['vonmisesequivalentstrain_21',['vonMisesEquivalentStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['vonmisesequivalentstress_22',['vonMisesEquivalentStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a2edc962186bf90e55cd2acee21d1a61c',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]]
+  ['voigtsize_14',['VoigtSize',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ad2929e869c726f5ae5e7f2f5cb1f6f35',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigtsize_15',['voigtSize',['../namespaceMarmot_1_1FiniteElement_1_1Spatial2D.html#aaea872d5192dd06913ff5dc8285bbb31',1,'Marmot::FiniteElement::Spatial2D::voigtSize()'],['../namespaceMarmot_1_1FiniteElement_1_1Spatial3D.html#a8769feab1f624cdad299fec1ce3ce871',1,'Marmot::FiniteElement::Spatial3D::voigtSize()'],['../classMarmotGeometryElement.html#af573006ded976c7f3a7df763df72440f',1,'MarmotGeometryElement::voigtSize()']]],
+  ['voigtsizefromdimension_16',['voigtSizeFromDimension',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a43f9254e1161e4f4209858acbddca1ff',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigttoplanevoigt_17',['voigtToPlaneVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae6aafe38fa41600a041daf106f615787',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigttostrain_18',['voigtToStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['voigttostress_19',['voigtToStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a5c73d9ab097dcfcda4b5f208457c9b52',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
+  ['vonmisesequivalentstrain_20',['vonMisesEquivalentStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
+  ['vonmisesequivalentstress_21',['vonMisesEquivalentStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a2edc962186bf90e55cd2acee21d1a61c',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]]
 ];

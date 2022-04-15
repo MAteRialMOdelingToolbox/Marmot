@@ -1,9 +1,11 @@
 <map id="modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" name="modules/core/MarmotMathCore/include/Marmot/MarmotMath.h">
-<area shape="rect" id="node1" title=" " alt="" coords="275,5,479,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="487,5,691,47"/>
 <area shape="rect" id="node2" href="$MarmotConstants_8h.html" title=" " alt="" coords="5,95,188,121"/>
 <area shape="rect" id="node4" href="$MarmotTypedefs_8h.html" title=" " alt="" coords="213,95,391,121"/>
-<area shape="rect" id="node8" title=" " alt="" coords="415,95,490,121"/>
-<area shape="rect" id="node9" title=" " alt="" coords="515,95,585,121"/>
+<area shape="rect" id="node8" title=" " alt="" coords="415,95,578,121"/>
+<area shape="rect" id="node9" title=" " alt="" coords="602,95,762,121"/>
+<area shape="rect" id="node10" title=" " alt="" coords="786,95,861,121"/>
+<area shape="rect" id="node11" title=" " alt="" coords="885,95,956,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="65,177,123,203"/>
 <area shape="rect" id="node5" title=" " alt="" coords="147,177,233,203"/>
 <area shape="rect" id="node6" title=" " alt="" coords="257,177,352,203"/>
