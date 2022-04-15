@@ -27,6 +27,14 @@ jobs:
              sudo make install
              pwd
              cd ../..
+             git clone https://github.com/autodiff/autodiff.git
+             cd autodiff
+             mkdir build
+             cd build
+             cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
+             sudo make install
+             pwd
+             cd ../..
              git clone --recurse-submodules https://github.com/${{ github.repository }}
              cd Marmot
              git fetch origin ${{ github.ref }}                     
@@ -36,5 +44,3 @@ jobs:
              cmake ..                                              
              make -j
              sudo make install
-             
-           
