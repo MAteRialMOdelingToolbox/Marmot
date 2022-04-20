@@ -22,7 +22,7 @@ jobs:
       run: |
            python doc/buildDocumentation.py --skipDoxygen
     - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.1.0
+      uses: mattnotmitt/doxygen-action@v1.8
       with:
         doxyfile-path: "./doc/config/dconfig"
         working-directory: "."
