@@ -1,9 +1,11 @@
 <map id="modules/core/MarmotMechanicsCore/include" name="modules/core/MarmotMechanicsCore/include">
-<area shape="rect" id="node2" href="dir_d0d496183679f761e8bac416323bbe4d.html" title="Marmot" alt="" coords="65,63,137,111"/>
-<area shape="rect" id="node3" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="5,159,77,207"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000018_000007.html" title="10" alt="" coords="66,141,80,155"/>
-<area shape="rect" id="node4" href="dir_39413a3592d49ba1372e049fbfe3e31f.html" title="MarmotMathCore" alt="" coords="101,159,224,207"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000018_000022.html" title="14" alt="" coords="137,131,152,146"/>
-<area shape="rect" id="clust2" href="dir_7d9e0bddc3df5047c06a16b0d057f1c8.html" alt="" coords="55,52,244,121"/>
-<area shape="rect" id="clust1" href="dir_9969c29766c3ca5ea49aac3cac97384d.html" title="MarmotMechanicsCore" alt="" coords="44,16,255,132"/>
+<area shape="rect" id="node2" href="dir_d0d496183679f761e8bac416323bbe4d.html" title="Marmot" alt="" coords="37,87,109,135"/>
+<area shape="rect" id="node3" href="dir_d44c64559bbebec7f509842c48db8b23.html" title="include" alt="" coords="149,183,221,231"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000021_000002.html" title="10" alt="" coords="138,158,152,172"/>
+<area shape="rect" id="node4" href="dir_39413a3592d49ba1372e049fbfe3e31f.html" title="MarmotMathCore" alt="" coords="237,87,360,135"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000021_000010.html" title="14" alt="" coords="273,60,288,75"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000010_000021.html" title="1" alt="" coords="92,66,100,81"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000010_000002.html" title="1" alt="" coords="228,171,236,185"/>
+<area shape="rect" id="clust2" href="dir_7d9e0bddc3df5047c06a16b0d057f1c8.html" alt="" coords="27,77,216,146"/>
+<area shape="rect" id="clust1" href="dir_9969c29766c3ca5ea49aac3cac97384d.html" title="MarmotMechanicsCore" alt="" coords="16,41,227,157"/>
 </map>
