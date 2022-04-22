@@ -56,9 +56,9 @@ namespace Marmot {
         Matrix6d     CInv;
         const double G23 = E2 / ( 2 * ( 1 + nu23 ) );
         // clang-format off
-            	  CInv <<   1./E1, -nu12/E1, -nu12/E1,      0,      0,      0,
-                       -nu12/E1,    1./E2, -nu23/E2,      0,      0,      0,
-                       -nu12/E1, -nu23/E2,    1./E2,      0,      0,      0,
+            	  CInv <<   1./E1, -nu12/E2, -nu12/E2,      0,      0,      0,
+                       -nu12/E2,    1./E2, -nu23/E2,      0,      0,      0,
+                       -nu12/E2, -nu23/E2,    1./E2,      0,      0,      0,
                               0,        0,        0, 1./G12,      0,      0,
                               0,        0,        0,      0, 1./G12,      0,
                               0,        0,        0,      0,      0, 1./G23;
