@@ -8,7 +8,7 @@
 using namespace Marmot;
 using namespace std;
 
-      namespace Marmot::Materials {
+namespace Marmot::Materials {
   namespace Shrinkage::B4 {
     Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                               const double dTDays,
@@ -19,7 +19,7 @@ using namespace std;
                                               const double ultimateDryingShrinkageStrain,
                                               const double dryingShrinkageHalfTime,
                                               const double kHum,
-                                              const double dryingStart)
+                                              const double dryingStart )
     {
 
       const double tEndDays = tStartDays + dTDays;
@@ -33,7 +33,6 @@ using namespace std;
         deltaAutogenous = pow( 1. + pow( autogenousShrinkageHalfTime / ( tStartDays + dTDays ), alpha ), rt ) -
                           pow( 1. + pow( autogenousShrinkageHalfTime / tStartDays, alpha ), rt );
       }
-
 
       // drying shrinkage
 
