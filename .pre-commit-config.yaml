@@ -3,3 +3,4 @@ repos:
   rev: v13.0.0
   hooks:
   - id: clang-format
+    args: ['--dry-run']

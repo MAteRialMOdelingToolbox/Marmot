@@ -8,7 +8,7 @@
 using namespace Marmot;
 using namespace std;
 
-namespace Marmot::Materials {
+      namespace Marmot::Materials {
   namespace Shrinkage::B4 {
     Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                               const double dTDays,
