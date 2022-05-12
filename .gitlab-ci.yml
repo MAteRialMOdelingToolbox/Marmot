@@ -63,7 +63,7 @@ build and test:
     - conda create --name test_env
     - source activate test_env
     - conda config --add channels conda-forge 
-    - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy
+    - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy gstools
 
     - git clone https://gitlab.com/libeigen/eigen.git
     - cd eigen 
