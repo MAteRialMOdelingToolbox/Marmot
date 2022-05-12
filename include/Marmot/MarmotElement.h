@@ -70,7 +70,9 @@ public:
 
   virtual void assignProperty( const MarmotMaterialSection& property );
 
-  virtual void initializeYourself( const double* coordinates ) = 0;
+  virtual void assignNodeCoordinates( const double* coordinates ) = 0;
+
+  virtual void initializeYourself() = 0;
 
   virtual void setInitialConditions( StateTypes state, const double* values ) = 0;
 
@@ -99,4 +101,6 @@ public:
                                  double        dT ) = 0;
 
   virtual StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
+
+  virtual std::vector< double > getCoordinatesAtCenter() = 0;
 };
