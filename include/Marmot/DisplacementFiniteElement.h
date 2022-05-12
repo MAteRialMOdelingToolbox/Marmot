@@ -157,7 +157,9 @@ namespace Marmot::Elements {
 
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
 
-    void initializeYourself( const double* coordinates );
+    void assignNodeCoordinates( const double* coordinates );
+
+    void initializeYourself();
 
     void setInitialConditions( StateTypes state, const double* values );
 
@@ -203,6 +205,8 @@ namespace Marmot::Elements {
         return qp.material->getStateView( stateName );
       }
     }
+
+    std::vector< double > getCoordinatesAtCenter();
   };
 
   template < int nDim, int nNodes >
@@ -275,21 +279,31 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
-    for ( auto& qp : qps )
+    for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
         MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
                                                               section.materialProperties,
                                                               section.nMaterialProperties,
                                                               elLabel ) ) );
+      if constexpr ( nDim == 3 )
+        qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
+      if constexpr ( nDim == 2 )
+        qp.material->setCharacteristicElementLength( std::sqrt( 4 * qp.detJ ) );
+      if constexpr ( nDim == 1 )
+        qp.material->setCharacteristicElementLength( 2 * qp.detJ );
+    }
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::initializeYourself( const double* coordinates )
+  void DisplacementFiniteElement< nDim, nNodes >::assignNodeCoordinates( const double* coordinates )
   {
-    ParentGeometryElement::initializeYourself( coordinates );
+    ParentGeometryElement::assignNodeCoordinates( coordinates );
+  }
 
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::initializeYourself()
+  {
     for ( QuadraturePoint& qp : qps ) {
-
       const dNdXiSized    dNdXi = this->dNdXi( qp.xi );
       const JacobianSized J     = this->Jacobian( dNdXi );
       const JacobianSized JInv  = J.inverse();
@@ -297,24 +311,16 @@ namespace Marmot::Elements {
       qp.detJ                   = J.determinant();
       qp.B                      = this->B( dNdX );
 
-      if ( sectionType == SectionType::Solid ) {
-
+      if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
-        qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
       }
-
-      else if ( sectionType == SectionType::PlaneStrain || sectionType == SectionType::PlaneStress ) {
-
+      if constexpr ( nDim == 2 ) {
         const double& thickness = elementProperties[0];
         qp.J0xW                 = qp.weight * qp.detJ * thickness;
-        qp.material->setCharacteristicElementLength( std::sqrt( 4 * qp.detJ ) );
       }
-
-      else if ( sectionType == SectionType::UniaxialStress ) {
-
+      if constexpr ( nDim == 1 ) {
         const double& crossSection = elementProperties[0];
         qp.J0xW                    = qp.weight * qp.detJ * crossSection;
-        qp.material->setCharacteristicElementLength( 2 * qp.detJ );
       }
     }
   }
@@ -424,7 +430,6 @@ namespace Marmot::Elements {
     }
     default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     }
-    /* } */
   }
 
   template < int nDim, int nNodes >
@@ -474,5 +479,16 @@ namespace Marmot::Elements {
 
     for ( const auto& qp : qps )
       Pe += this->NB( this->N( qp.xi ) ).transpose() * f * qp.J0xW;
+  }
+
+  template < int nDim, int nNodes >
+  std::vector< double > DisplacementFiniteElement< nDim, nNodes >::getCoordinatesAtCenter()
+  {
+    std::vector< double > coords( nDim );
+
+    Eigen::Map< XiSized > coordsMap( &coords[0] );
+    const auto            centerXi = XiSized::Zero();
+    coordsMap                      = this->NB( this->N( centerXi ) ) * this->coordinates;
+    return coords;
   }
 } // namespace Marmot::Elements
