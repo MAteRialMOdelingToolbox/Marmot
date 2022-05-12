@@ -47,7 +47,8 @@ class MarmotGeometryElement {
 public:
   /*Typedefs*/
   /* static constexpr VoigtSize voigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 ); */
-  static constexpr Marmot::ContinuumMechanics::VoigtNotation::VoigtSize voigtSize = Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension ( nDim );
+  static constexpr Marmot::ContinuumMechanics::VoigtNotation::VoigtSize
+    voigtSize = Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension( nDim );
 
   typedef Eigen::Matrix< double, nDim, 1 >                  XiSized;
   typedef Eigen::Matrix< double, nDim * nNodes, 1 >         CoordinateVector;
@@ -79,7 +80,7 @@ public:
     return shapes[this->shape];
   }
 
-  void initializeYourself( const double* coords )
+  void assignNodeCoordinates( const double* coords )
   {
     new ( &coordinates ) Eigen::Map< const CoordinateVector >( coords );
   }
