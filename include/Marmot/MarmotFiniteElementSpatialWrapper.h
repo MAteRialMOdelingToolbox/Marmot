@@ -77,7 +77,9 @@ public:
 
   void assignProperty( const MarmotMaterialSection& property );
 
-  void initializeYourself( const double* coordinates );
+  void assignNodeCoordinates( const double* coordinates );
+
+  void initializeYourself();
 
   void computeYourself( const double* QTotal,
                         const double* dQ,
@@ -106,4 +108,6 @@ public:
                          double        dT );
 
   StateView getStateView( const std::string& stateName, int quadraturePoint );
+
+  std::vector< double > getCoordinatesAtCenter();
 };

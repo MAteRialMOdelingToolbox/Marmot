@@ -1,5 +1,5 @@
-#include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 #include "Eigen/Sparse"
+#include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
 
@@ -93,7 +93,12 @@ void MarmotElementSpatialWrapper::assignStateVars( double* stateVars, int nState
   childElement->assignStateVars( stateVars, nStateVars );
 }
 
-void MarmotElementSpatialWrapper::initializeYourself( const double* coordinates )
+void MarmotElementSpatialWrapper::initializeYourself()
+{
+    childElement->initializeYourself();
+}
+
+void MarmotElementSpatialWrapper::assignNodeCoordinates( const double* coordinates )
 {
   Map< const MatrixXd > unprojectedCoordinates( coordinates, nDim, nNodes );
 
@@ -131,7 +136,7 @@ void MarmotElementSpatialWrapper::initializeYourself( const double* coordinates 
   for ( int i = 0; i < nNodes; i++ )
     projectedCoordinates.col( i ) = T * unprojectedCoordinates.col( i );
 
-  childElement->initializeYourself( projectedCoordinates.data() );
+  childElement->assignNodeCoordinates( projectedCoordinates.data() );
 }
 
 void MarmotElementSpatialWrapper::computeYourself( const double* Q,
@@ -218,8 +223,22 @@ void MarmotElementSpatialWrapper::computeBodyForce( double*       P_,
 StateView MarmotElementSpatialWrapper::getStateView( const std::string& stateName, int quadraturePoint )
 {
   if ( stateName == "MarmotElementSpatialWrapper.T" ) {
-    return { T.data(), T.size() };
+    return { T.data(), static_cast< int >( T.size() ) };
   }
 
   return childElement->getStateView( stateName, quadraturePoint );
+}
+
+std::vector< double > MarmotElementSpatialWrapper::getCoordinatesAtCenter()
+{
+  std::vector< double > coords( nDim );
+
+  Eigen::Map< Eigen::VectorXd > coordsMap( &coords[0], nDim );
+
+  const auto                          coordsChild_ = childElement->getCoordinatesAtCenter();
+  Eigen::Map< const Eigen::VectorXd > coordsChild( &coordsChild_[0], coordsChild_.size() );
+
+  coordsMap = P.transpose() * coordsChild;
+
+  return coords;
 }
