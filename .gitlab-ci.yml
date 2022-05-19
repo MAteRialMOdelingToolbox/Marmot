@@ -33,7 +33,7 @@ variables:
     
 build and test:
   stage: build
-  image: continuumio/miniconda3:latest
+  image: condaforge/mambaforge:latest
   script:
     
     - function install_marmot_module(){
@@ -60,14 +60,8 @@ build and test:
           install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
         done; }
         
-    - conda create --name test_env
-    #- source activate test_env
-    - conda init bash
-    - source ~/.bashrc    # <- !!!
-    - conda activate test_env 
-    - conda config --add channels conda-forge 
-    - conda update --all
-    - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy gstools
+    - mamba install -c conda-forge cython compilers openmp gfortran make numpy scipy rich cmake matplotlib sympy gstools
+    - mamba install -c anaconda mkl mkl-include
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
