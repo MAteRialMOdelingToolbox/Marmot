@@ -36,41 +36,124 @@
 
 namespace Marmot::Materials {
 
+  /**
+   * \brief Implementation of a linear elastic material
+   * according to Bazant et al. (2015)
+   * generalized for 3D stress states.
+   *
+   * For further information see \ref b4.
+   */
   class B4 : public MarmotMaterialHypoElastic {
 
-    // elasticity
+    /// \brief Poisson's ratio
     const double& nu;
+    /**< #nu represents Poisson's ratio for isotropic linear elasticity.
+     * It is a reference variable to #materialProperties[0]. */
 
-    // basic creep
+    /// \brief asymptotic elastic compliance parameter
     const double& q1;
+    /**< #q1 represents the first compliance parameter for %Solidification Theory.
+     * It is a reference variable to #materialProperties[1]. */
+
+    /// \brief viscoelastic compliance parameter
     const double& q2;
+    /**< #q2 represents the second compliance parameter for %Solidification Theory.
+     * It is a reference variable to #materialProperties[2]. */
+
+    /// \brief viscoelastic compliance parameter
     const double& q3;
+    /**< #q3 represents the third compliance parameter for %Solidification Theory.
+     * It is a reference variable to #materialProperties[3]. */
+
+    /// \brief flow compliance parameter
     const double& q4;
+    /**< #q4 represents the fourth compliance parameter for %Solidification Theory.
+     * It is a reference variable to #materialProperties[4]. */
+
+    /// \brief log-power law exponent
     const double& n;
+    /**< #n represents the exponent of the log-power law used in the compliance function of the hardened constituent.
+     * It is a reference variable to #materialProperties[5]. */
+
+    /// \brief solidified volume exponent
     const double& m;
-    const size_t  nKelvinBasic;
+    /**< #m represents the exponent in the function describing the solidification of the material.
+     * It is a reference variable to #materialProperties[6]. */
+
+    /// \brief number of Kelvin units to approximate the viscoelastic compliance
+    const size_t nKelvinBasic;
+    /**< #nKelvinBasic the number of Kelvin units used to approximate the viscoelastic compliance.
+     * It is a reference variable to #materialProperties[7]. */
+
+    /// \brief minimal retardation time used in the viscoelastic Kelvin chain
     const double& minTauBasic;
+    /**< #minTauBasic represents the minimal retardation time in days used in the Kelvin chain to approximate the
+     * viscoelastic compliance. It is a reference variable to #materialProperties[8]. */
 
-    // autogenous shrinkage
+    /// \brief ultimate autogenous shrinkage strain
     const double& ultimateAutogenousShrinkageStrain;
+    /**< #ultimateAutogenousShrinkageStrain represents the ultimate autogenous shrinkage strain.
+     * It is a reference variable to #materialProperties[9]. */
+
+    /// \brief autogenous shrinkage half time
     const double& autogenousShrinkageHalfTime;
+    /**< #autogenousShrinkageHalfTime represents the autogenous shrinkage half time.
+     * It is a reference variable to #materialProperties[10]. */
+
+    /// \brief autogenous shrinkage material parameter
     const double& alpha;
+    /**< #alpha represents a cement type and concrete composition dependent material parameter for autogenous shrinkage.
+     * It is a reference variable to #materialProperties[11]. */
+
+    /// \brief autogenous shrinkage material parameter
     const double& rt;
+    /**< #rt represents a cement type dependent material parameter for autogenous shrinkage.
+     * It is a reference variable to #materialProperties[12]. */
 
-    // drying shrinkage
+    /// \brief ultimate drying shrinkage strain
     const double& ultimateDryingShrinkageStrain;
+    /**< #ultimateDryingShrinkageStrain represents the ultimate drying shrinkage strain at zero relative ambient
+     * humidity. It is a reference variable to #materialProperties[13]. */
+
+    /// \brief drying shrinkage half time
     const double& dryingShrinkageHalfTime;
+    /**< #dryingShrinkageHalfTime represents the drying shrinkage half time.
+     * It is a reference variable to #materialProperties[14]. */
+
+    /// \brief drying start time
     const double& dryingStart;
+    /**< #dryingStart represents start of drying in days.
+     * It is a reference variable to #materialProperties[15]. */
+
+    /// \brief relative ambient humidity
     const double& hEnv;
+    /**< #hEnv represents relative ambient humidity.
+     * It is a reference variable to #materialProperties[16]. */
 
-    // drying creep
+    /// \brief drying creep compliance parameter
     const double& q5;
-    const size_t  nKelvinDrying;
-    const double& minTauDrying;
+    /**< #q5 represents drying creep compliance parameter.
+     * It is a reference variable to #materialProperties[17]. */
 
-    // time parameters
+    /// \brief number of Kelvin units to approximate the drying creep compliance
+    const size_t nKelvinDrying;
+    /**< #q5 represents the number of Kelvin units to approximate the drying creep compliance function.
+     * It is a reference variable to #materialProperties[18]. */
+
+    /// \brief minimal retardation time used in the drying creep Kelvin chain
+    const double& minTauDrying;
+    /**< #minTauDrying represents the minimal retardation time used in the Kelvin chain to approximate the drying creep
+     * compliance function. It is a reference variable to #materialProperties[19]. */
+
+    /// \brief time to start hydration
     const double& castTime;
+    /**< #castTime represents the time at which hydration starts with respect to simulation time.
+     * It is a reference variable to #materialProperties[20]. */
+
+    /// \brief ratio of simulation time to days
     const double& timeToDays;
+    /**< #timeToDays represents the ratio of simulation time to days.
+     * It is a reference variable to #materialProperties[21]. */
 
     class B4StateVarManager : public MarmotStateVarVectorManager {
 
@@ -116,6 +199,7 @@ namespace Marmot::Materials {
     static constexpr int dryingCreepComplianceApproximationOrder = 5;
     static constexpr int basicCreepComplianceApproximationOrder  = 2;
 
+    /// \brief drying creep compliance function
     template < typename T_ >
     T_ phi( T_ xi, double b, double xiZero )
     {

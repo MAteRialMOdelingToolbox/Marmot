@@ -20,8 +20,8 @@ namespace Marmot::Materials {
       // clang-format off
       // elastic parameters
       nu                                ( materialProperties[0] ),
-      // basic creep parameters
       q1                                ( materialProperties[1] ),
+      // basic creep parameters
       q2                                ( materialProperties[2] ),
       q3                                ( materialProperties[3] ),
       q4                                ( materialProperties[4] ),
