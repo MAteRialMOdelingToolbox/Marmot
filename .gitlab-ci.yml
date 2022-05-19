@@ -65,7 +65,7 @@ build and test:
     - conda config --add channels conda-forge 
     - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy gstools
 
-    - git clone https://gitlab.com/libeigen/eigen.git
+    - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
     - mkdir build
     - cd build 
