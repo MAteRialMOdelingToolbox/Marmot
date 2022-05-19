@@ -60,8 +60,8 @@ build and test:
           install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
         done; }
         
-    - conda create --name test_env
-    - source activate test_env
+    #- conda create --name test_env
+    #- source activate test_env
     - conda config --add channels conda-forge 
     - conda install cython gxx_linux-64 openmp gfortran make numpy scipy rich mkl mkl-include cmake matplotlib sympy gstools
 
