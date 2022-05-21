@@ -113,8 +113,9 @@ This library is freely available under the LGPLV2 license. Please find the detai
 
 The principal developers are (in alphabetical order):
 * [Alexander Dummer](https://www.uibk.ac.at/bft/mitarbeiter/dummer.html.de) [@alexdummer](https://github.com/alexdummer) (since 2019), University of Innsbruck
+* [Paul Hofer](https://www.uibk.ac.at/bft/mitarbeiter/paulhofer.html.de) [@advktEntnschdl](https://github.com/advktEntnschdl) (since 2020), University of Innsbruck
 * [Thomas Mader](https://www.uibk.ac.at/bft/mitarbeiter/mader.html) [@maderthomas](https://github.com/maderthomas) (since 2019), University of Innsbruck
-* [Matthias Neuner](https://www.uibk.ac.at/bft/mitarbeiter/neuner.html) [@matthiasneuner](https://github.com/matthiasneuner) (since 2015), University of Innsbruck
+* [Matthias Neuner](https://www.uibk.ac.at/bft/mitarbeiter/neuner.html) [@matthiasneuner](https://github.com/matthiasneuner) (since 2015), University of Innsbruck, Stanford University
 * [Magdalena Schreter](https://www.uibk.ac.at/bft/mitarbeiter/schreter.html) [@mschreter](https://github.com/mschreter) (since 2015), University of Innsbruck
 
 Contributors are (in alphabetical order):
@@ -136,10 +137,14 @@ M Schreter, M Neuner, D Unteregger, G Hofstetter - Tunnelling and Underground Sp
 M Neuner, P Gamnitzer, G Hofstetter - Computers & Structures, 2020
 [https://doi.org/10.1016/j.compstruc.2020.106332](https://www.sciencedirect.com/science/article/pii/S0045794920301358)
 
+* On the prediction of complex shear dominated concrete failure by means of classical and higher order damage-plasticity continuum models.
+M Neuner, P Hofer, G Hofstetter - Engineering Structures, 2022
+[https://10.1016/j.engstruct.2021.113506](https://www.sciencedirect.com/science/article/pii/S0141029621016072)
+
 * An extended gradient-enhanced damage-plasticity model for concrete considering nonlinear creep and failure due to creep.
 A Dummer, M Neuner, G Hofstetter - International Journal of Solids and Structures, 2022
-[**https://doi.org/10.1016/j.ijsolstr.2022.111541**](https://www.sciencedirect.com/science/article/pii/S0020768322000907)
+[https://doi.org/10.1016/j.ijsolstr.2022.111541](https://www.sciencedirect.com/science/article/pii/S0020768322000907)
 
 * A gradient enhanced transversely isotropic damage plasticity model for rock - formulation and comparison of different approaches.
 T Mader, M Schreter, G Hofstetter - International Journal for Numerical and Analytical Methods in Geomechanics, 2022; 46: 933-960
-[**https://doi.org/10.1002/nag.3327**](https://doi.org/10.1002/nag.3327)
+[https://doi.org/10.1002/nag.3327](https://doi.org/10.1002/nag.3327)
