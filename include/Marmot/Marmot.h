@@ -98,6 +98,7 @@ namespace MarmotLibrary {
     ORDPNonLocal                       = 60,
     CosseratHoekBrown                  = 61,
     BulkMetallicGlass                  = 62,
+    RedWildmoorSandstone               = 63,
   };
 
   enum ElementCode {

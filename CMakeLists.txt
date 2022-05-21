@@ -157,6 +157,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         MohrCoulomb
         ViscoPlasticShotcreteModel 
         PorousElastic
+        RedWildmoorSandstone
         RockDamagePlasticity
         RockDamagePlasticityNonLocal
         ORDP
