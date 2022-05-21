@@ -218,6 +218,47 @@ namespace Marmot {
         return { r, dRdTheta };
       }
 
+      template < typename T >
+      static std::tuple< T, T, T > d2PolarRadius_dTheta2( const T& theta, const double& e )
+      {
+
+        const auto [r, dr_dTheta] = dPolarRadius_dTheta< T >( theta, e );
+        if ( e >= 1.0 ) {
+          return { r, dr_dTheta, 0 };
+        }
+
+        const double e2   = pow( e, 2 );
+        const double e2m1 = e2 - 1;
+        const double tem1 = 2 * e - 1;
+
+        const T cos_theta   = cos( theta );
+        const T sin_theta   = sin( theta );
+        const T cos_2_theta = cos_theta * cos_theta;
+        const T sin_2_theta = sin_theta * sin_theta;
+
+        const T x      = 5 * e2 - 4 * e - 4 * e2m1 * cos_2_theta;
+        const T sqrt_x = sqrt( x );
+
+        const T one_over_sqrt_x = 1. / sqrt_x;
+
+        const T d2r_dTheta2 = e2m1 *
+                              ( -16 * e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2 ) * sin_2_theta *
+                                  cos_theta / ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) -
+                                8 * sin_2_theta + 8 * cos_2_theta +
+                                ( pow( 2 * e - 1, 2 ) - 4 * e2m1 * cos_2_theta ) *
+                                  ( 16.0 * tem1 * e2m1 * pow( x, -1.5 ) * sin_2_theta * cos_2_theta +
+                                    4.0 * tem1 * one_over_sqrt_x * sin_2_theta -
+                                    4.0 * tem1 * one_over_sqrt_x * cos_2_theta +
+                                    e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2 ) *
+                                      ( 8.0 * tem1 * one_over_sqrt_x * cos_theta + 4 ) * sin_2_theta /
+                                      ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) -
+                                    2 * cos_theta ) /
+                                  ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) ) /
+                              ( tem1 * sqrt_x - 2 * e2m1 * cos_theta );
+
+        return { r, dr_dTheta, d2r_dTheta2 };
+      }
+
       /**
        * Evaluate the yield function \f$f\f$ depending on the Haigh-Westergaard stress
        * coordinates @ref hw. \f$f<0\f$ means no yielding while \f$f\geq0\f$ means
