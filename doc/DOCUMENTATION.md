@@ -4,24 +4,21 @@ Linear Elastic Model based on B4 model by Bazant et al. (2015)
 
 ## Implementation
 
-The implementation can be found in \ref Marmot::Materials::B4
+The implementation can be found in \ref Marmot::Materials::B4.
 
 ## Theory 
 
-This model is based on the B4 model proposed by Bazant et al. \cite Bazant2015. The constitutive law is given in total form as
+The present model is based on the B4 model proposed by Bazant et al. \cite Bazant2015 generalized to 3D. 
+The constitutive law is given in total form as
 
 \f[
   \displaystyle \sig = \Cel : \epsE  = 
-    \Cel : \left( \eps - \epsVE - \epsF - \epsDC -\epsSHR \right), \f]  
+    \Cel : \left( \eps - \epsVE - \epsF - \epsDC -\epsSHR \right), 
+\f]  
 
 relating the nominal stress tensor \f$ \sig \f$ 
 to the elastic strain tensor\f$ \epsE \f$ 
 in terms of the fourth order stiffness tensor \f$ \Cel \f$.
-
-The evolution of the strain components are governed by the following rate equations:
-
-\f[ 
- \displaystyle \epsERate(t) =  q_1 \, \CelUnitInv \, \sigRate(t) \\
- \displaystyle \epsVERate (t)  =  \dfrac{1}{v(t)}\, \int_0^t \dot{ \Phi }(t-t')\, \CelUnitInv : \mbox{d} \sig (t')\\ 
- \displaystyle \epsFRate(t)  =  \dfrac{q_4}{t}\, \CelUnitInv : \boldsymbol{ \sigma } (t) \\
-\f]
+The rate equations decribing the evolution of the respective 
+strain components can be found a recent publication by Dummer et al. \cite Dummer2022.
+However, nonlinear creep is not accounted for in the present formulation.
