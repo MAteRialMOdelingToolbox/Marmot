@@ -31,6 +31,7 @@
 namespace Marmot::Materials {
   namespace SolidificationTheory {
 
+    /// \brief material parameters for Solidification Theory
     struct Parameters {
       double q1;
       double q2;
@@ -41,6 +42,8 @@ namespace Marmot::Materials {
       double lambda0 = 1.;
     };
 
+    /// \brief properties of the Kelvin chain for approximating
+    /// the viscoelastic compliance of the Solidification Theory
     struct KelvinChainProperties {
       double                  E0;
       KelvinChain::Properties elasticModuli;
