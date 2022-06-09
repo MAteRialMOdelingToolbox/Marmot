@@ -33,7 +33,6 @@ from projectmanager import walk_modules
 rootDir = os.getcwd()
 preCommitInstallCommand = "cp {root}/.pre-commit-config.yaml .".format(root=rootDir)
 preCommitInstallCommand += " && pre-commit install"
-preCommitInstallCommand += " && rm .pre-commit-config.yaml"
 
 if __name__ == "__main__":
 
