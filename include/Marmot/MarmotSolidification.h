@@ -42,20 +42,23 @@ namespace Marmot::Materials {
       double lambda0 = 1.;
     };
 
-    /// \brief properties of the Kelvin chain for approximating
-    /// the viscoelastic compliance of the Solidification Theory
+    /**
+     * \brief properties of the Kelvin chain for approximating
+     * the viscoelastic compliance of the %Solidification Theory */
     struct KelvinChainProperties {
       double                  E0;
       KelvinChain::Properties elasticModuli;
       KelvinChain::Properties retardationTimes;
     };
 
+    /// \brief uniaxial compliance components of the %Solidification Theory
     struct UniaxialComplianceComponents {
       double elastic      = 0.;
       double viscoelastic = 0.;
       double flow         = 0.;
     };
 
+    /// \brief results of the %Solidification Theory for a certain time step
     struct Result {
       Marmot::Vector6d             creepStrainIncrement;
       UniaxialComplianceComponents complianceComponents;
@@ -71,10 +74,13 @@ namespace Marmot::Materials {
       const KelvinChainProperties&                           kelvinChainProperties,
       const Eigen::Ref< const KelvinChain::StateVarMatrix >& kelvinStateVars );
 
+    /// \brief solidified volume function according to %Solidification Theory
     double solidifiedVolume( double timeInDays, Parameters params );
 
+    /// \brief  to %Solidification Theory
     double computeZerothElasticModul( double tauMin, double n, int order );
 
+    /// \brief compliance of the hardened constituent
     template < typename T >
     T phi( T xi, Parameters params )
     {

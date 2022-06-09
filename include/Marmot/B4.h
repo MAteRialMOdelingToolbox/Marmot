@@ -38,7 +38,7 @@ namespace Marmot::Materials {
 
   /**
    * \brief Implementation of a linear elastic material
-   * according to Bazant et al. (2015)
+   * according to the B4 model by Bazant et al. (2015)
    * generalized for 3D stress states.
    *
    * For further information see \ref b4.
