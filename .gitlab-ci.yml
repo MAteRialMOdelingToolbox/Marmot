@@ -30,6 +30,7 @@ variables:
       # repo name                 secret repo url                       default branch
     value: |
       LinearElastic               $LinearElastic_Repo                   master
+      B4                          $B4_Repo                              master
     
 build and test:
   stage: build
