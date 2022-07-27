@@ -155,7 +155,8 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         ModLeonPlaneStress
         ModLeonNonLocal
         MohrCoulomb
-        ViscoPlasticShotcreteModel 
+        ViscoPlasticShotcreteModel
+        VonMises
         PorousElastic
         RedWildmoorSandstone
         RockDamagePlasticity

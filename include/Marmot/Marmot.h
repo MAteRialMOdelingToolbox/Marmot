@@ -99,6 +99,7 @@ namespace MarmotLibrary {
     CosseratHoekBrown                  = 61,
     BulkMetallicGlass                  = 62,
     RedWildmoorSandstone               = 63,
+    VonMises                           = 64,
   };
 
   enum ElementCode {
