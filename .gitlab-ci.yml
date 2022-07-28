@@ -31,6 +31,7 @@ variables:
     value: |
       LinearElastic               $LinearElastic_Repo                   master
       B4                          $B4_Repo                              master
+      VonMises                    $VonMises_Repo                        main
     
 build and test:
   stage: build
