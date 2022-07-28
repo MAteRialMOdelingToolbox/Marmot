@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['displacementfiniteelement_856',['DisplacementFiniteElement',['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html',1,'Marmot::Elements']]],
-  ['duvautlionsviscosity_857',['DuvautLionsViscosity',['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels']]]
+  ['displacementfiniteelement_857',['DisplacementFiniteElement',['../classMarmot_1_1Elements_1_1DisplacementFiniteElement.html',1,'Marmot::Elements']]],
+  ['duvautlionsviscosity_858',['DuvautLionsViscosity',['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1DuvautLionsViscosity.html',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels']]]
 ];
