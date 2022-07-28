@@ -1,10 +1,11 @@
+#include "Marmot/VonMises.h"
 #include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include "Marmot/VonMises.h"
+#include "Marmot/VonMisesConstants.h"
 #include <iostream>
 #include <map>
 
@@ -34,96 +35,94 @@ namespace Marmot::Materials {
                                      double&       pNewDT )
 
   {
+    // elasticity parameters
+    const double& E  = this->materialProperties[0];
+    const double& nu = this->materialProperties[1];
+    // plasticity parameters
+    const double& yieldStress      = this->materialProperties[2];
+    const double& HLin             = this->materialProperties[3];
+    const double& deltaYieldStress = this->materialProperties[4];
+    const double& delta            = this->materialProperties[5];
+
+    // map to stress, strain and tangent
     mVector6d  S( stress );
     mMatrix6d  dS_dE( dStress_dStrain );
     const auto dE = Map< const Vector6d >( dStrain );
 
-    int i = 0;
-
-    // elasticity parameters
-    const double& E  = this->materialProperties[i++];
-    const double& nu = this->materialProperties[i++];
-    // plasticity parameters
-    const double& yieldStress      = this->materialProperties[i++];
-    const double& HLin             = this->materialProperties[i++];
-    const double& deltaYieldStress = this->materialProperties[i++];
-    const double& delta            = this->materialProperties[i++];
-
+    // compute elastic stiffness
     const auto Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-    double& kappa = managedStateVars->kappa;
-
+    // handle zero strain increment
     if ( dE.isZero( 1e-14 ) ) {
       dS_dE = Cel;
       return;
     }
+
+    // get current hardening variable
+    double& kappa = managedStateVars->kappa;
 
     // isotropic hardening law
     auto fy = [&]( double kappa_ ) {
       return yieldStress + HLin * kappa_ + deltaYieldStress * ( 1. - std::exp( -delta * kappa_ ) );
     };
 
+    // derivative of fy wrt dKappa
+    auto dfy_ddKappa = [&]( double kappa_ ) { return HLin + deltaYieldStress * delta * std::exp( -delta * kappa_ ); };
+
     // yield function
     auto f = [&]( double rho_, double kappa_ ) { return rho_ - Constants::sqrt2_3 * fy( kappa_ ); };
 
+    // compute elastic predictor
     Vector6d trialStress = S + Cel * dE;
 
-    std::cout << trialStress << std::endl;
+    using namespace ContinuumMechanics::VoigtNotation;
+    double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
 
-    const auto hwTrial = ContinuumMechanics::HaighWestergaard::haighWestergaard( trialStress );
-
-    if ( f( hwTrial.rho, kappa ) >= 0. ) {
-      // plastic stepi
-      const double G = E / ( 2. * ( 1. - nu ) );
+    if ( f( rhoTrial, kappa ) >= 0.0 ) {
+      // plastic step
+      const double G = E / ( 2. * ( 1. + nu ) );
 
       auto g = [&]( double deltaKappa ) {
-        return hwTrial.rho - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa + deltaKappa );
+        return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa + deltaKappa );
       };
 
-      double       dKappa  = 0.0;
-      const double tol     = 1e-12;
-      int          counter = 0;
-      double       dg_ddKappa;
+      // variables for return mapping
+      int    counter    = 0;
+      double dKappa     = 0;
+      double dLambda    = 0;
+      double dg_ddKappa = 0;
 
-      while ( std::abs( g( dKappa ) ) > tol ) {
-        dg_ddKappa = -Constants::sqrt6 * G -
-                     Constants::sqrt2_3 * ( HLin + deltaYieldStress * delta * std::exp( -delta * ( kappa + dKappa ) ) );
+      // compute return mapping direction
+      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
-        // std::cout << "dg_dkappa =" << dg_ddKappa << std::endl;
-        // std::cout << "g = " << g( dKappa ) << std::endl;
-        // std::cout << dKappa << std::endl;
-        // std::cout << counter << std::endl;
-
-        dKappa -= g( dKappa ) / dg_ddKappa;
-        counter += 1;
-
-        if ( counter == 5 ) {
-          pNewDT = 0.25;
+        if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
+          pNewDT = 0.5;
           return;
         }
+        // compute derivative of g wrt kappa
+        dg_ddKappa = -Constants::sqrt6 * G - dfy_ddKappa( kappa + dKappa );
+
+        // update dKappa and iteration counter
+        dKappa -= g( dKappa ) / dg_ddKappa;
+        counter += 1;
       }
 
-      double dLambda = Constants::sqrt3_2 * dKappa;
-      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / hwTrial.rho;
-      Vector6d dEp = dLambda * n;
-      std::cout << "dEp = " << dEp << std::endl;
-      std::cout << " n = " << n << std::endl;
-      S            = trialStress - Cel * dEp;
+      dLambda = Constants::sqrt3_2 * dKappa;
 
-      const auto hw = ContinuumMechanics::HaighWestergaard::haighWestergaard( Vector6d( S ) );
-      std::cout << hw.rho << std::endl;
-
-      std::cout << "f =" << f( hw.rho, kappa + dKappa ) << std::endl;
-      dS_dE = Cel;
-      kappa += dKappa;
+      // update material state
+      S     = trialStress - 2. * G * dLambda * n;
+      kappa = kappa + dKappa;
+      dS_dE = Cel -
+              2. * G * ( 1. / ( 1. + dfy_ddKappa( kappa ) / ( 3. * G ) ) - 2. * G * dLambda / rhoTrial ) *
+                ( n * n.transpose() ) -
+              4. * G * G * dLambda / rhoTrial * ContinuumMechanics::VoigtNotation::IDev;
     }
     else {
       // elastic step
       S     = trialStress;
       dS_dE = Cel;
     }
-
-    std::cout << S << std::endl;
   }
 
 } // namespace Marmot::Materials

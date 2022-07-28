@@ -1,5 +1,5 @@
-#include "Marmot/VonMises.h"
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
+#include "Marmot/VonMises.h"
 
 namespace Marmot::Materials {
 
