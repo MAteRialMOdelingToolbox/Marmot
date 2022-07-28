@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classMarmotStateVarVectorManager.html#structMarmotStateVarVectorManager_1_1StateVarEntryLocation" title="The location in the statevar vector consists of the index and its certain length." alt="" coords="5,5,211,47"/>
+<area shape="rect" id="node1" href="$classMarmotStateVarVectorManager.html" title="A convenience auxiliary class for managing multiple statevars with arbitrary length in a single conse..." alt="" coords="5,20,211,47"/>
+<area shape="rect" id="node2" href="$classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager.html" title=" " alt="" coords="259,5,517,61"/>
 </map>

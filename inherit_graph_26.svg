@@ -12,10 +12,10 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classMarmotStateVarVectorManager.html#structMarmotStateVarVectorManager_1_1StateVarVectorLayout" target="_top" xlink:title="The layout is defined by a map of names to Locations, and the resulting required total length of the ...">
+<g id="a_node1"><a xlink:href="classMarmotStateVarVectorManager.html#structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" target="_top" xlink:title="An entry in the statevar vector consists of the name and a certain length.">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-30.5 154,-30.5 154,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">MarmotStateVarVectorManager</text>
-<text text-anchor="middle" x="77" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::StateVarVectorLayout</text>
+<text text-anchor="middle" x="77" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::StateVarEntryDefinition</text>
 </a>
 </g>
 </g>

@@ -1,11 +1,4 @@
 var searchData=
 [
-  ['voigtfromstrainmatrix_1231',['voigtFromStrainMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#adc904196332827470b25210bcfacf896',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigtmap_1232',['voigtMap',['../namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation.html#a4ddc1f00f3679253f9bba7bbca7d6ae5',1,'Marmot::ContinuumMechanics::TensorUtility::IndexNotation']]],
-  ['voigtsizefromdimension_1233',['voigtSizeFromDimension',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a43f9254e1161e4f4209858acbddca1ff',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttoplanevoigt_1234',['voigtToPlaneVoigt',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae6aafe38fa41600a041daf106f615787',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttostrain_1235',['voigtToStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['voigttostress_1236',['voigtToStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a5c73d9ab097dcfcda4b5f208457c9b52',1,'Marmot::ContinuumMechanics::VoigtNotation']]],
-  ['vonmisesequivalentstrain_1237',['vonMisesEquivalentStrain',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]],
-  ['vonmisesequivalentstress_1238',['vonMisesEquivalentStress',['../namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a2edc962186bf90e55cd2acee21d1a61c',1,'Marmot::ContinuumMechanics::VoigtNotation::Invariants']]]
+  ['updatestatevarmatrix_1279',['updateStateVarMatrix',['../namespaceMarmot_1_1Materials_1_1KelvinChain.html#a59398da9ad5bc47468fef8fc9e6239f0',1,'Marmot::Materials::KelvinChain::updateStateVarMatrix(const double dT, Properties elasticModuli, Properties retardationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, const Marmot::Vector6d &amp;dStress, const Marmot::Matrix6d &amp;unitComplianceMatrix)'],['../namespaceMarmot_1_1Materials_1_1KelvinChain.html#a504ae00b33225c5078df31382076fa3d',1,'Marmot::Materials::KelvinChain::updateStateVarMatrix(double dT, Properties elasticModuli, Properties retardationTimes, Ref&lt; StateVarMatrix &gt; stateVars, const Vector6d &amp;dStress, const Matrix6d &amp;unitComplianceMatrix)']]]
 ];

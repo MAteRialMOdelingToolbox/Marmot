@@ -1,20 +1,4 @@
 var searchData=
 [
-  ['makestring_834',['MakeString',['../classMakeString.html',1,'']]],
-  ['marmotelement_835',['MarmotElement',['../classMarmotElement.html',1,'']]],
-  ['marmotelementfactory_836',['MarmotElementFactory',['../classMarmotLibrary_1_1MarmotElementFactory.html',1,'MarmotLibrary']]],
-  ['marmotelementspatialwrapper_837',['MarmotElementSpatialWrapper',['../classMarmotElementSpatialWrapper.html',1,'']]],
-  ['marmotgeometryelement_838',['MarmotGeometryElement',['../classMarmotGeometryElement.html',1,'']]],
-  ['marmotjournal_839',['MarmotJournal',['../classMarmotJournal.html',1,'']]],
-  ['marmotmaterial_840',['MarmotMaterial',['../classMarmotMaterial.html',1,'']]],
-  ['marmotmaterialfactory_841',['MarmotMaterialFactory',['../classMarmotLibrary_1_1MarmotMaterialFactory.html',1,'MarmotLibrary']]],
-  ['marmotmaterialgradientenhancedhypoelastic_842',['MarmotMaterialGradientEnhancedHypoElastic',['../classMarmotMaterialGradientEnhancedHypoElastic.html',1,'']]],
-  ['marmotmaterialgradientenhancedmechanical_843',['MarmotMaterialGradientEnhancedMechanical',['../classMarmotMaterialGradientEnhancedMechanical.html',1,'']]],
-  ['marmotmaterialhyperelastic_844',['MarmotMaterialHyperElastic',['../classMarmotMaterialHyperElastic.html',1,'']]],
-  ['marmotmaterialhypoelastic_845',['MarmotMaterialHypoElastic',['../classMarmotMaterialHypoElastic.html',1,'']]],
-  ['marmotmaterialmechanical_846',['MarmotMaterialMechanical',['../classMarmotMaterialMechanical.html',1,'']]],
-  ['marmotmaterialsection_847',['MarmotMaterialSection',['../classMarmotMaterialSection.html',1,'']]],
-  ['marmotstatevarvectormanager_848',['MarmotStateVarVectorManager',['../classMarmotStateVarVectorManager.html',1,'']]],
-  ['menetreywillam_849',['MenetreyWillam',['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels']]],
-  ['menetreywillamparameters_850',['MenetreyWillamParameters',['../classMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam.html#structMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels_1_1MenetreyWillam_1_1MenetreyWillamParameters',1,'Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam']]]
+  ['linearelastic_863',['LinearElastic',['../classMarmot_1_1Materials_1_1LinearElastic.html',1,'Marmot::Materials']]]
 ];

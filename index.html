@@ -39,11 +39,13 @@
     epsP: "{\\eps^{\\t{p}}}",
     epsVE: "{\\eps^{\\t{ve}}}",
     epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
     epsSHR: "{\\eps^{\\t{shr}}}",
     epsERate: "{\\epsRate^{\\t{el}}}",
     epsPRate: "{\\epsRate^{\\t{p}}}",
     epsVERate: "{\\epsRate^{\\t{ve}}}",
     epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
     epsSHRRate: "{\\epsRate^{\\t{shr}}}",
     epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
     const: "{\\t{const.}}",
@@ -134,7 +136,7 @@
 			<table cellspacing="0" cellpadding="0">
 				<tbody>
 					<tr style="height: 56px;">
-						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<!--<div id="projectname">Marmot
 							</div>-->
@@ -175,11 +177,103 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
 <div class="title">Marmot Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_doc_markdown_mainpage"></a><b>[WIP] Note: This project is still in the transfer stage to an open-source project. Thus, many changes will be made in the near future.</b></p>
+<h2><a class="anchor" id="autotoc_md28"></a>
+What is Marmot?</h2>
+<p><a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a> (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and open source codes like MOOSE or OpenSees, are ready-to-use available.</p>
+<h2><a class="anchor" id="autotoc_md29"></a>
+Gallery</h2>
+<p><img src="../../share/truss.gif" alt="Truss in compression using a micropolar von Mises plasticity model" class="inline"/></p>
+<p>Truss in compression using a micropolar von Mises plasticity model.</p>
+<p><img src="../../share/plane_strain_gmdruckerprager.gif" alt="Plane strain compression using a micropolar Drucker-Prager plasticity model" class="inline"/></p>
+<p>Plane strain compression using a micropolar Drucker-Prager plasticity model</p>
+<p><img src="../../share/MultiJoint_Rock.gif" alt="Triaxial compression using an orthotropic jointed rock plasticity model" class="inline"/></p>
+<p>Triaxial compression using an orthotropic jointed rock plasticity model</p>
+<h2><a class="anchor" id="autotoc_md30"></a>
+Third-party dependencies</h2>
+<p><a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a> requires the Eigen (&gt;3.3.8) and the autodiff (&gt;0.6.0) libraries:</p>
+<div class="fragment"><div class="line">git clone https://gitlab.com/libeigen/eigen.git</div>
+<div class="line">cd eigen</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake ..</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><div class="fragment"><div class="line">git clone https://github.com/autodiff/autodiff.git</div>
+<div class="line">cd autodiff</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><p>For anaconda users, those libraries can also be installed from the channels.</p>
+<h2><a class="anchor" id="autotoc_md31"></a>
+How to install Marmot</h2>
+<p><a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a> including all submodules can be installed with the following steps:</p>
+<div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ </div>
+<div class="line">cd Marmot</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake ..</div>
+<div class="line">make</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><p>CMake options CORE_MODULES, ELEMENT_MODULES and MATERIAL_MODULES allow to specify the modules which should be compiled, either by passing a semicolon seperated list, option <b>none</b> or option <b>all</b> (default). For instance:</p>
+<div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ </div>
+<div class="line">cd Marmot</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake \</div>
+<div class="line">    -DCORE_MODULES=&#39;MarmotMechanicsCore;MarmotFiniteElementCore&#39; \</div>
+<div class="line">    -DELEMENT_MODULES=&#39;none&#39; \</div>
+<div class="line">    -DMATERIAL_MODULES=&#39;all&#39; \</div>
+<div class="line">    ..</div>
+<div class="line">make</div>
+<div class="line">sudo make install</div>
+</div><!-- fragment --><p>CMake option CMAKE_INSTALL_PREFIX allows to specify the installation directory. For instance:</p>
+<div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ </div>
+<div class="line">cd Marmot</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake \</div>
+<div class="line">    -DCMAKE_INSTALL_PREFIX=/your/special/installationdirectory \</div>
+<div class="line">    ..</div>
+<div class="line">make</div>
+<div class="line">make install</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
+How to use Marmot with Abaqus</h2>
+<p>The <a href="https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface"><b>Abaqus-MarmotInterface</b></a> allows to use <a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a> in Abaqus simulations.</p>
+<h2><a class="anchor" id="autotoc_md33"></a>
+How to use Marmot with MOOSE</h2>
+<p>The <a href="https://github.com/matthiasneuner/chamois"><b>chamois App</b></a> allows to use <a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a> directly in <a href="https://github.com/idaholab/moose"><b>MOOSE</b></a>. A singularity container recipe is <a href="https://github.com/matthiasneuner/chamois-singularity"><b>available</b></a>.</p>
+<h2><a class="anchor" id="autotoc_md34"></a>
+License</h2>
+<p>This library is freely available under the LGPLV2 license. Please find the details in the LICENSE.md file.</p>
+<h2><a class="anchor" id="autotoc_md35"></a>
+Authors</h2>
+<p>The principal developers are (in alphabetical order):</p><ul>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/dummer.html.de"><b>Alexander Dummer</b></a> <a href="https://github.com/alexdummer">@alexdummer</a> (since 2019), University of Innsbruck</li>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/mader.html"><b>Thomas Mader</b></a> <a href="https://github.com/maderthomas">@maderthomas</a> (since 2019), University of Innsbruck</li>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/neuner.html"><b>Matthias Neuner</b></a> <a href="https://github.com/matthiasneuner">@matthiasneuner</a> (since 2015), University of Innsbruck</li>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/schreter.html"><b>Magdalena Schreter</b></a> <a href="https://github.com/mschreter">@mschreter</a> (since 2015), University of Innsbruck</li>
+</ul>
+<p>Contributors are (in alphabetical order):</p><ul>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/brugger.html.de"><b>Andreas Brugger</b></a> <a href="https://github.com/theBruegge">@theBruegge</a>, University of Innsbruck</li>
+<li><a href="https://www.uibk.ac.at/bft/mitarbeiter/gamnitzer.html.de"><b>Peter Gamnitzer</b></a>, University of Innsbruck</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md36"></a>
+Publications (selected)</h2>
+<p>The results of the following publications were obtained using <a class="el" href="namespaceMarmot.html" title="This file includes functions needed for calculations with stress and strain tensors written in voigt ...">Marmot</a>:</p>
+<ul>
+<li>On discrepancies between time-dependent nonlinear 3D and 2D finite element simulations of deep tunnel advance: A numerical study on the Brenner Base Tunnel. M Neuner, M Schreter, P Gamnitzer, G Hofstetter - Computers and Geotechnics, 2020 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0266352X19304197"><b>https://doi.org/10.1016/j.compgeo.2019.103355</b></a></li>
+<li>On the importance of advanced constitutive models in finite element simulations of deep tunnel advance. M Schreter, M Neuner, D Unteregger, G Hofstetter - Tunnelling and Underground Space Technology, 2018 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0886779818301950"><b>https://doi.org/10.1016/j.tust.2018.06.008</b></a></li>
+<li>A 3D gradient-enhanced micropolar damage-plasticity approach for modeling quasi-brittle failure of cohesive-frictional materials. M Neuner, P Gamnitzer, G Hofstetter - Computers &amp; Structures, 2020 <a href="https://www.sciencedirect.com/science/article/pii/S0045794920301358"><b>https://doi.org/10.1016/j.compstruc.2020.106332</b></a></li>
+<li>An extended gradient-enhanced damage-plasticity model for concrete considering nonlinear creep and failure due to creep. A Dummer, M Neuner, G Hofstetter - International Journal of Solids and Structures, 2022 <a href="https://www.sciencedirect.com/science/article/pii/S0020768322000907"><b>https://doi.org/10.1016/j.ijsolstr.2022.111541</b></a></li>
+<li>A gradient enhanced transversely isotropic damage plasticity model for rock - formulation and comparison of different approaches. T Mader, M Schreter, G Hofstetter - International Journal for Numerical and Analytical Methods in Geomechanics, 2022; 46: 933-960 <a href="https://doi.org/10.1002/nag.3327"><b>https://doi.org/10.1002/nag.3327</b></a> </li>
+</ul>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 		<script src="custom.js"></script>

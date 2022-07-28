@@ -39,11 +39,13 @@
     epsP: "{\\eps^{\\t{p}}}",
     epsVE: "{\\eps^{\\t{ve}}}",
     epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
     epsSHR: "{\\eps^{\\t{shr}}}",
     epsERate: "{\\epsRate^{\\t{el}}}",
     epsPRate: "{\\epsRate^{\\t{p}}}",
     epsVERate: "{\\epsRate^{\\t{ve}}}",
     epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
     epsSHRRate: "{\\epsRate^{\\t{shr}}}",
     epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
     const: "{\\t{const.}}",
@@ -134,7 +136,7 @@
 			<table cellspacing="0" cellpadding="0">
 				<tbody>
 					<tr style="height: 56px;">
-						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<!--<div id="projectname">Marmot
 							</div>-->
@@ -235,8 +237,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d05121938f57f6bc969774ac384f1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accde07ef0b65f8ae46108fcbc793dc59"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#accde07ef0b65f8ae46108fcbc793dc59">assignProperty</a> (const <a class="el" href="classMarmotMaterialSection.html">MarmotMaterialSection</a> &amp;property)</td></tr>
 <tr class="separator:accde07ef0b65f8ae46108fcbc793dc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a539983f31c67a52b7012f97d31212d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a0a539983f31c67a52b7012f97d31212d">initializeYourself</a> (const double *coordinates)=0</td></tr>
-<tr class="separator:a0a539983f31c67a52b7012f97d31212d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab43a5fd29bebd1d7b5129bcb51fb192b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#ab43a5fd29bebd1d7b5129bcb51fb192b">assignNodeCoordinates</a> (const double *coordinates)=0</td></tr>
+<tr class="separator:ab43a5fd29bebd1d7b5129bcb51fb192b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2fee3bfc78fa49a28ceded4aaa3f836"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#ad2fee3bfc78fa49a28ceded4aaa3f836">initializeYourself</a> ()=0</td></tr>
+<tr class="separator:ad2fee3bfc78fa49a28ceded4aaa3f836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dada12f443d996232e95326b39abed7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">setInitialConditions</a> (<a class="el" href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b">StateTypes</a> state, const double *values)=0</td></tr>
 <tr class="separator:a8dada12f443d996232e95326b39abed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbef3863159574d0bc93aa9c327cb493"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">computeYourself</a> (const double *QTotal, const double *dQ, double *Pint, double *K, const double *time, double dT, double &amp;pNewdT)=0</td></tr>
@@ -247,6 +251,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa0ef25e441523e4d36b748e83a4270b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</a> (const std::string &amp;stateName, int quadraturePoint)=0</td></tr>
 <tr class="separator:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aec5b505f89d2fca61b77befd2f06b7"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a6aec5b505f89d2fca61b77befd2f06b7">getCoordinatesAtCenter</a> ()=0</td></tr>
+<tr class="separator:a6aec5b505f89d2fca61b77befd2f06b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a4a399e8339bb2f93d379841bb252461b"></a>
@@ -574,8 +580,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0a539983f31c67a52b7012f97d31212d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a539983f31c67a52b7012f97d31212d">&#9670;&nbsp;</a></span>initializeYourself()</h2>
+<a id="ab43a5fd29bebd1d7b5129bcb51fb192b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab43a5fd29bebd1d7b5129bcb51fb192b">&#9670;&nbsp;</a></span>assignNodeCoordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -584,7 +590,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void MarmotElement::initializeYourself </td>
+          <td class="memname">virtual void MarmotElement::assignNodeCoordinates </td>
           <td>(</td>
           <td class="paramtype">const double *&#160;</td>
           <td class="paramname"><em>coordinates</em></td><td>)</td>
@@ -598,7 +604,34 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#accddf4616e2a6a0d709b0c0105ed4aba">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>, and <a class="el" href="classMarmotElementSpatialWrapper.html#a1e3c45b2bf57cf38a14441ff1aca4215">MarmotElementSpatialWrapper</a>.</p>
+<p>Implemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a98a9993ac5fa4e39c2bf54d6411e64f7">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>, and <a class="el" href="classMarmotElementSpatialWrapper.html#acd6bc7e5c1f4e2ae91830c24398beee9">MarmotElementSpatialWrapper</a>.</p>
+
+</div>
+</div>
+<a id="ad2fee3bfc78fa49a28ceded4aaa3f836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2fee3bfc78fa49a28ceded4aaa3f836">&#9670;&nbsp;</a></span>initializeYourself()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void MarmotElement::initializeYourself </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ad87745ce0f1345646df3699c259c1c8f">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>, and <a class="el" href="classMarmotElementSpatialWrapper.html#ae0206d68142bd2c2b56334e3f5e48609">MarmotElementSpatialWrapper</a>.</p>
 
 </div>
 </div>
@@ -879,6 +912,33 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classMarmotElementSpatialWrapper.html#a4c6940f963c814d25b38c4c5b7752dfa">MarmotElementSpatialWrapper</a>, and <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ae5d58342d479c1e7e4170d8c151e7649">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a6aec5b505f89d2fca61b77befd2f06b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aec5b505f89d2fca61b77befd2f06b7">&#9670;&nbsp;</a></span>getCoordinatesAtCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; double &gt; MarmotElement::getCoordinatesAtCenter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a3d5dfa36bac08553bb9165ddb63080b2">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>, and <a class="el" href="classMarmotElementSpatialWrapper.html#ab270b0bf2343259bf92621076b44510b">MarmotElementSpatialWrapper</a>.</p>
 
 </div>
 </div>

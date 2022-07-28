@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Marmot::ContinuumMechanics::LocalizationAnalysis Namespace Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics.html">ContinuumMechanics</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis.html">LocalizationAnalysis</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle">
+<div class="title">Marmot::ContinuumMechanics::LocalizationAnalysis Namespace Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a9692823e1e7ecc1cb29e22628c0b72b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot::Matrix3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis.html#a9692823e1e7ecc1cb29e22628c0b72b8">computeAcousticTensor</a> (const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;materialTangent, const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Marmot::Vector3d</a> &amp;normalVector)</td></tr>
+<tr class="separator:a9692823e1e7ecc1cb29e22628c0b72b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2584a6773166e96f681967bc4e41090a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis.html#a2584a6773166e96f681967bc4e41090a">localizationChecker</a> (const <a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot::Matrix3d</a> &amp;acousticTensor)</td></tr>
+<tr class="separator:a2584a6773166e96f681967bc4e41090a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f0c7c37fb9434b5d74af0a5b5c86d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Marmot::Vector3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis.html#a25f0c7c37fb9434b5d74af0a5b5c86d4">computeNormalVector</a> (double alpha, double beta)</td></tr>
+<tr class="separator:a25f0c7c37fb9434b5d74af0a5b5c86d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af73e1300206b015b834ce93a24538060"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis.html#af73e1300206b015b834ce93a24538060">minimumDeterminantAcousticTensor</a> (const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;materialTangent)</td></tr>
+<tr class="separator:af73e1300206b015b834ce93a24538060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a9692823e1e7ecc1cb29e22628c0b72b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9692823e1e7ecc1cb29e22628c0b72b8">&#9670;&nbsp;</a></span>computeAcousticTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot::Matrix3d</a> Marmot::ContinuumMechanics::LocalizationAnalysis::computeAcousticTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;&#160;</td>
+          <td class="paramname"><em>materialTangent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Marmot::Vector3d</a> &amp;&#160;</td>
+          <td class="paramname"><em>normalVector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2584a6773166e96f681967bc4e41090a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2584a6773166e96f681967bc4e41090a">&#9670;&nbsp;</a></span>localizationChecker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Marmot::ContinuumMechanics::LocalizationAnalysis::localizationChecker </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot::Matrix3d</a> &amp;&#160;</td>
+          <td class="paramname"><em>acousticTensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a25f0c7c37fb9434b5d74af0a5b5c86d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25f0c7c37fb9434b5d74af0a5b5c86d4">&#9670;&nbsp;</a></span>computeNormalVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Marmot::Vector3d</a> Marmot::ContinuumMechanics::LocalizationAnalysis::computeNormalVector </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>beta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af73e1300206b015b834ce93a24538060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73e1300206b015b834ce93a24538060">&#9670;&nbsp;</a></span>minimumDeterminantAcousticTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Marmot::ContinuumMechanics::LocalizationAnalysis::minimumDeterminantAcousticTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;&#160;</td>
+          <td class="paramname"><em>materialTangent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

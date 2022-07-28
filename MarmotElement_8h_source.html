@@ -39,11 +39,13 @@
     epsP: "{\\eps^{\\t{p}}}",
     epsVE: "{\\eps^{\\t{ve}}}",
     epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
     epsSHR: "{\\eps^{\\t{shr}}}",
     epsERate: "{\\epsRate^{\\t{el}}}",
     epsPRate: "{\\epsRate^{\\t{p}}}",
     epsVERate: "{\\epsRate^{\\t{ve}}}",
     epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
     epsSHRRate: "{\\epsRate^{\\t{shr}}}",
     epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
     const: "{\\t{const.}}",
@@ -134,7 +136,7 @@
 			<table cellspacing="0" cellpadding="0">
 				<tbody>
 					<tr style="height: 56px;">
-						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<!--<div id="projectname">Marmot
 							</div>-->
@@ -256,36 +258,40 @@ $(function() {
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classMarmotElement.html#accde07ef0b65f8ae46108fcbc793dc59">   71</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#accde07ef0b65f8ae46108fcbc793dc59">assignProperty</a>( <span class="keyword">const</span> <a class="code" href="classMarmotMaterialSection.html">MarmotMaterialSection</a>&amp; property );</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a0a539983f31c67a52b7012f97d31212d">   73</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#a0a539983f31c67a52b7012f97d31212d">initializeYourself</a>( <span class="keyword">const</span> <span class="keywordtype">double</span>* coordinates ) = 0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classMarmotElement.html#ab43a5fd29bebd1d7b5129bcb51fb192b">   73</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#ab43a5fd29bebd1d7b5129bcb51fb192b">assignNodeCoordinates</a>( <span class="keyword">const</span> <span class="keywordtype">double</span>* coordinates ) = 0;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">   75</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">setInitialConditions</a>( <a class="code" href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b">StateTypes</a> state, <span class="keyword">const</span> <span class="keywordtype">double</span>* values ) = 0;</div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classMarmotElement.html#ad2fee3bfc78fa49a28ceded4aaa3f836">   75</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#ad2fee3bfc78fa49a28ceded4aaa3f836">initializeYourself</a>() = 0;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">   77</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">computeYourself</a>( <span class="keyword">const</span> <span class="keywordtype">double</span>* QTotal,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">double</span>* dQ,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                <span class="keywordtype">double</span>*       Pint,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                <span class="keywordtype">double</span>*       K,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">double</span>* time,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                <span class="keywordtype">double</span>        dT,</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                <span class="keywordtype">double</span>&amp;       pNewdT ) = 0;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004">   85</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004">computeDistributedLoad</a>( <a class="code" href="classMarmotElement.html#a023cde1fc79ae1457663aa0093e758f5">DistributedLoadTypes</a> loadType,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                       <span class="keywordtype">double</span>*              Pext,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                       <span class="keywordtype">double</span>*              K,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                       <span class="keywordtype">int</span>                  elementFace,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        load,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        QTotal,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        time,</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                       <span class="keywordtype">double</span>               dT ) = 0;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">   94</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">computeBodyForce</a>( <span class="keywordtype">double</span>*       Pext,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                                 <span class="keywordtype">double</span>*       K,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* load,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* QTotal,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* time,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                 <span class="keywordtype">double</span>        dT ) = 0;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">  101</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="MarmotUtils_8h.html#structStateView">StateView</a> <a class="code" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</a>( <span class="keyword">const</span> std::string&amp; stateName, <span class="keywordtype">int</span> quadraturePoint ) = 0;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">   77</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">setInitialConditions</a>( <a class="code" href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b">StateTypes</a> state, <span class="keyword">const</span> <span class="keywordtype">double</span>* values ) = 0;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">   79</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">computeYourself</a>( <span class="keyword">const</span> <span class="keywordtype">double</span>* QTotal,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">double</span>* dQ,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                <span class="keywordtype">double</span>*       Pint,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                <span class="keywordtype">double</span>*       K,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                <span class="keyword">const</span> <span class="keywordtype">double</span>* time,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                <span class="keywordtype">double</span>        dT,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                                <span class="keywordtype">double</span>&amp;       pNewdT ) = 0;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004">   87</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004">computeDistributedLoad</a>( <a class="code" href="classMarmotElement.html#a023cde1fc79ae1457663aa0093e758f5">DistributedLoadTypes</a> loadType,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                       <span class="keywordtype">double</span>*              Pext,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                       <span class="keywordtype">double</span>*              K,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                       <span class="keywordtype">int</span>                  elementFace,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        load,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        QTotal,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                       <span class="keyword">const</span> <span class="keywordtype">double</span>*        time,</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                       <span class="keywordtype">double</span>               dT ) = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">   96</a></span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">computeBodyForce</a>( <span class="keywordtype">double</span>*       Pext,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                                 <span class="keywordtype">double</span>*       K,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* load,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* QTotal,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                 <span class="keyword">const</span> <span class="keywordtype">double</span>* time,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                 <span class="keywordtype">double</span>        dT ) = 0;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">  103</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="MarmotUtils_8h.html#structStateView">StateView</a> <a class="code" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</a>( <span class="keyword">const</span> std::string&amp; stateName, <span class="keywordtype">int</span> quadraturePoint ) = 0;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="classMarmotElement.html#a6aec5b505f89d2fca61b77befd2f06b7">  105</a></span>&#160;  <span class="keyword">virtual</span> std::vector&lt; double &gt; <a class="code" href="classMarmotElement.html#a6aec5b505f89d2fca61b77befd2f06b7">getCoordinatesAtCenter</a>() = 0;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassMarmotElement_html_a4a399e8339bb2f93d379841bb252461babd03e131da1d15661c83709bd73e4b29"><div class="ttname"><a href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461babd03e131da1d15661c83709bd73e4b29">MarmotElement::GeostaticStress</a></div><div class="ttdeci">@ GeostaticStress</div><div class="ttdef"><b>Definition:</b> MarmotElement.h:42</div></div>
 <div class="ttc" id="aclassMarmotElement_html_ae852bc0749f00720d9d07b6432bc77ab"><div class="ttname"><a href="classMarmotElement.html#ae852bc0749f00720d9d07b6432bc77ab">MarmotElement::~MarmotElement</a></div><div class="ttdeci">virtual ~MarmotElement()</div></div>
@@ -299,7 +305,6 @@ $(function() {
 <div class="ttc" id="aclassMarmotElement_html_accde07ef0b65f8ae46108fcbc793dc59"><div class="ttname"><a href="classMarmotElement.html#accde07ef0b65f8ae46108fcbc793dc59">MarmotElement::assignProperty</a></div><div class="ttdeci">virtual void assignProperty(const MarmotMaterialSection &amp;property)</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a2d009fe01070ba3eb7709a900584da11"><div class="ttname"><a href="classMarmotElement.html#a2d009fe01070ba3eb7709a900584da11">MarmotElement::getNodeFields</a></div><div class="ttdeci">virtual std::vector&lt; std::vector&lt; std::string &gt; &gt; getNodeFields()=0</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a63cb2bc783e871569531909f68649ebe"><div class="ttname"><a href="classMarmotElement.html#a63cb2bc783e871569531909f68649ebe">MarmotElement::getDofIndicesPermutationPattern</a></div><div class="ttdeci">virtual std::vector&lt; int &gt; getDofIndicesPermutationPattern()=0</div></div>
-<div class="ttc" id="aclassMarmotElement_html_a0a539983f31c67a52b7012f97d31212d"><div class="ttname"><a href="classMarmotElement.html#a0a539983f31c67a52b7012f97d31212d">MarmotElement::initializeYourself</a></div><div class="ttdeci">virtual void initializeYourself(const double *coordinates)=0</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a51789466344c5a3437cd4e07d7996313"><div class="ttname"><a href="classMarmotElement.html#a51789466344c5a3437cd4e07d7996313">MarmotElement::assignStateVars</a></div><div class="ttdeci">virtual void assignStateVars(double *stateVars, int nStateVars)=0</div></div>
 <div class="ttc" id="aMarmotElementProperty_8h_html"><div class="ttname"><a href="MarmotElementProperty_8h.html">MarmotElementProperty.h</a></div></div>
 <div class="ttc" id="aclassMarmotElement_html_a4a399e8339bb2f93d379841bb252461bafb0c1c00ee0276765fe91c1025f85eae"><div class="ttname"><a href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461bafb0c1c00ee0276765fe91c1025f85eae">MarmotElement::Sigma33</a></div><div class="ttdeci">@ Sigma33</div><div class="ttdef"><b>Definition:</b> MarmotElement.h:40</div></div>
@@ -311,6 +316,7 @@ $(function() {
 <div class="ttc" id="aclassMarmotElement_html_a99bcebd80c0c31c3e4705df9c37c41e6"><div class="ttname"><a href="classMarmotElement.html#a99bcebd80c0c31c3e4705df9c37c41e6">MarmotElement::getNNodes</a></div><div class="ttdeci">virtual int getNNodes()=0</div></div>
 <div class="ttc" id="aclassMarmotElement_html_aa0ef25e441523e4d36b748e83a4270b5"><div class="ttname"><a href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">MarmotElement::computeBodyForce</a></div><div class="ttdeci">virtual void computeBodyForce(double *Pext, double *K, const double *load, const double *QTotal, const double *time, double dT)=0</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a7009a873b60e587bcad34151f92f7f4d"><div class="ttname"><a href="classMarmotElement.html#a7009a873b60e587bcad34151f92f7f4d">MarmotElement::getNumberOfRequiredStateVars</a></div><div class="ttdeci">virtual int getNumberOfRequiredStateVars()=0</div></div>
+<div class="ttc" id="aclassMarmotElement_html_ad2fee3bfc78fa49a28ceded4aaa3f836"><div class="ttname"><a href="classMarmotElement.html#ad2fee3bfc78fa49a28ceded4aaa3f836">MarmotElement::initializeYourself</a></div><div class="ttdeci">virtual void initializeYourself()=0</div></div>
 <div class="ttc" id="aMarmotUtils_8h_html"><div class="ttname"><a href="MarmotUtils_8h.html">MarmotUtils.h</a></div></div>
 <div class="ttc" id="aclassMarmotElement_html_a4a399e8339bb2f93d379841bb252461b"><div class="ttname"><a href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b">MarmotElement::StateTypes</a></div><div class="ttdeci">StateTypes</div><div class="ttdef"><b>Definition:</b> MarmotElement.h:37</div></div>
 <div class="ttc" id="aclassMarmotElement_html_ab38da2001626ad74a3bc4f95ba144a2f"><div class="ttname"><a href="classMarmotElement.html#ab38da2001626ad74a3bc4f95ba144a2f">MarmotElement::getElementShape</a></div><div class="ttdeci">virtual std::string getElementShape()=0</div></div>
@@ -320,6 +326,8 @@ $(function() {
 <div class="ttc" id="aclassMarmotElement_html_a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751"><div class="ttname"><a href="classMarmotElement.html#a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751">MarmotElement::SurfaceTorsion</a></div><div class="ttdeci">@ SurfaceTorsion</div><div class="ttdef"><b>Definition:</b> MarmotElement.h:49</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a4a399e8339bb2f93d379841bb252461ba004802ab7fa7333f2ee4befa956fdf46"><div class="ttname"><a href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461ba004802ab7fa7333f2ee4befa956fdf46">MarmotElement::Sigma22</a></div><div class="ttdeci">@ Sigma22</div><div class="ttdef"><b>Definition:</b> MarmotElement.h:39</div></div>
 <div class="ttc" id="aclassMarmotElement_html_abbef3863159574d0bc93aa9c327cb493"><div class="ttname"><a href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">MarmotElement::computeYourself</a></div><div class="ttdeci">virtual void computeYourself(const double *QTotal, const double *dQ, double *Pint, double *K, const double *time, double dT, double &amp;pNewdT)=0</div></div>
+<div class="ttc" id="aclassMarmotElement_html_a6aec5b505f89d2fca61b77befd2f06b7"><div class="ttname"><a href="classMarmotElement.html#a6aec5b505f89d2fca61b77befd2f06b7">MarmotElement::getCoordinatesAtCenter</a></div><div class="ttdeci">virtual std::vector&lt; double &gt; getCoordinatesAtCenter()=0</div></div>
+<div class="ttc" id="aclassMarmotElement_html_ab43a5fd29bebd1d7b5129bcb51fb192b"><div class="ttname"><a href="classMarmotElement.html#ab43a5fd29bebd1d7b5129bcb51fb192b">MarmotElement::assignNodeCoordinates</a></div><div class="ttdeci">virtual void assignNodeCoordinates(const double *coordinates)=0</div></div>
 <div class="ttc" id="aclassMarmotElement_html_a8dada12f443d996232e95326b39abed7"><div class="ttname"><a href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">MarmotElement::setInitialConditions</a></div><div class="ttdeci">virtual void setInitialConditions(StateTypes state, const double *values)=0</div></div>
 <!-- start footer part -->
 		<script src="custom.js"></script>

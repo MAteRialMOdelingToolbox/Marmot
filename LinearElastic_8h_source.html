@@ -39,11 +39,13 @@
     epsP: "{\\eps^{\\t{p}}}",
     epsVE: "{\\eps^{\\t{ve}}}",
     epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
     epsSHR: "{\\eps^{\\t{shr}}}",
     epsERate: "{\\epsRate^{\\t{el}}}",
     epsPRate: "{\\epsRate^{\\t{p}}}",
     epsVERate: "{\\epsRate^{\\t{ve}}}",
     epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
     epsSHRRate: "{\\epsRate^{\\t{shr}}}",
     epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
     const: "{\\t{const.}}",
@@ -134,7 +136,7 @@
 			<table cellspacing="0" cellpadding="0">
 				<tbody>
 					<tr style="height: 56px;">
-						<td id="projectlogo"><img alt="Logo" src="marmot_logo_schrift_small.png"/></td>
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<!--<div id="projectname">Marmot
 							</div>-->
@@ -217,7 +219,7 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="namespaceMarmot_1_1Materials.html">   34</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a> {</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1LinearElastic.html">   41</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classMarmot_1_1Materials_1_1LinearElastic.html">LinearElastic</a> : <span class="keyword">public</span> <a class="code" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">using</span> MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;</div>
@@ -281,7 +283,7 @@ $(function() {
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_aa9e54614a9d9d56c3bcd0b8e76bcc9fc"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#aa9e54614a9d9d56c3bcd0b8e76bcc9fc">Marmot::Materials::LinearElastic::getStateView</a></div><div class="ttdeci">StateView getStateView(const std::string &amp;result)</div><div class="ttdef"><b>Definition:</b> LinearElastic.h:162</div></div>
 <div class="ttc" id="aMarmotTypedefs_8h_html"><div class="ttname"><a href="MarmotTypedefs_8h.html">MarmotTypedefs.h</a></div></div>
 <div class="ttc" id="anamespaceMarmot_html_a48144b7616079807fd550c92d142e9da"><div class="ttname"><a href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 6, 6 &gt; Matrix6d</div><div class="ttdef"><b>Definition:</b> MarmotTypedefs.h:35</div></div>
-<div class="ttc" id="anamespaceMarmot_1_1Materials_html"><div class="ttname"><a href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a></div><div class="ttdef"><b>Definition:</b> LinearElastic.h:34</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Materials_html"><div class="ttname"><a href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a></div><div class="ttdef"><b>Definition:</b> MarmotKelvinChain.h:33</div></div>
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e">Marmot::Materials::LinearElastic::Type::TransverseIsotropic</a></div><div class="ttdeci">@ TransverseIsotropic</div></div>
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_a694e1f7f1645bcfbb90f88404ef60545"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#a694e1f7f1645bcfbb90f88404ef60545">Marmot::Materials::LinearElastic::E2</a></div><div class="ttdeci">const double &amp; E2</div><div class="ttdoc">Young's modulus in x2 - direction.</div><div class="ttdef"><b>Definition:</b> LinearElastic.h:78</div></div>
 <div class="ttc" id="aclassMarmot_1_1Materials_1_1LinearElastic_html_aa7d28618a3c91c93347e04c13832e2d0"><div class="ttname"><a href="classMarmot_1_1Materials_1_1LinearElastic.html#aa7d28618a3c91c93347e04c13832e2d0">Marmot::Materials::LinearElastic::E1</a></div><div class="ttdeci">const double &amp; E1</div><div class="ttdoc">Young's modulus in x1 - direction.</div><div class="ttdef"><b>Definition:</b> LinearElastic.h:70</div></div>
