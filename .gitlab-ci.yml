@@ -99,6 +99,7 @@ build and test:
     - cd build
     - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
     - make install
+    - cd ../../
 
     - cd EdelweissFE 
     - if [ ! -z "$override_edelweiss_branch" ]; then
