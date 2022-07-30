@@ -62,7 +62,7 @@ build and test:
           install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
         done; }
         
-    - mamba install -c conda-forge cython compilers openmp gfortran make numpy scipy rich cmake matplotlib sympy gstools
+    - mamba install -c conda-forge cython compilers openmp gfortran make numpy scipy=1.8.1 rich cmake matplotlib sympy gstools
     - mamba install -c anaconda mkl mkl-include
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
