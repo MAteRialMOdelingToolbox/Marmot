@@ -61,9 +61,11 @@ build and test:
         do
           install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
         done; }
+
+
+    - git clone $EdelweissFE_Repo
         
-    - mamba install -c conda-forge cython compilers openmp gfortran make numpy scipy=1.8.1 rich cmake matplotlib sympy gstools
-    - mamba install -c anaconda mkl mkl-include
+    - mamba install --file EdelweissFE/requirements.txt
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
@@ -97,8 +99,7 @@ build and test:
     - cd build
     - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
     - make install
-    #
-    - git clone $EdelweissFE_Repo
+
     - cd EdelweissFE 
     - if [ ! -z "$override_edelweiss_branch" ]; then
           echo "trying to check out branch $override_edelweiss_branch" ;
