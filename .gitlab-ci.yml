@@ -65,7 +65,7 @@ build and test:
 
     - git clone $EdelweissFE_Repo
         
-    - mamba install -c anaconda conda-forge --file EdelweissFE/requirements.txt
+    - mamba install -c anaconda  --file EdelweissFE/requirements.txt
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
