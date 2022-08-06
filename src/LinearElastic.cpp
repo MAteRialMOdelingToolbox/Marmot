@@ -36,6 +36,15 @@ namespace Marmot::Materials {
   // clang-format on
   {
     assert( nMaterialProperties == 2 || nMaterialProperties == 8 || nMaterialProperties == 12 );
+  }
+
+  void LinearElastic::computeStress( double*       stress,
+                                     double*       dStressDDStrain,
+                                     const double* dStrain,
+                                     const double* timeOld,
+                                     const double  dT,
+                                     double&       pNewDT )
+  {
     switch ( anisotropicType ) {
     case Type::Isotropic: C = Isotropic::stiffnessTensor( E1, nu12 ); break;
 
@@ -69,15 +78,7 @@ namespace Marmot::Materials {
       C = transformationStrainInv * localStiffnessTensor * transformationStress;
       break;
     };
-  }
 
-  void LinearElastic::computeStress( double*       stress,
-                                     double*       dStressDDStrain,
-                                     const double* dStrain,
-                                     const double* timeOld,
-                                     const double  dT,
-                                     double&       pNewDT )
-  {
     mVector6d             S( stress );
     Map< const Vector6d > dE( dStrain );
     mMatrix6d             mC( dStressDDStrain );
