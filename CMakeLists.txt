@@ -105,6 +105,7 @@ if(NOT CORE_MODULES OR CORE_MODULES STREQUAL "all")
     set(CORE_MODULES
         MarmotMathCore
         MarmotMechanicsCore
+        MarmotGeomechanicsCore
         MarmotFiniteElementCore
         MarmotCosseratCore
         MarmotMicromorphicCore
