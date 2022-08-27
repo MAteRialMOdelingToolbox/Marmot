@@ -410,19 +410,20 @@ namespace Marmot::Elements {
       break;
     }
     case MarmotElement::GeostaticStress: {
-      for ( QuadraturePoint& qp : qps ) {
-        XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
+      if ( nDim >= 2 )
+        for ( QuadraturePoint& qp : qps ) {
+          XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
 
-        const double sigY1 = values[0];
-        const double sigY2 = values[2];
-        const double y1    = values[1];
-        const double y2    = values[3];
+          const double sigY1 = values[0];
+          const double sigY2 = values[2];
+          const double y1    = values[1];
+          const double y2    = values[3];
 
-        using namespace Math;
-        qp.managedStateVars->stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
-        qp.managedStateVars->stress( 0 ) = values[4] * qp.managedStateVars->stress( 1 );                 // sigma_x
-        qp.managedStateVars->stress( 2 ) = values[5] * qp.managedStateVars->stress( 1 );
-      }
+          using namespace Math;
+          qp.managedStateVars->stress( 1 ) = linearInterpolation( coordAtGauss[1], y1, y2, sigY1, sigY2 ); // sigma_y
+          qp.managedStateVars->stress( 0 ) = values[4] * qp.managedStateVars->stress( 1 );                 // sigma_x
+          qp.managedStateVars->stress( 2 ) = values[5] * qp.managedStateVars->stress( 1 );
+        }
       break;
     }
     case MarmotElement::MarmotMaterialStateVars: {
@@ -451,12 +452,25 @@ namespace Marmot::Elements {
 
       FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
-      VectorXd Pk = -p * boundaryEl.computeNormalLoadVector();
+      VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
 
       if ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
 
-      boundaryEl.assembleIntoParentVector( Pk, fU );
+      boundaryEl.assembleIntoParentVectorial( Pk, fU );
+
+      break;
+    }
+    case MarmotElement::SurfaceTraction: {
+
+      FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+
+      const XiSized tractionVector( load );
+
+      auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
+      if ( nDim == 2 )
+        Pk *= elementProperties[0]; // thickness
+      boundaryEl.assembleIntoParentVectorial( Pk, fU );
 
       break;
     }
