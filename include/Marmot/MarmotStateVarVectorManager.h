@@ -30,6 +30,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
 /// @brief A convenience auxiliary class for managing multiple statevars with arbitrary length in a single consecutive
 /// double array
