@@ -297,10 +297,11 @@ namespace Marmot {
 
       struct BoundaryElementQuadraturePoint {
         double          weight;
+        double          JxW;
         Eigen::VectorXd xi;
         Eigen::VectorXd N;
         Eigen::MatrixXd dNdXi;
-        Eigen::MatrixXd J;
+        Eigen::MatrixXd dx_dXi;
         Eigen::VectorXd areaVector;
       };
 
@@ -312,8 +313,8 @@ namespace Marmot {
 
       std::vector< BoundaryElementQuadraturePoint > quadraturePoints;
 
-      Eigen::VectorXi boundaryIndicesInParentNodes;
-      Eigen::VectorXi boundaryIndicesInParentCoordinates;
+      Eigen::VectorXi mapBoundaryToParentScalar;
+      Eigen::VectorXi mapBoundaryToParentVectorial;
       Eigen::VectorXd coordinates;
 
     public:
@@ -322,12 +323,26 @@ namespace Marmot {
                        int                    parentFaceNumber,
                        const Eigen::VectorXd& parentCoordinates );
 
-      Eigen::VectorXd computeNormalLoadVector();
-      Eigen::MatrixXd computeNormalLoadVectorStiffness();
-      Eigen::VectorXd condenseParentToBoundaryVector( const Eigen::VectorXd& parentVector );
-      void            assembleIntoParentVector( const Eigen::VectorXd&        boundaryVector,
+      Eigen::VectorXd computeScalarLoadVector();
+      Eigen::MatrixXd computeDScalarLoadVector_dCoordinates();
+
+      /// compute the element load vector for a unit vectorial load normal to the surface.
+      Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
+      Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
+
+      /// compute the element load vector for a unit vectorial load in a given direction.
+      Eigen::VectorXd computeVectorialLoadVector(const Eigen::VectorXd& direction);
+      Eigen::MatrixXd computeDVectorialLoadVector_dCoordinates(const Eigen::VectorXd& direction);
+
+      Eigen::VectorXd condenseParentToBoundaryScalar( const Eigen::VectorXd& parentVector );
+      void            assembleIntoParentScalar( const Eigen::VectorXd&        boundaryVector,
                                                 Eigen::Ref< Eigen::VectorXd > ParentVector );
-      void assembleIntoParentStiffness( const Eigen::MatrixXd& KBoundary, Eigen::Ref< Eigen::MatrixXd > KParent );
+      void assembleIntoParentStiffnessScalar( const Eigen::MatrixXd& KBoundary, Eigen::Ref< Eigen::MatrixXd > KParent );
+
+      Eigen::VectorXd condenseParentToBoundaryVectorial( const Eigen::VectorXd& parentVector );
+      void            assembleIntoParentVectorial( const Eigen::VectorXd&        boundaryVector,
+                                                Eigen::Ref< Eigen::VectorXd > ParentVector );
+      void assembleIntoParentStiffnessVectorial( const Eigen::MatrixXd& KBoundary, Eigen::Ref< Eigen::MatrixXd > KParent );
     };
   } // namespace FiniteElement
 
