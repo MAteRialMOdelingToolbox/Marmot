@@ -1,5 +1,7 @@
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotJournal.h"
 #include <iostream>
+#include <stdexcept>
 
 using namespace Eigen;
 namespace Marmot {
@@ -19,28 +21,28 @@ namespace Marmot {
          * */
 
       case Quad4: {
-        boundaryShape                = Bar2;
-        nNodes                       = Spatial1D::Bar2::nNodes;
-        boundaryIndicesInParentNodes = Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
+        boundaryShape             = Bar2;
+        nNodes                    = Spatial1D::Bar2::nNodes;
+        mapBoundaryToParentScalar = Spatial2D::Quad4::getBoundaryElementIndices( parentFaceNumber );
         break;
       }
 
       case Quad8: {
-        boundaryShape                = Bar3;
-        nNodes                       = Spatial1D::Bar3::nNodes;
-        boundaryIndicesInParentNodes = Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
+        boundaryShape             = Bar3;
+        nNodes                    = Spatial1D::Bar3::nNodes;
+        mapBoundaryToParentScalar = Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber );
         break;
       }
       case Hexa8: {
-        boundaryShape                = Quad4;
-        nNodes                       = Spatial2D::Quad4::nNodes;
-        boundaryIndicesInParentNodes = Spatial3D::Hexa8::getBoundaryElementIndices( parentFaceNumber );
+        boundaryShape             = Quad4;
+        nNodes                    = Spatial2D::Quad4::nNodes;
+        mapBoundaryToParentScalar = Spatial3D::Hexa8::getBoundaryElementIndices( parentFaceNumber );
         break;
       }
       case Hexa20: {
-        boundaryShape                = Quad8;
-        nNodes                       = Spatial2D::Quad8::nNodes;
-        boundaryIndicesInParentNodes = Spatial3D::Hexa20::getBoundaryElementIndices( parentFaceNumber );
+        boundaryShape             = Quad8;
+        nNodes                    = Spatial2D::Quad8::nNodes;
+        mapBoundaryToParentScalar = Spatial3D::Hexa20::getBoundaryElementIndices( parentFaceNumber );
         break;
       }
 
@@ -48,9 +50,9 @@ namespace Marmot {
       }
 
       // get the 'condensed' boundary element coordinates
-      nParentCoordinates                 = parentCoordinates.size();
-      boundaryIndicesInParentCoordinates = expandNodeIndicesToCoordinateIndices( boundaryIndicesInParentNodes, nDim );
-      coordinates                        = condenseParentToBoundaryVector( parentCoordinates );
+      nParentCoordinates           = parentCoordinates.size();
+      mapBoundaryToParentVectorial = expandNodeIndicesToCoordinateIndices( mapBoundaryToParentScalar, nDim );
+      coordinates                  = condenseParentToBoundaryVectorial( parentCoordinates );
 
       // get the proper gausspoints for the boundary element
 
@@ -97,27 +99,52 @@ namespace Marmot {
         }
 
         // Jacobian
-        qp.J = Jacobian( qp.dNdXi, coordinates );
+        qp.dx_dXi = Jacobian( qp.dNdXi, coordinates );
 
         // areaVector and integration area
         if ( nDim == 2 ) {
           // 90deg rotation
           Vector2d n;
-          n << qp.J( 1 ), -qp.J( 0 );
+          n << qp.dx_dXi( 1 ), -qp.dx_dXi( 0 );
           qp.areaVector = n;
         }
         else {
           // cross product
           typedef Eigen::Ref< const Vector3d > vector3_cr;
-          Vector3d                             n = vector3_cr( qp.J.col( 0 ) ).cross( vector3_cr( qp.J.col( 1 ) ) );
-          qp.areaVector                          = n;
+          Vector3d n    = vector3_cr( qp.dx_dXi.col( 0 ) ).cross( vector3_cr( qp.dx_dXi.col( 1 ) ) );
+          qp.areaVector = n;
         }
+
+        qp.JxW = qp.areaVector.norm() * qp.weight;
 
         quadraturePoints.push_back( std::move( qp ) );
       }
     }
 
-    VectorXd BoundaryElement::computeNormalLoadVector()
+    VectorXd BoundaryElement::computeScalarLoadVector()
+    {
+      /* compute the load vector for a constant scalar distributed load 
+       * Attention: result =  boundary-element-sized!
+       *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
+       * */
+
+      VectorXd Pk = VectorXd::Zero( nNodes );
+
+      for ( const auto& qp : quadraturePoints )
+        Pk += qp.JxW * qp.N;
+
+      return Pk;
+    }
+
+    MatrixXd BoundaryElement::computeDScalarLoadVector_dCoordinates( )
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
+      VectorXd Pk = VectorXd::Zero( nNodes );
+
+      return Pk;
+    }
+
+    VectorXd BoundaryElement::computeSurfaceNormalVectorialLoadVector()
     {
       /* compute the load vector for a constant distributed load (e.g. pressure)
        * Attention: result =  boundary-element-sized!
@@ -132,7 +159,7 @@ namespace Marmot {
       return Pk;
     }
 
-    MatrixXd BoundaryElement::computeNormalLoadVectorStiffness()
+    MatrixXd BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates()
     {
       MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
 
@@ -154,7 +181,7 @@ namespace Marmot {
         // Belytschko et al. 2014, pp.364
         Matrix3d HXi0, HXi1;
         for ( const auto& qp : quadraturePoints ) {
-          const MatrixXd& J = qp.J;
+          const MatrixXd& J = qp.dx_dXi;
 
           // clang-format off
                     HXi0 << 0,       J(2,0), -J(1,0), 
@@ -176,37 +203,91 @@ namespace Marmot {
       return K;
     }
 
-    VectorXd BoundaryElement::condenseParentToBoundaryVector( const VectorXd& parentVector )
+    VectorXd BoundaryElement::computeVectorialLoadVector( const Eigen::VectorXd& direction )
+    {
+      /* compute the load vector for a constant distributed load (e.g. traction) in arbitrary direction
+       * Attention: result =  boundary-element-sized!
+       *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
+       * */
+
+      VectorXd Pk = VectorXd::Zero( coordinates.size() );
+
+      for ( const auto& qp : quadraturePoints )
+        Pk += qp.JxW * direction.transpose() * NB( qp.N, nDim );
+
+      return Pk;
+    }
+
+    MatrixXd BoundaryElement::computeDVectorialLoadVector_dCoordinates( const Eigen::VectorXd& direction )
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
+      VectorXd Pk = VectorXd::Zero( coordinates.size() );
+
+      return Pk;
+    }
+
+    VectorXd BoundaryElement::condenseParentToBoundaryScalar( const VectorXd& parentVector )
+    {
+      /** Condense any scalar quantiaty parent vector to the corresponding boundary child vector (e.g.
+       * temperature fields ) dependent on the underlying indices mapping
+       * */
+      VectorXd boundaryVector( nNodes * nDim );
+
+      for ( int i = 0; i < mapBoundaryToParentScalar.size(); i++ )
+        boundaryVector( i ) = parentVector( mapBoundaryToParentScalar( i ) );
+
+      return boundaryVector;
+    }
+
+    void BoundaryElement::assembleIntoParentScalar( const Eigen::VectorXd&        boundaryVector,
+                                                    Eigen::Ref< Eigen::VectorXd > parentVector )
+    {
+      /* assemble any scalar boundary load vector (e.g. temperature load) into the corresponding parental vector
+       * */
+
+      for ( int i = 0; i < boundaryVector.size(); i++ )
+        parentVector( mapBoundaryToParentScalar( i ) ) += boundaryVector( i );
+    }
+
+    void BoundaryElement::assembleIntoParentStiffnessScalar( const Eigen::MatrixXd&        KBoundary,
+                                                             Eigen::Ref< Eigen::MatrixXd > KParent )
+    {
+      // mind the negative sign for a proper assembly of the residual(!) stiffness !
+      for ( int i = 0; i < KBoundary.cols(); i++ )
+        for ( int j = 0; j < KBoundary.cols(); j++ )
+          KParent( mapBoundaryToParentScalar( i ), mapBoundaryToParentScalar( j ) ) -= KBoundary( i, j );
+    }
+
+    VectorXd BoundaryElement::condenseParentToBoundaryVectorial( const VectorXd& parentVector )
     {
       /*  condense any parent vector to the corresponding boundary child vector (e.g.
        * coordinates) dependent on the underlying indices mapping
        * */
       VectorXd boundaryVector( nNodes * nDim );
 
-      for ( int i = 0; i < boundaryIndicesInParentCoordinates.size(); i++ )
-        boundaryVector( i ) = parentVector( boundaryIndicesInParentCoordinates( i ) );
+      for ( int i = 0; i < mapBoundaryToParentVectorial.size(); i++ )
+        boundaryVector( i ) = parentVector( mapBoundaryToParentVectorial( i ) );
 
       return boundaryVector;
     }
 
-    void BoundaryElement::assembleIntoParentVector( const Eigen::VectorXd&        boundaryVector,
-                                                    Eigen::Ref< Eigen::VectorXd > parentVector )
+    void BoundaryElement::assembleIntoParentVectorial( const Eigen::VectorXd&        boundaryVector,
+                                                       Eigen::Ref< Eigen::VectorXd > parentVector )
     {
       /* assemble any boundary vector (e.g. pressure load) into the corresponding parental vector
        * */
 
       for ( int i = 0; i < boundaryVector.size(); i++ )
-        parentVector( boundaryIndicesInParentCoordinates( i ) ) += boundaryVector( i );
+        parentVector( mapBoundaryToParentVectorial( i ) ) += boundaryVector( i );
     }
 
-    void BoundaryElement::assembleIntoParentStiffness( const Eigen::MatrixXd&        KBoundary,
-                                                       Eigen::Ref< Eigen::MatrixXd > KParent )
+    void BoundaryElement::assembleIntoParentStiffnessVectorial( const Eigen::MatrixXd&        KBoundary,
+                                                                Eigen::Ref< Eigen::MatrixXd > KParent )
     {
       // mind the negative sign for a proper assembly of the residual(!) stiffness !
       for ( int i = 0; i < KBoundary.cols(); i++ )
         for ( int j = 0; j < KBoundary.cols(); j++ )
-          KParent( boundaryIndicesInParentCoordinates( i ), boundaryIndicesInParentCoordinates( j ) ) -= KBoundary( i,
-                                                                                                                    j );
+          KParent( mapBoundaryToParentVectorial( i ), mapBoundaryToParentVectorial( j ) ) -= KBoundary( i, j );
     }
 
   } // namespace FiniteElement
