@@ -137,6 +137,7 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         GMNeoHooke
         GMDamagedShearNeoHooke
         GradientEnhancedDruckerPrager
+        GradientEnhancedCosseratDruckerPrager
         GosfordSandstone
         HoekBrown
 	      #JointedRock
