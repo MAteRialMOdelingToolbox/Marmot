@@ -200,11 +200,14 @@ $(function() {
 , <a class="el" href="classMarmotElement.html#ac68956668d34ac2ddac545ff2ce56004">MarmotElement</a>
 , <a class="el" href="classMarmotElementSpatialWrapper.html#a72aab0a107fc396d5c5f36b5b076f376">MarmotElementSpatialWrapper</a>
 </li>
-<li>computeNormalLoadVector()
-: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#abf57179e0229481031d991c09ea37450">Marmot::FiniteElement::BoundaryElement</a>
+<li>computeDScalarLoadVector_dCoordinates()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a0ae2278820b4c4d8fbf6fb2dff029d62">Marmot::FiniteElement::BoundaryElement</a>
 </li>
-<li>computeNormalLoadVectorStiffness()
-: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a421cb88cfb1ab12e630c51de1d2a348a">Marmot::FiniteElement::BoundaryElement</a>
+<li>computeDSurfaceNormalVectorialLoadVector_dCoordinates()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#abfebecb5d42869277a124591497f2fc3">Marmot::FiniteElement::BoundaryElement</a>
+</li>
+<li>computeDVectorialLoadVector_dCoordinates()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#abcc39de1f03974785132439be3a30368">Marmot::FiniteElement::BoundaryElement</a>
 </li>
 <li>computePlaneStress()
 : <a class="el" href="classMarmotMaterialGradientEnhancedHypoElastic.html#afad7aa64efd42519f04f45c52265bb65">MarmotMaterialGradientEnhancedHypoElastic</a>
@@ -214,6 +217,9 @@ $(function() {
 </li>
 <li>computePlaneStressPK2()
 : <a class="el" href="classMarmotMaterialHyperElastic.html#a47f31d372d1c7fdba141b543f7aed38c">MarmotMaterialHyperElastic</a>
+</li>
+<li>computeScalarLoadVector()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a71b0f046aa9089c5f32166f680e2f259">Marmot::FiniteElement::BoundaryElement</a>
 </li>
 <li>computeStress()
 : <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a3064926e24dbba5f5bf00cf05b190caa">Marmot::Materials::LinearElastic</a>
@@ -226,6 +232,9 @@ $(function() {
 <li>computeStressPK2()
 : <a class="el" href="classMarmotMaterialHyperElastic.html#aab2db47ca209a86cfca449e456a1c8ee">MarmotMaterialHyperElastic</a>
 </li>
+<li>computeSurfaceNormalVectorialLoadVector()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ad0fc582a23fb22f32eecb4feccd7fd7a">Marmot::FiniteElement::BoundaryElement</a>
+</li>
 <li>computeUniaxialStress()
 : <a class="el" href="classMarmotMaterialGradientEnhancedMechanical.html#ae99e6dabadd66400cad0b421596ccd4d">MarmotMaterialGradientEnhancedMechanical</a>
 , <a class="el" href="classMarmotMaterialHypoElastic.html#a7e3bded903448a16ce9630978de16059">MarmotMaterialHypoElastic</a>
@@ -234,13 +243,19 @@ $(function() {
 <li>computeUniaxialStressPK2()
 : <a class="el" href="classMarmotMaterialHyperElastic.html#a69ef73f76bd5ec9c509e68f0a61071a6">MarmotMaterialHyperElastic</a>
 </li>
+<li>computeVectorialLoadVector()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ac784a613d9d010521ef88babd55bb683">Marmot::FiniteElement::BoundaryElement</a>
+</li>
 <li>computeYourself()
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ae49ca66a01e838600fde6170f1ff151c">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>
 , <a class="el" href="classMarmotElement.html#abbef3863159574d0bc93aa9c327cb493">MarmotElement</a>
 , <a class="el" href="classMarmotElementSpatialWrapper.html#a588759d3bc43cab8c90ef1577dfc4282">MarmotElementSpatialWrapper</a>
 </li>
-<li>condenseParentToBoundaryVector()
-: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#a121c552d277a20e5c00d5f342099bd2b">Marmot::FiniteElement::BoundaryElement</a>
+<li>condenseParentToBoundaryScalar()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ad5c17e70323581f649323fa44ad796f0">Marmot::FiniteElement::BoundaryElement</a>
+</li>
+<li>condenseParentToBoundaryVectorial()
+: <a class="el" href="classMarmot_1_1FiniteElement_1_1BoundaryElement.html#ab4bee3d725969d8f42871a9c5333e6b3">Marmot::FiniteElement::BoundaryElement</a>
 </li>
 <li>consistentStiffness()
 : <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html#a17135fceb4273dc853477269e69c7cec">Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;</a>
