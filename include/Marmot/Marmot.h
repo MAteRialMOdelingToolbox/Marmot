@@ -238,6 +238,7 @@ namespace MarmotLibrary {
     CCPE4   = 458,
     CCPE8R  = 858,
     CCPE8   = 857,
+    CC3D20  = 2053,
     CC3D20R = 2056,
     CC3D8   = 853,
 
