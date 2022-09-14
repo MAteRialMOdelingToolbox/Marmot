@@ -73,10 +73,10 @@ namespace Marmot::Materials {
     auto f = [&]( double rho_, double kappa_ ) { return rho_ - Constants::sqrt2_3 * fy( kappa_ ); };
 
     // compute elastic predictor
-    Vector6d trialStress = S + Cel * dE;
+    const Vector6d trialStress = S + Cel * dE;
 
     using namespace ContinuumMechanics::VoigtNotation;
-    double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
+    const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
 
     if ( f( rhoTrial, kappa ) >= 0.0 ) {
       // plastic step
@@ -94,6 +94,8 @@ namespace Marmot::Materials {
 
       // compute return mapping direction
       Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      n.segment( 3, 3 ) *= 2;
+
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
