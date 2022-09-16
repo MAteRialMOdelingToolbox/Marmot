@@ -94,11 +94,12 @@ namespace Marmot::Materials {
 
       // compute return mapping direction
       Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
-      n.segment( 3, 3 ) *= 2;
 
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
+
+          std::cout << "not converged; g = " << g( dKappa ) << std::endl;
           pNewDT = 0.5;
           return;
         }
@@ -110,15 +111,21 @@ namespace Marmot::Materials {
         counter += 1;
       }
 
+      // std::cout << "converged; g = " << g( dKappa ) << std::endl;
       dLambda = Constants::sqrt3_2 * dKappa;
 
       // update material state
       S     = trialStress - 2. * G * dLambda * n;
       kappa = kappa + dKappa;
+
+      // compute consistent tangent in Voigt Notation
+      Matrix6d IDevHalfShear = ContinuumMechanics::VoigtNotation::IDev;
+      IDevHalfShear.block< 6, 3 >( 0, 3 ) *= 0.5;
+
       dS_dE = Cel -
               2. * G * ( 1. / ( 1. + dfy_ddKappa( kappa ) / ( 3. * G ) ) - 2. * G * dLambda / rhoTrial ) *
                 ( n * n.transpose() ) -
-              4. * G * G * dLambda / rhoTrial * ContinuumMechanics::VoigtNotation::IDev;
+              4. * G * G * dLambda / rhoTrial * IDevHalfShear;
     }
     else {
       // elastic step
