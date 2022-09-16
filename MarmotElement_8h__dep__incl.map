@@ -1,10 +1,11 @@
 <map id="include/Marmot/MarmotElement.h" name="include/Marmot/MarmotElement.h">
-<area shape="rect" id="node1" title=" " alt="" coords="298,5,514,32"/>
-<area shape="rect" id="node2" href="$Marmot_8h.html" title=" " alt="" coords="197,95,367,121"/>
-<area shape="rect" id="node5" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="310,184,521,240"/>
-<area shape="rect" id="node7" href="$MarmotFiniteElementSpatialWrapper_8h.html" title=" " alt="" coords="443,80,689,136"/>
-<area shape="rect" id="node3" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="30,191,235,233"/>
-<area shape="rect" id="node6" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="296,288,535,344"/>
+<area shape="rect" id="node1" title=" " alt="" coords="529,5,745,32"/>
+<area shape="rect" id="node2" href="$Marmot_8h.html" title=" " alt="" coords="428,95,597,121"/>
+<area shape="rect" id="node6" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="541,184,751,240"/>
+<area shape="rect" id="node8" href="$MarmotFiniteElementSpatialWrapper_8h.html" title=" " alt="" coords="673,80,920,136"/>
+<area shape="rect" id="node3" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="261,191,466,233"/>
+<area shape="rect" id="node7" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="527,288,765,344"/>
 <area shape="rect" id="node4" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="5,295,260,337"/>
-<area shape="rect" id="node8" href="$MarmotFiniteElementSpatialWrapper_8cpp.html" title=" " alt="" coords="595,184,841,240"/>
+<area shape="rect" id="node5" href="$VonMisesRegistration_8cpp.html" title=" " alt="" coords="284,295,483,337"/>
+<area shape="rect" id="node9" href="$MarmotFiniteElementSpatialWrapper_8cpp.html" title=" " alt="" coords="826,184,1071,240"/>
 </map>

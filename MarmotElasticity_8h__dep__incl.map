@@ -1,5 +1,6 @@
 <map id="modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" name="modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h">
-<area shape="rect" id="node1" title=" " alt="" coords="95,5,347,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="207,5,459,47"/>
 <area shape="rect" id="node2" href="$MarmotElasticity_8cpp.html" title=" " alt="" coords="5,95,216,136"/>
 <area shape="rect" id="node3" href="$LinearElastic_8cpp.html" title=" " alt="" coords="240,95,427,136"/>
+<area shape="rect" id="node4" href="$VonMises_8cpp.html" title=" " alt="" coords="451,95,642,136"/>
 </map>

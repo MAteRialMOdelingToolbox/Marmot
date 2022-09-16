@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['yieldsurfacecombinationmanager_903',['YieldSurfaceCombinationManager',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html',1,'Marmot::NumericalAlgorithms']]]
+  ['vonmisesmodel_914',['VonMisesModel',['../classMarmot_1_1Materials_1_1VonMisesModel.html',1,'Marmot::Materials']]],
+  ['vonmisesmodelstatevarmanager_915',['VonMisesModelStateVarManager',['../classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager.html',1,'Marmot::Materials::VonMisesModel']]]
 ];

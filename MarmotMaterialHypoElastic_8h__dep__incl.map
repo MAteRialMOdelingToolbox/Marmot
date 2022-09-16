@@ -1,9 +1,12 @@
 <map id="modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" name="modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h">
-<area shape="rect" id="node1" title=" " alt="" coords="275,5,511,61"/>
+<area shape="rect" id="node1" title=" " alt="" coords="382,5,618,61"/>
 <area shape="rect" id="node2" href="$MarmotMaterialHypoElastic_8cpp.html" title=" " alt="" coords="5,117,264,158"/>
 <area shape="rect" id="node3" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="288,109,499,165"/>
-<area shape="rect" id="node5" href="$LinearElastic_8h.html" title=" " alt="" coords="535,109,703,165"/>
-<area shape="rect" id="node4" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="262,213,501,269"/>
-<area shape="rect" id="node6" href="$LinearElastic_8cpp.html" title=" " alt="" coords="525,221,712,262"/>
-<area shape="rect" id="node7" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="737,221,991,262"/>
+<area shape="rect" id="node5" href="$LinearElastic_8h.html" title=" " alt="" coords="523,109,691,165"/>
+<area shape="rect" id="node8" href="$VonMises_8h.html" title=" " alt="" coords="881,117,1071,158"/>
+<area shape="rect" id="node4" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="127,213,366,269"/>
+<area shape="rect" id="node6" href="$LinearElastic_8cpp.html" title=" " alt="" coords="391,221,577,262"/>
+<area shape="rect" id="node7" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="602,221,857,262"/>
+<area shape="rect" id="node9" href="$VonMises_8cpp.html" title=" " alt="" coords="881,221,1071,262"/>
+<area shape="rect" id="node10" href="$VonMisesRegistration_8cpp.html" title=" " alt="" coords="1095,221,1294,262"/>
 </map>

@@ -1,11 +1,12 @@
 <map id="include/Marmot/MarmotElementProperty.h" name="include/Marmot/MarmotElementProperty.h">
-<area shape="rect" id="node1" title=" " alt="" coords="198,5,405,47"/>
-<area shape="rect" id="node2" href="$MarmotElement_8h.html" title=" " alt="" coords="193,95,409,121"/>
-<area shape="rect" id="node6" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="5,273,216,329"/>
-<area shape="rect" id="node8" href="$MarmotFiniteElementSpatialWrapper_8h.html" title=" " alt="" coords="410,169,657,225"/>
-<area shape="rect" id="node3" href="$Marmot_8h.html" title=" " alt="" coords="217,184,386,211"/>
-<area shape="rect" id="node4" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="240,281,445,322"/>
-<area shape="rect" id="node7" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="389,377,627,433"/>
-<area shape="rect" id="node5" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="110,385,365,426"/>
-<area shape="rect" id="node9" href="$MarmotFiniteElementSpatialWrapper_8cpp.html" title=" " alt="" coords="571,273,816,329"/>
+<area shape="rect" id="node1" title=" " alt="" coords="668,5,875,47"/>
+<area shape="rect" id="node2" href="$MarmotElement_8h.html" title=" " alt="" coords="663,95,879,121"/>
+<area shape="rect" id="node7" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="541,273,751,329"/>
+<area shape="rect" id="node9" href="$MarmotFiniteElementSpatialWrapper_8h.html" title=" " alt="" coords="773,169,1020,225"/>
+<area shape="rect" id="node3" href="$Marmot_8h.html" title=" " alt="" coords="419,184,588,211"/>
+<area shape="rect" id="node4" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="261,281,466,322"/>
+<area shape="rect" id="node8" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="527,377,765,433"/>
+<area shape="rect" id="node5" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="5,385,260,426"/>
+<area shape="rect" id="node6" href="$VonMisesRegistration_8cpp.html" title=" " alt="" coords="284,385,483,426"/>
+<area shape="rect" id="node10" href="$MarmotFiniteElementSpatialWrapper_8cpp.html" title=" " alt="" coords="826,273,1071,329"/>
 </map>

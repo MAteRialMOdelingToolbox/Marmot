@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 1211;
+var viewWidth = 1335;
 var viewHeight = 340;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,13 +54,13 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>include/Marmot/MarmotMaterial.h</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-336 1207,-336 1207,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-336 1330.5,-336 1330.5,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title=" ">
-<polygon fill="#bfbfbf" stroke="black" points="630,-312.5 630,-331.5 791,-331.5 791,-312.5 630,-312.5"/>
-<text text-anchor="middle" x="710.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial.h</text>
+<polygon fill="#bfbfbf" stroke="black" points="751,-312.5 751,-331.5 912,-331.5 912,-312.5 751,-312.5"/>
+<text text-anchor="middle" x="831.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial.h</text>
 </a>
 </g>
 </g>
@@ -68,88 +68,88 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="Marmot_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="200,-167.5 200,-186.5 327,-186.5 327,-167.5 200,-167.5"/>
-<text text-anchor="middle" x="263.5" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/Marmot.h</text>
+<polygon fill="white" stroke="black" points="240,-167.5 240,-186.5 367,-186.5 367,-167.5 240,-167.5"/>
+<text text-anchor="middle" x="303.5" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/Marmot.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M674.15,-309.37C586.82,-281.43 366.83,-211.06 290.27,-186.56"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="673.29,-312.77 683.88,-312.48 675.42,-306.1 673.29,-312.77"/>
+<path fill="none" stroke="midnightblue" d="M790.12,-309.79C688.05,-282.15 426.01,-211.18 335.12,-186.56"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="789.49,-313.25 800.05,-312.48 791.32,-306.49 789.49,-313.25"/>
 </g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="MarmotMaterialGradientEnhancedMechanical_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="921,-234.5 921,-275.5 1098,-275.5 1098,-234.5 921,-234.5"/>
-<text text-anchor="start" x="929" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="929" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="1009.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">GradientEnhancedMechanical.h</text>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="MarmotMaterialGradientEnhancedMechanical_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="1039,-234.5 1039,-275.5 1216,-275.5 1216,-234.5 1039,-234.5"/>
+<text text-anchor="start" x="1047" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="1047" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="1127.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">GradientEnhancedMechanical.h</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
-<title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M759.7,-310.3C803.37,-300.81 868.22,-286.71 920.91,-275.26"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="758.92,-306.89 749.9,-312.44 760.41,-313.73 758.92,-306.89"/>
+<!-- Node1&#45;&gt;Node8 -->
+<g id="edge8" class="edge">
+<title>Node1&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M880.42,-310.26C923.39,-300.82 986.97,-286.86 1038.87,-275.46"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="879.52,-306.87 870.5,-312.44 881.02,-313.71 879.52,-306.87"/>
 </g>
-<!-- Node10 -->
-<g id="node10" class="node">
-<title>Node10</title>
-<g id="a_node10"><a xlink:href="MarmotMaterialMechanical_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="622,-234.5 622,-275.5 799,-275.5 799,-234.5 622,-234.5"/>
-<text text-anchor="start" x="630" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="630" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="710.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mechanical.h</text>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="MarmotMaterialMechanical_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="743,-234.5 743,-275.5 920,-275.5 920,-234.5 743,-234.5"/>
+<text text-anchor="start" x="751" y="-263.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="751" y="-252.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="831.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">Mechanical.h</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node10 -->
-<g id="edge10" class="edge">
-<title>Node1&#45;&gt;Node10</title>
-<path fill="none" stroke="midnightblue" d="M710.5,-302.04C710.5,-293.71 710.5,-283.94 710.5,-275.54"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="707,-302.23 710.5,-312.23 714,-302.23 707,-302.23"/>
+<!-- Node1&#45;&gt;Node11 -->
+<g id="edge11" class="edge">
+<title>Node1&#45;&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M831.5,-302.04C831.5,-293.71 831.5,-283.94 831.5,-275.54"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="828,-302.23 831.5,-312.23 835,-302.23 828,-302.23"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="MarmotMaterialRegistrationHelper_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="104.5,-84 104.5,-114 258.5,-114 258.5,-84 104.5,-84"/>
-<text text-anchor="start" x="112.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="181.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">RegistrationHelper.h</text>
+<polygon fill="white" stroke="black" points="406.5,-84 406.5,-114 560.5,-114 560.5,-84 406.5,-84"/>
+<text text-anchor="start" x="414.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="483.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">RegistrationHelper.h</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M246.67,-160.4C231.97,-146.77 210.81,-127.16 196.63,-114.02"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="244.38,-163.05 254.09,-167.28 249.14,-157.92 244.38,-163.05"/>
-</g>
-<!-- Node5 -->
-<g id="node5" class="node">
-<title>Node5</title>
-<g id="a_node5"><a xlink:href="DisplacementFiniteElement_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="276.5,-78.5 276.5,-119.5 434.5,-119.5 434.5,-78.5 276.5,-78.5"/>
-<text text-anchor="start" x="284.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
-<text text-anchor="start" x="284.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/include/Marmot</text>
-<text text-anchor="middle" x="355.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DisplacementFiniteElement.h</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
-<title>Node2&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M282.15,-160.59C296.44,-148.79 316.27,-132.41 331.7,-119.66"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="279.53,-158.21 274.05,-167.28 283.99,-163.61 279.53,-158.21"/>
+<path fill="none" stroke="midnightblue" d="M333.13,-163.49C365.31,-149.9 416.58,-128.25 450.15,-114.08"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="331.65,-160.32 323.8,-167.43 334.37,-166.76 331.65,-160.32"/>
 </g>
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="DisplacementFiniteElementRegistration_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_node6"><a xlink:href="DisplacementFiniteElement_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="68.5,-78.5 68.5,-119.5 226.5,-119.5 226.5,-78.5 68.5,-78.5"/>
+<text text-anchor="start" x="76.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
+<text text-anchor="start" x="76.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/include/Marmot</text>
+<text text-anchor="middle" x="147.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DisplacementFiniteElement.h</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node2&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M276.85,-163.02C252.37,-151.09 215.74,-133.24 187.7,-119.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="275.39,-166.2 285.91,-167.43 278.45,-159.9 275.39,-166.2"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="DisplacementFiniteElementRegistration_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="black" points="0,-0.5 0,-41.5 179,-41.5 179,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/src/DisplacementFinite</text>
@@ -157,194 +157,248 @@ var sectionId = 'dynsection-1';
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node6 -->
-<g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M189.61,-169.94C155.52,-163.1 117.75,-148.96 95.5,-120 78.26,-97.56 80.86,-63.02 84.81,-41.5"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="189.12,-173.41 199.58,-171.76 190.37,-166.52 189.12,-173.41"/>
+<!-- Node2&#45;&gt;Node7 -->
+<g id="edge7" class="edge">
+<title>Node2&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M229.86,-169.1C165.98,-161.4 80.54,-146.42 59.5,-120 41.21,-97.04 58.96,-62.96 73.89,-41.64"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="229.58,-172.59 239.92,-170.27 230.39,-165.63 229.58,-172.59"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
 <g id="a_node4"><a xlink:href="LinearElasticRegistration_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="223,-6 223,-36 414,-36 414,-6 223,-6"/>
-<text text-anchor="start" x="231" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
-<text text-anchor="middle" x="318.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/src/LinearElasticRegistration.cpp</text>
+<polygon fill="white" stroke="black" points="574,-6 574,-36 765,-36 765,-6 574,-6"/>
+<text text-anchor="start" x="582" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
+<text text-anchor="middle" x="669.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/src/LinearElasticRegistration.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M215.75,-79C239.79,-65.66 271.41,-48.12 293.19,-36.04"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="213.99,-75.97 206.95,-83.88 217.39,-82.09 213.99,-75.97"/>
+<path fill="none" stroke="midnightblue" d="M527.44,-80.05C560.36,-66.59 604.79,-48.44 635.14,-36.04"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="525.98,-76.86 518.05,-83.88 528.63,-83.34 525.98,-76.86"/>
 </g>
-<!-- Node5&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node5&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M277.03,-75.58C239.18,-64.76 194.19,-51.91 157.77,-41.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="276.42,-79.05 287,-78.43 278.34,-72.32 276.42,-79.05"/>
-</g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="MarmotMaterialGradientEnhancedHypoElastic_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="1026,-156.5 1026,-197.5 1203,-197.5 1203,-156.5 1026,-156.5"/>
-<text text-anchor="start" x="1034" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="1034" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="1114.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">GradientEnhancedHypoElastic.h</text>
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="VonMisesRegistration_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="407,-6 407,-36 556,-36 556,-6 407,-6"/>
+<text text-anchor="start" x="415" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/VonMises</text>
+<text text-anchor="middle" x="481.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">/src/VonMisesRegistration.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node8 -->
-<g id="edge8" class="edge">
-<title>Node7&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M1044.94,-228.35C1058.86,-218.27 1074.58,-206.89 1087.55,-197.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1042.59,-225.73 1036.54,-234.43 1046.69,-231.4 1042.59,-225.73"/>
+<!-- Node3&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node3&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M482.86,-73.59C482.53,-61.26 482.15,-46.72 481.87,-36.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="479.36,-73.8 483.12,-83.7 486.36,-73.62 479.36,-73.8"/>
+</g>
+<!-- Node6&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node6&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M126.39,-70.34C119.09,-60.78 111.08,-50.27 104.39,-41.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="123.71,-72.6 132.56,-78.43 129.28,-68.36 123.71,-72.6"/>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="MarmotMaterialHypoElasticNonLocal_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="1026.5,-78.5 1026.5,-119.5 1202.5,-119.5 1202.5,-78.5 1026.5,-78.5"/>
-<text text-anchor="start" x="1034.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="1034.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHypoElastic</text>
-<text text-anchor="middle" x="1114.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">NonLocal.cpp</text>
+<g id="a_node9"><a xlink:href="MarmotMaterialGradientEnhancedHypoElastic_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="1145,-156.5 1145,-197.5 1322,-197.5 1322,-156.5 1145,-156.5"/>
+<text text-anchor="start" x="1153" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="1153" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="1233.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">GradientEnhancedHypoElastic.h</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node9 -->
 <g id="edge9" class="edge">
 <title>Node8&#45;&gt;Node9</title>
-<path fill="none" stroke="midnightblue" d="M1114.5,-146.3C1114.5,-137.3 1114.5,-127.65 1114.5,-119.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="1111,-146.43 1114.5,-156.43 1118,-146.43 1111,-146.43"/>
+<path fill="none" stroke="midnightblue" d="M1163.27,-228.35C1177.33,-218.27 1193.2,-206.89 1206.29,-197.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1160.89,-225.76 1154.8,-234.43 1164.96,-231.45 1160.89,-225.76"/>
 </g>
-<!-- Node11 -->
-<g id="node11" class="node">
-<title>Node11</title>
-<g id="a_node11"><a xlink:href="MarmotMaterialHyperElastic_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="622,-156.5 622,-197.5 799,-197.5 799,-156.5 622,-156.5"/>
-<text text-anchor="start" x="630" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="630" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="710.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">HyperElastic.h</text>
+<!-- Node10 -->
+<g id="node10" class="node">
+<title>Node10</title>
+<g id="a_node10"><a xlink:href="MarmotMaterialHypoElasticNonLocal_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="1150.5,-78.5 1150.5,-119.5 1326.5,-119.5 1326.5,-78.5 1150.5,-78.5"/>
+<text text-anchor="start" x="1158.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="1158.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHypoElastic</text>
+<text text-anchor="middle" x="1238.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">NonLocal.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node10&#45;&gt;Node11 -->
-<g id="edge11" class="edge">
-<title>Node10&#45;&gt;Node11</title>
-<path fill="none" stroke="midnightblue" d="M710.5,-224.3C710.5,-215.3 710.5,-205.65 710.5,-197.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="707,-224.43 710.5,-234.43 714,-224.43 707,-224.43"/>
-</g>
-<!-- Node13 -->
-<g id="node13" class="node">
-<title>Node13</title>
-<g id="a_node13"><a xlink:href="MarmotMaterialHypoElastic_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="427,-156.5 427,-197.5 604,-197.5 604,-156.5 427,-156.5"/>
-<text text-anchor="start" x="435" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="start" x="435" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="515.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">HypoElastic.h</text>
-</a>
-</g>
-</g>
-<!-- Node10&#45;&gt;Node13 -->
-<g id="edge13" class="edge">
-<title>Node10&#45;&gt;Node13</title>
-<path fill="none" stroke="midnightblue" d="M650.84,-230.75C623.54,-220.11 591.56,-207.65 565.55,-197.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="649.69,-234.06 660.28,-234.43 652.24,-227.54 649.69,-234.06"/>
-</g>
-<!-- Node17 -->
-<g id="node17" class="node">
-<title>Node17</title>
-<g id="a_node17"><a xlink:href="MarmotMaterialMechanical_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="817,-162 817,-192 1008,-192 1008,-162 817,-162"/>
-<text text-anchor="start" x="825" y="-180" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="middle" x="912.5" y="-169" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialMechanical.cpp</text>
-</a>
-</g>
-</g>
-<!-- Node10&#45;&gt;Node17 -->
-<g id="edge19" class="edge">
-<title>Node10&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M772.24,-230.77C805.8,-218.15 846.2,-202.94 875.01,-192.11"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="770.65,-227.63 762.52,-234.43 773.11,-234.18 770.65,-227.63"/>
+<!-- Node9&#45;&gt;Node10 -->
+<g id="edge10" class="edge">
+<title>Node9&#45;&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M1235.45,-146.3C1236.05,-137.3 1236.68,-127.65 1237.22,-119.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1231.95,-146.22 1234.79,-156.43 1238.94,-146.68 1231.95,-146.22"/>
 </g>
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="MarmotMaterialHyperElastic_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="809,-84 809,-114 1006,-114 1006,-84 809,-84"/>
-<text text-anchor="start" x="817" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="middle" x="907.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHyperElastic.cpp</text>
+<g id="a_node12"><a xlink:href="MarmotMaterialHyperElastic_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="945,-156.5 945,-197.5 1122,-197.5 1122,-156.5 945,-156.5"/>
+<text text-anchor="start" x="953" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="953" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="1033.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">HyperElastic.h</text>
 </a>
 </g>
 </g>
 <!-- Node11&#45;&gt;Node12 -->
 <g id="edge12" class="edge">
 <title>Node11&#45;&gt;Node12</title>
-<path fill="none" stroke="midnightblue" d="M770.71,-152.77C803.44,-140.15 842.84,-124.94 870.93,-114.11"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="769.3,-149.56 761.23,-156.43 771.82,-156.09 769.3,-149.56"/>
-</g>
-<!-- Node13&#45;&gt;Node5 -->
-<g id="edge15" class="edge">
-<title>Node13&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M465.08,-152.05C443.01,-141.57 417.45,-129.42 396.56,-119.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="463.76,-155.3 474.3,-156.43 466.76,-148.98 463.76,-155.3"/>
+<path fill="none" stroke="midnightblue" d="M892.93,-230.89C921.29,-220.22 954.59,-207.69 981.66,-197.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="891.65,-227.63 883.52,-234.43 894.11,-234.18 891.65,-227.63"/>
 </g>
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="MarmotMaterialHypoElastic_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="596.5,-84 596.5,-114 790.5,-114 790.5,-84 596.5,-84"/>
-<text text-anchor="start" x="604.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
-<text text-anchor="middle" x="693.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHypoElastic.cpp</text>
+<g id="a_node14"><a xlink:href="MarmotMaterialHypoElastic_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="541,-156.5 541,-197.5 718,-197.5 718,-156.5 541,-156.5"/>
+<text text-anchor="start" x="549" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="start" x="549" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">Core/include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="629.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">HypoElastic.h</text>
 </a>
 </g>
 </g>
-<!-- Node13&#45;&gt;Node14 -->
+<!-- Node11&#45;&gt;Node14 -->
 <g id="edge14" class="edge">
-<title>Node13&#45;&gt;Node14</title>
-<path fill="none" stroke="midnightblue" d="M570.67,-152.45C600.08,-139.89 635.3,-124.85 660.46,-114.11"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="569.16,-149.28 561.34,-156.43 571.91,-155.72 569.16,-149.28"/>
+<title>Node11&#45;&gt;Node14</title>
+<path fill="none" stroke="midnightblue" d="M770.07,-230.89C741.71,-220.22 708.41,-207.69 681.34,-197.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="768.89,-234.18 779.48,-234.43 771.35,-227.63 768.89,-234.18"/>
+</g>
+<!-- Node20 -->
+<g id="node20" class="node">
+<title>Node20</title>
+<g id="a_node20"><a xlink:href="MarmotMaterialMechanical_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="736,-162 736,-192 927,-192 927,-162 736,-162"/>
+<text text-anchor="start" x="744" y="-180" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="middle" x="831.5" y="-169" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialMechanical.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node11&#45;&gt;Node20 -->
+<g id="edge23" class="edge">
+<title>Node11&#45;&gt;Node20</title>
+<path fill="none" stroke="midnightblue" d="M831.5,-224.28C831.5,-213.25 831.5,-201.25 831.5,-192.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="828,-224.43 831.5,-234.43 835,-224.43 828,-224.43"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="MarmotMaterialHyperElastic_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="935,-84 935,-114 1132,-114 1132,-84 935,-84"/>
+<text text-anchor="start" x="943" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="middle" x="1033.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHyperElastic.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node12&#45;&gt;Node13 -->
+<g id="edge13" class="edge">
+<title>Node12&#45;&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M1033.5,-146.28C1033.5,-135.25 1033.5,-123.25 1033.5,-114.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="1030,-146.43 1033.5,-156.43 1037,-146.43 1030,-146.43"/>
+</g>
+<!-- Node14&#45;&gt;Node6 -->
+<g id="edge16" class="edge">
+<title>Node14&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M530.69,-164.25C450.79,-154.19 335.52,-138.44 235.5,-120 232.57,-119.46 229.59,-118.89 226.59,-118.3"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="530.39,-167.74 540.75,-165.5 531.26,-160.79 530.39,-167.74"/>
 </g>
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
-<g id="a_node15"><a xlink:href="LinearElastic_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="452.5,-78.5 452.5,-119.5 578.5,-119.5 578.5,-78.5 452.5,-78.5"/>
-<text text-anchor="start" x="460.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
-<text text-anchor="start" x="460.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/include/Marmot</text>
-<text text-anchor="middle" x="515.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/LinearElastic.h</text>
+<g id="a_node15"><a xlink:href="MarmotMaterialHypoElastic_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="578.5,-84 578.5,-114 772.5,-114 772.5,-84 578.5,-84"/>
+<text text-anchor="start" x="586.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotMechanics</text>
+<text text-anchor="middle" x="675.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">Core/src/MarmotMaterialHypoElastic.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node13&#45;&gt;Node15 -->
-<g id="edge16" class="edge">
-<title>Node13&#45;&gt;Node15</title>
-<path fill="none" stroke="midnightblue" d="M515.5,-146.3C515.5,-137.3 515.5,-127.65 515.5,-119.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="512,-146.43 515.5,-156.43 519,-146.43 512,-146.43"/>
-</g>
-<!-- Node15&#45;&gt;Node4 -->
-<g id="edge18" class="edge">
-<title>Node15&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M455.29,-74.77C422.56,-62.15 383.16,-46.94 355.07,-36.11"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="454.18,-78.09 464.77,-78.43 456.7,-71.56 454.18,-78.09"/>
+<!-- Node14&#45;&gt;Node15 -->
+<g id="edge15" class="edge">
+<title>Node14&#45;&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M646.66,-147.64C653.56,-136.25 661.21,-123.62 666.89,-114.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="643.53,-146.06 641.35,-156.43 649.52,-149.69 643.53,-146.06"/>
 </g>
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
-<g id="a_node16"><a xlink:href="LinearElastic_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="445.5,-6 445.5,-36 585.5,-36 585.5,-6 445.5,-6"/>
-<text text-anchor="start" x="453.5" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
-<text text-anchor="middle" x="515.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/src/LinearElastic.cpp</text>
+<g id="a_node16"><a xlink:href="LinearElastic_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="790.5,-78.5 790.5,-119.5 916.5,-119.5 916.5,-78.5 790.5,-78.5"/>
+<text text-anchor="start" x="798.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
+<text text-anchor="start" x="798.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/include/Marmot</text>
+<text text-anchor="middle" x="853.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/LinearElastic.h</text>
 </a>
 </g>
 </g>
-<!-- Node15&#45;&gt;Node16 -->
+<!-- Node14&#45;&gt;Node16 -->
 <g id="edge17" class="edge">
-<title>Node15&#45;&gt;Node16</title>
-<path fill="none" stroke="midnightblue" d="M515.5,-68.28C515.5,-57.25 515.5,-45.25 515.5,-36.23"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="512,-68.43 515.5,-78.43 519,-68.43 512,-68.43"/>
+<title>Node14&#45;&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M696.8,-153.17C728.42,-142.44 765.73,-129.78 796.01,-119.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="695.53,-149.9 687.19,-156.43 697.78,-156.53 695.53,-149.9"/>
+</g>
+<!-- Node18 -->
+<g id="node18" class="node">
+<title>Node18</title>
+<g id="a_node18"><a xlink:href="VonMises_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="245,-84 245,-114 388,-114 388,-84 245,-84"/>
+<text text-anchor="start" x="253" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/VonMises</text>
+<text text-anchor="middle" x="316.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">/include/Marmot/VonMises.h</text>
+</a>
+</g>
+</g>
+<!-- Node14&#45;&gt;Node18 -->
+<g id="edge20" class="edge">
+<title>Node14&#45;&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M538.32,-154.11C495.55,-143.81 443.9,-131.33 397.5,-120 389.62,-118.08 381.31,-116.04 373.14,-114.02"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="537.6,-157.53 548.14,-156.47 539.24,-150.73 537.6,-157.53"/>
+</g>
+<!-- Node16&#45;&gt;Node4 -->
+<g id="edge19" class="edge">
+<title>Node16&#45;&gt;Node4</title>
+<path fill="none" stroke="midnightblue" d="M796.87,-74.61C766.38,-62.02 729.78,-46.9 703.65,-36.11"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="795.54,-77.85 806.12,-78.43 798.21,-71.38 795.54,-77.85"/>
+</g>
+<!-- Node17 -->
+<g id="node17" class="node">
+<title>Node17</title>
+<g id="a_node17"><a xlink:href="LinearElastic_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="783.5,-6 783.5,-36 923.5,-36 923.5,-6 783.5,-6"/>
+<text text-anchor="start" x="791.5" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/Linear</text>
+<text text-anchor="middle" x="853.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">Elastic/src/LinearElastic.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node16&#45;&gt;Node17 -->
+<g id="edge18" class="edge">
+<title>Node16&#45;&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M853.5,-68.28C853.5,-57.25 853.5,-45.25 853.5,-36.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="850,-68.43 853.5,-78.43 857,-68.43 850,-68.43"/>
+</g>
+<!-- Node18&#45;&gt;Node5 -->
+<g id="edge22" class="edge">
+<title>Node18&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M356.23,-79.7C385.36,-66.28 424.32,-48.34 451.02,-36.04"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="354.77,-76.52 347.15,-83.88 357.7,-82.88 354.77,-76.52"/>
+</g>
+<!-- Node19 -->
+<g id="node19" class="node">
+<title>Node19</title>
+<g id="a_node19"><a xlink:href="VonMises_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="245,-6 245,-36 388,-36 388,-6 245,-6"/>
+<text text-anchor="start" x="253" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/VonMises</text>
+<text text-anchor="middle" x="316.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">/src/VonMises.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node18&#45;&gt;Node19 -->
+<g id="edge21" class="edge">
+<title>Node18&#45;&gt;Node19</title>
+<path fill="none" stroke="midnightblue" d="M316.5,-73.59C316.5,-61.26 316.5,-46.72 316.5,-36.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="313,-73.7 316.5,-83.7 320,-73.71 313,-73.7"/>
 </g>
 </g>
 </svg>

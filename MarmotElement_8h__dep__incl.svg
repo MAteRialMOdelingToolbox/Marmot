@@ -46,7 +46,7 @@ if (edges && edges.length) {
         </defs>
 
 <script type="text/javascript">
-var viewWidth = 635;
+var viewWidth = 808;
 var viewHeight = 262;
 var sectionId = 'dynsection-1';
 </script>
@@ -54,13 +54,13 @@ var sectionId = 'dynsection-1';
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>include/Marmot/MarmotElement.h</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-258 630.5,-258 630.5,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-258 803.5,-258 803.5,4 -4,4"/>
 <!-- Node1 -->
 <g id="node1" class="node">
 <title>Node1</title>
 <g id="a_node1"><a xlink:title=" ">
-<polygon fill="#bfbfbf" stroke="black" points="219.5,-234.5 219.5,-253.5 381.5,-253.5 381.5,-234.5 219.5,-234.5"/>
-<text text-anchor="middle" x="300.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotElement.h</text>
+<polygon fill="#bfbfbf" stroke="black" points="392.5,-234.5 392.5,-253.5 554.5,-253.5 554.5,-234.5 392.5,-234.5"/>
+<text text-anchor="middle" x="473.5" y="-241.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotElement.h</text>
 </a>
 </g>
 </g>
@@ -68,89 +68,89 @@ var sectionId = 'dynsection-1';
 <g id="node2" class="node">
 <title>Node2</title>
 <g id="a_node2"><a xlink:href="Marmot_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="144,-167.5 144,-186.5 271,-186.5 271,-167.5 144,-167.5"/>
-<text text-anchor="middle" x="207.5" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/Marmot.h</text>
+<polygon fill="white" stroke="black" points="317,-167.5 317,-186.5 444,-186.5 444,-167.5 317,-167.5"/>
+<text text-anchor="middle" x="380.5" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/Marmot.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
 <g id="edge1" class="edge">
 <title>Node1&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M279.64,-228.42C261.25,-215.57 235.09,-197.28 219.84,-186.63"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="277.76,-231.37 287.96,-234.23 281.77,-225.64 277.76,-231.37"/>
+<path fill="none" stroke="midnightblue" d="M452.64,-228.42C434.25,-215.57 408.09,-197.28 392.84,-186.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="450.76,-231.37 460.96,-234.23 454.77,-225.64 450.76,-231.37"/>
 </g>
-<!-- Node5 -->
-<g id="node5" class="node">
-<title>Node5</title>
-<g id="a_node5"><a xlink:href="DisplacementFiniteElement_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="228.5,-78.5 228.5,-119.5 386.5,-119.5 386.5,-78.5 228.5,-78.5"/>
-<text text-anchor="start" x="236.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
-<text text-anchor="start" x="236.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/include/Marmot</text>
-<text text-anchor="middle" x="307.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DisplacementFiniteElement.h</text>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="DisplacementFiniteElement_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="401.5,-78.5 401.5,-119.5 559.5,-119.5 559.5,-78.5 401.5,-78.5"/>
+<text text-anchor="start" x="409.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
+<text text-anchor="start" x="409.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/include/Marmot</text>
+<text text-anchor="middle" x="480.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">/DisplacementFiniteElement.h</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node5 -->
-<g id="edge10" class="edge">
-<title>Node1&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M301.41,-224.42C302.73,-197.36 305.18,-147.31 306.54,-119.65"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="297.91,-224.32 300.92,-234.48 304.9,-224.67 297.91,-224.32"/>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge11" class="edge">
+<title>Node1&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M474.41,-224.42C475.73,-197.36 478.18,-147.31 479.54,-119.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="470.91,-224.32 473.92,-234.48 477.9,-224.67 470.91,-224.32"/>
 </g>
-<!-- Node7 -->
-<g id="node7" class="node">
-<title>Node7</title>
-<g id="a_node7"><a xlink:href="MarmotFiniteElementSpatialWrapper_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="328,-156.5 328,-197.5 513,-197.5 513,-156.5 328,-156.5"/>
-<text text-anchor="start" x="336" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotFinite</text>
-<text text-anchor="start" x="336" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementCore/include/Marmot</text>
-<text text-anchor="middle" x="420.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">/MarmotFiniteElementSpatialWrapper.h</text>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="MarmotFiniteElementSpatialWrapper_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="501,-156.5 501,-197.5 686,-197.5 686,-156.5 501,-156.5"/>
+<text text-anchor="start" x="509" y="-185.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotFinite</text>
+<text text-anchor="start" x="509" y="-174.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementCore/include/Marmot</text>
+<text text-anchor="middle" x="593.5" y="-163.5" font-family="Helvetica,sans-Serif" font-size="10.00">/MarmotFiniteElementSpatialWrapper.h</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
-<title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="midnightblue" d="M325.5,-229.46C342.55,-220.22 365.4,-207.84 384.42,-197.54"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="323.81,-226.39 316.68,-234.23 327.14,-232.55 323.81,-226.39"/>
+<!-- Node1&#45;&gt;Node8 -->
+<g id="edge8" class="edge">
+<title>Node1&#45;&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M498.5,-229.46C515.55,-220.22 538.4,-207.84 557.42,-197.54"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="496.81,-226.39 489.68,-234.23 500.14,-232.55 496.81,-226.39"/>
 </g>
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
 <g id="a_node3"><a xlink:href="MarmotMaterialRegistrationHelper_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="18.5,-84 18.5,-114 172.5,-114 172.5,-84 18.5,-84"/>
-<text text-anchor="start" x="26.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial</text>
-<text text-anchor="middle" x="95.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">RegistrationHelper.h</text>
+<polygon fill="white" stroke="black" points="191.5,-84 191.5,-114 345.5,-114 345.5,-84 191.5,-84"/>
+<text text-anchor="start" x="199.5" y="-102" font-family="Helvetica,sans-Serif" font-size="10.00">include/Marmot/MarmotMaterial</text>
+<text text-anchor="middle" x="268.5" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">RegistrationHelper.h</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
 <g id="edge2" class="edge">
 <title>Node2&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M186.17,-161.53C166.04,-147.87 136.07,-127.53 116.16,-114.02"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="184.41,-164.56 194.65,-167.28 188.34,-158.77 184.41,-164.56"/>
+<path fill="none" stroke="midnightblue" d="M359.17,-161.53C339.04,-147.87 309.07,-127.53 289.16,-114.02"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="357.41,-164.56 367.65,-167.28 361.34,-158.77 357.41,-164.56"/>
 </g>
-<!-- Node2&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
-<title>Node2&#45;&gt;Node5</title>
-<path fill="none" stroke="midnightblue" d="M227.33,-160.93C242.9,-149.1 264.7,-132.53 281.63,-119.66"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="224.82,-158.44 218.97,-167.28 229.05,-164.02 224.82,-158.44"/>
+<!-- Node2&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node2&#45;&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M400.33,-160.93C415.9,-149.1 437.7,-132.53 454.63,-119.66"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="397.82,-158.44 391.97,-167.28 402.05,-164.02 397.82,-158.44"/>
 </g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="DisplacementFiniteElementRegistration_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="218,-0.5 218,-41.5 397,-41.5 397,-0.5 218,-0.5"/>
-<text text-anchor="start" x="226" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
-<text text-anchor="start" x="226" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/src/DisplacementFinite</text>
-<text text-anchor="middle" x="307.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementRegistration.cpp</text>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="DisplacementFiniteElementRegistration_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="391,-0.5 391,-41.5 570,-41.5 570,-0.5 391,-0.5"/>
+<text text-anchor="start" x="399" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/elements/Displacement</text>
+<text text-anchor="start" x="399" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">FiniteElement/src/DisplacementFinite</text>
+<text text-anchor="middle" x="480.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementRegistration.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node6 -->
-<g id="edge6" class="edge">
-<title>Node2&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M205.28,-157.18C203.78,-136.22 204.29,-102.09 219.5,-78 229.26,-62.53 245.02,-50.55 260.52,-41.72"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="201.82,-157.71 206.25,-167.33 208.78,-157.05 201.82,-157.71"/>
+<!-- Node2&#45;&gt;Node7 -->
+<g id="edge7" class="edge">
+<title>Node2&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M378.28,-157.18C376.78,-136.22 377.29,-102.09 392.5,-78 402.26,-62.53 418.02,-50.55 433.52,-41.72"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="374.82,-157.71 379.25,-167.33 381.78,-157.05 374.82,-157.71"/>
 </g>
 <!-- Node4 -->
 <g id="node4" class="node">
@@ -165,37 +165,53 @@ var sectionId = 'dynsection-1';
 <!-- Node3&#45;&gt;Node4 -->
 <g id="edge3" class="edge">
 <title>Node3&#45;&gt;Node4</title>
-<path fill="none" stroke="midnightblue" d="M95.5,-73.59C95.5,-61.26 95.5,-46.72 95.5,-36.23"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="92,-73.7 95.5,-83.7 99,-73.71 92,-73.7"/>
+<path fill="none" stroke="midnightblue" d="M226.84,-79.7C196.3,-66.28 155.45,-48.34 127.46,-36.04"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="225.8,-83.07 236.37,-83.88 228.62,-76.66 225.8,-83.07"/>
 </g>
-<!-- Node5&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node5&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M307.5,-68.3C307.5,-59.3 307.5,-49.65 307.5,-41.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="304,-68.43 307.5,-78.43 311,-68.43 304,-68.43"/>
-</g>
-<!-- Node7&#45;&gt;Node6 -->
-<g id="edge9" class="edge">
-<title>Node7&#45;&gt;Node6</title>
-<path fill="none" stroke="midnightblue" d="M418.62,-145.98C416.02,-125.22 409.89,-97.86 395.5,-78 384.45,-62.75 367.86,-50.65 352.04,-41.65"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="415.16,-146.58 419.68,-156.16 422.12,-145.85 415.16,-146.58"/>
-</g>
-<!-- Node8 -->
-<g id="node8" class="node">
-<title>Node8</title>
-<g id="a_node8"><a xlink:href="MarmotFiniteElementSpatialWrapper_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="black" points="442.5,-78.5 442.5,-119.5 626.5,-119.5 626.5,-78.5 442.5,-78.5"/>
-<text text-anchor="start" x="450.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotFinite</text>
-<text text-anchor="start" x="450.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementCore/src/MarmotFiniteElement</text>
-<text text-anchor="middle" x="534.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">SpatialWrapper.cpp</text>
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="VonMisesRegistration_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="209,-6 209,-36 358,-36 358,-6 209,-6"/>
+<text text-anchor="start" x="217" y="-24" font-family="Helvetica,sans-Serif" font-size="10.00">modules/materials/VonMises</text>
+<text text-anchor="middle" x="283.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">/src/VonMisesRegistration.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node8 -->
-<g id="edge8" class="edge">
-<title>Node7&#45;&gt;Node8</title>
-<path fill="none" stroke="midnightblue" d="M458.55,-150.64C473.77,-140.49 491.03,-128.98 505.24,-119.51"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="456.24,-147.97 449.86,-156.43 460.12,-153.79 456.24,-147.97"/>
+<!-- Node3&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node3&#45;&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M273.32,-73.59C275.75,-61.26 278.62,-46.72 280.69,-36.23"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="269.82,-73.22 271.32,-83.7 276.69,-74.57 269.82,-73.22"/>
+</g>
+<!-- Node6&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node6&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M480.5,-68.3C480.5,-59.3 480.5,-49.65 480.5,-41.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="477,-68.43 480.5,-78.43 484,-68.43 477,-68.43"/>
+</g>
+<!-- Node8&#45;&gt;Node7 -->
+<g id="edge10" class="edge">
+<title>Node8&#45;&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M591.62,-145.98C589.02,-125.22 582.89,-97.86 568.5,-78 557.45,-62.75 540.86,-50.65 525.04,-41.65"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="588.16,-146.58 592.68,-156.16 595.12,-145.85 588.16,-146.58"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="MarmotFiniteElementSpatialWrapper_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="615.5,-78.5 615.5,-119.5 799.5,-119.5 799.5,-78.5 615.5,-78.5"/>
+<text text-anchor="start" x="623.5" y="-107.5" font-family="Helvetica,sans-Serif" font-size="10.00">modules/core/MarmotFinite</text>
+<text text-anchor="start" x="623.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">ElementCore/src/MarmotFiniteElement</text>
+<text text-anchor="middle" x="707.5" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">SpatialWrapper.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node8&#45;&gt;Node9 -->
+<g id="edge9" class="edge">
+<title>Node8&#45;&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M631.55,-150.64C646.77,-140.49 664.03,-128.98 678.24,-119.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="629.24,-147.97 622.86,-156.43 633.12,-153.79 629.24,-147.97"/>
 </g>
 </g>
 </svg>

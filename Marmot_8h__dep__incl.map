@@ -1,7 +1,8 @@
 <map id="include/Marmot/Marmot.h" name="include/Marmot/Marmot.h">
-<area shape="rect" id="node1" title=" " alt="" coords="280,5,449,32"/>
-<area shape="rect" id="node2" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="30,87,235,129"/>
-<area shape="rect" id="node4" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="259,80,470,136"/>
-<area shape="rect" id="node5" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="336,184,575,240"/>
+<area shape="rect" id="node1" title=" " alt="" coords="497,5,667,32"/>
+<area shape="rect" id="node2" href="$MarmotMaterialRegistrationHelper_8h.html" title=" " alt="" coords="247,87,453,129"/>
+<area shape="rect" id="node5" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="477,80,687,136"/>
+<area shape="rect" id="node6" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="540,184,779,240"/>
 <area shape="rect" id="node3" href="$LinearElasticRegistration_8cpp.html" title=" " alt="" coords="5,191,260,233"/>
+<area shape="rect" id="node4" href="$VonMisesRegistration_8cpp.html" title=" " alt="" coords="284,191,483,233"/>
 </map>

@@ -1,5 +1,8 @@
 <map id="modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" name="modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h">
-<area shape="rect" id="node1" title=" " alt="" coords="14,5,235,61"/>
-<area shape="rect" id="node2" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="19,109,230,165"/>
+<area shape="rect" id="node1" title=" " alt="" coords="133,5,354,61"/>
+<area shape="rect" id="node2" href="$DisplacementFiniteElement_8h.html" title=" " alt="" coords="26,109,237,165"/>
+<area shape="rect" id="node4" href="$VonMises_8h.html" title=" " alt="" coords="268,117,459,158"/>
 <area shape="rect" id="node3" href="$DisplacementFiniteElementRegistration_8cpp.html" title=" " alt="" coords="5,213,244,269"/>
+<area shape="rect" id="node5" href="$VonMises_8cpp.html" title=" " alt="" coords="268,221,459,262"/>
+<area shape="rect" id="node6" href="$VonMisesRegistration_8cpp.html" title=" " alt="" coords="483,221,681,262"/>
 </map>
