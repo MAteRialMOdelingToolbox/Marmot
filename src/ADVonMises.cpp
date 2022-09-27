@@ -40,6 +40,7 @@ namespace Marmot::Materials {
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
     managedStateVars = std::make_unique< ADVonMisesModelStateVarManager >( stateVars );
+    return MarmotMaterialHypoElasticAD::assignStateVars( stateVars, nStateVars );
   }
 
   StateView ADVonMises::getStateView( const std::string& stateName )
