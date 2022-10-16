@@ -13,23 +13,7 @@ jobs:
     env:
       CC:   gcc-10
       CXX:  g++-10
-
     steps:
-
-      # - name: Setup Mambaforge
-      #   uses: conda-incubator/setup-miniconda@v2
-      #   with:
-      #     use-mamba: true
-      #     miniforge-variant: Mambaforge
-      #     miniforge-version: latest
-      #     activate-environment: anaconda-client-env
-              
-      # - name: Install conda packages
-      #   shell: bash -l {0}
-      #   run: |
-      #     mamba install --file requirements.txt
-      #     
-
       - name: Install Eigen
         shell: bash -l {0}
         run: |
@@ -52,7 +36,6 @@ jobs:
           sudo make install
           cd ../..
 
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with: 
           token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets 
@@ -61,38 +44,7 @@ jobs:
       - name: Install Marmot
         shell: bash -l {0}
         run: |
-          # cd Marmot
           mkdir build
           cd build
           cmake ..
           sudo make install
-          cd ../../
-
-
-      # - name: test build of Marmot
-      #   run: | 
-      #        git clone https://gitlab.com/libeigen/eigen.git
-      #        cd eigen
-      #        mkdir build
-      #        cd build
-      #        cmake ..
-      #        sudo make install
-      #        pwd
-      #        cd ../..
-      #        git clone https://github.com/autodiff/autodiff.git
-      #        cd autodiff
-      #        mkdir build
-      #        cd build
-      #        cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
-      #        sudo make install
-      #        pwd
-      #        cd ../..
-      #        git clone --recurse-submodules https://github.com/${{ github.repository }}
-      #        cd Marmot
-      #        git fetch origin ${{ github.ref }}                     
-      #        git checkout FETCH_HEAD                               
-      #        mkdir build                                            
-      #        cd build                                               
-      #        cmake ..                                              
-      #        make -j
-      #        sudo make install
