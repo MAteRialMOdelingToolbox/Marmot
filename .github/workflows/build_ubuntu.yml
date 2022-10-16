@@ -33,7 +33,7 @@ jobs:
           cd eigen 
           mkdir build
           cd build 
-          cmake -DBUILD_TESTING=OFF  -DINCLUDE_INSTALL_DIR=$(python -c "import sys; print(sys.prefix)")/include -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+          cmake -DBUILD_TESTING=OFF  ..
           make install
           cd ../..
 
@@ -44,7 +44,7 @@ jobs:
           cd autodiff
           mkdir build
           cd build
-          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
           make install
           cd ../..
 
@@ -60,7 +60,7 @@ jobs:
           # cd Marmot
           mkdir build
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
+          cmake ..
           make install
           cd ../../
 
