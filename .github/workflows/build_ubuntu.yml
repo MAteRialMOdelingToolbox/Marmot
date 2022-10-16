@@ -34,7 +34,7 @@ jobs:
           mkdir build
           cd build 
           cmake -DBUILD_TESTING=OFF  ..
-          make install
+          sudo make install
           cd ../..
 
       - name: Install Autodiff
@@ -45,7 +45,7 @@ jobs:
           mkdir build
           cd build
           cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
-          make install
+          sudo make install
           cd ../..
 
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -61,7 +61,7 @@ jobs:
           mkdir build
           cd build
           cmake ..
-          make install
+          sudo make install
           cd ../../
 
 
