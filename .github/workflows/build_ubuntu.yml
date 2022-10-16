@@ -25,6 +25,13 @@ jobs:
       #   shell: bash -l {0}
       #   run: |
       #     mamba install --file requirements.txt
+      #     
+
+      - name: Install Compilers
+        run:   |
+          sudo apt update
+          sudo apt install gcc-10 g++-10
+        shell: bash
 
       - name: Install Eigen
         shell: bash -l {0}
