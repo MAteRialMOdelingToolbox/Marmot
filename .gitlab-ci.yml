@@ -35,7 +35,7 @@ variables:
     
 build and test:
   stage: build
-  image: condaforge/mambaforge:latest
+  image: condaforge/mambaforge:22.9.0-2
   script:
     
     - function install_marmot_module(){
