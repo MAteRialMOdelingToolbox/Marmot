@@ -33,8 +33,14 @@ namespace Marmot {
   namespace Constants {
     constexpr double Pi         = 3.141592653589793238463;
     constexpr double numZeroPos = 1e-16;
-    inline double    cubicRootEps() { return std::pow( std::numeric_limits< double >::epsilon(), 1. / 3 ); }
-    inline double    squareRootEps() { return std::pow( std::numeric_limits< double >::epsilon(), 0.5 ); }
+    inline double    cubicRootEps()
+    {
+      return std::pow( std::numeric_limits< double >::epsilon(), 1. / 3 );
+    }
+    inline double squareRootEps()
+    {
+      return std::pow( std::numeric_limits< double >::epsilon(), 0.5 );
+    }
 
     const inline double SquareRootEps = squareRootEps();
     const inline double CubicRootEps  = cubicRootEps();

@@ -1,5 +1,5 @@
-#include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
+#include "Marmot/MarmotConstants.h"
 #include <complex>
 
 using namespace Eigen;

@@ -59,19 +59,31 @@ namespace Marmot {
 
     /**
      * convert angle \ref alpha in radiant to degree */
-    constexpr double radToDeg( const double alpha ) { return alpha * 180 / Marmot::Constants::Pi; }
+    constexpr double radToDeg( const double alpha )
+    {
+      return alpha * 180 / Marmot::Constants::Pi;
+    }
 
     /**
      * convert angle \ref alpha in degree to radiant */
-    constexpr double degToRad( const double alpha ) { return alpha / 180 * Marmot::Constants::Pi; }
+    constexpr double degToRad( const double alpha )
+    {
+      return alpha / 180 * Marmot::Constants::Pi;
+    }
 
     /**
      * Macaulay function applied to \ref scalar */
-    constexpr double macauly( double scalar ) { return scalar >= 0 ? scalar : 0.0; }
+    constexpr double macauly( double scalar )
+    {
+      return scalar >= 0 ? scalar : 0.0;
+    }
 
     /**
      * Heaviside function applied to \ref scalar */
-    constexpr int heaviside( double scalar ) { return scalar >= 0 ? 1 : 0; }
+    constexpr int heaviside( double scalar )
+    {
+      return scalar >= 0 ? 1 : 0;
+    }
 
     /**
      * Extract sign of value \ref val*/

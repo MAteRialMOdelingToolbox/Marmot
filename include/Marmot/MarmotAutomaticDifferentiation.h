@@ -35,6 +35,7 @@ namespace Marmot {
     using function_type = std::function< autodiff::VectorXdual( const autodiff::VectorXdual& X ) >;
     Eigen::MatrixXd forwardMode( const function_type& F, const Eigen::VectorXd& X );
 
+    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > dF_dX( const function_type& F, const Eigen::VectorXd& X );
   } // namespace AutomaticDifferentiation
 
 } // namespace Marmot
