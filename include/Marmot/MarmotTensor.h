@@ -104,7 +104,10 @@ namespace Marmot {
 
   namespace ContinuumMechanics::TensorUtility {
 
-    constexpr int d( int a, int b ) { return a == b ? 1 : 0; }
+    constexpr int d( int a, int b )
+    {
+      return a == b ? 1 : 0;
+    }
 
     template < int x,
                int y,

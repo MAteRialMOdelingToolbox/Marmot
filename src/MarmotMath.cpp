@@ -20,12 +20,24 @@ namespace Marmot {
       return std::exp( x );
     }
 
-    double makeReal( const complexDouble& value ) { return std::real( value ); }
+    double makeReal( const complexDouble& value )
+    {
+      return std::real( value );
+    }
 
-    double makeReal( const autodiff::real& value ) { return double( value ); }
-    double makeReal( const autodiff::dual& value ) { return double( value ); }
+    double makeReal( const autodiff::real& value )
+    {
+      return double( value );
+    }
+    double makeReal( const autodiff::dual& value )
+    {
+      return double( value );
+    }
 
-    double makeReal( const double& value ) { return value; }
+    double makeReal( const double& value )
+    {
+      return value;
+    }
 
     // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
     int getExponentPowerTen( const double x )
@@ -51,7 +63,7 @@ namespace Marmot {
         coordinateSystem( 0, 1 ) = -coordinateSystem( 1, 0 );
         coordinateSystem( 1, 1 ) = coordinateSystem( 0, 0 );
       }
-      coordinateSystem.col(1).normalize();
+      coordinateSystem.col( 1 ).normalize();
 
       coordinateSystem.col( 2 ) = coordinateSystem.col( 0 ).cross( coordinateSystem.col( 1 ) );
       coordinateSystem.col( 2 ).normalize();
