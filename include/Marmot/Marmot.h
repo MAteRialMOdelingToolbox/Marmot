@@ -101,6 +101,8 @@ namespace MarmotLibrary {
     RedWildmoorSandstone                  = 63,
     VonMises                              = 64,
     GradientEnhancedCosseratDruckerPrager = 65,
+    ADLinearElastic                       = 66,
+    ADVonMises                            = 67,
   };
 
   enum ElementCode {
@@ -259,6 +261,15 @@ namespace MarmotLibrary {
     CHMCPE4UL,
     CHMCPE8RUL,
     CHMC3D20RUL,
+
+    // autodiff displacement elements
+    ADCPE4,
+    ADCPE8R,
+    ADCPS4,
+    ADCPS8R,
+    ADC3D8,
+    ADC3D20,
+    ADC3D20R,
   };
 
   // MaterialFactory

@@ -114,6 +114,8 @@ endif()
 
 if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
     set (MATERIAL_MODULES
+        ADLinearElastic
+        ADVonMises
         B4
         Barodesy
         BarodesyGradientVoid
@@ -186,6 +188,7 @@ if(NOT ELEMENT_MODULES OR ELEMENT_MODULES STREQUAL "all")
     set(ELEMENT_MODULES
         CosseratFiniteElement
         DisplacementFiniteElement
+        ADDisplacementFiniteElement
         DisplacementTLFiniteElement
         DisplacementULFiniteElement
         DisplacementEASFiniteElement
