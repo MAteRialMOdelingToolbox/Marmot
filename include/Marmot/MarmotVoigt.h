@@ -44,7 +44,10 @@ namespace Marmot {
 
     enum VoigtSize { OneD = 1, TwoD = 3, ThreeD = 6, Axial = 4 };
 
-    constexpr VoigtSize voigtSizeFromDimension( int x ) { return (VoigtSize)( ( ( x * x ) + x ) >> 1 ); }
+    constexpr VoigtSize voigtSizeFromDimension( int x )
+    {
+      return (VoigtSize)( ( ( x * x ) + x ) >> 1 );
+    }
 
     extern const Marmot::Vector6d P;
     extern const Marmot::Vector6d PInv;
@@ -430,9 +433,9 @@ namespace Marmot {
       template < typename T >
       T J2( const Eigen::Matrix< T, 6, 1 >& stress )
       {
-        auto I1_ = I1( stress );
-        auto I2_ = I2( stress );
-        auto res = ( 1. / 3 ) * I1_ * I1_ - I2_;
+        const T I1_ = I1( stress );
+        const T I2_ = I2( stress );
+        const T res = ( 1. / 3 ) * I1_ * I1_ - I2_;
         return Marmot::Math::makeReal( res ) >= 0 ? res : T( 0.0 );
       }
 

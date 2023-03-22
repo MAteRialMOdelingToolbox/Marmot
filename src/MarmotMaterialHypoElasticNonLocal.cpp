@@ -69,7 +69,7 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
                                                                     double*       dStress_dStrain2D_,
                                                                     double*       dKLocal_dStrain2D_,
                                                                     double*       dStress_dK2D_,
-                                                                    const double*       dStrain2D_,
+                                                                    const double* dStrain2D_,
                                                                     double        KOld,
                                                                     double        dK,
                                                                     const double* timeOld,
@@ -82,8 +82,8 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
   Map< const Matrix< double, 3, 1 > > dStrain2D( dStrain2D_ );
   Map< Matrix< double, 3, 1 > >       stress2D( stress2D_ );
   Map< Matrix< double, 3, 3 > >       dStress_dStrain2D( dStress_dStrain2D_ );
-  Map< Matrix< double, 3, 1 > >       dStress_dK2D ( dStress_dK2D_ );
-  Map< Matrix< double, 3, 1 > >       dKLocal_dStrain2D ( dKLocal_dStrain2D_ );
+  Map< Matrix< double, 3, 1 > >       dStress_dK2D( dStress_dK2D_ );
+  Map< Matrix< double, 3, 1 > >       dKLocal_dStrain2D( dKLocal_dStrain2D_ );
   Map< VectorXd >                     stateVars( this->stateVars, this->nStateVars );
 
   Matrix6d dStress_dStrain3D;
@@ -100,7 +100,7 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
   int planeStressCount = 1;
   while ( true ) {
     stressTemp3D = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
-    stateVars  = stateVarsOld;
+    stateVars    = stateVarsOld;
 
     computeStress( stressTemp3D.data(),
                    KLocal,
@@ -125,7 +125,7 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
       break;
     }
 
-    double tangentCompliance = 1. / dStress_dStrain3D ( 2, 2 );
+    double tangentCompliance = 1. / dStress_dStrain3D( 2, 2 );
     if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
       tangentCompliance = 1e10;
 
@@ -139,9 +139,9 @@ void MarmotMaterialGradientEnhancedHypoElastic::computePlaneStress( double*     
     }
   }
 
-  stress2D          = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD>( stressTemp3D );
+  stress2D = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( stressTemp3D );
 
   dStress_dStrain2D = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
-  dKLocal_dStrain2D = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD>( dKLocal_dStrain3D );
-  dStress_dK2D      = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD>( dStress_dK3D );
+  dKLocal_dStrain2D = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( dKLocal_dStrain3D );
+  dStress_dK2D      = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( dStress_dK3D );
 }

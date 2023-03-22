@@ -19,9 +19,15 @@ namespace Marmot::NumericalAlgorithms {
     dR             = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
   }
 
-  Marmot::Vector6d HughesWinget::getStrainIncrement() { return dEps; }
+  Marmot::Vector6d HughesWinget::getStrainIncrement()
+  {
+    return dEps;
+  }
 
-  Matrix3d HughesWinget::getRotationIncrement() { return dOmega; }
+  Matrix3d HughesWinget::getRotationIncrement()
+  {
+    return dOmega;
+  }
 
   Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )
   {

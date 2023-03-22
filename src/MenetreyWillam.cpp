@@ -1,5 +1,5 @@
-#include "Marmot/MarmotConstants.h"
 #include "Marmot/MenetreyWillam.h"
+#include "Marmot/MarmotConstants.h"
 #include <cmath>
 #include <sstream>
 
