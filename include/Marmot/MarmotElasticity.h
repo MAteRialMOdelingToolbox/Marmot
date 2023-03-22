@@ -45,7 +45,10 @@ namespace Marmot {
           \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
         \f]
        */
-      double constexpr E( const double K, const double G ) { return 9. * K * G / ( 3. * K + G ); }
+      double constexpr E( const double K, const double G )
+      {
+        return 9. * K * G / ( 3. * K + G );
+      }
 
       /**
        * Computes the isotropic poisson's ratio \f$ \nu \f$ from the compression modulus K and shear modulus G
@@ -53,7 +56,10 @@ namespace Marmot {
          \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
         \f]
        */
-      double constexpr nu( const double K, const double G ) { return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G ); }
+      double constexpr nu( const double K, const double G )
+      {
+        return ( 3 * K - 2 * G ) / ( 6 * K + 2 * G );
+      }
 
       /**
        * Computes the isotropic shear modulus G from the young's modulus E and poisson's ratio \f$ \nu \f$.
@@ -61,7 +67,10 @@ namespace Marmot {
          \displaystyle G = \frac{E}{2\,(1 + \nu)}
         \f]
        */
-      double constexpr shearModulus( const double E, const double nu ) { return E / ( 2 * ( 1 + nu ) ); }
+      double constexpr shearModulus( const double E, const double nu )
+      {
+        return E / ( 2 * ( 1 + nu ) );
+      }
 
       /**
        * Computes the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu
@@ -129,13 +138,13 @@ namespace Marmot {
        *Computes the transversely isotropic compliance tensor:
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-         				       \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
-                			       \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
-           				       0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
-           				       0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
-           				       0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
-                             	            \end{bmatrix}
+                       \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
+                             \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
+                             \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
+                         0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
+                         0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
+                         0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
+                                          \end{bmatrix}
        \f]
        *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate
        system. It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio

@@ -1,8 +1,8 @@
+#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/HughesWinget.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotKinematics.h"
 #include "Marmot/MarmotLowerDimensionalStress.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
@@ -106,7 +106,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress2D_,
     }
   }
 
-  stress2D          = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD>( stress3DTemp );
+  stress2D          = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( stress3DTemp );
   dStress_dStrain2D = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
 }
 

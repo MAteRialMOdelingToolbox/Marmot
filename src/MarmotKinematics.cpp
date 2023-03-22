@@ -42,7 +42,7 @@ namespace Marmot {
 
       const EigenTensors::Tensor633d dStretchingRate_dVelocityGradient = initializeDStretchingRate_dVelocityGradient();
 
-    } // namespace velocityGradient
+    } // namespace VelocityGradient
 
     namespace Strain {
 
@@ -69,7 +69,7 @@ namespace Marmot {
         return dEdF;
       }
 
-    } // namespace strain
+    } // namespace Strain
     namespace DeformationGradient {
       template <>
       Eigen::Matrix3d make3D( const Eigen::Ref< const Eigen::Matrix< double, 1, 1 > >& tensor )
@@ -92,7 +92,7 @@ namespace Marmot {
       {
         return tensor;
       }
-    } // namespace deformationGradient
+    } // namespace DeformationGradient
 
   } // namespace ContinuumMechanics::Kinematics
 } // namespace Marmot
