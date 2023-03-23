@@ -156,11 +156,13 @@ namespace Marmot {
         const T      cosTheta  = cos( theta );
         const T      cos2Theta = cosTheta * cosTheta;
 
-        const T numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
-        const T denominator = ( 2 * ( 1 - e2 ) * cosTheta +
-                                ( 2 * e - 1 ) * sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
+        const T numerator   = ( 4. * ( 1. - e2 ) * cos2Theta + ( 2. * e - 1. ) * ( 2. * e - 1. ) );
+        const T denominator = ( 2. * ( 1. - e2 ) * cosTheta +
+                                ( 2. * e - 1. ) * sqrt( 4. * ( 1. - e2 ) * cos2Theta + 5. * e2 - 4. * e ) );
 
-        return numerator / denominator;
+        const T r = numerator / denominator;
+
+        return r;
       }
       /**
        * Compute the polar radius \f$r\f$ and its derivative
@@ -197,9 +199,9 @@ namespace Marmot {
         const T      cosTheta  = cos( theta );
         const T      cos2Theta = cosTheta * cosTheta;
 
-        T numerator   = ( 4 * ( 1 - e2 ) * cos2Theta + ( 2 * e - 1 ) * ( 2 * e - 1 ) );
-        T denominator = ( 2 * ( 1 - e2 ) * cosTheta +
-                          ( 2 * e - 1 ) * sqrt( 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e ) );
+        T numerator   = ( 4. * ( 1. - e2 ) * cos2Theta + ( 2. * e - 1. ) * ( 2. * e - 1. ) );
+        T denominator = ( 2. * ( 1. - e2 ) * cosTheta +
+                          ( 2. * e - 1. ) * sqrt( 4. * ( 1. - e2 ) * cos2Theta + 5. * e2 - 4. * e ) );
 
         r = numerator / denominator;
 
@@ -208,12 +210,12 @@ namespace Marmot {
 
         const T a          = numerator;
         const T b          = 1. / denominator;
-        const T aux        = 4 * ( 1 - e2 ) * cos2Theta + 5 * e2 - 4 * e;
-        const T dAuxdTheta = 4 * ( 1 - e2 ) * 2 * cosTheta * -sinTheta;
-        const T dadTheta   = 2 * cosTheta * ( -sinTheta ) * 4 * ( 1 - e2 );
-        const T dbdTheta   = -pow( denominator, -2 ) *
-                           ( 2 * ( 1 - e2 ) * -sinTheta + ( 2 * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
-        dRdTheta = b * dadTheta + a * dbdTheta;
+        const T aux        = 4. * ( 1. - e2 ) * cos2Theta + 5. * e2 - 4. * e;
+        const T dAuxdTheta = 4. * ( 1. - e2 ) * 2. * cosTheta * -sinTheta;
+        const T dadTheta   = 2. * cosTheta * ( -sinTheta ) * 4. * ( 1. - e2 );
+        const T dbdTheta   = -pow( denominator, -2. ) * ( 2. * ( 1. - e2 ) * -sinTheta +
+                                                        ( 2. * e - 1 ) * 1. / 2 * pow( aux, -1. / 2 ) * dAuxdTheta );
+        dRdTheta           = b * dadTheta + a * dbdTheta;
 
         return { r, dRdTheta };
       }
@@ -236,25 +238,25 @@ namespace Marmot {
         const T cos_2_theta = cos_theta * cos_theta;
         const T sin_2_theta = sin_theta * sin_theta;
 
-        const T x      = 5 * e2 - 4 * e - 4 * e2m1 * cos_2_theta;
+        const T x      = 5. * e2 - 4. * e - 4. * e2m1 * cos_2_theta;
         const T sqrt_x = sqrt( x );
 
         const T one_over_sqrt_x = 1. / sqrt_x;
 
         const T d2r_dTheta2 = e2m1 *
-                              ( -16 * e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2 ) * sin_2_theta *
+                              ( -16. * e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2. ) * sin_2_theta *
                                   cos_theta / ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) -
-                                8 * sin_2_theta + 8 * cos_2_theta +
-                                ( pow( 2 * e - 1, 2 ) - 4 * e2m1 * cos_2_theta ) *
+                                8. * sin_2_theta + 8. * cos_2_theta +
+                                ( pow( 2. * e - 1., 2 ) - 4 * e2m1 * cos_2_theta ) *
                                   ( 16.0 * tem1 * e2m1 * pow( x, -1.5 ) * sin_2_theta * cos_2_theta +
                                     4.0 * tem1 * one_over_sqrt_x * sin_2_theta -
                                     4.0 * tem1 * one_over_sqrt_x * cos_2_theta +
-                                    e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2 ) *
-                                      ( 8.0 * tem1 * one_over_sqrt_x * cos_theta + 4 ) * sin_2_theta /
-                                      ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) -
-                                    2 * cos_theta ) /
-                                  ( tem1 * sqrt_x - 2 * e2m1 * cos_theta ) ) /
-                              ( tem1 * sqrt_x - 2 * e2m1 * cos_theta );
+                                    e2m1 * ( 4.0 * tem1 * one_over_sqrt_x * cos_theta + 2. ) *
+                                      ( 8.0 * tem1 * one_over_sqrt_x * cos_theta + 4. ) * sin_2_theta /
+                                      ( tem1 * sqrt_x - 2. * e2m1 * cos_theta ) -
+                                    2. * cos_theta ) /
+                                  ( tem1 * sqrt_x - 2. * e2m1 * cos_theta ) ) /
+                              ( tem1 * sqrt_x - 2. * e2m1 * cos_theta );
 
         return { r, dr_dTheta, d2r_dTheta2 };
       }
@@ -274,12 +276,12 @@ namespace Marmot {
         const T r_ = polarRadius( hw.theta, param.e );
         if ( varEps == 0 )
           return ( param.Af * hw.rho ) * ( param.Af * hw.rho ) +
-                 param.m * ( param.Bf * hw.rho * r_ + param.Cf * hw.xi ) - 1;
+                 param.m * ( param.Bf * hw.rho * r_ + param.Cf * hw.xi ) - 1.;
         else
           return param.Af * param.Af * hw.rho * hw.rho +
                  param.m * ( std::sqrt( param.Bf * hw.rho * r_ * param.Bf * hw.rho * r_ + varEps * varEps ) +
                              param.Cf * hw.xi ) -
-                 1;
+                 1.;
       }
 
       /**
@@ -300,7 +302,7 @@ namespace Marmot {
         dFdXi = param.m * param.Cf;
 
         if ( varEps == 0.0 ) {
-          dFdRho   = 2 * param.Af * hw.rho * param.Af + param.m * param.Bf * r_;
+          dFdRho   = 2. * param.Af * hw.rho * param.Af + param.m * param.Bf * r_;
           dFdTheta = param.m * param.Bf * hw.rho * dRdTheta_;
         }
         else {
@@ -308,7 +310,7 @@ namespace Marmot {
                              pow( param.Bf * param.Bf * hw.rho * hw.rho * r_ * r_ + varEps * varEps, -0.5 ) * 2 *
                              param.Bf * hw.rho * r_ * param.Bf;
 
-          dFdRho   = param.Af * param.Af * 2 * hw.rho + auxTerm1 * r_;
+          dFdRho   = param.Af * param.Af * 2. * hw.rho + auxTerm1 * r_;
           dFdTheta = auxTerm1 * hw.rho * dRdTheta_;
         }
 

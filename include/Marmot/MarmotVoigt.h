@@ -456,9 +456,9 @@ namespace Marmot {
       template < typename T >
       T J3( const Eigen::Matrix< T, 6, 1 >& stress )
       {
-        T I1_ = I1( stress );
-        T I2_ = I2( stress );
-        T I3_ = I3( stress );
+        const T I1_ = I1( stress );
+        const T I2_ = I2( stress );
+        const T I3_ = I3( stress );
 
         return ( 2. / 27 ) * pow( I1_, 3 ) - ( 1. / 3 ) * I1_ * I2_ + I3_;
       }
