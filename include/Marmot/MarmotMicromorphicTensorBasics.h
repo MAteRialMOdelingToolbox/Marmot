@@ -28,6 +28,7 @@
 #include "Eigen/Core"
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotTensor.h"
+#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot {
 
@@ -37,6 +38,15 @@ namespace Marmot {
     using Tensor33d   = Fastor::Tensor< double, 3, 3 >;
     using Tensor333d  = Fastor::Tensor< double, 3, 3, 3 >;
     using Tensor3333d = Fastor::Tensor< double, 3, 3, 3, 3 >;
+
+    template < typename T >
+    using Tensor3t = Fastor::Tensor< T, 3 >;
+    template < typename T >
+    using Tensor33t = Fastor::Tensor< T, 3, 3 >;
+    template < typename T >
+    using Tensor333t = Fastor::Tensor< T, 3, 3, 3 >;
+    template < typename T >
+    using Tensor3333t = Fastor::Tensor< T, 3, 3, 3, 3 >;
 
     using TensorMap3d    = Fastor::TensorMap< double, 3 >;
     using TensorMap33d   = Fastor::TensorMap< double, 3, 3 >;
@@ -283,7 +293,10 @@ namespace Marmot {
     return reduceTo2D( result_type( theTensor3D ) );
   }
 
-  constexpr int const3( size_t x ) { return 3; }
+  constexpr int const3( size_t x )
+  {
+    return 3;
+  }
 
   template < typename T, size_t... dims2D >
   auto inline expandTo3D( const Fastor::Tensor< T, dims2D... >& theTensor2D )
@@ -303,6 +316,89 @@ namespace Marmot {
   {
     using result_type = typename Derived::result_type;
     return expandTo3D( result_type( theTensor2D ) );
+  }
+
+  template < typename T >
+  FastorStandardTensors::Tensor33t< T > multiplyFastorTensor33WithScalar( FastorStandardTensors::Tensor33t< T > tensor,
+                                                                          T                                     scalar )
+  {
+    // workaround for fastor bug (issue #149)
+    FastorStandardTensors::Tensor33t< T > res;
+
+    for ( int i = 0; i < 3; i++ ) {
+      for ( int j = 0; j < 3; j++ ) {
+        res( i, j ) = tensor( i, j ) * scalar;
+      }
+    }
+    return res;
+  }
+
+  template < typename T, size_t... Rest >
+  Fastor::Tensor< T, Rest... > multiplyFastorTensorWithScalar( Fastor::Tensor< T, Rest... > tensor, T scalar )
+  {
+    // workaround for fastor bug (issue #149)
+    Fastor::Tensor< T, Rest... > out;
+    T*                           out_data = out.data();
+    T*                           in_data  = tensor.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < tensor.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = in_data[tensor.get_mem_index( i )] * scalar;
+    }
+    return out;
+  }
+
+  template < typename T >
+  T einsum_ij_ij_hardcoded( const FastorStandardTensors::Tensor33t< T >& A,
+                            const FastorStandardTensors::Tensor33t< T >& B )
+  {
+    T result( 0.0 );
+
+    for ( int i = 0; i < 3; i++ ) {
+      for ( int j = 0; j < 3; j++ ) {
+        result += A( i, j ) * B( i, j );
+      }
+    }
+
+    return result;
+  }
+
+  template < typename T, size_t dim = 3 >
+  Fastor::Tensor< T, dim, dim > secondRankTensorFromSecondRankDoubleTensor(
+    const Fastor::Tensor< double, dim, dim >& in )
+  {
+    return fastorTensorFromDoubleTensor< T >( in );
+  }
+
+  template < typename T, size_t... Rest >
+  Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
+  {
+    // workaround for lack of casting of pointer types
+    // e.g. no cast available for autoduff::dual* and double*
+
+    Fastor::Tensor< T, Rest... > out;
+    T*                           out_data = out.data();
+    double*                      in_data  = in.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
+    }
+    return out;
+  }
+
+  template < typename T, size_t... Rest >
+  Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensorMap( const Fastor::TensorMap< double, Rest... >& in )
+  {
+    // workaround for lack of casting of pointer types
+    // e.g. no cast available for autoduff::dual* and double*
+
+    Fastor::Tensor< T, Rest... > out;
+    T*                           out_data = out.data();
+    double*                      in_data  = in.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
+    }
+    return out;
   }
 
 } // namespace Marmot
