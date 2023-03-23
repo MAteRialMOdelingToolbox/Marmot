@@ -26,13 +26,13 @@
  */
 #pragma once
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotMath.h"
 #include <iostream>
 
 namespace Marmot {
   namespace ContinuumMechanics::TensorUtility {
     namespace TensorExponential {
-      struct ExponentialMapFailed : std::exception {
-      };
+      struct ExponentialMapFailed : std::exception {};
 
       template < typename T, size_t tensorSize >
       Fastor::Tensor< T, tensorSize, tensorSize > computeTensorExponential(
@@ -63,7 +63,16 @@ namespace Marmot {
           tensorPower           = tensorPower % theTensor;
           const TensorNN series = 1. / facN * tensorPower;
           theExponential += series;
-          norm = Fastor::norm( series );
+
+          // workaround for autodiff::dual
+          Fastor::Tensor< double, tensorSize, tensorSize > series_real;
+          for ( size_t i = 0; i < tensorSize; i++ ) {
+            for ( size_t j = 0; j < tensorSize; j++ ) {
+              series_real( i, j ) = Math::makeReal( series( i, j ) );
+            }
+          }
+          norm = Fastor::norm( series_real );
+
           if ( norm <= tolerance )
             break;
         }
