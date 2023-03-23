@@ -162,6 +162,8 @@ if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
         ViscoPlasticShotcreteModel
         VonMises
         PorousElastic
+        ADRedWildmoorSandstone
+        NDRedWildmoorSandstone
         RedWildmoorSandstone
         RockDamagePlasticity
         RockDamagePlasticityNonLocal

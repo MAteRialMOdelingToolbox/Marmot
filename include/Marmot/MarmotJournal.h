@@ -51,7 +51,7 @@ private:
   MarmotJournal();
 
 public:
-  MarmotJournal( MarmotJournal const& ) = delete;
+  MarmotJournal( MarmotJournal const& )  = delete;
   void operator=( MarmotJournal const& ) = delete;
 
   static void setMSGOutputDirection( std::ostream& newOutputStream );

@@ -103,6 +103,8 @@ namespace MarmotLibrary {
     GradientEnhancedCosseratDruckerPrager = 65,
     ADLinearElastic                       = 66,
     ADVonMises                            = 67,
+    ADRedWildmoorSandstone                = 68,
+    NDRedWildmoorSandstone                = 69,
   };
 
   enum ElementCode {
