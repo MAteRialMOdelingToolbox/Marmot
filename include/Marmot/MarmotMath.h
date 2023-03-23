@@ -33,6 +33,7 @@
 #include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/real.hpp"
 #include <algorithm>
+#include <autodiff/forward/dual/dual.hpp>
 #include <complex>
 
 namespace Marmot {
@@ -94,9 +95,14 @@ namespace Marmot {
     }
 
     double makeReal( const double& value );
-    double makeReal( const complexDouble& value );
+    double makeReal( const std::complex< double >& value );
     double makeReal( const autodiff::real& value );
-    double makeReal( const autodiff::dual& value );
+
+    template < typename T, typename G >
+    double makeReal( const autodiff::detail::Dual< T, G >& number )
+    {
+      return double( number );
+    }
 
     /**
      * apply Macaulay function to a matrix

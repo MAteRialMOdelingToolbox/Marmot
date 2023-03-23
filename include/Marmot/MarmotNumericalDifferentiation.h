@@ -26,25 +26,40 @@
  */
 
 #pragma once
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <functional>
 
 namespace Marmot {
   namespace NumericalAlgorithms::Differentiation {
 
-    using function_type = std::function< Eigen::VectorXd( const Eigen::VectorXd& X ) >;
-    Eigen::MatrixXd forwardDifference( const function_type& F, const Eigen::VectorXd& X );
-    Eigen::MatrixXd centralDifference( const function_type& F, const Eigen::VectorXd& X );
+    using scalar_to_scalar_function_type = std::function< double( const double x ) >;
+    using vector_to_vector_function_type = std::function< Eigen::VectorXd( const Eigen::VectorXd& X ) >;
+
+    double forwardDifference( const scalar_to_scalar_function_type& f, const double x );
+    double centralDifference( const scalar_to_scalar_function_type& f, const double x );
+
+    Eigen::MatrixXd forwardDifference( const vector_to_vector_function_type& F, const Eigen::VectorXd& X );
+    Eigen::MatrixXd centralDifference( const vector_to_vector_function_type& F, const Eigen::VectorXd& X );
 
     namespace Complex {
 
-      using function_type_complex = std::function< Eigen::VectorXcd( const Eigen::VectorXcd& X ) >;
+      const static std::complex< double > imaginaryUnit = { 0, 1 };
+      const static std::complex< double > complexUnit   = { 1, 1 };
+      const static std::complex< double > i_            = Marmot::Constants::sqrt2 / 2. * complexUnit;
 
-      Eigen::MatrixXd forwardDifference( const function_type_complex& F, const Eigen::VectorXd& X );
+      using scalar_to_scalar_function_type = std::function< complexDouble( const complexDouble x ) >;
+      using vector_to_vector_function_type = std::function< Eigen::VectorXcd( const Eigen::VectorXcd& X ) >;
 
-      Eigen::MatrixXd centralDifference( const function_type_complex& F, const Eigen::VectorXd& X );
+      double forwardDifference( const scalar_to_scalar_function_type& f, const double x );
 
-      Eigen::MatrixXd fourthOrderAccurateDerivative( const function_type_complex& F, const Eigen::VectorXd& X );
+      std::tuple< Eigen::VectorXd, Eigen::MatrixXd > forwardDifference( const vector_to_vector_function_type& F,
+                                                                        const Eigen::VectorXd&                X );
+
+      Eigen::MatrixXd centralDifference( const vector_to_vector_function_type& F, const Eigen::VectorXd& X );
+
+      Eigen::MatrixXd fourthOrderAccurateDerivative( const vector_to_vector_function_type& F,
+                                                     const Eigen::VectorXd&                X );
 
     } // namespace Complex
   }   // namespace NumericalAlgorithms::Differentiation
