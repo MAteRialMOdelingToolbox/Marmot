@@ -22,7 +22,7 @@ namespace Marmot {
 
     double makeReal( const complexDouble& value )
     {
-      return std::real( value );
+      return value.real();
     }
 
     double makeReal( const autodiff::real& value )

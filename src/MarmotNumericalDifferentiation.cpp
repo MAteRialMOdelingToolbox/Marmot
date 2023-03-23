@@ -7,7 +7,21 @@ using namespace Eigen;
 namespace Marmot {
   namespace NumericalAlgorithms::Differentiation {
 
-    MatrixXd forwardDifference( const function_type& F, const VectorXd& X )
+    double forwardDifference( const scalar_to_scalar_function_type& f, const double x )
+    {
+      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::SquareRootEps;
+      const double out  = ( f( x + h ) - f( x ) ) / h;
+      return out;
+    }
+
+    double centralDifference( const scalar_to_scalar_function_type& f, const double x )
+    {
+      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::CubicRootEps;
+      const double out  = ( f( x + h ) - f( x - h ) ) / ( 2. * h );
+      return out;
+    }
+
+    MatrixXd forwardDifference( const vector_to_vector_function_type& F, const VectorXd& X )
     {
 
       const auto xSize = X.rows();
@@ -30,7 +44,7 @@ namespace Marmot {
       return J;
     }
 
-    MatrixXd centralDifference( const function_type& F, const VectorXd& X )
+    MatrixXd centralDifference( const vector_to_vector_function_type& F, const VectorXd& X )
     {
 
       const auto xSize = X.rows();
@@ -65,12 +79,14 @@ namespace Marmot {
        *   - Lai et al. (2005) New Complex-Step Derivative Approximations ...
        *
        */
+      double forwardDifference( const scalar_to_scalar_function_type& f, const double x )
+      {
+        complexDouble x_  = complexDouble( x ) + 1e-20 * imaginaryUnit;
+        const double  out = f( x_ ).imag() / 1e-20;
+        return out;
+      }
 
-      const static std::complex< double > imaginaryUnit = { 0, 1 };
-      const static std::complex< double > complexUnit   = { 1, 1 };
-      const static std::complex< double > i_            = Marmot::Constants::sqrt2 / 2. * complexUnit;
-
-      MatrixXd forwardDifference( const function_type_complex& F, const VectorXd& X )
+      std::tuple< VectorXd, MatrixXd > forwardDifference( const vector_to_vector_function_type& F, const VectorXd& X )
       {
         /*
          * according to Martins et al. (2003) Equ. 6
@@ -79,19 +95,20 @@ namespace Marmot {
         const auto xSize = X.rows();
         MatrixXd   J( xSize, xSize );
         VectorXcd  rightX( xSize );
+        VectorXcd  F_( xSize );
 
         for ( auto i = 0; i < xSize; i++ ) {
-          double h = std::max( 1.0, std::abs( X( i ) ) ) * 1e-16;
-          rightX   = X;
-          rightX( i ) += h * imaginaryUnit;
-
-          J.col( i ) = F( rightX ).imag() / h;
+          // double h = std::max( 1.0, std::abs( X( i ) ) ) * 1e-16;
+          rightX = X;
+          rightX( i ) += 1e-20 * imaginaryUnit;
+          F_         = F( rightX );
+          J.col( i ) = F_.imag() / 1e-20;
         }
 
-        return J;
+        return { F_.real(), J };
       }
 
-      MatrixXd centralDifference( const function_type_complex& F, const VectorXd& X )
+      MatrixXd centralDifference( const vector_to_vector_function_type& F, const VectorXd& X )
       {
         /*
          * according to Lai et al. (2005) Equ. 19
@@ -126,7 +143,7 @@ namespace Marmot {
         return J;
       }
 
-      MatrixXd fourthOrderAccurateDerivative( const function_type_complex& F, const VectorXd& X )
+      MatrixXd fourthOrderAccurateDerivative( const vector_to_vector_function_type& F, const VectorXd& X )
       {
         /*
          * according to Lai et al. (2005) Equ. 24

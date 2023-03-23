@@ -26,14 +26,32 @@
  */
 
 #pragma once
+#include "Marmot/MarmotTensor.h"
 #include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/dual/eigen.hpp"
+#include <autodiff/forward/dual/dual.hpp>
 #include <functional>
 
 namespace Marmot {
+
   namespace AutomaticDifferentiation {
-    using function_type = std::function< autodiff::VectorXdual( const autodiff::VectorXdual& X ) >;
-    Eigen::MatrixXd forwardMode( const function_type& F, const Eigen::VectorXd& X );
+
+    using namespace autodiff;
+    using namespace Eigen;
+
+    dual2nd shiftTo2ndOrderDual( const dual& x );
+
+    using scalar_to_scalar_function_type = std::function< dual( const dual& ) >;
+    double df_dx( const scalar_to_scalar_function_type& f, const double& x );
+
+    using scalar_to_scalar_function_type_2nd = std::function< dual2nd( const dual2nd& ) >;
+    dual df_dx( const scalar_to_scalar_function_type_2nd& f, const dual& x );
+
+    using vector_to_vector_function_type = std::function< VectorXdual( const VectorXdual& X ) >;
+    MatrixXd forwardMode( const vector_to_vector_function_type& F, const VectorXd& X );
+
+    using vector_to_vector_function_type_dual = std::function< VectorXdual( const VectorXdual& X ) >;
+    std::pair< VectorXd, MatrixXd > jacobian( const vector_to_vector_function_type_dual& F, const VectorXd& X );
 
     std::tuple< Eigen::VectorXd, Eigen::MatrixXd > dF_dX( const function_type& F, const Eigen::VectorXd& X );
   } // namespace AutomaticDifferentiation

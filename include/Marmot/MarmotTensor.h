@@ -26,6 +26,7 @@
  */
 
 #pragma once
+#include "Fastor/Fastor.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
