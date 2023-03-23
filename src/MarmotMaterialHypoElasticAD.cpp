@@ -56,7 +56,7 @@ void MarmotMaterialHypoElasticAD::computeStress( double*       stress_,
   // autodiff part
   // ----------------------------------------
   // compute stress and tangent with autodiff
-  std::tie( stress, CJaumann ) = Marmot::AutomaticDifferentiation::dF_dX(
+  std::tie( stress, CJaumann ) = Marmot::AutomaticDifferentiation::jacobian(
     [&]( const autodiff::VectorXdual& dE_ ) {
       // reset stateVars to old state
       stateVars = stateVarsOld;
@@ -111,7 +111,7 @@ void MarmotMaterialHypoElasticAD::computePlaneStress( double*       stress2D_,
     // autodiff part
     // ----------------------------------------
     // compute stress and tangent with autodiff
-    std::tie( stress3DTemp, dStress_dStrain3D ) = Marmot::AutomaticDifferentiation::dF_dX(
+    std::tie( stress3DTemp, dStress_dStrain3D ) = Marmot::AutomaticDifferentiation::jacobian(
       [&]( const autodiff::VectorXdual& dE_ ) {
         // reset stateVars to old state
         stateVars = stateVarsOld;
@@ -182,7 +182,7 @@ void MarmotMaterialHypoElasticAD::computeUniaxialStress( double* stress1D_,
     // autodiff part
     // ----------------------------------------
     // compute stress and tangent with autodiff
-    std::tie( stress3DTemp, dStress_dStrain3D ) = Marmot::AutomaticDifferentiation::dF_dX(
+    std::tie( stress3DTemp, dStress_dStrain3D ) = Marmot::AutomaticDifferentiation::jacobian(
       [&]( const autodiff::VectorXdual& dE_ ) {
         // reset stateVars to old state
         stateVars = stateVarsOld;
