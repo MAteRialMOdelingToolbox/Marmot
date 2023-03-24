@@ -228,6 +228,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a6ba10f629653aca77648bee9f60f87ed"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a6ba10f629653aca77648bee9f60f87ed">makeNodeFieldLayout</a> (const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</td></tr>
+<tr class="separator:a6ba10f629653aca77648bee9f60f87ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910af04439f794b333f7e1f073bc106c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a910af04439f794b333f7e1f073bc106c">makeBlockedLayoutPermutationPattern</a> (const std::vector&lt; std::vector&lt; std::string &gt;&gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</td></tr>
+<tr class="separator:a910af04439f794b333f7e1f073bc106c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a769a586beaa434927609968dfd2ea251"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a49b09e61f616525d0bb8d744c9d46b17">ElementShapes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a769a586beaa434927609968dfd2ea251">getElementShapeByMetric</a> (int nDim, int nNodes)</td></tr>
 <tr class="separator:a769a586beaa434927609968dfd2ea251"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4de872cc0a8ec382f0e38d8dac17693c"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a4de872cc0a8ec382f0e38d8dac17693c">NB</a> (const Eigen::VectorXd &amp;N, const int nDoFPerNode)</td></tr>
@@ -242,6 +246,10 @@ Functions</h2></td></tr>
 <tr class="separator:a4d998a75bf88c162719d2e2e36b8f7b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18a41c28bffd439b63aad65a549d38e4"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXi&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a18a41c28bffd439b63aad65a549d38e4">expandNodeIndicesToCoordinateIndices</a> (const Eigen::VectorXi &amp;nodeIndices, int nDim)</td></tr>
 <tr class="separator:a18a41c28bffd439b63aad65a549d38e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d78171e4149ca248fefccd3d875774c"><td class="memItemLeft" align="right" valign="top">const vector&lt; vector&lt; string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a8d78171e4149ca248fefccd3d875774c">makeNodeFieldLayout</a> (const map&lt; string, pair&lt; int, int &gt; &gt; &amp;fieldSizes)</td></tr>
+<tr class="separator:a8d78171e4149ca248fefccd3d875774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b080de84d7eadcaddca42eb9a4b9a8f"><td class="memItemLeft" align="right" valign="top">vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a0b080de84d7eadcaddca42eb9a4b9a8f">makeBlockedLayoutPermutationPattern</a> (const vector&lt; vector&lt; string &gt; &gt; &amp;nodeFields, const map&lt; string, pair&lt; int, int &gt; &gt; &amp;fieldSizes)</td></tr>
+<tr class="separator:a0b080de84d7eadcaddca42eb9a4b9a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6925511eb79c1ee76e0c9627dec49394"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a6925511eb79c1ee76e0c9627dec49394">NB</a> (const VectorXd &amp;N, const int nDoFPerNode)</td></tr>
 <tr class="separator:a6925511eb79c1ee76e0c9627dec49394"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72e57b6c7de21dd2cb8d00e19dba2d87"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html#a72e57b6c7de21dd2cb8d00e19dba2d87">Jacobian</a> (const MatrixXd &amp;dNdXi, const VectorXd &amp;coordinates)</td></tr>
@@ -275,6 +283,52 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a6ba10f629653aca77648bee9f60f87ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ba10f629653aca77648bee9f60f87ed">&#9670;&nbsp;</a></span>makeNodeFieldLayout() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::vector&lt;std::string&gt; &gt; Marmot::FiniteElement::makeNodeFieldLayout </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fieldSizes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a910af04439f794b333f7e1f073bc106c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a910af04439f794b333f7e1f073bc106c">&#9670;&nbsp;</a></span>makeBlockedLayoutPermutationPattern() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; Marmot::FiniteElement::makeBlockedLayoutPermutationPattern </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::vector&lt; std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>nodeFields</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fieldSizes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a769a586beaa434927609968dfd2ea251"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a769a586beaa434927609968dfd2ea251">&#9670;&nbsp;</a></span>getElementShapeByMetric()</h2>
 
@@ -426,6 +480,52 @@ template&lt;int nDim, int nNodes&gt; </div>
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>nDim</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8d78171e4149ca248fefccd3d875774c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d78171e4149ca248fefccd3d875774c">&#9670;&nbsp;</a></span>makeNodeFieldLayout() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const vector&lt; vector&lt; string &gt; &gt; Marmot::FiniteElement::makeNodeFieldLayout </td>
+          <td>(</td>
+          <td class="paramtype">const map&lt; string, pair&lt; int, int &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fieldSizes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0b080de84d7eadcaddca42eb9a4b9a8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b080de84d7eadcaddca42eb9a4b9a8f">&#9670;&nbsp;</a></span>makeBlockedLayoutPermutationPattern() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt; int &gt; Marmot::FiniteElement::makeBlockedLayoutPermutationPattern </td>
+          <td>(</td>
+          <td class="paramtype">const vector&lt; vector&lt; string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>nodeFields</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const map&lt; string, pair&lt; int, int &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fieldSizes</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
