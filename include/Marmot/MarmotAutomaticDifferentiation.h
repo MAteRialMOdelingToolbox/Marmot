@@ -53,7 +53,6 @@ namespace Marmot {
     using vector_to_vector_function_type_dual = std::function< VectorXdual( const VectorXdual& X ) >;
     std::pair< VectorXd, MatrixXd > jacobian( const vector_to_vector_function_type_dual& F, const VectorXd& X );
 
-    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > dF_dX( const function_type& F, const Eigen::VectorXd& X );
   } // namespace AutomaticDifferentiation
 
 } // namespace Marmot
