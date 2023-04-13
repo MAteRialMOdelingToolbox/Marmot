@@ -285,6 +285,12 @@ namespace Marmot::Elements {
                                                               section.materialProperties,
                                                               section.nMaterialProperties,
                                                               elLabel ) ) );
+
+      if ( !qp.material )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
+
       if constexpr ( nDim == 3 )
         qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
       if constexpr ( nDim == 2 )
