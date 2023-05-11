@@ -180,7 +180,17 @@ namespace Marmot {
      \end{bmatrix}
       \f]
      */
-    Eigen::Matrix3d voigtToStrain( const Marmot::Vector6d& strainVector );
+    template < typename T >
+    Eigen::Matrix< T, 3, 3 > voigtToStrain( const Eigen::Matrix< T, 6, 1 >& voigt )
+    {
+      Eigen::Matrix< T, 3, 3 > strain;
+      // clang-format off
+      strain << voigt[0],       voigt[3] * 0.5, voigt[4] * 0.5, 
+                voigt[3] * 0.5, voigt[1],       voigt[5] * 0.5, 
+                voigt[4] * 0.5, voigt[5] * 0.5, voigt[2];
+      // clang-format on
+      return strain;
+    }
 
     /**
      * Converts a voigt notated stress vector to its corresponding stress tensor
@@ -199,7 +209,17 @@ namespace Marmot {
      \end{bmatrix}
       \f]
      */
-    Eigen::Matrix3d voigtToStress( const Marmot::Vector6d& stressVector );
+    template < typename T >
+    Eigen::Matrix< T, 3, 3 > voigtToStress( const Eigen::Matrix< T, 6, 1 >& voigt )
+    {
+      Eigen::Matrix< T, 3, 3 > stress;
+      // clang-format off
+      stress << voigt[0], voigt[3], voigt[4], 
+                voigt[3], voigt[1], voigt[5], 
+                voigt[4], voigt[5], voigt[2];
+      // clang-format on
+      return stress;
+    }
 
     /**
      * Converts a strain tensor to its corresponding voigt notated strain vector
@@ -351,7 +371,11 @@ namespace Marmot {
 
       /** Computes the euclidian norm of the strain tensor \f$ ||\boldsymbol{\varepsilon}|| \f$
        */
-      double normStrain( const Marmot::Vector6d& strain );
+      template < typename T >
+      T normStrain( const Eigen::Matrix< T, 6, 1 >& strain )
+      {
+        return ContinuumMechanics::VoigtNotation::voigtToStrain( strain ).norm();
+      }
 
       /** Computes the euclidian norm of the stress tensor \f$ ||\boldsymbol{\sigma}|| \f$
        */
