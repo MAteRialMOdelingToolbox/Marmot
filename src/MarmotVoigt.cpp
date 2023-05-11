@@ -29,25 +29,6 @@ namespace Marmot {
         0,          0,      0,      0,  0,  1).finished();
     // clang-format on
 
-    Matrix3d voigtToStrain( const Vector6d& voigt )
-    {
-      Matrix3d strain;
-      strain << voigt[0], voigt[3] / 2, voigt[4] / 2, voigt[3] / 2, voigt[1], voigt[5] / 2, voigt[4] / 2, voigt[5] / 2,
-        voigt[2];
-      return strain;
-    }
-
-    Matrix3d voigtToStress( const Vector6d& voigt )
-    {
-      Matrix3d stress;
-      // clang-format off
-            stress << voigt[0], voigt[3], voigt[4], 
-                      voigt[3], voigt[1], voigt[5], 
-                      voigt[4], voigt[5], voigt[2];
-      // clang-format on
-      return stress;
-    }
-
     Vector6d strainToVoigt( const Matrix3d& strainTensor )
     {
       Vector6d strain;
@@ -220,11 +201,6 @@ namespace Marmot {
                           1. / 3. * ( e( 3 ) * e( 3 ) + e( 4 ) * e( 4 ) + e( 5 ) * e( 5 ) ) );
       }
 
-      double normStrain( const Vector6d& strain )
-      {
-        return ContinuumMechanics::VoigtNotation::voigtToStrain( strain ).norm();
-      }
-
       double normStress( const Vector6d& stress )
       {
         return ContinuumMechanics::VoigtNotation::voigtToStress( stress ).norm();
@@ -266,7 +242,7 @@ namespace Marmot {
 
       double J3Strain( const Vector6d& strain ) // determinant of the deviatoric strain tensor
       {
-        return voigtToStrain( IDev * strain ).determinant();
+        return voigtToStrain< double >( IDev * strain ).determinant();
       }
 
     } // namespace Invariants
