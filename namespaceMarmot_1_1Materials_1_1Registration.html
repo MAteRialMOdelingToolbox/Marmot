@@ -191,12 +191,38 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:ae17cd53ddfdce16b4323dc7abb9cdb6c"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1Registration.html#ae17cd53ddfdce16b4323dc7abb9cdb6c">LinearElasticCode</a> = 1</td></tr>
+<tr class="separator:ae17cd53ddfdce16b4323dc7abb9cdb6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83c90ef5060c041497f22a51c47d7091"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1Registration.html#a83c90ef5060c041497f22a51c47d7091">LinearElasticIsRegistered</a></td></tr>
 <tr class="separator:a83c90ef5060c041497f22a51c47d7091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c5884f57554abbdbc127ab95479bfc3"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1Registration.html#a4c5884f57554abbdbc127ab95479bfc3">vonMisesCode</a> = 2</td></tr>
+<tr class="separator:a4c5884f57554abbdbc127ab95479bfc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1de74a588f40d4b30b63f86a0fafbe9"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1Registration.html#aa1de74a588f40d4b30b63f86a0fafbe9">VonMisesIsRegistered</a></td></tr>
 <tr class="separator:aa1de74a588f40d4b30b63f86a0fafbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="ae17cd53ddfdce16b4323dc7abb9cdb6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae17cd53ddfdce16b4323dc7abb9cdb6c">&#9670;&nbsp;</a></span>LinearElasticCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::Materials::Registration::LinearElasticCode = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a83c90ef5060c041497f22a51c47d7091"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83c90ef5060c041497f22a51c47d7091">&#9670;&nbsp;</a></span>LinearElasticIsRegistered</h2>
 
@@ -217,10 +243,32 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= MarmotMaterialFactory::</div>
-<div class="line">      registerMaterial( <a class="code" href="namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ab58e46590b9617a1bed9d556da4e2556">MaterialCode::LinearElastic</a>,</div>
+<div class="line">      registerMaterial( <a class="code" href="namespaceMarmot_1_1Materials_1_1Registration.html#ae17cd53ddfdce16b4323dc7abb9cdb6c">LinearElasticCode</a>,</div>
 <div class="line">                        <span class="stringliteral">&quot;LINEARELASTIC&quot;</span>,</div>
 <div class="line">                        makeDefaultMarmotMaterialFactoryFunction&lt; class LinearElastic &gt;() )</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4c5884f57554abbdbc127ab95479bfc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5884f57554abbdbc127ab95479bfc3">&#9670;&nbsp;</a></span>vonMisesCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::Materials::Registration::vonMisesCode = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <a id="aa1de74a588f40d4b30b63f86a0fafbe9"></a>
@@ -243,15 +291,13 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= MarmotMaterialFactory::</div>
-<div class="line">      registerMaterial( <a class="code" href="namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93aefb1c8ccd6a6d496e0a29f30d97ed6ff">MaterialCode::VonMises</a>,</div>
-<div class="line">                        <span class="stringliteral">&quot;VONMISES&quot;</span>,</div>
-<div class="line">                        makeDefaultMarmotMaterialFactoryFunction&lt; class VonMisesModel &gt;() )</div>
+<div class="line">      registerMaterial( <a class="code" href="namespaceMarmot_1_1Materials_1_1Registration.html#a4c5884f57554abbdbc127ab95479bfc3">vonMisesCode</a>, <span class="stringliteral">&quot;VONMISES&quot;</span>, makeDefaultMarmotMaterialFactoryFunction&lt; class VonMisesModel &gt;() )</div>
 </div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
-<div class="ttc" id="anamespaceMarmotLibrary_html_ab2cce116fdc09329c2668bd1d41b7a93ab58e46590b9617a1bed9d556da4e2556"><div class="ttname"><a href="namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93ab58e46590b9617a1bed9d556da4e2556">MarmotLibrary::LinearElastic</a></div><div class="ttdeci">@ LinearElastic</div><div class="ttdef"><b>Definition:</b> Marmot.h:50</div></div>
-<div class="ttc" id="anamespaceMarmotLibrary_html_ab2cce116fdc09329c2668bd1d41b7a93aefb1c8ccd6a6d496e0a29f30d97ed6ff"><div class="ttname"><a href="namespaceMarmotLibrary.html#ab2cce116fdc09329c2668bd1d41b7a93aefb1c8ccd6a6d496e0a29f30d97ed6ff">MarmotLibrary::VonMises</a></div><div class="ttdeci">@ VonMises</div><div class="ttdef"><b>Definition:</b> Marmot.h:102</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Materials_1_1Registration_html_ae17cd53ddfdce16b4323dc7abb9cdb6c"><div class="ttname"><a href="namespaceMarmot_1_1Materials_1_1Registration.html#ae17cd53ddfdce16b4323dc7abb9cdb6c">Marmot::Materials::Registration::LinearElasticCode</a></div><div class="ttdeci">constexpr int LinearElasticCode</div><div class="ttdef"><b>Definition:</b> LinearElasticRegistration.cpp:8</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Materials_1_1Registration_html_a4c5884f57554abbdbc127ab95479bfc3"><div class="ttname"><a href="namespaceMarmot_1_1Materials_1_1Registration.html#a4c5884f57554abbdbc127ab95479bfc3">Marmot::Materials::Registration::vonMisesCode</a></div><div class="ttdeci">constexpr int vonMisesCode</div><div class="ttdef"><b>Definition:</b> VonMisesRegistration.cpp:8</div></div>
 <!-- start footer part -->
 		<script src="custom.js"></script>
 	</body>
