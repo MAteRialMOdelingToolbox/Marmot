@@ -32,7 +32,7 @@
 class MakeString {
 public:
   std::stringstream stream;
-                    operator std::string() const { return stream.str(); }
+  operator std::string() const { return stream.str(); }
 
   template < class T >
   MakeString& operator<<( T const& VAR )
@@ -51,7 +51,7 @@ private:
   MarmotJournal();
 
 public:
-  MarmotJournal( MarmotJournal const& ) = delete;
+  MarmotJournal( MarmotJournal const& )  = delete;
   void operator=( MarmotJournal const& ) = delete;
 
   static void setMSGOutputDirection( std::ostream& newOutputStream );
