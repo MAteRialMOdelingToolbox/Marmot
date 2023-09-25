@@ -5,10 +5,12 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
+    constexpr int LinearElasticCode = 1;
+
     using namespace MarmotLibrary;
 
     const static bool LinearElasticIsRegistered = MarmotMaterialFactory::
-      registerMaterial( MaterialCode::LinearElastic,
+      registerMaterial( LinearElasticCode,
                         "LINEARELASTIC",
                         makeDefaultMarmotMaterialFactoryFunction< class LinearElastic >() );
 
