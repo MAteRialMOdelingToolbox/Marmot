@@ -32,10 +32,20 @@ variables:
       LinearElastic               $LinearElastic_Repo                   master
       B4                          $B4_Repo                              master
       VonMises                    $VonMises_Repo                        master
-    
+
+format:
+  stage: test
+  image: condaforge/mambaforge:22.9.0-2
+  needs: []
+  script:
+    - mamba install -c conda-forge clang-format-15
+    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-15 --Werror -n --verbose
+  only:
+    - merge_requests
+
 build and test:
   stage: build
-  image: condaforge/mambaforge:latest
+  image: condaforge/mambaforge:22.9.0-2
   script:
     
     - function install_marmot_module(){
@@ -109,12 +119,4 @@ build and test:
     - python setup.py build_ext -i
     - python run_tests.py
 
-format:
-  stage: test
-  image: nexus.lumiplan.com:8443/toolchain/clang-format:13
-  needs: []
-  script:
-    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-13 --Werror -n --verbose
-  only:
-    - merge_requests
 
