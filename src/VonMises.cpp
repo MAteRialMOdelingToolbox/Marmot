@@ -99,8 +99,6 @@ namespace Marmot::Materials {
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
-
-          std::cout << "not converged; g = " << g( dKappa ) << std::endl;
           pNewDT = 0.5;
           return;
         }
@@ -112,7 +110,6 @@ namespace Marmot::Materials {
         counter += 1;
       }
 
-      // std::cout << "converged; g = " << g( dKappa ) << std::endl;
       dLambda = Constants::sqrt3_2 * dKappa;
 
       // update material state
