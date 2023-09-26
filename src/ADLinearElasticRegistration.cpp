@@ -7,8 +7,10 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
+    constexpr int ADLinearElasticCode = 1193002;
+
     const static bool ADLinearElasticIsRegistered = MarmotMaterialFactory::
-      registerMaterial( MaterialCode::ADLinearElastic,
+      registerMaterial( ADLinearElasticCode,
                         "ADLINEARELASTIC",
                         makeDefaultMarmotMaterialFactoryFunction< class ADLinearElastic >() );
 
