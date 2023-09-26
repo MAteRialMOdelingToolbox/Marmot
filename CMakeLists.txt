@@ -99,149 +99,79 @@ find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED NO_MODULE)
 include_directories(${AUTODIFF_INCLUDE_DIR})
 message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
 
-set(MODULES_DIR "modules/")
-
-if(NOT CORE_MODULES OR CORE_MODULES STREQUAL "all")
-    set(CORE_MODULES
-        MarmotMathCore
-        MarmotMechanicsCore
-        MarmotGeomechanicsCore
-        MarmotFiniteElementCore
-        MarmotCosseratCore
-        MarmotMicromorphicCore
-        )
-endif()
-
-if(NOT MATERIAL_MODULES OR MATERIAL_MODULES STREQUAL "all")
-    set (MATERIAL_MODULES
-        ADLinearElastic
-        ADVonMises
-        B4
-        Barodesy
-        BarodesyGradientVoid
-        BulkMetallicGlass
-        CDP
-        CDPFibreReinforced
-        CDPM2
-        BarodesyGradientDeformationModulus
-        CosseratLinearElastic
-        CosseratDruckerPrager
-        CosseratHoekBrown
-        DiffuseMicroCracking
-        DruckerPrager 
-        DruckerPragerMD
-        GCDP
-        GCSCDP
-        GMCDP
-        GMCDPFiniteStrain
-        GMBiotElastic
-        GMDruckerPrager
-        GMNeoHooke
-        GMDamagedShearNeoHooke
-        GradientEnhancedDruckerPrager
-        GradientEnhancedCosseratDruckerPrager
-        GosfordSandstone
-        HoekBrown
-	      #JointedRock
-          #JointedHoekBrown
-        LinearElastic
-        LinearElasticNonLocal
-        LinearElasticSolidificationCreep
-        LinearElasticShrinkage
-        MCDP
-        MenegottoPinto 
-        ModifiedCamClay
-        ModLeon
-        ModLeonSemiExplicit
-        ModLeonAnalytical
-        ModLeonAdaptive
-        ModLeonSemiExplicitAdaptive
-        ModLeonPlaneStress
-        ModLeonNonLocal
-        MohrCoulomb
-        ViscoPlasticShotcreteModel
-        VonMises
-        PorousElastic
-        ADRedWildmoorSandstone
-        NDRedWildmoorSandstone
-        RedWildmoorSandstone
-        RockDamagePlasticity
-        RockDamagePlasticityNonLocal
-        ORDP
-        ORDPNonLocal
-        SandHypo
-        SandHypoMicropolar
-        SchaedlichSchweiger
-        ShotLeon
-        ShotLeonV2
-        ShotLeonNonLocal
-        ShotLeonV2NonLocal
-        ShotcreteSolidificationCreep
-        ShotcreteHydration
-        SolidificationCreep
-        SolidificationCDP
-        SolidificationModLeon
-        StVenantKirchhoffIsotropic
-        UntereggerRockMassPlaxis
-        )
-endif()
-
-if(NOT ELEMENT_MODULES OR ELEMENT_MODULES STREQUAL "all")
-    set(ELEMENT_MODULES
-        CosseratFiniteElement
-        DisplacementFiniteElement
-        ADDisplacementFiniteElement
-        DisplacementTLFiniteElement
-        DisplacementULFiniteElement
-        DisplacementEASFiniteElement
-        GradientEnhancedDisplacementFiniteElement
-        GradientEnhancedDisplacementULFiniteElement
-        GradientEnhancedDisplacementULFBarFiniteElement
-        GradientEnhancedDisplacementEASFiniteElement
-        GradientEnhancedDisplacementMixedFiniteElement
-        GradientEnhancedCosseratFiniteElement
-        GradientEnhancedMicropolarFiniteElement
-        GradientEnhancedMicropolarULFiniteElement
-        CahnHilliardMicropolarULFiniteElement
-        )
-endif()
-
+set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 #
 # Add sources
 #
 file(GLOB sources "src/*.cpp")
 file(GLOB publicheaders "include/Marmot/*.h")
 
-# optional core modules 
-foreach(library ${CORE_MODULES})
-    file(TO_CMAKE_PATH "${MODULES_DIR}/core/${library}" librarypath)
-    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
-    if(EXISTS ${librarypath}/module.cmake)
-        message("--> found ${library}")
-        include(${librarypath}/module.cmake)
-    endif()
-endforeach(library)
-
-#optional material modules
-foreach(library ${MATERIAL_MODULES})
-    file(TO_CMAKE_PATH "${MODULES_DIR}/materials/${library}" librarypath)
-    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
-    if(EXISTS ${librarypath}/module.cmake)
-        message("--> found ${library}")
-        include(${librarypath}/module.cmake)
-    endif()
-endforeach(library)
 
 
-#optional elements modules
-foreach(library ${ELEMENT_MODULES})
-    file(TO_CMAKE_PATH "${MODULES_DIR}/elements/${library}" librarypath)
-    get_filename_component(librarypath ${librarypath} ABSOLUTE) 
-    if(EXISTS ${librarypath}/module.cmake)
-        message("--> found ${library}")
-        include(${librarypath}/module.cmake)
+# INSTALL MODULES 
+
+MACRO(SUBDIRLIST result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+      LIST(APPEND dirlist ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
+
+get_filename_component(COREPATH ${MODULES_DIR}/core ABSOLUTE) 
+get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE) 
+get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE) 
+
+SUBDIRLIST(COREDIRS ${COREPATH})
+SUBDIRLIST(MATERIALSDIRS ${MATERIALSPATH})
+SUBDIRLIST(ELEMENTSDIRS ${ELEMENTSPATH})
+
+set(INSTALLED_MODULES "")
+
+foreach(DIRNAME ${COREDIRS})
+    get_filename_component(MODULEPATH "${COREPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED CORE_MODULES)
+            set(CORE_MODULES "all")
+        endif()
+        if( ${CORE_MODULES} STREQUAL "all" OR ${DIRNAME} IN_LIST CORE_MODULES) 
+            message("--> found ${DIRNAME}")
+            include(${MODULEPATH}/module.cmake)
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+        endif()
     endif()
-endforeach(library)
+endforeach(DIRNAME)
+
+foreach(DIRNAME ${MATERIALSDIRS})
+    get_filename_component(MODULEPATH "${MATERIALSPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED MATERIAL_MODULES)
+            set(MATERIAL_MODULES "all")
+        endif()
+        if(${MATERIAL_MODULES} STREQUAL "all" OR ${DIRNAME} IN_LIST MATERIAL_MODULES)
+            message("--> found ${DIRNAME}")
+            include(${MODULEPATH}/module.cmake)
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+        endif()
+    endif()
+endforeach(DIRNAME)
+
+foreach(DIRNAME ${ELEMENTSDIRS})
+    get_filename_component(MODULEPATH "${ELEMENTSPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED ELEMENT_MODULES)
+            set(ELEMENT_MODULES "all")
+        endif()
+        if(${ELEMENT_MODULES} STREQUAL "all" OR ${DIRNAME} IN_LIST ELEMENT_MODULES)
+            message("--> found ${DIRNAME}")
+            include(${MODULEPATH}/module.cmake)
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+        endif()
+    endif()
+endforeach(DIRNAME)
 
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
