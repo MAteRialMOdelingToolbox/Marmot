@@ -7,10 +7,10 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
+    constexpr int ADVonMisesCode = 1193003;
+
     const static bool ADVonMisesIsRegistered = MarmotMaterialFactory::
-      registerMaterial( MaterialCode::ADVonMises,
-                        "ADVONMISES",
-                        makeDefaultMarmotMaterialFactoryFunction< class ADVonMises >() );
+      registerMaterial( ADVonMisesCode, "ADVONMISES", makeDefaultMarmotMaterialFactoryFunction< class ADVonMises >() );
 
   } // namespace Registration
 } // namespace Marmot::Materials
