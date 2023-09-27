@@ -189,12 +189,12 @@ $(function() {
 <div class="title">MarmotVoigt.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="HaighWestergaard_8h_source.html">Marmot/HaighWestergaard.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="MarmotVoigt_8h_source.html">Marmot/MarmotVoigt.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="HaighWestergaard_8h_source.html">Marmot/HaighWestergaard.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MarmotConstants_8h_source.html">Marmot/MarmotConstants.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MarmotMath_8h_source.html">Marmot/MarmotMath.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MarmotTensor_8h_source.html">Marmot/MarmotTensor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MarmotTypedefs_8h_source.html">Marmot/MarmotTypedefs.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="MarmotVoigt_8h_source.html">Marmot/MarmotVoigt.h</a>&quot;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for MarmotVoigt.cpp:</div>
@@ -221,10 +221,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a68fa9a47911bee57bc88648140e15eb7"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7">Marmot::ContinuumMechanics::VoigtNotation::voigtToStrain</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strainVector)</td></tr>
-<tr class="separator:a68fa9a47911bee57bc88648140e15eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c73d9ab097dcfcda4b5f208457c9b52"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a5c73d9ab097dcfcda4b5f208457c9b52">Marmot::ContinuumMechanics::VoigtNotation::voigtToStress</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stressVector)</td></tr>
-<tr class="separator:a5c73d9ab097dcfcda4b5f208457c9b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a656192cef368160c154f5ff334140d1f"><td class="memItemLeft" align="right" valign="top">Vector6d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a656192cef368160c154f5ff334140d1f">Marmot::ContinuumMechanics::VoigtNotation::strainToVoigt</a> (const Matrix3d &amp;strainTensor)</td></tr>
 <tr class="separator:a656192cef368160c154f5ff334140d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6aafe38fa41600a041daf106f615787"><td class="memItemLeft" align="right" valign="top">Eigen::Vector3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ae6aafe38fa41600a041daf106f615787">Marmot::ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;voigt)</td></tr>
@@ -245,8 +241,6 @@ Functions</h2></td></tr>
 <tr class="separator:a2edc962186bf90e55cd2acee21d1a61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af903ffc878150a05e74b17290a430b84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84">Marmot::ContinuumMechanics::VoigtNotation::Invariants::vonMisesEquivalentStrain</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>
 <tr class="separator:af903ffc878150a05e74b17290a430b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a4a15850ca03d84a5c99cd6f09bf05"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a62a4a15850ca03d84a5c99cd6f09bf05">Marmot::ContinuumMechanics::VoigtNotation::Invariants::normStrain</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>
-<tr class="separator:a62a4a15850ca03d84a5c99cd6f09bf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada9f38d87be94a8a05b7339194c6444a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ada9f38d87be94a8a05b7339194c6444a">Marmot::ContinuumMechanics::VoigtNotation::Invariants::normStress</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stress)</td></tr>
 <tr class="separator:ada9f38d87be94a8a05b7339194c6444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae275c2f0305a1bf414deddf817fb3054"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ae275c2f0305a1bf414deddf817fb3054">Marmot::ContinuumMechanics::VoigtNotation::Invariants::StrainVolumetricNegative</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>

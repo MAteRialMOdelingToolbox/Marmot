@@ -203,8 +203,9 @@ Functions</h2></td></tr>
 <tr class="separator:a2edc962186bf90e55cd2acee21d1a61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af903ffc878150a05e74b17290a430b84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#af903ffc878150a05e74b17290a430b84">vonMisesEquivalentStrain</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>
 <tr class="separator:af903ffc878150a05e74b17290a430b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a4a15850ca03d84a5c99cd6f09bf05"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#a62a4a15850ca03d84a5c99cd6f09bf05">normStrain</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>
-<tr class="separator:a62a4a15850ca03d84a5c99cd6f09bf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e298aa6f4d7bfa8231d9df64ecc61d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae4e298aa6f4d7bfa8231d9df64ecc61d"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ae4e298aa6f4d7bfa8231d9df64ecc61d">normStrain</a> (const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;strain)</td></tr>
+<tr class="separator:ae4e298aa6f4d7bfa8231d9df64ecc61d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada9f38d87be94a8a05b7339194c6444a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ada9f38d87be94a8a05b7339194c6444a">normStress</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;stress)</td></tr>
 <tr class="separator:ada9f38d87be94a8a05b7339194c6444a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae275c2f0305a1bf414deddf817fb3054"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1_1Invariants.html#ae275c2f0305a1bf414deddf817fb3054">StrainVolumetricNegative</a> (const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;strain)</td></tr>
@@ -369,16 +370,18 @@ Functions</h2></td></tr>
  
 </div>
 </div>
-<a id="a62a4a15850ca03d84a5c99cd6f09bf05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62a4a15850ca03d84a5c99cd6f09bf05">&#9670;&nbsp;</a></span>normStrain()</h2>
+<a id="ae4e298aa6f4d7bfa8231d9df64ecc61d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4e298aa6f4d7bfa8231d9df64ecc61d">&#9670;&nbsp;</a></span>normStrain()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">double Marmot::ContinuumMechanics::VoigtNotation::Invariants::normStrain </td>
+          <td class="memname">T Marmot::ContinuumMechanics::VoigtNotation::Invariants::normStrain </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;&#160;</td>
+          <td class="paramtype">const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;&#160;</td>
           <td class="paramname"><em>strain</em></td><td>)</td>
           <td></td>
         </tr>
@@ -555,7 +558,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the third invariant \( I^{(\varepsilon)}_3 \) from a voigt notated strain vector \( \boldsymbol{\varepsilon} \) by calling <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7">voigtToStrain()</a> and calculating the determinant. </p>
+<p>Computes the third invariant \( I^{(\varepsilon)}_3 \) from a voigt notated strain vector \( \boldsymbol{\varepsilon} \) by calling <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#aa1776cbb1ed1825ecdd9a96b4e7ddfa4">voigtToStrain()</a> and calculating the determinant. </p>
 
 </div>
 </div>
@@ -641,7 +644,7 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Computes the third invariant \( J^{(\varepsilon)}_3 \) of a voigt notated deviatoric strain vector \( \boldsymbol{e} \) by calling <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a68fa9a47911bee57bc88648140e15eb7">voigtToStrain()</a> and calculating the determinant. </p>
+<p>Computes the third invariant \( J^{(\varepsilon)}_3 \) of a voigt notated deviatoric strain vector \( \boldsymbol{e} \) by calling <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#aa1776cbb1ed1825ecdd9a96b4e7ddfa4">voigtToStrain()</a> and calculating the determinant. </p>
 
 </div>
 </div>

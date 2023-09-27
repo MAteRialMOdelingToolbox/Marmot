@@ -1,8 +1,9 @@
 <map id="MarmotMaterialMechanical" name="MarmotMaterialMechanical">
-<area shape="rect" id="node1" title=" " alt="" coords="113,80,291,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="217,80,395,107"/>
 <area shape="rect" id="node3" href="$classMarmotMaterialHyperElastic.html" title=" " alt="" coords="5,155,191,181"/>
 <area shape="rect" id="node4" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="215,155,397,181"/>
-<area shape="rect" id="node2" href="$classMarmotMaterial.html" title=" " alt="" coords="146,5,258,32"/>
+<area shape="rect" id="node7" href="$classMarmotMaterialHypoElasticAD.html" title=" " alt="" coords="421,155,620,181"/>
+<area shape="rect" id="node2" href="$classMarmotMaterial.html" title=" " alt="" coords="250,5,362,32"/>
 <area shape="rect" id="node5" href="$classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states." alt="" coords="163,229,294,271"/>
 <area shape="rect" id="node6" href="$classMarmot_1_1Materials_1_1VonMisesModel.html" title=" " alt="" coords="318,229,449,271"/>
 </map>

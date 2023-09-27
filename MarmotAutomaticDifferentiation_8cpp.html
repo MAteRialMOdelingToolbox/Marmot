@@ -190,11 +190,12 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="MarmotAutomaticDifferentiation_8h_source.html">Marmot/MarmotAutomaticDifferentiation.h</a>&quot;</code><br />
+<code>#include &lt;autodiff/forward/utils/derivative.hpp&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for MarmotAutomaticDifferentiation.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="MarmotAutomaticDifferentiation_8cpp__incl.svg" width="495" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MarmotAutomaticDifferentiation_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><table class="memberdecls">
@@ -208,8 +209,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1073d5a3fd09f788b474b0ecb1f07225"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a1073d5a3fd09f788b474b0ecb1f07225">Marmot::AutomaticDifferentiation::forwardMode</a> (const function_type &amp;F, const Eigen::VectorXd &amp;X)</td></tr>
-<tr class="separator:a1073d5a3fd09f788b474b0ecb1f07225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37db7167c4a2d4cb39e61c2fec762760"><td class="memItemLeft" align="right" valign="top">dual2nd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a37db7167c4a2d4cb39e61c2fec762760">Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</a> (const dual &amp;x)</td></tr>
+<tr class="separator:a37db7167c4a2d4cb39e61c2fec762760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada497b02f84e8a978405d9eaa629d43b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#ada497b02f84e8a978405d9eaa629d43b">Marmot::AutomaticDifferentiation::df_dx</a> (const scalar_to_scalar_function_type &amp;f, const double &amp;x)</td></tr>
+<tr class="separator:ada497b02f84e8a978405d9eaa629d43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd064183bd43fcae3cd6078f9a150ab5"><td class="memItemLeft" align="right" valign="top">dual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#abd064183bd43fcae3cd6078f9a150ab5">Marmot::AutomaticDifferentiation::df_dx</a> (const scalar_to_scalar_function_type_2nd &amp;f, const dual &amp;x)</td></tr>
+<tr class="separator:abd064183bd43fcae3cd6078f9a150ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c2e573ffeccf0ad9973de05d4b9a6d7"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a8c2e573ffeccf0ad9973de05d4b9a6d7">Marmot::AutomaticDifferentiation::forwardMode</a> (const vector_to_vector_function_type &amp;F, const VectorXd &amp;X)</td></tr>
+<tr class="separator:a8c2e573ffeccf0ad9973de05d4b9a6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6edafe8be435db932f7e6938d94e1b7"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXd, MatrixXd &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#ab6edafe8be435db932f7e6938d94e1b7">Marmot::AutomaticDifferentiation::jacobian</a> (const vector_to_vector_function_type_dual &amp;F, const VectorXd &amp;X)</td></tr>
+<tr class="separator:ab6edafe8be435db932f7e6938d94e1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
