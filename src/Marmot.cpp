@@ -3,6 +3,7 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterial.h"
 #include <cassert>
+#include <iostream>
 #include <string>
 #include <tuple>
 #include <unordered_map>
