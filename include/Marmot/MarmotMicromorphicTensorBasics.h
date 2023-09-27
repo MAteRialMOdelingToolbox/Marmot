@@ -362,12 +362,6 @@ namespace Marmot {
     return result;
   }
 
-  template < typename T, size_t dim = 3 >
-  Fastor::Tensor< T, dim, dim > secondRankTensorFromSecondRankDoubleTensor(
-    const Fastor::Tensor< double, dim, dim >& in )
-  {
-    return fastorTensorFromDoubleTensor< T >( in );
-  }
 
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
@@ -399,6 +393,13 @@ namespace Marmot {
       out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
     }
     return out;
+  }
+
+  template < typename T, size_t dim = 3 >
+  Fastor::Tensor< T, dim, dim > secondRankTensorFromSecondRankDoubleTensor(
+    const Fastor::Tensor< double, dim, dim >& in )
+  {
+    return fastorTensorFromDoubleTensor< T >( in );
   }
 
 } // namespace Marmot
