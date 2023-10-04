@@ -35,6 +35,7 @@ namespace Marmot::Elements::Registration {
     // Plane Strain 2D
     CPE4  = 407,
     CPE8R = 808,
+    CPE8  = 807,
 
     // Solid
     C3D8   = 803,
@@ -80,6 +81,13 @@ namespace Marmot::Elements::Registration {
                      DisplacementElementCode::CPE8R,
                      makeFactoryFunction< DisplacementFiniteElement< 2, 8 >,
                                           ReducedIntegration,
+                                          DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
+
+  const static bool CPE8_isRegistered = MarmotElementFactory::
+    registerElement( "CPE8",
+                     DisplacementElementCode::CPE8,
+                     makeFactoryFunction< DisplacementFiniteElement< 2, 8 >,
+                                          FullIntegration,
                                           DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
   const static bool C3D8_isRegistered = MarmotLibrary::MarmotElementFactory::
