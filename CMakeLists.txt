@@ -193,3 +193,12 @@ install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/Marmot
     )
+
+# look for tests in modules
+enable_testing()
+
+foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
+    if(EXISTS ${MODULEPATH}/test.cmake)
+        include(${MODULEPATH}/test.cmake)
+    endif()
+endforeach(MODULEPATH)
