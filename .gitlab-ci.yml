@@ -109,6 +109,7 @@ build and test:
     - cd build
     - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
     - make install
+    - ctest
     - cd ../
 
     - cd EdelweissFE 
