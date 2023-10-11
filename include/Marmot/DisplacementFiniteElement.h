@@ -207,6 +207,8 @@ namespace Marmot::Elements {
     }
 
     std::vector< double > getCoordinatesAtCenter();
+
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
   };
 
   template < int nDim, int nNodes >
@@ -510,5 +512,21 @@ namespace Marmot::Elements {
     const auto            centerXi = XiSized::Zero();
     coordsMap                      = this->NB( this->N( centerXi ) ) * this->coordinates;
     return coords;
+  }
+
+  template < int nDim, int nNodes >
+  std::vector< std::vector< double > > DisplacementFiniteElement< nDim, nNodes >::getCoordinatesAtQuadraturePoints()
+  {
+    std::vector< std::vector< double > > listedCoords;
+
+    std::vector< double > coords( nDim );
+    Eigen::Map< XiSized > coordsMap( &coords[0] );
+
+    for ( QuadraturePoint& qp : qps ) {
+      coordsMap = this->NB( this->N( qp.xi ) ) * this->coordinates;
+      listedCoords.push_back(coords);
+    }
+
+    return listedCoords;
   }
 } // namespace Marmot::Elements
