@@ -209,6 +209,8 @@ namespace Marmot::Elements {
     std::vector< double > getCoordinatesAtCenter();
 
     std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+
+    int getNumberOfQuadraturePoints();
   };
 
   template < int nDim, int nNodes >
@@ -528,5 +530,11 @@ namespace Marmot::Elements {
     }
 
     return listedCoords;
+  }
+
+  template < int nDim, int nNodes >
+  int DisplacementFiniteElement< nDim, nNodes >::getNumberOfQuadraturePoints()
+  {
+    return qps.size();
   }
 } // namespace Marmot::Elements
