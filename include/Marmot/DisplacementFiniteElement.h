@@ -522,7 +522,7 @@ namespace Marmot::Elements {
     std::vector< double > coords( nDim );
     Eigen::Map< XiSized > coordsMap( &coords[0] );
 
-    for ( QuadraturePoint& qp : qps ) {
+    for ( const auto& qp : qps ) {
       coordsMap = this->NB( this->N( qp.xi ) ) * this->coordinates;
       listedCoords.push_back(coords);
     }
