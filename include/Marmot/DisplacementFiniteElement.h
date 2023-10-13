@@ -524,7 +524,7 @@ namespace Marmot::Elements {
 
     for ( const auto& qp : qps ) {
       coordsMap = this->NB( this->N( qp.xi ) ) * this->coordinates;
-      listedCoords.push_back(coords);
+      listedCoords.push_back( coords );
     }
 
     return listedCoords;
