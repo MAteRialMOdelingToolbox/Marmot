@@ -1,3 +1,5 @@
 add_executable("LinearElastic_executable" "${CMAKE_CURRENT_LIST_DIR}/test/test.cpp")
-target_link_libraries("LinearElastic_executable" ${PROJECT_NAME})
-add_test(NAME "LinearElastic" COMMAND "LinearElastic_executable")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/../include/" "${INSTALLED_MODULE_PATHS}/include/")
+target_link_libraries("LinearElastic_executable" "${CMAKE_CURRENT_BINARY_DIR}/lib/libMarmot.so")
+add_dependencies("LinearElastic_executable" "${PROJECT_NAME}")
+add_test(NAME "LinearElastic" COMMAND "LinearElastic_executable" WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
