@@ -95,7 +95,7 @@ void MarmotElementSpatialWrapper::assignStateVars( double* stateVars, int nState
 
 void MarmotElementSpatialWrapper::initializeYourself()
 {
-    childElement->initializeYourself();
+  childElement->initializeYourself();
 }
 
 void MarmotElementSpatialWrapper::assignNodeCoordinates( const double* coordinates )
@@ -241,4 +241,30 @@ std::vector< double > MarmotElementSpatialWrapper::getCoordinatesAtCenter()
   coordsMap = P.transpose() * coordsChild;
 
   return coords;
+}
+
+std::vector< std::vector< double > > MarmotElementSpatialWrapper::getCoordinatesAtQuadraturePoints()
+{
+  auto listedChildCoords = childElement->getCoordinatesAtQuadraturePoints();
+
+  std::vector< std::vector< double > > listedCoords;
+
+  std::vector< double >         coords( nDim );
+  Eigen::Map< Eigen::VectorXd > coordsMap( &coords[0], nDim );
+
+  for ( const auto& coordsChild : listedChildCoords ) {
+    Eigen::Map< const Eigen::VectorXd > coordsChildMap( &coordsChild[0], nDim );
+    coordsMap = P.transpose() * coordsChildMap;
+
+    listedCoords.push_back( coords );
+  }
+
+  return listedCoords;
+}
+
+int MarmotElementSpatialWrapper::getNumberOfQuadraturePoints()
+{
+  auto numberOfQuadraturePoints = childElement->getNumberOfQuadraturePoints();
+
+  return numberOfQuadraturePoints;
 }

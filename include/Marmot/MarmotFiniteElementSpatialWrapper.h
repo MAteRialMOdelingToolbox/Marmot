@@ -110,4 +110,8 @@ public:
   StateView getStateView( const std::string& stateName, int quadraturePoint );
 
   std::vector< double > getCoordinatesAtCenter();
+
+  std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+
+  int getNumberOfQuadraturePoints();
 };
