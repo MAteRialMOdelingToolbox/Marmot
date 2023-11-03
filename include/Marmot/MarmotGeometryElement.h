@@ -66,7 +66,7 @@ public:
   MarmotGeometryElement()
     : coordinates( nullptr ), shape( Marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
 
-  std::string getElementShape()
+  std::string getElementShape() const
   {
     using namespace Marmot::FiniteElement;
     static std::map< ElementShapes, std::string > shapes = { { Bar2, "bar2" },
@@ -90,25 +90,25 @@ public:
    *Fully specialized templates are precompiled in marmotMechanics (rather than the unspecialized and
    *partially specialized templates)
    * */
-  NSized     N( const XiSized& xi );
-  dNdXiSized dNdXi( const XiSized& xi );
-  BSized     B( const dNdXiSized& dNdX );
-  BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F );
+  NSized     N( const XiSized& xi ) const;
+  dNdXiSized dNdXi( const XiSized& xi ) const;
+  BSized     B( const dNdXiSized& dNdX ) const;
+  BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const;
 
   /*These functions are equal for each element and independent of node number and  nDimension*/
-  NBSized NB( const NSized& N ) { return Marmot::FiniteElement::NB< nDim, nNodes >( N ); }
+  NBSized NB( const NSized& N ) const { return Marmot::FiniteElement::NB< nDim, nNodes >( N ); }
 
-  JacobianSized Jacobian( const dNdXiSized& dNdXi )
+  JacobianSized Jacobian( const dNdXiSized& dNdXi ) const
   {
     return Marmot::FiniteElement::Jacobian< nDim, nNodes >( dNdXi, coordinates );
   }
 
-  dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse )
+  dNdXiSized dNdX( const dNdXiSized& dNdXi, const JacobianSized& JacobianInverse ) const
   {
     return ( dNdXi.transpose() * JacobianInverse ).transpose();
   }
 
-  JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q )
+  JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q ) const
   {
     return Marmot::FiniteElement::Jacobian< nDim, nNodes >( dNdX, Q ) + JacobianSized::Identity();
   }
