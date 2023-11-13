@@ -117,7 +117,7 @@ build and test:
           echo "trying to check out branch $override_edelweiss_branch" ;
           git checkout $override_edelweiss_branch || echo "branch $module_branch not available for EdelweissFE" ;
       fi; 
-    - python setup.py build_ext -i
-    - python run_tests.py
+    - pip install .
+    - run_tests_edelweissfe
 
 
