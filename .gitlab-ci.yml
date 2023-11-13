@@ -118,6 +118,6 @@ build and test:
           git checkout $override_edelweiss_branch || echo "branch $module_branch not available for EdelweissFE" ;
       fi; 
     - pip install .
-    - run_tests_edelweissfe
+    - run_tests_edelweissfe ./testfiles
 
 
