@@ -269,6 +269,25 @@ namespace Marmot {
     return Eigen::Map< Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
   }
 
+  template < typename T, size_t nRows, typename = void >
+  auto inline mapEigenToFastor( const Fastor::Tensor< T, nRows >& fastor )
+  {
+    return Eigen::Map< Eigen::Matrix< T, nRows, 1 > >( fastor.data() );
+  }
+
+  template < typename T, size_t nRows, typename = void >
+  auto inline mapEigenToFastor( const Fastor::TensorMap< T, nRows >& fastor )
+  {
+    return Eigen::Map< Eigen::Matrix< T, nRows, 1> >( fastor.data() );
+  }
+
+  template < typename T, size_t nRows, size_t nCols, typename = void >
+  auto inline mapEigenToFastor( const Fastor::TensorMap< T, nRows, nCols >& fastor )
+  {
+    return Eigen::Map< Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
+  }
+
+
   template < template < typename, size_t... > class TensorType, typename T, size_t... Rest >
   void inline copyFastorToColumnMajor( T* target, const TensorType< T, Rest... >& source )
   {
