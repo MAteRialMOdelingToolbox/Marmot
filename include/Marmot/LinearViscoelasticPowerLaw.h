@@ -28,7 +28,6 @@
 #pragma once
 #include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotSolidification.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include <iostream>
 #include <string>
@@ -104,15 +103,9 @@ namespace Marmot::Materials {
 
     KelvinChain::Properties elasticModuli;
     KelvinChain::Properties retardationTimes;
+    double zerothKelvinChainCompliance;
+        
+    static constexpr int powerLawApproximationOrder = 2;
 
-    static constexpr int powerLawApproximationOrder  = 5;
-
-    /// \brief creep compliance function
-    template < typename T_ >
-    T_ phi( T_ tau, double m, double n )
-    {
-      T_ val = m * pow( tau, n );
-      return val;
-    }
   };
 } // namespace Marmot::Materials

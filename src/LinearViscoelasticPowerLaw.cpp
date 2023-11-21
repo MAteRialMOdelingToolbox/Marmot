@@ -4,6 +4,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
+#include "Marmot/MarmotViscoelasticity.h"
 #include "autodiff/forward/real.hpp"
 #include <iostream>
 #include <map>
@@ -30,11 +31,17 @@ namespace Marmot::Materials {
       timeToDays                        ( materialProperties[6] )
   // clang-format on
   {
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, 10. );
-
-    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) { return phi( tau, m, n ); };
+    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau,  sqrt( 10. ) );
+    
+    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
 
     elasticModuli = KelvinChain::computeElasticModuli< powerLawApproximationOrder >( phi_, retardationTimes );
+   
+
+    // for 2nd order approximations
+    zerothKelvinChainCompliance =  m * (1. - n ) * pow( 2., n ) *  pow( minTau / sqrt( 10. ), n );  
+
   }
 
   void LinearViscoelasticPowerLaw::computeStress( double*       stress,
@@ -54,7 +61,7 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > creepStateVars( ( stateVarManager->kelvinStateVars ) );
+    Eigen::Ref< KelvinChain::mapStateVarMatrix > creepStateVars(  stateVarManager->kelvinStateVars  );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -71,7 +78,10 @@ namespace Marmot::Materials {
                                       creepStrainIncrement,
                                       1.0 );
 
-    double effectiveCompliance = 1. / E + creepCompliance;
+    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+    double effectiveCompliance = 1. / E 
+        + zerothKelvinChainCompliance 
+        + creepCompliance;
 
     C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
     Vector6d deltaStress = C * ( dE - creepStrainIncrement );

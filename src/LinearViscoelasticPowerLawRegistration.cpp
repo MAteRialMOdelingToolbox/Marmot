@@ -9,7 +9,7 @@ namespace Marmot::Materials::Registration {
 
   const static bool
     LinearViscoelasticPowerLawisRegistered = MarmotMaterialFactory::registerMaterial( LinearViscoelasticPowerLawCode,
-                                                              "LINEARELASTICPOWERLAW",
+                                                              "LINEARVISCOELASTICPOWERLAW",
                                                               makeDefaultMarmotMaterialFactoryFunction< class LinearViscoelasticPowerLaw >() );
 
 } // namespace Marmot::Materials::Registration
