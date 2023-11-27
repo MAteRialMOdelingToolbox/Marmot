@@ -76,29 +76,27 @@ public:
                               double&                                     pNewDT,
                               const std::tuple< double, double, double >& eigenDeformation );
 
-  /*virtual void computePlaneStrain( Fastor::Tensor< double, 3, 3 >&       kirchhoffStress,*/
-  /*                                 Fastor::Tensor< double, 3, 3, 3, 3 >& dS_dF,*/
-  /*                                 const DeformationIncrement< 3 >&,*/
-  /*                                 const TimeIncrement&,*/
-  /*                                 double& pNewDT );*/
-
+  virtual void computePlaneStrain( ConstitutiveResponse< 3 >&       response,
+                                   AlgorithmicModuli< 3 >&          algorithmicModuli,
+                                   const DeformationIncrement< 3 >& deformationIncrement,
+                                   const TimeIncrement&             timeIncrement,
+                                   double&                          pNewDT );
   /***/
   /* * Compute stress under plane strain conditions, but account for eigen deformations (e.g, geostatic stress
    * states).*/
   /* * Modifies algorithmic tangent accordingly.*/
-  /*virtual void computePlaneStrain( Fastor::Tensor< double, 3, 3 >&       kirchhoffStress,*/
-  /*                                 Fastor::Tensor< double, 3, 3, 3, 3 >& dS_dF,*/
-  /*                                 const DeformationIncrement< 3 >&,*/
-  /*                                 const TimeIncrement&,*/
-  /*                                 double&                                     pNewDT,*/
-  /*                                 const std::tuple< double, double, double >& eigenDeformation );*/
+  virtual void computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
+                                   AlgorithmicModuli< 3 >&                     algorithmicModuli,
+                                   const DeformationIncrement< 3 >&            deformationIncrement,
+                                   const TimeIncrement&                        timeIncrement,
+                                   double&                                     pNewDT,
+                                   const std::tuple< double, double, double >& eigenDeformation );
 
-  /*virtual void computePlaneStress( Fastor::Tensor< double, 3, 3 >&       kirchhoffStress,*/
-  /*                                 Fastor::Tensor< double, 3, 3, 3, 3 >& dS_dF,*/
-  /*                                 const DeformationIncrement< 2 >&,*/
-  /*                                 const TimeIncrement&,*/
-  /*                                 double& pNewDT );*/
-
+  virtual void computePlaneStress( ConstitutiveResponse< 2 >&       response,
+                                   AlgorithmicModuli< 2 >&          algorithmicModuli,
+                                   const DeformationIncrement< 2 >& deformationIncrement,
+                                   const TimeIncrement&             timeIncrement,
+                                   double&                          pNewDT );
   /** Find for given eigen stress the appropriate eigen deformation.
    * */
   std::tuple< double, double, double > findEigenDeformationForEigenStress(

@@ -1,5 +1,5 @@
-#include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotTypedefs.h"
 
 void applyEigenDeformation_( Fastor::Tensor< double, 3, 3 >& F, double F0_XX, double F0_YY, double F0_ZZ )
@@ -50,38 +50,33 @@ void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&      
   return;
 }
 
-/* void MarmotMaterialFiniteStrain::computePlaneStrain( */
-/*   ConstitutiveResponse< 3 >&       response, */
-/*   AlgorithmicModuli< 3 >&          algorithmicModuli, */
-/*   const DeformationIncrement< 3 >& deformationIncrement, */
-/*   const TimeIncrement&             timeIncrement, */
-/*   double&                          pNewDT ) */
-/* { */
-/*   return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT ); */
-/* } */
+void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >&       response,
+                                                     AlgorithmicModuli< 3 >&          algorithmicModuli,
+                                                     const DeformationIncrement< 3 >& deformationIncrement,
+                                                     const TimeIncrement&             timeIncrement,
+                                                     double&                          pNewDT )
+{
+  return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT );
+}
 
-/* void MarmotMaterialGradientEnhancedMicropolar::computePlaneStrain( */
-/*   ConstitutiveResponse< 3 >&       response, */
-/*   AlgorithmicModuli< 3 >&          algorithmicModuli, */
-/*   const DeformationIncrement< 3 >& deformationIncrement, */
-/*   const TimeIncrement&             timeIncrement, */
-/*   double&                          pNewDT, */
+void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
+                                                     AlgorithmicModuli< 3 >&                     algorithmicModuli,
+                                                     const DeformationIncrement< 3 >&            deformationIncrement,
+                                                     const TimeIncrement&                        timeIncrement,
+                                                     double&                                     pNewDT,
+                                                     const std::tuple< double, double, double >& eigenDeformation )
+{
+  return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT, eigenDeformation );
+}
 
-/*   const std::tuple< double, double, double >& eigenDeformation ) */
-/* { */
-/*   return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT, eigenDeformation );
- */
-/* } */
-
-/* void MarmotMaterialGradientEnhancedMicropolar::computePlaneStress( */
-/*   ConstitutiveResponse< 2 >&       response, */
-/*   AlgorithmicModuli< 2 >&          algorithmicModuli, */
-/*   const DeformationIncrement< 2 >& deformationIncrement, */
-/*   const TimeIncrement&             timeIncrement, */
-/*   double&                          pNewDT ) */
-/* { */
-/*   throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." ); */
-/* } */
+void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >&       response,
+                                                     AlgorithmicModuli< 2 >&          algorithmicModuli,
+                                                     const DeformationIncrement< 2 >& deformationIncrement,
+                                                     const TimeIncrement&             timeIncrement,
+                                                     double&                          pNewDT )
+{
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
+}
 
 /** The basic implementation here assumes non-chirial, isotropic elastic behavior.
  */
