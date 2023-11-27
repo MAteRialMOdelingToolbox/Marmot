@@ -8,16 +8,8 @@ int main()
 
   using namespace Marmot::Materials;
   std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-  double                  nMaterialProperties = 2;
-  int                     elLabel             = 1;
-
-  /* std::unique_ptr< MarmotMaterialFiniteStrain > mat( dynamic_cast< MarmotMaterialFiniteStrain* >( */
-  /*   MarmotLibrary::MarmotMaterialFactory::createMaterial(
-   * MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( */
-  /*                                                           "COMPRESSIBLENEOHOOKE" ), */
-  /*                                                         materialProperties_.data(), */
-  /*                                                         nMaterialProperties, */
-  /*                                                         elLabel ) ) ); */
+  const double                  nMaterialProperties = 2;
+  const int                     elLabel             = 1;
 
   CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
 
@@ -29,11 +21,10 @@ int main()
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent;
 
   def.F_np = Marmot::FastorStandardTensors::Spatial3D::I;
-  def.F_np( 0, 0 ) += 1e-2;
-  def.F_np( 1, 1 ) += 1e-2;
-  def.F_np( 2, 2 ) += 1e-2;
+  def.F_np( 0, 0 ) += 1e-4;
+  def.F_np( 1, 1 ) += 1e-4;
+  def.F_np( 2, 2 ) += 1e-4;
 
-  // def.F_np *= 0.0;
 
   mat.computeStress( response, tangent, def, timeInc, pNewDT );
 
