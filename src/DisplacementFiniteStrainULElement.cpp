@@ -31,7 +31,12 @@ namespace Marmot::Elements::Registration {
      *                  1: 2D full integration, axisymmetric
      * */
 
-    C3D8UL = CONCAT( 1193, 83101 ),
+    CPE8RUL  = CONCAT( 1193, 83801 ),
+    C3D8UL   = CONCAT( 1193, 83301 ),
+    C3D20UL  = CONCAT( 1193, 203301 ),
+    C3D20RUL = CONCAT( 1193, 203601 ),
+    CX8RUL   = CONCAT( 1193, 83901 ),
+    CX8UL    = CONCAT( 1193, 83101 ),
 
   };
 #undef CONCAT
@@ -47,28 +52,28 @@ namespace Marmot::Elements::Registration {
   using namespace MarmotLibrary;
   using namespace Marmot::FiniteElement::Quadrature;
 
-  /* const static bool GMCX8RGradientEnhancedMicropolar_isRegistered = MarmotElementFactory:: */
-  /*   registerElement( "GMCX8RUL", */
-  /*                    DisplacementFiniteStrainULElementCode::GMCX8RUL, */
-  /*                    makeFactoryFunction< AxiSymmetricDisplacementFiniteStrainULElement< 8 >, */
-  /*                                         ReducedIntegration, */
-  /*                                         AxiSymmetricDisplacementFiniteStrainULElement< 8 >::PlaneStrain >() ); */
+  const static bool CX8RUL_isRegistered = MarmotElementFactory::
+    registerElement( "CX8RUL",
+                     DisplacementFiniteStrainULElementCode::CX8RUL,
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteStrainULElement< 8 >,
+                                          ReducedIntegration,
+                                          AxiSymmetricDisplacementFiniteStrainULElement< 8 >::PlaneStrain >() );
 
-  /* const static bool GMCX8GradientEnhancedMicropolar_isRegistered = MarmotElementFactory:: */
-  /*   registerElement( "GMCX8UL", */
-  /*                    DisplacementFiniteStrainULElementCode::GMCX8UL, */
-  /*                    makeFactoryFunction< AxiSymmetricDisplacementFiniteStrainULElement< 8 >, */
-  /*                                         FullIntegration, */
-  /*                                         AxiSymmetricDisplacementFiniteStrainULElement< 8 >::PlaneStrain >() ); */
+  const static bool CX8UL_isRegistered = MarmotElementFactory::
+    registerElement( "CX8UL",
+                     DisplacementFiniteStrainULElementCode::CX8UL,
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteStrainULElement< 8 >,
+                                          FullIntegration,
+                                          AxiSymmetricDisplacementFiniteStrainULElement< 8 >::PlaneStrain >() );
 
-  /* const static bool GMCPE8RGradientEnhancedMicropolar_isRegistered = MarmotElementFactory:: */
-  /*   registerElement( "GMCPE8RUL", */
-  /*                    DisplacementFiniteStrainULElementCode::GMCPE8RUL, */
-  /*                    makeFactoryFunction< DisplacementFiniteStrainULElement< 2, 8 >, */
-  /*                                         ReducedIntegration, */
-  /*                                         DisplacementFiniteStrainULElement< 2, 8 >::PlaneStrain >() ); */
+  const static bool CPE8RGradientEnhancedMicropolar_isRegistered = MarmotElementFactory::
+    registerElement( "CPE8RUL",
+                     DisplacementFiniteStrainULElementCode::CPE8RUL,
+                     makeFactoryFunction< DisplacementFiniteStrainULElement< 2, 8 >,
+                                          ReducedIntegration,
+                                          DisplacementFiniteStrainULElement< 2, 8 >::PlaneStrain >() );
 
-  const static bool GMC3D8GradientEnhancedMicropolar_isRegistered = MarmotLibrary::MarmotElementFactory::
+  const static bool C3D8UL_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D8UL", DisplacementFiniteStrainULElementCode::C3D8UL, []( int elementID ) -> MarmotElement* {
       return new DisplacementFiniteStrainULElement<
         3,
@@ -77,24 +82,24 @@ namespace Marmot::Elements::Registration {
              DisplacementFiniteStrainULElement< 3, 8 >::SectionType::Solid );
     } );
 
-  /* const static bool GMC3D20RGradientEnhancedMicropolar_isRegistered = MarmotLibrary::MarmotElementFactory:: */
-  /*   registerElement( "GMC3D20RUL", DisplacementFiniteStrainULElementCode::GMC3D20RUL, []( int elementID ) ->
-   * MarmotElement* { */
-  /*     return new DisplacementFiniteStrainULElement< */
-  /*       3, */
-  /*       20 >( elementID, */
-  /*             Marmot::FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration, */
-  /*             DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid ); */
-  /*   } ); */
+  const static bool C3D20RUL_isRegistered = MarmotLibrary::MarmotElementFactory::
+    registerElement( "C3D20RUL",
+                     DisplacementFiniteStrainULElementCode::C3D20RUL,
+                     []( int elementID ) -> MarmotElement* {
+                       return new DisplacementFiniteStrainULElement<
+                         3,
+                         20 >( elementID,
+                               Marmot::FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+                               DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid );
+                     } );
 
-  /* const static bool GMC3D20GradientEnhancedMicropolar_isRegistered = MarmotLibrary::MarmotElementFactory:: */
-  /*   registerElement( "GMC3D20UL", DisplacementFiniteStrainULElementCode::GMC3D20UL, []( int elementID ) ->
-   * MarmotElement* { */
-  /*     return new DisplacementFiniteStrainULElement< */
-  /*       3, */
-  /*       20 >( elementID, */
-  /*             Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration, */
-  /*             DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid ); */
-  /*   } ); */
+  const static bool C3D20UL_isRegistered = MarmotLibrary::MarmotElementFactory::
+    registerElement( "C3D20UL", DisplacementFiniteStrainULElementCode::C3D20UL, []( int elementID ) -> MarmotElement* {
+      return new DisplacementFiniteStrainULElement<
+        3,
+        20 >( elementID,
+              Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+              DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid );
+    } );
 
 } // namespace Marmot::Elements::Registration
