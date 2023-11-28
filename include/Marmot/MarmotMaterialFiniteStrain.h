@@ -63,8 +63,7 @@ public:
   virtual void computeStress( ConstitutiveResponse< 3 >& response,
                               AlgorithmicModuli< 3 >&    tangents,
                               const Deformation< 3 >&,
-                              const TimeIncrement&,
-                              double& pNewDT ) = 0;
+                              const TimeIncrement& ) = 0;
 
   /**
    * Compute Stress, but account for eigen deformations (e.g, geostatic stress states). Modifies algorithmic tangent
@@ -73,14 +72,12 @@ public:
                               AlgorithmicModuli< 3 >&                     tangents,
                               const Deformation< 3 >&                     deformation,
                               const TimeIncrement&                        timeIncrement,
-                              double&                                     pNewDT,
                               const std::tuple< double, double, double >& eigenDeformation );
 
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                    AlgorithmicModuli< 3 >&    algorithmicModuli,
                                    const Deformation< 3 >&    deformation,
-                                   const TimeIncrement&       timeIncrement,
-                                   double&                    pNewDT );
+                                   const TimeIncrement&       timeIncrement );
   /***/
   /* * Compute stress under plane strain conditions, but account for eigen deformations (e.g, geostatic stress
    * states).*/
@@ -89,14 +86,12 @@ public:
                                    AlgorithmicModuli< 3 >&                     algorithmicModuli,
                                    const Deformation< 3 >&                     deformation,
                                    const TimeIncrement&                        timeIncrement,
-                                   double&                                     pNewDT,
                                    const std::tuple< double, double, double >& eigenDeformation );
 
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,
                                    AlgorithmicModuli< 2 >&    algorithmicModuli,
                                    const Deformation< 2 >&    deformation,
-                                   const TimeIncrement&       timeIncrement,
-                                   double&                    pNewDT );
+                                   const TimeIncrement&       timeIncrement );
   /** Find for given eigen stress the appropriate eigen deformation.
    * */
   std::tuple< double, double, double > findEigenDeformationForEigenStress(
