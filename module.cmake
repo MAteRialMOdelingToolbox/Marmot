@@ -1,5 +1,5 @@
 set(MODULE_NAME
-    "DisplacementFinitStrainULElement")
+    "DisplacementFiniteStrainULElement")
 
 set(MODULES_DEPENDENCIES
     MarmotMechanicsCore
