@@ -1,5 +1,5 @@
-#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 
 void applyEigenDeformation_( Fastor::Tensor< double, 3, 3 >& F, double F0_XX, double F0_YY, double F0_ZZ )
@@ -31,49 +31,48 @@ void applyEigenDeformationToTangent_( Fastor::Tensor< double, 3, 3, 3, 3 >& dT2_
 }
 void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&                  response,
                                                 AlgorithmicModuli< 3 >&                     tangents,
-                                                const DeformationIncrement< 3 >&            deformationIncrement,
+                                                const Deformation< 3 >&                     deformation,
                                                 const TimeIncrement&                        timeIncrement,
                                                 double&                                     pNewDT,
                                                 const std::tuple< double, double, double >& eigenDeformation )
 {
   // TODO: Think about if we simply modify the input increment.
 
-  const auto& [F0_XX, F0_YY, F0_ZZ]             = eigenDeformation;
-  auto deformationIncrementWithEigenDeformation = deformationIncrement;
-  applyEigenDeformation_( deformationIncrementWithEigenDeformation.F_n, F0_XX, F0_YY, F0_ZZ );
-  applyEigenDeformation_( deformationIncrementWithEigenDeformation.F_np, F0_XX, F0_YY, F0_ZZ );
+  const auto& [F0_XX, F0_YY, F0_ZZ]    = eigenDeformation;
+  auto deformationWithEigenDeformation = deformation;
+  applyEigenDeformation_( deformationWithEigenDeformation.F, F0_XX, F0_YY, F0_ZZ );
 
-  computeStress( response, tangents, deformationIncrementWithEigenDeformation, timeIncrement, pNewDT );
+  computeStress( response, tangents, deformationWithEigenDeformation, timeIncrement, pNewDT );
 
   applyEigenDeformationToTangent_( tangents.dS_dF, F0_XX, F0_YY, F0_ZZ );
 
   return;
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >&       response,
-                                                     AlgorithmicModuli< 3 >&          algorithmicModuli,
-                                                     const DeformationIncrement< 3 >& deformationIncrement,
-                                                     const TimeIncrement&             timeIncrement,
-                                                     double&                          pNewDT )
+void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
+                                                     AlgorithmicModuli< 3 >&    algorithmicModuli,
+                                                     const Deformation< 3 >&    deformation,
+                                                     const TimeIncrement&       timeIncrement,
+                                                     double&                    pNewDT )
 {
-  return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT );
+  return computeStress( response, algorithmicModuli, deformation, timeIncrement, pNewDT );
 }
 
 void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
                                                      AlgorithmicModuli< 3 >&                     algorithmicModuli,
-                                                     const DeformationIncrement< 3 >&            deformationIncrement,
+                                                     const Deformation< 3 >&                     deformation,
                                                      const TimeIncrement&                        timeIncrement,
                                                      double&                                     pNewDT,
                                                      const std::tuple< double, double, double >& eigenDeformation )
 {
-  return computeStress( response, algorithmicModuli, deformationIncrement, timeIncrement, pNewDT, eigenDeformation );
+  return computeStress( response, algorithmicModuli, deformation, timeIncrement, pNewDT, eigenDeformation );
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >&       response,
-                                                     AlgorithmicModuli< 2 >&          algorithmicModuli,
-                                                     const DeformationIncrement< 2 >& deformationIncrement,
-                                                     const TimeIncrement&             timeIncrement,
-                                                     double&                          pNewDT )
+void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& response,
+                                                     AlgorithmicModuli< 2 >&    algorithmicModuli,
+                                                     const Deformation< 2 >&    deformation,
+                                                     const TimeIncrement&       timeIncrement,
+                                                     double&                    pNewDT )
 {
   throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
 }
@@ -86,22 +85,22 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 {
   using namespace Marmot;
 
-  DeformationIncrement< 3 > deformationIncrement = { 0.0, 0.0 };
-  ConstitutiveResponse< 3 > response             = { 0.0 };
+  Deformation< 3 >          deformation = { 0.0 };
+  ConstitutiveResponse< 3 > response    = { 0.0, 0.0, 0.0 };
   AlgorithmicModuli< 3 >    tangents;
 
   const double        time[] = { 0.0, 0.0 };
-  const TimeIncrement timeIncrement{ time, 0.0 };
+  const TimeIncrement timeIncrement{ time[0], 0.0 };
   double              pNewDT = 1e36;
 
   Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, nStateVars );
 
   auto evaluateStress = [&]( const Vector3d& F0 ) {
-    deformationIncrement.F_np( 0, 0 ) = F0( 0 );
-    deformationIncrement.F_np( 1, 1 ) = F0( 1 );
-    deformationIncrement.F_np( 2, 2 ) = F0( 2 );
+    deformation.F( 0, 0 ) = F0( 0 );
+    deformation.F( 1, 1 ) = F0( 1 );
+    deformation.F( 2, 2 ) = F0( 2 );
 
-    computeStress( response, tangents, deformationIncrement, timeIncrement, pNewDT );
+    computeStress( response, tangents, deformation, timeIncrement, pNewDT );
 
     Vector3d S = { response.S( 0, 0 ), response.S( 1, 1 ), response.S( 2, 2 ) };
     Matrix3d dS_dF;
@@ -114,7 +113,7 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 
   const auto& [F0_XX, F0_YY, F0_ZZ] = initialGuess;
   const auto& [S_XX, S_YY, S_ZZ]    = eigenStressComponents;
-  Eigen::Vector3d deformation       = { F0_XX, F0_YY, F0_ZZ };
+  Eigen::Vector3d def               = { F0_XX, F0_YY, F0_ZZ };
   Eigen::Vector3d eigenNormalStress = { S_XX, S_YY, S_ZZ };
   Eigen::Vector3d R, dF;
 
@@ -122,7 +121,7 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 
   int itCounter = 0;
   while ( true ) {
-    auto [normalStress, dNormalStress_dF] = evaluateStress( deformation );
+    auto [normalStress, dNormalStress_dF] = evaluateStress( def );
     theStateVars                          = materialStateVarsBackup;
 
     R = normalStress - eigenNormalStress;
@@ -138,8 +137,8 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 
     dF = -dNormalStress_dF.inverse() * R;
 
-    deformation += dF;
+    def += dF;
   }
 
-  return { deformation( 0 ), deformation( 1 ), deformation( 2 ) };
+  return { def( 0 ), def( 1 ), def( 2 ) };
 }
