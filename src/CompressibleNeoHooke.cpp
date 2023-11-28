@@ -25,36 +25,36 @@ namespace Marmot::Materials {
   {
   }
 
-  void CompressibleNeoHooke::computeStress( ConstitutiveResponse< 3 >&       response,
-                                            AlgorithmicModuli< 3 >&          tangents,
-                                            const DeformationIncrement< 3 >& deformationIncrement,
-                                            const TimeIncrement&             timeIncrement,
-                                            double&                          pNewDT )
+  void CompressibleNeoHooke::computeStress( ConstitutiveResponse< 3 >& response,
+                                            AlgorithmicModuli< 3 >&    tangents,
+                                            const Deformation< 3 >&    deformation,
+                                            const TimeIncrement&       timeIncrement,
+                                            double&                    pNewDT )
   {
     const double& K = materialProperties[0];
     const double& G = materialProperties[1];
 
-    const auto& F_ = deformationIncrement.F_np;
+    const auto& F_ = deformation.F;
     double      psi_;
     Tensor33d   dPsi_dC;
     Tensor3333d d2Psi_dCdC;
 
     // compute Cauchy-Green deformation
     Tensor33d C = einsum< KI, KJ >( F_, F_ );
-    
+
     // compute energy density, first and second partial derivatives wrt Cauchy Green deformation
     std::tie( psi_, dPsi_dC, d2Psi_dCdC ) = AutomaticDifferentiation::SecondOrder::d2f_dTensor_dTensor<
       3 >( [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& Ce_ ) { return psi( Ce_, K, G ); }, C );
 
     // compute Kirchhoff stress
-    response.S = einsum< iI, IJ, jJ, to_ij >( F_, 2. * dPsi_dC, F_ );
-
+    response.S                    = einsum< iI, IJ, jJ, to_ij >( F_, 2. * dPsi_dC, F_ );
+    response.rho                  = 1.0;
+    response.elasticEnergyDensity = psi_;
     // compute tangent operator
     const auto&       I     = FastorStandardTensors::Spatial3D::I;
-    const Tensor3333d dC_dF = einsum< LI, KJ, to_IJKL >( I, deformationIncrement.F_np ) +
-                              einsum< JL, KI, to_IJKL >( I, deformationIncrement.F_np );
+    const Tensor3333d dC_dF = einsum< LI, KJ, to_IJKL >( I, F_ ) + einsum< JL, KI, to_IJKL >( I, F_ );
 
-    const Tensor3333d dS_dPK2 = einsum< iK, jL, to_ijKL >( deformationIncrement.F_np, deformationIncrement.F_np );
+    const Tensor3333d dS_dPK2 = einsum< iK, jL, to_ijKL >( F_, F_ );
 
     tangents.dS_dF = einsum< ijKL, KLMN >( einsum< ijKL, KLMN >( dS_dPK2, 2. * d2Psi_dCdC ), dC_dF );
   }

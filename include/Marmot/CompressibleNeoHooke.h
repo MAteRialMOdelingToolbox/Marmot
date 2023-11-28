@@ -27,8 +27,6 @@
 
 #pragma once
 #include "Marmot/MarmotMaterialFiniteStrain.h"
-#include <Fastor/expressions/linalg_ops/unary_lu_op.h>
-#include <Fastor/expressions/linalg_ops/unary_trace_op.h>
 #include <string>
 
 namespace Marmot::Materials {
@@ -43,7 +41,7 @@ namespace Marmot::Materials {
 
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
-                        const DeformationIncrement< 3 >&,
+                        const Deformation< 3 >&,
                         const TimeIncrement&,
                         double& pNewDT );
 
