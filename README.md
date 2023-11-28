@@ -1,6 +1,4 @@
-This is the implementation of the gradient-enhanced micropolar element.
-Mathematically, it is identical to Eringen's Microstretch theory,
-i.e,  the micropolar continuum + an additional scalar eq. describing the relation between macriscopic and microscropic dilation.
+## Marmot Module
 
-This implemenation makes use of the Fastor library (https://github.com/romeric/Fastor, hard dependency)
-for all tensor contractions.
+This module is part of [Marmot](https://github.com/MAteRialMOdelingToolbox/Marmot).
+Please refer to the [documentation](https://materialmodelingtoolbox.github.io/Marmot/) for details on the module system.

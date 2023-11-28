@@ -1,10 +1,10 @@
 set(MODULE_NAME
-    "GradientEnhancedMicropolarULFiniteElement")
+    "DisplacementFinitStrainULElement")
 
 set(MODULES_DEPENDENCIES
     MarmotMechanicsCore
     MarmotFiniteElementCore 
-    MarmotMicromorphicCore 
+    MarmotFiniteStrainMechanicsCore 
     )
 
 set(DEPENDECIES_FULLFILLED TRUE)
