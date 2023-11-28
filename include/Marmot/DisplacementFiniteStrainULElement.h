@@ -386,61 +386,61 @@ namespace Marmot::Elements {
 
       Material::ConstitutiveResponse< nDim > response;
       Material::AlgorithmicModuli< nDim >    tangents;
+      try {
+        if constexpr ( nDim == 2 ) {
 
-      if constexpr ( nDim == 2 ) {
+          if ( sectionType == SectionType::PlaneStrain ) {
 
-        if ( sectionType == SectionType::PlaneStrain ) {
+            using namespace Marmot;
 
-          using namespace Marmot;
+            Material::ConstitutiveResponse< 3 >
+              response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+                          -1.0,
+                          -1.0 };
 
-          Material::ConstitutiveResponse< 3 >
-            response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
-                        -1.0,
-                        -1.0 };
+            Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
-          Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
+            Material::Deformation< 3 > deformation3D{
+              expandTo3D( deformation.F ),
+            };
 
-          Material::Deformation< 3 > deformation3D{
-            expandTo3D( deformation.F ),
-          };
+            deformation3D.F( 2, 2 ) = 1.0;
 
-          deformation3D.F( 2, 2 ) = 1.0;
+            if ( hasEigenDeformation )
+              qp.material->computePlaneStrain( response3D,
+                                               algorithmicModuli3D,
+                                               deformation3D,
+                                               timeIncrement,
+                                               { qp.managedStateVars->F0_XX,
+                                                 qp.managedStateVars->F0_YY,
+                                                 qp.managedStateVars->F0_ZZ } );
+            else
+              qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-          if ( hasEigenDeformation )
-            qp.material->computePlaneStrain( response3D,
-                                             algorithmicModuli3D,
-                                             deformation3D,
-                                             timeIncrement,
-                                             pNewDT,
-                                             { qp.managedStateVars->F0_XX,
-                                               qp.managedStateVars->F0_YY,
-                                               qp.managedStateVars->F0_ZZ } );
-          else
-            qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement, pNewDT );
+            response = { reduceTo2D< U, U >( response3D.S ), response3D.rho, response3D.elasticEnergyDensity };
 
-          response = { reduceTo2D< U, U >( response3D.S ), response3D.rho, response3D.elasticEnergyDensity };
+            tangents = {
+              reduceTo2D< U, U, U, U >( algorithmicModuli3D.dS_dF ),
+            };
 
-          tangents = {
-            reduceTo2D< U, U, U, U >( algorithmicModuli3D.dS_dF ),
-          };
+            qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.S ).reshaped();
+          }
+        }
+        else {
+          response = { Marmot::FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
+                       -1.0,
+                       -1.0 };
 
-          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.S ).reshaped();
+          qp.material->computeStress( response, tangents, deformation, timeIncrement );
+
+          // implicit conversion to col major
+          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.S ).reshaped();
         }
       }
-      else {
-        response = { Marmot::FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
-                     -1.0,
-                     -1.0 };
-
-        qp.material->computeStress( response, tangents, deformation, timeIncrement, pNewDT );
-
-        // implicit conversion to col major
-        qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.S ).reshaped();
-      }
-
-      if ( pNewDT < 1.0 )
+      catch ( const std::runtime_error& ) {
+        pNewDT = 0.25;
         return;
-
+      }
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
       const double& J0xW = qp.J0xW;
@@ -704,7 +704,6 @@ namespace Marmot::Elements {
       Material::AlgorithmicModuli< nDim >    tangents;
 
       using namespace Marmot;
-
       Material::ConstitutiveResponse< 3 >
         response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                     -1.0,
@@ -716,8 +715,13 @@ namespace Marmot::Elements {
 
       deformation3D.F( 2, 2 ) = 1 + u_np[0] / r;
 
-      qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement, pNewDT );
-
+      try {
+        qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
+      }
+      catch ( const std::runtime_error& ) {
+        pNewDT = 0.25;
+        return;
+      }
       response = { reduceTo2D< U, U >( response3D.S ), response3D.rho, response3D.elasticEnergyDensity };
 
       tangents = {
@@ -725,9 +729,6 @@ namespace Marmot::Elements {
       };
 
       qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.S ).reshaped();
-
-      if ( pNewDT < 1.0 )
-        return;
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
