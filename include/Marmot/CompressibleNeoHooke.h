@@ -42,8 +42,7 @@ namespace Marmot::Materials {
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
-                        const TimeIncrement&,
-                        double& pNewDT );
+                        const TimeIncrement& );
 
     int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
 
