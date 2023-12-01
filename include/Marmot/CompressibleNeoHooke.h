@@ -55,15 +55,4 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& result );
   };
 
-  template < typename T >
-  T psi( const Fastor::Tensor< T, 3, 3 >& C, const double K, const double G )
-  {
-
-    const T J  = sqrt( Fastor::determinant( C ) );
-    const T I1 = Fastor::trace( C );
-
-    T res = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
-
-    return res;
-  }
 } // namespace Marmot::Materials

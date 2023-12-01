@@ -27,8 +27,8 @@ int main()
   mat.computeStress( response, tangent, def, timeInc );
 
   std::cout << "deformation=\n" << def.F << std::endl;
-  std::cout << "stress = \n" << response.S << std::endl;
-  std::cout << "tangent = \n" << tangent.dS_dF << std::endl;
+  std::cout << "stress = \n" << response.tau << std::endl;
+  std::cout << "tangent = \n" << tangent.dTau_dF << std::endl;
 
   return 0;
 }

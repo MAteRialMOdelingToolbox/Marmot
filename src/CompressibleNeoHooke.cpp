@@ -1,8 +1,11 @@
 #include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotDeformationMeasures.h"
+#include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMicromorphicTensorBasics.h"
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
+#include "Marmot/MarmotStressMeasures.h"
 #include "Marmot/MarmotVoigt.h"
 #include <Fastor/expressions/linalg_ops/unary_trans_op.h>
 #include <Fastor/tensor/Tensor.h>
@@ -38,24 +41,24 @@ namespace Marmot::Materials {
     Tensor33d   dPsi_dC;
     Tensor3333d d2Psi_dCdC;
 
+    using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    Tensor33d C = einsum< KI, KJ >( F_, F_ );
+    Tensor33d   C;
+    Tensor3333d dC_dF;
+    std::tie( C, dC_dF ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( F_ );
 
     // compute energy density, first and second partial derivatives wrt Cauchy Green deformation
-    std::tie( psi_, dPsi_dC, d2Psi_dCdC ) = AutomaticDifferentiation::SecondOrder::d2f_dTensor_dTensor<
-      3 >( [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& Ce_ ) { return psi( Ce_, K, G ); }, C );
+    std::tie( psi_, dPsi_dC, d2Psi_dCdC ) = EnergyDensityFunctions::SeconOrderDerived::PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
-    response.S                    = einsum< iI, IJ, jJ, to_ij >( F_, 2. * dPsi_dC, F_ );
-    response.rho                  = 1.0;
-    response.elasticEnergyDensity = psi_;
+    Tensor33d   PK2 = 2. * dPsi_dC;
+    Tensor3333d dTau_dPK2, dTau_dF;
+    std::tie( response.tau, dTau_dPK2, dTau_dF ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, F_ );
+    response.rho                                 = 1.0;
+    response.elasticEnergyDensity                = psi_;
+
     // compute tangent operator
-    const auto&       I     = FastorStandardTensors::Spatial3D::I;
-    const Tensor3333d dC_dF = einsum< LI, KJ, to_IJKL >( I, F_ ) + einsum< JL, KI, to_IJKL >( I, F_ );
-
-    const Tensor3333d dS_dPK2 = einsum< iK, jL, to_ijKL >( F_, F_ );
-
-    tangents.dS_dF = einsum< ijKL, KLMN >( einsum< ijKL, KLMN >( dS_dPK2, 2. * d2Psi_dCdC ), dC_dF );
+    tangents.dTau_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) + dTau_dF;
   }
 
   StateView CompressibleNeoHooke::getStateView( const std::string& stateName )
