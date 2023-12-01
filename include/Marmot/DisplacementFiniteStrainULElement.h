@@ -417,13 +417,13 @@ namespace Marmot::Elements {
             else
               qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-            response = { reduceTo2D< U, U >( response3D.S ), response3D.rho, response3D.elasticEnergyDensity };
+            response = { reduceTo2D< U, U >( response3D.tau ), response3D.rho, response3D.elasticEnergyDensity };
 
             tangents = {
-              reduceTo2D< U, U, U, U >( algorithmicModuli3D.dS_dF ),
+              reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
             };
 
-            qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.S ).reshaped();
+            qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
           }
         }
         else {
@@ -434,7 +434,7 @@ namespace Marmot::Elements {
           qp.material->computeStress( response, tangents, deformation, timeIncrement );
 
           // implicit conversion to col major
-          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.S ).reshaped();
+          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
         }
       }
       catch ( const std::runtime_error& ) {
@@ -445,22 +445,22 @@ namespace Marmot::Elements {
 
       const double& J0xW = qp.J0xW;
 
-      const auto& S = response.S;
+      const auto& tau = response.tau;
 
       const auto& t = tangents;
 
       // aux stiffness tensors
-      const auto dS_dqU = evaluate( +einsum< ijkl, lB >( t.dS_dF, dNdX ) );
+      const auto dTau_dqU = evaluate( +einsum< ijkl, lB >( t.dTau_dF, dNdX ) );
 
       // r[ node, dim ] (swap to abuse directly colmajor layout)
       // directly operate via TensorMap
-      r_U -= ( +einsum< iA, ij >( dNdx, S ) ) * J0xW;
+      r_U -= ( +einsum< iA, ij >( dNdx, tau ) ) * J0xW;
 
       // K [dim, node, dim, node ]
-      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dS_dqU ) ) * J0xW;
+      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dTau_dqU ) ) * J0xW;
 
       // geometric contribution
-      k_UU += ( -einsum< kA, ij, iB, to_jAkB >( dNdx, S, dNdx ) ) * J0xW;
+      k_UU += ( -einsum< kA, ij, iB, to_jAkB >( dNdx, tau, dNdx ) ) * J0xW;
     }
     // copy back to the subblocks using mighty Eigen block access,
     // note the layout swap rowmajor -> colmajor
@@ -722,64 +722,64 @@ namespace Marmot::Elements {
         pNewDT = 0.25;
         return;
       }
-      response = { reduceTo2D< U, U >( response3D.S ), response3D.rho, response3D.elasticEnergyDensity };
+      response = { reduceTo2D< U, U >( response3D.tau ), response3D.rho, response3D.elasticEnergyDensity };
 
       tangents = {
-        reduceTo2D< U, U, U, U >( algorithmicModuli3D.dS_dF ),
+        reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
       };
 
-      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.S ).reshaped();
+      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
       const double J0xWxRx2Pi = qp.J0xW * 2 * Constants::Pi * r;
 
-      const auto& S = response.S;
+      const auto& tau = response.tau;
 
       const auto& t = tangents;
 
       // aux stiffness tensors
-      auto dS_dqU = evaluate( +einsum< ijkl, lB >( t.dS_dF, dNdX ) );
+      auto dTau_dqU = evaluate( +einsum< ijkl, lB >( t.dTau_dF, dNdX ) );
 
-      Fastor::Tensor< double, 2, 2 > dS33_dF_2D( 0.0 );
+      Fastor::Tensor< double, 2, 2 > dTau33_dF_2D( 0.0 );
       for ( int i = 0; i < 2; i++ )
         for ( int j = 0; j < 2; j++ ) {
-          dS33_dF_2D( i, j ) = algorithmicModuli3D.dS_dF( 2, 2, i, j );
+          dTau33_dF_2D( i, j ) = algorithmicModuli3D.dTau_dF( 2, 2, i, j );
         }
-      auto dS33_dqU = evaluate( +einsum< kl, lB >( dS33_dF_2D, dNdX ) );
+      auto dTau33_dqU = evaluate( +einsum< kl, lB >( dTau33_dF_2D, dNdX ) );
 
       // additional terms due to axisymmetry:
 
       for ( int B = 0; B < nNodes; B++ ) {
         for ( int i = 0; i < 2; i++ )
           for ( int j = 0; j < 2; j++ ) {
-            dS_dqU( i, j, 0, B ) += algorithmicModuli3D.dS_dF( i, j, 2, 2 ) * N( B ) / r;
+            dTau_dqU( i, j, 0, B ) += algorithmicModuli3D.dTau_dF( i, j, 2, 2 ) * N( B ) / r;
           }
-        dS33_dqU( 0, B ) += algorithmicModuli3D.dS_dF( 2, 2, 2, 2 ) * N( B ) / r;
+        dTau33_dqU( 0, B ) += algorithmicModuli3D.dTau_dF( 2, 2, 2, 2 ) * N( B ) / r;
       }
 
       // r[ node, dim ] (swap to abuse directly colmajor layout)
       // directly operate via TensorMap
-      r_U -= ( +einsum< iA, ij >( dNdx, S ) ) * J0xWxRx2Pi;
+      r_U -= ( +einsum< iA, ij >( dNdx, tau ) ) * J0xWxRx2Pi;
 
       const double F33          = 1 + u_np[0] / r;
       const double invF33       = 1. / F33;
       const double dInvF33_dF33 = -1. / ( F33 * F33 );
 
       for ( int A = 0; A < nNodes; A++ ) {
-        r_U( A, 0 ) -= ( +N( A ) * invF33 * response3D.S( 2, 2 ) / r ) * J0xWxRx2Pi;
+        r_U( A, 0 ) -= ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
 
         for ( int B = 0; B < nNodes; B++ ) {
           for ( int j = 0; j < 2; j++ ) {
-            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dS33_dqU( j, B ) / r ) * J0xWxRx2Pi;
+            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
           }
           const double dF33_dN_qU_0 = ( N( B ) / r );
-          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.S( 2, 2 ) / r ) * J0xWxRx2Pi;
+          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
         }
       }
 
       // K [dim, node, dim, node ]
-      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dS_dqU ) ) * J0xWxRx2Pi;
+      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dTau_dqU ) ) * J0xWxRx2Pi;
     }
     // copy back to the subblocks using mighty Eigen block access,
     // note the layout swap rowmajor -> colmajor
