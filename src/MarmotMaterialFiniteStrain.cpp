@@ -43,7 +43,7 @@ void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&      
 
   computeStress( response, tangents, deformationWithEigenDeformation, timeIncrement );
 
-  applyEigenDeformationToTangent_( tangents.dS_dF, F0_XX, F0_YY, F0_ZZ );
+  applyEigenDeformationToTangent_( tangents.dTau_dF, F0_XX, F0_YY, F0_ZZ );
 
   return;
 }
@@ -87,7 +87,6 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 
   const double        time[] = { 0.0, 0.0 };
   const TimeIncrement timeIncrement{ time[0], 0.0 };
-  double              pNewDT = 1e36;
 
   Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, nStateVars );
 
@@ -98,13 +97,13 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
 
     computeStress( response, tangents, deformation, timeIncrement );
 
-    Vector3d S = { response.S( 0, 0 ), response.S( 1, 1 ), response.S( 2, 2 ) };
-    Matrix3d dS_dF;
-    dS_dF << tangents.dS_dF( 0, 0, 0, 0 ), tangents.dS_dF( 0, 0, 1, 1 ), tangents.dS_dF( 0, 0, 2, 2 ),
-      tangents.dS_dF( 1, 1, 0, 0 ), tangents.dS_dF( 1, 1, 1, 1 ), tangents.dS_dF( 1, 1, 2, 2 ),
-      tangents.dS_dF( 2, 2, 0, 0 ), tangents.dS_dF( 2, 2, 1, 1 ), tangents.dS_dF( 2, 2, 2, 2 );
+    Vector3d tau = { response.tau( 0, 0 ), response.tau( 1, 1 ), response.tau( 2, 2 ) };
+    Matrix3d dTau_dF;
+    dTau_dF << tangents.dTau_dF( 0, 0, 0, 0 ), tangents.dTau_dF( 0, 0, 1, 1 ), tangents.dTau_dF( 0, 0, 2, 2 ),
+      tangents.dTau_dF( 1, 1, 0, 0 ), tangents.dTau_dF( 1, 1, 1, 1 ), tangents.dTau_dF( 1, 1, 2, 2 ),
+      tangents.dTau_dF( 2, 2, 0, 0 ), tangents.dTau_dF( 2, 2, 1, 1 ), tangents.dTau_dF( 2, 2, 2, 2 );
 
-    return std::tuple< Eigen::Vector3d, Eigen::Matrix3d >( S, dS_dF );
+    return std::tuple< Eigen::Vector3d, Eigen::Matrix3d >( tau, dTau_dF );
   };
 
   const auto& [F0_XX, F0_YY, F0_ZZ] = initialGuess;

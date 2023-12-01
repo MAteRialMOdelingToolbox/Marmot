@@ -28,29 +28,31 @@
 #pragma once
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotMaterial.h"
+#include "autodiff/forward/dual.hpp"
 #include <Fastor/tensor/Tensor.h>
 
-class MarmotMaterialFiniteStrain : public MarmotMaterial {
+class MarmotMaterialFiniteStrainAD : public MarmotMaterial {
 
   /*
      Abstract basic class for mechanical materials in the finite strain regime
+     using autodiff functionality for computing the algorithmic tangent operator
   */
 public:
-  template < int nDim >
+  template < int nDim, typename T = autodiff::dual >
   struct ConstitutiveResponse {
-    Fastor::Tensor< double, nDim, nDim > tau;                  // kirchhoff stress
-    double                               rho;                  // density
-    double                               elasticEnergyDensity; // elastic energy per unit volume
+    Fastor::Tensor< T, nDim, nDim > tau;                  // kirchhoff stress
+    double                          rho;                  // density
+    double                          elasticEnergyDensity; // elastic energy per unit volume
+  };
+
+  template < int nDim, typename T = autodiff::dual >
+  struct Deformation {
+    Fastor::Tensor< T, nDim, nDim > F;
   };
 
   template < int nDim >
   struct AlgorithmicModuli {
     Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF; // tangent operator w.r.t. deformation gradient
-  };
-
-  template < int nDim >
-  struct Deformation {
-    Fastor::Tensor< double, nDim, nDim > F;
   };
 
   struct TimeIncrement {
@@ -60,22 +62,17 @@ public:
 
   using MarmotMaterial::MarmotMaterial;
 
-  virtual void computeStress( ConstitutiveResponse< 3 >& response,
-                              AlgorithmicModuli< 3 >&    tangents,
-                              const Deformation< 3 >&,
-                              const TimeIncrement& ) = 0;
+  virtual void computeStress( ConstitutiveResponse< 3 >& response, const Deformation< 3 >&, const TimeIncrement& ) = 0;
 
   /**
    * Compute Stress, but account for eigen deformations (e.g, geostatic stress states). Modifies algorithmic tangent
    * accordingly.*/
   virtual void computeStress( ConstitutiveResponse< 3 >&                  response,
-                              AlgorithmicModuli< 3 >&                     tangents,
                               const Deformation< 3 >&                     deformation,
                               const TimeIncrement&                        timeIncrement,
                               const std::tuple< double, double, double >& eigenDeformation );
 
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
-                                   AlgorithmicModuli< 3 >&    algorithmicModuli,
                                    const Deformation< 3 >&    deformation,
                                    const TimeIncrement&       timeIncrement );
   /***/
@@ -83,13 +80,11 @@ public:
    * states).*/
   /* * Modifies algorithmic tangent accordingly.*/
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
-                                   AlgorithmicModuli< 3 >&                     algorithmicModuli,
                                    const Deformation< 3 >&                     deformation,
                                    const TimeIncrement&                        timeIncrement,
                                    const std::tuple< double, double, double >& eigenDeformation );
 
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,
-                                   AlgorithmicModuli< 2 >&    algorithmicModuli,
                                    const Deformation< 2 >&    deformation,
                                    const TimeIncrement&       timeIncrement );
   /** Find for given eigen stress the appropriate eigen deformation.
