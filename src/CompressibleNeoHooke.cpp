@@ -48,7 +48,7 @@ namespace Marmot::Materials {
     std::tie( C, dC_dF ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( F_ );
 
     // compute energy density, first and second partial derivatives wrt Cauchy Green deformation
-    std::tie( psi_, dPsi_dC, d2Psi_dCdC ) = EnergyDensityFunctions::SeconOrderDerived::PenceGouPotentialB( C, K, G );
+    std::tie( psi_, dPsi_dC, d2Psi_dCdC ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
     Tensor33d   PK2 = 2. * dPsi_dC;
