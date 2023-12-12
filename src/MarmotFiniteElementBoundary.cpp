@@ -123,7 +123,7 @@ namespace Marmot {
 
     VectorXd BoundaryElement::computeScalarLoadVector()
     {
-      /* compute the load vector for a constant scalar distributed load 
+      /* compute the load vector for a constant scalar distributed load
        * Attention: result =  boundary-element-sized!
        *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
        * */
@@ -136,7 +136,7 @@ namespace Marmot {
       return Pk;
     }
 
-    MatrixXd BoundaryElement::computeDScalarLoadVector_dCoordinates( )
+    MatrixXd BoundaryElement::computeDScalarLoadVector_dCoordinates()
     {
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
       VectorXd Pk = VectorXd::Zero( nNodes );

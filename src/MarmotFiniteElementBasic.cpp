@@ -19,6 +19,8 @@ namespace Marmot {
         switch ( nNodes ) {
         case 4: return ElementShapes::Quad4;
         case 8: return ElementShapes::Quad8;
+        case 9: return ElementShapes::Quad9;
+        case 16: return ElementShapes::Quad16;
         default: throw std::invalid_argument( "Invalid number of nodes for nDim=2" );
         }
       }
@@ -28,6 +30,7 @@ namespace Marmot {
         case 10: return ElementShapes::Tetra10;
         case 8: return ElementShapes::Hexa8;
         case 20: return ElementShapes::Hexa20;
+        case 27: return ElementShapes::Hexa27;
         default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
         }
       }

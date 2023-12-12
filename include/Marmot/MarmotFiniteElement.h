@@ -38,10 +38,13 @@ namespace Marmot {
       Bar3,
       Quad4,
       Quad8,
+      Quad9,
+      Quad16,
       Tetra4,
       Tetra10,
       Hexa8,
       Hexa20,
+      Hexa27,
     };
 
     ElementShapes getElementShapeByMetric( int nDim, int nNodes );
@@ -331,8 +334,8 @@ namespace Marmot {
       Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
       /// compute the element load vector for a unit vectorial load in a given direction.
-      Eigen::VectorXd computeVectorialLoadVector(const Eigen::VectorXd& direction);
-      Eigen::MatrixXd computeDVectorialLoadVector_dCoordinates(const Eigen::VectorXd& direction);
+      Eigen::VectorXd computeVectorialLoadVector( const Eigen::VectorXd& direction );
+      Eigen::MatrixXd computeDVectorialLoadVector_dCoordinates( const Eigen::VectorXd& direction );
 
       Eigen::VectorXd condenseParentToBoundaryScalar( const Eigen::VectorXd& parentVector );
       void            assembleIntoParentScalar( const Eigen::VectorXd&        boundaryVector,
@@ -341,8 +344,9 @@ namespace Marmot {
 
       Eigen::VectorXd condenseParentToBoundaryVectorial( const Eigen::VectorXd& parentVector );
       void            assembleIntoParentVectorial( const Eigen::VectorXd&        boundaryVector,
-                                                Eigen::Ref< Eigen::VectorXd > ParentVector );
-      void assembleIntoParentStiffnessVectorial( const Eigen::MatrixXd& KBoundary, Eigen::Ref< Eigen::MatrixXd > KParent );
+                                                   Eigen::Ref< Eigen::VectorXd > ParentVector );
+      void            assembleIntoParentStiffnessVectorial( const Eigen::MatrixXd&        KBoundary,
+                                                            Eigen::Ref< Eigen::MatrixXd > KParent );
     };
   } // namespace FiniteElement
 

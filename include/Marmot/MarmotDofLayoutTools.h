@@ -26,22 +26,19 @@
  */
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
-#include <vector>
 #include <map>
+#include <vector>
 
 namespace Marmot {
 
   namespace FiniteElement {
 
-      const std::vector<std::vector<std::string>> 
-          makeNodeFieldLayout(
-              const std::map< std::string, std::pair<int, int> >& fieldSizes
-                  );
-    
-      std::vector<int> makeBlockedLayoutPermutationPattern(
-              const std::vector<std::vector<std::string>>& nodeFields,
-              const std::map< std::string, std::pair<int, int> >& fieldSizes
-              );
+    const std::vector< std::vector< std::string > > makeNodeFieldLayout(
+      const std::map< std::string, std::pair< int, int > >& fieldSizes );
 
-  }
+    std::vector< int > makeBlockedLayoutPermutationPattern(
+      const std::vector< std::vector< std::string > >&      nodeFields,
+      const std::map< std::string, std::pair< int, int > >& fieldSizes );
+
+  } // namespace FiniteElement
 } // namespace Marmot
