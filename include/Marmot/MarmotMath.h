@@ -104,6 +104,18 @@ namespace Marmot {
       return double( number );
     }
 
+    template < typename T >
+    Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
+    {
+
+      int             inSize = in.size();
+      Eigen::VectorXd out( inSize );
+      for ( int i = 0; i < inSize; i++ ) {
+        out( i ) = double( in( i ) );
+      }
+      return out;
+    }
+
     /**
      * apply Macaulay function to a matrix
      * @todo: Can be replaced easily with Eigen's array() functionality ??? */
