@@ -31,6 +31,7 @@ namespace Marmot {
         case 8: return ElementShapes::Hexa8;
         case 20: return ElementShapes::Hexa20;
         case 27: return ElementShapes::Hexa27;
+        case 64: return ElementShapes::Hexa64;
         default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
         }
       }

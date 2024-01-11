@@ -45,6 +45,7 @@ namespace Marmot {
       Hexa8,
       Hexa20,
       Hexa27,
+      Hexa64,
     };
 
     ElementShapes getElementShapeByMetric( int nDim, int nNodes );
