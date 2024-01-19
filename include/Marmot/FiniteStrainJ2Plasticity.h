@@ -129,28 +129,22 @@ namespace Marmot::Materials {
     {
       Tensor33d    dev = ContinuumMechanics::Micropolar::GeneralizedInvariants::deviatoric( mandelStress );
       const double rho = std::max( sqrt( Fastor::inner( dev, dev ) ), 1e-15 );
-      double       f   = 1. / fy * ( rho - Marmot::Constants::sqrt2_3 * betaP );
+      const double f   = 1. / fy * ( rho - Marmot::Constants::sqrt2_3 * betaP );
 
       Tensor33d dRho_dMandel = 1. / rho * dev;
 
-      /* Tensor3333d d2Rho_dMandel_dMandel = -1.0 / std::pow( rho, 3 ) * outer( dev, dev ) + */
-      /*                                     1. / rho * Spatial3D::Deviatoric; */
+      Tensor3333d d2Rho_dMandel_dMandel = -1.0 / std::pow( rho, 3 ) * outer( dev, dev ) +
+                                          1. / rho *
+                                            ( einsum< ik, jl, to_ijkl >( Spatial3D::I, Spatial3D::I ) -
+                                              1. / 3 *
+                                                einsum< ij, IK, IL, to_ijKL >( Spatial3D::I,
+                                                                               Spatial3D::I,
+                                                                               Spatial3D::I ) );
 
-      /* Tensor3333d d2f_dMandel_dMandel_analytical = 1. / fy * d2Rho_dMandel_dMandel; */
-      Tensor33d df_dMandel_analytical = 1. / fy * dRho_dMandel;
-      Tensor33d df_dMandel;
+      Tensor3333d d2f_dMandel_dMandel = 1. / fy * d2Rho_dMandel_dMandel;
+      Tensor33d   df_dMandel          = 1. / fy * dRho_dMandel;
 
-      Tensor3333d d2f_dMandel_dMandel;
-
-      // Workaround using autodiff for 2nd derivative of f wrt mandel stress
-      std::tie( f, df_dMandel, d2f_dMandel_dMandel ) = AutomaticDifferentiation::SecondOrder::d2f_dTensor_dTensor<
-        3 >( [&]( const FastorStandardTensors::Tensor33t< autodiff::dual2nd >&
-                    mandel_ ) { return yieldFunctionFromStress( mandel_, autodiff::dual2nd( betaP ) ); },
-             mandelStress );
-      /* std::cout << "diff 1st: " << df_dMandel_analytical - df_dMandel << std::endl; */
-      /* std::cout << "diff 2nd: " << d2f_dMandel_dMandel_analytical - d2f_dMandel_dMandel << std::endl; */
-
-      return { f, df_dMandel_analytical, d2f_dMandel_dMandel, -Constants::sqrt2_3 / fy };
+      return { f, df_dMandel, d2f_dMandel_dMandel, -Constants::sqrt2_3 / fy };
     }
 
     bool isYielding( const Tensor33d& Fe, const double betaP )
@@ -178,10 +172,10 @@ namespace Marmot::Materials {
       std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce,
                                                                                                                  K,
                                                                                                                  G );
-      Tensor33d PK2                            = 2.0 * dPsi_dCe;
-      /* const Tensor33d mandel = Ce % PK2; */
-      const Tensor33d mandel = einsum< Ii, iJ >( Ce, PK2 );
-      dMandel_dCe            = einsum< Ii, iJKL, to_IJKL >( Ce, 2. * d2Psi_dCedCe ) +
+      Tensor33d       PK2                      = 2.0 * dPsi_dCe;
+      const Tensor33d mandel                   = Ce % PK2;
+      /* const Tensor33d mandel = einsum< Ii, iJ >( Ce, PK2 ); */
+      dMandel_dCe = einsum< Ii, iJKL, to_IJKL >( Ce, 2. * d2Psi_dCedCe ) +
                     einsum< IK, iL, iJ, to_IJKL >( Spatial3D::I, Spatial3D::I, PK2 );
       Tensor3333d dMandel_dFe = einsum< IJKL, KLMN >( dMandel_dCe, dCe_dFe );
       return { mandel, dMandel_dFe };
@@ -239,9 +233,75 @@ namespace Marmot::Materials {
       return { dFp, einsum< IJKL, KL >( ddFp_ddGp, df_dS ) };
     }
 
-    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVector( const Eigen::VectorXd& X,
-                                                                          const Tensor33d&       FeTrial,
-                                                                          const double           alphaPTrial )
+    Eigen::VectorXd computeResidualVector( const Eigen::VectorXd& X,
+                                           const Tensor33d&       FeTrial,
+                                           const double           alphaPTrial )
+    {
+
+      const int idxA = 9;
+      const int idxF = 10;
+      using namespace Eigen;
+      using mV9d = Eigen::Map< Eigen::Matrix< double, 9, 1 > >;
+      VectorXd R( 11 );
+      // initialize residual
+      R.segment< 9 >( 0 ) = -mV9d( FeTrial.data() );
+      R( 9 )              = -alphaPTrial;
+
+      Tensor33d Fe( X.segment( 0, 9 ).data() );
+
+      const double dLambda = X( 10 );
+      const double alphaP  = X( 9 );
+
+      /* std::cout << "dLambda: " << dLambda << std::endl; */
+      double betaP, dBetaP_dAlphaP;
+      std::tie( betaP, dBetaP_dAlphaP ) = computeBetaP( alphaP );
+
+      // compute mandel stress
+      Tensor33d   mandelStress;
+      Tensor3333d dMandel_dFe, d2f_dMandel_dMandel;
+      std::tie( mandelStress, dMandel_dFe ) = computeMandelStress( Fe );
+
+      double    f, df_dBetaP;
+      Tensor33d df_dMandel;
+      std::tie( f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP ) = yieldFunctionFromStress( mandelStress, betaP );
+
+      Tensor33d   dGp = dLambda * df_dMandel;
+      Tensor33d   dFp;
+      Tensor3333d ddFp_ddGp;
+      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::Micropolar::Plasticity::FlowIntegration::FirstOrderDerived::
+        exponentialMap( dGp );
+
+      Tensor3333d ddGp_dFe      = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );
+      Tensor33d   ddFp_ddLambda = einsum< IJKL, KL >( ddFp_ddGp, df_dMandel );
+
+      Tensor3333d ddFp_dFe = einsum< iImn, mnkL >( ddFp_ddGp, ddGp_dFe );
+      /* Tensor3333d dFeTrial_dFe = einsum< iIkL, iJ, to_IJkL >( ddFp_dFe, Fe ) + */
+      /*                            einsum< iI, ik, JL, to_IJkL >( dFp, Spatial3D::I, Spatial3D::I ); */
+      Tensor3333d dFeTrial_dFe = einsum< iI, IJKL >( Fe, ddFp_dFe ) +
+                                 einsum< IK, JL, to_IJKL >( Spatial3D::I, transpose( Spatial3D::I % dFp ) );
+
+      /* std::cout << "ddFeTrial_dFe: " << dFeTrial_dFe << std::endl; */
+
+      /* Tensor33d dFe_ddLambda = einsum< iI, iJ >( ddFp_ddLambda, Fe ); */
+      Tensor33d dFe_ddLambda = einsum< Ii, iJ >( Fe, ddFp_ddLambda );
+
+      df_dBetaP = -Constants::sqrt2_3 / fy;
+
+      /* Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe ); */
+      Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
+      std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );
+      df_dFe                           = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
+
+      /* R.segment< 9 >( 0 ) += mV9d( Tensor33d( einsum< iI, iJ >( dFp, Fe ) ).data() ); */
+      R.segment< 9 >( 0 ) += mV9d( Tensor33d( einsum< iJ, JK >( Fe, dFp ) ).data() );
+      R( idxA ) += ( alphaP + dLambda * df_dBetaP );
+      R( idxF ) = f;
+
+      return R;
+    }
+    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVectorAndTangent( const Eigen::VectorXd& X,
+                                                                                    const Tensor33d&       FeTrial,
+                                                                                    const double           alphaPTrial )
     {
 
       const int idxA = 9;
@@ -283,20 +343,26 @@ namespace Marmot::Materials {
       Tensor3333d ddGp_dFe      = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );
       Tensor33d   ddFp_ddLambda = einsum< IJKL, KL >( ddFp_ddGp, df_dMandel );
 
-      Tensor3333d ddFp_dFe     = einsum< iImn, mnkL >( ddFp_ddGp, ddGp_dFe );
-      Tensor3333d dFeTrial_dFe = einsum< iIkL, iJ, to_IJkL >( ddFp_dFe, Fe ) +
-                                 einsum< iI, ik, JL, to_IJkL >( dFp, Spatial3D::I, Spatial3D::I );
+      Tensor3333d ddFp_dFe = einsum< iImn, mnkL >( ddFp_ddGp, ddGp_dFe );
+      /* Tensor3333d dFeTrial_dFe = einsum< iIkL, iJ, to_IJkL >( ddFp_dFe, Fe ) + */
+      /*                            einsum< iI, ik, JL, to_IJkL >( dFp, Spatial3D::I, Spatial3D::I ); */
+      Tensor3333d dFeTrial_dFe = einsum< iI, IJKL >( Fe, ddFp_dFe ) +
+                                 einsum< IK, JL, to_IJKL >( Spatial3D::I, transpose( Spatial3D::I % dFp ) );
 
       /* std::cout << "ddFeTrial_dFe: " << dFeTrial_dFe << std::endl; */
 
-      Tensor33d dFe_ddLambda = einsum< iI, iJ >( ddFp_ddLambda, Fe );
+      /* Tensor33d dFe_ddLambda = einsum< iI, iJ >( ddFp_ddLambda, Fe ); */
+      Tensor33d dFe_ddLambda = einsum< Ii, iJ >( Fe, ddFp_ddLambda );
 
       df_dBetaP = -Constants::sqrt2_3 / fy;
 
+      /* Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe ); */
       Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
       std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );
+      df_dFe                           = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
 
-      R.segment< 9 >( 0 ) += mV9d( Tensor33d( einsum< iI, iJ >( dFp, Fe ) ).data() );
+      /* R.segment< 9 >( 0 ) += mV9d( Tensor33d( einsum< iI, iJ >( dFp, Fe ) ).data() ); */
+      R.segment< 9 >( 0 ) += mV9d( Tensor33d( einsum< iJ, JK >( Fe, dFp ) ).data() );
       R( idxA ) += ( alphaP + dLambda * df_dBetaP );
       R( idxF ) = f;
 
