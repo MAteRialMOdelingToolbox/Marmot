@@ -40,9 +40,10 @@ namespace Marmot::ContinuumMechanics {
     template < typename T >
     Tensor33t< T > KirchhoffStressFromPK2( const Tensor33t< T >& PK2, const Tensor33t< T >& F )
     {
-      const Tensor33t< T > S = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+      // tau = F * PK2 * F^T  = F_iI * S_IJ * F_Jj
+      const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
 
-      return S;
+      return tau;
     }
 
     namespace FirstOrderDerived {
@@ -52,11 +53,18 @@ namespace Marmot::ContinuumMechanics {
         const Tensor33t< T >& PK2,
         const Tensor33t< T >& F )
       {
-        const Tensor33t< T >   tau       = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
-        const Tensor3333t< T > dTau_dPK2 = einsum< iK, jL, to_ijKL >( F, F );
-        const auto&            I         = Spatial3D::I;
-        const Tensor3333t< T > dTau_dF   = einsum< iK, IL, IJ, jJ, to_ijKL >( I, I, PK2, F ) +
-                                         einsum< iI, IJ, jK, JL, to_ijKL >( F, PK2, I, I );
+        const auto&          I   = Spatial3D::I;
+        const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+        /* const Tensor3333t< T > dTau_dPK2 = einsum< iK, jL, to_ijKL >( einsum< iI, IK >( F, I ), */
+        /*                                                               transpose( einsum< JL, jJ >( I, F ) ) ); */
+        const Tensor3333t< T > dTau_dPK2 = einsum< iI, jJ, to_ijIJ >( F, F );
+        /* const Tensor3333t< T > dTau_dF   = einsum< iK, IL, IJ, jJ, to_ijKL >( I, I, PK2, F ) + */
+        /*                                  einsum< iI, IJ, jK, JL, to_ijKL >( F, PK2, I, I ); */
+
+        const Tensor33t< T >   S_F     = einsum< KJ, jJ >( PK2, F );
+        const Tensor3333t< T > dTau_dF = einsum< ik, jK, to_ijkK >( I, transpose( S_F ) ) +
+                                         einsum< Ki, jk, to_ijkK >( S_F, I );
+
         return { tau, dTau_dPK2, dTau_dF };
       }
     } // namespace FirstOrderDerived

@@ -26,7 +26,6 @@
  */
 
 #pragma once
-
 #include "Marmot/MarmotMicromorphicTensorBasics.h"
 
 namespace Marmot::ContinuumMechanics {
@@ -39,19 +38,21 @@ namespace Marmot::ContinuumMechanics {
     template < typename T >
     Tensor33t< T > CauchyGreen( const Tensor33t< T > F_ )
     {
-      Tensor33t< T > C = einsum< KI, KJ >( F_, F_ );
+      // C = F ^ T * F; C_IJ = F_iI F_iJ
+      Tensor33t< T > C = einsum< iI, iJ >( F_, F_ );
       return C;
     }
 
     namespace FirstOrderDerived {
 
       template < typename T >
-      std::pair< Tensor33t< T >, Tensor3333t< T > > CauchyGreen( const Tensor33t< T > F_ )
+      std::pair< Tensor33t< T >, Tensor3333t< T > > CauchyGreen( const Tensor33t< T > F )
       {
-        Tensor33t< T > C = einsum< KI, KJ >( F_, F_ );
+        Tensor33t< T > C = einsum< iI, iJ >( F, F );
 
-        const auto&            I     = FastorStandardTensors::Spatial3D::I;
-        const Tensor3333t< T > dC_dF = einsum< IL, KJ, to_IJKL >( I, F_ ) + einsum< JL, KI, to_IJKL >( I, F_ );
+        // dC_IJ / dF_F_KL = dF_iI / dF_KL * F_iJ + F_iI * dF_iJ / dF_F_KL
+        const Tensor3333t< T > dC_dF = einsum< IK, kJ, to_IJkK >( Spatial3D::I, F ) +
+                                       einsum< kI, JK, to_IJkK >( F, Spatial3D::I );
 
         return { C, dC_dF };
       }

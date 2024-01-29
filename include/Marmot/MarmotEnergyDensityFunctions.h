@@ -49,6 +49,33 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
+    namespace FirstOrderDerived {
+
+      template < typename T >
+      std::tuple< T, Tensor33t< T > > PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
+      {
+        using namespace FastorIndices;
+
+        const T J  = sqrt( determinant( C ) );
+        const T I1 = trace( C );
+        // energy density
+        T psi = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
+
+        // first derivative w.r.t. C
+        const T dPsi_dJ  = K / 4. * ( J - 1. / J ) * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * pow( J, -5. / 3. );
+        const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
+
+        const Tensor33t< T > CInv   = inverse( C );
+        const Tensor33t< T > dJ_dC  = multiplyFastorTensorWithScalar( transpose( CInv ), J / 2. );
+        const Tensor33t< T > dI1_dC = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+
+        Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
+                                 multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
+
+        return { psi, dPsi_dC };
+      }
+    } // namespace FirstOrderDerived
+
     namespace SecondOrderDerived {
 
       template < typename T >
@@ -69,7 +96,7 @@ namespace Marmot::ContinuumMechanics {
 
         const Tensor33t< T > CInv   = inverse( C );
         const Tensor33t< T > dJ_dC  = 0.5 * J * transpose( CInv );
-        const Tensor33d      dI1_dC = Spatial3D::I;
+        const Tensor33t< T > dI1_dC = Spatial3D::I;
 
         Tensor33t< T > dPsi_dC = dPsi_dJ * dJ_dC + dPsi_dI1 * dI1_dC;
 
