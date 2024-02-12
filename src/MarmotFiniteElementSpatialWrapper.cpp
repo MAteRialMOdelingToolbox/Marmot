@@ -38,6 +38,11 @@ int MarmotElementSpatialWrapper::getNNodes()
   return nNodes;
 }
 
+int MarmotElementSpatialWrapper::getNSpatialDimensions()
+{
+  return nDim;
+}
+
 int MarmotElementSpatialWrapper::getNDofPerElement()
 {
   return unprojectedSize;

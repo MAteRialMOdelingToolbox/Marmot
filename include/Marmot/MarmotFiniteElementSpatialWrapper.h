@@ -67,6 +67,8 @@ public:
 
   int getNNodes();
 
+  int getNSpatialDimensions();
+
   int getNDofPerElement();
 
   std::string getElementShape();
