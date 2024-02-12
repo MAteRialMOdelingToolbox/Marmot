@@ -147,6 +147,8 @@ namespace Marmot::Elements {
 
     int getNNodes() { return nNodes; }
 
+    int getNSpatialDimensions() { return nDim; }
+
     int getNDofPerElement() { return sizeLoadVector; }
 
     std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
