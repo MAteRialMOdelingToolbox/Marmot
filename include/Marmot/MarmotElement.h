@@ -60,6 +60,8 @@ public:
 
   virtual int getNNodes() = 0;
 
+  virtual int getNSpatialDimensions() = 0;
+
   virtual int getNDofPerElement() = 0;
 
   virtual std::string getElementShape() = 0;
