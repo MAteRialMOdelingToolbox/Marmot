@@ -67,7 +67,7 @@ namespace Marmot::Materials {
   void B4::computeStress( double*       stress,
                           double*       dStressDDStrain,
                           const double* dStrain,
-                          const double* timeOld,
+                          const double* time,
                           const double  dT,
                           double&       pNewDT )
 
@@ -87,7 +87,7 @@ namespace Marmot::Materials {
       ( stateVarManager->kelvinStateVars ).rightCols( nKelvinDrying ) );
 
     const double dTimeDays  = dT * timeToDays;
-    const double tStartDays = ( timeOld[1] - castTime ) * timeToDays;
+    const double tStartDays = ( time[1] - dT - castTime ) * timeToDays;
 
     Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
 
@@ -175,7 +175,10 @@ namespace Marmot::Materials {
     MarmotMaterial::assignStateVars( stateVars_, nStateVars );
   }
 
-  StateView B4::getStateView( const std::string& stateName ) { return stateVarManager->getStateView( stateName ); }
+  StateView B4::getStateView( const std::string& stateName )
+  {
+    return stateVarManager->getStateView( stateName );
+  }
 
   int B4::getNumberOfRequiredStateVars()
   {
