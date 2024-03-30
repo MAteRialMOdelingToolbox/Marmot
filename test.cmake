@@ -1,3 +1,6 @@
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED NO_MODULE)
+include_directories(${AUTODIFF_INCLUDE_DIR})
 add_executable("LinearElastic_executable" "${CMAKE_CURRENT_LIST_DIR}/test/test.cpp")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/../include/" "${INSTALLED_MODULE_PATHS}/include/")
 target_link_libraries("LinearElastic_executable" "${CMAKE_CURRENT_BINARY_DIR}/lib/libMarmot.so")
