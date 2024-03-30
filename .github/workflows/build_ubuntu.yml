@@ -17,7 +17,7 @@ jobs:
       - name: Install Eigen
         shell: bash -l {0}
         run: |
-          git clone https://gitlab.com/libeigen/eigen.git
+          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
           cd eigen 
           mkdir build
           cd build 
@@ -28,7 +28,7 @@ jobs:
       - name: Install Autodiff
         shell: bash -l {0}
         run: |
-          git clone https://github.com/autodiff/autodiff.git
+          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
           cd autodiff
           mkdir build
           cd build
