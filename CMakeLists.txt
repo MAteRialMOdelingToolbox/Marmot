@@ -123,15 +123,23 @@ ENDMACRO()
 
 get_filename_component(COREPATH ${MODULES_DIR}/core ABSOLUTE) 
 get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE) 
+get_filename_component(PARTICLESPATH ${MODULES_DIR}/particles ABSOLUTE) 
 get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE) 
+get_filename_component(CELLSPATH ${MODULES_DIR}/cells ABSOLUTE) 
 
 SUBDIRLIST(COREDIRS ${COREPATH})
 SUBDIRLIST(MATERIALSDIRS ${MATERIALSPATH})
+SUBDIRLIST(PARTICLESDIRS ${PARTICLESPATH})
 SUBDIRLIST(ELEMENTSDIRS ${ELEMENTSPATH})
+SUBDIRLIST(CELLSDIRS ${CELLSPATH})
 
 set(INSTALLED_MODULES "")
 set(INSTALLED_MODULE_PATHS "")
+message("+------------------------------------------------------------------------------+")
 
+message("checking for modules in 
+${COREPATH}. 
+"       "If you want to install a Marmot Core module, make sure it is in this directory.")
 foreach(DIRNAME ${COREDIRS})
     get_filename_component(MODULEPATH "${COREPATH}/${DIRNAME}" ABSOLUTE) 
     if(EXISTS ${MODULEPATH}/module.cmake)
@@ -145,7 +153,11 @@ foreach(DIRNAME ${COREDIRS})
         endif()
     endif()
 endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
 
+message("Checking for modules in 
+${MATERIALSPATH}. 
+"       "If you want to install a Marmot Material, make sure it is in this directory.")
 foreach(DIRNAME ${MATERIALSDIRS})
     get_filename_component(MODULEPATH "${MATERIALSPATH}/${DIRNAME}" ABSOLUTE) 
     if(EXISTS ${MODULEPATH}/module.cmake)
@@ -159,7 +171,11 @@ foreach(DIRNAME ${MATERIALSDIRS})
         endif()
     endif()
 endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
 
+message("Checking for modules in 
+${ELEMENTSPATH}. 
+"       "If you want to install a Marmot Finite Element, make sure it is in this directory.")
 foreach(DIRNAME ${ELEMENTSDIRS})
     get_filename_component(MODULEPATH "${ELEMENTSPATH}/${DIRNAME}" ABSOLUTE) 
     if(EXISTS ${MODULEPATH}/module.cmake)
@@ -173,6 +189,50 @@ foreach(DIRNAME ${ELEMENTSDIRS})
         endif()
     endif()
 endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
+
+message("Checking for modules in 
+${PARTICLESPATH}. 
+"       "If you want to install a Marmot Particle module, make sure it is in this directory.")
+foreach(DIRNAME ${PARTICLESDIRS})
+    get_filename_component(MODULEPATH "${PARTICLESPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED PARTICLE_MODULES)
+            set(PARTICLE_MODULES "all")
+        endif()
+        if(PARTICLE_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST PARTICLE_MODULES)
+            message("--> found ${DIRNAME}")
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
+        endif()
+    endif()
+endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
+
+message("Checking for modules in 
+${CELLSPATH}. 
+"       "If you want to install a Marmot Cell module, make sure it is in this directory.")
+
+foreach(DIRNAME ${CELLSDIRS})
+    get_filename_component(MODULEPATH "${CELLSPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED CELL_MODULES)
+            set(CELL_MODULES "all")
+        endif()
+        if(CELL_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CELL_MODULES)
+            message("--> found ${DIRNAME}")
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
+        endif()
+    endif()
+endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
+
+message("Now check if all of your modules are listed. If one is missing in this list 
+"       "despite being present in the correct directory, also check if the module has a 
+"       "proper module.cmake file.")
+
+message("+------------------------------------------------------------------------------+")
 
 foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
     include(${MODULEPATH}/module.cmake)
