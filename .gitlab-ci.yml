@@ -35,17 +35,17 @@ variables:
 
 format:
   stage: test
-  image: condaforge/mambaforge:22.9.0-2
+  image: condaforge/mambaforge:23.11.0-0
   needs: []
   script:
-    - mamba install -c conda-forge clang-format-15
-    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-15 --Werror -n --verbose
+    - mamba install -c conda-forge clang-format-16
+    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-16 --Werror -n --verbose
   only:
     - merge_requests
 
 build and test:
   stage: build
-  image: condaforge/mambaforge:22.9.0-2
+  image: condaforge/mambaforge:23.11.0-0
   script:
     
     - function install_marmot_module(){
@@ -85,7 +85,7 @@ build and test:
     - make install
     - cd ../..
 
-    - git clone https://github.com/autodiff/autodiff.git
+    - git clone -b v1.1.0 https://github.com/autodiff/autodiff.git
     - cd autodiff
     - mkdir build
     - cd build
