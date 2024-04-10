@@ -59,7 +59,12 @@ namespace Marmot {
   typedef std::complex< double >               complexDouble;
   typedef Eigen::Matrix< complexDouble, 6, 1 > Vector6cd;
 
-  // definitions for dual numbers
+  // definitions for templated scalar type
+  template < typename T >
+  using Vector6t = Eigen::Matrix< T, 6, 1 >;
+
+  template < typename T >
+  using VectorXt = Eigen::Matrix< T, -1, 1 >;
 
   namespace EigenTensors {
 

@@ -71,6 +71,28 @@ namespace Marmot {
       return coordinateSystem;
     }
 
+    Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 )
+    {
+
+      // check if n1 and n2 are orthogonal
+
+      if ( std::abs( n1.dot( n2 ) ) > 1e-15 )
+        throw std::invalid_argument( "n1 and n2 not orthogonal" );
+
+      Matrix3d coordinateSystem = Eigen::MatrixXd::Zero( 3, 3 );
+      coordinateSystem.col( 0 ) = n1;
+      coordinateSystem.col( 1 ) = n2;
+
+      // make sure n1 and n2 are normalized
+      coordinateSystem.col( 0 ).normalize();
+      coordinateSystem.col( 1 ).normalize();
+
+      coordinateSystem.col( 2 ) = coordinateSystem.col( 0 ).cross( coordinateSystem.col( 1 ) );
+      coordinateSystem.col( 2 ).normalize();
+
+      return coordinateSystem;
+    }
+
     Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem )
     {
       Vector3d unitVectorX1;

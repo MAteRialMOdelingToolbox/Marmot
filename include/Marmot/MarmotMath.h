@@ -104,6 +104,33 @@ namespace Marmot {
       return double( number );
     }
 
+    template < typename T, size_t... Rest >
+    Eigen::Matrix< double, Rest... > makeReal( const Eigen::Matrix< T, Rest... > mat )
+    {
+      Eigen::Matrix< double, Rest... > out;
+      const size_t                     m = static_cast< size_t >( mat.rows() );
+      const size_t                     n = static_cast< size_t >( mat.cols() );
+
+      for ( size_t i = 0; i < m; i++ ) {
+        for ( size_t j = 0; j < n; j++ ) {
+          out( i, j ) = makeReal( mat( i, j ) );
+        }
+      }
+      return out;
+    }
+
+    template < typename T >
+    Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
+    {
+
+      int             inSize = in.size();
+      Eigen::VectorXd out( inSize );
+      for ( int i = 0; i < inSize; i++ ) {
+        out( i ) = double( in( i ) );
+      }
+      return out;
+    }
+
     /**
      * apply Macaulay function to a matrix
      * @todo: Can be replaced easily with Eigen's array() functionality ??? */
@@ -241,5 +268,10 @@ namespace Marmot {
      * Computes an orthonormal coordinate system from an unit normal vector as \f$ x_1 \f$ - axis.
      */
     Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector );
+
+    /**
+     * Computes an orthonormal coordinate system from two unit normal vectors as \f$ x_1 \f$ and \f$ x_2 \f$ - axis.
+     */
+    Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 );
   } // namespace Math
 } // namespace Marmot
