@@ -26,6 +26,7 @@
  */
 
 #pragma once
+#include "Marmot/MarmotNumericalIntegration.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "autodiff/forward/real.hpp"
 #include <functional>
@@ -63,15 +64,40 @@ namespace Marmot::Materials {
     }
 
     template < int k >
+    double approximateZerothCompliance( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
+                                        double tauMin )
+    {
+      NumericalAlgorithms::Integration::scalar_to_scalar_function_type f = [&]( double tau ) {
+        double                      val_ = -pow( k, k ) * pow( -tau, k - 1 ) / double( Factorial< k - 1 >::value );
+        autodiff::Real< k, double > tau_( tau * k );
+        val_ *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
+        return val_;
+      };
+
+      double
+        val = NumericalAlgorithms::Integration::integrateScalarFunction( f,
+                                                                         { 1e-14, tauMin / sqrt( 10. ) },
+                                                                         100,
+                                                                         NumericalAlgorithms::Integration::simpson );
+      return val;
+    }
+
+    template < int k >
     Properties computeElasticModuli( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-                                     Properties retardationTimes )
+                                     Properties retardationTimes,
+                                     bool       gaussQuadrature = false )
     {
       Properties elasticModuli( retardationTimes.size() );
       double     spacing = log( retardationTimes( 1 ) / retardationTimes( 0 ) );
 
       for ( int i = 0; i < retardationTimes.size(); i++ ) {
-        double tau         = retardationTimes( i );
-        elasticModuli( i ) = 1. / ( spacing * evaluatePostWidderFormula< k >( phi, tau ) );
+        double tau = retardationTimes( i );
+        if ( !gaussQuadrature )
+          elasticModuli( i ) = 1. / ( spacing * evaluatePostWidderFormula< k >( phi, tau ) );
+        else
+          elasticModuli( i ) = 1. / ( spacing / 2. *
+                                      ( evaluatePostWidderFormula< k >( phi, tau * pow( 10., -sqrt( 3. ) / 6. ) ) +
+                                        evaluatePostWidderFormula< k >( phi, tau * pow( 10., sqrt( 3. ) / 6. ) ) ) );
       }
 
       return elasticModuli;
