@@ -47,7 +47,7 @@ namespace Marmot::Materials {
   {
     return managedStateVars->getStateView( stateName );
   }
-  void ADVonMises::computeStress( autodiff::dual*       stress,
+  void ADVonMises::computeStressAD( autodiff::dual*       stress,
                                   const autodiff::dual* dStrain,
                                   const double*         timeOld,
                                   const double          dT,

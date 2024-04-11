@@ -7,7 +7,9 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    constexpr int ADVonMisesCode = 1193003;
+    constexpr int base = 11930000;
+    constexpr int code = 3;
+    constexpr int ADVonMisesCode = base + code ;
 
     const static bool ADVonMisesIsRegistered = MarmotMaterialFactory::
       registerMaterial( ADVonMisesCode, "ADVONMISES", makeDefaultMarmotMaterialFactoryFunction< class ADVonMises >() );
