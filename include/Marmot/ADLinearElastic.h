@@ -55,7 +55,7 @@ namespace Marmot::Materials {
   protected:
     
 
-    void computeStress( autodiff::dual* stress,
+    void computeStressAD( autodiff::dual* stress,
                         const autodiff::dual* dStrain,
                         const double* timeOld,
                         const double  dT,

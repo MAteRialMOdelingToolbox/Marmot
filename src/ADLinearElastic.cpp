@@ -24,7 +24,7 @@ namespace Marmot::Materials {
   {
     assert( nMaterialProperties == 2 );
   }
-  void ADLinearElastic::computeStress( autodiff::dual*       stress,
+  void ADLinearElastic::computeStressAD( autodiff::dual*       stress,
                                        const autodiff::dual* dStrain,
                                        const double*         timeOld,
                                        const double          dT,

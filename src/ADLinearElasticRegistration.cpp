@@ -1,13 +1,17 @@
 #include "Marmot/ADLinearElastic.h"
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
+#include <cstddef>
+#include <string>
 
 namespace Marmot::Materials {
 
   namespace Registration {
 
     using namespace MarmotLibrary;
-
-    constexpr int ADLinearElasticCode = 1193002;
+    
+    constexpr int base = 11930000;
+    constexpr int code = 1;
+    constexpr int ADLinearElasticCode = base + code ;
 
     const static bool ADLinearElasticIsRegistered = MarmotMaterialFactory::
       registerMaterial( ADLinearElasticCode,
