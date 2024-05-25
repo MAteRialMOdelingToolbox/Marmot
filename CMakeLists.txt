@@ -36,7 +36,8 @@ MESSAGE("+--------------------------------------------------------------------+"
 
 MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
 MESSAGE(STATUS "")
-cmake_minimum_required(VERSION 3.3)  
+
+cmake_minimum_required(VERSION 3.12)
 
 project(Marmot CXX Fortran)
 
@@ -100,6 +101,7 @@ include_directories(${AUTODIFF_INCLUDE_DIR})
 message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
+set(SHARED_LIBRARIES "")
 #
 # Add sources
 #
@@ -126,12 +128,14 @@ get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE)
 get_filename_component(PARTICLESPATH ${MODULES_DIR}/particles ABSOLUTE) 
 get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE) 
 get_filename_component(CELLSPATH ${MODULES_DIR}/cells ABSOLUTE) 
+get_filename_component(CELLELEMENTSPATH ${MODULES_DIR}/cellelements ABSOLUTE) 
 
 SUBDIRLIST(COREDIRS ${COREPATH})
 SUBDIRLIST(MATERIALSDIRS ${MATERIALSPATH})
 SUBDIRLIST(PARTICLESDIRS ${PARTICLESPATH})
 SUBDIRLIST(ELEMENTSDIRS ${ELEMENTSPATH})
 SUBDIRLIST(CELLSDIRS ${CELLSPATH})
+SUBDIRLIST(CELLELEMENTSDIRS ${CELLELEMENTSPATH})
 
 set(INSTALLED_MODULES "")
 set(INSTALLED_MODULE_PATHS "")
@@ -228,6 +232,25 @@ foreach(DIRNAME ${CELLSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
+message("Checking for modules in 
+${CELLELEMENTSPATH}. 
+"       "If you want to install a Marmot CellElement module, make sure it is in this directory.")
+
+foreach(DIRNAME ${CELLELEMENTSDIRS})
+    get_filename_component(MODULEPATH "${CELLELEMENTSPATH}/${DIRNAME}" ABSOLUTE) 
+    if(EXISTS ${MODULEPATH}/module.cmake)
+        if (NOT DEFINED CELLELEMENT_MODULES)
+            set(CELLELEMENT_MODULES "all")
+        endif()
+        if(CELLELEMENT_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CELLELEMENT_MODULES)
+            message("--> found ${DIRNAME}")
+            list(APPEND INSTALLED_MODULES ${DIRNAME})
+            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
+        endif()
+    endif()
+endforeach(DIRNAME)
+message("+------------------------------------------------------------------------------+")
+
 message("Now check if all of your modules are listed. If one is missing in this list 
 "       "despite being present in the correct directory, also check if the module has a 
 "       "proper module.cmake file.")
@@ -238,12 +261,23 @@ foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
     include(${MODULEPATH}/module.cmake)
 endforeach(MODULEPATH)
 
+message("+------------------------------------------------------------------------------+")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 # compile the shared library
 add_library(${PROJECT_NAME} SHARED ${sources})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
+
+if (SHARED_LIBRARIES)
+    message("+------------------------------------------------------------------------------+")
+    message("Marmot modules have requested to link against following shared libraries:")
+    foreach(SHARED_LIBRARY ${SHARED_LIBRARIES})
+        message("--> ${SHARED_LIBRARY}")
+        target_link_libraries (${PROJECT_NAME} ${SHARED_LIBRARY})
+    endforeach()
+    message("+------------------------------------------------------------------------------+")
+endif()
 
 # and finally install the library to the system location
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -262,3 +296,4 @@ foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
         include(${MODULEPATH}/test.cmake)
     endif()
 endforeach(MODULEPATH)
+
