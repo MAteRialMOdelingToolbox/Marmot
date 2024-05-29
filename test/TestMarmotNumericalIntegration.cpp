@@ -8,7 +8,7 @@ int main()
 {
 
   auto f = [&]( double x ) { return x * x * x; };
-  
+
   // Test Simpson Rule
   double res = integrateScalarFunction( f, { 0., 1. }, 1, integrationRule::simpson );
 
