@@ -40,8 +40,6 @@ format:
   script:
     - mamba install -c conda-forge clang-format-16
     - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-16 --Werror -n --verbose
-  only:
-    - merge_requests
 
 build and test:
   stage: build
