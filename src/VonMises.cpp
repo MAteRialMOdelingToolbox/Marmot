@@ -103,7 +103,7 @@ namespace Marmot::Materials {
           return;
         }
         // compute derivative of g wrt kappa
-        dg_ddKappa = -Constants::sqrt6 * G - dfy_ddKappa( kappa + dKappa );
+        dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
 
         // update dKappa and iteration counter
         dKappa -= g( dKappa ) / dg_ddKappa;
