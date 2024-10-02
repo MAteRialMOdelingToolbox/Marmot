@@ -79,6 +79,8 @@ build and test:
     - source "${HOME}/conda/etc/profile.d/mamba.sh"
     - mamba activate
 
+    - mamba install cmake compilers
+
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
     - mkdir build
