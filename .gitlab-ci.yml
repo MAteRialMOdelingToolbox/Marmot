@@ -79,11 +79,6 @@ build and test:
     - source "${HOME}/conda/etc/profile.d/mamba.sh"
     - mamba activate
 
-    - git clone $EdelweissFE_Repo
-        
-    - mamba install -c anaconda  --file EdelweissFE/requirements.txt
-    - mamba install -c anaconda  tbb
-
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
     - mkdir build
@@ -118,6 +113,11 @@ build and test:
     - make install
     - ctest
     - cd ../
+
+    - git clone $EdelweissFE_Repo
+        
+    - mamba install -c anaconda  --file EdelweissFE/requirements.txt
+    - mamba install -c anaconda  tbb
 
     - cd EdelweissFE 
     - if [ ! -z "$override_edelweiss_branch" ]; then
