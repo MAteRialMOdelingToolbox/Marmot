@@ -104,7 +104,7 @@ namespace Marmot {
       return double( number );
     }
 
-    template < typename T, size_t... Rest >
+    template < typename T, int... Rest >
     Eigen::Matrix< double, Rest... > makeReal( const Eigen::Matrix< T, Rest... > mat )
     {
       Eigen::Matrix< double, Rest... > out;
@@ -118,7 +118,6 @@ namespace Marmot {
       }
       return out;
     }
-
     template < typename T >
     Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
     {
