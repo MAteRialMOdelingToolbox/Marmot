@@ -4,10 +4,6 @@ variables:
     value: ""
     description: "override the default branch for each Marmot module"
 
-  override_edelweiss_branch:
-    value: ""
-    description: "override the default branch for EdelweissFE"
-
   # number of columns in the module definition matrix
   marmot_module_defintion_matrix_col_size: 3
 
@@ -72,18 +68,13 @@ build and test:
 
     - apt-get update -y
     - apt-get upgrade -y
-    - apt-get install -y wget cmake git libtbbmalloc2
-    - wget -O Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
-    - bash Miniforge3.sh -b -p "${HOME}/conda"
-    - source "${HOME}/conda/etc/profile.d/conda.sh"
-    - source "${HOME}/conda/etc/profile.d/mamba.sh"
-    - mamba activate
+    - apt-get install -y wget cmake git libtbbmalloc2 build-essential gfortran
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
     - cd eigen 
     - mkdir build
     - cd build 
-    - cmake -DBUILD_TESTING=OFF  -DINCLUDE_INSTALL_DIR=$(python -c "import sys; print(sys.prefix)")/include -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - cmake -DBUILD_TESTING=OFF ..
     - make install
     - cd ../..
 
@@ -91,7 +82,7 @@ build and test:
     - cd autodiff
     - mkdir build
     - cd build
-    - cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
     - make install
     - cd ../..
     
@@ -109,22 +100,6 @@ build and test:
 
     - mkdir build
     - cd build
-    - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)")  ..
+    - cmake ..
     - make install
     - ctest
-    - cd ../
-
-    - git clone $EdelweissFE_Repo
-        
-    - mamba install -c anaconda  --file EdelweissFE/requirements.txt
-    - mamba install -c anaconda  tbb
-
-    - cd EdelweissFE 
-    - if [ ! -z "$override_edelweiss_branch" ]; then
-          echo "trying to check out branch $override_edelweiss_branch" ;
-          git checkout $override_edelweiss_branch || echo "branch $module_branch not available for EdelweissFE" ;
-      fi; 
-    - pip install .
-    - run_tests_edelweissfe ./testfiles
-
-

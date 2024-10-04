@@ -56,6 +56,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_FIND_LIBRARY_PREFIXES lib)
 
+# enable testing
+enable_testing()
+
+# custom function to add tests
+function(add_marmot_test test_name test_source)
+  add_executable(${test_name} ${test_source})
+  target_include_directories(${test_name} PRIVATE "${INSTALLED_MODULEPATHS}/include")
+  target_include_directories(${test_name} PRIVATE include)
+  target_link_libraries(${test_name} ${PROJECT_NAME})
+  add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endfunction()
+
 # set install directories
 include(GNUInstallDirs)
 
@@ -92,7 +104,7 @@ endif()
 
 ## find Eigen library
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-# include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories(${EIGEN3_INCLUDE_DIR})
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 ## find autodiff library (https://autodiff.github.io/)
@@ -279,21 +291,19 @@ if (SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
 endif()
 
-# and finally install the library to the system location
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    PUBLIC_HEADER "${publicheaders}"
-)
-install(TARGETS ${PROJECT_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/Marmot
-    )
-
-# look for tests in modules
-enable_testing()
-
 foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
     if(EXISTS ${MODULEPATH}/test.cmake)
         include(${MODULEPATH}/test.cmake)
     endif()
 endforeach(MODULEPATH)
 
+# and finally install the library to the system location
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    PUBLIC_HEADER "${publicheaders}"
+)
+
+
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/Marmot
+    )
