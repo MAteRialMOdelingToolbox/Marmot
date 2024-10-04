@@ -1,15 +1,11 @@
 #include "Marmot/MarmotAutomaticDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
-#include <exception>
-#include <iostream>
-#include <vector>
 
 using namespace Marmot::Testing;
 
 // test automatic differentiation
-void testAutomaticDifferentiation()
+void testAutomaticDifferentiationForScalars()
 {
-
   using namespace Marmot::AutomaticDifferentiation;
 
   // check scalar first derivative
@@ -34,6 +30,6 @@ void testAutomaticDifferentiation()
 
 int main()
 {
-  testAutomaticDifferentiation();
+  testAutomaticDifferentiationForScalars();
   return 0;
 }

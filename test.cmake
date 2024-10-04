@@ -1,8 +1,20 @@
-# add_executable("TestMarmotNumericalIntegration_executable" "${CMAKE_CURRENT_LIST_DIR}/test/TestMarmotNumericalIntegration.cpp")
-# include_directories("${CMAKE_CURRENT_BINARY_DIR}/../include/" "${INSTALLED_MODULE_PATHS}/include/")
-# target_link_libraries("TestMarmotNumericalIntegration_executable" "${CMAKE_CURRENT_BINARY_DIR}/lib/libMarmot.so")
-# add_dependencies("TestMarmotNumericalIntegration_executable" "${PROJECT_NAME}")
-# add_test(NAME "TestMarmotNumericalIntegration" COMMAND "TestMarmotNumericalIntegration_executable" WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-# add_executable("MarmotMathCore_executable" "${CMAKE_CURRENT_LIST_DIR}/test/test.cpp")
-# target_link_libraries("MarmotMathCore_executable" Marmot)
-# add_test(NAME "MarmotMathCore" COMMAND "MarmotMathCore_executable")
+# add current directory to the source for the tests
+SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
+
+# Tests for MarmotAutomaticDifferentiation
+add_marmot_test("TestMarmotAutomaticDifferentiation_executable" "${CURR_TEST_SOURCE_DIR}/TestMarmotAutomaticDifferentiation.cpp")
+
+# Tests for MarmotMath
+add_marmot_test("TestMarmotMath_executable" "${CURR_TEST_SOURCE_DIR}/TestMarmotMath.cpp")
+
+# Tests for MarmotNumericalDifferentiation
+add_marmot_test("TestMarmotNumericalDifferentiation_executable" "${CURR_TEST_SOURCE_DIR}/TestMarmotNumericalDifferentiation.cpp")
+
+# Tests for MarmotNumericalIntegration
+add_marmot_test("TestMarmotNumericalIntegration_executable" "${CURR_TEST_SOURCE_DIR}/TestMarmotNumericalIntegration.cpp")
+
+# Tests for MarmotTensor
+add_marmot_test("TestMarmotTensor_executable" "${CURR_TEST_SOURCE_DIR}/TestMarmotTensor.cpp")
+
+# Tests for NewtonConvergenceChecker
+add_marmot_test("TestNewtonConvergenceChecker_executable" "${CURR_TEST_SOURCE_DIR}/TestNewtonConvergenceChecker.cpp")
