@@ -24,7 +24,7 @@ variables:
       B4                          $B4_Repo                              master
 
 format:
-  stage: format
+  stage: test
   image: condaforge/mambaforge:23.11.0-0
   needs: []
   script:
