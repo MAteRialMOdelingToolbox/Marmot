@@ -7,30 +7,24 @@ variables:
   # number of columns in the module definition matrix
   marmot_module_defintion_matrix_col_size: 3
 
-  # core libraries
-  CoreModules:
+  # additional core libraries
+  # CoreModules:
       # repo name                 secret repo url                       default branch
-    value: |
-      MarmotMechanicsCore         $MarmotMechanicsCore_Repo             master
-      MarmotFiniteElementCore     $MarmotFiniteElementCore_Repo         master  
-      MarmotMathCore              $MarmotMathCore_Repo                  master  
+    # value: |
 
-  # element libraries
-  ElementModules:
+  # additional element libraries
+  # ElementModules:
       # repo name                 secret repo url                       default branch
-    value: |
-      DisplacementFiniteElement   $DisplacementFiniteElement_Repo       master
+    # value: |
 
-  # material libraries
+  # additional material libraries
   MaterialModules:
       # repo name                 secret repo url                       default branch
     value: |
-      LinearElastic               $LinearElastic_Repo                   master
       B4                          $B4_Repo                              master
-      VonMises                    $VonMises_Repo                        master
 
 format:
-  stage: test
+  stage: format
   image: condaforge/mambaforge:23.11.0-0
   needs: []
   script:
@@ -86,13 +80,13 @@ build and test:
     - make install
     - cd ../..
     
-    - cd modules/core
-    - install_marmot_modules ${CoreModules[@]}
-    - cd ../..
+#    - cd modules/core
+#    - install_marmot_modules ${CoreModules[@]}
+#    - cd ../..
 
-    - cd modules/elements
-    - install_marmot_modules ${ElementModules[@]}  
-    - cd ../..
+#    - cd modules/elements
+#    - install_marmot_modules ${ElementModules[@]}  
+#    - cd ../..
 
     - cd modules/materials
     - install_marmot_modules ${MaterialModules[@]}
