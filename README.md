@@ -46,10 +46,10 @@ For ```anaconda``` users, those libraries can also be installed from the channel
 
 ## How to install Marmot
 
-```Marmot``` including all submodules can be installed with the following steps:
+```Marmot``` can be installed with the following steps:
 
 ```bash
-git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+git clone https://github.com/MAteRialMOdelingToolbox/Marmot/ 
 cd Marmot
 mkdir build
 cd build
@@ -58,30 +58,11 @@ make
 sudo make install
 ```
 
-CMake options ```CORE_MODULES```, ```ELEMENT_MODULES``` and ```MATERIAL_MODULES``` 
-allow to specify the modules which should be compiled, either by passing a 
-```semicolon seperated list```, option ```none``` or option ```all``` (default).
-For instance:
-
-```bash
-git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
-cd Marmot
-mkdir build
-cd build
-cmake \
-    -DCORE_MODULES='MarmotMechanicsCore;MarmotFiniteElementCore' \
-    -DELEMENT_MODULES='none' \
-    -DMATERIAL_MODULES='all' \
-    ..
-make
-sudo make install
-```
-
 CMake option ```CMAKE_INSTALL_PREFIX``` allows to specify the installation directory.
 For instance:
 
 ```bash
-git clone --recurse-submodules https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+git clone https://github.com/MAteRialMOdelingToolbox/Marmot/ 
 cd Marmot
 mkdir build
 cd build
