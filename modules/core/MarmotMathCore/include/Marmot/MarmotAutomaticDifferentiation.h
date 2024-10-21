@@ -26,8 +26,6 @@
  */
 
 #pragma once
-#include "Marmot/MarmotTensor.h"
-#include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/dual/eigen.hpp"
 #include <autodiff/forward/dual/dual.hpp>
 #include <functional>

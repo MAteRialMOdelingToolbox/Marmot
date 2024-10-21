@@ -1,7 +1,6 @@
 #include "Marmot/MarmotAutomaticDifferentiation.h"
 #include <autodiff/forward/dual/eigen.hpp>
 #include <autodiff/forward/utils/derivative.hpp>
-#include <iostream>
 
 using namespace autodiff;
 using namespace Eigen;
@@ -71,7 +70,6 @@ namespace Marmot {
       VectorXd     F_( sizeX );
 
       // J_ij = d F_i / d x_j
-
       for ( size_t j = 0; j < sizeX; j++ ) {
 
         seed< 1 >( X_( j ), 1.0 );
@@ -86,6 +84,7 @@ namespace Marmot {
 
       return { F_, J };
     }
+
     std::pair< VectorXdual, MatrixXdual > jacobian2nd( const vector_to_vector_function_type_dual2nd& F,
                                                        const VectorXdual&                            X )
     {
@@ -95,21 +94,17 @@ namespace Marmot {
       MatrixXdual    J( sizeX, sizeX );
       VectorXdual    F_( sizeX );
 
-      /* std::cout << " X ="<< X << std::endl; */
       // J_ij = d F_i / d x_j
-
       for ( size_t j = 0; j < sizeX; j++ ) {
 
         seed< 1 >( X_( j ), 1.0 );
         F_right = F( X_ );
 
-        /* std::cout << " F ="<< F_right << std::endl; */
-
         for ( size_t i = 0; i < sizeX; i++ ) {
           J( i, j ).val  = derivative< 1 >( F_right( i ) );
           J( i, j ).grad = derivative< 2 >( F_right( i ) );
-          /* J( i, j ) = decreaseDualOrderWithShift<2>(F_right(i)); */
         }
+
         seed< 1 >( X_( j ), 0.0 );
         F_( j ).val  = F_right( j ).val.val;
         F_( j ).grad = derivative< 1 >( F_right( j ) );

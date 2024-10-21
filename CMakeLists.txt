@@ -62,9 +62,10 @@ enable_testing()
 # custom function to add tests
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
+  target_include_directories(${test_name} PRIVATE "${CMAKE_SOURCE_DIR}/include")
   target_include_directories(${test_name} PRIVATE "${INSTALLED_MODULEPATHS}/include")
   target_include_directories(${test_name} PRIVATE include)
-  target_link_libraries(${test_name} ${PROJECT_NAME})
+  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endfunction()
 

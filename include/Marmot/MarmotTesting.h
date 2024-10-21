@@ -26,9 +26,39 @@
  */
 
 #include "autodiff/forward/dual/dual.hpp"
+#include <Eigen/Core>
+#include <iostream>
 
 namespace Marmot::Testing {
-  void checkIfEqual( double a, double b );
-  void checkIfEqual( autodiff::dual a, autodiff::dual b );
+
+  bool checkIfEqual( const double a, const double b, const double tol = 1e-15 );
+
+  bool checkIfEqual( const autodiff::dual a, const autodiff::dual b, const double tol = 1e-15 );
+
+  std::string getString( const double a );
+  std::string getString( const autodiff::dual a );
+
+  template < typename T >
+  bool checkIfEqual( const Eigen::Matrix< T, -1, -1 >& a,
+                     const Eigen::Matrix< T, -1, -1 >& b,
+                     const double                      tol = 1e-15 )
+  {
+    if ( a.rows() != b.rows() || a.cols() != b.cols() ) {
+      return false;
+    }
+    for ( int i = 0; i < a.rows(); i++ ) {
+      for ( int j = 0; j < a.cols(); j++ ) {
+        auto cond = checkIfEqual( a( i, j ), b( i, j ), tol );
+        if ( !cond ) {
+          std::cout << "  -> HINT:  a(" << i << "," << j << ") = " << getString( a( i, j ) ) << " !=  b(" << i << ","
+                    << j << ") =" << getString( b( i, j ) ) << std::endl;
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void throwExceptionOnFailure( const bool condition, const std::string& message = "" );
 
 } // namespace Marmot::Testing
