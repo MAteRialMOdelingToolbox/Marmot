@@ -3,12 +3,12 @@
 
 namespace Marmot::Testing {
 
-  std::string printScalar( const double a )
+  std::string getString( const double a )
   {
     return std::to_string( a );
   }
 
-  std::string printScalar( const autodiff::dual a )
+  std::string getString( const autodiff::dual a )
   {
     return "(" + std::to_string( a.val ) + ",  " + std::to_string( a.grad ) + ")";
   }
