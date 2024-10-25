@@ -114,3 +114,9 @@ void MarmotMaterialMechanical::computeUniaxialStress( double*       stress_,
 
   throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
 }
+
+double MarmotMaterialMechanical::getDensity()
+{
+
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+}

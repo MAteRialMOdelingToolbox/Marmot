@@ -189,6 +189,9 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
+    void computeConsistentMassMatrix( double* M );
+    void computeLumpedInertia( double* M );
+
     StateView getStateView( const std::string& stateName, int qpNumber )
     {
       const auto& qp = qps[qpNumber];
@@ -505,6 +508,31 @@ namespace Marmot::Elements {
 
     for ( const auto& qp : qps )
       Pe += this->NB( this->N( qp.xi ) ).transpose() * f * qp.J0xW;
+  }
+
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::computeConsistentMassMatrix( double* M )
+  {
+    Map< KeSizedMatrix > Me( M );
+    Me.setZero();
+
+    for ( const auto& qp : qps ) {
+      const auto   N_  = this->NB( this->N( qp.xi ) );
+      const double rho = qp.material->getDensity();
+      Me += N_.transpose() * N_ * qp.detJ * qp.weight * rho;
+    }
+  }
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::computeLumpedInertia( double* M )
+  {
+    Map< RhsSized > Me( M );
+    Me.setZero();
+
+    KeSizedMatrix CMM;
+    CMM.setZero();
+    computeConsistentMassMatrix( CMM.data() );
+
+    Me = CMM.rowwise().sum();
   }
 
   template < int nDim, int nNodes >

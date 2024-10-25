@@ -28,6 +28,13 @@ namespace Marmot::Materials {
     return managedStateVars->getStateView( stateName );
   }
 
+  double VonMisesModel::getDensity()
+  {
+    if ( this->nMaterialProperties < 7 )
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7" );
+    return this->materialProperties[6];
+  }
+
   void VonMisesModel::computeStress( double*       stress,
                                      double*       dStress_dStrain,
                                      const double* dStrain,
