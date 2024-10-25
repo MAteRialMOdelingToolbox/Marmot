@@ -102,6 +102,8 @@ public:
                                  const double* time,
                                  double        dT ) = 0;
 
+  virtual void computeLumpedInertia( double* I );
+
   virtual StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
 
   virtual std::vector< double > getCoordinatesAtCenter() = 0;

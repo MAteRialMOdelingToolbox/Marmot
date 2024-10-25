@@ -44,6 +44,8 @@ namespace Marmot::Materials {
                         const double  dT,
                         double&       pNewDT ) override;
 
+    double getDensity() override;
+
     class VonMisesModelStateVarManager : public MarmotStateVarVectorManager {
 
     public:
