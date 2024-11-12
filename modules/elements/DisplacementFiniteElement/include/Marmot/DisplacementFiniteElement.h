@@ -189,7 +189,8 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
-    void computeConsistentMassMatrix( double* M );
+    void computeConsistentInertia( double* M );
+
     void computeLumpedInertia( double* M );
 
     StateView getStateView( const std::string& stateName, int qpNumber )
@@ -511,7 +512,7 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeConsistentMassMatrix( double* M )
+  void DisplacementFiniteElement< nDim, nNodes >::computeConsistentInertia( double* M )
   {
     Map< KeSizedMatrix > Me( M );
     Me.setZero();
@@ -530,7 +531,7 @@ namespace Marmot::Elements {
 
     KeSizedMatrix CMM;
     CMM.setZero();
-    computeConsistentMassMatrix( CMM.data() );
+    computeConsistentInertia( CMM.data() );
 
     Me = CMM.rowwise().sum();
   }
