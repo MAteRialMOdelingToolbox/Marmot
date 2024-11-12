@@ -15,7 +15,7 @@ namespace Marmot::Materials {
   LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
-          anisotropicType( static_cast< Type >( nMaterialProperties ) ),
+          anisotropicType( nMaterialProperties % 2 == 0 ? static_cast< Type >( nMaterialProperties ) : static_cast< Type >( nMaterialProperties - 1 ) ),
           E1(   materialProperties[0] ),
           E2(   anisotropicType == Type::Isotropic ? E1 : materialProperties[1] ),
           E3(   anisotropicType == Type::Orthotropic ? materialProperties[2] : E2 ),
@@ -89,5 +89,11 @@ namespace Marmot::Materials {
       return;
 
     S += mC * dE;
+  }
+
+  double LinearElastic::getDensity()
+  {
+    return nMaterialProperties % 2 != 0 ? materialProperties[nMaterialProperties - 1]
+                                        : throw std::runtime_error( "Density not specified for this material" );
   }
 } // namespace Marmot::Materials
