@@ -40,6 +40,9 @@ add_marmot_test("TestMarmotMaterialMechanical" "${CURR_TEST_SOURCE_DIR}/TestMarm
 # Tests for MarmotPronySeries
 add_marmot_test("TestMarmotPronySeries" "${CURR_TEST_SOURCE_DIR}/TestMarmotPronySeries.cpp")
 
+# Tests for MarmotStateVarVectorManager
+add_marmot_test("TestMarmotStateVarVectorManager" "${CURR_TEST_SOURCE_DIR}/TestMarmotStateVarVectorManager.cpp")
+
 # Tests for MarmotUtility
 add_marmot_test("TestMarmotUtility" "${CURR_TEST_SOURCE_DIR}/TestMarmotUtility.cpp")
 

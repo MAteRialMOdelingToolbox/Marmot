@@ -1,4 +1,3 @@
-
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;

@@ -1,5 +1,10 @@
 #include "Marmot/MarmotTesting.h"
 
+/*
+ * ASSIGNEE: Nasser Alkmim
+ * TODO: Test MarMotStateVarVectorManager implementation
+ */
+
 using namespace Marmot::Testing;
 
 void myDummyTestFunction()
