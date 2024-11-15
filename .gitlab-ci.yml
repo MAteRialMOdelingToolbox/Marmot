@@ -24,16 +24,20 @@ variables:
       B4                          $B4_Repo                              master
 
 format:
-  stage: test
-  image: condaforge/mambaforge:23.11.0-0
+  stage: .pre
+  image: mambaorg/micromamba:latest
   needs: []
+  rules:
+    - when: always
   script:
-    - mamba install -c conda-forge clang-format-16=16.0.0
+    - micromamba install -c conda-forge clang-format-16=16.0.0
     - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-16 --Werror -n --verbose
 
-build and test:
+build:linux:
   stage: build
   image: debian:bookworm
+  rules:
+    - if: $CI_PIPELINE_SOURCE != 'merge_request_event'
   script:
     
     - function install_marmot_module(){
@@ -97,3 +101,79 @@ build and test:
     - cmake ..
     - make install
     - ctest
+
+build and test with edelweiss:
+  stage: test
+  image: mambaorg/micromamba:latest
+  only: [merge_requests]
+  script:
+    - function install_marmot_module(){
+        repo_name=$1;
+        repo_url=$2;
+        repo_default_branch=$3;
+
+        echo "installing module $repo_name with branch $repo_default_branch";
+
+        rm -rf $repo_name;
+        git clone --branch $repo_default_branch   $repo_url   $repo_name;
+
+        if [ ! -z "$override_module_branch" ]; then
+          echo "trying to check out branch $override_module_branch" ;
+          cd $repo_name;
+          git checkout $override_module_branch || echo "branch $module_branch not available for $repo_name" ;
+          cd ../ ;
+        fi; }
+
+    - function install_marmot_modules(){
+        modules=("$@");
+        for (( i=0; i<${#modules[@]}; i+=(($marmot_module_defintion_matrix_col_size)) ));
+        do
+          install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
+        done; }
+
+    - micromamba install git
+    - git clone $EdelweissFE_Repo
+    - micromamba install -c conda-forge --file EdelweissFE/requirements.txt
+
+    - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
+    - cd eigen 
+    - mkdir build
+    - cd build 
+    - cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - make install
+    - cd ../..
+
+    - git clone -b v1.1.0 https://github.com/autodiff/autodiff.git
+    - cd autodiff
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
+    - make install
+    - cd ../..
+    
+#    - cd modules/core
+#    - install_marmot_modules ${CoreModules[@]}
+#    - cd ../..
+
+#    - cd modules/elements
+#    - install_marmot_modules ${ElementModules[@]}  
+#    - cd ../..
+
+    - cd modules/materials
+    - install_marmot_modules ${MaterialModules[@]}
+    - cd ../..
+
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
+    - make install
+    - ctest
+    - cd ..
+    # build and test EdelweissFE
+    - cd EdelweissFE
+    - which python
+    - which pip
+    - python -c "import numpy as np"
+    - python setup.py install
+    # - python -m pip install .
+    - run_tests_edelweissfe testfiles/

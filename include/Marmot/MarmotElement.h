@@ -27,7 +27,9 @@
  */
 #pragma once
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotUtils.h"
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -102,7 +104,15 @@ public:
                                  const double* time,
                                  double        dT ) = 0;
 
-  virtual void computeLumpedInertia( double* I );
+  virtual void computeLumpedInertia( double* I )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+  };
+
+  virtual void computeConsistentInertia( double* I )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+  };
 
   virtual StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
 

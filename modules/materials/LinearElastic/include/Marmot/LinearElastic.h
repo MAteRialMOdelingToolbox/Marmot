@@ -51,16 +51,16 @@ namespace Marmot::Materials {
     enum class Type {
       Isotropic           = 2, /**< Number of materialProperties equals 2.*/
       TransverseIsotropic = 8, /**< Number of materialProperties equals 8. 5 to describe
-                                * 						the material behavior and 3 components of a normal
-                                * vector. The latter corresponds to the x1 - axis of the principal material
-                                * directions and defines the materials plane of isotropy (directions x2 and x3).*/
-
-      Orthotropic = 12 /**< Number of materialProperties equals 12. 9 to describe material behavior and
-                        * 	   			        3 components of a normal vector. The latter corresponds to the
-                        * x1 - axis of the principal material directions. */
-
-    } anisotropicType; /**< #anisotropicType represents the directional dependence of the material behavior.
-                        *  					 It is a representative of the enum class #Type. */
+                                *   the material behavior and 3 components of a normal
+                                *   vector. The latter corresponds to the x1 - axis of the principal material
+                                *   directions and defines the materials plane of isotropy (directions x2 and x3).
+                                */
+      Orthotropic = 12         /**< Number of materialProperties equals 12. 9 to describe material behavior and
+                                * 	3 components of a normal vector. The latter corresponds to the
+                                *   x1 - axis of the principal material directions.
+                                */
+    } anisotropicType;         /**< #anisotropicType represents the directional dependence of the material behavior.
+                                *  	It is a representative of the enum class #Type. */
 
     /// \brief Young's modulus in x1 - direction
     /** #E1 represents the Young's modulus effective in the direction of the x1 - axis
@@ -162,5 +162,7 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
 
     int getNumberOfRequiredStateVars() { return 0; }
+
+    double getDensity();
   };
 } // namespace Marmot::Materials
