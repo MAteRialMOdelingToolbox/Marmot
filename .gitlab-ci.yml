@@ -30,8 +30,9 @@ format:
   rules:
     - when: always
   script:
-    - micromamba install -c conda-forge clang-format-16=16.0.0
-    - find .  \( -name \*.cpp -o -name \*.h \) -print0 | xargs -0 -n 1 clang-format-16 --Werror -n --verbose
+    - micromamba install pre-commit
+    - pre-commit install
+    - pre-commit run --all
 
 build:linux:
   stage: build
