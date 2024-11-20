@@ -33,7 +33,7 @@ format:
     - micromamba install pre-commit git
     - git config --global --add safe.directory $CI_PROJECT_DIR
     - pre-commit install
-    - pre-commit run --all --dry-run --verbose --Werror
+    - pre-commit run --all
 
 build:linux:
   stage: build
