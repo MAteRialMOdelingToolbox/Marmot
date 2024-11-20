@@ -170,7 +170,7 @@ namespace Marmot {
         Eigen::Vector3i getBoundaryElementIndices( int faceID );
       } // namespace Quad8
 
-    } // end of namespace Spatial2D
+    }   // end of namespace Spatial2D
 
     namespace Spatial3D {
       constexpr int nDim      = 3;

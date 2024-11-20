@@ -3,3 +3,4 @@ repos:
   rev: v16.0.0
   hooks:
   - id: clang-format
+    args: [ "--verbose", "--Werror"]

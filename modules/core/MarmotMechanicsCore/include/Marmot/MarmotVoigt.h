@@ -682,5 +682,5 @@ namespace Marmot {
 
     } // namespace Transformations
 
-  } // namespace ContinuumMechanics::VoigtNotation
+  }   // namespace ContinuumMechanics::VoigtNotation
 } // namespace Marmot
