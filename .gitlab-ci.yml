@@ -30,7 +30,7 @@ format:
   rules:
     - when: always
   script:
-    - micromamba install pre-commit
+    - micromamba install pre-commit git
     - pre-commit install
     - pre-commit run --all
 
