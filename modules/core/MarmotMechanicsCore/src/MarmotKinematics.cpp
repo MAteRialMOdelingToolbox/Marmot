@@ -94,5 +94,5 @@ namespace Marmot {
       }
     } // namespace DeformationGradient
 
-  } // namespace ContinuumMechanics::Kinematics
+  }   // namespace ContinuumMechanics::Kinematics
 } // namespace Marmot

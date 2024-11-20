@@ -11,7 +11,7 @@ namespace Marmot::NumericalAlgorithms {
 
     Matrix3d FMidStep = 0.5 * ( FNew + FOld );
 
-    l = ( FNew - FOld ) * FMidStep.inverse(); // actually l * dT
+    l = ( FNew - FOld ) * FMidStep.inverse();     // actually l * dT
 
     Matrix3d dEps_ = 0.5 * ( l + l.transpose() ); // actually d * dT
     dOmega         = 0.5 * ( l - l.transpose() ); // actually omega * dT
