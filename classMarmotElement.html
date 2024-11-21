@@ -251,6 +251,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac68956668d34ac2ddac545ff2ce56004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ef25e441523e4d36b748e83a4270b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#aa0ef25e441523e4d36b748e83a4270b5">computeBodyForce</a> (double *Pext, double *K, const double *load, const double *QTotal, const double *time, double dT)=0</td></tr>
 <tr class="separator:aa0ef25e441523e4d36b748e83a4270b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed752615a4b8434456de9baf1b5a9e24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#aed752615a4b8434456de9baf1b5a9e24">computeLumpedInertia</a> (double *I)</td></tr>
+<tr class="separator:aed752615a4b8434456de9baf1b5a9e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898fde1c6644d2f2b5b10d6f6e6dd5fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a898fde1c6644d2f2b5b10d6f6e6dd5fb">computeConsistentInertia</a> (double *I)</td></tr>
+<tr class="separator:a898fde1c6644d2f2b5b10d6f6e6dd5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</a> (const std::string &amp;stateName, int quadraturePoint)=0</td></tr>
 <tr class="separator:a37cadc2b9f7d4a1dcaec9830409acaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aec5b505f89d2fca61b77befd2f06b7"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotElement.html#a6aec5b505f89d2fca61b77befd2f06b7">getCoordinatesAtCenter</a> ()=0</td></tr>
@@ -907,6 +911,62 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a95e4e836e9ae9f111ae5b26083c4d607">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>, and <a class="el" href="classMarmotElementSpatialWrapper.html#af1403c3a29504fb4ccc25475bb3b2699">MarmotElementSpatialWrapper</a>.</p>
+
+</div>
+</div>
+<a id="aed752615a4b8434456de9baf1b5a9e24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed752615a4b8434456de9baf1b5a9e24">&#9670;&nbsp;</a></span>computeLumpedInertia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void MarmotElement::computeLumpedInertia </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>I</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ac1c41e8caeb7ddd1cc8df254838984e8">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a898fde1c6644d2f2b5b10d6f6e6dd5fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a898fde1c6644d2f2b5b10d6f6e6dd5fb">&#9670;&nbsp;</a></span>computeConsistentInertia()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void MarmotElement::computeConsistentInertia </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>I</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#abff72979bbc04bf804617e8d6becff95">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>.</p>
 
 </div>
 </div>

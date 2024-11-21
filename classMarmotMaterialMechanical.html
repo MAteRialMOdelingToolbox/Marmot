@@ -190,7 +190,7 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for MarmotMaterialMechanical:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classMarmotMaterialMechanical__inherit__graph.svg" width="626" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classMarmotMaterialMechanical__inherit__graph.svg" width="100%" height="427"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -202,6 +202,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa90c4ada414a955753901c8c88628381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74c12f7b78dc7da4559140b74b32a05c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#a74c12f7b78dc7da4559140b74b32a05c">computeUniaxialStress</a> (double *stress1D, double *dStress1D_dF1DNew, const double *F1DOld, const double *F1DNew, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
 <tr class="separator:a74c12f7b78dc7da4559140b74b32a05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57cfc9a91cd0423616775106e5da7079"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#a57cfc9a91cd0423616775106e5da7079">getDensity</a> ()</td></tr>
+<tr class="separator:a57cfc9a91cd0423616775106e5da7079"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a395b074d78052f5e58220cfeda65c5bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#a395b074d78052f5e58220cfeda65c5bd">MarmotMaterial</a> (const double *<a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">nMaterialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd">materialNumber</a>)</td></tr>
 <tr class="separator:a395b074d78052f5e58220cfeda65c5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
@@ -310,7 +312,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classMarmotMaterialHypoElasticAD.html#adfb0529d758bf457f429beda67c8cf78">MarmotMaterialHypoElasticAD</a>, <a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">MarmotMaterialHypoElastic</a>, and <a class="el" href="classMarmotMaterialHyperElastic.html#aaffc377bb0b49799a709f37ac01e3754">MarmotMaterialHyperElastic</a>.</p>
+<p>Implemented in <a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">MarmotMaterialHypoElastic</a>, and <a class="el" href="classMarmotMaterialHyperElastic.html#aaffc377bb0b49799a709f37ac01e3754">MarmotMaterialHyperElastic</a>.</p>
 
 </div>
 </div>
@@ -443,6 +445,33 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57cfc9a91cd0423616775106e5da7079"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57cfc9a91cd0423616775106e5da7079">&#9670;&nbsp;</a></span>getDensity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double MarmotMaterialMechanical::getDensity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classMarmot_1_1Materials_1_1VonMisesModel.html#aef6cb497f4cfac2c6064099dc0420c7d">Marmot::Materials::VonMisesModel</a>, and <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a033164e592bad453127b4989821012bc">Marmot::Materials::LinearElastic</a>.</p>
 
 </div>
 </div>

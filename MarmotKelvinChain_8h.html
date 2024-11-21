@@ -191,13 +191,14 @@ $(function() {
 <div class="title">MarmotKelvinChain.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="MarmotTypedefs_8h_source.html">Marmot/MarmotTypedefs.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="MarmotNumericalIntegration_8h_source.html">Marmot/MarmotNumericalIntegration.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MarmotTypedefs_8h_source.html">Marmot/MarmotTypedefs.h</a>&quot;</code><br />
 <code>#include &quot;autodiff/forward/real.hpp&quot;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for MarmotKelvinChain.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="MarmotKelvinChain_8h__incl.svg" width="546" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MarmotKelvinChain_8h__incl.svg" width="100%" height="473"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -242,9 +243,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a3f564758677f0016ead1ed7dc89fd610">Marmot::Materials::KelvinChain::evaluatePostWidderFormula</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</td></tr>
 <tr class="separator:a3f564758677f0016ead1ed7dc89fd610"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
-<tr class="memitem:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memTemplItemLeft" align="right" valign="top">Properties&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#ab9dc5fb8b54d0f6264ff3bb45e3e1bb6">Marmot::Materials::KelvinChain::computeElasticModuli</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, Properties retardationTimes)</td></tr>
-<tr class="separator:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
+<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a5c9642a0ce70c5bb1b9d903ea7e63591">Marmot::Materials::KelvinChain::approximateZerothCompliance</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin)</td></tr>
+<tr class="separator:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
+<tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplItemLeft" align="right" valign="top">Properties&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a2f2efb416b0dab23259040740294e9e6">Marmot::Materials::KelvinChain::computeElasticModuli</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, Properties retardationTimes, bool gaussQuadrature=false)</td></tr>
+<tr class="separator:a2f2efb416b0dab23259040740294e9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2bfc2546999dd6545dcf008b66e6798"><td class="memItemLeft" align="right" valign="top">Properties&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#ad2bfc2546999dd6545dcf008b66e6798">Marmot::Materials::KelvinChain::generateRetardationTimes</a> (int n, double min, double spacing)</td></tr>
 <tr class="separator:ad2bfc2546999dd6545dcf008b66e6798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59398da9ad5bc47468fef8fc9e6239f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a59398da9ad5bc47468fef8fc9e6239f0">Marmot::Materials::KelvinChain::updateStateVarMatrix</a> (const double dT, Properties elasticModuli, Properties retardationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;dStress, const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;unitComplianceMatrix)</td></tr>

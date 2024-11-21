@@ -191,29 +191,44 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a12bdd2ba89594201d66bdb9bcaf3fbbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a12bdd2ba89594201d66bdb9bcaf3fbbe">checkIfEqual</a> (double a, double b)</td></tr>
-<tr class="separator:a12bdd2ba89594201d66bdb9bcaf3fbbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eb2a961127b3f744c5578f2348ed5a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a6eb2a961127b3f744c5578f2348ed5a3">checkIfEqual</a> (autodiff::dual a, autodiff::dual b)</td></tr>
-<tr class="separator:a6eb2a961127b3f744c5578f2348ed5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd6d75987f47297f37a92bdc698fb04"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a0fd6d75987f47297f37a92bdc698fb04">checkIfEqual</a> (const double a, const double b, const double tol=1e-15)</td></tr>
+<tr class="separator:a0fd6d75987f47297f37a92bdc698fb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc0bb108985d93862de52d8efb07d457"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#abc0bb108985d93862de52d8efb07d457">checkIfEqual</a> (const autodiff::dual a, const autodiff::dual b, const double tol=1e-15)</td></tr>
+<tr class="separator:abc0bb108985d93862de52d8efb07d457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87715a3d2e074a8043020ceaffc9e82e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a87715a3d2e074a8043020ceaffc9e82e">getString</a> (const double a)</td></tr>
+<tr class="separator:a87715a3d2e074a8043020ceaffc9e82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0483b94b58257122784697c6492627f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a0483b94b58257122784697c6492627f8">getString</a> (const autodiff::dual a)</td></tr>
+<tr class="separator:a0483b94b58257122784697c6492627f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8532780a87a911bd99a477fe5e8c812"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae8532780a87a911bd99a477fe5e8c812"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#ae8532780a87a911bd99a477fe5e8c812">checkIfEqual</a> (const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;a, const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;b, const double tol=1e-15)</td></tr>
+<tr class="separator:ae8532780a87a911bd99a477fe5e8c812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af036d587586043fa17744b4d17a459db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#af036d587586043fa17744b4d17a459db">throwExceptionOnFailure</a> (const bool condition, const std::string &amp;message=&quot;&quot;)</td></tr>
+<tr class="separator:af036d587586043fa17744b4d17a459db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a12bdd2ba89594201d66bdb9bcaf3fbbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12bdd2ba89594201d66bdb9bcaf3fbbe">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[1/2]</span></h2>
+<a id="a0fd6d75987f47297f37a92bdc698fb04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd6d75987f47297f37a92bdc698fb04">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Marmot::Testing::checkIfEqual </td>
+          <td class="memname">bool Marmot::Testing::checkIfEqual </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">const double&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em> = <code>1e-15</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -225,23 +240,129 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6eb2a961127b3f744c5578f2348ed5a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6eb2a961127b3f744c5578f2348ed5a3">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[2/2]</span></h2>
+<a id="abc0bb108985d93862de52d8efb07d457"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0bb108985d93862de52d8efb07d457">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Marmot::Testing::checkIfEqual </td>
+          <td class="memname">bool Marmot::Testing::checkIfEqual </td>
           <td>(</td>
-          <td class="paramtype">autodiff::dual&#160;</td>
+          <td class="paramtype">const autodiff::dual&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">autodiff::dual&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
+          <td class="paramtype">const autodiff::dual&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em> = <code>1e-15</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a87715a3d2e074a8043020ceaffc9e82e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87715a3d2e074a8043020ceaffc9e82e">&#9670;&nbsp;</a></span>getString() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Marmot::Testing::getString </td>
+          <td>(</td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0483b94b58257122784697c6492627f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0483b94b58257122784697c6492627f8">&#9670;&nbsp;</a></span>getString() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Marmot::Testing::getString </td>
+          <td>(</td>
+          <td class="paramtype">const autodiff::dual&#160;</td>
+          <td class="paramname"><em>a</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8532780a87a911bd99a477fe5e8c812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8532780a87a911bd99a477fe5e8c812">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Marmot::Testing::checkIfEqual </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em> = <code>1e-15</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af036d587586043fa17744b4d17a459db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af036d587586043fa17744b4d17a459db">&#9670;&nbsp;</a></span>throwExceptionOnFailure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::Testing::throwExceptionOnFailure </td>
+          <td>(</td>
+          <td class="paramtype">const bool&#160;</td>
+          <td class="paramname"><em>condition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

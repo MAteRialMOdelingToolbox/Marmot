@@ -220,6 +220,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a69172724abb6467891288c900d513c41"><td class="memTemplParams" colspan="2">template&lt;typename T , typename G &gt; </td></tr>
 <tr class="memitem:a69172724abb6467891288c900d513c41"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a69172724abb6467891288c900d513c41">makeReal</a> (const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</td></tr>
 <tr class="separator:a69172724abb6467891288c900d513c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d6268751bba3290bce9671666ae6fc"><td class="memTemplParams" colspan="2">template&lt;typename T , int... Rest&gt; </td></tr>
+<tr class="memitem:a92d6268751bba3290bce9671666ae6fc"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a92d6268751bba3290bce9671666ae6fc">makeReal</a> (const Eigen::Matrix&lt; T, Rest... &gt; mat)</td></tr>
+<tr class="separator:a92d6268751bba3290bce9671666ae6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab39bca6f7dd1d9f60631cf267ec05847"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab39bca6f7dd1d9f60631cf267ec05847"><td class="memTemplItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#ab39bca6f7dd1d9f60631cf267ec05847">makeReal</a> (Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</td></tr>
+<tr class="separator:ab39bca6f7dd1d9f60631cf267ec05847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17783b288ece1a97c5a43490744c98c2"><td class="memTemplParams" colspan="2">template&lt;int nRows, int nCols&gt; </td></tr>
 <tr class="memitem:a17783b288ece1a97c5a43490744c98c2"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, nRows, nCols &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a17783b288ece1a97c5a43490744c98c2">macaulyMatrix</a> (const Eigen::Matrix&lt; double, nRows, nCols &gt; &amp;mat)</td></tr>
 <tr class="separator:a17783b288ece1a97c5a43490744c98c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -242,6 +248,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad3ad1d152a8910ba18d583323a662a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af414d1d24c08314c9d16d36bc5a33ed4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Matrix3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#af414d1d24c08314c9d16d36bc5a33ed4">orthonormalCoordinateSystem</a> (<a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;normalVector)</td></tr>
 <tr class="separator:af414d1d24c08314c9d16d36bc5a33ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4c04c61c51f99273d455957b84675e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Matrix3d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#ac4c04c61c51f99273d455957b84675e3">orthonormalCoordinateSystem</a> (const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;n1, const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;n2)</td></tr>
+<tr class="separator:ac4c04c61c51f99273d455957b84675e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a373a95bba3d9c90ecb6bcb0b2917286c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a373a95bba3d9c90ecb6bcb0b2917286c">makeReal</a> (const autodiff::dual &amp;value)</td></tr>
 <tr class="separator:a373a95bba3d9c90ecb6bcb0b2917286c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -490,7 +498,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a335a5f714ab10341744d8fea021e08dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a335a5f714ab10341744d8fea021e08dd">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a335a5f714ab10341744d8fea021e08dd">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -508,7 +516,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="addb82ef87d972fcdc7123c0896eee245"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#addb82ef87d972fcdc7123c0896eee245">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#addb82ef87d972fcdc7123c0896eee245">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,7 +534,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="affe40f6c8efff9f4b45aa107d84f035a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affe40f6c8efff9f4b45aa107d84f035a">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#affe40f6c8efff9f4b45aa107d84f035a">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -544,7 +552,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a69172724abb6467891288c900d513c41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69172724abb6467891288c900d513c41">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a69172724abb6467891288c900d513c41">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -556,6 +564,46 @@ template&lt;typename T , typename G &gt; </div>
           <td>(</td>
           <td class="paramtype">const autodiff::detail::Dual&lt; T, G &gt; &amp;&#160;</td>
           <td class="paramname"><em>number</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92d6268751bba3290bce9671666ae6fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92d6268751bba3290bce9671666ae6fc">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , int... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::makeReal </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Matrix&lt; T, Rest... &gt;&#160;</td>
+          <td class="paramname"><em>mat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab39bca6f7dd1d9f60631cf267ec05847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab39bca6f7dd1d9f60631cf267ec05847">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::VectorXd Marmot::Math::makeReal </td>
+          <td>(</td>
+          <td class="paramtype">Eigen::Vector&lt; T, Eigen::Dynamic &gt;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -815,7 +863,7 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
 </div>
 </div>
 <a id="af414d1d24c08314c9d16d36bc5a33ed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af414d1d24c08314c9d16d36bc5a33ed4">&#9670;&nbsp;</a></span>orthonormalCoordinateSystem()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af414d1d24c08314c9d16d36bc5a33ed4">&#9670;&nbsp;</a></span>orthonormalCoordinateSystem() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -833,8 +881,37 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
 
 </div>
 </div>
+<a id="ac4c04c61c51f99273d455957b84675e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4c04c61c51f99273d455957b84675e3">&#9670;&nbsp;</a></span>orthonormalCoordinateSystem() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Matrix3d</a> Marmot::Math::orthonormalCoordinateSystem </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;&#160;</td>
+          <td class="paramname"><em>n1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot.html#a0ca8adc515d73860f9edd2004e064f97">Vector3d</a> &amp;&#160;</td>
+          <td class="paramname"><em>n2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Computes an orthonormal coordinate system from two unit normal vectors as \( x_1 \) and \( x_2 \) - axis. </p>
+
+</div>
+</div>
 <a id="a373a95bba3d9c90ecb6bcb0b2917286c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a373a95bba3d9c90ecb6bcb0b2917286c">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a373a95bba3d9c90ecb6bcb0b2917286c">&#9670;&nbsp;</a></span>makeReal() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

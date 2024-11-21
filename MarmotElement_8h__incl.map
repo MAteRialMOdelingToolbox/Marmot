@@ -1,7 +1,11 @@
 <map id="include/Marmot/MarmotElement.h" name="include/Marmot/MarmotElement.h">
-<area shape="rect" id="node1" title=" " alt="" coords="279,5,495,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="401,5,617,32"/>
 <area shape="rect" id="node2" href="$MarmotElementProperty_8h.html" title=" " alt="" coords="5,80,224,107"/>
-<area shape="rect" id="node3" href="$MarmotUtils_8h.html" title=" " alt="" coords="249,80,399,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="423,80,478,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="503,80,561,107"/>
+<area shape="rect" id="node3" href="$MarmotJournal_8h.html" title=" " alt="" coords="249,80,415,107"/>
+<area shape="rect" id="node6" title=" " alt="" coords="418,155,473,181"/>
+<area shape="rect" id="node7" href="$MarmotUtils_8h.html" title=" " alt="" coords="491,80,642,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="666,80,745,107"/>
+<area shape="rect" id="node9" title=" " alt="" coords="769,80,828,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="211,155,283,181"/>
+<area shape="rect" id="node5" title=" " alt="" coords="307,155,376,181"/>
 </map>

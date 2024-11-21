@@ -214,9 +214,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a3f564758677f0016ead1ed7dc89fd610">evaluatePostWidderFormula</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</td></tr>
 <tr class="separator:a3f564758677f0016ead1ed7dc89fd610"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
-<tr class="memitem:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#ab9dc5fb8b54d0f6264ff3bb45e3e1bb6">computeElasticModuli</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a> retardationTimes)</td></tr>
-<tr class="separator:ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
+<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a5c9642a0ce70c5bb1b9d903ea7e63591">approximateZerothCompliance</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin)</td></tr>
+<tr class="separator:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
+<tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a2f2efb416b0dab23259040740294e9e6">computeElasticModuli</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a> retardationTimes, bool gaussQuadrature=false)</td></tr>
+<tr class="separator:a2f2efb416b0dab23259040740294e9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2bfc2546999dd6545dcf008b66e6798"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#ad2bfc2546999dd6545dcf008b66e6798">generateRetardationTimes</a> (int n, double min, double spacing)</td></tr>
 <tr class="separator:ad2bfc2546999dd6545dcf008b66e6798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59398da9ad5bc47468fef8fc9e6239f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a59398da9ad5bc47468fef8fc9e6239f0">updateStateVarMatrix</a> (const double dT, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a> elasticModuli, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a> retardationTimes, Eigen::Ref&lt; <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#ac6c31e76aceb440b9b6ea4aee7aae8f3">StateVarMatrix</a> &gt; stateVars, const <a class="el" href="namespaceMarmot.html#a9ffd691bb9e3aad9fd71fc16249719e8">Marmot::Vector6d</a> &amp;dStress, const <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot::Matrix6d</a> &amp;unitComplianceMatrix)</td></tr>
@@ -316,8 +319,38 @@ template&lt;int k&gt; </div>
 
 </div>
 </div>
-<a id="ab9dc5fb8b54d0f6264ff3bb45e3e1bb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9dc5fb8b54d0f6264ff3bb45e3e1bb6">&#9670;&nbsp;</a></span>computeElasticModuli()</h2>
+<a id="a5c9642a0ce70c5bb1b9d903ea7e63591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c9642a0ce70c5bb1b9d903ea7e63591">&#9670;&nbsp;</a></span>approximateZerothCompliance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int k&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double Marmot::Materials::KelvinChain::approximateZerothCompliance </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;&#160;</td>
+          <td class="paramname"><em>phi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tauMin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2f2efb416b0dab23259040740294e9e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f2efb416b0dab23259040740294e9e6">&#9670;&nbsp;</a></span>computeElasticModuli()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,7 +367,13 @@ template&lt;int k&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a>&#160;</td>
-          <td class="paramname"><em>retardationTimes</em>&#160;</td>
+          <td class="paramname"><em>retardationTimes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>gaussQuadrature</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
