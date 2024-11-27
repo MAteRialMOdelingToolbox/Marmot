@@ -1,4 +1,6 @@
 #include "Marmot/MarmotMaterial.h"
+#include "Marmot/MarmotJournal.h"
+#include <stdexcept>
 
 MarmotMaterial::MarmotMaterial( const double* materialProperties_, int nMaterialProperties_, int materialNumber_ )
   : materialProperties( materialProperties_ ),
@@ -29,6 +31,12 @@ void MarmotMaterial::initializeYourself()
 {
   for ( auto i = 0; i < this->getNumberOfAssignedStateVars(); i++ )
     this->stateVars[i] = 0;
+}
+
+double MarmotMaterial::getDensity()
+{
+
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
 }
 
 MarmotMaterial::~MarmotMaterial() {}

@@ -78,6 +78,4 @@ public:
                                       const double* timeOld,
                                       const double  dT,
                                       double&       pNewDT );
-
-  virtual double getDensity();
 };
