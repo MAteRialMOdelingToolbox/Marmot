@@ -26,6 +26,7 @@
  */
 
 #include "autodiff/forward/dual/dual.hpp"
+#include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
 #include <iostream>
 
@@ -54,6 +55,25 @@ namespace Marmot::Testing {
                     << j << ") =" << getString( b( i, j ) ) << std::endl;
           return false;
         }
+      }
+    }
+    return true;
+  }
+
+  template < typename T, long int... Rest >
+  bool checkIfEqual( const Eigen::TensorFixedSize< T, Eigen::Sizes< Rest... > >& a,
+                     const Eigen::TensorFixedSize< T, Eigen::Sizes< Rest... > >& b,
+                     const double                                                tol = 1e-15 )
+  {
+    const T* a_data = a.data();
+    const T* b_data = b.data();
+
+    for ( int i = 0; i < a.size(); i++ ) {
+      auto cond = checkIfEqual( a_data[i], b_data[i], tol );
+      if ( !cond ) {
+        std::cout << "  -> HINT:  a(" << i << ") = " << getString( a_data[i] ) << " !=  b(" << i
+                  << ") =" << getString( b_data[i] ) << std::endl;
+        return false;
       }
     }
     return true;
