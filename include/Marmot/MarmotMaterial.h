@@ -56,4 +56,6 @@ public:
   int getNumberOfAssignedStateVars();
 
   virtual void initializeYourself();
+
+  virtual double getDensity();
 };
