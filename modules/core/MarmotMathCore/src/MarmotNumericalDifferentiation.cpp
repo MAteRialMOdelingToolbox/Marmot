@@ -179,5 +179,5 @@ namespace Marmot {
       }
     } // namespace Complex
 
-  } // namespace NumericalAlgorithms::Differentiation
+  }   // namespace NumericalAlgorithms::Differentiation
 } // namespace Marmot
