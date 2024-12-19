@@ -173,9 +173,7 @@ build and test with edelweiss:
     - cd ..
     # build and test EdelweissFE
     - cd EdelweissFE
-    - which python
-    - which pip
-    - python -c "import numpy as np"
-    - python setup.py install
-    # - python -m pip install .
+    - pip install setuptools
+    # - python setup.py install
+    - python -m pip install .
     - run_tests_edelweissfe testfiles/
