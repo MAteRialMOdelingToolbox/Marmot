@@ -173,7 +173,7 @@ build and test with edelweiss:
     - cd ..
     # build and test EdelweissFE
     - cd EdelweissFE
-    - pip install setuptools
+    - micromamba install setuptools numpy
     # - python setup.py install
     - python -m pip install .
     - run_tests_edelweissfe testfiles/
