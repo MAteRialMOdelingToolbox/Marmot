@@ -133,6 +133,7 @@ build and test with edelweiss:
           install_marmot_module ${modules[@]:$i:$marmot_module_defintion_matrix_col_size};
         done; }
 
+    - micromamba install python=3.12
     - micromamba install git
     - git clone $EdelweissFE_Repo
     - micromamba install -c conda-forge --file EdelweissFE/requirements.txt
@@ -173,7 +174,5 @@ build and test with edelweiss:
     - cd ..
     # build and test EdelweissFE
     - cd EdelweissFE
-    - micromamba install setuptools numpy
-    # - python setup.py install
     - python -m pip install .
     - run_tests_edelweissfe testfiles/
