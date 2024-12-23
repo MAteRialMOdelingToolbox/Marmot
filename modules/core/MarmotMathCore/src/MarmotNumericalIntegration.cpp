@@ -1,4 +1,5 @@
 #include "Marmot/MarmotNumericalIntegration.h"
+#include <algorithm>
 #include <iostream>
 #include <iterator>
 
