@@ -2,7 +2,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <iostream>
 
-namespace Marmot::Materials {
+namespace Marmot::ContinuumMechanics::Viscoelasticity {
   namespace PronySeries {
 
     using namespace Marmot;
@@ -77,4 +77,4 @@ namespace Marmot::Materials {
     }
 
   } // namespace PronySeries
-} // namespace Marmot::Materials
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity
