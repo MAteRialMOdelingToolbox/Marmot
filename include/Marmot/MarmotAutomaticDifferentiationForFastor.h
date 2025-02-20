@@ -28,6 +28,7 @@
 #pragma once
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotAutomaticDifferentiation.h"
+#include "Marmot/MarmotMicromorphicTensorBasics.h"
 #include "Marmot/MarmotTensor.h"
 #include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/dual/eigen.hpp"
@@ -52,6 +53,23 @@ namespace Marmot {
           out( i, j ).val = in( i, j );
           seed< 2 >( out( i, j ), (double)in( i, j ).grad );
         }
+      }
+      return out;
+    }
+
+    template < size_t order, size_t... Rest >
+    Fastor::Tensor< HigherOrderDual< order + 1, double >, Rest... > increaseDualOrderWithShift(
+      const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& in )
+    {
+      using in_scalar_type  = HigherOrderDual< order, double >;
+      using out_scalar_type = HigherOrderDual< order + 1, double >;
+
+      Fastor::Tensor< out_scalar_type, Rest... > out( 0.0 );
+      out_scalar_type*                           out_data = out.data();
+      in_scalar_type*                            in_data  = in.data();
+
+      for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+        out_data[out.get_mem_index( i )] = increaseDualOrderWithShift< order >( in_data[in.get_mem_index( i )] );
       }
       return out;
     }
@@ -135,6 +153,71 @@ namespace Marmot {
       return { f_, df_dT_ };
     }
 
+    template < size_t order, size_t... Rest >
+    using tensor_to_scalar_function_type_arbitrary_dual_order = std::function< HigherOrderDual< order, double >(
+      const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& T ) >;
+
+    template < size_t order, size_t... Rest >
+    Fastor::Tensor< HigherOrderDual< order, double >, Rest... > df_dT(
+      tensor_to_scalar_function_type_arbitrary_dual_order< order + 1, Rest... >& f,
+      const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >&         T )
+    {
+
+      using scalartype            = HigherOrderDual< order, double >;
+      using higherOrderScalartype = HigherOrderDual< order + 1, double >;
+
+      higherOrderScalartype                            f_;
+      Fastor::Tensor< scalartype, Rest... >            df_dT_( 0.0 );
+      Fastor::Tensor< higherOrderScalartype, Rest... > T_right = increaseDualOrderWithShift< order >( T );
+
+      higherOrderScalartype* T_right_data = T_right.data();
+      scalartype*            df_dT_data   = df_dT_.data();
+
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
+        seed< 1 >( T_right_data[T_right.get_mem_index( i )], 1.0 );
+        f_ = f( T_right );
+        /* std::cout <<  f_.val << f_.grad << std::endl; */
+
+        df_dT_data[df_dT_.get_mem_index( i )] = decreaseDualOrderWithShift< order + 1 >( f_ );
+        seed< 1 >( T_right_data[T_right.get_mem_index( i )], 0.0 );
+      }
+
+      return df_dT_;
+    }
+
+    template < size_t... RestF, size_t... RestT >
+    std::pair< Fastor::Tensor< double, RestF... >, Fastor::Tensor< double, RestF..., RestT... > > dF_dT(
+      std::function< Fastor::Tensor< dual, RestF... >( const Fastor::Tensor< dual, RestT... >& ) >& F,
+      const Fastor::Tensor< double, RestT... >&                                                     T )
+    {
+
+      Fastor::Tensor< double, RestF... >           F_( 0.0 );
+      Fastor::Tensor< double, RestF..., RestT... > dF_dT_( 0.0 );
+      Fastor::Tensor< dual, RestT... >             T_right = makeDual( T );
+
+      Fastor::Tensor< dual, RestF... > F_at_T_right( 0.0 );
+
+      double* dF_dT_data        = dF_dT_.data();
+      dual*   T_right_data      = T_right.data();
+      dual*   F_at_T_right_data = F_at_T_right.data();
+
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
+        const int T_right_mem_idx = T_right.get_mem_index( i );
+        T_right_data[T_right_mem_idx].grad += 1.0;
+        F_at_T_right = F( T_right );
+
+        for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
+          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = F_at_T_right_data[F_at_T_right.get_mem_index( j )]
+                                                                   .grad;
+        }
+        T_right_data[T_right_mem_idx].grad -= 1.0;
+      }
+
+      F_ = makeReal( F_at_T_right );
+
+      return { F_, dF_dT_ };
+    }
+
     namespace SecondOrder {
 
       template < size_t dim >
@@ -147,7 +230,7 @@ namespace Marmot {
       {
         double                                       F_;
         dual2nd                                      F_right;
-        Fastor::Tensor< double, dim, dim >           dF_dT;
+        Fastor::Tensor< double, dim, dim >           dF_dT_;
         Fastor::Tensor< double, dim, dim, dim, dim > d2F_dT2;
         Fastor::Tensor< dual2nd, dim, dim > T_right = secondRankTensorFromSecondRankDoubleTensor< dual2nd, dim >( T );
 
@@ -165,13 +248,13 @@ namespace Marmot {
                 seed< 2 >( T_right( k, l ), 0.0 );
               }
             }
-            dF_dT( i, j ) = derivative< 1 >( F_right );
-            F_            = double( F_right );
+            dF_dT_( i, j ) = derivative< 1 >( F_right );
+            F_             = double( F_right );
             seed< 1 >( T_right( i, j ), 0.0 );
           }
         }
 
-        return { F_, dF_dT, d2F_dT2 };
+        return { F_, dF_dT_, d2F_dT2 };
       }
 
       template < size_t dim >
