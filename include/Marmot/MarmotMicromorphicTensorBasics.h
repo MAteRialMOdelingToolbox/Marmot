@@ -54,7 +54,6 @@ namespace Marmot {
     using TensorMap3333d = Fastor::TensorMap< double, 3, 3, 3, 3 >;
 
     namespace Spatial3D {
-
       inline const Tensor33d I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                             Fastor::ColumnMajor );
 
@@ -107,6 +106,7 @@ namespace Marmot {
     using Ii   = Fastor::Index< I_, i_ >;
     using IikK = Fastor::Index< I_, i_, k_, K_ >;
     using Ik   = Fastor::Index< I_, k_ >;
+    using IL   = Fastor::Index< I_, L_ >;
     using Im   = Fastor::Index< I_, m_ >;
     using JI   = Fastor::Index< J_, I_ >;
     using JK   = Fastor::Index< J_, K_ >;
@@ -194,6 +194,7 @@ namespace Marmot {
     using ji   = Fastor::Index< j_, i_ >;
     using jin  = Fastor::Index< j_, i_, n_ >;
     using jk   = Fastor::Index< j_, k_ >;
+    using jK   = Fastor::Index< j_, K_ >;
     using jkB  = Fastor::Index< j_, k_, B_ >;
     using jkl  = Fastor::Index< j_, k_, l_ >;
     using jl   = Fastor::Index< j_, l_ >;
@@ -206,6 +207,7 @@ namespace Marmot {
     using kM   = Fastor::Index< k_, M_ >;
     using kNL  = Fastor::Index< k_, N_, L_ >;
     using kj   = Fastor::Index< k_, j_ >;
+    using kJ   = Fastor::Index< k_, J_ >;
     using kl   = Fastor::Index< k_, l_ >;
     using km   = Fastor::Index< k_, m_ >;
     using l    = Fastor::Index< l_ >;
@@ -224,6 +226,7 @@ namespace Marmot {
     using nB   = Fastor::Index< n_, B_ >;
 
     using to_IJKL = Fastor::OIndex< I_, J_, K_, L_ >;
+    using to_IJkK = Fastor::OIndex< I_, J_, k_, K_ >;
     using to_IJkL = Fastor::OIndex< I_, J_, k_, L_ >;
     using to_IikK = Fastor::OIndex< I_, i_, k_, K_ >;
     using to_IjkK = Fastor::OIndex< I_, j_, k_, K_ >;
@@ -233,6 +236,7 @@ namespace Marmot {
     using to_iIjJ = Fastor::OIndex< i_, I_, j_, J_ >;
     using to_iImn = Fastor::OIndex< i_, I_, m_, n_ >;
     using to_ij   = Fastor::OIndex< i_, j_ >;
+    using to_ijIJ = Fastor::OIndex< i_, j_, I_, J_ >;
     using to_ijKL = Fastor::OIndex< i_, j_, K_, L_ >;
     using to_ijL  = Fastor::OIndex< i_, j_, L_ >;
     using to_ijLk = Fastor::OIndex< i_, j_, L_, k_ >;
@@ -278,7 +282,7 @@ namespace Marmot {
   template < typename T, size_t nRows, typename = void >
   auto inline mapEigenToFastor( const Fastor::TensorMap< T, nRows >& fastor )
   {
-    return Eigen::Map< Eigen::Matrix< T, nRows, 1> >( fastor.data() );
+    return Eigen::Map< Eigen::Matrix< T, nRows, 1 > >( fastor.data() );
   }
 
   template < typename T, size_t nRows, size_t nCols, typename = void >
@@ -286,7 +290,6 @@ namespace Marmot {
   {
     return Eigen::Map< Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
   }
-
 
   template < template < typename, size_t... > class TensorType, typename T, size_t... Rest >
   void inline copyFastorToColumnMajor( T* target, const TensorType< T, Rest... >& source )
@@ -381,7 +384,6 @@ namespace Marmot {
     return result;
   }
 
-
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
   {
@@ -419,6 +421,49 @@ namespace Marmot {
     const Fastor::Tensor< double, dim, dim >& in )
   {
     return fastorTensorFromDoubleTensor< T >( in );
+  }
+
+  template < typename T, size_t... Rest >
+  Fastor::Tensor< double, Rest... > makeReal( const Fastor::Tensor< T, Rest... >& in )
+  {
+
+    Fastor::Tensor< double, Rest... > out;
+    double*                           out_data = out.data();
+    T*                                in_data  = in.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = static_cast< double >( in_data[in.get_mem_index( i )] );
+    }
+    return out;
+  }
+
+  template < typename T, size_t... Rest >
+  Fastor::Tensor< autodiff::dual, Rest... > makeDual( const Fastor::Tensor< T, Rest... >& in )
+  {
+
+    Fastor::Tensor< autodiff::dual, Rest... > out;
+    autodiff::dual*                           out_data = out.data();
+    T*                                        in_data  = in.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = autodiff::dual( in_data[in.get_mem_index( i )] );
+    }
+    return out;
+  }
+
+  template < size_t order, size_t... Rest >
+  Fastor::Tensor< autodiff::HigherOrderDual< order, double >, Rest... > makeHigherOrderDual(
+    const Fastor::Tensor< double, Rest... >& in )
+  {
+
+    Fastor::Tensor< autodiff::HigherOrderDual< order, double >, Rest... > out;
+    autodiff::HigherOrderDual< order, double >*                           out_data = out.data();
+    double*                                                               in_data  = in.data();
+
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
+      out_data[out.get_mem_index( i )] = autodiff::HigherOrderDual< order, double >( in_data[in.get_mem_index( i )] );
+    }
+    return out;
   }
 
 } // namespace Marmot
