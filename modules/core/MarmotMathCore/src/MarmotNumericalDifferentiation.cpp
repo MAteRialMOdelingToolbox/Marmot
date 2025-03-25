@@ -23,9 +23,11 @@ namespace Marmot {
 
     MatrixXd forwardDifference( const vector_to_vector_function_type& F, const VectorXd& X )
     {
+      VectorXd fx = F( X );
 
-      const auto xSize = X.rows();
-      MatrixXd   J( xSize, xSize );
+      const auto xSize  = X.rows();
+      const auto fxSize = fx.rows();
+      MatrixXd   J( fxSize, xSize );
 
       VectorXd rightX( xSize );
 
@@ -35,7 +37,7 @@ namespace Marmot {
         rightX = X;
         rightX( i ) += h;
 
-        J.col( i ) = (  F( rightX )  - F( X  ) )
+        J.col( i ) = (  F( rightX )  - fx )
             / //------------------------------------
                             ( 1. * h );
         // clang-format on
