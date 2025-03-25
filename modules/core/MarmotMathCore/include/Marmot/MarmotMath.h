@@ -86,12 +86,17 @@ namespace Marmot {
       return scalar >= 0 ? 1 : 0;
     }
 
+    constexpr int heavisideExclude0( double scalar )
+    {
+      return scalar > 0 ? 1 : 0;
+    }
+
     /**
      * Extract sign of value \ref val*/
     template < typename T >
-    constexpr T sgn( T val )
+    constexpr int sgn( const T& val ) noexcept
     {
-      return val / std::abs( val );
+      return ( T( 0 ) < val ) - ( val < T( 0 ) );
     }
 
     double makeReal( const double& value );

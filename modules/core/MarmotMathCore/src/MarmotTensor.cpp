@@ -47,6 +47,18 @@ namespace Marmot {
     }
     const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
+    auto Initialize_I2()
+    {
+      EigenTensors::Tensor33d I2;
+
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          I2( i, j ) = d( i, j );
+
+      return I2;
+    }
+    const EigenTensors::Tensor33d I2 = Initialize_I2();
+
     auto Initialize_Isym()
     {
       EigenTensors::Tensor3333d Isym;
