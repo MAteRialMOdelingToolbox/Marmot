@@ -15,6 +15,21 @@ namespace Marmot::Testing {
 
   bool checkIfEqual( const double a, const double b, const double tol )
   {
+    // check for NaN values and return false if any of the values is NaN
+    if ( std::isnan( a ) || std::isnan( b ) ) {
+      std::cout << " Hint: a = " << a << " or "
+                << " b = " << b << " is NaN" << std::endl;
+      return false;
+    }
+
+    // check for inf values and return false if any of the values is inf
+    if ( std::isinf( a ) || std::isinf( b ) ) {
+      std::cout << " Hint: a = " << a << " or "
+                << " b = " << b << " is inf" << std::endl;
+      return false;
+    }
+
+    // check if values are equal with respect to the tolerance
     if ( std::abs( a - b ) > tol ) {
       std::cout << " Hint: a = " << a << " != "
                 << " b = " << b << " ( tol = " << tol << " )" << std::endl;
