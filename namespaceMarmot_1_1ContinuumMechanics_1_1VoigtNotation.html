@@ -235,6 +235,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a02fcdad0184c1dd32f766a0f7c26c0e5"><td class="memTemplParams" colspan="2">template&lt;typename T  = double&gt; </td></tr>
 <tr class="memitem:a02fcdad0184c1dd32f766a0f7c26c0e5"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; T, 6, 1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a02fcdad0184c1dd32f766a0f7c26c0e5">stressToVoigt</a> (const Eigen::Matrix&lt; T, 3, 3 &gt; &amp;stressTensor)</td></tr>
 <tr class="separator:a02fcdad0184c1dd32f766a0f7c26c0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37df806bdfd78a6e1aea78100a0d37f7"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#a37df806bdfd78a6e1aea78100a0d37f7">stiffnessToVoigt</a> (const Eigen::Tensor&lt; double, 4 &gt; &amp;C)</td></tr>
+<tr class="separator:a37df806bdfd78a6e1aea78100a0d37f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e1d50ccf1ef1340c6447e1fbd54dac"><td class="memTemplParams" colspan="2">template&lt;int nDim&gt; </td></tr>
 <tr class="memitem:ac1e1d50ccf1ef1340c6447e1fbd54dac"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, nDim, nDim &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation.html#ac1e1d50ccf1ef1340c6447e1fbd54dac">stressMatrixFromVoigt</a> (const Eigen::Matrix&lt; double, <a class="el" href="MarmotVoigt_8h.html#ab05a2676268f62bf9214105a0fe8e614">VOIGTFROMDIM</a>(nDim), 1 &gt; &amp;Voigt)</td></tr>
 <tr class="separator:ac1e1d50ccf1ef1340c6447e1fbd54dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -495,6 +497,24 @@ template&lt;typename T  = double&gt; </div>
 \[ \displaystyle \begin{bmatrix} \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13}\\ \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\ \sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33} \\ \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix} \sigma_{11}\\ \sigma_{22}\\ \sigma_{33}\\ \sigma_{12}\\ \sigma_{13}\\ \sigma_{23} \end{bmatrix} \]
 </p>
  
+</div>
+</div>
+<a id="a37df806bdfd78a6e1aea78100a0d37f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37df806bdfd78a6e1aea78100a0d37f7">&#9670;&nbsp;</a></span>stiffnessToVoigt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::Matrix&lt; double, 6, 6 &gt; Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Tensor&lt; double, 4 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>C</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <a id="ac1e1d50ccf1ef1340c6447e1fbd54dac"></a>

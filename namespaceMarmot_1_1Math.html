@@ -208,9 +208,11 @@ Functions</h2></td></tr>
 <tr class="separator:a6df59eeb030f379b61b830c7bd115fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a057c092d86779e08ca193ccc04f41901"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a057c092d86779e08ca193ccc04f41901">heaviside</a> (double scalar)</td></tr>
 <tr class="separator:a057c092d86779e08ca193ccc04f41901"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a315076a1c31bdb4ae6f7f5c1794d45e2">sgn</a> (T val)</td></tr>
-<tr class="separator:a315076a1c31bdb4ae6f7f5c1794d45e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a986ba8aa6ef55e38d21228170220325b"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a986ba8aa6ef55e38d21228170220325b">heavisideExclude0</a> (double scalar)</td></tr>
+<tr class="separator:a986ba8aa6ef55e38d21228170220325b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeab5c0a8ec2b02dccbcabcec543f2765"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aeab5c0a8ec2b02dccbcabcec543f2765"><td class="memTemplItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#aeab5c0a8ec2b02dccbcabcec543f2765">sgn</a> (const T &amp;val) noexcept</td></tr>
+<tr class="separator:aeab5c0a8ec2b02dccbcabcec543f2765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a335a5f714ab10341744d8fea021e08dd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a335a5f714ab10341744d8fea021e08dd">makeReal</a> (const double &amp;value)</td></tr>
 <tr class="separator:a335a5f714ab10341744d8fea021e08dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb82ef87d972fcdc7123c0896eee245"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#addb82ef87d972fcdc7123c0896eee245">makeReal</a> (const std::complex&lt; double &gt; &amp;value)</td></tr>
@@ -468,8 +470,34 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a315076a1c31bdb4ae6f7f5c1794d45e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a315076a1c31bdb4ae6f7f5c1794d45e2">&#9670;&nbsp;</a></span>sgn()</h2>
+<a id="a986ba8aa6ef55e38d21228170220325b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a986ba8aa6ef55e38d21228170220325b">&#9670;&nbsp;</a></span>heavisideExclude0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::Math::heavisideExclude0 </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>scalar</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeab5c0a8ec2b02dccbcabcec543f2765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeab5c0a8ec2b02dccbcabcec543f2765">&#9670;&nbsp;</a></span>sgn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -480,16 +508,16 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr T Marmot::Math::sgn </td>
+          <td class="memname">constexpr int Marmot::Math::sgn </td>
           <td>(</td>
-          <td class="paramtype">T&#160;</td>
+          <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>val</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
