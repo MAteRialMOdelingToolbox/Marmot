@@ -28,7 +28,7 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot::Materials {
+namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
   namespace PronySeries {
     using namespace Marmot;
@@ -58,4 +58,4 @@ namespace Marmot::Materials {
                           const double                    dT );
 
   } // namespace PronySeries
-} // namespace Marmot::Materials
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity
