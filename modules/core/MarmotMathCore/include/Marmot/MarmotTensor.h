@@ -44,6 +44,8 @@ namespace Marmot {
     extern const EigenTensors::Tensor333d LeviCivita3D;
     extern const EigenTensors::Tensor122d LeviCivita2D;
 
+    extern const EigenTensors::Tensor33d I2;
+
     constexpr int getNumberOfDofForRotation( int nDim )
     {
       if ( nDim == 2 )
@@ -139,6 +141,26 @@ namespace Marmot {
       return Eigen::Map<
         const Eigen::Matrix< typename Derived::Scalar, Derived::RowsAtCompileTime * Derived::ColsAtCompileTime, 1 > >(
         t.data() );
+    }
+
+    template < int... Pairs >
+    constexpr auto contractionDims() // should be evaluated at compile time
+    {
+      static_assert( sizeof...( Pairs ) % 2 == 0, "Pairs must contain an even number of elements." );
+
+      constexpr int numPairs = sizeof...( Pairs ) / 2;
+
+      Eigen::array< Eigen::IndexPair< int >, numPairs > result{};
+
+      if constexpr ( numPairs > 0 ) {          // return empty array if no pairs are given
+        constexpr int values[] = { Pairs... }; // Pairs... expands the parameter pack
+
+        // Fill the result array at compile-time
+        for ( int i = 0; i < numPairs; ++i ) {
+          result[i] = { values[2 * i], values[2 * i + 1] };
+        }
+      }
+      return result;
     }
 
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 );
