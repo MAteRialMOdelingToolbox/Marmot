@@ -3,15 +3,16 @@
 
 namespace Marmot::Materials {
 
-  namespace Registration {
+namespace Registration {
 
-    constexpr int FiniteStrainJ2PlasticityCode = 11930000 + 16;
+constexpr int FiniteStrainJ2PlasticityCode = 11930000 + 16;
 
-    using namespace MarmotLibrary;
+using namespace MarmotLibrary;
 
-    const static bool FiniteStrainJ2PlasticityRegistered = MarmotMaterialFactory::
-      registerMaterial( FiniteStrainJ2PlasticityCode,
-                        "FINITESTRAINJ2PLASTICITY",
-                        makeDefaultMarmotMaterialFactoryFunction< class FiniteStrainJ2Plasticity >() );
-  } // namespace Registration
+const static bool FiniteStrainJ2PlasticityRegistered =
+    MarmotMaterialFactory::registerMaterial(
+        FiniteStrainJ2PlasticityCode, "FINITESTRAINJ2PLASTICITY",
+        makeDefaultMarmotMaterialFactoryFunction<
+            class FiniteStrainJ2Plasticity>());
+} // namespace Registration
 } // namespace Marmot::Materials
