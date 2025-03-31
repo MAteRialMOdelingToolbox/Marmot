@@ -2,7 +2,7 @@
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
 
 namespace Marmot::Materials::Registration {
-  
+
   constexpr int B4Code = 1193001;
 
   using namespace MarmotLibrary;
