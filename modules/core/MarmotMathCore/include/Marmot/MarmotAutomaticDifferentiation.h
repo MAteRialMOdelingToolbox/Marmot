@@ -123,9 +123,6 @@ namespace Marmot {
     using scalar_to_scalar_function_type_2nd = std::function< dual2nd( const dual2nd& ) >;
     dual df_dx( const scalar_to_scalar_function_type_2nd& f, const dual& x );
 
-    /* using vector_to_vector_function_type = std::function< VectorXdual( const VectorXdual& X ) >; */
-    /* MatrixXd dF_dX( const vector_to_vector_function_type& F, const VectorXd& X ); */
-
     using vector_to_vector_function_type_dual = std::function< VectorXdual( const VectorXdual& X ) >;
     std::pair< VectorXd, MatrixXd > dF_dX( const vector_to_vector_function_type_dual& F, const VectorXd& X );
 
