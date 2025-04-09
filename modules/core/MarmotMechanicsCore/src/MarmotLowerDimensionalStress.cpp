@@ -138,6 +138,7 @@ namespace Marmot::ContinuumMechanics {
       T( 3, 2 )                = 1;
       T( 2, 0 )                = -tangent( 2, 0 ) / tangent( 2, 2 );
       T( 2, 1 )                = -tangent( 2, 1 ) / tangent( 2, 2 );
+      T( 2, 2 )                = -tangent( 2, 3 ) / tangent( 2, 2 );
       return T;
     }
 

@@ -13,12 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: DoozyX/clang-format-lint-action@v0.11
+    - uses: DoozyX/clang-format-lint-action@v0.18.2
       with:
         source: '.'
         exclude: ''
-        extensions: 'hpp,cpp'
-        clangFormatVersion: 15
+        extensions: 'h,cpp'
+        clangFormatVersion: 16.0.0
         inplace: true
     - run: |
         git diff

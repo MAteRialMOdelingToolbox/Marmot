@@ -272,6 +272,8 @@ namespace Marmot {
       return stress;
     }
 
+    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Eigen::Tensor< double, 4 >& C );
+
     template < int nDim >
     Eigen::Matrix< double, nDim, nDim > stressMatrixFromVoigt(
       const Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >& Voigt )
