@@ -13,6 +13,10 @@ public:
 
   // Constructor initializes the parent class
   DummyMaterialStateVarManager( double* stateVars ) : MarmotStateVarVectorManager( stateVars, layout ) {};
+
+  // Expose nRequiredStateVars for testing layout calculation
+  static int getRequiredSize() { return layout.nRequiredStateVars; }
+  
 };
 
 void testStateVarVectorManagerFind()
@@ -29,6 +33,7 @@ void testStateVarVectorManagerFind()
 
 void testStateVarVectorManagerContains()
 {
+  // Test contain method in the statevar vector manager
   std::vector<double> stateVarData(5);
   DummyMaterialStateVarManager manager( stateVarData.data() );
 
@@ -36,6 +41,12 @@ void testStateVarVectorManagerContains()
   throwExceptionOnFailure( manager.contains( "var2" ), "var2 should be contained" );
   throwExceptionOnFailure( !manager.contains( "var3" ), "var3 should not be contained" );
   throwExceptionOnFailure( !manager.contains( "" ), "Empty string should not be contained" );
+}
+
+void testStateVarVectorManagerLayout()
+{
+    // Directly test the static layout property if needed
+    throwExceptionOnFailure( checkIfEqual( DummyMaterialStateVarManager::getRequiredSize(), 5 ), "Layout requires 5 doubles" );  
 }
 
 int main()
