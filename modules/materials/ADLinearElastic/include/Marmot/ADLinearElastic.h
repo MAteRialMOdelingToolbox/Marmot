@@ -27,14 +27,13 @@
 #pragma once
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "autodiff/forward/dual.hpp"
 #include <Eigen/src/Core/Map.h>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "autodiff/forward/dual.hpp"
 
 using namespace Marmot;
-
 
 namespace Marmot::Materials {
   /**
@@ -48,22 +47,18 @@ namespace Marmot::Materials {
 
     const double& E;
     const double& nu;
-    
+
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-
   protected:
-    
+    void computeStressAD( autodiff::dual*       stress,
+                          const autodiff::dual* dStrain,
+                          const double*         timeOld,
+                          const double          dT,
+                          double&               pNewDT );
 
-    void computeStressAD( autodiff::dual* stress,
-                        const autodiff::dual* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-    
     StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
 
     int getNumberOfRequiredStateVars() { return 0; }
   };
 } // namespace Marmot::Materials
-

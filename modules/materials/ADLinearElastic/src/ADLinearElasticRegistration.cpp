@@ -8,10 +8,10 @@ namespace Marmot::Materials {
   namespace Registration {
 
     using namespace MarmotLibrary;
-    
-    constexpr int base = 11930000;
-    constexpr int code = 1;
-    constexpr int ADLinearElasticCode = base + code ;
+
+    constexpr int base                = 11930000;
+    constexpr int code                = 1;
+    constexpr int ADLinearElasticCode = base + code;
 
     const static bool ADLinearElasticIsRegistered = MarmotMaterialFactory::
       registerMaterial( ADLinearElasticCode,

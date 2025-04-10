@@ -25,21 +25,18 @@ namespace Marmot::Materials {
     assert( nMaterialProperties == 2 );
   }
   void ADLinearElastic::computeStressAD( autodiff::dual*       stress,
-                                       const autodiff::dual* dStrain,
-                                       const double*         timeOld,
-                                       const double          dT,
-                                       double&               pNewDT )
+                                         const autodiff::dual* dStrain,
+                                         const double*         timeOld,
+                                         const double          dT,
+                                         double&               pNewDT )
   {
-    using Vector6dual     = Eigen::Matrix< dual, 6, 1 >;
-    using mVector6dual   = Eigen::Map< Vector6dual >;
-    using mVector6dualConst   = Eigen::Map< const Vector6dual >;
-
-
+    using Vector6dual       = Eigen::Matrix< dual, 6, 1 >;
+    using mVector6dual      = Eigen::Map< Vector6dual >;
+    using mVector6dualConst = Eigen::Map< const Vector6dual >;
 
     mVector6dual            s( stress );
     const mVector6dualConst dE( dStrain );
 
-    
     const MatrixXdual C( ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu ) );
 
     s = s + C * dE;
