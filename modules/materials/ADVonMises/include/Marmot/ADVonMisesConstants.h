@@ -27,9 +27,9 @@
 
 namespace Marmot::Materials {
 
-  namespace ADVonMisesConstants {
-    const double innerNewtonTol        = 1e-10;
-    const int    nMaxInnerNewtonCycles = 15;
-  } // namespace ADVonMisesConstants
+namespace ADVonMisesConstants {
+const double innerNewtonTol = 1e-10;
+const int nMaxInnerNewtonCycles = 15;
+} // namespace ADVonMisesConstants
 
 } // namespace Marmot::Materials
