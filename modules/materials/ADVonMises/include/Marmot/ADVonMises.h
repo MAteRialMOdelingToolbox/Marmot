@@ -39,68 +39,69 @@
 using namespace Marmot;
 
 namespace Marmot::Materials {
-/**
- * \brief Implementation of a isotropic J2-plasticity  material
- * for 3D stress states using automatic differentiation.
- *
- */
-class ADVonMises : public MarmotMaterialHypoElasticAD {
-public:
-  using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
-
-  const double &E;
-  const double &nu;
-  const double &yieldStress;
-  const double &HLin;
-  const double &deltaYieldStress;
-  const double &delta;
-  const double G;
-
-  ADVonMises(const double *materialProperties, int nMaterialProperties,
-             int materialNumber);
-
-protected:
-  void computeStressAD(autodiff::dual *stress, const autodiff::dual *dStrain,
-                       const double *timeOld, const double dT,
-                       double &pNewDT) override;
-
-  class ADVonMisesModelStateVarManager : public MarmotStateVarVectorManager {
-
+  /**
+   * \brief Implementation of a isotropic J2-plasticity  material
+   * for 3D stress states using automatic differentiation.
+   *
+   */
+  class ADVonMises : public MarmotMaterialHypoElasticAD {
   public:
-    inline const static auto layout = makeLayout({
-        {.name = "kappa", .length = 1},
-    });
+    using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
 
-    double &kappa;
+    const double& E;
+    const double& nu;
+    const double& yieldStress;
+    const double& HLin;
+    const double& deltaYieldStress;
+    const double& delta;
+    const double  G;
 
-    ADVonMisesModelStateVarManager(double *theStateVarVector)
-        : MarmotStateVarVectorManager(theStateVarVector, layout),
-          kappa(find("kappa")){};
+    ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber );
+
+  protected:
+    void computeStressAD( autodiff::dual*       stress,
+                          const autodiff::dual* dStrain,
+                          const double*         timeOld,
+                          const double          dT,
+                          double&               pNewDT ) override;
+
+    class ADVonMisesModelStateVarManager : public MarmotStateVarVectorManager {
+
+    public:
+      inline const static auto layout = makeLayout( {
+        { .name = "kappa", .length = 1 },
+      } );
+
+      double& kappa;
+
+      ADVonMisesModelStateVarManager( double* theStateVarVector )
+        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
+    };
+    std::unique_ptr< ADVonMisesModelStateVarManager > managedStateVars;
+
+    int getNumberOfRequiredStateVars() override { return ADVonMisesModelStateVarManager::layout.nRequiredStateVars; }
+
+    void assignStateVars( double* stateVars, int nStateVars ) override;
+
+    StateView getStateView( const std::string& result ) override;
+
+    template < typename T >
+    T fy( T kappa_ )
+    {
+      const T res = yieldStress + HLin * kappa_ + deltaYieldStress * ( 1. - exp( -delta * kappa_ ) );
+      return res;
+    }
+
+    template < typename T >
+    T f( const T rho_, const double kappa_ )
+    {
+      return rho_ - Constants::sqrt2_3 * fy( kappa_ );
+    }
+    template < typename T >
+    T g( const T rhoTrial, const double kappa, const T deltaKappa )
+    {
+      const T kappa_ = kappa + deltaKappa;
+      return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa_ );
+    }
   };
-  std::unique_ptr<ADVonMisesModelStateVarManager> managedStateVars;
-
-  int getNumberOfRequiredStateVars() override {
-    return ADVonMisesModelStateVarManager::layout.nRequiredStateVars;
-  }
-
-  void assignStateVars(double *stateVars, int nStateVars) override;
-
-  StateView getStateView(const std::string &result) override;
-
-  template <typename T> T fy(T kappa_) {
-    const T res = yieldStress + HLin * kappa_ +
-                  deltaYieldStress * (1. - exp(-delta * kappa_));
-    return res;
-  }
-
-  template <typename T> T f(const T rho_, const double kappa_) {
-    return rho_ - Constants::sqrt2_3 * fy(kappa_);
-  }
-  template <typename T>
-  T g(const T rhoTrial, const double kappa, const T deltaKappa) {
-    const T kappa_ = kappa + deltaKappa;
-    return rhoTrial - Constants::sqrt6 * G * deltaKappa -
-           Constants::sqrt2_3 * fy(kappa_);
-  }
-};
 } // namespace Marmot::Materials

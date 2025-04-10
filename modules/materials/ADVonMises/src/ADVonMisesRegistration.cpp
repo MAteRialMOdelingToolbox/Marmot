@@ -3,18 +3,16 @@
 
 namespace Marmot::Materials {
 
-namespace Registration {
+  namespace Registration {
 
-using namespace MarmotLibrary;
+    using namespace MarmotLibrary;
 
-constexpr int base = 11930000;
-constexpr int code = 3;
-constexpr int ADVonMisesCode = base + code;
+    constexpr int base           = 11930000;
+    constexpr int code           = 3;
+    constexpr int ADVonMisesCode = base + code;
 
-const static bool ADVonMisesIsRegistered =
-    MarmotMaterialFactory::registerMaterial(
-        ADVonMisesCode, "ADVONMISES",
-        makeDefaultMarmotMaterialFactoryFunction<class ADVonMises>());
+    const static bool ADVonMisesIsRegistered = MarmotMaterialFactory::
+      registerMaterial( ADVonMisesCode, "ADVONMISES", makeDefaultMarmotMaterialFactoryFunction< class ADVonMises >() );
 
-} // namespace Registration
+  } // namespace Registration
 } // namespace Marmot::Materials
