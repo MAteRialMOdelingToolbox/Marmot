@@ -3,9 +3,13 @@
 
 using namespace Marmot::Testing;
 
-// Create dummy manager for testing (based on VonMises.h)
-// Base class is protected, so we need to create a derived class
 class DummyMaterialStateVarManager : public MarmotStateVarVectorManager {
+  /*
+   * DummyMaterialStateVarManager is a derived class of MarmotStateVarVectorManager
+   * for testing purposes. It defines a static layout with two state variables:
+   * "var1" and "var2", with lengths 3 and 2 respectively.
+   */
+   
 public:
   inline const static auto layout = makeLayout( {
     { .name = "var1", .length = 3 },
@@ -21,6 +25,10 @@ public:
 
 void testStateVarVectorManagerFind()
 {
+  /*
+   * Test find method in the statevar vector manager
+   * and check if the pointers to the state variables are correct.
+   */
   std::vector<double> stateVarData(5);
   DummyMaterialStateVarManager manager( stateVarData.data() );
 
@@ -33,7 +41,10 @@ void testStateVarVectorManagerFind()
 
 void testStateVarVectorManagerContains()
 {
-  // Test contain method in the statevar vector manager
+  /*
+   * Test contains method in the statevar vector manager
+   * and check if the correct state variables are contained.
+   */
   std::vector<double> stateVarData(5);
   DummyMaterialStateVarManager manager( stateVarData.data() );
 
@@ -45,8 +56,11 @@ void testStateVarVectorManagerContains()
 
 void testStateVarVectorManagerLayout()
 {
-    // Directly test the static layout property if needed
-    throwExceptionOnFailure( checkIfEqual( DummyMaterialStateVarManager::getRequiredSize(), 5 ), "Layout requires 5 doubles" );  
+  /* 
+   * Test the layout of the statevar vector manager
+   * and check if the required size is correct.
+   */
+  throwExceptionOnFailure( checkIfEqual( DummyMaterialStateVarManager::getRequiredSize(), 5 ), "Layout requires 5 doubles" );  
 }
 
 int main()
