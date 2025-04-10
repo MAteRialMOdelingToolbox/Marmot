@@ -40,7 +40,6 @@ void testIntegrateScalarFunction()
   double simpsonResult = integrateScalarFunction( testFunction, limits, nSteps, integrationRule::simpson );
   throwExceptionOnFailure( checkIfEqual( simpsonResult, analyticalResult, tolerance ),
                            "Simpson's rule integration failed." );
-
 }
 
 int main()
