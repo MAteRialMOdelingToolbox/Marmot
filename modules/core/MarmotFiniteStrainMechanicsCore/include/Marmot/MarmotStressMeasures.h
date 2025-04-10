@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include "Marmot/MarmotMicromorphicTensorBasics.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include <Fastor/tensor/Tensor.h>
 
 namespace Marmot::ContinuumMechanics {
@@ -69,6 +69,6 @@ namespace Marmot::ContinuumMechanics {
       }
     } // namespace FirstOrderDerived
 
-  } // namespace StressMeasures
+  }   // namespace StressMeasures
 
 } // namespace Marmot::ContinuumMechanics

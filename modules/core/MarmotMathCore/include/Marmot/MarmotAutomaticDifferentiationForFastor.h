@@ -287,6 +287,6 @@ namespace Marmot {
       }
     } // namespace SecondOrder
 
-  } // namespace AutomaticDifferentiation
+  }   // namespace AutomaticDifferentiation
 
 } // namespace Marmot

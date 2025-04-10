@@ -27,7 +27,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotMicromorphicTensorBasics.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 
 namespace Marmot::ContinuumMechanics {
 
@@ -115,6 +115,6 @@ namespace Marmot::ContinuumMechanics {
 
     } // namespace SecondOrderDerived
 
-  } // namespace EnergyDensityFunctions
+  }   // namespace EnergyDensityFunctions
 
 } // namespace Marmot::ContinuumMechanics

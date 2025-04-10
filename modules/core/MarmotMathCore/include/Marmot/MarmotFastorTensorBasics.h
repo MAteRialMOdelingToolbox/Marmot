@@ -84,7 +84,7 @@ namespace Marmot {
 
     } // namespace Spatial3D
 
-  } // namespace FastorStandardTensors
+  }   // namespace FastorStandardTensors
 
   namespace ContinuumMechanics::Micropolar::GeneralizedInvariants {
 
