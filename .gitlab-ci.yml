@@ -164,7 +164,7 @@ build and test with edelweiss:
     - cd Fastor 
     - mkdir build
     - cd build 
-    - cmake -DBUILD_TESTING=OFF ..
+    - cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
     - make install
     - cd ../..
     
