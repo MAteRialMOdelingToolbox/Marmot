@@ -47,7 +47,7 @@ namespace Marmot::Materials {
     /// \brief Young's modulus
     const double& E;
 
-    /// \brief Poisson's ratio 
+    /// \brief Poisson's ratio
     const double& nu;
 
     /// \brief power law compliance parameter
@@ -55,7 +55,7 @@ namespace Marmot::Materials {
 
     /// \brief power law exponent
     const double& n;
-    
+
     /// \brief number of Kelvin units to approximate the viscoelastic compliance
     const size_t nKelvin;
 
@@ -64,7 +64,7 @@ namespace Marmot::Materials {
 
     /// \brief ratio of simulation time to days
     const double& timeToDays;
-    
+
     class LinearViscoelasticPowerLawStateVarManager : public MarmotStateVarVectorManager {
 
     public:
@@ -100,12 +100,10 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
-
     KelvinChain::Properties elasticModuli;
     KelvinChain::Properties retardationTimes;
-    double zerothKelvinChainCompliance;
-        
-    static constexpr int powerLawApproximationOrder = 2;
+    double                  zerothKelvinChainCompliance;
 
+    static constexpr int powerLawApproximationOrder = 2;
   };
 } // namespace Marmot::Materials
