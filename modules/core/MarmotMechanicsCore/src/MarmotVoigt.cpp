@@ -43,6 +43,34 @@ namespace Marmot {
       return strain;
     }
 
+    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Eigen::Tensor< double, 4 >& C )
+    {
+      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->yz, 5->xz)
+      std::array< std::pair< int, int >, 6 > ordering = {
+        { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
+
+      Eigen::Matrix< double, 6, 6 > voigtStiffness;
+      voigtStiffness.setZero(); // Initialize with zeros
+
+      for ( int a = 0; a < 6; ++a ) {
+        int i = ordering[a].first;
+        int j = ordering[a].second;
+        for ( int b = 0; b < 6; ++b ) {
+          int k = ordering[b].first;
+          int l = ordering[b].second;
+
+          // Populate the Voigt stiffness matrix
+          voigtStiffness( a, b ) = C( i, j, k, l );
+          voigtStiffness( a, b ) += C( j, i, k, l );
+          voigtStiffness( a, b ) += C( j, i, l, k );
+          voigtStiffness( a, b ) += C( i, j, l, k );
+          voigtStiffness( a, b ) /= 4.0;
+        }
+      }
+
+      return voigtStiffness;
+    }
+
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
     {
       /* converts a 6d voigt Vector with Abaqus notation

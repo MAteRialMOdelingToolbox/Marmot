@@ -48,3 +48,4 @@ jobs:
           cd build
           cmake ..
           sudo make install
+          ctest

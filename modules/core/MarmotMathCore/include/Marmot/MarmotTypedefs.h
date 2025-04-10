@@ -77,6 +77,7 @@ namespace Marmot {
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 2, 2, 1, 2 > > Tensor2212d;
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 2, 1, 2, 2 > > Tensor2122d;
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 2, 1, 1, 2 > > Tensor2112d;
+    typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > >       Tensor33d;
 
   } // namespace EigenTensors
 
