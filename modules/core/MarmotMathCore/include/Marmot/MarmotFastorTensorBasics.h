@@ -86,12 +86,6 @@ namespace Marmot {
 
   }   // namespace FastorStandardTensors
 
-  namespace ContinuumMechanics::Micropolar::GeneralizedInvariants {
-
-    FastorStandardTensors::Tensor3333d d2J2_dStress_dStress( double a1, double a2 );
-
-  }
-
   namespace FastorIndices {
     enum { i_, j_, k_, l_, m_, n_, A_, B_, I_, J_, K_, L_, M_, N_, P_ };
 
@@ -466,4 +460,13 @@ namespace Marmot {
     return out;
   }
 
+  template < typename T >
+  FastorStandardTensors::Tensor33t< T > deviatoric( const FastorStandardTensors::Tensor33t< T >& t )
+  {
+    Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
+    const FastorStandardTensors::Tensor33t< T > I     = FastorStandardTensors::Tensor33t< T >( dummy.data(),
+                                                                                           Fastor::ColumnMajor );
+    const FastorStandardTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensor33WithScalar( I, trace( t ) );
+    return dev;
+  }
 } // namespace Marmot
