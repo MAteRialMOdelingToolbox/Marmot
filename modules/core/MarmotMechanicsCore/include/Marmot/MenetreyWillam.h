@@ -279,8 +279,8 @@ namespace Marmot {
                  param.m * ( param.Bf * hw.rho * r_ + param.Cf * hw.xi ) - 1.;
         else
           return param.Af * param.Af * hw.rho * hw.rho +
-                 param.m * ( std::sqrt( param.Bf * hw.rho * r_ * param.Bf * hw.rho * r_ + varEps * varEps ) +
-                             param.Cf * hw.xi ) -
+                 param.m *
+                   ( sqrt( param.Bf * hw.rho * r_ * param.Bf * hw.rho * r_ + varEps * varEps ) + param.Cf * hw.xi ) -
                  1.;
       }
 
@@ -341,7 +341,7 @@ namespace Marmot {
       static inline double c( const double fc, const double ft )
       {
         const double phi_ = phi( fc, ft );
-        return ft * ( 1 + std::sin( phi_ ) ) / ( 2 + std::cos( phi_ ) );
+        return ft / 2. * ( 1 + std::sin( phi_ ) ) / ( std::cos( phi_ ) );
       }
 
       /**

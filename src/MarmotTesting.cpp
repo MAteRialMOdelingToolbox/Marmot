@@ -47,6 +47,15 @@ namespace Marmot::Testing {
     return false;
   }
 
+  bool checkIfEqual( const std::complex< double > a, const std::complex< double > b, const double tol )
+  {
+    // Check equality for the real and imaginary parts independently
+    if ( checkIfEqual( a.real(), b.real(), tol ) && checkIfEqual( a.imag(), b.imag(), tol ) ) {
+      return true;
+    }
+    return false;
+  }
+
   void throwExceptionOnFailure( const bool condition, const std::string& message )
   {
     if ( !condition ) {
