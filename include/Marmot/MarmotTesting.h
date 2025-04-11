@@ -81,4 +81,6 @@ namespace Marmot::Testing {
 
   void throwExceptionOnFailure( const bool condition, const std::string& message = "" );
 
+  void executeTestsAndCollectExceptions( const std::vector< std::function< void() > >& testFunctions );
+
 } // namespace Marmot::Testing

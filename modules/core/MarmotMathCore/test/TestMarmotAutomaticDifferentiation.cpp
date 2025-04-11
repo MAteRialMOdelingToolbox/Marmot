@@ -78,9 +78,11 @@ void testADForVectorValuedFunctions()
 
 int main()
 {
-  testAutomaticDifferentiationForScalars();
 
-  testADForVectorValuedFunctions();
+  auto tests = std::vector< std::function< void() > >{ testAutomaticDifferentiationForScalars,
+                                                       testADForVectorValuedFunctions };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

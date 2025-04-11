@@ -113,9 +113,13 @@ void testPronySeriesWithOneMaxwellElement()
 
 int main()
 {
-  testPronySeriesWithZeroMaxwellElements();
 
-  testPronySeriesWithOneMaxwellElement();
+  auto tests = std::vector< std::function< void() > >{
+    testPronySeriesWithZeroMaxwellElements,
+    testPronySeriesWithOneMaxwellElement,
+  };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }
