@@ -5,6 +5,8 @@
 #include "memory"
 #include <array>
 
+using namespace Marmot::Testing;
+
 std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( std::string   materialName,
                                                                               const double* materialProperties,
                                                                               const int     nMaterialProperties )
@@ -44,7 +46,7 @@ int main()
   const Marmot::Vector6d stressTarget = { 24., 8., 8., 0., 0., 0. };
 
   // check the result
-  Marmot::Testing::checkIfEqual< double >( stress, stressTarget );
+  throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget ) );
 
   // TODO: add tests also for shear increments and anisotropic formulations
 
