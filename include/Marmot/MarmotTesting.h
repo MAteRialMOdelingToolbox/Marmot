@@ -36,6 +36,8 @@ namespace Marmot::Testing {
 
   bool checkIfEqual( const autodiff::dual a, const autodiff::dual b, const double tol = 1e-15 );
 
+  bool checkIfEqual( const std::complex< double > a, const std::complex< double > b, const double tol = 1e-15 );
+
   std::string getString( const double a );
   std::string getString( const autodiff::dual a );
 
