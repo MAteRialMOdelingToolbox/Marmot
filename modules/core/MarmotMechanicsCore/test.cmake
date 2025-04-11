@@ -46,6 +46,9 @@ add_marmot_test("TestMarmotStateVarVectorManager" "${CURR_TEST_SOURCE_DIR}/TestM
 # Tests for MarmotUtility
 add_marmot_test("TestMarmotUtility" "${CURR_TEST_SOURCE_DIR}/TestMarmotUtility.cpp")
 
+# Tests for MarmotViscoelasticity
+add_marmot_test("TestMarmotViscoelasticity" "${CURR_TEST_SOURCE_DIR}/TestMarmotViscoelasticity.cpp")
+
 # Tests for MarmotVoigt
 add_marmot_test("TestMarmotVoigt" "${CURR_TEST_SOURCE_DIR}/TestMarmotVoigt.cpp")
 
