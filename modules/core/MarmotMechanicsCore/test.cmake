@@ -51,3 +51,6 @@ add_marmot_test("TestMarmotVoigt" "${CURR_TEST_SOURCE_DIR}/TestMarmotVoigt.cpp")
 
 # Tests for MenetreyWillam
 add_marmot_test("TestMenetreyWillam" "${CURR_TEST_SOURCE_DIR}/TestMenetreyWillam.cpp")
+
+# Tests for YieldSurfaceCombinatioNmanager
+add_marmot_test("TestYieldSurfaceCombinationManager" "${CURR_TEST_SOURCE_DIR}/TestYieldSurfaceCombinationManager.cpp")
