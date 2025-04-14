@@ -352,33 +352,33 @@ void test_dSortedPrincipalStrains_dStrain()
 
 int main()
 {
-  testStrainToVoigt();
-  testVoigtToPlaneVoigt();
-  testPrincipalStrains();
-  testPrincipalStresses();
-  testSortedPrincipalStrains();
-  testPrincipalStressDirections();
-  testVonMisesEquivalentStress();
-  testVonMisesEquivalentStrain();
-  testI1();
-  testI2();
-  testI2Strain();
-  testI3();
-  testI3Strain();
-  testJ2();
-  testJ3();
-  testJ3Strain();
 
-  // Derivatives test
-  test_dStressMean_dStress();
-  test_dRho_dStress();
-  test_dTheta_dStress();
-  test_dJ2_dStress();
-  test_dJ3_dStress();
-  test_dJ2Strain_dStrain();
-  test_dJ3Strain_dStrain();
+  auto tests = std::vector< std::function< void() > >{ testStrainToVoigt,
+                                                       testVoigtToPlaneVoigt,
+                                                       testPrincipalStrains,
+                                                       testPrincipalStresses,
+                                                       testSortedPrincipalStrains,
+                                                       testPrincipalStressDirections,
+                                                       testVonMisesEquivalentStress,
+                                                       testVonMisesEquivalentStrain,
+                                                       testI1,
+                                                       testI2,
+                                                       testI2Strain,
+                                                       testI3,
+                                                       testI3Strain,
+                                                       testJ2,
+                                                       testJ3,
+                                                       testJ3Strain,
+                                                       test_dStressMean_dStress,
+                                                       test_dRho_dStress,
+                                                       test_dTheta_dStress,
+                                                       test_dJ2_dStress,
+                                                       test_dJ3_dStress,
+                                                       test_dJ2Strain_dStrain,
+                                                       test_dJ3Strain_dStrain,
+                                                       test_dSortedPrincipalStrains_dStrain };
 
-  test_dSortedPrincipalStrains_dStrain();
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

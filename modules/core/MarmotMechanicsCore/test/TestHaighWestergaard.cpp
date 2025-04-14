@@ -210,9 +210,12 @@ void testHaighWestergaardFromStrain()
 
 int main()
 {
-  testHaighWestergaardDouble();
-  testHaighWestergaardDual();
-  testHaighWestergaardComplexDouble();
-  testHaighWestergaardFromStrain();
-  return 0;
+  auto tests = std::vector< std::function< void() > >{
+    testHaighWestergaardDouble,
+    testHaighWestergaardDual,
+    testHaighWestergaardComplexDouble,
+    testHaighWestergaardFromStrain,
+  };
+
+  executeTestsAndCollectExceptions( tests );
 }

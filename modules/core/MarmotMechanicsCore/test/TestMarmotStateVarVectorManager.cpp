@@ -64,8 +64,14 @@ void testStateVarVectorManagerLayout()
 
 int main()
 {
-  testStateVarVectorManagerFind();
-  testStateVarVectorManagerContains();
+
+  auto tests = std::vector< std::function< void() > >{
+    testStateVarVectorManagerFind,
+    testStateVarVectorManagerContains,
+    testStateVarVectorManagerLayout,
+  };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

@@ -411,16 +411,21 @@ void testGetDensityOrthotropic()
 
 int main()
 {
-  // Run tests
-  testMaterialResponse();                         // Test for normal strain
-  testShearMaterialResponse();                    // Test for shear strain
-  testTransverseIsotropicMaterialResponse();      // Test for transverse isotropic normal strain
-  testTransverseIsotropicShearMaterialResponse(); // Test for transverse isotropic shear strain
-  testOrthotropicMaterialResponse();              // Test for orthotropic normal strain
-  testOrthotropicShearMaterialResponse();         // Test for orthotropic shear strain
-  testOrthotropicMaterialResponseRotation();      // Test for orthotropic normal strain with rotation
-  testGetDensityIsotropic();                      // Test for density retrieval for isotropic case
-  testGetDensityTransverselyIsotropic();          // Test for density retrieval for transversely isotropic case
-  testGetDensityOrthotropic();                    // Test for density retrieval for orthotropic case
+
+  auto tests = std::vector< std::function< void() > >{
+    testMaterialResponse,                         // test for normal strain
+    testShearMaterialResponse,                    // test for shear strain
+    testTransverseIsotropicMaterialResponse,      // test for transverse isotropic normal strain
+    testTransverseIsotropicShearMaterialResponse, // test for transverse isotropic shear strain
+    testOrthotropicMaterialResponse,              // test for orthotropic normal strain
+    testOrthotropicShearMaterialResponse,         // test for orthotropic shear strain
+    testOrthotropicMaterialResponseRotation,      // test for orthotropic normal strain with rotation
+    testGetDensityIsotropic,                      // test for density retrieval for isotropic case
+    testGetDensityTransverselyIsotropic,          // test for density retrieval for transversely isotropic case
+    testGetDensityOrthotropic                     // test for density retrieval for orthotropic case
+  };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

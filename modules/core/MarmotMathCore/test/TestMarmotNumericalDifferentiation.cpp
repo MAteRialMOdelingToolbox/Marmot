@@ -117,9 +117,13 @@ void testComplexStepDerivativeForVectorValuedFunctions()
 
 int main()
 {
-  testNumericDifferentiationForScalars();
-  testNumericalDifferntiationForVectorValuedFunctions();
-  testComplexStepDerivativeForScalars();
-  testComplexStepDerivativeForVectorValuedFunctions();
+
+  auto tests = std::vector< std::function< void() > >{ testNumericDifferentiationForScalars,
+                                                       testNumericalDifferntiationForVectorValuedFunctions,
+                                                       testComplexStepDerivativeForScalars,
+                                                       testComplexStepDerivativeForVectorValuedFunctions };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

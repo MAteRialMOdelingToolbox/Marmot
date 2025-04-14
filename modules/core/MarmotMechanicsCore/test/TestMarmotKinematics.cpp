@@ -138,8 +138,12 @@ void testDimensionalTransformationTo3DOfTheDeformationGradient()
 
 int main()
 {
-  testDifferentiationsWithRegardsToVelocityGradient();
-  testDeformationGradientAnddEdFCalculation();
-  testDimensionalTransformationTo3DOfTheDeformationGradient();
+
+  auto tests = std::vector< std::function< void() > >{ testDifferentiationsWithRegardsToVelocityGradient,
+                                                       testDeformationGradientAnddEdFCalculation,
+                                                       testDimensionalTransformationTo3DOfTheDeformationGradient };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

@@ -717,22 +717,25 @@ void test_explicitEulerRichardsonWithErrorEstimator()
 
 int main()
 {
-  test_linearInterpolation();
-  test_exp();
-  test_makeReal();
-  test_getExponentPowerTen();
-  test_orthonormalCoordinateSystem();
-  test_directionCosines();
-  test_isNaN();
-  test_radToDeg();
-  test_degToRad();
-  test_macauly();
-  test_macaulyMatrix();
-  test_heaviside();
-  test_sgn();
-  test_explicitEuler();
-  test_semiImplicitEuler();
-  test_explicitEulerRichardson();
-  test_explicitEulerRichardsonWithErrorEstimator();
+  auto tests = std::vector< std::function< void() > >{ test_linearInterpolation,
+                                                       test_exp,
+                                                       test_makeReal,
+                                                       test_getExponentPowerTen,
+                                                       test_orthonormalCoordinateSystem,
+                                                       test_directionCosines,
+                                                       test_isNaN,
+                                                       test_radToDeg,
+                                                       test_degToRad,
+                                                       test_macauly,
+                                                       test_macaulyMatrix,
+                                                       test_heaviside,
+                                                       test_sgn,
+                                                       test_explicitEuler,
+                                                       test_semiImplicitEuler,
+                                                       test_explicitEulerRichardson,
+                                                       test_explicitEulerRichardsonWithErrorEstimator };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

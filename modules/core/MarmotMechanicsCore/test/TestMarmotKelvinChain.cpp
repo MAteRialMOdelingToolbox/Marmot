@@ -192,11 +192,14 @@ void approximateZerothComplianceTestFunction()
 
 int main()
 {
-  computeLambdaAndBetaTestFunction();
-  evaluateKCandUpdateStateVarsTestFunction();
-  computeElasticModuliTestFunction();
-  approximateZerothComplianceTestFunction();
-  evaluatePostWidderFormulaTestFunction();
+
+  auto tests = std::vector< std::function< void() > >{ evaluateKCandUpdateStateVarsTestFunction,
+                                                       computeLambdaAndBetaTestFunction,
+                                                       computeElasticModuliTestFunction,
+                                                       approximateZerothComplianceTestFunction,
+                                                       evaluatePostWidderFormulaTestFunction };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

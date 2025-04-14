@@ -328,15 +328,19 @@ void test_dStrainDStrainPlaneStress()
 
 int main()
 {
-  test_getUniaxialStressTangent();
-  test_reduce3D_dStress_dDeformationGradient();
-  test_getPlaneStrainTangent();
-  test_dStrainDStrainPlaneStrain();
-  test_compute_dStress_dDeformationGradient();
-  test_dStressPlaneStressDStress();
-  test_getPlaneStressTangent();
-  test_planeStressCompensationStrain();
-  test_planeStressTangentTransformationMatrix();
-  test_dStrainDStrainPlaneStress();
+
+  auto tests = std::vector< std::function< void() > >{ test_getUniaxialStressTangent,
+                                                       test_reduce3D_dStress_dDeformationGradient,
+                                                       test_getPlaneStrainTangent,
+                                                       test_dStrainDStrainPlaneStrain,
+                                                       test_compute_dStress_dDeformationGradient,
+                                                       test_dStressPlaneStressDStress,
+                                                       test_getPlaneStressTangent,
+                                                       test_planeStressCompensationStrain,
+                                                       test_planeStressTangentTransformationMatrix,
+                                                       test_dStrainDStrainPlaneStress };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

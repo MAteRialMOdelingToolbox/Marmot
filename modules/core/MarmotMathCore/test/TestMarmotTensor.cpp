@@ -149,14 +149,18 @@ auto testDyadicProduct()
 
 int main()
 {
-  testInitialize_IFourthOrder();
-  testInitialize_IFourthOrderTranspose();
-  testInitialize_I2xI2();
-  testInitialize_Isym();
-  testInitialize_Iskew();
-  testInitialize_dDeviatoricStress_dStress();
-  testInitialize_LeviCivita3D();
-  testInitialize_LeviCivita2D();
-  testDyadicProduct();
+
+  auto tests = std::vector< std::function< void() > >{ testInitialize_IFourthOrder,
+                                                       testInitialize_IFourthOrderTranspose,
+                                                       testInitialize_I2xI2,
+                                                       testInitialize_Isym,
+                                                       testInitialize_Iskew,
+                                                       testInitialize_dDeviatoricStress_dStress,
+                                                       testInitialize_LeviCivita3D,
+                                                       testInitialize_LeviCivita2D,
+                                                       testDyadicProduct };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }

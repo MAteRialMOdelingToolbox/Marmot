@@ -108,9 +108,12 @@ void testDerivatives()
 
 int main()
 {
-  testYieldFunctions();
-  testSmoothingWithFillet();
-  testInlineFunctions();
-  testDerivatives();
+  auto tests = std::vector< std::function< void() > >{ testYieldFunctions,
+                                                       testSmoothingWithFillet,
+                                                       testInlineFunctions,
+                                                       testDerivatives };
+
+  executeTestsAndCollectExceptions( tests );
+
   return 0;
 }
