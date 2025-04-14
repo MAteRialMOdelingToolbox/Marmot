@@ -196,8 +196,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a24c6bddc88d86dea7844840f44801774"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78fb59311d8ec039b4aa8eee40596fd6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a78fb59311d8ec039b4aa8eee40596fd6">scalar_to_scalar_function_type_2nd</a> = std::function&lt; dual2nd(const dual2nd &amp;) &gt;</td></tr>
 <tr class="separator:a78fb59311d8ec039b4aa8eee40596fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74e798080d7f9f6f304b4ba47830bbc4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a74e798080d7f9f6f304b4ba47830bbc4">vector_to_vector_function_type</a> = std::function&lt; VectorXdual(const VectorXdual &amp;X) &gt;</td></tr>
-<tr class="separator:a74e798080d7f9f6f304b4ba47830bbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f127a97ca75433d40152f623f95e087"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a2f127a97ca75433d40152f623f95e087">vector_to_vector_function_type_dual</a> = std::function&lt; VectorXdual(const VectorXdual &amp;X) &gt;</td></tr>
 <tr class="separator:a2f127a97ca75433d40152f623f95e087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9f3f9c2c02912cbcd06b7b2405f357"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> = std::function&lt; VectorXdual2nd(const VectorXdual2nd &amp;X) &gt;</td></tr>
@@ -228,12 +226,10 @@ Functions</h2></td></tr>
 <tr class="separator:ada497b02f84e8a978405d9eaa629d43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd064183bd43fcae3cd6078f9a150ab5"><td class="memItemLeft" align="right" valign="top">dual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#abd064183bd43fcae3cd6078f9a150ab5">df_dx</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a78fb59311d8ec039b4aa8eee40596fd6">scalar_to_scalar_function_type_2nd</a> &amp;f, const dual &amp;x)</td></tr>
 <tr class="separator:abd064183bd43fcae3cd6078f9a150ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c2e573ffeccf0ad9973de05d4b9a6d7"><td class="memItemLeft" align="right" valign="top">MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a8c2e573ffeccf0ad9973de05d4b9a6d7">forwardMode</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a74e798080d7f9f6f304b4ba47830bbc4">vector_to_vector_function_type</a> &amp;F, const VectorXd &amp;X)</td></tr>
-<tr class="separator:a8c2e573ffeccf0ad9973de05d4b9a6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6edafe8be435db932f7e6938d94e1b7"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXd, MatrixXd &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#ab6edafe8be435db932f7e6938d94e1b7">jacobian</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a2f127a97ca75433d40152f623f95e087">vector_to_vector_function_type_dual</a> &amp;F, const VectorXd &amp;X)</td></tr>
-<tr class="separator:ab6edafe8be435db932f7e6938d94e1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7af762d43022aa0b2c440bf40942b771"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXdual, MatrixXdual &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a7af762d43022aa0b2c440bf40942b771">jacobian2nd</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> &amp;F, const VectorXdual &amp;X)</td></tr>
-<tr class="separator:a7af762d43022aa0b2c440bf40942b771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37fa3eec636936303f0bb6ded3b3288d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXd, MatrixXd &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a37fa3eec636936303f0bb6ded3b3288d">dF_dX</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a2f127a97ca75433d40152f623f95e087">vector_to_vector_function_type_dual</a> &amp;F, const VectorXd &amp;X)</td></tr>
+<tr class="separator:a37fa3eec636936303f0bb6ded3b3288d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe3a1926bfc33ef4201b9ddb3ffc3d19"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXdual, MatrixXdual &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#afe3a1926bfc33ef4201b9ddb3ffc3d19">dF_dX_2nd</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> &amp;F, const VectorXdual &amp;X)</td></tr>
+<tr class="separator:afe3a1926bfc33ef4201b9ddb3ffc3d19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a24c6bddc88d86dea7844840f44801774"></a>
@@ -258,20 +254,6 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a78fb59311d8ec039b4aa8eee40596fd6">Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type_2nd</a> = typedef std::function&lt; dual2nd( const dual2nd&amp; ) &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a74e798080d7f9f6f304b4ba47830bbc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74e798080d7f9f6f304b4ba47830bbc4">&#9670;&nbsp;</a></span>vector_to_vector_function_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a74e798080d7f9f6f304b4ba47830bbc4">Marmot::AutomaticDifferentiation::vector_to_vector_function_type</a> = typedef std::function&lt; VectorXdual( const VectorXdual&amp; X ) &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -499,42 +481,14 @@ template&lt;size_t order&gt; </div>
 
 </div>
 </div>
-<a id="a8c2e573ffeccf0ad9973de05d4b9a6d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c2e573ffeccf0ad9973de05d4b9a6d7">&#9670;&nbsp;</a></span>forwardMode()</h2>
+<a id="a37fa3eec636936303f0bb6ded3b3288d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37fa3eec636936303f0bb6ded3b3288d">&#9670;&nbsp;</a></span>dF_dX()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">MatrixXd Marmot::AutomaticDifferentiation::forwardMode </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a74e798080d7f9f6f304b4ba47830bbc4">vector_to_vector_function_type</a> &amp;&#160;</td>
-          <td class="paramname"><em>F</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const VectorXd &amp;&#160;</td>
-          <td class="paramname"><em>X</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ab6edafe8be435db932f7e6938d94e1b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6edafe8be435db932f7e6938d94e1b7">&#9670;&nbsp;</a></span>jacobian()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::pair&lt; VectorXd, MatrixXd &gt; Marmot::AutomaticDifferentiation::jacobian </td>
+          <td class="memname">std::pair&lt; VectorXd, MatrixXd &gt; Marmot::AutomaticDifferentiation::dF_dX </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a2f127a97ca75433d40152f623f95e087">vector_to_vector_function_type_dual</a> &amp;&#160;</td>
           <td class="paramname"><em>F</em>, </td>
@@ -555,14 +509,14 @@ template&lt;size_t order&gt; </div>
 
 </div>
 </div>
-<a id="a7af762d43022aa0b2c440bf40942b771"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7af762d43022aa0b2c440bf40942b771">&#9670;&nbsp;</a></span>jacobian2nd()</h2>
+<a id="afe3a1926bfc33ef4201b9ddb3ffc3d19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe3a1926bfc33ef4201b9ddb3ffc3d19">&#9670;&nbsp;</a></span>dF_dX_2nd()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; VectorXdual, MatrixXdual &gt; Marmot::AutomaticDifferentiation::jacobian2nd </td>
+          <td class="memname">std::pair&lt; VectorXdual, MatrixXdual &gt; Marmot::AutomaticDifferentiation::dF_dX_2nd </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> &amp;&#160;</td>
           <td class="paramname"><em>F</em>, </td>

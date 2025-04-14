@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ultimatestiffnessmatrix_1488',['ultimateStiffnessMatrix',['../namespaceMarmot_1_1Materials_1_1PronySeries.html#a81ab165c0b8bcfc319ff08143396f303',1,'Marmot::Materials::PronySeries::Properties']]],
-  ['unprojectedsize_1489',['unprojectedSize',['../classMarmotElementSpatialWrapper.html#a1de75d57ef38a7d306f02fc9e2915aab',1,'MarmotElementSpatialWrapper']]]
+  ['ultimatestiffnessmatrix_1479',['ultimateStiffnessMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1Viscoelasticity_1_1PronySeries.html#a050e4314ad75a330c5e3d900cf174681',1,'Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties']]],
+  ['unprojectedsize_1480',['unprojectedSize',['../classMarmotElementSpatialWrapper.html#a1de75d57ef38a7d306f02fc9e2915aab',1,'MarmotElementSpatialWrapper']]]
 ];

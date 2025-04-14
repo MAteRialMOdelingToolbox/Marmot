@@ -214,9 +214,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
 <tr class="memitem:a3f564758677f0016ead1ed7dc89fd610"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a3f564758677f0016ead1ed7dc89fd610">evaluatePostWidderFormula</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</td></tr>
 <tr class="separator:a3f564758677f0016ead1ed7dc89fd610"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
-<tr class="memitem:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a5c9642a0ce70c5bb1b9d903ea7e63591">approximateZerothCompliance</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin)</td></tr>
-<tr class="separator:a5c9642a0ce70c5bb1b9d903ea7e63591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fddff12d5c5fcc1b6145e7b93fbcc3f"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
+<tr class="memitem:a7fddff12d5c5fcc1b6145e7b93fbcc3f"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a7fddff12d5c5fcc1b6145e7b93fbcc3f">approximateZerothCompliance</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin, double spacing=10.)</td></tr>
+<tr class="separator:a7fddff12d5c5fcc1b6145e7b93fbcc3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplParams" colspan="2">template&lt;int k&gt; </td></tr>
 <tr class="memitem:a2f2efb416b0dab23259040740294e9e6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a2f2efb416b0dab23259040740294e9e6">computeElasticModuli</a> (std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">Properties</a> retardationTimes, bool gaussQuadrature=false)</td></tr>
 <tr class="separator:a2f2efb416b0dab23259040740294e9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,8 +319,8 @@ template&lt;int k&gt; </div>
 
 </div>
 </div>
-<a id="a5c9642a0ce70c5bb1b9d903ea7e63591"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c9642a0ce70c5bb1b9d903ea7e63591">&#9670;&nbsp;</a></span>approximateZerothCompliance()</h2>
+<a id="a7fddff12d5c5fcc1b6145e7b93fbcc3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fddff12d5c5fcc1b6145e7b93fbcc3f">&#9670;&nbsp;</a></span>approximateZerothCompliance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -337,7 +337,13 @@ template&lt;int k&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tauMin</em>&#160;</td>
+          <td class="paramname"><em>tauMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>spacing</em> = <code>10.</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -237,9 +237,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aa70f058118d023378595a10df1872291"><td class="memTemplParams" colspan="2">template&lt;int ySize, typename functionType , typename... Args&gt; </td></tr>
 <tr class="memitem:aa70f058118d023378595a10df1872291"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, ySize, 1 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#aa70f058118d023378595a10df1872291">semiImplicitEuler</a> (Eigen::Matrix&lt; double, ySize, 1 &gt; yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</td></tr>
 <tr class="separator:aa70f058118d023378595a10df1872291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c216f067cc9629f6e8c0ef79bfcd737"><td class="memTemplParams" colspan="2">template&lt;int nRows, int nCols, typename functionType &gt; </td></tr>
-<tr class="memitem:a3c216f067cc9629f6e8c0ef79bfcd737"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, nRows, nCols &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a3c216f067cc9629f6e8c0ef79bfcd737">centralDiff</a> (functionType f, const Eigen::Matrix&lt; double, nCols, 1 &gt; &amp;X)</td></tr>
-<tr class="separator:a3c216f067cc9629f6e8c0ef79bfcd737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50eb2b47c8a8215c8edd2b67a3939183"><td class="memTemplParams" colspan="2">template&lt;typename functionType , typename yType , typename... Args&gt; </td></tr>
 <tr class="memitem:a50eb2b47c8a8215c8edd2b67a3939183"><td class="memTemplItemLeft" align="right" valign="top">yType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Math.html#a50eb2b47c8a8215c8edd2b67a3939183">explicitEulerRichardson</a> (yType yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</td></tr>
 <tr class="separator:a50eb2b47c8a8215c8edd2b67a3939183"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -745,37 +742,6 @@ template&lt;int ySize, typename functionType , typename... Args&gt; </div>
 <p>Semi-implicit Euler integration of function fRate taking arguments fRateArgs and initial value yN using central difference scheme for computing </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd><p class="startdd">: Replace inverse bei solving equation system? </p>
 <p class="enddd">: Use external central difference function? </p>
 </dd></dl>
-
-</div>
-</div>
-<a id="a3c216f067cc9629f6e8c0ef79bfcd737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c216f067cc9629f6e8c0ef79bfcd737">&#9670;&nbsp;</a></span>centralDiff()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;int nRows, int nCols, typename functionType &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::Matrix&lt; double, nRows, nCols &gt; Marmot::Math::centralDiff </td>
-          <td>(</td>
-          <td class="paramtype">functionType&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Matrix&lt; double, nCols, 1 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>X</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>returns central numerical differentiation of a vector-valued function f with respect to vector X --&gt; use std::bind to create function f(x) from function with multiple arguments </p>
 
 </div>
 </div>

@@ -190,12 +190,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;autodiff/forward/dual/dual.hpp&quot;</code><br />
+<code>#include &quot;unsupported/Eigen/CXX11/Tensor&quot;</code><br />
 <code>#include &lt;Eigen/Core&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for MarmotTesting.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="MarmotTesting_8h__incl.svg" width="355" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="MarmotTesting_8h__incl.svg" width="555" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -215,6 +216,8 @@ Functions</h2></td></tr>
 <tr class="separator:a0fd6d75987f47297f37a92bdc698fb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc0bb108985d93862de52d8efb07d457"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#abc0bb108985d93862de52d8efb07d457">Marmot::Testing::checkIfEqual</a> (const autodiff::dual a, const autodiff::dual b, const double tol=1e-15)</td></tr>
 <tr class="separator:abc0bb108985d93862de52d8efb07d457"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536c090df341abb53026544c6ba29a80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a536c090df341abb53026544c6ba29a80">Marmot::Testing::checkIfEqual</a> (const std::complex&lt; double &gt; a, const std::complex&lt; double &gt; b, const double tol=1e-15)</td></tr>
+<tr class="separator:a536c090df341abb53026544c6ba29a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87715a3d2e074a8043020ceaffc9e82e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a87715a3d2e074a8043020ceaffc9e82e">Marmot::Testing::getString</a> (const double a)</td></tr>
 <tr class="separator:a87715a3d2e074a8043020ceaffc9e82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0483b94b58257122784697c6492627f8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a0483b94b58257122784697c6492627f8">Marmot::Testing::getString</a> (const autodiff::dual a)</td></tr>
@@ -222,8 +225,13 @@ Functions</h2></td></tr>
 <tr class="memitem:ae8532780a87a911bd99a477fe5e8c812"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ae8532780a87a911bd99a477fe5e8c812"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#ae8532780a87a911bd99a477fe5e8c812">Marmot::Testing::checkIfEqual</a> (const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;a, const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;b, const double tol=1e-15)</td></tr>
 <tr class="separator:ae8532780a87a911bd99a477fe5e8c812"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplParams" colspan="2">template&lt;typename T , long int... Rest&gt; </td></tr>
+<tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#aa9631a49d5e76b29696611bf3ed21ceb">Marmot::Testing::checkIfEqual</a> (const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;a, const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;b, const double tol=1e-15)</td></tr>
+<tr class="separator:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af036d587586043fa17744b4d17a459db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#af036d587586043fa17744b4d17a459db">Marmot::Testing::throwExceptionOnFailure</a> (const bool condition, const std::string &amp;message=&quot;&quot;)</td></tr>
 <tr class="separator:af036d587586043fa17744b4d17a459db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a419cfd0357321b6165f13314560b904a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a419cfd0357321b6165f13314560b904a">Marmot::Testing::executeTestsAndCollectExceptions</a> (const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;testFunctions)</td></tr>
+<tr class="separator:a419cfd0357321b6165f13314560b904a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

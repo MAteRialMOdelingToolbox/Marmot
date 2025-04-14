@@ -56,10 +56,11 @@ var searchData=
   ['getstrainincrement_261',['getStrainIncrement',['../classMarmot_1_1NumericalAlgorithms_1_1HughesWinget.html#a624f64f6906e6c77d6d530535c8eabe7',1,'Marmot::NumericalAlgorithms::HughesWinget']]],
   ['getstring_262',['getString',['../namespaceMarmot_1_1Testing.html#a87715a3d2e074a8043020ceaffc9e82e',1,'Marmot::Testing::getString(const double a)'],['../namespaceMarmot_1_1Testing.html#a0483b94b58257122784697c6492627f8',1,'Marmot::Testing::getString(const autodiff::dual a)']]],
   ['getuniaxialstresstangent_263',['getUniaxialStressTangent',['../namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ad85ade68dbdb13a6679a15de717a8b75',1,'Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent(const Eigen::Ref&lt; const Matrix6d &gt; &amp;C)'],['../namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress.html#ac7e18d4633571f75f66f1ec74df85bba',1,'Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent(const Ref&lt; const Matrix6d &gt; &amp;C)']]],
-  ['gp2_264',['gp2',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#a5069b1a95836b4cc9d5098ed4aafd315',1,'Marmot::FiniteElement::Quadrature']]],
-  ['gp3_265',['gp3',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#ab9b6183986556ec9bec1f6797c4fcd95',1,'Marmot::FiniteElement::Quadrature']]],
-  ['gradient_20enhanced_20hypoelastic_20material_20models_266',['Gradient Enhanced Hypoelastic Material Models',['../gradhypoelastic.html',1,'gradmechanicalmaterials']]],
-  ['gradient_20enhanced_20mechanical_20material_20models_267',['Gradient Enhanced Mechanical Material Models',['../gradmechanicalmaterials.html',1,'continuummechanics']]],
-  ['gradmechanicalmaterials_2emd_268',['gradmechanicalmaterials.md',['../gradmechanicalmaterials_8md.html',1,'']]],
-  ['greenlagrange_269',['GreenLagrange',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1Strain.html#a87f54c1d86f7489b5cd21a4545ef4987',1,'Marmot::ContinuumMechanics::Kinematics::Strain']]]
+  ['globalstiffnesstensor_264',['globalStiffnessTensor',['../classMarmot_1_1Materials_1_1LinearElastic.html#a90c85db72cc76e26ebc83813fe0ba4c1',1,'Marmot::Materials::LinearElastic']]],
+  ['gp2_265',['gp2',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#a5069b1a95836b4cc9d5098ed4aafd315',1,'Marmot::FiniteElement::Quadrature']]],
+  ['gp3_266',['gp3',['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#ab9b6183986556ec9bec1f6797c4fcd95',1,'Marmot::FiniteElement::Quadrature']]],
+  ['gradient_20enhanced_20hypoelastic_20material_20models_267',['Gradient Enhanced Hypoelastic Material Models',['../gradhypoelastic.html',1,'gradmechanicalmaterials']]],
+  ['gradient_20enhanced_20mechanical_20material_20models_268',['Gradient Enhanced Mechanical Material Models',['../gradmechanicalmaterials.html',1,'continuummechanics']]],
+  ['gradmechanicalmaterials_2emd_269',['gradmechanicalmaterials.md',['../gradmechanicalmaterials_8md.html',1,'']]],
+  ['greenlagrange_270',['GreenLagrange',['../namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1Strain.html#a87f54c1d86f7489b5cd21a4545ef4987',1,'Marmot::ContinuumMechanics::Kinematics::Strain']]]
 ];

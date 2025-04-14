@@ -245,8 +245,8 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
 Protected Types</h2></td></tr>
 <tr class="memitem:a53c2c485fd4b63003c29db81451b7ed5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5">Type</a> { <a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5a14b5edf8fb82e568afeb4413c67fa479">Type::Isotropic</a> = 2, 
-<a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e">Type::TransverseIsotropic</a> = 8, 
-<a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5a5cdc1062d951d8d6709b94f439635a4c">Type::Orthotropic</a> = 12
+<a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e">Type::TransverseIsotropic</a> = 11, 
+<a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5a5cdc1062d951d8d6709b94f439635a4c">Type::Orthotropic</a> = 15
  }</td></tr>
 <tr class="memdesc:a53c2c485fd4b63003c29db81451b7ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of anisotropic behavior.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a53c2c485fd4b63003c29db81451b7ed5">More...</a><br /></td></tr>
 <tr class="separator:a53c2c485fd4b63003c29db81451b7ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -293,9 +293,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">G13</a></td></tr>
 <tr class="memdesc:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shear modulus between axis x1 and x3.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a57e19e288d8e271a0bcaf1a93bdcae19">More...</a><br /></td></tr>
 <tr class="separator:a57e19e288d8e271a0bcaf1a93bdcae19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60956291f9addd9bc595a16699c6e651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">C</a></td></tr>
-<tr class="memdesc:a60956291f9addd9bc595a16699c6e651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Material stiffness tensor.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651">More...</a><br /></td></tr>
-<tr class="separator:a60956291f9addd9bc595a16699c6e651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90c85db72cc76e26ebc83813fe0ba4c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a90c85db72cc76e26ebc83813fe0ba4c1">globalStiffnessTensor</a></td></tr>
+<tr class="memdesc:a90c85db72cc76e26ebc83813fe0ba4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Material stiffness tensor.  <a href="classMarmot_1_1Materials_1_1LinearElastic.html#a90c85db72cc76e26ebc83813fe0ba4c1">More...</a><br /></td></tr>
+<tr class="separator:a90c85db72cc76e26ebc83813fe0ba4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
 <tr class="memitem:a0f631d6ec14531146ec683712a085960 inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">const double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a></td></tr>
 <tr class="separator:a0f631d6ec14531146ec683712a085960 inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,7 +347,7 @@ Additional Inherited Members</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e"></a>TransverseIsotropic&#160;</td><td class="fielddoc"><p>Number of materialProperties equals 8. 5 to describe the material behavior and 3 components of a normal vector. The latter corresponds to the x1 - axis of the principal material directions and defines the materials plane of isotropy (directions x2 and x3). </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a53c2c485fd4b63003c29db81451b7ed5a5cdc1062d951d8d6709b94f439635a4c"></a>Orthotropic&#160;</td><td class="fielddoc"><p>Number of materialProperties equals 12. 9 to describe material behavior and 3 components of a normal vector. The latter corresponds to the x1 - axis of the principal material directions. </p>
+<tr><td class="fieldname"><a id="a53c2c485fd4b63003c29db81451b7ed5a5cdc1062d951d8d6709b94f439635a4c"></a>Orthotropic&#160;</td><td class="fielddoc"><p>Number of materialProperties equals 12. 9 to describe material behavior and 3 components of a orthogonal vectors. The latter corresponds to the x1 and x2 of the principal material directions. </p>
 </td></tr>
 </table>
 
@@ -807,8 +807,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a60956291f9addd9bc595a16699c6e651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60956291f9addd9bc595a16699c6e651">&#9670;&nbsp;</a></span>C</h2>
+<a id="a90c85db72cc76e26ebc83813fe0ba4c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90c85db72cc76e26ebc83813fe0ba4c1">&#9670;&nbsp;</a></span>globalStiffnessTensor</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -817,7 +817,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::Materials::LinearElastic::C</td>
+          <td class="memname"><a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Matrix6d</a> Marmot::Materials::LinearElastic::globalStiffnessTensor</td>
         </tr>
       </table>
   </td>
@@ -828,7 +828,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Material stiffness tensor. </p>
-<p><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a60956291f9addd9bc595a16699c6e651" title="Material stiffness tensor.">C</a> represents the materials stiffness tensor in voigt notation. It is calculated by the functions implemented in <a class="el" href="MarmotElasticity_8h.html">MarmotElasticity.h</a> . </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1LinearElastic.html#a90c85db72cc76e26ebc83813fe0ba4c1" title="Material stiffness tensor.">globalStiffnessTensor</a> represents the materials stiffness tensor in voigt notation in the global coordinate system. It is calculated by the functions implemented in <a class="el" href="MarmotElasticity_8h.html">MarmotElasticity.h</a> . </p>
 
 </div>
 </div>
