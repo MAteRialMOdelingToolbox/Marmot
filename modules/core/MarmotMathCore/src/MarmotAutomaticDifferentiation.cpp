@@ -53,15 +53,8 @@ namespace Marmot {
 
       return df_dx;
     }
-    MatrixXd forwardMode( const vector_to_vector_function_type& F, const VectorXd& X )
-    {
-      VectorXdual X_( X );
-      const auto  J = jacobian( F, wrt( X_ ), at( X_ ) );
 
-      return J;
-    }
-
-    std::pair< VectorXd, MatrixXd > jacobian( const vector_to_vector_function_type_dual& F, const VectorXd& X )
+    std::pair< VectorXd, MatrixXd > dF_dX( const vector_to_vector_function_type_dual& F, const VectorXd& X )
     {
       VectorXdual  X_( X );
       VectorXdual  F_right;
@@ -85,8 +78,8 @@ namespace Marmot {
       return { F_, J };
     }
 
-    std::pair< VectorXdual, MatrixXdual > jacobian2nd( const vector_to_vector_function_type_dual2nd& F,
-                                                       const VectorXdual&                            X )
+    std::pair< VectorXdual, MatrixXdual > dF_dX_2nd( const vector_to_vector_function_type_dual2nd& F,
+                                                     const VectorXdual&                            X )
     {
       VectorXdual2nd X_ = increaseDualOrderWithShift< 1 >( X );
       VectorXdual2nd F_right;

@@ -1,5 +1,4 @@
 #include "Marmot/MarmotElasticity.h"
-#include <iostream>
 
 using namespace Eigen;
 
@@ -72,12 +71,21 @@ namespace Marmot {
                                 const double nu23,
                                 const double G12 )
       {
-        Matrix6d C = Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic::complianceTensor( E1,
-                                                                                                    E2,
-                                                                                                    nu12,
-                                                                                                    nu23,
-                                                                                                    G12 )
-                       .inverse();
+
+        Matrix3d CInvTopLeft;
+
+        // clang-format off
+        CInvTopLeft <<   1./E1, -nu12/E2, -nu12/E2,
+                      -nu12/E2,    1./E2, -nu23/E2,
+                      -nu12/E2, -nu23/E2,    1./E2;
+        // clang-format on
+
+        Matrix6d     C          = Matrix6d::Zero();
+        const double G23        = E2 / ( 2 * ( 1 + nu23 ) );
+        C.block< 3, 3 >( 0, 0 ) = CInvTopLeft.inverse();
+        C( 3, 3 )               = G12;
+        C( 4, 4 )               = G12;
+        C( 5, 5 )               = G23;
 
         return C;
       }
@@ -118,16 +126,21 @@ namespace Marmot {
                                 const double G23,
                                 const double G31 )
       {
-        Matrix6d C = Marmot::ContinuumMechanics::Elasticity::Orthotropic::complianceTensor( E1,
-                                                                                            E2,
-                                                                                            E3,
-                                                                                            nu12,
-                                                                                            nu23,
-                                                                                            nu13,
-                                                                                            G12,
-                                                                                            G23,
-                                                                                            G31 )
-                       .inverse();
+
+        Matrix3d CInvTopLeft;
+
+        // clang-format off
+        CInvTopLeft <<    1./E1, -nu12/E2, -nu13/E3,
+           	           -nu12/E2,    1./E2, -nu23/E3,
+           	           -nu13/E3, -nu23/E3,    1./E3;
+        // clang-format on
+
+        Matrix6d C              = Matrix6d::Zero();
+        C.block< 3, 3 >( 0, 0 ) = CInvTopLeft.inverse();
+        C( 3, 3 )               = G12;
+        C( 4, 4 )               = G31;
+        C( 5, 5 )               = G23;
+
         return C;
       }
     } // namespace Elasticity::Orthotropic

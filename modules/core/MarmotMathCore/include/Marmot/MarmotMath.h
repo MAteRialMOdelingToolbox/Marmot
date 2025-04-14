@@ -188,29 +188,6 @@ namespace Marmot {
     }
 
     /**
-     * returns central numerical differentiation of a vector-valued function \ref f with respect to vector \ref X
-     * --> use std::bind to create function f(x) from function with multiple arguments */
-    template < int nRows, int nCols, typename functionType >
-    Eigen::Matrix< double, nRows, nCols > centralDiff( functionType f, const Eigen::Matrix< double, nCols, 1 >& X )
-    {
-      Eigen::Matrix< double, nRows, nCols > dXdY = Eigen::Matrix< double, nRows, nCols >::Zero();
-
-      Eigen::VectorXd leftX( nCols );
-      Eigen::VectorXd rightX( nCols );
-
-      for ( size_t i = 0; i < nCols; i++ ) {
-        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Constants::cubicRootEps();
-        leftX             = X;
-        leftX( i ) -= h;
-        rightX = X;
-        rightX( i ) += h;
-        dXdY.col( i ) = 1. / ( 2. * h ) * ( f( rightX ) - f( leftX ) );
-      }
-
-      return dXdY;
-    }
-
-    /**
      *  Explicit Euler integration with Richardson extrapolation of function \ref fRate taking arguments \ref fRateArgs
      * and initial value \ref yN
      * */

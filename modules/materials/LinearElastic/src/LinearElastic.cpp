@@ -15,7 +15,7 @@ namespace Marmot::Materials {
   LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
-          anisotropicType( nMaterialProperties % 2 == 0 ? static_cast< Type >( nMaterialProperties ) : static_cast< Type >( nMaterialProperties - 1 ) ),
+          anisotropicType( nMaterialProperties == 2 || nMaterialProperties == 11 || nMaterialProperties == 15 ? static_cast< Type >( nMaterialProperties ) : static_cast< Type >( nMaterialProperties - 1 ) ),
           E1(   materialProperties[0] ),
           E2(   anisotropicType == Type::Isotropic ? E1 : materialProperties[1] ),
           E3(   anisotropicType == Type::Orthotropic ? materialProperties[2] : E2 ),
@@ -35,7 +35,6 @@ namespace Marmot::Materials {
           G13(  anisotropicType == Type::Orthotropic ? materialProperties[8] : G12 )
   // clang-format on
   {
-    assert( nMaterialProperties == 2 || nMaterialProperties == 8 || nMaterialProperties == 12 );
   }
 
   void LinearElastic::computeStress( double*       stress,
@@ -45,55 +44,57 @@ namespace Marmot::Materials {
                                      const double  dT,
                                      double&       pNewDT )
   {
-    switch ( anisotropicType ) {
-    case Type::Isotropic: C = Isotropic::stiffnessTensor( E1, nu12 ); break;
+    // set global stiffness tensor
+    if ( anisotropicType == Type::Isotropic ) {
+      globalStiffnessTensor = Isotropic::stiffnessTensor( E1, nu12 );
+    }
+    else {
+      // set coordinate system for transversly isotropic and orthotropic materials
+      const int i          = nMaterialProperties % 2 == 0 ? nMaterialProperties - 7 : nMaterialProperties - 6;
+      Vector3d  direction1 = { materialProperties[i], materialProperties[i + 1], materialProperties[i + 2] };
+      Vector3d  direction2 = { materialProperties[i + 3], materialProperties[i + 4], materialProperties[i + 5] };
 
-    case Type::TransverseIsotropic:
-    case Type::Orthotropic:
+      Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
+      using namespace ContinuumMechanics::VoigtNotation::Transformations;
+      Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
+      Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
+                                                 .colPivHouseholderQr()
+                                                 .solve( Matrix6d::Identity() );
+
       Matrix6d localStiffnessTensor;
-      Vector3d normalVector;
-
-      int i = nMaterialProperties - 3;
-      normalVector << materialProperties[i], materialProperties[i + 1], materialProperties[i + 2];
 
       switch ( anisotropicType ) {
-      case Type::Isotropic: break;
+      case Type::Isotropic: globalStiffnessTensor = Isotropic::stiffnessTensor( E1, nu12 ); break;
       case Type::TransverseIsotropic:
-        localStiffnessTensor = TransverseIsotropic::stiffnessTensor( E1, E2, nu12, nu23, G12 );
+        localStiffnessTensor  = TransverseIsotropic::stiffnessTensor( E1, E2, nu12, nu23, G12 );
+        globalStiffnessTensor = transformStressToGlobalSystem * localStiffnessTensor * transformStrainToLocalSystem;
         break;
       case Type::Orthotropic:
-        localStiffnessTensor = Orthotropic::stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
-
+        localStiffnessTensor  = Orthotropic::stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
+        globalStiffnessTensor = transformStressToGlobalSystem * localStiffnessTensor * transformStrainToLocalSystem;
         break;
       };
+    }
 
-      Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( normalVector );
-
-      // strain and stress transformation matrices
-      using namespace ContinuumMechanics::VoigtNotation::Transformations;
-      Matrix6d transformationStrainInv = transformationMatrixStrainVoigt( localCoordinateSystem ).inverse();
-      Matrix6d transformationStress    = transformationMatrixStressVoigt( localCoordinateSystem );
-
-      // transformation Cel into global coordinate system
-      C = transformationStrainInv * localStiffnessTensor * transformationStress;
-      break;
-    };
-
+    // map stress, strain increment and stiffness tensor
     mVector6d             S( stress );
     Map< const Vector6d > dE( dStrain );
     mMatrix6d             mC( dStressDDStrain );
-    mC = C;
+    mC = globalStiffnessTensor;
 
-    // Zero strain  increment check
+    // Zero strain increment check
     if ( ( dE.array() == 0 ).all() )
       return;
 
+    // Compute stress increment
     S += mC * dE;
   }
 
   double LinearElastic::getDensity()
   {
-    return nMaterialProperties % 2 != 0 ? materialProperties[nMaterialProperties - 1]
-                                        : throw std::runtime_error( "Density not specified for this material" );
+    if ( nMaterialProperties == 3 || nMaterialProperties == 12 || nMaterialProperties == 16 )
+      return materialProperties[nMaterialProperties - 1];
+    else
+      throw std::runtime_error( "Density not specified for this material" );
   }
 } // namespace Marmot::Materials
