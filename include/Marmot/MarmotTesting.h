@@ -26,6 +26,7 @@
  */
 
 #include "autodiff/forward/dual/dual.hpp"
+#include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
 #include <iostream>
 
@@ -34,6 +35,8 @@ namespace Marmot::Testing {
   bool checkIfEqual( const double a, const double b, const double tol = 1e-15 );
 
   bool checkIfEqual( const autodiff::dual a, const autodiff::dual b, const double tol = 1e-15 );
+
+  bool checkIfEqual( const std::complex< double > a, const std::complex< double > b, const double tol = 1e-15 );
 
   std::string getString( const double a );
   std::string getString( const autodiff::dual a );
@@ -59,6 +62,27 @@ namespace Marmot::Testing {
     return true;
   }
 
+  template < typename T, long int... Rest >
+  bool checkIfEqual( const Eigen::TensorFixedSize< T, Eigen::Sizes< Rest... > >& a,
+                     const Eigen::TensorFixedSize< T, Eigen::Sizes< Rest... > >& b,
+                     const double                                                tol = 1e-15 )
+  {
+    const T* a_data = a.data();
+    const T* b_data = b.data();
+
+    for ( int i = 0; i < a.size(); i++ ) {
+      auto cond = checkIfEqual( a_data[i], b_data[i], tol );
+      if ( !cond ) {
+        std::cout << "  -> HINT:  a(" << i << ") = " << getString( a_data[i] ) << " !=  b(" << i
+                  << ") =" << getString( b_data[i] ) << std::endl;
+        return false;
+      }
+    }
+    return true;
+  }
+
   void throwExceptionOnFailure( const bool condition, const std::string& message = "" );
+
+  void executeTestsAndCollectExceptions( const std::vector< std::function< void() > >& testFunctions );
 
 } // namespace Marmot::Testing
