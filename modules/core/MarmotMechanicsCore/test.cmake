@@ -36,3 +36,6 @@ add_marmot_test("TestMenetreyWillam" "${CURR_TEST_SOURCE_DIR}/TestMenetreyWillam
 
 # Tests for YieldSurfaceCombinatioNmanager
 add_marmot_test("TestYieldSurfaceCombinationManager" "${CURR_TEST_SOURCE_DIR}/TestYieldSurfaceCombinationManager.cpp")
+
+# Tests for NewmarkBetaIntegrator
+add_marmot_test("TestNewmarkBetaIntegrator" "${CURR_TEST_SOURCE_DIR}/TestNewmarkBetaIntegrator.cpp")
