@@ -45,7 +45,7 @@ void testADForVectorValuedFunctions()
   VectorXd X( 3 );
   X << 1, 2, 3;
 
-  auto [F, J] = jacobian( vector_func, X );
+  auto [F, J] = dF_dX( vector_func, X );
 
   throwExceptionOnFailure( checkIfEqual< double >( F, 2 * X ),
                            "Error in vector function evaluation for jacobian computation with autodiff::dual" );
@@ -66,7 +66,7 @@ void testADForVectorValuedFunctions()
   XDual( 2 ).val  = 3;
   XDual( 2 ).grad = 1;
 
-  auto [F_, J_] = jacobian2nd( vector_func_2nd, XDual );
+  auto [F_, J_] = dF_dX_2nd( vector_func_2nd, XDual );
 
   MatrixXdual target = 2 * MatrixXdual::Identity( 3, 3 );
 
@@ -78,9 +78,11 @@ void testADForVectorValuedFunctions()
 
 int main()
 {
-  testAutomaticDifferentiationForScalars();
 
-  testADForVectorValuedFunctions();
+  auto tests = std::vector< std::function< void() > >{ testAutomaticDifferentiationForScalars,
+                                                       testADForVectorValuedFunctions };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }
