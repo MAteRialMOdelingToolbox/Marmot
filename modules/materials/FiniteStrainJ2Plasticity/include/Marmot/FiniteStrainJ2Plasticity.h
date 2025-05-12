@@ -218,7 +218,7 @@ namespace Marmot::Materials {
       Tensor33t< T > dPsi_dCe;
 
       std::tie( psi_, dPsi_dCe )  = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
-      Tensor33t< T >       PK2    = multiplyFastorTensor33WithScalar( dPsi_dCe, T( 2.0 ) );
+      Tensor33t< T >       PK2    = multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
       const Tensor33t< T > mandel = Ce % PK2;
       return mandel;
     }
@@ -309,7 +309,7 @@ namespace Marmot::Materials {
       Tensor33t< T > df_dMandel;
       std::tie( f, df_dMandel, df_dBetaP ) = yieldFunctionFromStressFirstOrderDerived( mandelStress, betaP );
 
-      const Tensor33t< T > dGp = multiplyFastorTensor33WithScalar( df_dMandel, dLambda );
+      const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( df_dMandel, dLambda );
       const Tensor33t< T > dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
 
       VectorXt< T > aux = mV9t( Tensor33t< T >( einsum< iJ, JK >( Fe, dFp ) ).data() ) -

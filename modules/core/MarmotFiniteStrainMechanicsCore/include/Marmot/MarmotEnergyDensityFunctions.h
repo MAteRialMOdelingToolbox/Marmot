@@ -66,7 +66,7 @@ namespace Marmot::ContinuumMechanics {
         const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
 
         const Tensor33t< T > CInv   = inverse( C );
-        const Tensor33t< T > dJ_dC  = multiplyFastorTensorWithScalar( transpose( CInv ), J / 2. );
+        const Tensor33t< T > dJ_dC  = multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
         const Tensor33t< T > dI1_dC = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
 
         Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +

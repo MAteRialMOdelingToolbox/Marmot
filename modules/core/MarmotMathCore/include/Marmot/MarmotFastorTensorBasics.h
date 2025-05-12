@@ -334,21 +334,6 @@ namespace Marmot {
     return expandTo3D( result_type( theTensor2D ) );
   }
 
-  template < typename T >
-  FastorStandardTensors::Tensor33t< T > multiplyFastorTensor33WithScalar( FastorStandardTensors::Tensor33t< T > tensor,
-                                                                          T                                     scalar )
-  {
-    // workaround for fastor bug (issue #149)
-    FastorStandardTensors::Tensor33t< T > res;
-
-    for ( int i = 0; i < 3; i++ ) {
-      for ( int j = 0; j < 3; j++ ) {
-        res( i, j ) = tensor( i, j ) * scalar;
-      }
-    }
-    return res;
-  }
-
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > multiplyFastorTensorWithScalar( Fastor::Tensor< T, Rest... > tensor, T scalar )
   {
@@ -382,7 +367,7 @@ namespace Marmot {
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
   {
     // workaround for lack of casting of pointer types
-    // e.g. no cast available for autoduff::dual* and double*
+    // e.g. no cast available for autodiff::dual* and double*
 
     Fastor::Tensor< T, Rest... > out;
     T*                           out_data = out.data();
@@ -398,7 +383,7 @@ namespace Marmot {
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensorMap( const Fastor::TensorMap< double, Rest... >& in )
   {
     // workaround for lack of casting of pointer types
-    // e.g. no cast available for autoduff::dual* and double*
+    // e.g. no cast available for autodiff::dual* and double*
 
     Fastor::Tensor< T, Rest... > out;
     T*                           out_data = out.data();
@@ -408,13 +393,6 @@ namespace Marmot {
       out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
     }
     return out;
-  }
-
-  template < typename T, size_t dim = 3 >
-  Fastor::Tensor< T, dim, dim > secondRankTensorFromSecondRankDoubleTensor(
-    const Fastor::Tensor< double, dim, dim >& in )
-  {
-    return fastorTensorFromDoubleTensor< T >( in );
   }
 
   template < typename T, size_t... Rest >
@@ -466,7 +444,7 @@ namespace Marmot {
     Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
     const FastorStandardTensors::Tensor33t< T > I     = FastorStandardTensors::Tensor33t< T >( dummy.data(),
                                                                                            Fastor::ColumnMajor );
-    const FastorStandardTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensor33WithScalar( I, trace( t ) );
+    const FastorStandardTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
     return dev;
   }
 } // namespace Marmot

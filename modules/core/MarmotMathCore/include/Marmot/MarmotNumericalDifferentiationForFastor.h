@@ -144,8 +144,8 @@ namespace Marmot {
 
       template < size_t... RestF, size_t... RestT >
       Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
-        std::function< Fastor::Tensor< double, RestF... >( const Fastor::Tensor< double, RestT... >& ) >& F,
-        const Fastor::Tensor< double, RestT... >&                                                         T )
+        const std::function< Fastor::Tensor< double, RestF... >( const Fastor::Tensor< double, RestT... >& ) >& F,
+        const Fastor::Tensor< double, RestT... >&                                                               T )
       {
 
         Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
@@ -179,8 +179,8 @@ namespace Marmot {
 
       template < size_t... Rest1, size_t... Rest2 >
       Fastor::Tensor< double, Rest1..., Rest2... > centralDifference(
-        std::function< Fastor::Tensor< double, Rest1... >( const Fastor::Tensor< double, Rest2... >& ) >& F,
-        const Fastor::Tensor< double, Rest2... >&                                                         T )
+        const std::function< Fastor::Tensor< double, Rest1... >( const Fastor::Tensor< double, Rest2... >& ) >& F,
+        const Fastor::Tensor< double, Rest2... >&                                                               T )
       {
 
         Fastor::Tensor< double, Rest1..., Rest2... > dF_dT( 0.0 );
