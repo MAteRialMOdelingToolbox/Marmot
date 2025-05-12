@@ -28,6 +28,7 @@
 #include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
+#include <Fastor/Fastor.h>
 #include <iostream>
 
 namespace Marmot::Testing {
@@ -81,6 +82,24 @@ namespace Marmot::Testing {
     return true;
   }
 
+  template < typename T, size_t... Rest >
+  bool checkIfEqual( const Fastor::Tensor< T, Rest... >& a,
+                     const Fastor::Tensor< T, Rest... >& b,
+                     const double                        tol = 1e-15 )
+  {
+    const T* a_data = a.data();
+    const T* b_data = b.data();
+
+    for ( size_t i = 0; i < a.size(); i++ ) {
+      auto cond = checkIfEqual( a_data[i], b_data[i], tol );
+      if ( !cond ) {
+        std::cout << "  -> HINT:  a(" << i << ") = " << getString( a_data[i] ) << " !=  b(" << i
+                  << ") =" << getString( b_data[i] ) << std::endl;
+        return false;
+      }
+    }
+    return true;
+  }
   void throwExceptionOnFailure( const bool condition, const std::string& message = "" );
 
   void executeTestsAndCollectExceptions( const std::vector< std::function< void() > >& testFunctions );
