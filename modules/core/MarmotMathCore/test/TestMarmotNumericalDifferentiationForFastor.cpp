@@ -232,8 +232,6 @@ void testTensorToTensorComplex()
                                    Fastor::Index< 1, 3 >,
                                    Fastor::OIndex< 0, 1, 2, 3 > >( x_, FastorStandardTensors::Spatial3D::I );
 
-  std::cout << "dF_dX_forward - dF_dX_target: " << dF_dX_forward - dF_dX_target << std::endl;
-
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-10 ),
                            MakeString() << __PRETTY_FUNCTION__
                                         << " failed: forward difference doesn't yield the right result" );
