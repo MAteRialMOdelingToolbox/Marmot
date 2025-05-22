@@ -24,3 +24,6 @@ add_marmot_test("TestMarmotTensor" "${CURR_TEST_SOURCE_DIR}/TestMarmotTensor.cpp
 
 # Tests for NewtonConvergenceChecker
 add_marmot_test("TestNewtonConvergenceChecker" "${CURR_TEST_SOURCE_DIR}/TestNewtonConvergenceChecker.cpp")
+
+# Tests for MarmotTensorExponential
+add_marmot_test("TestMarmotTensorExponential" "${CURR_TEST_SOURCE_DIR}/TestMarmotTensorExponential.cpp")
