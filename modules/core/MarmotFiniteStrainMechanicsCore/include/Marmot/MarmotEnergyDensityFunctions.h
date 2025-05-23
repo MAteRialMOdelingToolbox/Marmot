@@ -36,8 +36,21 @@ namespace Marmot::ContinuumMechanics {
     using namespace Fastor;
     using namespace FastorStandardTensors;
 
-    // \brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12)
     template < typename T >
+    // \brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
+    T PenceGouPotentialA( const Tensor33t< T >& C, const double K, const double G )
+    {
+
+      const T J  = sqrt( determinant( C ) );
+      const T I1 = trace( C );
+
+      T res = G / 2. * ( I1 - 3. ) + ( K / 2. - G / 3. ) * pow( J - 1, 2 ) - G * log( J );
+
+      return res;
+    }
+
+    template < typename T >
+    // \brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12)
     T PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
     {
 
@@ -45,6 +58,19 @@ namespace Marmot::ContinuumMechanics {
       const T I1 = trace( C );
 
       T res = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
+
+      return res;
+    }
+
+    template < typename T >
+    // \brief Hyperelastic Energy Density Function Wc acc. Pence & Gou (2015), Eq. (2.13)
+    T PenceGouPotentialC( const Tensor33t< T >& C, const double K, const double G )
+    {
+
+      const T J  = sqrt( determinant( C ) );
+      const T I1 = trace( C );
+
+      T res = G / 2. * ( I1 - 3. ) + 3. * G * G / ( 3. * K - 2. * G ) * ( pow( J, 2. / 3 - K / G ) - 1 );
 
       return res;
     }
