@@ -30,7 +30,8 @@ namespace Marmot::Testing {
     }
 
     // check if values are equal with respect to the tolerance
-    if ( std::abs( a - b ) > tol ) {
+    // relative error is used for non-zero values
+    if ( std::abs( a - b ) / ( std::abs( a ) > 1e-10 ? std::abs( a ) : 1.0 ) > tol ) {
       std::cout << " Hint: a = " << a << " != "
                 << " b = " << b << " ( tol = " << tol << " )" << std::endl;
       return false;
