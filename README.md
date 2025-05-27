@@ -42,7 +42,16 @@ cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EX
 sudo make install
 ```
 
-For ```anaconda``` users, those libraries can also be installed from the channels.
+```bash
+git clone https://github.com/romeric/Fastor.git
+cd Fastor
+mkdir build
+cd build
+cmake ..
+sudo make install
+```
+
+For ```anaconda``` users, eigen and autodiff can also be installed from the channels.
 
 ## How to install Marmot
 
