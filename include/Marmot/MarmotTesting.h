@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Alexander Dummer alexander.dummer@uibk.ac.at
+ * Paul Hofer Paul.Hofer@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -25,6 +26,8 @@
  * ---------------------------------------------------------------------
  */
 
+#include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
@@ -103,5 +106,34 @@ namespace Marmot::Testing {
   void throwExceptionOnFailure( const bool condition, const std::string& message = "" );
 
   void executeTestsAndCollectExceptions( const std::vector< std::function< void() > >& testFunctions );
+
+  template < int N >
+  Eigen::Matrix< double, N, 2 > fibonacciLatticeHemisphere()
+  {
+    double                        phi;
+    double                        theta;
+    Eigen::Matrix< double, 1, 2 > pt;
+    Eigen::Matrix< double, N, 2 > pts;
+
+    // i1 = 1, 2, ..., N
+    for ( int i1 = 1; i1 <= N; i1++ ) {
+      theta = acos( -( i1 - 1. ) / N );
+      phi   = ( i1 - 1. ) * Constants::GoldenAngle;
+
+      pts.row( i1 - 1 ) = Eigen::Vector2d( phi, theta );
+    }
+
+    return pts;
+  };
+
+  bool spinTurbokreisel( const std::unique_ptr< MarmotMaterialHypoElastic >& material,
+                         double*                                             stress,
+                         double*                                             dStress_dStrain,
+                         const double*                                       dStrain,
+                         const double*                                       timeOld,
+                         const double                                        dT,
+                         double&                                             pNewDT,
+                         const double                                        stressTol    = 1e-15,
+                         const double                                        stiffnessTol = 1e-15 );
 
 } // namespace Marmot::Testing
