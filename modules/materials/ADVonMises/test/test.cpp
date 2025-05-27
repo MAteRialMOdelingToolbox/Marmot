@@ -5,10 +5,10 @@
 
 using namespace Marmot::Testing;
 
-void testVonMises()
+void testADVonMises()
 {
   // material properties
-  const int                  vonMisesCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( "VONMISES" );
+  const int vonMisesCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( "ADVONMISES" );
   Eigen::Vector< double, 6 > materialProperties;
   materialProperties << 210000., 0.3, 200., 2100., 20., 20;
 
@@ -77,7 +77,7 @@ void testVonMises()
 
 int main()
 {
-  testVonMises();
+  testADVonMises();
 
   return 0;
 }
