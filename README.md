@@ -22,7 +22,7 @@ Triaxial compression using an orthotropic jointed rock plasticity model
 
 ## Third-party dependencies
 
-```Marmot``` requires the Eigen (>3.3.8) and the autodiff (>0.6.0) libraries:
+```Marmot``` requires the Eigen (>3.3.8), autodiff (>0.6.0) and Fastor (>6.4.0) libraries:
 
 ```bash
 git clone https://gitlab.com/libeigen/eigen.git
