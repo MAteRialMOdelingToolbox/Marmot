@@ -76,6 +76,7 @@ namespace Marmot {
       \f]
      */
     Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
+    Vector4d        voigtToAxisymmetricVoigt( const Vector6d& voigt );
 
     /**
      * Converts a voigt notated plane stress vector to a 3D vector.
@@ -95,6 +96,7 @@ namespace Marmot {
       \f]
      */
     Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
+    Vector6d         axisymmetricVoigtToVoigt( const Vector4d& voigtAxisymmetric );
 
     /**
      * Reduces a 3D voigt notated vector to a lower dimension defined by the template parameter 'voigtSize'.
@@ -157,6 +159,8 @@ namespace Marmot {
         return planeVoigtToVoigt( Voigt );
       else if constexpr ( voigtSize == ThreeD )
         return Voigt;
+      else if constexpr ( voigtSize == Axial )
+        return axisymmetricVoigtToVoigt( Voigt );
       else
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }

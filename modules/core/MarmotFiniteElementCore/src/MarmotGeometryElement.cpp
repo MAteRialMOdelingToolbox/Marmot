@@ -121,11 +121,29 @@ typename MarmotGeometryElement< 2, 4 >::BSized MarmotGeometryElement< 2, 4 >::B(
 {
   return Marmot::FiniteElement::Spatial2D::B< 4 >( dNdX );
 }
+// axisymmetric quad8
+template <>
+typename MarmotGeometryElement< 2, 4 >::BSizedAxisymmetric MarmotGeometryElement< 2, 4 >::B_axisymmetric(
+  const dNdXiSized& dNdX,
+  const NSized&     N,
+  const XiSized&    x_gauss ) const
+{
+  return Marmot::FiniteElement::Spatial2D::axisymmetric::B< 4 >( dNdX, N, x_gauss );
+}
 // Quad8
 template <>
 typename MarmotGeometryElement< 2, 8 >::BSized MarmotGeometryElement< 2, 8 >::B( const dNdXiSized& dNdX ) const
 {
   return Marmot::FiniteElement::Spatial2D::B< 8 >( dNdX );
+}
+// axisymmetric quad8
+template <>
+typename MarmotGeometryElement< 2, 8 >::BSizedAxisymmetric MarmotGeometryElement< 2, 8 >::B_axisymmetric(
+  const dNdXiSized& dNdX,
+  const NSized&     N,
+  const XiSized&    x_gauss ) const
+{
+  return Marmot::FiniteElement::Spatial2D::axisymmetric::B< 8 >( dNdX, N, x_gauss );
 }
 // Tetra4
 template <>

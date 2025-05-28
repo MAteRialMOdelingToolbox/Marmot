@@ -125,6 +125,27 @@ namespace Marmot {
         }
         return B_;
       }
+      namespace axisymmetric {
+        constexpr int voigtSize = 4;
+
+        template < int nNodes >
+        Eigen::Matrix< double, voigtSize, nNodes * nDim > B( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
+                                                             const Eigen::Matrix< double, 1, nNodes >&    N,
+                                                             const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
+        {
+
+          Eigen::Matrix< double, voigtSize, nNodes* nDim >
+            B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+          for ( int i = 0; i < nNodes; i++ ) {
+            B_( 0, 2 * i )     = dNdX( 0, i );
+            B_( 1, 2 * i + 1 ) = dNdX( 1, i );
+            B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
+            B_( 3, 2 * i )     = dNdX( 1, i );
+            B_( 3, 2 * i + 1 ) = dNdX( 0, i );
+          }
+          return B_;
+        }
+      } // namespace axisymmetric
 
       template < int nNodes >
       Eigen::Matrix< double, voigtSize, nNodes * nDim > BGreen( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
@@ -332,6 +353,7 @@ namespace Marmot {
 
       /// compute the element load vector for a unit vectorial load normal to the surface.
       Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
+      Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
       Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
       /// compute the element load vector for a unit vectorial load in a given direction.

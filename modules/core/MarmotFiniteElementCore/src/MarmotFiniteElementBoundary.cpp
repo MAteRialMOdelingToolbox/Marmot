@@ -1,3 +1,4 @@
+#include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotJournal.h"
 #include <iostream>
@@ -155,6 +156,25 @@ namespace Marmot {
 
       for ( const auto& qp : quadraturePoints )
         Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
+
+      return Pk;
+    }
+
+    VectorXd BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()
+    {
+      /* compute the load vector for a constant distributed load (e.g. pressure) for axisymmetric elements
+       * (circumferential integration included)
+       * Attention: result =  boundary-element-sized!
+       *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
+       * */
+
+      VectorXd Pk = VectorXd::Zero( coordinates.size() );
+
+      for ( const auto& qp : quadraturePoints ) {
+        // Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
+        Eigen::VectorXd coordAtGauss = NB( qp.N, nDim ) * coordinates;
+        Pk += qp.weight * 2. * coordAtGauss( 0 ) * Constants::Pi * qp.areaVector.transpose() * NB( qp.N, nDim );
+      }
 
       return Pk;
     }
