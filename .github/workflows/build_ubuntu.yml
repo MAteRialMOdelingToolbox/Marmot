@@ -39,7 +39,7 @@ jobs:
       - name: Install Fastor
         shell: bash -l {0}
         run: |
-          git clone --branch V0.6.4 https://github.com/romeric/Fastorf.git
+          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
           cd Fastor
           mkdir build
           cd build
