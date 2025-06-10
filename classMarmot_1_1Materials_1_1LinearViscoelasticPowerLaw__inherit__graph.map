@@ -1,0 +1,6 @@
+<map id="Marmot::Materials::LinearViscoelasticPowerLaw" name="Marmot::Materials::LinearViscoelasticPowerLaw">
+<area shape="rect" id="node1" title="Implementation of a linear elastic material according to the LinearViscoelasticPowerLaw model by Baza..." alt="" coords="5,229,196,271"/>
+<area shape="rect" id="node2" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="10,155,191,181"/>
+<area shape="rect" id="node3" href="$classMarmotMaterialMechanical.html" title=" " alt="" coords="11,80,190,107"/>
+<area shape="rect" id="node4" href="$classMarmotMaterial.html" title=" " alt="" coords="45,5,157,32"/>
+</map>

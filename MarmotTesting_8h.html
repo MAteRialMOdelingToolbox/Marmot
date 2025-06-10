@@ -189,14 +189,17 @@ $(function() {
 <div class="title">MarmotTesting.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;autodiff/forward/dual/dual.hpp&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="MarmotConstants_8h_source.html">Marmot/MarmotConstants.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MarmotMaterialHypoElastic_8h_source.html">Marmot/MarmotMaterialHypoElastic.h</a>&quot;</code><br />
+<code>#include &quot;autodiff/forward/dual/dual.hpp&quot;</code><br />
 <code>#include &quot;unsupported/Eigen/CXX11/Tensor&quot;</code><br />
 <code>#include &lt;Eigen/Core&gt;</code><br />
+<code>#include &lt;Fastor/Fastor.h&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for MarmotTesting.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="MarmotTesting_8h__incl.svg" width="555" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="MarmotTesting_8h__incl.svg" width="100%" height="563"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
@@ -228,10 +231,18 @@ Functions</h2></td></tr>
 <tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplParams" colspan="2">template&lt;typename T , long int... Rest&gt; </td></tr>
 <tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#aa9631a49d5e76b29696611bf3ed21ceb">Marmot::Testing::checkIfEqual</a> (const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;a, const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;b, const double tol=1e-15)</td></tr>
 <tr class="separator:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2650f599f03fc8c503c969366b1b5812"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a2650f599f03fc8c503c969366b1b5812"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a2650f599f03fc8c503c969366b1b5812">Marmot::Testing::checkIfEqual</a> (const Fastor::Tensor&lt; T, Rest... &gt; &amp;a, const Fastor::Tensor&lt; T, Rest... &gt; &amp;b, const double tol=1e-15)</td></tr>
+<tr class="separator:a2650f599f03fc8c503c969366b1b5812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af036d587586043fa17744b4d17a459db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#af036d587586043fa17744b4d17a459db">Marmot::Testing::throwExceptionOnFailure</a> (const bool condition, const std::string &amp;message=&quot;&quot;)</td></tr>
 <tr class="separator:af036d587586043fa17744b4d17a459db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a419cfd0357321b6165f13314560b904a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a419cfd0357321b6165f13314560b904a">Marmot::Testing::executeTestsAndCollectExceptions</a> (const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;testFunctions)</td></tr>
 <tr class="separator:a419cfd0357321b6165f13314560b904a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memTemplParams" colspan="2">template&lt;int N&gt; </td></tr>
+<tr class="memitem:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, N, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a06f3f34b638c6c214635b15cb7e2b62f">Marmot::Testing::fibonacciLatticeHemisphere</a> ()</td></tr>
+<tr class="separator:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77104a97c304eda282f242eea0f09502"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a77104a97c304eda282f242eea0f09502">Marmot::Testing::spinTurbokreisel</a> (const std::unique_ptr&lt; <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> &gt; &amp;material, double *stress, double *dStress_dStrain, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT, const double stressTol=1e-15, const double stiffnessTol=1e-15)</td></tr>
+<tr class="separator:a77104a97c304eda282f242eea0f09502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

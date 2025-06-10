@@ -1,9 +1,13 @@
 <map id="MarmotMaterialMechanical" name="MarmotMaterialMechanical">
-<area shape="rect" id="node1" title=" " alt="" coords="165,53,344,79"/>
-<area shape="rect" id="node3" href="$classMarmotMaterialHyperElastic.html" title=" " alt="" coords="392,27,577,54"/>
-<area shape="rect" id="node4" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="394,78,575,105"/>
-<area shape="rect" id="node2" href="$classMarmotMaterial.html" title=" " alt="" coords="5,53,117,79"/>
-<area shape="rect" id="node5" href="$classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states." alt="" coords="659,5,790,47"/>
-<area shape="rect" id="node6" href="$classMarmot_1_1Materials_1_1VonMisesModel.html" title=" " alt="" coords="659,71,790,112"/>
-<area shape="rect" id="node7" href="$classMarmotMaterialHypoElasticAD.html" title=" " alt="" coords="625,137,824,163"/>
+<area shape="rect" id="node1" title=" " alt="" coords="165,104,344,131"/>
+<area shape="rect" id="node3" href="$classMarmotMaterialHyperElastic.html" title=" " alt="" coords="392,79,577,105"/>
+<area shape="rect" id="node4" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="394,129,575,156"/>
+<area shape="rect" id="node2" href="$classMarmotMaterial.html" title=" " alt="" coords="5,104,117,131"/>
+<area shape="rect" id="node5" href="$classMarmot_1_1Materials_1_1B4.html" title="Implementation of a linear elastic material according to the B4 model by Bazant et al...." alt="" coords="651,5,798,32"/>
+<area shape="rect" id="node6" href="$classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states." alt="" coords="659,57,790,98"/>
+<area shape="rect" id="node7" href="$classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw.html" title="Implementation of a linear elastic material according to the LinearViscoelasticPowerLaw model by Baza..." alt="" coords="629,122,820,163"/>
+<area shape="rect" id="node8" href="$classMarmot_1_1Materials_1_1VonMisesModel.html" title=" " alt="" coords="659,187,790,229"/>
+<area shape="rect" id="node9" href="$classMarmotMaterialHypoElasticAD.html" title=" " alt="" coords="625,253,824,280"/>
+<area shape="rect" id="node10" href="$classMarmot_1_1Materials_1_1ADLinearElastic.html" title="Implementation of a isotropic linear elastic material for 3D stress states using automatic differenti..." alt="" coords="872,213,1003,254"/>
+<area shape="rect" id="node11" href="$classMarmot_1_1Materials_1_1ADVonMises.html" title="Implementation of a isotropic J2&#45;plasticity material for 3D stress states using automatic differentia..." alt="" coords="872,278,1003,319"/>
 </map>

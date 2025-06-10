@@ -201,6 +201,12 @@ $(function() {
 <li>sectionType
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#ac28b6d017733a698ec51b4b55c7ec414">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>
 </li>
+<li>SectionType
+: <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html#aa4182a61ba063a61affdac7763a4df12">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;</a>
+</li>
+<li>sectionType
+: <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html#a7dba3d6f0983a2c18c22f760fa7dea3e">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;</a>
+</li>
 <li>setCharacteristicElementLength()
 : <a class="el" href="classMarmotMaterialHypoElastic.html#aee2d34ac568027969f668999154b4b20">MarmotMaterialHypoElastic</a>
 </li>
@@ -210,6 +216,7 @@ $(function() {
 </li>
 <li>setInitialConditions()
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a8abd60a2f8ed3ab8534a7fa457956f42">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>
+, <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html#a6c9240b3504bbfdb82a808f44acfea5d">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;</a>
 , <a class="el" href="classMarmotElement.html#a8dada12f443d996232e95326b39abed7">MarmotElement</a>
 , <a class="el" href="classMarmotElementSpatialWrapper.html#a9d4962210e1a7dfcb2eb9813069ae7b5">MarmotElementSpatialWrapper</a>
 </li>
@@ -233,9 +240,17 @@ $(function() {
 </li>
 <li>sizeLoadVector
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#a11940c5891a560bb89f5b9e57fb422d8">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>
+, <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html#a466641e41a44dc1dee13b7dda7039bf5">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;</a>
 </li>
 <li>Solid
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement.html#abc9550701c39e91da02eb22efdd69e3dabe9738b2df45447aa88b7a5740d3be11">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</a>
+, <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html#aa4182a61ba063a61affdac7763a4df12a75e9f999e13195f382a692d90f29a4fb">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;</a>
+</li>
+<li>solidificationKelvinProperties
+: <a class="el" href="classMarmot_1_1Materials_1_1B4.html#a9bd463c2e8e4f231e9a9673b440888d1">Marmot::Materials::B4</a>
+</li>
+<li>solidificationParameters
+: <a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4d8030c73e8943f389492acc6c975478">Marmot::Materials::B4</a>
 </li>
 <li>splitCurrentSubstep()
 : <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html#a751a7723ca4331da03ffcc58656efa29">Marmot::NumericalAlgorithms::AdaptiveSubstepper&lt; materialTangentSize, nIntegrationDependentStateVars &gt;</a>
@@ -262,8 +277,13 @@ $(function() {
 <li>StateTypes
 : <a class="el" href="classMarmotElement.html#a4a399e8339bb2f93d379841bb252461b">MarmotElement</a>
 </li>
+<li>stateVarManager
+: <a class="el" href="classMarmot_1_1Materials_1_1B4.html#ae9317da309ae9d717b6cf90f4f703681">Marmot::Materials::B4</a>
+, <a class="el" href="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw.html#abef4d01d0571d47d9aedfe793a179ac9">Marmot::Materials::LinearViscoelasticPowerLaw</a>
+</li>
 <li>stateVars
-: <a class="el" href="classMarmotMaterial.html#a3153122a8c7819cc306d6d35378cf414">MarmotMaterial</a>
+: <a class="el" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7910b687083b42f69dbb800a15b8d191">Marmot::Materials::FiniteStrainJ2Plasticity</a>
+, <a class="el" href="classMarmotMaterial.html#a3153122a8c7819cc306d6d35378cf414">MarmotMaterial</a>
 </li>
 <li>strain
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager.html#a4cc2e26bc56e350d3ea241c70717e316">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</a>
@@ -273,6 +293,7 @@ $(function() {
 </li>
 <li>stress
 : <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager.html#a2c8e025383aa0ebdce6196578a8b8359">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</a>
+, <a class="el" href="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager.html#a448560ea578909fbb9a5871d1536413d">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</a>
 </li>
 <li>stressProgress
 : <a class="el" href="classMarmot_1_1NumericalAlgorithms_1_1AdaptiveSubstepper.html#a30b93bd0f677eba9858244374698fea6">Marmot::NumericalAlgorithms::AdaptiveSubstepper&lt; materialTangentSize, nIntegrationDependentStateVars &gt;</a>

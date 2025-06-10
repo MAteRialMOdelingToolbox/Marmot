@@ -1,0 +1,1336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Marmot::Materials::B4 Class Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1Materials.html">Materials</a></li><li class="navelem"><a class="el" href="classMarmot_1_1Materials_1_1B4.html">B4</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
+<a href="classMarmot_1_1Materials_1_1B4-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">Marmot::Materials::B4 Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implementation of a linear elastic material according to the <a class="el" href="classMarmot_1_1Materials_1_1B4.html" title="Implementation of a linear elastic material according to the B4 model by Bazant et al....">B4</a> model by Bazant et al. (2015) generalized for 3D stress states.  
+ <a href="classMarmot_1_1Materials_1_1B4.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="B4_8h_source.html">B4.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Marmot::Materials::B4:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classMarmot_1_1Materials_1_1B4__inherit__graph.svg" width="192" height="262"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager.html">B4StateVarManager</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8e248b9c1f79112b6b49ed10d3901c27"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a8e248b9c1f79112b6b49ed10d3901c27">B4</a> (const double *<a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">nMaterialProperties</a>, int materialLabel)</td></tr>
+<tr class="separator:a8e248b9c1f79112b6b49ed10d3901c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6933712c5a8f4da72673981748691658"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a6933712c5a8f4da72673981748691658">computeStress</a> (double *stress, double *dStressDDStrain, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:a6933712c5a8f4da72673981748691658"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f38abc1541c0b457a64ba25f992fe4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aa3f38abc1541c0b457a64ba25f992fe4">getNumberOfRequiredStateVars</a> ()</td></tr>
+<tr class="separator:aa3f38abc1541c0b457a64ba25f992fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898db99d30f6b14ac23d5f7512fcb66d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a898db99d30f6b14ac23d5f7512fcb66d">assignStateVars</a> (double *stateVars_, int <a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a>)</td></tr>
+<tr class="separator:a898db99d30f6b14ac23d5f7512fcb66d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d99bbc3c2924bf7f176c3efc10cbfa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4d99bbc3c2924bf7f176c3efc10cbfa6">getStateView</a> (const std::string &amp;stateName)</td></tr>
+<tr class="separator:a4d99bbc3c2924bf7f176c3efc10cbfa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classMarmotMaterialHypoElastic"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMarmotMaterialHypoElastic')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></td></tr>
+<tr class="memitem:aee2d34ac568027969f668999154b4b20 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#aee2d34ac568027969f668999154b4b20">setCharacteristicElementLength</a> (double length)</td></tr>
+<tr class="separator:aee2d34ac568027969f668999154b4b20 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf6b9c6f3b81effab814390600e974fa inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#acf6b9c6f3b81effab814390600e974fa">computeStress</a> (double *stress, double *dStressDDStrain, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</td></tr>
+<tr class="separator:acf6b9c6f3b81effab814390600e974fa inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5486a80660fa57833ce4a4a084d38d2c inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#a5486a80660fa57833ce4a4a084d38d2c">computePlaneStress</a> (double *stress2D, double *dStress_dStrain2D, const double *dStrain2D, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:a5486a80660fa57833ce4a4a084d38d2c inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e3bded903448a16ce9630978de16059 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#a7e3bded903448a16ce9630978de16059">computeUniaxialStress</a> (double *stress1D, double *dStress_dStrain1D, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:a7e3bded903448a16ce9630978de16059 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa90c4ada414a955753901c8c88628381 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#aa90c4ada414a955753901c8c88628381">computePlaneStress</a> (double *stress2D, double *dStress_dF2DNew, const double *FOld2D, const double *FNew2D, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:aa90c4ada414a955753901c8c88628381 inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c12f7b78dc7da4559140b74b32a05c inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#a74c12f7b78dc7da4559140b74b32a05c">computeUniaxialStress</a> (double *stress1D, double *dStress1D_dF1DNew, const double *F1DOld, const double *F1DNew, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:a74c12f7b78dc7da4559140b74b32a05c inherit pub_methods_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classMarmotMaterialMechanical"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMarmotMaterialMechanical')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMarmotMaterialMechanical.html">MarmotMaterialMechanical</a></td></tr>
+<tr class="memitem:aa90c4ada414a955753901c8c88628381 inherit pub_methods_classMarmotMaterialMechanical"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#aa90c4ada414a955753901c8c88628381">computePlaneStress</a> (double *stress2D, double *dStress_dF2DNew, const double *FOld2D, const double *FNew2D, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:aa90c4ada414a955753901c8c88628381 inherit pub_methods_classMarmotMaterialMechanical"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c12f7b78dc7da4559140b74b32a05c inherit pub_methods_classMarmotMaterialMechanical"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#a74c12f7b78dc7da4559140b74b32a05c">computeUniaxialStress</a> (double *stress1D, double *dStress1D_dF1DNew, const double *F1DOld, const double *F1DNew, const double *timeOld, const double dT, double &amp;pNewDT)</td></tr>
+<tr class="separator:a74c12f7b78dc7da4559140b74b32a05c inherit pub_methods_classMarmotMaterialMechanical"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395b074d78052f5e58220cfeda65c5bd inherit pub_methods_classMarmotMaterialMechanical"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialMechanical.html#a395b074d78052f5e58220cfeda65c5bd">MarmotMaterial</a> (const double *<a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">nMaterialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd">materialNumber</a>)</td></tr>
+<tr class="separator:a395b074d78052f5e58220cfeda65c5bd inherit pub_methods_classMarmotMaterialMechanical"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
+<tr class="memitem:a395b074d78052f5e58220cfeda65c5bd inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a395b074d78052f5e58220cfeda65c5bd">MarmotMaterial</a> (const double *<a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">nMaterialProperties</a>, int <a class="el" href="classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd">materialNumber</a>)</td></tr>
+<tr class="separator:a395b074d78052f5e58220cfeda65c5bd inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33fd1c89a919e8b0d396eb846614c815 inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a33fd1c89a919e8b0d396eb846614c815">~MarmotMaterial</a> ()</td></tr>
+<tr class="separator:a33fd1c89a919e8b0d396eb846614c815 inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6cfeb1fbd2990b1c38433bdb12b762 inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a3a6cfeb1fbd2990b1c38433bdb12b762">getAssignedStateVars</a> ()</td></tr>
+<tr class="separator:a3a6cfeb1fbd2990b1c38433bdb12b762 inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2e855ed98253c5f426735bc251771dd inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#ac2e855ed98253c5f426735bc251771dd">getNumberOfAssignedStateVars</a> ()</td></tr>
+<tr class="separator:ac2e855ed98253c5f426735bc251771dd inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d6615f62d1e33ab694f3e889dba203f inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9d6615f62d1e33ab694f3e889dba203f">initializeYourself</a> ()</td></tr>
+<tr class="separator:a9d6615f62d1e33ab694f3e889dba203f inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16ef751ebc410cb5173cb65a2e43e1ec inherit pub_methods_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a16ef751ebc410cb5173cb65a2e43e1ec">getDensity</a> ()</td></tr>
+<tr class="separator:a16ef751ebc410cb5173cb65a2e43e1ec inherit pub_methods_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aed4dd5498e97cbfdfb4f210fbe8bcda3"><td class="memTemplParams" colspan="2">template&lt;typename T_ &gt; </td></tr>
+<tr class="memitem:aed4dd5498e97cbfdfb4f210fbe8bcda3"><td class="memTemplItemLeft" align="right" valign="top">T_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aed4dd5498e97cbfdfb4f210fbe8bcda3">phi</a> (T_ xi, double b, double xiZero)</td></tr>
+<tr class="memdesc:aed4dd5498e97cbfdfb4f210fbe8bcda3"><td class="mdescLeft">&#160;</td><td class="mdescRight">drying creep compliance function  <a href="classMarmot_1_1Materials_1_1B4.html#aed4dd5498e97cbfdfb4f210fbe8bcda3">More...</a><br /></td></tr>
+<tr class="separator:aed4dd5498e97cbfdfb4f210fbe8bcda3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2eaf3e988998391c4319a0b08ed74cda"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a2eaf3e988998391c4319a0b08ed74cda">nu</a></td></tr>
+<tr class="memdesc:a2eaf3e988998391c4319a0b08ed74cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Poisson's ratio.  <a href="classMarmot_1_1Materials_1_1B4.html#a2eaf3e988998391c4319a0b08ed74cda">More...</a><br /></td></tr>
+<tr class="separator:a2eaf3e988998391c4319a0b08ed74cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeead2058deed3952b66f803d7f8ec83"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aeeead2058deed3952b66f803d7f8ec83">q1</a></td></tr>
+<tr class="memdesc:aeeead2058deed3952b66f803d7f8ec83"><td class="mdescLeft">&#160;</td><td class="mdescRight">asymptotic elastic compliance parameter  <a href="classMarmot_1_1Materials_1_1B4.html#aeeead2058deed3952b66f803d7f8ec83">More...</a><br /></td></tr>
+<tr class="separator:aeeead2058deed3952b66f803d7f8ec83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbdc2fafba30e88c508bf959e5d665cb"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#adbdc2fafba30e88c508bf959e5d665cb">q2</a></td></tr>
+<tr class="memdesc:adbdc2fafba30e88c508bf959e5d665cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">viscoelastic compliance parameter  <a href="classMarmot_1_1Materials_1_1B4.html#adbdc2fafba30e88c508bf959e5d665cb">More...</a><br /></td></tr>
+<tr class="separator:adbdc2fafba30e88c508bf959e5d665cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e97ebd7f50331c4a9b3f492be3a5482"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a5e97ebd7f50331c4a9b3f492be3a5482">q3</a></td></tr>
+<tr class="memdesc:a5e97ebd7f50331c4a9b3f492be3a5482"><td class="mdescLeft">&#160;</td><td class="mdescRight">viscoelastic compliance parameter  <a href="classMarmot_1_1Materials_1_1B4.html#a5e97ebd7f50331c4a9b3f492be3a5482">More...</a><br /></td></tr>
+<tr class="separator:a5e97ebd7f50331c4a9b3f492be3a5482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00f91333264db351d8e3d55312d352b6"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a00f91333264db351d8e3d55312d352b6">q4</a></td></tr>
+<tr class="memdesc:a00f91333264db351d8e3d55312d352b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">flow compliance parameter  <a href="classMarmot_1_1Materials_1_1B4.html#a00f91333264db351d8e3d55312d352b6">More...</a><br /></td></tr>
+<tr class="separator:a00f91333264db351d8e3d55312d352b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2968ffc5996bed644885803e598eeb6b"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a2968ffc5996bed644885803e598eeb6b">n</a></td></tr>
+<tr class="memdesc:a2968ffc5996bed644885803e598eeb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log-power law exponent  <a href="classMarmot_1_1Materials_1_1B4.html#a2968ffc5996bed644885803e598eeb6b">More...</a><br /></td></tr>
+<tr class="separator:a2968ffc5996bed644885803e598eeb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a53a3c509beadae9c4a04cbf474883"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a67a53a3c509beadae9c4a04cbf474883">m</a></td></tr>
+<tr class="memdesc:a67a53a3c509beadae9c4a04cbf474883"><td class="mdescLeft">&#160;</td><td class="mdescRight">solidified volume exponent  <a href="classMarmot_1_1Materials_1_1B4.html#a67a53a3c509beadae9c4a04cbf474883">More...</a><br /></td></tr>
+<tr class="separator:a67a53a3c509beadae9c4a04cbf474883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56873cc259f85e8f017a0506340ccf07"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a56873cc259f85e8f017a0506340ccf07">nKelvinBasic</a></td></tr>
+<tr class="memdesc:a56873cc259f85e8f017a0506340ccf07"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of Kelvin units to approximate the viscoelastic compliance  <a href="classMarmot_1_1Materials_1_1B4.html#a56873cc259f85e8f017a0506340ccf07">More...</a><br /></td></tr>
+<tr class="separator:a56873cc259f85e8f017a0506340ccf07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0c99ec0c4d77b1ff26e89b62f9529a6"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ac0c99ec0c4d77b1ff26e89b62f9529a6">minTauBasic</a></td></tr>
+<tr class="memdesc:ac0c99ec0c4d77b1ff26e89b62f9529a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">minimal retardation time used in the viscoelastic Kelvin chain  <a href="classMarmot_1_1Materials_1_1B4.html#ac0c99ec0c4d77b1ff26e89b62f9529a6">More...</a><br /></td></tr>
+<tr class="separator:ac0c99ec0c4d77b1ff26e89b62f9529a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab64c145db5d842309016125a9833d64e"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ab64c145db5d842309016125a9833d64e">ultimateAutogenousShrinkageStrain</a></td></tr>
+<tr class="memdesc:ab64c145db5d842309016125a9833d64e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ultimate autogenous shrinkage strain  <a href="classMarmot_1_1Materials_1_1B4.html#ab64c145db5d842309016125a9833d64e">More...</a><br /></td></tr>
+<tr class="separator:ab64c145db5d842309016125a9833d64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c79d39639c628b547a3a7fea2b9940"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a34c79d39639c628b547a3a7fea2b9940">autogenousShrinkageHalfTime</a></td></tr>
+<tr class="memdesc:a34c79d39639c628b547a3a7fea2b9940"><td class="mdescLeft">&#160;</td><td class="mdescRight">autogenous shrinkage half time  <a href="classMarmot_1_1Materials_1_1B4.html#a34c79d39639c628b547a3a7fea2b9940">More...</a><br /></td></tr>
+<tr class="separator:a34c79d39639c628b547a3a7fea2b9940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0f49d27d16e09075100035730f1088"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#acf0f49d27d16e09075100035730f1088">alpha</a></td></tr>
+<tr class="memdesc:acf0f49d27d16e09075100035730f1088"><td class="mdescLeft">&#160;</td><td class="mdescRight">autogenous shrinkage material parameter  <a href="classMarmot_1_1Materials_1_1B4.html#acf0f49d27d16e09075100035730f1088">More...</a><br /></td></tr>
+<tr class="separator:acf0f49d27d16e09075100035730f1088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945ef886c515f8d8fac13e0586dc8e8b"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a945ef886c515f8d8fac13e0586dc8e8b">rt</a></td></tr>
+<tr class="memdesc:a945ef886c515f8d8fac13e0586dc8e8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">autogenous shrinkage material parameter  <a href="classMarmot_1_1Materials_1_1B4.html#a945ef886c515f8d8fac13e0586dc8e8b">More...</a><br /></td></tr>
+<tr class="separator:a945ef886c515f8d8fac13e0586dc8e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01437a79d71a5f2ba7f92ffdd218e22d"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a01437a79d71a5f2ba7f92ffdd218e22d">ultimateDryingShrinkageStrain</a></td></tr>
+<tr class="memdesc:a01437a79d71a5f2ba7f92ffdd218e22d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ultimate drying shrinkage strain  <a href="classMarmot_1_1Materials_1_1B4.html#a01437a79d71a5f2ba7f92ffdd218e22d">More...</a><br /></td></tr>
+<tr class="separator:a01437a79d71a5f2ba7f92ffdd218e22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa426ea311744894b13f8f3fd504a8413"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aa426ea311744894b13f8f3fd504a8413">dryingShrinkageHalfTime</a></td></tr>
+<tr class="memdesc:aa426ea311744894b13f8f3fd504a8413"><td class="mdescLeft">&#160;</td><td class="mdescRight">drying shrinkage half time  <a href="classMarmot_1_1Materials_1_1B4.html#aa426ea311744894b13f8f3fd504a8413">More...</a><br /></td></tr>
+<tr class="separator:aa426ea311744894b13f8f3fd504a8413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8145b7292e3cf837374ecf5d09a6e68"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ac8145b7292e3cf837374ecf5d09a6e68">dryingStart</a></td></tr>
+<tr class="memdesc:ac8145b7292e3cf837374ecf5d09a6e68"><td class="mdescLeft">&#160;</td><td class="mdescRight">drying start time  <a href="classMarmot_1_1Materials_1_1B4.html#ac8145b7292e3cf837374ecf5d09a6e68">More...</a><br /></td></tr>
+<tr class="separator:ac8145b7292e3cf837374ecf5d09a6e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a205cffffd999e64846595b8e54588af3"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a205cffffd999e64846595b8e54588af3">hEnv</a></td></tr>
+<tr class="memdesc:a205cffffd999e64846595b8e54588af3"><td class="mdescLeft">&#160;</td><td class="mdescRight">relative ambient humidity  <a href="classMarmot_1_1Materials_1_1B4.html#a205cffffd999e64846595b8e54588af3">More...</a><br /></td></tr>
+<tr class="separator:a205cffffd999e64846595b8e54588af3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4009fafd6a8d9dc86a95401fbfcfdee8"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4009fafd6a8d9dc86a95401fbfcfdee8">q5</a></td></tr>
+<tr class="memdesc:a4009fafd6a8d9dc86a95401fbfcfdee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">drying creep compliance parameter  <a href="classMarmot_1_1Materials_1_1B4.html#a4009fafd6a8d9dc86a95401fbfcfdee8">More...</a><br /></td></tr>
+<tr class="separator:a4009fafd6a8d9dc86a95401fbfcfdee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0048fcbb0b0c2d37214f7d600c0e18f6"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a0048fcbb0b0c2d37214f7d600c0e18f6">nKelvinDrying</a></td></tr>
+<tr class="memdesc:a0048fcbb0b0c2d37214f7d600c0e18f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of Kelvin units to approximate the drying creep compliance  <a href="classMarmot_1_1Materials_1_1B4.html#a0048fcbb0b0c2d37214f7d600c0e18f6">More...</a><br /></td></tr>
+<tr class="separator:a0048fcbb0b0c2d37214f7d600c0e18f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43ff5b201e37bca31dcf5b035f9ee2e3"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a43ff5b201e37bca31dcf5b035f9ee2e3">minTauDrying</a></td></tr>
+<tr class="memdesc:a43ff5b201e37bca31dcf5b035f9ee2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">minimal retardation time used in the drying creep Kelvin chain  <a href="classMarmot_1_1Materials_1_1B4.html#a43ff5b201e37bca31dcf5b035f9ee2e3">More...</a><br /></td></tr>
+<tr class="separator:a43ff5b201e37bca31dcf5b035f9ee2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a365005effccbb0d39e13d5ca14f7870d"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a365005effccbb0d39e13d5ca14f7870d">castTime</a></td></tr>
+<tr class="memdesc:a365005effccbb0d39e13d5ca14f7870d"><td class="mdescLeft">&#160;</td><td class="mdescRight">time to start hydration  <a href="classMarmot_1_1Materials_1_1B4.html#a365005effccbb0d39e13d5ca14f7870d">More...</a><br /></td></tr>
+<tr class="separator:a365005effccbb0d39e13d5ca14f7870d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466f56c79a12adfdd3edeeb460b522f9"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a466f56c79a12adfdd3edeeb460b522f9">timeToDays</a></td></tr>
+<tr class="memdesc:a466f56c79a12adfdd3edeeb460b522f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ratio of simulation time to days  <a href="classMarmot_1_1Materials_1_1B4.html#a466f56c79a12adfdd3edeeb460b522f9">More...</a><br /></td></tr>
+<tr class="separator:a466f56c79a12adfdd3edeeb460b522f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9317da309ae9d717b6cf90f4f703681"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager.html">B4StateVarManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ae9317da309ae9d717b6cf90f4f703681">stateVarManager</a></td></tr>
+<tr class="separator:ae9317da309ae9d717b6cf90f4f703681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8030c73e8943f389492acc6c975478"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters">SolidificationTheory::Parameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4d8030c73e8943f389492acc6c975478">solidificationParameters</a></td></tr>
+<tr class="separator:a4d8030c73e8943f389492acc6c975478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd463c2e8e4f231e9a9673b440888d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties">SolidificationTheory::KelvinChainProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a9bd463c2e8e4f231e9a9673b440888d1">solidificationKelvinProperties</a></td></tr>
+<tr class="separator:a9bd463c2e8e4f231e9a9673b440888d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cfc840893f1c0cbd15f24118a71dbed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">KelvinChain::Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a3cfc840893f1c0cbd15f24118a71dbed">basicCreepElasticModuli</a></td></tr>
+<tr class="separator:a3cfc840893f1c0cbd15f24118a71dbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90abb8d24ffce29ee81933ebda4c0ac5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">KelvinChain::Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a90abb8d24ffce29ee81933ebda4c0ac5">basicCreepRetardationTimes</a></td></tr>
+<tr class="separator:a90abb8d24ffce29ee81933ebda4c0ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ad0dde9ac0a0a9026319624c81d075d34"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ad0dde9ac0a0a9026319624c81d075d34">dryingCreepComplianceApproximationOrder</a> = 5</td></tr>
+<tr class="separator:ad0dde9ac0a0a9026319624c81d075d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47de019b8c16d71edef8debf1a4a0e12"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a47de019b8c16d71edef8debf1a4a0e12">basicCreepComplianceApproximationOrder</a> = 2</td></tr>
+<tr class="separator:a47de019b8c16d71edef8debf1a4a0e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classMarmotMaterialHypoElastic"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classMarmotMaterialHypoElastic')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a></td></tr>
+<tr class="memitem:af526ea494a3ba4d70de3be5d2d55b5a0 inherit pub_attribs_classMarmotMaterialHypoElastic"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterialHypoElastic.html#af526ea494a3ba4d70de3be5d2d55b5a0">characteristicElementLength</a></td></tr>
+<tr class="memdesc:af526ea494a3ba4d70de3be5d2d55b5a0 inherit pub_attribs_classMarmotMaterialHypoElastic"><td class="mdescLeft">&#160;</td><td class="mdescRight">Characteristic element length.  <a href="classMarmotMaterialHypoElastic.html#af526ea494a3ba4d70de3be5d2d55b5a0">More...</a><br /></td></tr>
+<tr class="separator:af526ea494a3ba4d70de3be5d2d55b5a0 inherit pub_attribs_classMarmotMaterialHypoElastic"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
+<tr class="memitem:a31bc9f9283f984f5d78685d82e764edd inherit pub_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a31bc9f9283f984f5d78685d82e764edd">materialNumber</a></td></tr>
+<tr class="separator:a31bc9f9283f984f5d78685d82e764edd inherit pub_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classMarmotMaterial"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classMarmotMaterial')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classMarmotMaterial.html">MarmotMaterial</a></td></tr>
+<tr class="memitem:a0f631d6ec14531146ec683712a085960 inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">const double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a></td></tr>
+<tr class="separator:a0f631d6ec14531146ec683712a085960 inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b6c5faf3cb8abd50c67146dad8c175a inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a0b6c5faf3cb8abd50c67146dad8c175a">nMaterialProperties</a></td></tr>
+<tr class="separator:a0b6c5faf3cb8abd50c67146dad8c175a inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3153122a8c7819cc306d6d35378cf414 inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a3153122a8c7819cc306d6d35378cf414">stateVars</a></td></tr>
+<tr class="separator:a3153122a8c7819cc306d6d35378cf414 inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMarmotMaterial.html#a9b7554e1cb090e36004b1590f6cdb73c">nStateVars</a></td></tr>
+<tr class="separator:a9b7554e1cb090e36004b1590f6cdb73c inherit pro_attribs_classMarmotMaterial"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Implementation of a linear elastic material according to the <a class="el" href="classMarmot_1_1Materials_1_1B4.html" title="Implementation of a linear elastic material according to the B4 model by Bazant et al....">B4</a> model by Bazant et al. (2015) generalized for 3D stress states. </p>
+<p>For further information see <a class="el" href="b4.html">B4 Model</a>. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a8e248b9c1f79112b6b49ed10d3901c27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e248b9c1f79112b6b49ed10d3901c27">&#9670;&nbsp;</a></span>B4()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Marmot::Materials::B4::B4 </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>materialProperties</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nMaterialProperties</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>materialLabel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6933712c5a8f4da72673981748691658"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6933712c5a8f4da72673981748691658">&#9670;&nbsp;</a></span>computeStress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::Materials::B4::computeStress </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>stress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>dStressDDStrain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>dStrain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>timeOld</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>dT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>pNewDT</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For a given linearized strain increment \(\Delta\boldsymbol{\varepsilon}\) at the old and the current time, compute the Cauchy stress and the algorithmic tangent \(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">stress</td><td>Cauchy stress </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">dStressDDstrain</td><td>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dStrain</td><td>linearized strain increment </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeOld</td><td>Old (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dt</td><td>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">pNewDT</td><td>Suggestion for a new time increment </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classMarmotMaterialHypoElastic.html#a4751feeb33fc3205fc5c2b75fdc0d30c">MarmotMaterialHypoElastic</a>.</p>
+
+</div>
+</div>
+<a id="aa3f38abc1541c0b457a64ba25f992fe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3f38abc1541c0b457a64ba25f992fe4">&#9670;&nbsp;</a></span>getNumberOfRequiredStateVars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Marmot::Materials::B4::getNumberOfRequiredStateVars </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classMarmotMaterial.html#a16e96c33fdc77ddd5aa98ffbbca1577d">MarmotMaterial</a>.</p>
+
+</div>
+</div>
+<a id="a898db99d30f6b14ac23d5f7512fcb66d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a898db99d30f6b14ac23d5f7512fcb66d">&#9670;&nbsp;</a></span>assignStateVars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::Materials::B4::assignStateVars </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>stateVars_</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nStateVars</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classMarmotMaterial.html#a9644446a593632d0da2462bdeb43e25c">MarmotMaterial</a>.</p>
+
+</div>
+</div>
+<a id="a4d99bbc3c2924bf7f176c3efc10cbfa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d99bbc3c2924bf7f176c3efc10cbfa6">&#9670;&nbsp;</a></span>getStateView()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="MarmotUtils_8h.html#structStateView">StateView</a> Marmot::Materials::B4::getStateView </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>stateName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classMarmotMaterial.html#acc7dfa70f71415b2c9b562a9fafe64d1">MarmotMaterial</a>.</p>
+
+</div>
+</div>
+<a id="aed4dd5498e97cbfdfb4f210fbe8bcda3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed4dd5498e97cbfdfb4f210fbe8bcda3">&#9670;&nbsp;</a></span>phi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_ &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T_ Marmot::Materials::B4::phi </td>
+          <td>(</td>
+          <td class="paramtype">T_&#160;</td>
+          <td class="paramname"><em>xi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>xiZero</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>drying creep compliance function </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2eaf3e988998391c4319a0b08ed74cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eaf3e988998391c4319a0b08ed74cda">&#9670;&nbsp;</a></span>nu</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::nu</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Poisson's ratio. </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a2eaf3e988998391c4319a0b08ed74cda" title="Poisson&#39;s ratio.">nu</a> represents Poisson's ratio for isotropic linear elasticity. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[0]. </p>
+
+</div>
+</div>
+<a id="aeeead2058deed3952b66f803d7f8ec83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeead2058deed3952b66f803d7f8ec83">&#9670;&nbsp;</a></span>q1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::q1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>asymptotic elastic compliance parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aeeead2058deed3952b66f803d7f8ec83" title="asymptotic elastic compliance parameter">q1</a> represents the first compliance parameter for Solidification Theory. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[1]. </p>
+
+</div>
+</div>
+<a id="adbdc2fafba30e88c508bf959e5d665cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbdc2fafba30e88c508bf959e5d665cb">&#9670;&nbsp;</a></span>q2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::q2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>viscoelastic compliance parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#adbdc2fafba30e88c508bf959e5d665cb" title="viscoelastic compliance parameter">q2</a> represents the second compliance parameter for Solidification Theory. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[2]. </p>
+
+</div>
+</div>
+<a id="a5e97ebd7f50331c4a9b3f492be3a5482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e97ebd7f50331c4a9b3f492be3a5482">&#9670;&nbsp;</a></span>q3</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::q3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>viscoelastic compliance parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a5e97ebd7f50331c4a9b3f492be3a5482" title="viscoelastic compliance parameter">q3</a> represents the third compliance parameter for Solidification Theory. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[3]. </p>
+
+</div>
+</div>
+<a id="a00f91333264db351d8e3d55312d352b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00f91333264db351d8e3d55312d352b6">&#9670;&nbsp;</a></span>q4</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::q4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>flow compliance parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a00f91333264db351d8e3d55312d352b6" title="flow compliance parameter">q4</a> represents the fourth compliance parameter for Solidification Theory. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[4]. </p>
+
+</div>
+</div>
+<a id="a2968ffc5996bed644885803e598eeb6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2968ffc5996bed644885803e598eeb6b">&#9670;&nbsp;</a></span>n</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::n</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>log-power law exponent </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a2968ffc5996bed644885803e598eeb6b" title="log-power law exponent">n</a> represents the exponent of the log-power law used in the compliance function of the hardened constituent. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[5]. </p>
+
+</div>
+</div>
+<a id="a67a53a3c509beadae9c4a04cbf474883"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67a53a3c509beadae9c4a04cbf474883">&#9670;&nbsp;</a></span>m</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::m</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>solidified volume exponent </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a67a53a3c509beadae9c4a04cbf474883" title="solidified volume exponent">m</a> represents the exponent in the function describing the solidification of the material. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[6]. </p>
+
+</div>
+</div>
+<a id="a56873cc259f85e8f017a0506340ccf07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56873cc259f85e8f017a0506340ccf07">&#9670;&nbsp;</a></span>nKelvinBasic</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t Marmot::Materials::B4::nKelvinBasic</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>number of Kelvin units to approximate the viscoelastic compliance </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a56873cc259f85e8f017a0506340ccf07" title="number of Kelvin units to approximate the viscoelastic compliance">nKelvinBasic</a> the number of Kelvin units used to approximate the viscoelastic compliance. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[7]. </p>
+
+</div>
+</div>
+<a id="ac0c99ec0c4d77b1ff26e89b62f9529a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0c99ec0c4d77b1ff26e89b62f9529a6">&#9670;&nbsp;</a></span>minTauBasic</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::minTauBasic</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>minimal retardation time used in the viscoelastic Kelvin chain </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ac0c99ec0c4d77b1ff26e89b62f9529a6" title="minimal retardation time used in the viscoelastic Kelvin chain">minTauBasic</a> represents the minimal retardation time in days used in the Kelvin chain to approximate the viscoelastic compliance. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[8]. </p>
+
+</div>
+</div>
+<a id="ab64c145db5d842309016125a9833d64e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab64c145db5d842309016125a9833d64e">&#9670;&nbsp;</a></span>ultimateAutogenousShrinkageStrain</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::ultimateAutogenousShrinkageStrain</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ultimate autogenous shrinkage strain </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ab64c145db5d842309016125a9833d64e" title="ultimate autogenous shrinkage strain">ultimateAutogenousShrinkageStrain</a> represents the ultimate autogenous shrinkage strain. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[9]. </p>
+
+</div>
+</div>
+<a id="a34c79d39639c628b547a3a7fea2b9940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c79d39639c628b547a3a7fea2b9940">&#9670;&nbsp;</a></span>autogenousShrinkageHalfTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::autogenousShrinkageHalfTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>autogenous shrinkage half time </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a34c79d39639c628b547a3a7fea2b9940" title="autogenous shrinkage half time">autogenousShrinkageHalfTime</a> represents the autogenous shrinkage half time. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[10]. </p>
+
+</div>
+</div>
+<a id="acf0f49d27d16e09075100035730f1088"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf0f49d27d16e09075100035730f1088">&#9670;&nbsp;</a></span>alpha</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::alpha</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>autogenous shrinkage material parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#acf0f49d27d16e09075100035730f1088" title="autogenous shrinkage material parameter">alpha</a> represents a cement type and concrete composition dependent material parameter for autogenous shrinkage. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[11]. </p>
+
+</div>
+</div>
+<a id="a945ef886c515f8d8fac13e0586dc8e8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945ef886c515f8d8fac13e0586dc8e8b">&#9670;&nbsp;</a></span>rt</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::rt</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>autogenous shrinkage material parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a945ef886c515f8d8fac13e0586dc8e8b" title="autogenous shrinkage material parameter">rt</a> represents a cement type dependent material parameter for autogenous shrinkage. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[12]. </p>
+
+</div>
+</div>
+<a id="a01437a79d71a5f2ba7f92ffdd218e22d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01437a79d71a5f2ba7f92ffdd218e22d">&#9670;&nbsp;</a></span>ultimateDryingShrinkageStrain</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::ultimateDryingShrinkageStrain</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ultimate drying shrinkage strain </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a01437a79d71a5f2ba7f92ffdd218e22d" title="ultimate drying shrinkage strain">ultimateDryingShrinkageStrain</a> represents the ultimate drying shrinkage strain at zero relative ambient humidity. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[13]. </p>
+
+</div>
+</div>
+<a id="aa426ea311744894b13f8f3fd504a8413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa426ea311744894b13f8f3fd504a8413">&#9670;&nbsp;</a></span>dryingShrinkageHalfTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::dryingShrinkageHalfTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>drying shrinkage half time </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#aa426ea311744894b13f8f3fd504a8413" title="drying shrinkage half time">dryingShrinkageHalfTime</a> represents the drying shrinkage half time. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[14]. </p>
+
+</div>
+</div>
+<a id="ac8145b7292e3cf837374ecf5d09a6e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8145b7292e3cf837374ecf5d09a6e68">&#9670;&nbsp;</a></span>dryingStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::dryingStart</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>drying start time </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#ac8145b7292e3cf837374ecf5d09a6e68" title="drying start time">dryingStart</a> represents start of drying in days. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[15]. </p>
+
+</div>
+</div>
+<a id="a205cffffd999e64846595b8e54588af3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a205cffffd999e64846595b8e54588af3">&#9670;&nbsp;</a></span>hEnv</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::hEnv</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>relative ambient humidity </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a205cffffd999e64846595b8e54588af3" title="relative ambient humidity">hEnv</a> represents relative ambient humidity. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[16]. </p>
+
+</div>
+</div>
+<a id="a4009fafd6a8d9dc86a95401fbfcfdee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4009fafd6a8d9dc86a95401fbfcfdee8">&#9670;&nbsp;</a></span>q5</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::q5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>drying creep compliance parameter </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4009fafd6a8d9dc86a95401fbfcfdee8" title="drying creep compliance parameter">q5</a> represents drying creep compliance parameter. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[17]. </p>
+
+</div>
+</div>
+<a id="a0048fcbb0b0c2d37214f7d600c0e18f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0048fcbb0b0c2d37214f7d600c0e18f6">&#9670;&nbsp;</a></span>nKelvinDrying</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t Marmot::Materials::B4::nKelvinDrying</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>number of Kelvin units to approximate the drying creep compliance </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a4009fafd6a8d9dc86a95401fbfcfdee8" title="drying creep compliance parameter">q5</a> represents the number of Kelvin units to approximate the drying creep compliance function. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[18]. </p>
+
+</div>
+</div>
+<a id="a43ff5b201e37bca31dcf5b035f9ee2e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43ff5b201e37bca31dcf5b035f9ee2e3">&#9670;&nbsp;</a></span>minTauDrying</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::minTauDrying</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>minimal retardation time used in the drying creep Kelvin chain </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a43ff5b201e37bca31dcf5b035f9ee2e3" title="minimal retardation time used in the drying creep Kelvin chain">minTauDrying</a> represents the minimal retardation time used in the Kelvin chain to approximate the drying creep compliance function. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[19]. </p>
+
+</div>
+</div>
+<a id="a365005effccbb0d39e13d5ca14f7870d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a365005effccbb0d39e13d5ca14f7870d">&#9670;&nbsp;</a></span>castTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::castTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>time to start hydration </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a365005effccbb0d39e13d5ca14f7870d" title="time to start hydration">castTime</a> represents the time at which hydration starts with respect to simulation time. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[20]. </p>
+
+</div>
+</div>
+<a id="a466f56c79a12adfdd3edeeb460b522f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a466f56c79a12adfdd3edeeb460b522f9">&#9670;&nbsp;</a></span>timeToDays</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double&amp; Marmot::Materials::B4::timeToDays</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ratio of simulation time to days </p>
+<p><a class="el" href="classMarmot_1_1Materials_1_1B4.html#a466f56c79a12adfdd3edeeb460b522f9" title="ratio of simulation time to days">timeToDays</a> represents the ratio of simulation time to days. It is a reference variable to <a class="el" href="classMarmotMaterial.html#a0f631d6ec14531146ec683712a085960">materialProperties</a>[21]. </p>
+
+</div>
+</div>
+<a id="ae9317da309ae9d717b6cf90f4f703681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9317da309ae9d717b6cf90f4f703681">&#9670;&nbsp;</a></span>stateVarManager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager.html">B4StateVarManager</a> &gt; Marmot::Materials::B4::stateVarManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d8030c73e8943f389492acc6c975478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d8030c73e8943f389492acc6c975478">&#9670;&nbsp;</a></span>solidificationParameters</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters">SolidificationTheory::Parameters</a> Marmot::Materials::B4::solidificationParameters</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9bd463c2e8e4f231e9a9673b440888d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bd463c2e8e4f231e9a9673b440888d1">&#9670;&nbsp;</a></span>solidificationKelvinProperties</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties">SolidificationTheory::KelvinChainProperties</a> Marmot::Materials::B4::solidificationKelvinProperties</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cfc840893f1c0cbd15f24118a71dbed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cfc840893f1c0cbd15f24118a71dbed">&#9670;&nbsp;</a></span>basicCreepElasticModuli</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">KelvinChain::Properties</a> Marmot::Materials::B4::basicCreepElasticModuli</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a90abb8d24ffce29ee81933ebda4c0ac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90abb8d24ffce29ee81933ebda4c0ac5">&#9670;&nbsp;</a></span>basicCreepRetardationTimes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a4161f4ca08c7a35dd1dcd75e630f60f4">KelvinChain::Properties</a> Marmot::Materials::B4::basicCreepRetardationTimes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0dde9ac0a0a9026319624c81d075d34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0dde9ac0a0a9026319624c81d075d34">&#9670;&nbsp;</a></span>dryingCreepComplianceApproximationOrder</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::Materials::B4::dryingCreepComplianceApproximationOrder = 5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a47de019b8c16d71edef8debf1a4a0e12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47de019b8c16d71edef8debf1a4a0e12">&#9670;&nbsp;</a></span>basicCreepComplianceApproximationOrder</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::Materials::B4::basicCreepComplianceApproximationOrder = 2</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>modules/materials/B4/include/Marmot/<a class="el" href="B4_8h_source.html">B4.h</a></li>
+<li>modules/materials/B4/src/<a class="el" href="B4_8cpp.html">B4.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

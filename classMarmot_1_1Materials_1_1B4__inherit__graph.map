@@ -1,0 +1,6 @@
+<map id="Marmot::Materials::B4" name="Marmot::Materials::B4">
+<area shape="rect" id="node1" title="Implementation of a linear elastic material according to the B4 model by Bazant et al...." alt="" coords="23,229,169,256"/>
+<area shape="rect" id="node2" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="5,155,187,181"/>
+<area shape="rect" id="node3" href="$classMarmotMaterialMechanical.html" title=" " alt="" coords="7,80,185,107"/>
+<area shape="rect" id="node4" href="$classMarmotMaterial.html" title=" " alt="" coords="40,5,152,32"/>
+</map>

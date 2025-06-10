@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h Source File</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="dir_a55c496f430aa4275197c786dabe211f.html">materials</a></li><li class="navelem"><a class="el" href="dir_984035e4ceb50f91b954fb0fb05c5bde.html">FiniteStrainJ2Plasticity</a></li><li class="navelem"><a class="el" href="dir_a665675ccca5bc93d793daac371d7424.html">include</a></li><li class="navelem"><a class="el" href="dir_73a73a73765fc59683ce99d47551b6d0.html">Marmot</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">FiniteStrainJ2Plasticity.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="FiniteStrainJ2Plasticity_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* ---------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *                                       _</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * | &#39;_ ` _ \ / _` | &#39;__| &#39;_ ` _ \ / _ \| __|</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * | | | | | | (_| | |  | | | | | | (_) | |_</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"> * Unit of Strength of Materials and Structural Analysis</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> * University of Innsbruck</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"> * 2020 - today</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * festigkeitslehre@uibk.ac.at</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"> * Alexander Dummer alexander.dummer@uibk.ac.at</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> * This file is part of the MAteRialMOdellingToolbox (marmot).</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> * This library is free software; you can redistribute it and/or</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment"> * modify it under the terms of the GNU Lesser General Public</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment"> * License as published by the Free Software Foundation; either</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment"> * version 2.1 of the License, or (at your option) any later version.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> * The full text of the license can be found in the file LICENSE.md at</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> * the top level directory of marmot.</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment"> * ---------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotDeformationMeasures_8h.html">Marmot/MarmotDeformationMeasures.h</a>&quot;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotEnergyDensityFunctions_8h.html">Marmot/MarmotEnergyDensityFunctions.h</a>&quot;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotFastorTensorBasics_8h.html">Marmot/MarmotFastorTensorBasics.h</a>&quot;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotFiniteStrainPlasticity_8h.html">Marmot/MarmotFiniteStrainPlasticity.h</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotMaterialFiniteStrain_8h.html">Marmot/MarmotMaterialFiniteStrain.h</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotMath_8h.html">Marmot/MarmotMath.h</a>&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotStateVarVectorManager_8h.html">Marmot/MarmotStateVarVectorManager.h</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="MarmotTypedefs_8h.html">Marmot/MarmotTypedefs.h</a>&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">using namespace </span>Fastor;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">using namespace </span>FastorStandardTensors;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">using namespace </span>FastorIndices;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html">   45</a></span>&#160;  <span class="keyword">class </span><a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html">FiniteStrainJ2Plasticity</a> : <span class="keyword">public</span> <a class="code" href="classMarmotMaterialFiniteStrain.html">MarmotMaterialFiniteStrain</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">using</span> MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// elastic constants</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af241e194ffa0091b0ed0ed6d80cca05d">   50</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af241e194ffa0091b0ed0ed6d80cca05d">K</a>, G;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// plasticity parameters</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a989af2d7a68835d72fa64611b54120c5">   53</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">double</span> fy, fyInf, eta, <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a989af2d7a68835d72fa64611b54120c5">H</a>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">// implementation</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a2899614611d275d7410c8ad88ea021a1">   56</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a2899614611d275d7410c8ad88ea021a1">implementationType</a>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html">FiniteStrainJ2Plasticity</a>( <span class="keyword">const</span> <span class="keywordtype">double</span>* materialProperties, <span class="keywordtype">int</span> nMaterialProperties, <span class="keywordtype">int</span> materialLabel );</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> computeStress( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                        <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                        <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                        <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> computeStressWithScalarReturnMapping( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                               <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                               <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                                               <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> computeStressWithFullReturnMapping( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                                             <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                             <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                             <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> computeStressFDAF( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                            <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> computeStressFDAC( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                            <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> computeStressCSDA( <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">ConstitutiveResponse&lt; 3 &gt;</a>&amp; response,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                            <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">AlgorithmicModuli&lt; 3 &gt;</a>&amp;    tangents,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">Deformation&lt; 3 &gt;</a>&amp;    deformation,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                            <span class="keyword">const</span> <a class="code" href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">TimeIncrement</a>&amp;       timeIncrement );</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a772738c665da6e23fea781a527d2a0a4">   84</a></span>&#160;    <span class="keywordtype">int</span>  <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a772738c665da6e23fea781a527d2a0a4">getNumberOfRequiredStateVars</a>() { <span class="keywordflow">return</span> FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html">   86</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html">FiniteStrainJ2PlasticityStateVarManager</a> : <span class="keyword">public</span> <a class="code" href="classMarmotStateVarVectorManager.html">MarmotStateVarVectorManager</a> {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#a8ada4260920cc53b8419dbfe2b9e8f26">   89</a></span>&#160;      <span class="keyword">inline</span> <span class="keyword">const</span> <span class="keyword">static</span> <span class="keyword">auto</span> layout = makeLayout( {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        { .name = <span class="stringliteral">&quot;Fp&quot;</span>, .length = 9 },</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        { .name = <span class="stringliteral">&quot;alphaP&quot;</span>, .length = 1 },</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      } );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#af091c3c33164345c9e214595e046d9b8">   94</a></span>&#160;      Fastor::TensorMap&lt; double, 3, 3 &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#af091c3c33164345c9e214595e046d9b8">Fp</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#aa1ba8e49d3e9ebe9433444e671980476">   95</a></span>&#160;      <span class="keywordtype">double</span>&amp;                           <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#aa1ba8e49d3e9ebe9433444e671980476">alphaP</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#a50522dae9457bf4d8b1d580b846b6a25">   97</a></span>&#160;      <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#a50522dae9457bf4d8b1d580b846b6a25">FiniteStrainJ2PlasticityStateVarManager</a>( <span class="keywordtype">double</span>* theStateVarVector )</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        : <a class="code" href="classMarmotStateVarVectorManager.html">MarmotStateVarVectorManager</a>( theStateVarVector, layout ), Fp( &amp;find( <span class="stringliteral">&quot;Fp&quot;</span> ) ), alphaP( find( <span class="stringliteral">&quot;alphaP&quot;</span> ) ){};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7910b687083b42f69dbb800a15b8d191">  100</a></span>&#160;    std::unique_ptr&lt; FiniteStrainJ2PlasticityStateVarManager &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7910b687083b42f69dbb800a15b8d191">stateVars</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">void</span> assignStateVars( <span class="keywordtype">double</span>* stateVars, <span class="keywordtype">int</span> nStateVars );</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="MarmotUtils_8h.html#structStateView">StateView</a> getStateView( <span class="keyword">const</span> std::string&amp; result );</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span> initializeYourself();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7b2090519af0e8c7dc6b953974653c6b">  108</a></span>&#160;    std::tuple&lt; double, Tensor33d, double &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7b2090519af0e8c7dc6b953974653c6b">yieldFunction</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; Fe, <span class="keyword">const</span> <span class="keywordtype">double</span> betaP )</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   mandelStress;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dMandel_dFe;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      std::tie( mandelStress, dMandel_dFe ) = computeMandelStress( Fe );</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      <span class="keywordtype">double</span>      f;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   df_dMandel;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> d2f_dMandel_dMandel;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   df_dFe;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;      <span class="keywordtype">double</span>      df_dBetaP;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      std::tie( f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP ) = yieldFunctionFromStress( mandelStress, betaP );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      df_dFe = einsum&lt; IJ, IJKL &gt;( df_dMandel, dMandel_dFe );</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;      <span class="keywordflow">return</span> { f, df_dFe, df_dBetaP };</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a190ba39388668a757cd726fb090c30c3">  128</a></span>&#160;    T <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a190ba39388668a757cd726fb090c30c3">yieldFunctionFromStress</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a>&amp; mandelStress, <span class="keyword">const</span> T betaP )</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dev = <a class="code" href="namespaceMarmot.html#ad8af416a52bd57f2eadaa0c931cd438e">deviatoric</a>( mandelStress );</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      T                    rho = sqrt( Fastor::inner( dev, dev ) );</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keywordflow">if</span> ( <span class="keywordtype">double</span>( rho ) == 0.0 )</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        rho += 1e-15;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;      <span class="keyword">const</span> T f = 1. / fy * ( rho - <a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Marmot::Constants::sqrt2_3</a> * betaP );</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keywordflow">return</span> f;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a23ca6d4a0906bb1bf48a44673415c553">  138</a></span>&#160;    std::tuple&lt; double, Tensor33d, Tensor3333d, double &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a23ca6d4a0906bb1bf48a44673415c553">yieldFunctionFromStress</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; mandelStress,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                                                                                  <span class="keyword">const</span> <span class="keywordtype">double</span>     betaP )</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>    dev = <a class="code" href="namespaceMarmot.html#ad8af416a52bd57f2eadaa0c931cd438e">deviatoric</a>( mandelStress );</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> rho = std::max( sqrt( Fastor::inner( dev, dev ) ), 1e-15 );</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> f   = 1. / fy * ( rho - <a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Marmot::Constants::sqrt2_3</a> * betaP );</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> dRho_dMandel = 1. / rho * dev;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> d2Rho_dMandel_dMandel = -1.0 / std::pow( rho, 3 ) * outer( dev, dev ) +</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                                          1. / rho *</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                                            ( einsum&lt; ik, jl, to_ijkl &gt;( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>, <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a> ) -</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                                              1. / 3 *</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                                                einsum&lt; ij, IK, IL, to_ijKL &gt;( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                                                                               <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>,</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                                                                               <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a> ) );</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> d2f_dMandel_dMandel = 1. / fy * d2Rho_dMandel_dMandel;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   df_dMandel          = 1. / fy * dRho_dMandel;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      <span class="keywordflow">return</span> { f, df_dMandel, d2f_dMandel_dMandel, -<a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Constants::sqrt2_3</a> / fy };</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a82c18a36b6b0bec286f472160db44b3e">  161</a></span>&#160;    std::tuple&lt; T, Tensor33t&lt; T &gt;, T &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a82c18a36b6b0bec286f472160db44b3e">yieldFunctionFromStressFirstOrderDerived</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a>&amp; mandelStress,</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                                                                                 <span class="keyword">const</span> T               betaP )</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dev = <a class="code" href="namespaceMarmot.html#ad8af416a52bd57f2eadaa0c931cd438e">deviatoric</a>( mandelStress );</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      T              rho = sqrt( Fastor::inner( dev, dev ) );</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="keywordflow">if</span> ( <a class="code" href="namespaceMarmot_1_1Math.html#a335a5f714ab10341744d8fea021e08dd">Math::makeReal</a>( rho ) == 0.0 )</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        rho += 1e-15;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="keyword">const</span> T f = 1. / fy * ( rho - <a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Marmot::Constants::sqrt2_3</a> * betaP );</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dRho_dMandel = <a class="code" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a>( dev, 1. / rho );</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> df_dMandel = <a class="code" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a>( dRho_dMandel, T( 1. / fy ) );</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      <span class="keywordflow">return</span> { f, df_dMandel, T( -<a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Constants::sqrt2_3</a> / fy ) };</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ada9603edf0333ac06ea294f9052d11f7">  177</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ada9603edf0333ac06ea294f9052d11f7">isYielding</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; Fe, <span class="keyword">const</span> <span class="keywordtype">double</span> betaP )</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="keywordtype">double</span>    f, df_dBetaP;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> df_dFe;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      <span class="keywordflow">if</span> ( f &gt; 0.0 )</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    }</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7050170ba2b009214be90f7f6742c6ce">  188</a></span>&#160;    std::tuple&lt; Tensor33d, Tensor3333d &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7050170ba2b009214be90f7f6742c6ce">computeMandelStress</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; Fe )</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    {</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;      <span class="keyword">using namespace </span><a class="code" href="namespaceMarmot_1_1ContinuumMechanics.html">Marmot::ContinuumMechanics</a>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   Ce;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dCe_dFe;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      std::tie( Ce, dCe_dFe ) = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures.html#a64c531660e6ae1833c8ab1d97a1222b5">DeformationMeasures::FirstOrderDerived::CauchyGreen</a>( Fe );</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;      <span class="keywordtype">double</span>      psi_;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dPsi_dCe;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> d2Psi_dCedCe, dMandel_dCe;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1EnergyDensityFunctions.html#aadee8fcdff08e16df791b8eb4d1de3f9">EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB</a>( Ce,</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                                                                                                                 K,</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                                                                                                                 G );</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>       PK2                      = 2.0 * dPsi_dCe;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> mandel                   = Ce % PK2;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      <span class="comment">/* const Tensor33d mandel = einsum&lt; Ii, iJ &gt;( Ce, PK2 ); */</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      dMandel_dCe = einsum&lt; Ii, iJKL, to_IJKL &gt;( Ce, 2. * d2Psi_dCedCe ) +</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                    einsum&lt; IK, iL, iJ, to_IJKL &gt;( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>, <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>, PK2 );</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dMandel_dFe = einsum&lt; IJKL, KLMN &gt;( dMandel_dCe, dCe_dFe );</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      <span class="keywordflow">return</span> { mandel, dMandel_dFe };</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af2ffb7b627c7b626f0e319cc997de2bb">  212</a></span>&#160;    <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af2ffb7b627c7b626f0e319cc997de2bb">computeMandelStressOnly</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a>&amp; Fe )</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    {</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      <span class="keyword">using namespace </span><a class="code" href="namespaceMarmot_1_1ContinuumMechanics.html">Marmot::ContinuumMechanics</a>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> Ce = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures.html#a64c531660e6ae1833c8ab1d97a1222b5">DeformationMeasures::CauchyGreen</a>( Fe );</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      T              psi_;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dPsi_dCe;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      std::tie( psi_, dPsi_dCe )  = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1EnergyDensityFunctions.html#aadee8fcdff08e16df791b8eb4d1de3f9">EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB</a>( Ce, K, G );</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a>       PK2    = <a class="code" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a>( dPsi_dCe, T( 2.0 ) );</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> mandel = Ce % PK2;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;      <span class="keywordflow">return</span> mandel;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a52fad614ee4a6c1e64e708a468430b74">  227</a></span>&#160;    T <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a52fad614ee4a6c1e64e708a468430b74">computeBetaPOnly</a>( <span class="keyword">const</span> T alphaP )</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;      <span class="keyword">const</span> T beta = fyInf + ( fy - fyInf ) * <a class="code" href="namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d">exp</a>( -alphaP * eta ) + alphaP * H;</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;      <span class="keywordflow">return</span> beta;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
+<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ab38ec6037be8323b618af94895e95640">  232</a></span>&#160;    std::tuple&lt; double, double &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ab38ec6037be8323b618af94895e95640">computeBetaP</a>( <span class="keyword">const</span> <span class="keywordtype">double</span> alphaP )</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    {</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> beta           = fyInf + ( fy - fyInf ) * <a class="code" href="namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d">exp</a>( -alphaP * eta ) + alphaP * H;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> dBetaP_dAlphaP = -eta * ( fy - fyInf ) * <a class="code" href="namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d">exp</a>( -alphaP * eta ) + H;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keywordflow">return</span> { beta, dBetaP_dAlphaP };</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a0a6fe26407bd4afd9e306bf58658d14b">  239</a></span>&#160;    std::tuple&lt; double, double &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a0a6fe26407bd4afd9e306bf58658d14b">g</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; Fe_trial, <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; df_dS, <span class="keywordtype">double</span> dLambda, <span class="keywordtype">double</span> betaP )</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    {</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> dFp, ddFp_ddLambda;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      std::tie( dFp, ddFp_ddLambda ) = computePlasticIncrement( df_dS, dLambda );</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;      <span class="keywordtype">double</span>    f, df_dBetaP;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> df_dFe;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dFpInv   = Fastor::inverse( dFp );</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dFe_ddFp = einsum&lt; iI, iJKL &gt;( Fe_trial, einsum&lt; LI, JK, to_IJKL &gt;( -dFpInv, dFpInv ) );</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;      std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>( Fe_trial % dFpInv ), betaP );</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      <span class="keywordtype">double</span> df_ddLambda = einsum&lt; IJ, IJKL, KL &gt;( df_dFe, dFe_ddFp, ddFp_ddLambda ).toscalar();</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      <span class="keywordflow">return</span> { f, df_ddLambda };</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    }</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a796cbf1732eb149bdfa95e6886b23f25">  258</a></span>&#160;    <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a796cbf1732eb149bdfa95e6886b23f25">computeReturnMappingDirection</a>( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> Fe, T betaP )</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   mandelStressTrial;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dMandel_dFe;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;      std::tie( mandelStressTrial, dMandel_dFe ) = computeMandelStress( Fe );</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;      <span class="keywordtype">double</span>    f, df_dBetaP;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> df_dS;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;      std::tie( f, df_dS, df_dBetaP ) = yieldFunctionFromStress( mandelStressTrial, betaP );</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;      <span class="keywordflow">return</span> df_dS;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00272"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a5a0a05f484cb98aca3f6e113666ec91f">  272</a></span>&#160;    std::tuple&lt; Tensor33d, Tensor33d &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a5a0a05f484cb98aca3f6e113666ec91f">computePlasticIncrement</a>( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> df_dS, T dLambda )</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dGp = <a class="code" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a>( df_dS, dLambda );</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dFp;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> ddFp_ddGp;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;      std::tie( dFp, ddFp_ddGp ) = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived.html#ac5090d6bd5c231cd5a3c780492eb8e04">ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::</a></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived.html#ac5090d6bd5c231cd5a3c780492eb8e04">        exponentialMap</a>( dGp );</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;      <span class="keywordflow">return</span> { dFp, einsum&lt; IJKL, KL &gt;( ddFp_ddGp, df_dS ) };</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="keyword">template</span> &lt; <span class="keyword">typename</span> T &gt;</div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a999f513b3b26b0e9874fd20bb16c919f">  285</a></span>&#160;    <a class="code" href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">VectorXt&lt; T &gt;</a> <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a999f513b3b26b0e9874fd20bb16c919f">computeResidualVector</a>( <span class="keyword">const</span> <a class="code" href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">VectorXt&lt; T &gt;</a>&amp; X, <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp; FeTrial, <span class="keyword">const</span> <span class="keywordtype">double</span> alphaPTrial )</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> idxA = 9;</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> idxF = 10;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;      <span class="keyword">using namespace </span>Eigen;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;      <span class="keyword">using</span> mV9t = Eigen::Map&lt; Eigen::Matrix&lt; T, 9, 1 &gt; &gt;;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;      <a class="code" href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">VectorXt&lt; T &gt;</a> R( 11 );</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;      <span class="comment">// initialize residual</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;      <span class="comment">/* R.segment&lt; 9 &gt;( 0 ) = -mV9t( fastorTensorFromDoubleTensor&lt; T &gt;( FeTrial</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">       * ).data() ); */</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;      R( 9 ) = -alphaPTrial;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> Fe( X.segment( 0, 9 ).data() );</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;      <span class="keyword">const</span> T dLambda = X( 10 );</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;      <span class="keyword">const</span> T alphaP  = X( 9 );</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;      <span class="keyword">const</span> T betaP = computeBetaPOnly( alphaP );</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;      <span class="comment">// compute mandel stress</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> mandelStress = computeMandelStressOnly( Fe );</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;      T              f, df_dBetaP;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> df_dMandel;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;      std::tie( f, df_dMandel, df_dBetaP ) = yieldFunctionFromStressFirstOrderDerived( mandelStress, betaP );</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dGp = <a class="code" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a>( df_dMandel, dLambda );</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a> dFp = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration.html#ad35ebc36e298a4bf78bcbb7c92d7310e">ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap</a>( dGp );</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;      <a class="code" href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">VectorXt&lt; T &gt;</a> aux = mV9t( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Tensor33t&lt; T &gt;</a>( einsum&lt; iJ, JK &gt;( Fe, dFp ) ).data() ) -</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                          mV9t( fastorTensorFromDoubleTensor&lt; T &gt;( FeTrial ).data() );</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      R( 0 )    = aux( 0 );</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      R( 1 )    = aux( 1 );</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      R( 2 )    = aux( 2 );</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      R( 3 )    = aux( 3 );</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;      R( 4 )    = aux( 4 );</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;      R( 5 )    = aux( 5 );</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;      R( 6 )    = aux( 6 );</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;      R( 7 )    = aux( 7 );</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;      R( 8 )    = aux( 8 );</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;      R( idxA ) = ( alphaP + dLambda * df_dBetaP ) - alphaPTrial;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;      R( idxF ) = f;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      <span class="keywordflow">return</span> R;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a631a468733747f7162841272ce29c30a">  331</a></span>&#160;    std::tuple&lt; Eigen::VectorXd, Eigen::MatrixXd &gt; <a class="code" href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a631a468733747f7162841272ce29c30a">computeResidualVectorAndTangent</a>( <span class="keyword">const</span> Eigen::VectorXd&amp; X,</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;                                                                                    <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&amp;       FeTrial,</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;                                                                                    <span class="keyword">const</span> <span class="keywordtype">double</span>           alphaPTrial )</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> idxA = 9;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">int</span> idxF = 10;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      <span class="keyword">using namespace </span>Eigen;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;      <span class="keyword">using</span> mV9d = Eigen::Map&lt; Eigen::Matrix&lt; double, 9, 1 &gt; &gt;;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;      <span class="keyword">using</span> mM9d = Eigen::Map&lt; Eigen::Matrix&lt; double, 9, 9 &gt; &gt;;</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;      VectorXd R( 11 );</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;      MatrixXd dR_dX( 11, 11 );</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;      dR_dX.setZero();</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;      <span class="comment">// initialize residual</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;      R.segment&lt; 9 &gt;( 0 ) = -mV9d( FeTrial.data() );</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      R( 9 )              = -alphaPTrial;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> Fe( X.segment( 0, 9 ).data() );</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> dLambda = X( 10 );</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">double</span> alphaP  = X( 9 );</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;      <span class="comment">/* std::cout &lt;&lt; &quot;dLambda: &quot; &lt;&lt; dLambda &lt;&lt; std::endl; */</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      <span class="keywordtype">double</span> betaP, dBetaP_dAlphaP;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;      std::tie( betaP, dBetaP_dAlphaP ) = computeBetaP( alphaP );</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;      <span class="comment">// compute mandel stress</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   mandelStress;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dMandel_dFe, d2f_dMandel_dMandel;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;      std::tie( mandelStress, dMandel_dFe ) = computeMandelStress( Fe );</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;      <span class="keywordtype">double</span>    f, df_dBetaP;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> df_dMandel;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;      std::tie( f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP ) = yieldFunctionFromStress( mandelStress, betaP );</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dGp = dLambda * df_dMandel;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   dFp;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> ddFp_ddGp;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;      std::tie( dFp, ddFp_ddGp ) = <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived.html#ac5090d6bd5c231cd5a3c780492eb8e04">ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::</a></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived.html#ac5090d6bd5c231cd5a3c780492eb8e04">        exponentialMap</a>( dGp );</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> ddGp_dFe      = dLambda * einsum&lt; ijmn, mnkL &gt;( d2f_dMandel_dMandel, dMandel_dFe );</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>   ddFp_ddLambda = einsum&lt; IJKL, KL &gt;( ddFp_ddGp, df_dMandel );</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> ddFp_dFe = einsum&lt; iImn, mnkL &gt;( ddFp_ddGp, ddGp_dFe );</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;      <span class="comment">/* Tensor3333d dFeTrial_dFe = einsum&lt; iIkL, iJ, to_IJkL &gt;( ddFp_dFe, Fe ) +</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">       */</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;      <span class="comment">/*                            einsum&lt; iI, ik, JL, to_IJkL &gt;( dFp,</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">       * Spatial3D::I, Spatial3D::I ); */</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> dFeTrial_dFe = einsum&lt; iI, IJKL &gt;( Fe, ddFp_dFe ) +</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;                                 einsum&lt; IK, JL, to_IJKL &gt;( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a>, transpose( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Spatial3D::I</a> % dFp ) );</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;      <span class="comment">/* std::cout &lt;&lt; &quot;ddFeTrial_dFe: &quot; &lt;&lt; dFeTrial_dFe &lt;&lt; std::endl; */</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      <span class="comment">/* Tensor33d dFe_ddLambda = einsum&lt; iI, iJ &gt;( ddFp_ddLambda, Fe ); */</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> dFe_ddLambda = einsum&lt; Ii, iJ &gt;( Fe, ddFp_ddLambda );</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      df_dBetaP = -<a class="code" href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Constants::sqrt2_3</a> / fy;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      <span class="comment">/* Tensor33d df_dFe                 = einsum&lt; IJ, IJKL &gt;( df_dMandel,</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="comment">       * dMandel_dFe ); */</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;      <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> df_dFe                 = einsum&lt; IJ, IJKL &gt;( df_dMandel, dMandel_dFe );</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;      std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;      df_dFe                           = einsum&lt; IJ, IJKL &gt;( df_dMandel, dMandel_dFe );</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;      <span class="comment">/* R.segment&lt; 9 &gt;( 0 ) += mV9d( Tensor33d( einsum&lt; iI, iJ &gt;( dFp, Fe )</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">       * ).data() ); */</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;      R.segment&lt; 9 &gt;( 0 ) += mV9d( <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>( einsum&lt; iJ, JK &gt;( Fe, dFp ) ).data() );</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;      R( idxA ) += ( alphaP + dLambda * df_dBetaP );</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;      R( idxF ) = f;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;      dR_dX.block&lt; 9, 9 &gt;( 0, 0 ) = mM9d( dFeTrial_dFe.data() ).transpose();</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      dR_dX.block&lt; 1, 9 &gt;( idxF, 0 ) = mV9d( df_dFe.data() );</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;      dR_dX.block&lt; 9, 1 &gt;( 0, idxF ) = mV9d( dFe_ddLambda.data() );</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      dR_dX( idxF, idxA )            = df_dBetaP * dBetaP_dAlphaP;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;      dR_dX( idxA, idxF )            = df_dBetaP;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;      dR_dX( idxA, idxA )            = 1.0;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; </div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;      <span class="keywordflow">return</span> { R, dR_dX };</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    }</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;  };</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;} <span class="comment">// namespace Marmot::Materials</span></div>
+</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_html_af091c3c33164345c9e214595e046d9b8"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#af091c3c33164345c9e214595e046d9b8">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::Fp</a></div><div class="ttdeci">Fastor::TensorMap&lt; double, 3, 3 &gt; Fp</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:94</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a7050170ba2b009214be90f7f6742c6ce"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7050170ba2b009214be90f7f6742c6ce">Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStress</a></div><div class="ttdeci">std::tuple&lt; Tensor33d, Tensor3333d &gt; computeMandelStress(const Tensor33d &amp;Fe)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:188</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Constants_html_a0d09803bb3b4546bc7685c44bef36cbc"><div class="ttname"><a href="namespaceMarmot_1_1Constants.html#a0d09803bb3b4546bc7685c44bef36cbc">Marmot::Constants::sqrt2_3</a></div><div class="ttdeci">constexpr double sqrt2_3</div><div class="ttdef"><b>Definition:</b> MarmotConstants.h:51</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures_html_a64c531660e6ae1833c8ab1d97a1222b5"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures.html#a64c531660e6ae1833c8ab1d97a1222b5">Marmot::ContinuumMechanics::DeformationMeasures::CauchyGreen</a></div><div class="ttdeci">Tensor33t&lt; T &gt; CauchyGreen(const Tensor33t&lt; T &gt; F_)</div><div class="ttdef"><b>Definition:</b> MarmotDeformationMeasures.h:39</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_ab38ec6037be8323b618af94895e95640"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ab38ec6037be8323b618af94895e95640">Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaP</a></div><div class="ttdeci">std::tuple&lt; double, double &gt; computeBetaP(const double alphaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:232</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a796cbf1732eb149bdfa95e6886b23f25"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a796cbf1732eb149bdfa95e6886b23f25">Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection</a></div><div class="ttdeci">Tensor33t&lt; T &gt; computeReturnMappingDirection(Tensor33t&lt; T &gt; Fe, T betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:258</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Math_html_a20088570076b71e5f4f0bb08fa7ba44d"><div class="ttname"><a href="namespaceMarmot_1_1Math.html#a20088570076b71e5f4f0bb08fa7ba44d">Marmot::Math::exp</a></div><div class="ttdeci">double exp(double x)</div><div class="ttdef"><b>Definition:</b> MarmotMath.cpp:13</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a5a0a05f484cb98aca3f6e113666ec91f"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a5a0a05f484cb98aca3f6e113666ec91f">Marmot::Materials::FiniteStrainJ2Plasticity::computePlasticIncrement</a></div><div class="ttdeci">std::tuple&lt; Tensor33d, Tensor33d &gt; computePlasticIncrement(Tensor33t&lt; T &gt; df_dS, T dLambda)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:272</div></div>
+<div class="ttc" id="aMarmotFastorTensorBasics_8h_html"><div class="ttname"><a href="MarmotFastorTensorBasics_8h.html">MarmotFastorTensorBasics.h</a></div></div>
+<div class="ttc" id="aclassMarmotMaterialFiniteStrain_html"><div class="ttname"><a href="classMarmotMaterialFiniteStrain.html">MarmotMaterialFiniteStrain</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialFiniteStrain.h:33</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_html_ad35ebc36e298a4bf78bcbb7c92d7310e"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration.html#ad35ebc36e298a4bf78bcbb7c92d7310e">Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap</a></div><div class="ttdeci">Tensor33t&lt; T &gt; exponentialMap(const Tensor33t&lt; T &gt; &amp;dGp)</div><div class="ttdef"><b>Definition:</b> MarmotFiniteStrainPlasticity.h:40</div></div>
+<div class="ttc" id="anamespaceMarmot_html_a1d6bef1a2dab561af43ae5cd570c0d4b"><div class="ttname"><a href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">Marmot::multiplyFastorTensorWithScalar</a></div><div class="ttdeci">Fastor::Tensor&lt; T, Rest... &gt; multiplyFastorTensorWithScalar(Fastor::Tensor&lt; T, Rest... &gt; tensor, T scalar)</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:338</div></div>
+<div class="ttc" id="aMarmotTypedefs_8h_html"><div class="ttname"><a href="MarmotTypedefs_8h.html">MarmotTypedefs.h</a></div></div>
+<div class="ttc" id="aMarmotMath_8h_html"><div class="ttname"><a href="MarmotMath_8h.html">MarmotMath.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_html_aa1ba8e49d3e9ebe9433444e671980476"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#aa1ba8e49d3e9ebe9433444e671980476">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::alphaP</a></div><div class="ttdeci">double &amp; alphaP</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:95</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D_html_ac7886a56e9b9adf66dd3635be909ed9e"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">Marmot::FastorStandardTensors::Spatial3D::I</a></div><div class="ttdeci">const Tensor33d I</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:57</div></div>
+<div class="ttc" id="aclassMarmotMaterialFiniteStrain_html_structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse"><div class="ttname"><a href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse">MarmotMaterialFiniteStrain::ConstitutiveResponse</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialFiniteStrain.h:40</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_a27b9b068b60334251eab8f864953a091"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Marmot::FastorStandardTensors::Tensor33d</a></div><div class="ttdeci">Fastor::Tensor&lt; double, 3, 3 &gt; Tensor33d</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:38</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Materials_html"><div class="ttname"><a href="namespaceMarmot_1_1Materials.html">Marmot::Materials</a></div><div class="ttdef"><b>Definition:</b> MarmotKelvinChain.h:34</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_ada9603edf0333ac06ea294f9052d11f7"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#ada9603edf0333ac06ea294f9052d11f7">Marmot::Materials::FiniteStrainJ2Plasticity::isYielding</a></div><div class="ttdeci">bool isYielding(const Tensor33d &amp;Fe, const double betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:177</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a190ba39388668a757cd726fb090c30c3"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a190ba39388668a757cd726fb090c30c3">Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</a></div><div class="ttdeci">T yieldFunctionFromStress(const Tensor33t&lt; T &gt; &amp;mandelStress, const T betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:128</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_af2ffb7b627c7b626f0e319cc997de2bb"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af2ffb7b627c7b626f0e319cc997de2bb">Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStressOnly</a></div><div class="ttdeci">Tensor33t&lt; T &gt; computeMandelStressOnly(const Tensor33t&lt; T &gt; &amp;Fe)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:212</div></div>
+<div class="ttc" id="aclassMarmotStateVarVectorManager_html"><div class="ttname"><a href="classMarmotStateVarVectorManager.html">MarmotStateVarVectorManager</a></div><div class="ttdoc">A convenience auxiliary class for managing multiple statevars with arbitrary length in a single conse...</div><div class="ttdef"><b>Definition:</b> MarmotStateVarVectorManager.h:37</div></div>
+<div class="ttc" id="aclassMarmotMaterialFiniteStrain_html_structMarmotMaterialFiniteStrain_1_1Deformation"><div class="ttname"><a href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1Deformation">MarmotMaterialFiniteStrain::Deformation</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialFiniteStrain.h:52</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_html"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</a></div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:86</div></div>
+<div class="ttc" id="aMarmotStateVarVectorManager_8h_html"><div class="ttname"><a href="MarmotStateVarVectorManager_8h.html">MarmotStateVarVectorManager.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a7b2090519af0e8c7dc6b953974653c6b"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7b2090519af0e8c7dc6b953974653c6b">Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunction</a></div><div class="ttdeci">std::tuple&lt; double, Tensor33d, double &gt; yieldFunction(const Tensor33d &amp;Fe, const double betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:108</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1Math_html_a335a5f714ab10341744d8fea021e08dd"><div class="ttname"><a href="namespaceMarmot_1_1Math.html#a335a5f714ab10341744d8fea021e08dd">Marmot::Math::makeReal</a></div><div class="ttdeci">double makeReal(const double &amp;value)</div><div class="ttdef"><b>Definition:</b> MarmotMath.cpp:37</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_html"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics.html">Marmot::ContinuumMechanics</a></div><div class="ttdef"><b>Definition:</b> MarmotDeformationMeasures.h:31</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a0a6fe26407bd4afd9e306bf58658d14b"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a0a6fe26407bd4afd9e306bf58658d14b">Marmot::Materials::FiniteStrainJ2Plasticity::g</a></div><div class="ttdeci">std::tuple&lt; double, double &gt; g(const Tensor33d &amp;Fe_trial, const Tensor33d &amp;df_dS, double dLambda, double betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:239</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1EnergyDensityFunctions_html_aadee8fcdff08e16df791b8eb4d1de3f9"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1EnergyDensityFunctions.html#aadee8fcdff08e16df791b8eb4d1de3f9">Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB</a></div><div class="ttdeci">T PenceGouPotentialB(const Tensor33t&lt; T &gt; &amp;C, const double K, const double G)</div><div class="ttdef"><b>Definition:</b> MarmotEnergyDensityFunctions.h:54</div></div>
+<div class="ttc" id="aMarmotUtils_8h_html_structStateView"><div class="ttname"><a href="MarmotUtils_8h.html#structStateView">StateView</a></div><div class="ttdef"><b>Definition:</b> MarmotUtils.h:29</div></div>
+<div class="ttc" id="anamespaceMarmot_html_adcffabeff4f10cae874268b1a50b6e46"><div class="ttname"><a href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">Marmot::VectorXt</a></div><div class="ttdeci">Eigen::Matrix&lt; T, -1, 1 &gt; VectorXt</div><div class="ttdef"><b>Definition:</b> MarmotTypedefs.h:67</div></div>
+<div class="ttc" id="aclassMarmotMaterialFiniteStrain_html_structMarmotMaterialFiniteStrain_1_1TimeIncrement"><div class="ttname"><a href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1TimeIncrement">MarmotMaterialFiniteStrain::TimeIncrement</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialFiniteStrain.h:56</div></div>
+<div class="ttc" id="aclassMarmotMaterialFiniteStrain_html_structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli"><div class="ttname"><a href="classMarmotMaterialFiniteStrain.html#structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli">MarmotMaterialFiniteStrain::AlgorithmicModuli</a></div><div class="ttdef"><b>Definition:</b> MarmotMaterialFiniteStrain.h:47</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a772738c665da6e23fea781a527d2a0a4"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a772738c665da6e23fea781a527d2a0a4">Marmot::Materials::FiniteStrainJ2Plasticity::getNumberOfRequiredStateVars</a></div><div class="ttdeci">int getNumberOfRequiredStateVars()</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:84</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived_html_ac5090d6bd5c231cd5a3c780492eb8e04"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived.html#ac5090d6bd5c231cd5a3c780492eb8e04">Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap</a></div><div class="ttdeci">std::pair&lt; Tensor33d, Tensor3333d &gt; exponentialMap(const Tensor33d &amp;deltaGp)</div><div class="ttdef"><b>Definition:</b> MarmotFiniteStrainPlasticity.cpp:22</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_a7faffb667194b2b9c2aa127be4c4cbd1"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Marmot::FastorStandardTensors::Tensor3333d</a></div><div class="ttdeci">Fastor::Tensor&lt; double, 3, 3, 3, 3 &gt; Tensor3333d</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:40</div></div>
+<div class="ttc" id="aMarmotDeformationMeasures_8h_html"><div class="ttname"><a href="MarmotDeformationMeasures_8h.html">MarmotDeformationMeasures.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a2899614611d275d7410c8ad88ea021a1"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a2899614611d275d7410c8ad88ea021a1">Marmot::Materials::FiniteStrainJ2Plasticity::implementationType</a></div><div class="ttdeci">const int implementationType</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:56</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a52fad614ee4a6c1e64e708a468430b74"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a52fad614ee4a6c1e64e708a468430b74">Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaPOnly</a></div><div class="ttdeci">T computeBetaPOnly(const T alphaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:227</div></div>
+<div class="ttc" id="aMarmotMaterialFiniteStrain_8h_html"><div class="ttname"><a href="MarmotMaterialFiniteStrain_8h.html">MarmotMaterialFiniteStrain.h</a></div></div>
+<div class="ttc" id="anamespaceMarmot_html_ad8af416a52bd57f2eadaa0c931cd438e"><div class="ttname"><a href="namespaceMarmot.html#ad8af416a52bd57f2eadaa0c931cd438e">Marmot::deviatoric</a></div><div class="ttdeci">FastorStandardTensors::Tensor33t&lt; T &gt; deviatoric(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;t)</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:442</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_af241e194ffa0091b0ed0ed6d80cca05d"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#af241e194ffa0091b0ed0ed6d80cca05d">Marmot::Materials::FiniteStrainJ2Plasticity::K</a></div><div class="ttdeci">const double K</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:50</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a23ca6d4a0906bb1bf48a44673415c553"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a23ca6d4a0906bb1bf48a44673415c553">Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</a></div><div class="ttdeci">std::tuple&lt; double, Tensor33d, Tensor3333d, double &gt; yieldFunctionFromStress(const Tensor33d &amp;mandelStress, const double betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:138</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a631a468733747f7162841272ce29c30a"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a631a468733747f7162841272ce29c30a">Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVectorAndTangent</a></div><div class="ttdeci">std::tuple&lt; Eigen::VectorXd, Eigen::MatrixXd &gt; computeResidualVectorAndTangent(const Eigen::VectorXd &amp;X, const Tensor33d &amp;FeTrial, const double alphaPTrial)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:331</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html">Marmot::Materials::FiniteStrainJ2Plasticity</a></div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:45</div></div>
+<div class="ttc" id="aMarmotFiniteStrainPlasticity_8h_html"><div class="ttname"><a href="MarmotFiniteStrainPlasticity_8h.html">MarmotFiniteStrainPlasticity.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a999f513b3b26b0e9874fd20bb16c919f"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a999f513b3b26b0e9874fd20bb16c919f">Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVector</a></div><div class="ttdeci">VectorXt&lt; T &gt; computeResidualVector(const VectorXt&lt; T &gt; &amp;X, const Tensor33d &amp;FeTrial, const double alphaPTrial)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:285</div></div>
+<div class="ttc" id="aMarmotEnergyDensityFunctions_8h_html"><div class="ttname"><a href="MarmotEnergyDensityFunctions_8h.html">MarmotEnergyDensityFunctions.h</a></div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a82c18a36b6b0bec286f472160db44b3e"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a82c18a36b6b0bec286f472160db44b3e">Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived</a></div><div class="ttdeci">std::tuple&lt; T, Tensor33t&lt; T &gt;, T &gt; yieldFunctionFromStressFirstOrderDerived(const Tensor33t&lt; T &gt; &amp;mandelStress, const T betaP)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:161</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a989af2d7a68835d72fa64611b54120c5"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a989af2d7a68835d72fa64611b54120c5">Marmot::Materials::FiniteStrainJ2Plasticity::H</a></div><div class="ttdeci">const double H</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:53</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_aacebc11decd10b3fe4949af25fbc67fa"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">Marmot::FastorStandardTensors::Tensor33t</a></div><div class="ttdeci">Fastor::Tensor&lt; T, 3, 3 &gt; Tensor33t</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:45</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_html_a7910b687083b42f69dbb800a15b8d191"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity.html#a7910b687083b42f69dbb800a15b8d191">Marmot::Materials::FiniteStrainJ2Plasticity::stateVars</a></div><div class="ttdeci">std::unique_ptr&lt; FiniteStrainJ2PlasticityStateVarManager &gt; stateVars</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:100</div></div>
+<div class="ttc" id="aclassMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_html_a50522dae9457bf4d8b1d580b846b6a25"><div class="ttname"><a href="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager.html#a50522dae9457bf4d8b1d580b846b6a25">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::FiniteStrainJ2PlasticityStateVarManager</a></div><div class="ttdeci">FiniteStrainJ2PlasticityStateVarManager(double *theStateVarVector)</div><div class="ttdef"><b>Definition:</b> FiniteStrainJ2Plasticity.h:97</div></div>
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

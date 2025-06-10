@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Namespace Members</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a id="index_k"></a>- k -</h3><ul>
+<li>k
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ac49402a061cb97af6214e45c651c536c">Marmot::FastorIndices</a>
+</li>
+<li>kA
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a1c57feae0d643898c23c88aa573c213a">Marmot::FastorIndices</a>
+</li>
+<li>kB
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a5656ffb15340894eb94a9b6a39609e54">Marmot::FastorIndices</a>
+</li>
+<li>KI
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ad67e2803ae15a546cae5943fdc4f6c03">Marmot::FastorIndices</a>
+</li>
+<li>Ki
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a3f0a979f190f590a594ad2176f778ee9">Marmot::FastorIndices</a>
+</li>
+<li>kI
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a30fdaa9de46927520347a7b12c38a70e">Marmot::FastorIndices</a>
+</li>
+<li>kJ
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a65b9d7b3eef37cd2baa0011ad75a72ff">Marmot::FastorIndices</a>
+</li>
+<li>KJ
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a6a5617f070f92309e74cfc9681ac73b0">Marmot::FastorIndices</a>
+</li>
+<li>kj
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a0d6cf32495883f8ee4a2483c0497ef4d">Marmot::FastorIndices</a>
+</li>
+<li>KJN
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a1dd18fb251a06f4484112a5b0335cf2d">Marmot::FastorIndices</a>
+</li>
+<li>kK
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ad9ec30838fcb7e308e1a5b4f4896470c">Marmot::FastorIndices</a>
+</li>
+<li>Kk
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ad4580a2b1daf6bae1b7f804dd9714d61">Marmot::FastorIndices</a>
+</li>
+<li>KL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ab110bd3a45451b23eaad78034c42d7eb">Marmot::FastorIndices</a>
+</li>
+<li>kL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ace732020a995911e0c2099ffa7538a77">Marmot::FastorIndices</a>
+</li>
+<li>kl
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ac823f092640a71e9136f7433234f8f47">Marmot::FastorIndices</a>
+</li>
+<li>KLm
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a8f3e212d1b41f73426ed676a659cf734">Marmot::FastorIndices</a>
+</li>
+<li>KLMN
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a4afacd47580a658fc92b2e1bb83d12b9">Marmot::FastorIndices</a>
+</li>
+<li>KLMP
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#aaf88f573b99ede1eb8057f8c7032d7c3">Marmot::FastorIndices</a>
+</li>
+<li>KLNM
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a47f4dff6f85d81b5ec829a5478a923d8">Marmot::FastorIndices</a>
+</li>
+<li>KLPM
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a9974765ebac5b7b3112cacf2cfad1f0b">Marmot::FastorIndices</a>
+</li>
+<li>km
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a8874df7f88ea868fc449e0562f36548e">Marmot::FastorIndices</a>
+</li>
+<li>kM
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#aec7d9c1e5f19f35a18fa59df9016e12d">Marmot::FastorIndices</a>
+</li>
+<li>KMJ
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a4f37873eac5ebb3bea5a2085be5fd28b">Marmot::FastorIndices</a>
+</li>
+<li>KMN
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a2d22a8caa434b377b1e9a4571e94d4b2">Marmot::FastorIndices</a>
+</li>
+<li>kNL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a8a1067e702834c5495c25e46cee18aef">Marmot::FastorIndices</a>
+</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

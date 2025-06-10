@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yieldsurfacecombinationmanager_850',['YieldSurfaceCombinationManager',['../classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager.html',1,'Marmot::NumericalAlgorithms']]]
+  ['result_1240',['Result',['../namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result',1,'Marmot::Materials::SolidificationTheory']]]
 ];

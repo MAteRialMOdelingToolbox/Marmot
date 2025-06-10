@@ -181,6 +181,7 @@ $(function() {
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Marmot Namespace Reference</div>  </div>
@@ -202,7 +203,13 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceMarmot_1_1Elements"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Elements.html">Elements</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1FastorIndices"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorIndices.html">FastorIndices</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1FastorStandardTensors"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html">FastorStandardTensors</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceMarmot_1_1FiniteElement"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FiniteElement.html">FiniteElement</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceMarmot_1_1GeostaticStress"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1GeostaticStress.html">GeostaticStress</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceMarmot_1_1Materials"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Materials.html">Materials</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,8 +275,71 @@ Typedefs</h2></td></tr>
 <tr class="memitem:adcffabeff4f10cae874268b1a50b6e46"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#adcffabeff4f10cae874268b1a50b6e46">VectorXt</a> = Eigen::Matrix&lt; T, -1, 1 &gt;</td></tr>
 <tr class="separator:adcffabeff4f10cae874268b1a50b6e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ab05d498f6a35b42d5315d67905a08c24"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#ab05d498f6a35b42d5315d67905a08c24">DimensionType</a> { <a class="el" href="namespaceMarmot.html#ab05d498f6a35b42d5315d67905a08c24aebe9b4f90e252c766f40e863c31a2c77">U</a>, 
+<a class="el" href="namespaceMarmot.html#ab05d498f6a35b42d5315d67905a08c24aa621bfeba8c79a8c5bac30e0e2e1ba78">W</a>
+ }</td></tr>
+<tr class="separator:ab05d498f6a35b42d5315d67905a08c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:acbee7445de295709f4135cb148214f5e"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t nRows, size_t nCols, typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;&gt; </td></tr>
+<tr class="memitem:acbee7445de295709f4135cb148214f5e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#acbee7445de295709f4135cb148214f5e">mapEigenToFastor</a> (const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</td></tr>
+<tr class="separator:acbee7445de295709f4135cb148214f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c8ad58f567c8413437bf04497bed9f2"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t nRows, size_t nCols, typename  = void&gt; </td></tr>
+<tr class="memitem:a3c8ad58f567c8413437bf04497bed9f2"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a3c8ad58f567c8413437bf04497bed9f2">mapEigenToFastor</a> (Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</td></tr>
+<tr class="separator:a3c8ad58f567c8413437bf04497bed9f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb046a9afec8bb0bdf55590391802fce"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t nRows, typename  = void&gt; </td></tr>
+<tr class="memitem:adb046a9afec8bb0bdf55590391802fce"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#adb046a9afec8bb0bdf55590391802fce">mapEigenToFastor</a> (const Fastor::Tensor&lt; T, nRows &gt; &amp;fastor)</td></tr>
+<tr class="separator:adb046a9afec8bb0bdf55590391802fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432e83a0c579f414f545e38c7bb28197"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t nRows, typename  = void&gt; </td></tr>
+<tr class="memitem:a432e83a0c579f414f545e38c7bb28197"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a432e83a0c579f414f545e38c7bb28197">mapEigenToFastor</a> (const Fastor::TensorMap&lt; T, nRows &gt; &amp;fastor)</td></tr>
+<tr class="separator:a432e83a0c579f414f545e38c7bb28197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9053ebd1defd0d42715851e68624d3f"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t nRows, size_t nCols, typename  = void&gt; </td></tr>
+<tr class="memitem:ae9053ebd1defd0d42715851e68624d3f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#ae9053ebd1defd0d42715851e68624d3f">mapEigenToFastor</a> (const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;fastor)</td></tr>
+<tr class="separator:ae9053ebd1defd0d42715851e68624d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61086290a551b3d41b384be7edcbc5a1"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename, size_t... &gt; class TensorType, typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a61086290a551b3d41b384be7edcbc5a1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a61086290a551b3d41b384be7edcbc5a1">copyFastorToColumnMajor</a> (T *target, const TensorType&lt; T, Rest... &gt; &amp;source)</td></tr>
+<tr class="separator:a61086290a551b3d41b384be7edcbc5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34408079f87a3b28e136d7245ad91c5d"><td class="memTemplParams" colspan="2">template&lt;DimensionType... dims, typename T , size_t... dims3D&gt; </td></tr>
+<tr class="memitem:a34408079f87a3b28e136d7245ad91c5d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a34408079f87a3b28e136d7245ad91c5d">reduceTo2D</a> (const Fastor::Tensor&lt; T, dims3D... &gt; &amp;theTensor3D)</td></tr>
+<tr class="separator:a34408079f87a3b28e136d7245ad91c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90efbee376206cce017a5a4c0a43d565"><td class="memTemplParams" colspan="2">template&lt;typename Derived , size_t order&gt; </td></tr>
+<tr class="memitem:a90efbee376206cce017a5a4c0a43d565"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a90efbee376206cce017a5a4c0a43d565">reduceTo2D</a> (const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor3D)</td></tr>
+<tr class="separator:a90efbee376206cce017a5a4c0a43d565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1b062d270e79e79a1ea3b623b9ba98d"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#ad1b062d270e79e79a1ea3b623b9ba98d">const3</a> (size_t x)</td></tr>
+<tr class="separator:ad1b062d270e79e79a1ea3b623b9ba98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce96b45653e6918c9d2e16feb0e0237"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... dims2D&gt; </td></tr>
+<tr class="memitem:afce96b45653e6918c9d2e16feb0e0237"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#afce96b45653e6918c9d2e16feb0e0237">expandTo3D</a> (const Fastor::Tensor&lt; T, dims2D... &gt; &amp;theTensor2D)</td></tr>
+<tr class="separator:afce96b45653e6918c9d2e16feb0e0237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a608845c3c341d32c4432c9abf4bb2f8e"><td class="memTemplParams" colspan="2">template&lt;typename Derived , size_t order&gt; </td></tr>
+<tr class="memitem:a608845c3c341d32c4432c9abf4bb2f8e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a608845c3c341d32c4432c9abf4bb2f8e">expandTo3D</a> (const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor2D)</td></tr>
+<tr class="separator:a608845c3c341d32c4432c9abf4bb2f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d6bef1a2dab561af43ae5cd570c0d4b"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a1d6bef1a2dab561af43ae5cd570c0d4b"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; T, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a1d6bef1a2dab561af43ae5cd570c0d4b">multiplyFastorTensorWithScalar</a> (Fastor::Tensor&lt; T, Rest... &gt; tensor, T scalar)</td></tr>
+<tr class="separator:a1d6bef1a2dab561af43ae5cd570c0d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a497088b0941ceb489c234f0ca34dca"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5a497088b0941ceb489c234f0ca34dca"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a5a497088b0941ceb489c234f0ca34dca">einsum_ij_ij_hardcoded</a> (const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;A, const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;B)</td></tr>
+<tr class="separator:a5a497088b0941ceb489c234f0ca34dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b77e34e976cbebf5a2a1484488952f"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a53b77e34e976cbebf5a2a1484488952f"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; T, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a53b77e34e976cbebf5a2a1484488952f">fastorTensorFromDoubleTensor</a> (const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:a53b77e34e976cbebf5a2a1484488952f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a251a4e72c65e5221b1d07bc43eb949ab"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a251a4e72c65e5221b1d07bc43eb949ab"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; T, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a251a4e72c65e5221b1d07bc43eb949ab">fastorTensorFromDoubleTensorMap</a> (const Fastor::TensorMap&lt; double, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:a251a4e72c65e5221b1d07bc43eb949ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc8deec5875096e9aae6c710f89e0690"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:acc8deec5875096e9aae6c710f89e0690"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; double, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#acc8deec5875096e9aae6c710f89e0690">makeReal</a> (const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:acc8deec5875096e9aae6c710f89e0690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b27c38160146824cbd182e6753899ac"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a6b27c38160146824cbd182e6753899ac"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; autodiff::dual, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a6b27c38160146824cbd182e6753899ac">makeDual</a> (const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:a6b27c38160146824cbd182e6753899ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1272f1655d8334837578afe9ac2ca92d"><td class="memTemplParams" colspan="2">template&lt;size_t order, size_t... Rest&gt; </td></tr>
+<tr class="memitem:a1272f1655d8334837578afe9ac2ca92d"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a1272f1655d8334837578afe9ac2ca92d">makeHigherOrderDual</a> (const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:a1272f1655d8334837578afe9ac2ca92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8af416a52bd57f2eadaa0c931cd438e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad8af416a52bd57f2eadaa0c931cd438e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#ad8af416a52bd57f2eadaa0c931cd438e">deviatoric</a> (const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;t)</td></tr>
+<tr class="separator:ad8af416a52bd57f2eadaa0c931cd438e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a252d6a7dd503dee472f2d47ae9782b83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot.html#a252d6a7dd503dee472f2d47ae9782b83">discardTheIncrement</a> (double &amp;pNewDT, double value, const std::string &amp;message)</td></tr>
 <tr class="separator:a252d6a7dd503dee472f2d47ae9782b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -616,7 +686,522 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ab05d498f6a35b42d5315d67905a08c24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab05d498f6a35b42d5315d67905a08c24">&#9670;&nbsp;</a></span>DimensionType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceMarmot.html#ab05d498f6a35b42d5315d67905a08c24">Marmot::DimensionType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab05d498f6a35b42d5315d67905a08c24aebe9b4f90e252c766f40e863c31a2c77"></a>U&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab05d498f6a35b42d5315d67905a08c24aa621bfeba8c79a8c5bac30e0e2e1ba78"></a>W&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="acbee7445de295709f4135cb148214f5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbee7445de295709f4135cb148214f5e">&#9670;&nbsp;</a></span>mapEigenToFastor() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t nRows, size_t nCols, typename  = std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::mapEigenToFastor </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fastor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c8ad58f567c8413437bf04497bed9f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c8ad58f567c8413437bf04497bed9f2">&#9670;&nbsp;</a></span>mapEigenToFastor() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t nRows, size_t nCols, typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::mapEigenToFastor </td>
+          <td>(</td>
+          <td class="paramtype">Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fastor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adb046a9afec8bb0bdf55590391802fce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb046a9afec8bb0bdf55590391802fce">&#9670;&nbsp;</a></span>mapEigenToFastor() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t nRows, typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::mapEigenToFastor </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, nRows &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fastor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a432e83a0c579f414f545e38c7bb28197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a432e83a0c579f414f545e38c7bb28197">&#9670;&nbsp;</a></span>mapEigenToFastor() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t nRows, typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::mapEigenToFastor </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::TensorMap&lt; T, nRows &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fastor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae9053ebd1defd0d42715851e68624d3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9053ebd1defd0d42715851e68624d3f">&#9670;&nbsp;</a></span>mapEigenToFastor() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t nRows, size_t nCols, typename  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::mapEigenToFastor </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fastor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a61086290a551b3d41b384be7edcbc5a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61086290a551b3d41b384be7edcbc5a1">&#9670;&nbsp;</a></span>copyFastorToColumnMajor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename, size_t... &gt; class TensorType, typename T , size_t... Rest&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Marmot::copyFastorToColumnMajor </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TensorType&lt; T, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34408079f87a3b28e136d7245ad91c5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34408079f87a3b28e136d7245ad91c5d">&#9670;&nbsp;</a></span>reduceTo2D() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;DimensionType... dims, typename T , size_t... dims3D&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::reduceTo2D </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, dims3D... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>theTensor3D</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a90efbee376206cce017a5a4c0a43d565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90efbee376206cce017a5a4c0a43d565">&#9670;&nbsp;</a></span>reduceTo2D() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived , size_t order&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::reduceTo2D </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;&#160;</td>
+          <td class="paramname"><em>theTensor3D</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad1b062d270e79e79a1ea3b623b9ba98d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b062d270e79e79a1ea3b623b9ba98d">&#9670;&nbsp;</a></span>const3()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Marmot::const3 </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afce96b45653e6918c9d2e16feb0e0237"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce96b45653e6918c9d2e16feb0e0237">&#9670;&nbsp;</a></span>expandTo3D() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... dims2D&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::expandTo3D </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, dims2D... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>theTensor2D</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a608845c3c341d32c4432c9abf4bb2f8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a608845c3c341d32c4432c9abf4bb2f8e">&#9670;&nbsp;</a></span>expandTo3D() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Derived , size_t order&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto Marmot::expandTo3D </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;&#160;</td>
+          <td class="paramname"><em>theTensor2D</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1d6bef1a2dab561af43ae5cd570c0d4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d6bef1a2dab561af43ae5cd570c0d4b">&#9670;&nbsp;</a></span>multiplyFastorTensorWithScalar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; T, Rest... &gt; Marmot::multiplyFastorTensorWithScalar </td>
+          <td>(</td>
+          <td class="paramtype">Fastor::Tensor&lt; T, Rest... &gt;&#160;</td>
+          <td class="paramname"><em>tensor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>scalar</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a497088b0941ceb489c234f0ca34dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a497088b0941ceb489c234f0ca34dca">&#9670;&nbsp;</a></span>einsum_ij_ij_hardcoded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T Marmot::einsum_ij_ij_hardcoded </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>B</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a53b77e34e976cbebf5a2a1484488952f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53b77e34e976cbebf5a2a1484488952f">&#9670;&nbsp;</a></span>fastorTensorFromDoubleTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; T, Rest... &gt; Marmot::fastorTensorFromDoubleTensor </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; double, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a251a4e72c65e5221b1d07bc43eb949ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a251a4e72c65e5221b1d07bc43eb949ab">&#9670;&nbsp;</a></span>fastorTensorFromDoubleTensorMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; T, Rest... &gt; Marmot::fastorTensorFromDoubleTensorMap </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::TensorMap&lt; double, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc8deec5875096e9aae6c710f89e0690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc8deec5875096e9aae6c710f89e0690">&#9670;&nbsp;</a></span>makeReal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; double, Rest... &gt; Marmot::makeReal </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6b27c38160146824cbd182e6753899ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b27c38160146824cbd182e6753899ac">&#9670;&nbsp;</a></span>makeDual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; autodiff::dual, Rest... &gt; Marmot::makeDual </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1272f1655d8334837578afe9ac2ca92d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1272f1655d8334837578afe9ac2ca92d">&#9670;&nbsp;</a></span>makeHigherOrderDual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t order, size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt; Marmot::makeHigherOrderDual </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; double, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad8af416a52bd57f2eadaa0c931cd438e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8af416a52bd57f2eadaa0c931cd438e">&#9670;&nbsp;</a></span>deviatoric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; Marmot::deviatoric </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#aacebc11decd10b3fe4949af25fbc67fa">FastorStandardTensors::Tensor33t</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a252d6a7dd503dee472f2d47ae9782b83"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a252d6a7dd503dee472f2d47ae9782b83">&#9670;&nbsp;</a></span>discardTheIncrement()</h2>
 

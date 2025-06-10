@@ -1,5 +1,8 @@
 <map id="MarmotElement" name="MarmotElement">
-<area shape="rect" id="node1" title=" " alt="" coords="5,42,119,69"/>
-<area shape="rect" id="node2" href="$classMarmot_1_1Elements_1_1DisplacementFiniteElement.html" title=" " alt="" coords="167,5,377,47"/>
-<area shape="rect" id="node3" href="$classMarmotElementSpatialWrapper.html" title=" " alt="" coords="171,71,373,98"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,58,119,85"/>
+<area shape="rect" id="node2" href="$classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html" title=" " alt="" coords="512,31,723,87"/>
+<area shape="rect" id="node4" href="$classMarmot_1_1Elements_1_1DisplacementFiniteElement.html" title=" " alt="" coords="168,32,379,73"/>
+<area shape="rect" id="node5" href="$classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html" title=" " alt="" coords="168,97,379,153"/>
+<area shape="rect" id="node6" href="$classMarmotElementSpatialWrapper.html" title=" " alt="" coords="173,177,374,203"/>
+<area shape="rect" id="node3" href="$classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement.html" title=" " alt="" coords="772,31,1004,87"/>
 </map>

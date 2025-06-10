@@ -183,6 +183,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -190,6 +191,11 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder.html">SecondOrder</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a24c6bddc88d86dea7844840f44801774"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a24c6bddc88d86dea7844840f44801774">scalar_to_scalar_function_type</a> = std::function&lt; dual(const dual &amp;) &gt;</td></tr>
@@ -200,6 +206,12 @@ Typedefs</h2></td></tr>
 <tr class="separator:a2f127a97ca75433d40152f623f95e087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9f3f9c2c02912cbcd06b7b2405f357"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> = std::function&lt; VectorXdual2nd(const VectorXdual2nd &amp;X) &gt;</td></tr>
 <tr class="separator:acd9f3f9c2c02912cbcd06b7b2405f357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af78e325758375297a0f00c33ec907051"><td class="memTemplParams" colspan="2">template&lt;size_t... Rest&gt; </td></tr>
+<tr class="memitem:af78e325758375297a0f00c33ec907051"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#af78e325758375297a0f00c33ec907051">tensor_to_scalar_function_type</a> = std::function&lt; dual(const Fastor::Tensor&lt; dual, Rest... &gt; &amp;T) &gt;</td></tr>
+<tr class="separator:af78e325758375297a0f00c33ec907051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a173aa6675482cea657b64cf186d3cf1c"><td class="memTemplParams" colspan="2">template&lt;size_t order, size_t... Rest&gt; </td></tr>
+<tr class="memitem:a173aa6675482cea657b64cf186d3cf1c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a173aa6675482cea657b64cf186d3cf1c">tensor_to_scalar_function_type_arbitrary_dual_order</a> = std::function&lt; HigherOrderDual&lt; order, double &gt;(const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T) &gt;</td></tr>
+<tr class="separator:a173aa6675482cea657b64cf186d3cf1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -230,6 +242,18 @@ Functions</h2></td></tr>
 <tr class="separator:a37fa3eec636936303f0bb6ded3b3288d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe3a1926bfc33ef4201b9ddb3ffc3d19"><td class="memItemLeft" align="right" valign="top">std::pair&lt; VectorXdual, MatrixXdual &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#afe3a1926bfc33ef4201b9ddb3ffc3d19">dF_dX_2nd</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">vector_to_vector_function_type_dual2nd</a> &amp;F, const VectorXdual &amp;X)</td></tr>
 <tr class="separator:afe3a1926bfc33ef4201b9ddb3ffc3d19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8682193ecfe8d4d4d852060343ae776"><td class="memTemplParams" colspan="2">template&lt;size_t order, size_t... Rest&gt; </td></tr>
+<tr class="memitem:aa8682193ecfe8d4d4d852060343ae776"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#aa8682193ecfe8d4d4d852060343ae776">increaseDualOrderWithShift</a> (const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;in)</td></tr>
+<tr class="separator:aa8682193ecfe8d4d4d852060343ae776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c89fdfd4ef801c108cc51e8a178d2cd"><td class="memTemplParams" colspan="2">template&lt;size_t... Rest&gt; </td></tr>
+<tr class="memitem:a6c89fdfd4ef801c108cc51e8a178d2cd"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; double, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a6c89fdfd4ef801c108cc51e8a178d2cd">df_dT</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#af78e325758375297a0f00c33ec907051">tensor_to_scalar_function_type</a>&lt; Rest... &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T)</td></tr>
+<tr class="separator:a6c89fdfd4ef801c108cc51e8a178d2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5209a50e756c9f69105a262cbdf7eb"><td class="memTemplParams" colspan="2">template&lt;size_t order, size_t... Rest&gt; </td></tr>
+<tr class="memitem:adb5209a50e756c9f69105a262cbdf7eb"><td class="memTemplItemLeft" align="right" valign="top">Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#adb5209a50e756c9f69105a262cbdf7eb">df_dT</a> (const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a173aa6675482cea657b64cf186d3cf1c">tensor_to_scalar_function_type_arbitrary_dual_order</a>&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T)</td></tr>
+<tr class="separator:adb5209a50e756c9f69105a262cbdf7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab174ba4f9bb176f5085009b4360f50"><td class="memTemplParams" colspan="2">template&lt;size_t... RestF, size_t... RestT&gt; </td></tr>
+<tr class="memitem:a7ab174ba4f9bb176f5085009b4360f50"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a7ab174ba4f9bb176f5085009b4360f50">dF_dT</a> (std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T)</td></tr>
+<tr class="separator:a7ab174ba4f9bb176f5085009b4360f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a24c6bddc88d86dea7844840f44801774"></a>
@@ -282,6 +306,38 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#acd9f3f9c2c02912cbcd06b7b2405f357">Marmot::AutomaticDifferentiation::vector_to_vector_function_type_dual2nd</a> = typedef std::function&lt; VectorXdual2nd( const VectorXdual2nd&amp; X ) &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af78e325758375297a0f00c33ec907051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af78e325758375297a0f00c33ec907051">&#9670;&nbsp;</a></span>tensor_to_scalar_function_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#af78e325758375297a0f00c33ec907051">Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type</a> = typedef std::function&lt; dual( const Fastor::Tensor&lt; dual, Rest... &gt;&amp; T ) &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a173aa6675482cea657b64cf186d3cf1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a173aa6675482cea657b64cf186d3cf1c">&#9670;&nbsp;</a></span>tensor_to_scalar_function_type_arbitrary_dual_order</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t order, size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a173aa6675482cea657b64cf186d3cf1c">Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order</a> = typedef std::function&lt; HigherOrderDual&lt; order, double &gt;( const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -366,7 +422,7 @@ template&lt;size_t order, typename T , typename G &gt; </div>
 </div>
 </div>
 <a id="a15dbc71382e429062f14d19ecee8d222"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15dbc71382e429062f14d19ecee8d222">&#9670;&nbsp;</a></span>increaseDualOrderWithShift() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a15dbc71382e429062f14d19ecee8d222">&#9670;&nbsp;</a></span>increaseDualOrderWithShift() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +462,7 @@ template&lt;size_t order&gt; </div>
 </div>
 </div>
 <a id="ad0c917489ad531f9027f6c40a895b6d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0c917489ad531f9027f6c40a895b6d4">&#9670;&nbsp;</a></span>increaseDualOrderWithShift() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0c917489ad531f9027f6c40a895b6d4">&#9670;&nbsp;</a></span>increaseDualOrderWithShift() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,6 +582,116 @@ template&lt;size_t order&gt; </div>
           <td></td>
           <td class="paramtype">const VectorXdual &amp;&#160;</td>
           <td class="paramname"><em>X</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa8682193ecfe8d4d4d852060343ae776"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8682193ecfe8d4d4d852060343ae776">&#9670;&nbsp;</a></span>increaseDualOrderWithShift() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t order, size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; HigherOrderDual&lt; order + 1, double &gt;, Rest... &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6c89fdfd4ef801c108cc51e8a178d2cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c89fdfd4ef801c108cc51e8a178d2cd">&#9670;&nbsp;</a></span>df_dT() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; double, Rest... &gt; Marmot::AutomaticDifferentiation::df_dT </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#af78e325758375297a0f00c33ec907051">tensor_to_scalar_function_type</a>&lt; Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Fastor::Tensor&lt; double, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>T</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adb5209a50e756c9f69105a262cbdf7eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb5209a50e756c9f69105a262cbdf7eb">&#9670;&nbsp;</a></span>df_dT() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t order, size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; Marmot::AutomaticDifferentiation::df_dT </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a173aa6675482cea657b64cf186d3cf1c">tensor_to_scalar_function_type_arbitrary_dual_order</a>&lt; order+1, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>T</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ab174ba4f9bb176f5085009b4360f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ab174ba4f9bb176f5085009b4360f50">&#9670;&nbsp;</a></span>dF_dT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t... RestF, size_t... RestT&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt; Marmot::AutomaticDifferentiation::dF_dT </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;&#160;</td>
+          <td class="paramname"><em>F</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Fastor::Tensor&lt; double, RestT... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>T</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

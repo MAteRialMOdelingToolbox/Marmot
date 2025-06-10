@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Namespace Members</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a id="index_c"></a>- c -</h3><ul>
+<li>complexDouble
+: <a class="el" href="namespaceMarmot.html#a6381919ddfb218b0b24594f833bc97b6">Marmot</a>
+, <a class="el" href="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex.html#af2bf27edd3a3b822954a1af72c054ff3">Marmot::NumericalAlgorithms::Differentiation::Complex</a>
+</li>
+<li>CoordinateSized
+: <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad4.html#a663bb5a4567506f701bb3e09d4003b18">Marmot::FiniteElement::Spatial2D::Quad4</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad8.html#a2084261a53d2455610db9a72ab913d53">Marmot::FiniteElement::Spatial2D::Quad8</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa20.html#a123b15162a61180e89c20536da552afa">Marmot::FiniteElement::Spatial3D::Hexa20</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa8.html#a18b596e13c0bceecd446131f08733f9a">Marmot::FiniteElement::Spatial3D::Hexa8</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra10.html#a922c0fa0c422334e725ae5e8f4b75ecc">Marmot::FiniteElement::Spatial3D::Tetra10</a>
+, <a class="el" href="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4.html#a7d86db4cd87ceeffca049df34a8924fa">Marmot::FiniteElement::Spatial3D::Tetra4</a>
+</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

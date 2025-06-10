@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['factorial_814',['Factorial',['../structMarmot_1_1Materials_1_1KelvinChain_1_1Factorial.html',1,'Marmot::Materials::KelvinChain']]],
-  ['factorial_3c_200_20_3e_815',['Factorial&lt; 0 &gt;',['../structMarmot_1_1Materials_1_1KelvinChain_1_1Factorial_3_010_01_4.html',1,'Marmot::Materials::KelvinChain']]]
+  ['elementproperties_1201',['ElementProperties',['../classElementProperties.html',1,'']]],
+  ['exponentialmapfailed_1202',['ExponentialMapFailed',['../structMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential_1_1ExponentialMapFailed.html',1,'Marmot::ContinuumMechanics::TensorUtility::TensorExponential']]]
 ];

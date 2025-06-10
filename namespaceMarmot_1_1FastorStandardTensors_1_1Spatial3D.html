@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Marmot::FastorStandardTensors::Spatial3D Namespace Reference</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceMarmot.html">Marmot</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html">FastorStandardTensors</a></li><li class="navelem"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html">Spatial3D</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Marmot::FastorStandardTensors::Spatial3D Namespace Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac7886a56e9b9adf66dd3635be909ed9e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac7886a56e9b9adf66dd3635be909ed9e">I</a></td></tr>
+<tr class="separator:ac7886a56e9b9adf66dd3635be909ed9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0ebb997ccb471b2cac75c9102dd655"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a1ed1265a6c056aa94690fe8c33b93ecd">Tensor333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#acd0ebb997ccb471b2cac75c9102dd655">LeviCivita</a></td></tr>
+<tr class="separator:acd0ebb997ccb471b2cac75c9102dd655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac50998280d7be0fc0dda92ae7aeaac16"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac50998280d7be0fc0dda92ae7aeaac16">IHyd</a></td></tr>
+<tr class="separator:ac50998280d7be0fc0dda92ae7aeaac16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2963988ec771610dd8fa99200bb23774"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a2963988ec771610dd8fa99200bb23774">ISymm</a></td></tr>
+<tr class="separator:a2963988ec771610dd8fa99200bb23774"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa803e9203befe715b79182302a74d730"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#aa803e9203befe715b79182302a74d730">ISkew</a></td></tr>
+<tr class="separator:aa803e9203befe715b79182302a74d730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1a05858b79498902fa6a1b4848464d7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ae1a05858b79498902fa6a1b4848464d7">I4</a></td></tr>
+<tr class="separator:ae1a05858b79498902fa6a1b4848464d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a7f66a55a8b5f7292db05d9d6b6444"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a92a7f66a55a8b5f7292db05d9d6b6444">ITranspose</a></td></tr>
+<tr class="separator:a92a7f66a55a8b5f7292db05d9d6b6444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ebd7c5d7ac032048364d6e6ed5f40a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a26ebd7c5d7ac032048364d6e6ed5f40a">Deviatoric</a> = <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ae1a05858b79498902fa6a1b4848464d7">I4</a> - 1. / 3 * <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac50998280d7be0fc0dda92ae7aeaac16">IHyd</a></td></tr>
+<tr class="separator:a26ebd7c5d7ac032048364d6e6ed5f40a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a501f0c606f20ad2ab508ccb5422cb966"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a501f0c606f20ad2ab508ccb5422cb966">DeviatoricTranspose</a> = Fastor::transpose( DeviatoricTranspose )</td></tr>
+<tr class="separator:a501f0c606f20ad2ab508ccb5422cb966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a731497ac99afd6102cbc4f11f2956a3b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a731497ac99afd6102cbc4f11f2956a3b">DeviatoricSymmetric</a> = <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a2963988ec771610dd8fa99200bb23774">ISymm</a> - 1. / 3 * <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac50998280d7be0fc0dda92ae7aeaac16">IHyd</a></td></tr>
+<tr class="separator:a731497ac99afd6102cbc4f11f2956a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ac7886a56e9b9adf66dd3635be909ed9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7886a56e9b9adf66dd3635be909ed9e">&#9670;&nbsp;</a></span>I</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a> Marmot::FastorStandardTensors::Spatial3D::I</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Tensor33d</a>( ( <a class="code" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Eigen::Matrix3d</a>() &lt;&lt; Eigen::Matrix3d::Identity() ).finished().data(),</div>
+<div class="line">                                            Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="acd0ebb997ccb471b2cac75c9102dd655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd0ebb997ccb471b2cac75c9102dd655">&#9670;&nbsp;</a></span>LeviCivita</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a1ed1265a6c056aa94690fe8c33b93ecd">Tensor333d</a> Marmot::FastorStandardTensors::Spatial3D::LeviCivita</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a1ed1265a6c056aa94690fe8c33b93ecd">Tensor333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a127950653ef345e8a45df1e68393c6f1">Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</a>.data(),</div>
+<div class="line">                                                       Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ac50998280d7be0fc0dda92ae7aeaac16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50998280d7be0fc0dda92ae7aeaac16">&#9670;&nbsp;</a></span>IHyd</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::IHyd</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a19e903c99f721cb9a86a8613f35794a0">Marmot::ContinuumMechanics::CommonTensors::I2xI2</a>.data(),</div>
+<div class="line">                                                   Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a2963988ec771610dd8fa99200bb23774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2963988ec771610dd8fa99200bb23774">&#9670;&nbsp;</a></span>ISymm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::ISymm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aad74cf6891e87ab6df1f6db6ee2ccb86">Marmot::ContinuumMechanics::CommonTensors::Isym</a>.data(),</div>
+<div class="line">                                                    Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa803e9203befe715b79182302a74d730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa803e9203befe715b79182302a74d730">&#9670;&nbsp;</a></span>ISkew</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::ISkew</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a39e22eecd0896eb7b3c4158fdb25340e">Marmot::ContinuumMechanics::CommonTensors::Iskew</a>.data(),</div>
+<div class="line">                                                    Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae1a05858b79498902fa6a1b4848464d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1a05858b79498902fa6a1b4848464d7">&#9670;&nbsp;</a></span>I4</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::I4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab12fa46f0ae9374c111d07cfd88e44d6">Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</a>.data(),</div>
+<div class="line">                                                 Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a92a7f66a55a8b5f7292db05d9d6b6444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a7f66a55a8b5f7292db05d9d6b6444">&#9670;&nbsp;</a></span>ITranspose</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::ITranspose</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= <a class="code" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a>( <a class="code" href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a488003e8a0f1a7cc17e2d27346b4aaea">Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</a>.data(),</div>
+<div class="line">                                  Fastor::ColumnMajor )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a26ebd7c5d7ac032048364d6e6ed5f40a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26ebd7c5d7ac032048364d6e6ed5f40a">&#9670;&nbsp;</a></span>Deviatoric</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::Deviatoric = <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ae1a05858b79498902fa6a1b4848464d7">I4</a> - 1. / 3 * <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac50998280d7be0fc0dda92ae7aeaac16">IHyd</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a501f0c606f20ad2ab508ccb5422cb966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a501f0c606f20ad2ab508ccb5422cb966">&#9670;&nbsp;</a></span>DeviatoricTranspose</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::DeviatoricTranspose = Fastor::transpose( DeviatoricTranspose )</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a731497ac99afd6102cbc4f11f2956a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a731497ac99afd6102cbc4f11f2956a3b">&#9670;&nbsp;</a></span>DeviatoricSymmetric</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Tensor3333d</a> Marmot::FastorStandardTensors::Spatial3D::DeviatoricSymmetric = <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#a2963988ec771610dd8fa99200bb23774">ISymm</a> - 1. / 3 * <a class="el" href="namespaceMarmot_1_1FastorStandardTensors_1_1Spatial3D.html#ac50998280d7be0fc0dda92ae7aeaac16">IHyd</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_a19e903c99f721cb9a86a8613f35794a0"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a19e903c99f721cb9a86a8613f35794a0">Marmot::ContinuumMechanics::CommonTensors::I2xI2</a></div><div class="ttdeci">const EigenTensors::Tensor3333d I2xI2</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:48</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_ab12fa46f0ae9374c111d07cfd88e44d6"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#ab12fa46f0ae9374c111d07cfd88e44d6">Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</a></div><div class="ttdeci">const EigenTensors::Tensor3333d IFourthOrder</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:20</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_a488003e8a0f1a7cc17e2d27346b4aaea"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a488003e8a0f1a7cc17e2d27346b4aaea">Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</a></div><div class="ttdeci">const EigenTensors::Tensor3333d IFourthOrderTranspose</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:34</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_a27b9b068b60334251eab8f864953a091"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#a27b9b068b60334251eab8f864953a091">Marmot::FastorStandardTensors::Tensor33d</a></div><div class="ttdeci">Fastor::Tensor&lt; double, 3, 3 &gt; Tensor33d</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:38</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_aad74cf6891e87ab6df1f6db6ee2ccb86"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#aad74cf6891e87ab6df1f6db6ee2ccb86">Marmot::ContinuumMechanics::CommonTensors::Isym</a></div><div class="ttdeci">const EigenTensors::Tensor3333d Isym</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:74</div></div>
+<div class="ttc" id="anamespaceMarmot_html_a13408696fbca14d8a266da5a7648c4d3"><div class="ttname"><a href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot::Matrix3d</a></div><div class="ttdeci">Eigen::Matrix&lt; double, 3, 3 &gt; Matrix3d</div><div class="ttdef"><b>Definition:</b> MarmotTypedefs.h:40</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_a7faffb667194b2b9c2aa127be4c4cbd1"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#a7faffb667194b2b9c2aa127be4c4cbd1">Marmot::FastorStandardTensors::Tensor3333d</a></div><div class="ttdeci">Fastor::Tensor&lt; double, 3, 3, 3, 3 &gt; Tensor3333d</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:40</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_a127950653ef345e8a45df1e68393c6f1"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a127950653ef345e8a45df1e68393c6f1">Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</a></div><div class="ttdeci">const EigenTensors::Tensor333d LeviCivita3D</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:132</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1FastorStandardTensors_html_a1ed1265a6c056aa94690fe8c33b93ecd"><div class="ttname"><a href="namespaceMarmot_1_1FastorStandardTensors.html#a1ed1265a6c056aa94690fe8c33b93ecd">Marmot::FastorStandardTensors::Tensor333d</a></div><div class="ttdeci">Fastor::Tensor&lt; double, 3, 3, 3 &gt; Tensor333d</div><div class="ttdef"><b>Definition:</b> MarmotFastorTensorBasics.h:39</div></div>
+<div class="ttc" id="anamespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors_html_a39e22eecd0896eb7b3c4158fdb25340e"><div class="ttname"><a href="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors.html#a39e22eecd0896eb7b3c4158fdb25340e">Marmot::ContinuumMechanics::CommonTensors::Iskew</a></div><div class="ttdeci">const EigenTensors::Tensor3333d Iskew</div><div class="ttdef"><b>Definition:</b> MarmotTensor.cpp:88</div></div>
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

@@ -207,14 +207,22 @@ Functions</h2></td></tr>
 <tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplParams" colspan="2">template&lt;typename T , long int... Rest&gt; </td></tr>
 <tr class="memitem:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#aa9631a49d5e76b29696611bf3ed21ceb">checkIfEqual</a> (const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;a, const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;b, const double tol=1e-15)</td></tr>
 <tr class="separator:aa9631a49d5e76b29696611bf3ed21ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2650f599f03fc8c503c969366b1b5812"><td class="memTemplParams" colspan="2">template&lt;typename T , size_t... Rest&gt; </td></tr>
+<tr class="memitem:a2650f599f03fc8c503c969366b1b5812"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a2650f599f03fc8c503c969366b1b5812">checkIfEqual</a> (const Fastor::Tensor&lt; T, Rest... &gt; &amp;a, const Fastor::Tensor&lt; T, Rest... &gt; &amp;b, const double tol=1e-15)</td></tr>
+<tr class="separator:a2650f599f03fc8c503c969366b1b5812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af036d587586043fa17744b4d17a459db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#af036d587586043fa17744b4d17a459db">throwExceptionOnFailure</a> (const bool condition, const std::string &amp;message=&quot;&quot;)</td></tr>
 <tr class="separator:af036d587586043fa17744b4d17a459db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a419cfd0357321b6165f13314560b904a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a419cfd0357321b6165f13314560b904a">executeTestsAndCollectExceptions</a> (const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;testFunctions)</td></tr>
 <tr class="separator:a419cfd0357321b6165f13314560b904a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memTemplParams" colspan="2">template&lt;int N&gt; </td></tr>
+<tr class="memitem:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memTemplItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, N, 2 &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a06f3f34b638c6c214635b15cb7e2b62f">fibonacciLatticeHemisphere</a> ()</td></tr>
+<tr class="separator:a06f3f34b638c6c214635b15cb7e2b62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77104a97c304eda282f242eea0f09502"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceMarmot_1_1Testing.html#a77104a97c304eda282f242eea0f09502">spinTurbokreisel</a> (const std::unique_ptr&lt; <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> &gt; &amp;material, double *stress, double *dStress_dStrain, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT, const double stressTol=1e-15, const double stiffnessTol=1e-15)</td></tr>
+<tr class="separator:a77104a97c304eda282f242eea0f09502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a0fd6d75987f47297f37a92bdc698fb04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fd6d75987f47297f37a92bdc698fb04">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd6d75987f47297f37a92bdc698fb04">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,7 +256,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="abc0bb108985d93862de52d8efb07d457"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc0bb108985d93862de52d8efb07d457">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0bb108985d93862de52d8efb07d457">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +290,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a536c090df341abb53026544c6ba29a80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a536c090df341abb53026544c6ba29a80">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a536c090df341abb53026544c6ba29a80">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -352,7 +360,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="ae8532780a87a911bd99a477fe5e8c812"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8532780a87a911bd99a477fe5e8c812">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8532780a87a911bd99a477fe5e8c812">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,7 +396,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aa9631a49d5e76b29696611bf3ed21ceb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9631a49d5e76b29696611bf3ed21ceb">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9631a49d5e76b29696611bf3ed21ceb">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -405,6 +413,42 @@ template&lt;typename T , long int... Rest&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>tol</em> = <code>1e-15</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2650f599f03fc8c503c969366b1b5812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2650f599f03fc8c503c969366b1b5812">&#9670;&nbsp;</a></span>checkIfEqual() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , size_t... Rest&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Marmot::Testing::checkIfEqual </td>
+          <td>(</td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, Rest... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const Fastor::Tensor&lt; T, Rest... &gt; &amp;&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
@@ -463,6 +507,95 @@ template&lt;typename T , long int... Rest&gt; </div>
           <td class="paramtype">const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>testFunctions</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a06f3f34b638c6c214635b15cb7e2b62f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06f3f34b638c6c214635b15cb7e2b62f">&#9670;&nbsp;</a></span>fibonacciLatticeHemisphere()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;int N&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">Eigen::Matrix&lt; double, N, 2 &gt; Marmot::Testing::fibonacciLatticeHemisphere </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77104a97c304eda282f242eea0f09502"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77104a97c304eda282f242eea0f09502">&#9670;&nbsp;</a></span>spinTurbokreisel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Marmot::Testing::spinTurbokreisel </td>
+          <td>(</td>
+          <td class="paramtype">const std::unique_ptr&lt; <a class="el" href="classMarmotMaterialHypoElastic.html">MarmotMaterialHypoElastic</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>material</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>stress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>dStress_dStrain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>dStrain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>timeOld</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>dT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>pNewDT</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>stressTol</em> = <code>1e-15</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>stiffnessTol</em> = <code>1e-15</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

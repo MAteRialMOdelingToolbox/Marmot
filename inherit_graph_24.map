@@ -1,11 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classMarmotMaterial.html" title=" " alt="" coords="5,42,117,69"/>
-<area shape="rect" id="node2" href="$classMarmotMaterialGradientEnhancedMechanical.html" title=" " alt="" coords="165,5,384,47"/>
-<area shape="rect" id="node4" href="$classMarmotMaterialMechanical.html" title=" " alt="" coords="185,71,364,98"/>
-<area shape="rect" id="node3" href="$classMarmotMaterialGradientEnhancedHypoElastic.html" title=" " alt="" coords="432,5,651,47"/>
-<area shape="rect" id="node5" href="$classMarmotMaterialHyperElastic.html" title=" " alt="" coords="449,71,634,98"/>
-<area shape="rect" id="node6" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="451,122,632,149"/>
-<area shape="rect" id="node7" href="$classMarmot_1_1Materials_1_1LinearElastic.html" title="Implementation of a linear elastic material for 3D stress states." alt="" coords="733,49,863,91"/>
-<area shape="rect" id="node8" href="$classMarmot_1_1Materials_1_1VonMisesModel.html" title=" " alt="" coords="733,115,863,156"/>
-<area shape="rect" id="node9" href="$classMarmotMaterialHypoElasticAD.html" title=" " alt="" coords="699,181,897,207"/>
+<area shape="rect" id="node1" href="$classMarmot_1_1NumericalAlgorithms_1_1PerezFougetSubstepper.html" title=" " alt="" coords="5,5,199,61"/>
 </map>

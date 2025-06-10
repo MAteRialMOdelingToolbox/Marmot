@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['boundaryelement_809',['BoundaryElement',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html',1,'Marmot::FiniteElement']]],
-  ['boundaryelementquadraturepoint_810',['BoundaryElementQuadraturePoint',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint',1,'Marmot::FiniteElement::BoundaryElement']]]
+  ['b4_1190',['B4',['../classMarmot_1_1Materials_1_1B4.html',1,'Marmot::Materials']]],
+  ['b4statevarmanager_1191',['B4StateVarManager',['../classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager.html',1,'Marmot::Materials::B4']]],
+  ['boundaryelement_1192',['BoundaryElement',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html',1,'Marmot::FiniteElement']]],
+  ['boundaryelementquadraturepoint_1193',['BoundaryElementQuadraturePoint',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html#structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint',1,'Marmot::FiniteElement::BoundaryElement']]]
 ];

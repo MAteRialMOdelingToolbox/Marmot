@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+		<meta name="generator" content="Doxygen 1.8.18"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Marmot: Namespace Members</title>
+		<link href="tabs.css" rel="stylesheet" type="text/css"/>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript" src="dynsections.js"></script>
+		<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+		<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js", "TeX/AMSmath.js", "TeX/AMSsymbols.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+   TeX: { Macros: {
+    t: ["{\\textrm{#1}}",1],
+    eff: ["{\\bar{#1}}",1],
+    Cel: "{\\mathbb{C}}",
+    CelInv: "{{\\Cel}^{-1}}",
+    CelUnitInv: "{{\\Cel}_\\nu^{-1}}",
+    sig: "{{\\boldsymbol{\\sigma}}}",
+    effSig: "{{\\eff{\\sig}}}",
+    sigRate: "{\\dot{\\sig}}",
+    sigM: "{\\sigma^{\\t{m}}}",
+    effSigMean: "{{\\eff{\\sigma}^{\\t{m}}}}",
+    effRho: "{{\\eff{\\rho}} }",
+    effTheta: "{{\\theta}}",
+    eps: "{\\boldsymbol{\\varepsilon}}",
+    epsRate: "{\\dot{\\eps}}",
+    epsE: "{\\eps^{\\t{el}}}",
+    epsP: "{\\eps^{\\t{p}}}",
+    epsVE: "{\\eps^{\\t{ve}}}",
+    epsF: "{\\eps^{\\t{f}}}",
+    epsDC: "{\\eps^{\\t{dc}}}",
+    epsSHR: "{\\eps^{\\t{shr}}}",
+    epsERate: "{\\epsRate^{\\t{el}}}",
+    epsPRate: "{\\epsRate^{\\t{p}}}",
+    epsVERate: "{\\epsRate^{\\t{ve}}}",
+    epsFRate: "{\\epsRate^{\\t{f}}}",
+    epsDCRate: "{\\epsRate^{\\t{dc}}}",
+    epsSHRRate: "{\\epsRate^{\\t{shr}}}",
+    epsPVRate: "{\\epsRate^\\t{{p,vol}}}",
+    const: "{\\t{const.}}",
+    shortMinus: "{\\text{-}}",
+    intDomain: ["{\\int_{\\Omega}#1\\,d\\Omega}",1],
+    fracPartial: ["{\\frac{\\partial#1}{\\partial#2}}",2],
+    fracPartialSec: ["{\\frac{\\partial^2#1}{\\partial#2^2}}",2],
+    fracPartialSecMixed: ["{\\frac{\\partial^2#1}{\\partial#2\\,\\partial#3}}",3],
+    fracPartialTex: ["{\\partial#1/\\partial#2}",2],
+    fracPartialTime: ["{\\left\\frac{\\partial#1}{\\partial#2}\\right|_{#3}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",3],
+    fracPartialTimeSecMixed: ["{\\left\\frac{\\partial^2#1}{\\partial#2\\partial#3}\\right|_{#4}\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!\\!}",4],
+    test: ["{\\delta#1}",1],
+    fP: "{f_\\t{p}}",
+    fPCutOff: "{f_\\t{cut}}",
+    sigMShift: "{\\eff{\\sigma}^\\t{m,shif}}",
+    fD: "{f_\\t{d}}",
+    gP: "{g_\\t{p}}",
+    gPCutOff: "{g_\\t{cu}}",
+    dGDSigmaEff: "{\\frac{\\partial\\gP(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    dGCutOffDSigmaEff: "{\\frac{\\partial\\fPCutOff(\\effSig, \\qhard(\\alphaP))}{\\partial\\effSig}}",
+    xs: "{x_\\t{s}}",
+    epsTilde: "{\\tilde{\\varepsilon}}",
+    qhard: "{q_\\t{{h}}}",
+    qh: "{q_\\t{{h}}}",
+    alphaP: "{\\alpha_\\t{{p}}}",
+    alphaD: "{\\alpha_\\t{{d}}}",
+    alphaRate: "{\\dot{\\alpha}}",
+    BalphaRate: "{\\dot{\\Bal}}",
+    alphaPRate: "{\\dot{\\alpha}_\\t{{p}}}",
+    alphaDRate: "{\\dot{\\alpha}_\\t{{d}}}",
+    lambdaRate: "{\\dot{\\lambda}}",
+    lambdaRateVec: "{\\dot{\\boldsymbol{\\lambda}}}",
+    lambdaRateCu: "{\\dot{\\lambda}_\\t{cu}}",
+    fRate: "{\\dot{f}}",
+    act: "{\\beta}",
+    nAct: "{{n_\\t{act}}}",
+    nSig: "{\\sigma}",
+    jAll: "{\\mathbb{J}_\\t{all}}",
+    jAct: "{\\mathbb{J}_\\t{act}}",
+    lambdaRateAct: "{\\lambdaRate_{\\mathsmaller{\\beta}}}",
+    lambdaRateAll: "{\\lambdaRate_{\\mathsmaller{\\alpha}}}",
+    lambdaAct: "{\\lambda_{\\mathsmaller{\\beta}}}",
+    lambdaAll: "{\\lambda_{\\mathsmaller{\\alpha}}}",
+    fAct: "{f_{\\mathsmaller{\\beta}}}",
+    fAll: "{f_{\\mathsmaller{\\alpha}}}",
+    fActVec: "{\\boldsymbol{f}}",
+    fActRate: "{\\dot{f}_{\\mathsmaller{\\beta}}}",
+    fAllRate: "{\\dot{f}_{\\mathsmaller{\\alpha}}}",
+    fActN: "{f_{\\mathsmaller{\\beta}}^\\n}",
+    fAllN: "{f_{\\mathsmaller{\\alpha}}^\\n}",
+    gAct: "{g_{\\mathsmaller{\\beta}}}",
+    gActVec: "{\\boldsymbol{g}}",
+    hAct: "{h_{\\mathsmaller{\\beta}}}",
+    hActVec: "{\\boldsymbol{h}}",
+    sumAct: "{\\sum_{\\beta\\,\\int\\,\\jAct}^{}}",
+    Ah: "{A_\\t{{h}}}",
+    Bh: "{B_\\t{{h}}}",
+    Ch: "{C_\\t{{h}}}",
+    Dh: "{D_\\t{{h}}}",
+    Eh: "{E_\\t{{h}}}",
+    Fh: "{F_\\t{{h}}}",
+    Gh: "{G_\\t{{h}}}",
+    Rh: "{R_\\t{{h}}}",
+    mgOne: "{m_\\t{{g1,rm}}}",
+    mgTwo: "{m_\\t{{g2,rm}}}",
+    mb: "{m_\\t{b}}",
+    mbmzero: "{m_\\t{b}/m_\\t{0}}",
+    mbmzeroFrac: "{\\frac{m_\\t{b}}{m_\\t{0}}}",
+    ermei: "{E_\\t{rm}/E_\\t{i}}",
+    ermeiFrac: "{\\frac{E_\\t{rm}}{E_\\t{i}}}",
+    furm: "{f_\\t{u,rm}}",
+    As: "{A_\\t{{s}}}",
+    Bs: "{B_\\t{{s}}}",
+    GfI: "{G_\\t{{f}}^\\t{I}}",
+    softModulus: "{\\varepsilon_{\\t{f}}}",
+    lChar: "{l_\\t{char}}",
+    epsZero: "{\\varepsilon_\\t{0}}",
+  } }
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="doxygen-style.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+		<div id="titlearea">
+			<table cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr style="height: 56px;">
+						<td id="projectlogo"><img alt="Logo" src="marmot_logo_avenir.png"/></td>
+						<td id="projectalign" style="padding-left: 0.5em;">
+							<!--<div id="projectname">Marmot
+							</div>-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- end header part -->
+<!-- Generated by Doxygen 1.8.18 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="contents">
+&#160;
+
+<h3><a id="index_m"></a>- m -</h3><ul>
+<li>m
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a4d7bee502d184d0b56e828d9002b52e2">Marmot::FastorIndices</a>
+</li>
+<li>mapProperties
+: <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a9fc5728c546ccca8041fc22a969235fa">Marmot::Materials::KelvinChain</a>
+</li>
+<li>mapStateVarMatrix
+: <a class="el" href="namespaceMarmot_1_1ContinuumMechanics_1_1Viscoelasticity_1_1PronySeries.html#a481a6a7f467111c775dc5a2c18a979ef">Marmot::ContinuumMechanics::Viscoelasticity::PronySeries</a>
+, <a class="el" href="namespaceMarmot_1_1Materials_1_1KelvinChain.html#a01798c882d4d09e944aaa13153c21079">Marmot::Materials::KelvinChain</a>
+</li>
+<li>Matrix34d
+: <a class="el" href="namespaceMarmot.html#ad86d1ce5512561af7c3acc09ad35174f">Marmot</a>
+</li>
+<li>Matrix36
+: <a class="el" href="namespaceMarmot.html#aafff432cf7a4c6a916c625aa3f69a278">Marmot</a>
+</li>
+<li>Matrix36d
+: <a class="el" href="namespaceMarmot.html#a69a44de0a03fcbdf397fa8e951889154">Marmot</a>
+</li>
+<li>Matrix3d
+: <a class="el" href="namespaceMarmot.html#a13408696fbca14d8a266da5a7648c4d3">Marmot</a>
+</li>
+<li>Matrix63d
+: <a class="el" href="namespaceMarmot.html#a397580baed2ffbfc7230416de736742e">Marmot</a>
+</li>
+<li>Matrix69d
+: <a class="el" href="namespaceMarmot.html#a0a2344556757165684203dfbb2e0ca1d">Marmot</a>
+</li>
+<li>Matrix6d
+: <a class="el" href="namespaceMarmot.html#a48144b7616079807fd550c92d142e9da">Marmot</a>
+</li>
+<li>Matrix99d
+: <a class="el" href="namespaceMarmot.html#af33f8a23557bad80e7029e08e8a71591">Marmot</a>
+</li>
+<li>Matrix9d
+: <a class="el" href="namespaceMarmot.html#a92e92658ec8f3b5f376dde69375da320">Marmot</a>
+</li>
+<li>mConstVector6d
+: <a class="el" href="namespaceMarmot.html#aab67dc8984f8afd2a802dce3128dd464">Marmot</a>
+</li>
+<li>Mi
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a672514711ea8d1e0ed3826d102b4d23c">Marmot::FastorIndices</a>
+</li>
+<li>mj
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a2aa7e7dd837947e320cceada3a44078e">Marmot::FastorIndices</a>
+</li>
+<li>MJKL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a588a990eb3e0c190752e3f11ee912e5f">Marmot::FastorIndices</a>
+</li>
+<li>mjL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a10f520ec79cf99f2a73e70fd8743b492">Marmot::FastorIndices</a>
+</li>
+<li>MK
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a6fe648cce0e76f106a9b7b68fb49efee">Marmot::FastorIndices</a>
+</li>
+<li>mK
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#aab0d6f1ce35a0aa060cd466da9d6e2f5">Marmot::FastorIndices</a>
+</li>
+<li>ML
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ace353a7f324f1fd8e0be3e3f342f7ff8">Marmot::FastorIndices</a>
+</li>
+<li>mLl
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#af3ac59ed37e6d7c3db1da5487b628296">Marmot::FastorIndices</a>
+</li>
+<li>mMatrix6d
+: <a class="el" href="namespaceMarmot.html#a42cce1f9189e52b4cad0caef7ace17d2">Marmot</a>
+</li>
+<li>mn
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a3e3312f9e8cea9bee5d246ddd2aece2c">Marmot::FastorIndices</a>
+</li>
+<li>mnij
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a3ea8b952e456d7ee0d0484e65d608d43">Marmot::FastorIndices</a>
+</li>
+<li>mnkB
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#af1599a68a6da05c3aaf49d9c799212be">Marmot::FastorIndices</a>
+</li>
+<li>mnKL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ac04b8af591c4ec349c4ea7b776754cbc">Marmot::FastorIndices</a>
+</li>
+<li>mnkL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#ad3037d4c4fe3f9214e03804fbe460edf">Marmot::FastorIndices</a>
+</li>
+<li>MNL
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#af3e2295d94aa418f2245f758e7d0140e">Marmot::FastorIndices</a>
+</li>
+<li>MPm
+: <a class="el" href="namespaceMarmot_1_1FastorIndices.html#a25f2e5e6487354d0d29fa8cb0e34ba91">Marmot::FastorIndices</a>
+</li>
+<li>mVector6d
+: <a class="el" href="namespaceMarmot.html#a4e78d5e4bb006cdfd319f06ae686312f">Marmot</a>
+</li>
+<li>mVectorXd
+: <a class="el" href="namespaceMarmot.html#a5e77b34ec4d5628dc4a164a359a4fd22">Marmot</a>
+</li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+		<script src="custom.js"></script>
+	</body>
+</html>

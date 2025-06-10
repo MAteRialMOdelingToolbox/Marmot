@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['weight_1491',['weight',['../classMarmot_1_1FiniteElement_1_1BoundaryElement.html#aed89fe9298679403fb69d544393b363b',1,'Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::weight()'],['../namespaceMarmot_1_1FiniteElement_1_1Quadrature.html#ad9d2fbe7fcbab0e30cf9ba2ba25c6fac',1,'Marmot::FiniteElement::Quadrature::QuadraturePointInfo::weight()'],['../structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint.html#a935e88b0953775bd37e48cc770c6bf1c',1,'Marmot::Elements::DisplacementFiniteElement::QuadraturePoint::weight()']]]
+  ['ultimateautogenousshrinkagestrain_2104',['ultimateAutogenousShrinkageStrain',['../classMarmot_1_1Materials_1_1B4.html#ab64c145db5d842309016125a9833d64e',1,'Marmot::Materials::B4']]],
+  ['ultimatedryingshrinkagestrain_2105',['ultimateDryingShrinkageStrain',['../classMarmot_1_1Materials_1_1B4.html#a01437a79d71a5f2ba7f92ffdd218e22d',1,'Marmot::Materials::B4']]],
+  ['ultimatestiffnessmatrix_2106',['ultimateStiffnessMatrix',['../namespaceMarmot_1_1ContinuumMechanics_1_1Viscoelasticity_1_1PronySeries.html#a050e4314ad75a330c5e3d900cf174681',1,'Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties']]],
+  ['unprojectedsize_2107',['unprojectedSize',['../classMarmotElementSpatialWrapper.html#a1de75d57ef38a7d306f02fc9e2915aab',1,'MarmotElementSpatialWrapper']]]
 ];
