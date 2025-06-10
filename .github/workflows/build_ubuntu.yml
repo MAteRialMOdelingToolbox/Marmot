@@ -43,7 +43,7 @@ jobs:
           cd Fastor
           mkdir build
           cd build
-          cmake ..
+          cmake -DBUILD_TESTING=OFF  ..
           sudo make install
           cd ../..
 
