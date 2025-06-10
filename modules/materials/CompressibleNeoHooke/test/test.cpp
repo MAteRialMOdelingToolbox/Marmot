@@ -1,7 +1,6 @@
 #include "Marmot/CompressibleNeoHooke.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
-#include "Marmot/MarmotMicromorphicTensorBasics.h"
 
 int main()
 {
@@ -26,9 +25,9 @@ int main()
 
   mat.computeStress( response, tangent, def, timeInc );
 
-  std::cout << "deformation=\n" << def.F << std::endl;
-  std::cout << "stress = \n" << response.tau << std::endl;
-  std::cout << "tangent = \n" << tangent.dTau_dF << std::endl;
+  /* std::cout << "deformation=\n" << def.F << std::endl; */
+  /* std::cout << "stress = \n" << response.tau << std::endl; */
+  /* std::cout << "tangent = \n" << tangent.dTau_dF << std::endl; */
 
   return 0;
 }
