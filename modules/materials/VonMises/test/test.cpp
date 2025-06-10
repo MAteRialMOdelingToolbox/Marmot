@@ -20,10 +20,8 @@ void testVonMises()
                                                           0 ) ) );
   // set state vars
   if ( material->getNumberOfRequiredStateVars() > 1 ) {
-    throw std::runtime_error( "Number of required state vars for Mises model changed!" );
+    throw std::runtime_error( "Number of required state vars changed!" );
   }
-  double kappa = 0;
-  material->assignStateVars( &kappa, 1 );
 
   // set increment
   Marmot::Vector6d stress;
@@ -34,7 +32,33 @@ void testVonMises()
   double           pNewDT;
 
   // initialize stress
-  stress << 0., 0., 0., 0., 0., 0.;
+  stress.setZero();
+
+  // initialize material state
+  double kappa = 0.;
+  material->assignStateVars( &kappa, 1 );
+
+  // set strain increment
+  dStrain << 0.01, 0, 0., 0., 0.03, 0.;
+
+  // check coordinate invariance
+  throwExceptionOnFailure( spinTurbokreisel( material,
+                                             stress.data(),
+                                             dStressDDStrain.data(),
+                                             dStrain.data(),
+                                             &timeOld,
+                                             dT,
+                                             pNewDT,
+                                             1e-10,
+                                             1e-8 ),
+                           "Turbokreisel failed!" );
+
+  // initialize stress
+  stress.setZero();
+
+  // initialize material state
+  kappa = 0.;
+  material->assignStateVars( &kappa, 1 );
 
   // set strain increment
   dStrain << 0.00839244, 0.00089344, -0.00703916, 0.00013635, 0.00160548, 0.00572825;
