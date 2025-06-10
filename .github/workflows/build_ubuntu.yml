@@ -35,6 +35,17 @@ jobs:
           cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
           sudo make install
           cd ../..
+          
+      - name: Install Fastor
+        shell: bash -l {0}
+        run: |
+          git clone --branch V0.6.4 https://github.com/romeric/Fastorf.git
+          cd Fastor
+          mkdir build
+          cd build
+          cmake ..
+          sudo make install
+          cd ../..
 
       - uses: actions/checkout@v3
         with: 
