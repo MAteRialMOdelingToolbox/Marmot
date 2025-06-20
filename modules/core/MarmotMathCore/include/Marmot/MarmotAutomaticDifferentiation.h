@@ -82,6 +82,24 @@ namespace Marmot {
 
       return out;
     }
+
+    template < size_t order >
+    autodiff::HigherOrderDual< order - 1, double > decreaseDualOrder( autodiff::HigherOrderDual< order, double >& in )
+    {
+      using out_scalar_type = autodiff::HigherOrderDual< order - 1, double >;
+      using namespace autodiff::detail;
+
+      out_scalar_type out( 0.0 );
+      double*         in_point  = &valnode< order >( in );
+      double*         out_point = &valnode< order - 1 >( out );
+
+      for ( size_t i = 0; i < size_t( std::pow( 2, order - 1 ) ); i++ ) {
+        *( out_point + i ) = *( in_point + i );
+      }
+
+      return out;
+    }
+
     template < size_t order >
     autodiff::HigherOrderDual< order - 1, double > decreaseDualOrderWithShift(
       autodiff::HigherOrderDual< order, double >& in )

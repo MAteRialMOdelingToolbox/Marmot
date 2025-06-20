@@ -85,7 +85,7 @@ namespace Marmot {
       const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& T ) >;
 
     template < size_t order, size_t... Rest >
-    Fastor::Tensor< HigherOrderDual< order, double >, Rest... > df_dT(
+    std::pair< HigherOrderDual< order, double >, Fastor::Tensor< HigherOrderDual< order, double >, Rest... > > df_dT(
       const tensor_to_scalar_function_type_arbitrary_dual_order< order + 1, Rest... >& f,
       const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >&               T )
     {
@@ -106,8 +106,8 @@ namespace Marmot {
         df_dT_data[df_dT_.get_mem_index( i )] = decreaseDualOrderWithShift< order + 1 >( f_ );
         seed< 1 >( T_right_data[T_right.get_mem_index( i )], 0.0 );
       }
-
-      return df_dT_;
+      f_ = f( T_right );
+      return { decreaseDualOrder< order + 1 >( f_ ), df_dT_ };
     }
 
     template < size_t... RestF, size_t... RestT >

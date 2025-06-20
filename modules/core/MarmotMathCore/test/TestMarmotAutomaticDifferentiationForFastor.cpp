@@ -91,7 +91,7 @@ void testTensorToScalarWith2ndOrderDuals()
   auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
-  Tensor33t< autodiff::dual > dPsi_dC = df_dT< 1 >( psi, C_dual );
+  Tensor33t< autodiff::dual > dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
@@ -105,7 +105,7 @@ void testTensorToScalarWith2ndOrderDuals()
   std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
-  dPsi_dC = df_dT< 1 >( psi, C_dual );
+  dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
@@ -119,7 +119,7 @@ void testTensorToScalarWith2ndOrderDuals()
   std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
-  dPsi_dC = df_dT< 1 >( psi, C_dual );
+  dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
                            MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
