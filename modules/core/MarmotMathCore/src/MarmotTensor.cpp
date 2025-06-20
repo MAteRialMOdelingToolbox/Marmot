@@ -5,7 +5,7 @@ using namespace Marmot::ContinuumMechanics::TensorUtility;
 namespace Marmot {
   namespace ContinuumMechanics::CommonTensors {
 
-    auto Initialize_IFourthOrder()
+    EigenTensors::Tensor3333d Initialize_IFourthOrder()
     {
       EigenTensors::Tensor3333d I;
 
@@ -17,9 +17,8 @@ namespace Marmot {
             }
       return I;
     }
-    const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
-    auto Initialize_IFourthOrderTranspose()
+    EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose()
     {
       EigenTensors::Tensor3333d IT;
 
@@ -31,9 +30,8 @@ namespace Marmot {
             }
       return IT;
     }
-    const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
-    auto Initialize_I2xI2()
+    EigenTensors::Tensor3333d Initialize_I2xI2()
     {
       EigenTensors::Tensor3333d I2xI2;
 
@@ -45,9 +43,8 @@ namespace Marmot {
             }
       return I2xI2;
     }
-    const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
-    auto Initialize_I2()
+    EigenTensors::Tensor33d Initialize_I2()
     {
       EigenTensors::Tensor33d I2;
 
@@ -57,9 +54,8 @@ namespace Marmot {
 
       return I2;
     }
-    const EigenTensors::Tensor33d I2 = Initialize_I2();
 
-    auto Initialize_Isym()
+    EigenTensors::Tensor3333d Initialize_Isym()
     {
       EigenTensors::Tensor3333d Isym;
 
@@ -71,9 +67,8 @@ namespace Marmot {
             }
       return Isym;
     }
-    const EigenTensors::Tensor3333d Isym = Initialize_Isym();
 
-    auto Initialize_Iskew()
+    EigenTensors::Tensor3333d Initialize_Iskew()
     {
       EigenTensors::Tensor3333d Iskew;
 
@@ -85,9 +80,8 @@ namespace Marmot {
             }
       return Iskew;
     }
-    const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
 
-    auto Initialize_dDeviatoricStress_dStress()
+    EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress()
     {
       EigenTensors::Tensor3333d dsdsigma;
       dsdsigma.setZero();
@@ -99,8 +93,6 @@ namespace Marmot {
             }
       return dsdsigma;
     }
-
-    const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
 
     EigenTensors::Tensor333d Initialize_LeviCivita3D()
     {
@@ -128,9 +120,6 @@ namespace Marmot {
 
       return e;
     }
-
-    const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
-    const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
   } // namespace ContinuumMechanics::CommonTensors
 
