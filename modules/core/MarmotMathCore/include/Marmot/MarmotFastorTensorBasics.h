@@ -439,6 +439,13 @@ namespace Marmot {
   }
 
   template < typename T >
+  FastorStandardTensors::Tensor33t< T > symmetric( const FastorStandardTensors::Tensor33t< T >& t )
+  {
+    const FastorStandardTensors::Tensor33t< T > sym = 0.5 * ( t + Fastor::transpose( t ) );
+    return sym;
+  }
+
+  template < typename T >
   FastorStandardTensors::Tensor33t< T > deviatoric( const FastorStandardTensors::Tensor33t< T >& t )
   {
     Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
