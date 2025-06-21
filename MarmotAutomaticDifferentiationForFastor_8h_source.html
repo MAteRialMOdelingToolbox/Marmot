@@ -273,7 +273,7 @@ $(function() {
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      <span class="keyword">const</span> Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">template</span> &lt; <span class="keywordtype">size_t</span> order, <span class="keywordtype">size_t</span>... Rest &gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="namespaceMarmot_1_1AutomaticDifferentiation.html#adb5209a50e756c9f69105a262cbdf7eb">   88</a></span>&#160;    Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; <a class="code" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a6c89fdfd4ef801c108cc51e8a178d2cd">df_dT</a>(</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a64e5b14fad670ebdd8af30a77b1e64b1">   88</a></span>&#160;    std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt; <a class="code" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a6c89fdfd4ef801c108cc51e8a178d2cd">df_dT</a>(</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      <span class="keyword">const</span> <a class="code" href="namespaceMarmot_1_1AutomaticDifferentiation.html#a173aa6675482cea657b64cf186d3cf1c">tensor_to_scalar_function_type_arbitrary_dual_order&lt; order + 1, Rest... &gt;</a>&amp; f,</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      <span class="keyword">const</span> Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp;               T )</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    {</div>
@@ -294,8 +294,8 @@ $(function() {
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        df_dT_data[df_dT_.get_mem_index( <a class="code" href="namespaceMarmot_1_1FastorIndices.html#ab76bbbd01442fa279041639d7f50cbda">i</a> )] = decreaseDualOrderWithShift&lt; order + 1 &gt;( f_ );</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        seed&lt; 1 &gt;( T_right_data[T_right.get_mem_index( <a class="code" href="namespaceMarmot_1_1FastorIndices.html#ab76bbbd01442fa279041639d7f50cbda">i</a> )], 0.0 );</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="keywordflow">return</span> df_dT_;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      f_ = f( T_right );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;      <span class="keywordflow">return</span> { decreaseDualOrder&lt; order + 1 &gt;( f_ ), df_dT_ };</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">template</span> &lt; <span class="keywordtype">size_t</span>... RestF, <span class="keywordtype">size_t</span>... RestT &gt;</div>
