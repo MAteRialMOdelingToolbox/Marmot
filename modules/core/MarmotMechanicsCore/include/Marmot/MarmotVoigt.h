@@ -684,6 +684,21 @@ namespace Marmot {
         */
       Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
 
+      Marmot::Vector6d transformStressToLocalSystem( const Marmot::Vector6d& stress,
+                                                     const Matrix3d&         transformedCoordinateSystem );
+
+      Marmot::Vector6d transformStrainToLocalSystem( const Marmot::Vector6d& stress,
+                                                     const Matrix3d&         transformedCoordinateSystem );
+
+      Marmot::Vector6d transformStressToGlobalSystem( const Marmot::Vector6d& stress,
+                                                      const Matrix3d&         transformedCoordinateSystem );
+
+      Marmot::Vector6d transformStrainToGlobalSystem( const Marmot::Vector6d& stress,
+                                                      const Matrix3d&         transformedCoordinateSystem );
+
+      Marmot::Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
+                                                         const Matrix3d&         transformedCoordinateSystem );
+
     } // namespace Transformations
 
   }   // namespace ContinuumMechanics::VoigtNotation

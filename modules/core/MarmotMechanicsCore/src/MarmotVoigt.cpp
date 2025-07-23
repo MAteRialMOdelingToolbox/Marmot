@@ -520,8 +520,8 @@ namespace Marmot {
         Matrix6d transformationMatrix;
 
         // clang-format off
-                transformationMatrix << 
-                    pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,2)*N(0,0), 2*N(0,2)*N(0,1),
+        transformationMatrix << 
+                    pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,0)*N(0,2), 2*N(0,2)*N(0,1),
                     pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,0)*N(1,2), 2*N(1,2)*N(1,1),
                     pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,0)*N(2,2), 2*N(2,2)*N(2,1),
                     N(0,0)*N(1,0), N(0,1)*N(1,1), N(0,2)*N(1,2), N(0,0)*N(1,1)+N(0,1)*N(1,0), N(0,0)*N(1,2)+N(0,2)*N(1,0), N(0,1)*N(1,2)+N(0,2)*N(1,1),
@@ -559,6 +559,61 @@ namespace Marmot {
         const Matrix3d& TR = Q * T * Q.transpose();
         return stressToVoigt( TR );
       }
+
+      Marmot::Vector6d transformStressToLocalSystem( const Marmot::Vector6d& stress,
+                                                     const Matrix3d&         transformedCoordinateSystem )
+      {
+        const Matrix3d s_prime = Math::transformToLocalSystem( voigtToStress( stress ), transformedCoordinateSystem );
+
+        return stressToVoigt( s_prime );
+      }
+
+      Marmot::Vector6d transformStrainToLocalSystem( const Marmot::Vector6d& strain,
+                                                     const Matrix3d&         transformedCoordinateSystem )
+      {
+        const Matrix3d e_prime = Math::transformToLocalSystem( voigtToStrain( strain ), transformedCoordinateSystem );
+
+        return strainToVoigt( e_prime );
+      }
+
+      Marmot::Vector6d transformStressToGlobalSystem( const Marmot::Vector6d& stress,
+                                                      const Matrix3d&         transformedCoordinateSystem )
+      {
+        const Matrix3d s_prime = Math::transformToGlobalSystem( voigtToStress( stress ), transformedCoordinateSystem );
+
+        return stressToVoigt( s_prime );
+      }
+      Marmot::Vector6d transformStrainToGlobalSystem( const Marmot::Vector6d& strain,
+                                                      const Matrix3d&         transformedCoordinateSystem )
+      {
+        const Matrix3d e_prime = Math::transformToGlobalSystem( voigtToStrain( strain ), transformedCoordinateSystem );
+
+        return strainToVoigt( e_prime );
+      }
+
+      Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
+                                                 const Matrix3d&         transformedCoordinateSystem )
+      {
+        const EigenTensors::Tensor3333d stiffnessTensorLocal = voigtToStiffness( stiffness );
+        EigenTensors::Tensor3333d       stiffnessTensorGlobal;
+        stiffnessTensorGlobal.setZero();
+        Matrix3d N = transformedCoordinateSystem.transpose();
+
+        for ( size_t i = 0; i < 3; i++ )
+          for ( size_t j = 0; j < 3; j++ )
+            for ( size_t k = 0; k < 3; k++ )
+              for ( size_t l = 0; l < 3; l++ )
+                for ( size_t m = 0; m < 3; m++ )
+                  for ( size_t n = 0; n < 3; n++ )
+                    for ( size_t o = 0; o < 3; o++ )
+                      for ( size_t p = 0; p < 3; p++ )
+                        stiffnessTensorGlobal( i, j, k, l ) += N( i, m ) * N( j, n ) * N( k, o ) * N( l, p ) *
+                                                               stiffnessTensorLocal( m, n, o, p );
+
+        Matrix6d res = stiffnessToVoigt( stiffnessTensorGlobal );
+        return res;
+      }
+
     } // namespace Transformations
   }   // namespace ContinuumMechanics::VoigtNotation
 } // namespace Marmot

@@ -254,5 +254,10 @@ namespace Marmot {
      * Computes an orthonormal coordinate system from two unit normal vectors as \f$ x_1 \f$ and \f$ x_2 \f$ - axis.
      */
     Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 );
+
+    Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+
+    Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+
   } // namespace Math
 } // namespace Marmot
