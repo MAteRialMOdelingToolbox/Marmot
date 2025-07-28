@@ -524,8 +524,23 @@ namespace Marmot {
           return Eigen::Matrix< T, 6, 1 >::Zero();
 
         Eigen::Matrix< T, 6, 1 > s = IDev * stress;
-
+        // P array results from the derivative of the double contraction s:s in voigt notation
         return T( 1. / rho ) * P.array() * s.array();
+      }
+      /**
+       * Computes the derivative \f$ \frac{d\, \varepsilon_\rho}{d\, \boldsymbol{\varepsilon}}\f$ of the haigh
+       * westergaard coordinate \f$
+       * \strain_\rho \f$ with respect to the voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$
+       */
+      template < typename T >
+      Eigen::Matrix< T, 6, 1 > dRhoStrain_dStrain( T rhoStrain, const Eigen::Matrix< T, 6, 1 >& strain )
+      {
+        if ( Marmot::Math::makeReal( rhoStrain ) <= 1e-16 )
+          return Eigen::Matrix< T, 6, 1 >::Zero();
+
+        Eigen::Matrix< T, 6, 1 > e = IDev * strain;
+        // P array results from the derivative of the double contraction e:e in voigt notation
+        return T( 1. / rhoStrain ) * PInv.array() * e.array();
       }
 
       /**
