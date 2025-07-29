@@ -42,6 +42,9 @@ namespace Marmot {
       return std::pow( std::numeric_limits< double >::epsilon(), 0.5 );
     }
 
+    constexpr double GoldenRatio = 1.618033988749895;
+    constexpr double GoldenAngle = 2.399963229728653;
+
     const inline double SquareRootEps = squareRootEps();
     const inline double CubicRootEps  = cubicRootEps();
     constexpr double    sqrt3_8       = 0.61237243569579452454932101867647;

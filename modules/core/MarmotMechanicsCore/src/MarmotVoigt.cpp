@@ -4,7 +4,6 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <iostream>
 
 using namespace Eigen;
 
@@ -69,6 +68,30 @@ namespace Marmot {
       }
 
       return voigtStiffness;
+    }
+
+    Eigen::Tensor< double, 4 > voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness )
+    {
+      using namespace TensorUtility::IndexNotation;
+
+      EigenTensors::Tensor3333d stiffness;
+      stiffness.setZero(); // Initialize with zeros
+
+      int row;
+      int col;
+      for ( int i = 0; i < 3; i++ ) {
+        for ( int j = 0; j < 3; j++ ) {
+          row = toVoigt< 3 >( i, j );
+          for ( int k = 0; k < 3; k++ ) {
+            for ( int l = 0; l < 3; l++ ) {
+              col = toVoigt< 3 >( k, l );
+              stiffness( i, j, k, l ) += voigtStiffness( row, col );
+            };
+          };
+        };
+      };
+
+      return stiffness;
     }
 
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )

@@ -29,22 +29,38 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include <iostream>
 #include <utility>
 
 namespace Marmot {
   namespace ContinuumMechanics::CommonTensors {
-    extern const EigenTensors::Tensor3333d I2xI2;
-    extern const EigenTensors::Tensor3333d Isym;
-    extern const EigenTensors::Tensor3333d Iskew;
-    extern const EigenTensors::Tensor3333d IFourthOrder;
-    extern const EigenTensors::Tensor3333d IFourthOrderTranspose;
-    extern const EigenTensors::Tensor3333d dDeviatoricStress_dStress;
 
-    extern const EigenTensors::Tensor333d LeviCivita3D;
-    extern const EigenTensors::Tensor122d LeviCivita2D;
+    EigenTensors::Tensor3333d              Initialize_I2xI2();
+    inline const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
-    extern const EigenTensors::Tensor33d I2;
+    EigenTensors::Tensor3333d              Initialize_Isym();
+    inline const EigenTensors::Tensor3333d Isym = Initialize_Isym();
+
+    EigenTensors::Tensor3333d              Initialize_Iskew();
+    inline const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
+
+    EigenTensors::Tensor3333d              Initialize_IFourthOrder();
+    inline const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
+
+    EigenTensors::Tensor3333d              Initialize_IFourthOrderTranspose();
+    inline const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
+
+    EigenTensors::Tensor3333d              Initialize_dDeviatoricStress_dStress();
+    inline const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
+    ;
+
+    EigenTensors::Tensor333d              Initialize_LeviCivita3D();
+    inline const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
+
+    EigenTensors::Tensor122d              Initialize_LeviCivita2D();
+    inline const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
+
+    EigenTensors::Tensor33d              Initialize_I2();
+    inline const EigenTensors::Tensor33d I2 = Initialize_I2();
 
     constexpr int getNumberOfDofForRotation( int nDim )
     {

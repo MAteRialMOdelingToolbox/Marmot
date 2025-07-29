@@ -11,8 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CC:   gcc-10
-      CXX:  g++-10
+      CC:   gcc-14
+      CXX:  g++-14
     steps:
       - name: Install Eigen
         shell: bash -l {0}
@@ -33,6 +33,17 @@ jobs:
           mkdir build
           cd build
           cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
+          sudo make install
+          cd ../..
+          
+      - name: Install Fastor
+        shell: bash -l {0}
+        run: |
+          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
+          cd Fastor
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
           sudo make install
           cd ../..
 
