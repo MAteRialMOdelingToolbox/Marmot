@@ -20,6 +20,13 @@ namespace Marmot {
       return std::exp( x );
     }
 
+    unsigned long factorial( unsigned int n )
+    {
+      if ( n == 0 || n == 1 )
+        return 1;
+      return n * factorial( n - 1 );
+    }
+
     double makeReal( const complexDouble& value )
     {
       return value.real();

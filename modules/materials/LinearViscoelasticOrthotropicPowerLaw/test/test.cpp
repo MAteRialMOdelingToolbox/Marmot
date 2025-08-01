@@ -14,7 +14,7 @@ void testLinearViscoelasticOrthotropicPowerLaw()
   double nu = 0.2;
   double G  = E / ( 2 * ( 1 + nu ) );
   // material properties
-  double materialProperties[20];
+  double materialProperties[22];
   // Young's moduli
   materialProperties[0] = E;
   materialProperties[1] = E;
@@ -31,16 +31,18 @@ void testLinearViscoelasticOrthotropicPowerLaw()
   // viscoelastic parameters
   materialProperties[9]  = 0.5;
   materialProperties[10] = 0.1;
-  materialProperties[11] = 10;
-  materialProperties[12] = 0.0001;
-  materialProperties[13] = 1.;
+  materialProperties[11] = 2;
+  materialProperties[12] = 10;
+  materialProperties[13] = 0.0001;
+  materialProperties[14] = 3.1622776601683795;
+  materialProperties[15] = 1.;
   // coordinate system
-  materialProperties[14] = 1.;
-  materialProperties[15] = 0.5;
-  materialProperties[16] = 0.;
-  materialProperties[17] = -0.5;
-  materialProperties[18] = 1;
-  materialProperties[19] = 1;
+  materialProperties[16] = 1.;
+  materialProperties[17] = 0.5;
+  materialProperties[18] = 0.;
+  materialProperties[19] = -0.5;
+  materialProperties[20] = 1;
+  materialProperties[21] = 1;
 
   // instantiate material
   auto material = Marmot::Materials::LinearViscoelasticOrthotropicPowerLaw( &materialProperties[0], 20, 1 );

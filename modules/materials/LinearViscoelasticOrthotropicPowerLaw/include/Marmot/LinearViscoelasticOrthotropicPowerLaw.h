@@ -76,11 +76,17 @@ namespace Marmot::Materials {
     /// \brief power law exponent
     const double& n;
 
+    /// \brief approximation order for the retardation spectrum
+    const int powerLawApproximationOrder;
+
     /// \brief number of Kelvin units to approximate the viscoelastic compliance
     const size_t nKelvin;
 
     /// \brief minimal retardation time used in the viscoelastic Kelvin chain
     const double& minTau;
+
+    /// \brief log spacing between the retardation times of the Kelvin Chain
+    const double& spacing;
 
     /// \brief ratio of simulation time to days
     const double& timeToDays;
@@ -135,7 +141,5 @@ namespace Marmot::Materials {
     Matrix6d CInv, Cel, CelUnit, CelUnitInv, CelUnitGlobal;
 
     Matrix3d localCoordinateSystem;
-
-    static constexpr int powerLawApproximationOrder = 2;
   };
 } // namespace Marmot::Materials

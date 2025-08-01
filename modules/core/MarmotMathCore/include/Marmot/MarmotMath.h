@@ -54,6 +54,8 @@ namespace Marmot {
      * exponential of value \ref x with numerical limits check */
     double exp( double x );
 
+    unsigned long factorial( unsigned int n );
+
     /**
      * compute the exponent to the power of ten of an expression, e.g., 5*10^5 --> return 5 */
     int getExponentPowerTen( const double x );

@@ -32,25 +32,59 @@ namespace Marmot::Materials {
       // viscoelastic parameters
       m                                 ( materialProperties[9] ),
       n                                 ( materialProperties[10] ),
-      nKelvin                           ( static_cast< size_t > ( materialProperties[11] ) ),
-      minTau                            ( materialProperties[12] ),
-      timeToDays                        ( materialProperties[13] ),
+      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[11] ) ), 
+      nKelvin                           ( static_cast< size_t > ( materialProperties[12] ) ),
+      minTau                            ( materialProperties[13] ),
+      spacing                           ( materialProperties[14] ),
+      timeToDays                        ( materialProperties[15] ),
       // material coordinate system
-      direction1                        ( { materialProperties[14], materialProperties[15], materialProperties[16] } ),
-      direction2                        ( { materialProperties[17], materialProperties[18], materialProperties[19] } )
+      direction1                        ( { materialProperties[16], materialProperties[17], materialProperties[18] } ),
+      direction2                        ( { materialProperties[19], materialProperties[20], materialProperties[21] } )
   // clang-format on
   {
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
+    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
 
-    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {
-      return ComplianceFunctions::powerLaw( tau, m, n );
+    auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
+      const int& k   = order;
+      double     fac = 1;
+      for ( size_t a = 1; a < k; a++ )
+        fac *= ( n - a );
+      return -pow( k, n ) / Math::factorial( k - 1 ) * m * fac * pow( tau, n );
     };
 
-    elasticModuli = KelvinChain::computeElasticModuli< powerLawApproximationOrder >( phi_, retardationTimes );
+    // compute moduli for a given approximation order in [2, 3, 4, 7]
+    switch ( powerLawApproximationOrder ) {
+    case 2: {
+      using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+      auto phi_2nd  = [&]( autodiff::Real< 2, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      elasticModuli = KelvinChain::computeElasticModuli< 2 >( phi_2nd, retardationTimes );
+      zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 2, minTau / sqrt( spacing ) );
+      break;
+    }
+    case 3: {
+      using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+      auto phi_3rd  = [&]( autodiff::Real< 3, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      elasticModuli = KelvinChain::computeElasticModuli< 3 >( phi_3rd, retardationTimes );
+      zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 3, minTau / sqrt( spacing ) );
+      break;
+    }
+    case 4: {
+      using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+      auto phi_4th  = [&]( autodiff::Real< 4, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      elasticModuli = KelvinChain::computeElasticModuli< 4 >( phi_4th, retardationTimes );
+      zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 4, minTau / sqrt( spacing ) );
+      break;
+    }
+    case 7: {
+      using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+      auto phi_7th  = [&]( autodiff::Real< 7, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      elasticModuli = KelvinChain::computeElasticModuli< 7 >( phi_7th, retardationTimes );
+      zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 7, minTau / sqrt( spacing ) );
+      break;
+    }
 
-    // for 2nd order approximations
-    zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( 10. ), n );
+    default: throw std::invalid_argument( "powerLawApproximationOrder must be in [2,3,4,7]" );
+    }
 
     // local normalized stiffness and compliance tensors
     CInv = ContinuumMechanics::Elasticity::Orthotropic::complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
