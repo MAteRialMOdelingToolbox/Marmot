@@ -47,9 +47,9 @@ namespace Marmot::Materials {
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
       const int& k   = order;
       double     fac = 1;
-      for ( size_t a = 1; a < k; a++ )
+      for ( int a = 1; a < k; a++ )
         fac *= ( n - a );
-      return -pow( k, n ) / Math::factorial( k - 1 ) * m * fac * pow( tau, n );
+      return -pow( -k, k ) / Math::factorial( k - 1 ) * m * fac * pow( k, n - k ) * pow( tau, n );
     };
 
     // compute moduli for a given approximation order in [2, 3, 4, 7]
