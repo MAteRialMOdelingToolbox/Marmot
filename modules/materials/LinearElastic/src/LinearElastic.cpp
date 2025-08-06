@@ -20,17 +20,17 @@ namespace Marmot::Materials {
           E2(   anisotropicType == Type::Isotropic ? E1 : materialProperties[1] ),
           E3(   anisotropicType == Type::Orthotropic ? materialProperties[2] : E2 ),
           nu12( anisotropicType == Type::Isotropic ?           materialProperties[1] :
-	            ( anisotropicType == Type::TransverseIsotropic ? materialProperties[2] : 
+	            ( anisotropicType == Type::TransverseIsotropic ? materialProperties[2] :
                                                                materialProperties[3] ) ),
-          nu23( anisotropicType == Type::Isotropic ?           nu12 : 
-              ( anisotropicType == Type::TransverseIsotropic ? materialProperties[3] : 
+          nu23( anisotropicType == Type::Isotropic ?           nu12 :
+              ( anisotropicType == Type::TransverseIsotropic ? materialProperties[3] :
                                                                materialProperties[4] ) ),
           nu13( anisotropicType == Type::Orthotropic ? materialProperties[5] : nu23 ),
           G12(  anisotropicType == Type::Isotropic ?           E1 / ( 2 * ( 1 + nu12 ) ):
-             (  anisotropicType == Type::TransverseIsotropic ? materialProperties[4] : 
+             (  anisotropicType == Type::TransverseIsotropic ? materialProperties[4] :
                                                                materialProperties[6] ) ),
           G23(  anisotropicType == Type::Isotropic ?           G12 :
-             (  anisotropicType == Type::TransverseIsotropic ? E2 / ( 2 * ( 1 + nu23 ) ) : 
+             (  anisotropicType == Type::TransverseIsotropic ? E2 / ( 2 * ( 1 + nu23 ) ) :
                                                                materialProperties[7] ) ),
           G13(  anisotropicType == Type::Orthotropic ? materialProperties[8] : G12 )
   // clang-format on

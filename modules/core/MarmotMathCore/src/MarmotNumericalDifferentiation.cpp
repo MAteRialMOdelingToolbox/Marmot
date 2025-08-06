@@ -136,7 +136,7 @@ namespace Marmot {
           rightX += e * i_ * h;
 
           // clang-format off
-          J.col( i ) =      ( F( rightX ) - F( leftX )  ).imag() 
+          J.col( i ) =      ( F( rightX ) - F( leftX )  ).imag()
                        / //--------------------------------------
                               ( Marmot::Constants::sqrt2 * h );
 
@@ -170,8 +170,8 @@ namespace Marmot {
           x4_ = complex_X - e * i_ * h;
 
           // clang-format off
-          J.col( i ) = ( 8.* ( F( x1_ ) - F( x2_ ) ) 
-                           - ( F( x3_ ) - F( x4_ ) ) ).imag() 
+          J.col( i ) = ( 8.* ( F( x1_ ) - F( x2_ ) )
+                           - ( F( x3_ ) - F( x4_ ) ) ).imag()
                            / ( Marmot::Constants::sqrt2 * 3. * h );
 
           // clang-format on

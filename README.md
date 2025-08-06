@@ -58,7 +58,7 @@ For ```anaconda``` users, eigen and autodiff can also be installed from the chan
 ```Marmot``` can be installed with the following steps:
 
 ```bash
-git clone https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+git clone https://github.com/MAteRialMOdelingToolbox/Marmot/
 cd Marmot
 mkdir build
 cd build
@@ -71,7 +71,7 @@ CMake option ```CMAKE_INSTALL_PREFIX``` allows to specify the installation direc
 For instance:
 
 ```bash
-git clone https://github.com/MAteRialMOdelingToolbox/Marmot/ 
+git clone https://github.com/MAteRialMOdelingToolbox/Marmot/
 cd Marmot
 mkdir build
 cd build

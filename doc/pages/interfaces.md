@@ -20,8 +20,8 @@ A singularity container recipe is [available](https://github.com/matthiasneuner/
 To create your custom interface to Marmot, you can leverage the MarmotLibrary::MarmotMaterialFactory and MarmotLibrary::MarmotElementFactory factories to create
 instances of registered material models and finite elements.
 In general, specialized Marmot materials are derived from the general parent class MarmotMaterial, and
-Marmot finite elements are derived from the general parent class MarmotElement. 
-In particular for Marmot materials, Marmot strongly makes use of inheritance to specialize 
+Marmot finite elements are derived from the general parent class MarmotElement.
+In particular for Marmot materials, Marmot strongly makes use of inheritance to specialize
 on specific continuum theories, e.g., MarmotMaterialHypoElastic for hypoelastic materials.
 
 Base classes MarmotMaterial and MarmotElement are considered the most general description of materials and finite elements.
@@ -57,7 +57,7 @@ material->computeStress(stress_in_and_out, dstress_dstrain_out,  dstrain_in, tim
 
 Materials and finite elements are registered using the MarmotMaterialFactory::registerMaterial and MarmotElementFactory::registerElement interfaces.
 Both functions take a unique name (a string chosen by the user), a unique integer identifier (chosen by the user), and factory functions.
-Those Factory functions are used by Marmot to create specific instances of the material or element, 
+Those Factory functions are used by Marmot to create specific instances of the material or element,
 providing a custom element number (MarmotElement) or a material number and a set of material properties (MarmotMaterial).
 
 For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as
@@ -103,5 +103,5 @@ theElement->assignStateVars(stateVars, nStateVars);
 theElement->initializeYourself(coordinates);
 
 // compute the kernel
-theElement->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT); 
+theElement->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT);
 ```

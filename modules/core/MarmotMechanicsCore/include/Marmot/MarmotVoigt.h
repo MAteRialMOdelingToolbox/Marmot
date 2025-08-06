@@ -185,8 +185,8 @@ namespace Marmot {
     {
       Eigen::Matrix< T, 3, 3 > strain;
       // clang-format off
-      strain << voigt[0],       voigt[3] * 0.5, voigt[4] * 0.5, 
-                voigt[3] * 0.5, voigt[1],       voigt[5] * 0.5, 
+      strain << voigt[0],       voigt[3] * 0.5, voigt[4] * 0.5,
+                voigt[3] * 0.5, voigt[1],       voigt[5] * 0.5,
                 voigt[4] * 0.5, voigt[5] * 0.5, voigt[2];
       // clang-format on
       return strain;
@@ -214,8 +214,8 @@ namespace Marmot {
     {
       Eigen::Matrix< T, 3, 3 > stress;
       // clang-format off
-      stress << voigt[0], voigt[3], voigt[4], 
-                voigt[3], voigt[1], voigt[5], 
+      stress << voigt[0], voigt[3], voigt[4],
+                voigt[3], voigt[1], voigt[5],
                 voigt[4], voigt[5], voigt[2];
       // clang-format on
       return stress;
@@ -262,11 +262,11 @@ namespace Marmot {
     {
       Eigen::Matrix< T, 6, 1 > stress;
       // clang-format off
-            stress << stressTensor( 0, 0 ), 
-                      stressTensor( 1, 1 ), 
-                      stressTensor( 2, 2 ), 
+            stress << stressTensor( 0, 0 ),
+                      stressTensor( 1, 1 ),
+                      stressTensor( 2, 2 ),
                       stressTensor( 0, 1 ),
-                      stressTensor( 0, 2 ), 
+                      stressTensor( 0, 2 ),
                       stressTensor( 1, 2 );
       // clang-format on
       return stress;
