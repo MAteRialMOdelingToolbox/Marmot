@@ -40,7 +40,7 @@ build:linux:
   rules:
     - if: $CI_PIPELINE_SOURCE != 'merge_request_event'
   script:
-    
+
     - function install_marmot_module(){
         repo_name=$1;
         repo_url=$2;
@@ -70,9 +70,9 @@ build:linux:
     - apt-get install -y wget cmake git libtbbmalloc2 build-essential gfortran
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
-    - cd eigen 
+    - cd eigen
     - mkdir build
-    - cd build 
+    - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - make install
     - cd ../..
@@ -86,19 +86,19 @@ build:linux:
     - cd ../..
 
     - git clone https://github.com/romeric/Fastor.git
-    - cd Fastor 
+    - cd Fastor
     - mkdir build
-    - cd build 
+    - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - make install
     - cd ../..
-    
+
 #    - cd modules/core
 #    - install_marmot_modules ${CoreModules[@]}
 #    - cd ../..
 
 #    - cd modules/elements
-#    - install_marmot_modules ${ElementModules[@]}  
+#    - install_marmot_modules ${ElementModules[@]}
 #    - cd ../..
 
     - cd modules/materials
@@ -142,13 +142,13 @@ build and test with edelweiss:
 
     - micromamba install python=3.12
     - micromamba install git
-    - git clone $EdelweissFE_Repo
+    - git clone https://github.com/EdelweissFE/EdelweissFE.git
     - micromamba install -c conda-forge --file EdelweissFE/requirements.txt
 
     - git clone -b 3.4.0 https://gitlab.com/libeigen/eigen.git
-    - cd eigen 
+    - cd eigen
     - mkdir build
-    - cd build 
+    - cd build
     - cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
     - make install
     - cd ../..
@@ -162,19 +162,19 @@ build and test with edelweiss:
     - cd ../..
 
     - git clone https://github.com/romeric/Fastor.git
-    - cd Fastor 
+    - cd Fastor
     - mkdir build
-    - cd build 
+    - cd build
     - cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$(python -c "import sys; print(sys.prefix)") ..
     - make install
     - cd ../..
-    
+
 #    - cd modules/core
 #    - install_marmot_modules ${CoreModules[@]}
 #    - cd ../..
 
 #    - cd modules/elements
-#    - install_marmot_modules ${ElementModules[@]}  
+#    - install_marmot_modules ${ElementModules[@]}
 #    - cd ../..
 
     - cd modules/materials

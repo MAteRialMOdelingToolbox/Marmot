@@ -167,7 +167,7 @@ namespace Marmot {
         // Neuner, November 2018
         Matrix2d R;
         // clang-format off
-                R << 0, 1, 
+                R << 0, 1,
                     -1, 0;
         // clang-format on
 
@@ -184,12 +184,12 @@ namespace Marmot {
           const MatrixXd& J = qp.dx_dXi;
 
           // clang-format off
-                    HXi0 << 0,       J(2,0), -J(1,0), 
-                           -J(2,0),  0,       J(0,0), 
+                    HXi0 << 0,       J(2,0), -J(1,0),
+                           -J(2,0),  0,       J(0,0),
                             J(1,0), -J(0,0),  0;
 
-                    HXi1 << 0,       J(2,1), -J(1,1), 
-                           -J(2,1),  0,       J(0,1), 
+                    HXi1 << 0,       J(2,1), -J(1,1),
+                           -J(2,1),  0,       J(0,1),
                             J(1,1), -J(0,1),  0;
           // clang-format on
 

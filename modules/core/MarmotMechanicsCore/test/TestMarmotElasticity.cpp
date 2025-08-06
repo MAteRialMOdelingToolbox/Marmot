@@ -19,7 +19,7 @@ void testStiffnessTensor_Isotropic()
   // The expected stiffness matrix (expectedC)
   Marmot::Matrix6d expectedC;
   // clang-format off
-  expectedC << 
+  expectedC <<
     1200,   400,    400,    0,      0,      0,
     400,    1200,   400,    0,      0,      0,
     400,    400,    1200,   0,      0,      0,
@@ -47,7 +47,7 @@ void testStiffnessTensorKG_Isotropic()
   // The same as before
   Marmot::Matrix6d expectedC_KG;
   // clang-format off
-  expectedC_KG << 
+  expectedC_KG <<
     1200,   400,    400,    0,      0,      0,
     400,    1200,   400,    0,      0,      0,
     400,    400,    1200,   0,      0,      0,
@@ -73,7 +73,7 @@ void testComplianceTensor_Isotropic()
   // The expected compliance matrix (calcualted manually)
   Marmot::Matrix6d expectedCInv;
   // clang-format off
-  expectedCInv << 
+  expectedCInv <<
     0.001,      -0.00025,   -0.00025,   0,          0,          0,
     -0.00025,   0.001,      -0.00025,   0,          0,          0,
     -0.00025,   -0.00025,   0.001,      0,          0,          0,
@@ -103,7 +103,7 @@ void testComplianceTensor_TransverseIsotropic()
   // double G23 = 200;
   Marmot::Matrix6d expectedCInv;
   // clang-format off
-  expectedCInv << 
+  expectedCInv <<
     0.001,      -0.001,     -0.001,     0,          0,          0,
     -0.001,     0.002,      -0.0005,    0,          0,          0,
     -0.001,     -0.0005,    0.002,      0,          0,          0,
@@ -132,7 +132,7 @@ void testStiffnessTensor_TransverseIsotropic()
   // The expected stiffness matrix (calculated manually)
   Marmot::Matrix6d expectedC;
   // clang-format off
-  expectedC << 
+  expectedC <<
     -3000,      -2000,      -2000,      0,      0,      0,
     -2000,      -800,       -1200,      0,      0,      0,
     -2000,      -1200,      -800,       0,      0,      0,
@@ -165,7 +165,7 @@ void testComplianceTensor_Orthotropic()
   // The expected compliance matrix (calculated manually)
   Marmot::Matrix6d expectedCInv;
   // clang-format off
-  expectedCInv << 
+  expectedCInv <<
     0.001,      -0.001,     -0.0005,    0,          0,          0,
     -0.001,     0.002,      -0.00125,   0,          0,          0,
     -0.0005,    -0.00125,   0.005,      0,          0,          0,
@@ -198,7 +198,7 @@ void testStiffnessTensor_Orthotropic()
   // The expected stiffness matrix (calculated manually)
   Marmot::Matrix6d expectedC;
   // clang-format off
-  expectedC << 
+  expectedC <<
     5000,                       3333.3333333333333332,      1333.3333333333333333,      0,      0,      0,
     3333.3333333333333332,      2814.8148148148148147,      1037.037037037037037,       0,      0,      0,
     1333.3333333333333333,      1037.037037037037037,       592.59259259259259259,      0,      0,      0,
