@@ -22,7 +22,7 @@ jobs:
       - name: Install conda packages
         shell: bash -l {0}
         run: |
-          mamba install --file requirements.txt
+          mamba install --file doc/requirements.txt
 
       - name: Install Eigen
         shell: bash -l {0}
