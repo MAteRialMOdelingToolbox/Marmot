@@ -60,7 +60,7 @@ jobs:
           make install
           cd ..
 
-      - name: Building EdelweissFE documentation
+      - name: Building Marmot  documentation
         shell: bash -l {0}
         run: |
           python scripts/buildDocumentation.py
@@ -69,6 +69,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN}}
-          publish_dir: ./doc/doc_out
+          publish_dir: ./doc/doc_out/sphinx
           publish_branch: gh-pages
 
