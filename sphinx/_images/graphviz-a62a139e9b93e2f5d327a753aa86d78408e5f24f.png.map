@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" alt="" coords="5,5,1260,53"/>
+<area shape="rect" id="node2" title="Fastor/tensor/Tensor.h" alt="" coords="348,101,584,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="592,56,521,96,519,91,590,52"/>
+<area shape="rect" id="node3" title="Marmot/MarmotFastorTensorBasics.h" alt="" coords="608,101,991,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="675,52,746,91,744,96,673,56"/>
+</map>

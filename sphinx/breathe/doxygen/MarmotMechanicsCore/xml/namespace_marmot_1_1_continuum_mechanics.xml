@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models">Marmot::ContinuumMechanics::CommonConstitutiveModels</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity">Marmot::ContinuumMechanics::Elasticity</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard">Marmot::ContinuumMechanics::HaighWestergaard</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics">Marmot::ContinuumMechanics::Kinematics</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_localization_analysis">Marmot::ContinuumMechanics::LocalizationAnalysis</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_strain">Marmot::ContinuumMechanics::PlaneStrain</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress">Marmot::ContinuumMechanics::PlaneStress</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress">Marmot::ContinuumMechanics::UniaxialStress</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity">Marmot::ContinuumMechanics::Viscoelasticity</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation">Marmot::ContinuumMechanics::VoigtNotation</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

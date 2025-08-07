@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4" kind="namespace" language="C++">
+    <compoundname>Marmot::FiniteElement::Spatial3D::Tetra4</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a0a6547036f072aa71219d1809fee29ad" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1abe7697773fcb34e72be2027f0e6f5ddf" kindref="member">nNodes</ref> *<ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a9ac5ef64e27d7a96bb28a4c670713f58" kindref="member">nDim</ref>, 1 &gt;</type>
+        <definition>using Marmot::FiniteElement::Spatial3D::Tetra4::CoordinateSized =  Eigen::Matrix&lt; double, nNodes * nDim, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>CoordinateSized</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::CoordinateSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="247" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="247" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afe02eb49fed474d83fdfaea3bccbc6b2" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1abe7697773fcb34e72be2027f0e6f5ddf" kindref="member">nNodes</ref> &gt;</type>
+        <definition>using Marmot::FiniteElement::Spatial3D::Tetra4::NSized =  Eigen::Matrix&lt; double, 1, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>NSized</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::NSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="248" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="248" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afa9fef8694caf6b656cad7d807bfa302" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a9ac5ef64e27d7a96bb28a4c670713f58" kindref="member">nDim</ref>, <ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1abe7697773fcb34e72be2027f0e6f5ddf" kindref="member">nNodes</ref> &gt;</type>
+        <definition>using Marmot::FiniteElement::Spatial3D::Tetra4::dNdXiSized =  Eigen::Matrix&lt; double, nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>dNdXiSized</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::dNdXiSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="249" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="249" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1abe7697773fcb34e72be2027f0e6f5ddf" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::FiniteElement::Spatial3D::Tetra4::nNodes</definition>
+        <argsstring></argsstring>
+        <name>nNodes</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::nNodes</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="246" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="246" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a4e029800f24cba1ee83b9a1078663bca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afe02eb49fed474d83fdfaea3bccbc6b2" kindref="member">NSized</ref></type>
+        <definition>NSized Marmot::FiniteElement::Spatial3D::Tetra4::N</definition>
+        <argsstring>(const Eigen::Vector3d &amp;xi)</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::N</qualifiedname>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="251" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="251" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a872ae2ba2db31453c233fcbe427bd8de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afa9fef8694caf6b656cad7d807bfa302" kindref="member">dNdXiSized</ref></type>
+        <definition>dNdXiSized Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi</definition>
+        <argsstring>(const Eigen::Vector3d &amp;xi)</argsstring>
+        <name>dNdXi</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi</qualifiedname>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="252" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="252" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a46effa9f904ca9c793715233ac1c0c1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Vector3i</type>
+        <definition>Vector3i Marmot::FiniteElement::Spatial3D::Tetra4::getBoundaryElementIndices</definition>
+        <argsstring>(int faceID)</argsstring>
+        <name>getBoundaryElementIndices</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::getBoundaryElementIndices</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" line="67" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" bodystart="67" bodyend="70" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="254" declcolumn="25"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a30aec9797834b4445eefb655dcbb90b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afe02eb49fed474d83fdfaea3bccbc6b2" kindref="member">NSized</ref></type>
+        <definition>NSized Marmot::FiniteElement::Spatial3D::Tetra4::N</definition>
+        <argsstring>(const Vector3d &amp;xi)</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::N</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" line="11" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" bodystart="11" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a05bb0d5d05107287980a90bc7aa76250" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1afa9fef8694caf6b656cad7d807bfa302" kindref="member">dNdXiSized</ref></type>
+        <definition>dNdXiSized Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi</definition>
+        <argsstring>(const Vector3d &amp;xi)</argsstring>
+        <name>dNdXi</name>
+        <qualifiedname>Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" line="42" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElement3D.cpp" bodystart="42" bodyend="65"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="244" column="7"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_9969c29766c3ca5ea49aac3cac97384d" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore</compoundname>
+    <innerdir refid="dir_7d9e0bddc3df5047c06a16b0d057f1c8">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/"/>
+  </compounddef>
+</doxygen>

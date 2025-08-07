@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotAutomaticDifferentiationForFastor_8h" kind="file" language="C++">
+    <compoundname>MarmotAutomaticDifferentiationForFastor.h</compoundname>
+    <includes local="yes">Fastor/Fastor.h</includes>
+    <includes refid="MarmotAutomaticDifferentiation_8h" local="yes">Marmot/MarmotAutomaticDifferentiation.h</includes>
+    <includes refid="MarmotFastorTensorBasics_8h" local="yes">Marmot/MarmotFastorTensorBasics.h</includes>
+    <includes local="yes">autodiff/forward/dual.hpp</includes>
+    <includes local="yes">autodiff/forward/dual/eigen.hpp</includes>
+    <includes local="no">autodiff/forward/dual/dual.hpp</includes>
+    <includes local="no">functional</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>Marmot/MarmotJournal.h</label>
+        <link refid="MarmotJournal_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotAutomaticDifferentiation.h</label>
+        <link refid="MarmotAutomaticDifferentiation_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h</label>
+        <link refid="MarmotAutomaticDifferentiationForFastor_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+        <link refid="MarmotFastorTensorBasics_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Marmot/MarmotTensor.h</label>
+        <link refid="MarmotTensor_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="MarmotVoigt_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="15">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="2">
+        <label>Fastor/Fastor.h</label>
+      </node>
+      <node id="23">
+        <label>algorithm</label>
+      </node>
+      <node id="21">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="5">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="4">
+        <label>autodiff/forward/dual/eigen.hpp</label>
+      </node>
+      <node id="22">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="20">
+        <label>cmath</label>
+      </node>
+      <node id="24">
+        <label>complex</label>
+      </node>
+      <node id="6">
+        <label>functional</label>
+      </node>
+      <node id="11">
+        <label>iostream</label>
+      </node>
+      <node id="12">
+        <label>sstream</label>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="16">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="25">
+        <label>utility</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1AutomaticDifferentiation">Marmot::AutomaticDifferentiation</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder">Marmot::AutomaticDifferentiation::SecondOrder</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Alexander<sp/>Dummer<sp/>alexander.dummer@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Fastor/Fastor.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotAutomaticDifferentiation_8h" kindref="compound">Marmot/MarmotAutomaticDifferentiation.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotFastorTensorBasics_8h" kindref="compound">Marmot/MarmotFastorTensorBasics.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;autodiff/forward/dual.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;autodiff/forward/dual/eigen.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;autodiff/forward/dual/dual.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot" kindref="compound">Marmot</ref><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation" kindref="compound">AutomaticDifferentiation</ref><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">autodiff;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>Rest<sp/>&gt;</highlight></codeline>
+<codeline lineno="44" refid="namespaceMarmot_1_1AutomaticDifferentiation_1a90b3b2b1526ecba6b611c5a51bf86a66" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>HigherOrderDual&lt;<sp/>order<sp/>+<sp/>1,<sp/>double<sp/>&gt;,<sp/>Rest...<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a9ad0d01310a119fdeb6dad14f737d478" kindref="member">increaseDualOrderWithShift</ref>(</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;,<sp/>Rest...<sp/>&gt;&amp;<sp/>in<sp/>)</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">in_scalar_type<sp/><sp/>=<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">out_scalar_type<sp/>=<sp/>HigherOrderDual&lt;<sp/>order<sp/>+<sp/>1,<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>out_scalar_type,<sp/>Rest...<sp/>&gt;<sp/>out(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>out_scalar_type*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out_data<sp/>=<sp/>out.data();</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>in_scalar_type*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>in_data<sp/><sp/>=<sp/>in.data();</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>Fastor::FASTOR_INDEX<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>in.size();<sp/>++i<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out_data[out.get_mem_index(<sp/>i<sp/>)]<sp/>=<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a9ad0d01310a119fdeb6dad14f737d478" kindref="member">increaseDualOrderWithShift&lt; order &gt;</ref>(<sp/>in_data[in.get_mem_index(<sp/>i<sp/>)]<sp/>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>out;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>Rest<sp/>&gt;</highlight></codeline>
+<codeline lineno="61" refid="namespaceMarmot_1_1AutomaticDifferentiation_1abd557d65d9c216aac93099bd98863e44" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1abd557d65d9c216aac93099bd98863e44" kindref="member">tensor_to_scalar_function_type</ref><sp/>=<sp/>std::function&lt;<sp/>dual(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>Rest...<sp/>&gt;&amp;<sp/>T<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>Rest<sp/>&gt;</highlight></codeline>
+<codeline lineno="64" refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>Rest...<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1abd557d65d9c216aac93099bd98863e44" kindref="member">tensor_to_scalar_function_type&lt; Rest... &gt;</ref>&amp;<sp/>f,</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>Rest...<sp/>&gt;&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>)</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>Rest...<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>Rest...<sp/>&gt;<sp/><sp/><sp/>T_right<sp/>=<sp/><ref refid="namespaceMarmot_1a6b27c38160146824cbd182e6753899ac" kindref="member">makeDual</ref>(<sp/>T<sp/>);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>df_dT_data<sp/><sp/><sp/>=<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>.data();</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dual*<sp/><sp/><sp/>T_right_data<sp/>=<sp/>T_right.data();</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>Fastor::FASTOR_INDEX<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>T.size();<sp/>++i<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>T_right_mem_idx<sp/>=<sp/>T_right.get_mem_index(<sp/>i<sp/>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right_data[T_right_mem_idx],<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>df_dT_data[<ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>.get_mem_index(<sp/>i<sp/>)]<sp/>=<sp/>derivative&lt;<sp/>1<sp/>&gt;(<sp/>f(<sp/>T_right<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right_data[T_right_mem_idx],<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>Rest<sp/>&gt;</highlight></codeline>
+<codeline lineno="84" refid="namespaceMarmot_1_1AutomaticDifferentiation_1a76d8057dbc112c363ce2436df8e04f3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a76d8057dbc112c363ce2436df8e04f3a" kindref="member">tensor_to_scalar_function_type_arbitrary_dual_order</ref><sp/>=<sp/>std::function&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;(</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;,<sp/>Rest...<sp/>&gt;&amp;<sp/>T<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>Rest<sp/>&gt;</highlight></codeline>
+<codeline lineno="88" refid="namespaceMarmot_1_1AutomaticDifferentiation_1a64e5b14fad670ebdd8af30a77b1e64b1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;,<sp/>Fastor::Tensor&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;,<sp/>Rest...<sp/>&gt;<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a6c89fdfd4ef801c108cc51e8a178d2cd" kindref="member">df_dT</ref>(</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a76d8057dbc112c363ce2436df8e04f3a" kindref="member">tensor_to_scalar_function_type_arbitrary_dual_order&lt; order + 1, Rest... &gt;</ref>&amp;<sp/>f,</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;,<sp/>Rest...<sp/>&gt;&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalartype<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>HigherOrderDual&lt;<sp/>order,<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">higherOrderScalartype<sp/>=<sp/>HigherOrderDual&lt;<sp/>order<sp/>+<sp/>1,<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>higherOrderScalartype<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>f_;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>scalartype,<sp/>Rest...<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>df_dT_(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>higherOrderScalartype,<sp/>Rest...<sp/>&gt;<sp/>T_right<sp/>=<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a9ad0d01310a119fdeb6dad14f737d478" kindref="member">increaseDualOrderWithShift&lt; order &gt;</ref>(<sp/>T<sp/>);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>higherOrderScalartype*<sp/>T_right_data<sp/>=<sp/>T_right.data();</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>scalartype*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>df_dT_data<sp/><sp/><sp/>=<sp/>df_dT_.data();</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>Fastor::FASTOR_INDEX<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>T.size();<sp/>++i<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right_data[T_right.get_mem_index(<sp/>i<sp/>)],<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>f_<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>f(<sp/>T_right<sp/>);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>df_dT_data[df_dT_.get_mem_index(<sp/>i<sp/>)]<sp/>=<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a19f193e335d4a3fac9f70a357057ab3a" kindref="member">decreaseDualOrderWithShift&lt; order + 1 &gt;</ref>(<sp/>f_<sp/>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right_data[T_right.get_mem_index(<sp/>i<sp/>)],<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>f_<sp/>=<sp/>f(<sp/>T_right<sp/>);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1ad50a4452ffce2fcc7331b9873f0a6529" kindref="member">decreaseDualOrder&lt; order + 1 &gt;</ref>(<sp/>f_<sp/>),<sp/>df_dT_<sp/>};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>RestF,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal">...<sp/>RestT<sp/>&gt;</highlight></codeline>
+<codeline lineno="114" refid="namespaceMarmot_1_1AutomaticDifferentiation_1a7ab174ba4f9bb176f5085009b4360f50" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::pair&lt;<sp/>Fastor::Tensor&lt;<sp/>double,<sp/>RestF...<sp/>&gt;,<sp/>Fastor::Tensor&lt;<sp/>double,<sp/>RestF...,<sp/>RestT...<sp/>&gt;<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1a7ab174ba4f9bb176f5085009b4360f50" kindref="member">dF_dT</ref>(</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::function&lt;<sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>RestF...<sp/>&gt;(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>RestT...<sp/>&gt;&amp;<sp/>)<sp/>&gt;&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>RestT...<sp/>&gt;&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/>)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>RestF...<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>RestF...,<sp/>RestT...<sp/>&gt;<sp/>dF_dT_(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>RestT...<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T_right<sp/>=<sp/><ref refid="namespaceMarmot_1a6b27c38160146824cbd182e6753899ac" kindref="member">makeDual</ref>(<sp/>T<sp/>);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>dual,<sp/>RestF...<sp/>&gt;<sp/>F_at_T_right(<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>dF_dT_data<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>dF_dT_.data();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dual*<sp/><sp/><sp/>T_right_data<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>T_right.data();</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dual*<sp/><sp/><sp/>F_at_T_right_data<sp/>=<sp/>F_at_T_right.data();</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>Fastor::FASTOR_INDEX<sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>T.size();<sp/>++i<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>T_right_mem_idx<sp/>=<sp/>T_right.get_mem_index(<sp/>i<sp/>);</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T_right_data[T_right_mem_idx].grad<sp/>+=<sp/>1.0;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_at_T_right<sp/>=<sp/>F(<sp/>T_right<sp/>);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/>Fastor::FASTOR_INDEX<sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>F_at_T_right.size();<sp/>++j<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dF_dT_data[dF_dT_.get_mem_index(<sp/>j<sp/>*<sp/>T.size()<sp/>+<sp/>i<sp/>)]<sp/>=<sp/>F_at_T_right_data[F_at_T_right.get_mem_index(<sp/>j<sp/>)]</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.grad;</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T_right_data[T_right_mem_idx].grad<sp/>-=<sp/>1.0;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>F_<sp/>=<sp/><ref refid="namespaceMarmot_1acc8deec5875096e9aae6c710f89e0690" kindref="member">makeReal</ref>(<sp/>F_at_T_right<sp/>);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<sp/>F_,<sp/>dF_dT_<sp/>};</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="146" refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder" kindref="compound">SecondOrder</ref><sp/>{</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dim<sp/>&gt;</highlight></codeline>
+<codeline lineno="149" refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a81fa1bac17c8d27d45ecb414c659ce78" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a81fa1bac17c8d27d45ecb414c659ce78" kindref="member">tensor_to_scalar_function_type</ref><sp/>=<sp/>std::function&lt;<sp/>dual2nd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>dual2nd,<sp/>dim,<sp/>dim<sp/>&gt;&amp;<sp/>T<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dim<sp/>&gt;</highlight></codeline>
+<codeline lineno="152" refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a625b3988552211bfe44936bee620e32a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::tuple&lt;<sp/>double,<sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;,<sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim,<sp/>dim,<sp/>dim<sp/>&gt;<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a625b3988552211bfe44936bee620e32a" kindref="member">d2f_dT2</ref>(</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a81fa1bac17c8d27d45ecb414c659ce78" kindref="member">tensor_to_scalar_function_type&lt; dim &gt;</ref>&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;&amp;<sp/><sp/><sp/><sp/>T<sp/>)</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dual2nd<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_right;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dF_dT_;</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim,<sp/>dim,<sp/>dim<sp/>&gt;<sp/>d2F_dT2;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>dual2nd,<sp/>dim,<sp/>dim<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T_right<sp/>=<sp/><ref refid="namespaceMarmot_1a1272f1655d8334837578afe9ac2ca92d" kindref="member">makeHigherOrderDual&lt; 2 &gt;</ref>(<sp/>T<sp/>);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>dim;<sp/>i++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>dim;<sp/>j++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right(<sp/>i,<sp/>j<sp/>),<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;<sp/>dim;<sp/>k++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/>l<sp/>&lt;<sp/>dim;<sp/>l++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>2<sp/>&gt;(<sp/>T_right(<sp/>k,<sp/>l<sp/>),<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_right<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>F(<sp/>T_right<sp/>);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d2F_dT2(<sp/>i,<sp/>j,<sp/>k,<sp/>l<sp/>)<sp/>=<sp/>derivative&lt;<sp/>2<sp/>&gt;(<sp/>F_right<sp/>);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>2<sp/>&gt;(<sp/>T_right(<sp/>k,<sp/>l<sp/>),<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dF_dT_(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>derivative&lt;<sp/>1<sp/>&gt;(<sp/>F_right<sp/>);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>F_<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>double(<sp/>F_right<sp/>);</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right(<sp/>i,<sp/>j<sp/>),<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<sp/>F_,<sp/>dF_dT_,<sp/>d2F_dT2<sp/>};</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dim<sp/>&gt;</highlight></codeline>
+<codeline lineno="186" refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a78715c46ca01c2e9a6f125b636af0664" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a78715c46ca01c2e9a6f125b636af0664" kindref="member">tensor_and_scalar_to_scalar_function_type</ref><sp/>=<sp/>std::function&lt;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dual2nd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>dual2nd,<sp/>dim,<sp/>dim<sp/>&gt;&amp;<sp/>T,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dual2nd<sp/>scalar<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>dim<sp/>&gt;</highlight></codeline>
+<codeline lineno="190" refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a0e87b1a80e0e084e1ee007e662f9e03e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a0e87b1a80e0e084e1ee007e662f9e03e" kindref="member">d2f_dTensor_dScalar</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1AutomaticDifferentiation_1_1SecondOrder_1a78715c46ca01c2e9a6f125b636af0664" kindref="member">tensor_and_scalar_to_scalar_function_type&lt; dim &gt;</ref>&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>T,</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>scalar<sp/>)</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>double,<sp/>dim,<sp/>dim<sp/>&gt;<sp/><sp/>d2F_dTdScalar;</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>dual2nd,<sp/>dim,<sp/>dim<sp/>&gt;<sp/>T_right<sp/>=<sp/><ref refid="namespaceMarmot_1a1272f1655d8334837578afe9ac2ca92d" kindref="member">makeHigherOrderDual&lt; 2 &gt;</ref>(<sp/>T<sp/>);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"></highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dual2nd<sp/>scalar_right(<sp/>scalar<sp/>);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>2<sp/>&gt;(<sp/>scalar_right,<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>dim;<sp/>i++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>dim;<sp/>j++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right(<sp/>i,<sp/>j<sp/>),<sp/>1.0<sp/>);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d2F_dTdScalar(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>derivative&lt;<sp/>2<sp/>&gt;(<sp/>F(<sp/>T_right,<sp/>scalar_right<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"></highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>seed&lt;<sp/>1<sp/>&gt;(<sp/>T_right(<sp/>i,<sp/>j<sp/>),<sp/>0.0<sp/>);</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>d2F_dTdScalar;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SecondOrder</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/>}<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>AutomaticDifferentiation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h"/>
+  </compounddef>
+</doxygen>

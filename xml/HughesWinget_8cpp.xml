@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="HughesWinget_8cpp" kind="file" language="C++">
+    <compoundname>HughesWinget.cpp</compoundname>
+    <includes refid="HughesWinget_8h" local="yes">Marmot/HughesWinget.h</includes>
+    <includes refid="MarmotKinematics_8h" local="yes">Marmot/MarmotKinematics.h</includes>
+    <includes refid="MarmotTensor_8h" local="yes">Marmot/MarmotTensor.h</includes>
+    <includes refid="MarmotVoigt_8h" local="yes">Marmot/MarmotVoigt.h</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotJournal.h</label>
+        <link refid="MarmotJournal_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Marmot/MarmotTensor.h</label>
+        <link refid="MarmotTensor_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/HughesWinget.h</label>
+        <link refid="HughesWinget_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>Marmot/MarmotKinematics.h</label>
+        <link refid="MarmotKinematics_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="MarmotVoigt_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/HughesWinget.cpp</label>
+        <link refid="HughesWinget_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="13">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="17">
+        <label>algorithm</label>
+      </node>
+      <node id="15">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="18">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="16">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="10">
+        <label>cmath</label>
+      </node>
+      <node id="19">
+        <label>complex</label>
+      </node>
+      <node id="5">
+        <label>iostream</label>
+      </node>
+      <node id="6">
+        <label>sstream</label>
+      </node>
+      <node id="7">
+        <label>string</label>
+      </node>
+      <node id="14">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="22">
+        <label>utility</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1NumericalAlgorithms">Marmot::NumericalAlgorithms</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="HughesWinget_8h" kindref="compound">Marmot/HughesWinget.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotKinematics_8h" kindref="compound">Marmot/MarmotKinematics.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotTensor_8h" kindref="compound">Marmot/MarmotTensor.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotVoigt_8h" kindref="compound">Marmot/MarmotVoigt.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms" kindref="compound">Marmot::NumericalAlgorithms</ref><sp/>{</highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Eigen;</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><ref refid="classMarmot_1_1NumericalAlgorithms_1_1HughesWinget_1ac322eff7ab6d041fede8e9c90b06a04d" kindref="member">HughesWinget::HughesWinget</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref>&amp;<sp/>FOld,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref>&amp;<sp/>FNew,<sp/>Formulation<sp/>formulation<sp/>)</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/>theFormulation(<sp/>formulation<sp/>)</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref><sp/>FMidStep<sp/>=<sp/>0.5<sp/>*<sp/>(<sp/>FNew<sp/>+<sp/>FOld<sp/>);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>=<sp/>(<sp/>FNew<sp/>-<sp/>FOld<sp/>)<sp/>*<sp/>FMidStep.inverse();<sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>actually<sp/>l<sp/>*<sp/>dT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref><sp/>dEps_<sp/>=<sp/>0.5<sp/>*<sp/>(<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>+<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>.transpose()<sp/>);<sp/></highlight><highlight class="comment">//<sp/>actually<sp/>d<sp/>*<sp/>dT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/>dOmega<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.5<sp/>*<sp/>(<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>-<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>.transpose()<sp/>);<sp/></highlight><highlight class="comment">//<sp/>actually<sp/>omega<sp/>*<sp/>dT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/>dEps<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1ae8eac19a17822352de1d8c2bc2775b86" kindref="member">Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix</ref>(<sp/>dEps_<sp/>);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>dR<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>(<sp/>Matrix3d::Identity()<sp/>-<sp/>0.5<sp/>*<sp/>dOmega<sp/>).inverse()<sp/>*<sp/>(<sp/>Matrix3d::Identity()<sp/>+<sp/>0.5<sp/>*<sp/>dOmega<sp/>);</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref><sp/>HughesWinget::getStrainIncrement()</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dEps;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref><sp/>HughesWinget::getRotationIncrement()</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dOmega;</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref><sp/>HughesWinget::rotateTensor(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref>&amp;<sp/>tensor<sp/>)</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1a02fcdad0184c1dd32f766a0f7c26c0e5" kindref="member">Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt&lt; double &gt;</ref>(</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>dR<sp/>*<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1ae1581dc1677ced10242837a5f509df51" kindref="member">Marmot::ContinuumMechanics::VoigtNotation::voigtToStress</ref>(<sp/>tensor<sp/>)<sp/>*<sp/>dR.transpose()<sp/>);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><ref refid="namespaceMarmot_1_1EigenTensors_1a5330da689df6e18d1d88c3de1d1cc420" kindref="member">Marmot::EigenTensors::Tensor633d</ref><sp/>HughesWinget::compute_dS_dF(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref>&amp;<sp/>stress,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix3d&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>FInv,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a48144b7616079807fd550c92d142e9da" kindref="member">Marmot::Matrix6d</ref>&amp;<sp/>dChauchydEps<sp/>)</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot" kindref="compound">Marmot</ref>;</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility" kindref="compound">Marmot::ContinuumMechanics::TensorUtility</ref>;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient" kindref="compound">Marmot::ContinuumMechanics::Kinematics::VelocityGradient</ref>;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1EigenTensors_1a5330da689df6e18d1d88c3de1d1cc420" kindref="member">EigenTensors::Tensor633d</ref><sp/>dS_dl;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1EigenTensors_1a5330da689df6e18d1d88c3de1d1cc420" kindref="member">EigenTensors::Tensor633d</ref><sp/>dS_dF;</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1EigenTensors_1a5330da689df6e18d1d88c3de1d1cc420" kindref="member">EigenTensors::Tensor633d</ref><sp/>dStressRotational_dl;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1EigenTensors_1a5330da689df6e18d1d88c3de1d1cc420" kindref="member">EigenTensors::Tensor633d</ref><sp/>dStressJaumann_dl;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stressNew<sp/>=<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1ac1e1d50ccf1ef1340c6447e1fbd54dac" kindref="member">ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt&lt; 3 &gt;</ref>(<sp/>stress<sp/>);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>dStressRotational_dl.setZero();</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ij<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref><sp/>&lt;<sp/>6;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref>++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>[<ref refid="namespaceMarmot_1_1FastorIndices_1a86d3058ec46954e3842516199edc3a6e" kindref="member">i</ref>,<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a4e97095b6d06034139e2ee17b86c338a" kindref="member">j</ref>]<sp/>=<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1IndexNotation_1a0e7c0348949da50ad0055ea5e2aea72c" kindref="member">IndexNotation::fromVoigt&lt; 3 &gt;</ref>(<sp/>ij<sp/>);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>m<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1abe0bb03a2c6cdb424f8360e4dbb26d19" kindref="member">m</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1abe0bb03a2c6cdb424f8360e4dbb26d19" kindref="member">m</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStressRotational_dl(<sp/>ij,<sp/>k,<sp/>l<sp/>)<sp/>+=<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient_1a52102ccdae92089f86b3374cc5ec140f" kindref="member">dOmega_dVelocityGradient</ref>(<sp/>i,<sp/>m,<sp/>k,<sp/>l<sp/>)<sp/>*<sp/>stressNew(<sp/>m,<sp/>j<sp/>)<sp/>+</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient_1a52102ccdae92089f86b3374cc5ec140f" kindref="member">dOmega_dVelocityGradient</ref>(<sp/>j,<sp/>m,<sp/>k,<sp/>l<sp/>)<sp/>*<sp/>stressNew(<sp/>i,<sp/>m<sp/>);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>dStressJaumann_dl.setZero();</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ij<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref><sp/>&lt;<sp/>6;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>mn<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a33a0116660f2f2991e48a6886427c5ee" kindref="member">mn</ref><sp/>&lt;<sp/>6;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a33a0116660f2f2991e48a6886427c5ee" kindref="member">mn</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStressJaumann_dl(<sp/>ij,<sp/>k,<sp/>l<sp/>)<sp/>+=<sp/>dChauchydEps(<sp/>ij,<sp/>mn<sp/>)<sp/>*<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient_1aa3821787e628ff9b1d089aacc97d0b60" kindref="member">dStretchingRate_dVelocityGradient</ref>(<sp/>mn,<sp/>k,<sp/>l<sp/>);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>dS_dl<sp/>=<sp/>dStressJaumann_dl<sp/>+<sp/>dStressRotational_dl;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>dS_dF.setZero();</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ij<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref><sp/>&lt;<sp/>6;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>m<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1abe0bb03a2c6cdb424f8360e4dbb26d19" kindref="member">m</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1abe0bb03a2c6cdb424f8360e4dbb26d19" kindref="member">m</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dS_dF(<sp/>ij,<sp/>k,<sp/>l<sp/>)<sp/>+=<sp/>dS_dl(<sp/>ij,<sp/>k,<sp/>m<sp/>)<sp/>*<sp/>FInv(<sp/>l,<sp/>m<sp/>);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dS_dF;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/>Eigen::Matrix3d<sp/>HughesWinget::compute_dScalar_dF(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FInv,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref>&amp;<sp/>dScalarDEps<sp/>)</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient" kindref="compound">Marmot::ContinuumMechanics::Kinematics::VelocityGradient</ref>;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref><sp/>dScalar_dl<sp/>=<sp/>Matrix3d::Zero();</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>l<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref><sp/>&lt;<sp/>3;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a850818d7ef140d69a9e199cb184dcf6a" kindref="member">l</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>ij<sp/>=<sp/>0;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref><sp/>&lt;<sp/>6;<sp/><ref refid="namespaceMarmot_1_1FastorIndices_1a3d9fc1dd9278a7a185d747013395cea6" kindref="member">ij</ref>++<sp/>)</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dScalar_dl(<sp/>k,<sp/>l<sp/>)<sp/>+=<sp/>dScalarDEps(<sp/>ij<sp/>)<sp/>*<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient_1aa3821787e628ff9b1d089aacc97d0b60" kindref="member">dStretchingRate_dVelocityGradient</ref>(<sp/>ij,<sp/>k,<sp/>l<sp/>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dScalar_dl<sp/>*<sp/>FInv;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::NumericalAlgorithms</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/HughesWinget.cpp"/>
+  </compounddef>
+</doxygen>

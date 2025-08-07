@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmotMaterial" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>MarmotMaterial</compoundname>
+    <derivedcompoundref refid="classMarmotMaterialFiniteStrain" prot="public" virt="non-virtual">MarmotMaterialFiniteStrain</derivedcompoundref>
+    <derivedcompoundref refid="classMarmotMaterialGradientEnhancedMechanical" prot="public" virt="non-virtual">MarmotMaterialGradientEnhancedMechanical</derivedcompoundref>
+    <derivedcompoundref refid="classMarmotMaterialMechanical" prot="public" virt="non-virtual">MarmotMaterialMechanical</derivedcompoundref>
+    <includes refid="MarmotMaterial_8h" local="no">MarmotMaterial.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classMarmotMaterial_1a0f631d6ec14531146ec683712a085960" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* MarmotMaterial::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>MarmotMaterial::materialProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="35" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmotMaterial_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int MarmotMaterial::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>MarmotMaterial::nMaterialProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="36" column="17" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmotMaterial_1a3153122a8c7819cc306d6d35378cf414" prot="protected" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* MarmotMaterial::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>MarmotMaterial::stateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="38" column="10" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MarmotMaterial::nStateVars</definition>
+        <argsstring></argsstring>
+        <name>nStateVars</name>
+        <qualifiedname>MarmotMaterial::nStateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="39" column="11" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmotMaterial_1a31bc9f9283f984f5d78685d82e764edd" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int MarmotMaterial::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>MarmotMaterial::materialNumber</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="42" column="13" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmotMaterial_1a395b074d78052f5e58220cfeda65c5bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotMaterial::MarmotMaterial</definition>
+        <argsstring>(const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>MarmotMaterial</name>
+        <qualifiedname>MarmotMaterial::MarmotMaterial</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="44" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a33fd1c89a919e8b0d396eb846614c815" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual MarmotMaterial::~MarmotMaterial</definition>
+        <argsstring>()</argsstring>
+        <name>~MarmotMaterial</name>
+        <qualifiedname>MarmotMaterial::~MarmotMaterial</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="46" column="11"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a16e96c33fdc77ddd5aa98ffbbca1577d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int MarmotMaterial::getNumberOfRequiredStateVars</definition>
+        <argsstring>()=0</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>MarmotMaterial::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1ADLinearElastic_1afe08a4e3e4e4ac7d2390632a3684d832">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1ADVonMises_1a973a42203292be270bfe5bfec3edaf27">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1B4_1aa3f38abc1541c0b457a64ba25f992fe4">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1ad0a3542167ae56a08979b4883f5b8d13">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a772738c665da6e23fea781a527d2a0a4">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearElastic_1adfcfded914babfb1ac6e2e513cefc0e0">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1ae125be550e9a756d522a5338dae04774">getNumberOfRequiredStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a">getNumberOfRequiredStateVars</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="48" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a9644446a593632d0da2462bdeb43e25c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterial::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>MarmotMaterial::assignStateVars</qualifiedname>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1ADVonMises_1a3e087b2e9fe240772d81260e5c9345e5">assignStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1B4_1a898db99d30f6b14ac23d5f7512fcb66d">assignStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1a758b5e27325c0489e9eaca551b51e059">assignStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a919a2545ce365585fe25fa7497fd7440">assignStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a08dab7e70520a87d4c55b8a2ebfa3957">assignStateVars</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1VonMisesModel_1a40f9ce9ccc2fbb16b4136656916ebb5f">assignStateVars</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="50" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1acc7dfa70f71415b2c9b562a9fafe64d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="structStateView" kindref="compound">StateView</ref></type>
+        <definition>virtual StateView MarmotMaterial::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName)=0</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>MarmotMaterial::getStateView</qualifiedname>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1ADLinearElastic_1aa4767f35d32d2472a44a600506799264">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1ADVonMises_1ae73613d48c7f8fdcdf8166019eb6ae5c">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1B4_1a4d99bbc3c2924bf7f176c3efc10cbfa6">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1a36b7de235163fe1ed6dd050bd84612cb">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af652c8fa2c2664e80a66a4684665dd6d">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearElastic_1aa9e54614a9d9d56c3bcd0b8e76bcc9fc">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1aca8046709f0297f78be42fc45334a565">getStateView</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1VonMisesModel_1ac35d22d569565f0afbb4b85e333082ce">getStateView</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="52" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double *</type>
+        <definition>double * MarmotMaterial::getAssignedStateVars</definition>
+        <argsstring>()</argsstring>
+        <name>getAssignedStateVars</name>
+        <qualifiedname>MarmotMaterial::getAssignedStateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="54" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1ac2e855ed98253c5f426735bc251771dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int MarmotMaterial::getNumberOfAssignedStateVars</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfAssignedStateVars</name>
+        <qualifiedname>MarmotMaterial::getNumberOfAssignedStateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="56" column="7"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a9d6615f62d1e33ab694f3e889dba203f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterial::initializeYourself</definition>
+        <argsstring>()</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>MarmotMaterial::initializeYourself</qualifiedname>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aed49aa303577337c673aacee3f54a88d">initializeYourself</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="58" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterial_1a16ef751ebc410cb5173cb65a2e43e1ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>virtual double MarmotMaterial::getDensity</definition>
+        <argsstring>()</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>MarmotMaterial::getDensity</qualifiedname>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1LinearElastic_1a033164e592bad453127b4989821012bc">getDensity</reimplementedby>
+        <reimplementedby refid="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d">getDensity</reimplementedby>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="60" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="15">
+        <label>Marmot::Materials::ADLinearElastic</label>
+        <link refid="classMarmot_1_1Materials_1_1ADLinearElastic"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Marmot::Materials::ADVonMises</label>
+        <link refid="classMarmot_1_1Materials_1_1ADVonMises"/>
+        <childnode refid="14" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Marmot::Materials::B4</label>
+        <link refid="classMarmot_1_1Materials_1_1B4"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Materials::CompressibleNeoHooke</label>
+        <link refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>Marmot::Materials::LinearElastic</label>
+        <link refid="classMarmot_1_1Materials_1_1LinearElastic"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Marmot::Materials::LinearViscoelasticPowerLaw</label>
+        <link refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Marmot::Materials::VonMisesModel</label>
+        <link refid="classMarmot_1_1Materials_1_1VonMisesModel"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialFiniteStrain</label>
+        <link refid="classMarmotMaterialFiniteStrain"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>MarmotMaterialGradientEnhancedHypoElastic</label>
+        <link refid="classMarmotMaterialGradientEnhancedHypoElastic"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>MarmotMaterialGradientEnhancedMechanical</label>
+        <link refid="classMarmotMaterialGradientEnhancedMechanical"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>MarmotMaterialHyperElastic</label>
+        <link refid="classMarmotMaterialHyperElastic"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>MarmotMaterialHypoElastic</label>
+        <link refid="classMarmotMaterialHypoElastic"/>
+        <childnode refid="7" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>MarmotMaterialHypoElasticAD</label>
+        <link refid="classMarmotMaterialHypoElasticAD"/>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>MarmotMaterialMechanical</label>
+        <link refid="classMarmotMaterialMechanical"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="32" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="32" bodyend="61"/>
+    <listofallmembers>
+      <member refid="classMarmotMaterial_1a9644446a593632d0da2462bdeb43e25c" prot="public" virt="virtual"><scope>MarmotMaterial</scope><name>assignStateVars</name></member>
+      <member refid="classMarmotMaterial_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" virt="non-virtual"><scope>MarmotMaterial</scope><name>getAssignedStateVars</name></member>
+      <member refid="classMarmotMaterial_1a16ef751ebc410cb5173cb65a2e43e1ec" prot="public" virt="virtual"><scope>MarmotMaterial</scope><name>getDensity</name></member>
+      <member refid="classMarmotMaterial_1ac2e855ed98253c5f426735bc251771dd" prot="public" virt="non-virtual"><scope>MarmotMaterial</scope><name>getNumberOfAssignedStateVars</name></member>
+      <member refid="classMarmotMaterial_1a16e96c33fdc77ddd5aa98ffbbca1577d" prot="public" virt="pure-virtual"><scope>MarmotMaterial</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="classMarmotMaterial_1acc7dfa70f71415b2c9b562a9fafe64d1" prot="public" virt="pure-virtual"><scope>MarmotMaterial</scope><name>getStateView</name></member>
+      <member refid="classMarmotMaterial_1a9d6615f62d1e33ab694f3e889dba203f" prot="public" virt="virtual"><scope>MarmotMaterial</scope><name>initializeYourself</name></member>
+      <member refid="classMarmotMaterial_1a395b074d78052f5e58220cfeda65c5bd" prot="public" virt="non-virtual"><scope>MarmotMaterial</scope><name>MarmotMaterial</name></member>
+      <member refid="classMarmotMaterial_1a31bc9f9283f984f5d78685d82e764edd" prot="public" virt="non-virtual"><scope>MarmotMaterial</scope><name>materialNumber</name></member>
+      <member refid="classMarmotMaterial_1a0f631d6ec14531146ec683712a085960" prot="protected" virt="non-virtual"><scope>MarmotMaterial</scope><name>materialProperties</name></member>
+      <member refid="classMarmotMaterial_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" virt="non-virtual"><scope>MarmotMaterial</scope><name>nMaterialProperties</name></member>
+      <member refid="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" virt="non-virtual"><scope>MarmotMaterial</scope><name>nStateVars</name></member>
+      <member refid="classMarmotMaterial_1a3153122a8c7819cc306d6d35378cf414" prot="protected" virt="non-virtual"><scope>MarmotMaterial</scope><name>stateVars</name></member>
+      <member refid="classMarmotMaterial_1a33fd1c89a919e8b0d396eb846614c815" prot="public" virt="virtual"><scope>MarmotMaterial</scope><name>~MarmotMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

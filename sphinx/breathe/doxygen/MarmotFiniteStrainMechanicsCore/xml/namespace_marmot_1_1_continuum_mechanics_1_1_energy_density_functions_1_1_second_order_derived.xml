@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_second_order_derived" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_energy_density_functions_8h_1aad1774c5d8d6e561b83fcad98982a4d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; T, Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::tuple&lt; T, Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;C, const double K, const double G)</argsstring>
+        <name>PenceGouPotentialB</name>
+        <qualifiedname>Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB</qualifiedname>
+        <param>
+          <type>const Tensor33t&lt; T &gt; &amp;</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="108" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="108" bodyend="140"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="105" column="5"/>
+  </compounddef>
+</doxygen>

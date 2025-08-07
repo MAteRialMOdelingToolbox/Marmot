@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" alt="" coords="5,5,1036,53"/>
+<area shape="rect" id="node2" title="cmath" alt="" coords="480,101,561,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="523,54,523,86,518,86,518,54"/>
+</map>

@@ -1,7 +1,0 @@
-<map id="Marmot::Materials::ADVonMises" name="Marmot::Materials::ADVonMises">
-<area shape="rect" id="node1" title="Implementation of a isotropic J2&#45;plasticity material for 3D stress states using automatic differentia..." alt="" coords="39,304,170,345"/>
-<area shape="rect" id="node2" href="$classMarmotMaterialHypoElasticAD.html" title=" " alt="" coords="5,229,204,256"/>
-<area shape="rect" id="node3" href="$classMarmotMaterialHypoElastic.html" title=" " alt="" coords="14,155,195,181"/>
-<area shape="rect" id="node4" href="$classMarmotMaterialMechanical.html" title=" " alt="" coords="15,80,194,107"/>
-<area shape="rect" id="node5" href="$classMarmotMaterial.html" title=" " alt="" coords="49,5,161,32"/>
-</map>

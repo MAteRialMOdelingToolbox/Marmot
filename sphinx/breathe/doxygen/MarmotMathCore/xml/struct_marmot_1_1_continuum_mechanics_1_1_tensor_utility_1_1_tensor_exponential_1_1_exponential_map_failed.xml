@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_exponential_map_failed" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::exception</basecompoundref>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed</label>
+        <link refid="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_exponential_map_failed"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::exception</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed</label>
+        <link refid="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_exponential_map_failed"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::exception</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="35" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="35" bodyend="35"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

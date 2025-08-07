@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</compoundname>
+    <basecompoundref refid="classMarmotStateVarVectorManager" prot="public" virt="non-virtual">MarmotStateVarVectorManager</basecompoundref>
+    <includes refid="FiniteStrainJ2Plasticity_8h" local="no">FiniteStrainJ2Plasticity.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a8ada4260920cc53b8419dbfe2b9e8f26" prot="public" static="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::layout</qualifiedname>
+        <initializer>= <ref refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" kindref="member">makeLayout</ref>( {
+        { .name = &quot;Fp&quot;, .length = 9 },
+        { .name = &quot;alphaP&quot;, .length = 1 },
+      } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="89" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1af091c3c33164345c9e214595e046d9b8" prot="public" static="no" mutable="no">
+        <type>Fastor::TensorMap&lt; double, 3, 3 &gt;</type>
+        <definition>Fastor::TensorMap&lt; double, 3, 3 &gt; Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::Fp</definition>
+        <argsstring></argsstring>
+        <name>Fp</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::Fp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="94" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1aa1ba8e49d3e9ebe9433444e671980476" prot="public" static="no" mutable="no">
+        <type>double &amp;</type>
+        <definition>double&amp; Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::alphaP</definition>
+        <argsstring></argsstring>
+        <name>alphaP</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::alphaP</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="95" column="40" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a50522dae9457bf4d8b1d580b846b6a25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::FiniteStrainJ2PlasticityStateVarManager</definition>
+        <argsstring>(double *theStateVarVector)</argsstring>
+        <name>FiniteStrainJ2PlasticityStateVarManager</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::FiniteStrainJ2PlasticityStateVarManager</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>theStateVarVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="97" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="97" bodyend="98"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>theLayout</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotStateVarVectorManager::StateVarVectorLayout</label>
+        <link refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="86" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="86" bodyend="99"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1aa1ba8e49d3e9ebe9433444e671980476" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>alphaP</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>contains</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>find</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a50522dae9457bf4d8b1d580b846b6a25" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>FiniteStrainJ2PlasticityStateVarManager</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1af091c3c33164345c9e214595e046d9b8" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>Fp</name></member>
+      <member refid="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>getStateView</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a8ada4260920cc53b8419dbfe2b9e8f26" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>layout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>makeLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>MarmotStateVarVectorManager</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>theLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</scope><name>theStateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_d0d496183679f761e8bac416323bbe4d" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot</compoundname>
+    <innerfile refid="_adaptive_substepper_8h">AdaptiveSubstepper.h</innerfile>
+    <innerfile refid="_adaptive_substepper_explicit_8h">AdaptiveSubstepperExplicit.h</innerfile>
+    <innerfile refid="_duvaut_lions_viscosity_8h">DuvautLionsViscosity.h</innerfile>
+    <innerfile refid="_haigh_westergaard_8h">HaighWestergaard.h</innerfile>
+    <innerfile refid="_hughes_winget_8h">HughesWinget.h</innerfile>
+    <innerfile refid="_marmot_elasticity_8h">MarmotElasticity.h</innerfile>
+    <innerfile refid="_marmot_geostatic_stress_8h">MarmotGeostaticStress.h</innerfile>
+    <innerfile refid="_marmot_kelvin_chain_8h">MarmotKelvinChain.h</innerfile>
+    <innerfile refid="_marmot_kinematics_8h">MarmotKinematics.h</innerfile>
+    <innerfile refid="_marmot_localization_8h">MarmotLocalization.h</innerfile>
+    <innerfile refid="_marmot_lower_dimensional_stress_8h">MarmotLowerDimensionalStress.h</innerfile>
+    <innerfile refid="_marmot_material_gradient_enhanced_hypo_elastic_8h">MarmotMaterialGradientEnhancedHypoElastic.h</innerfile>
+    <innerfile refid="_marmot_material_gradient_enhanced_mechanical_8h">MarmotMaterialGradientEnhancedMechanical.h</innerfile>
+    <innerfile refid="_marmot_material_hyper_elastic_8h">MarmotMaterialHyperElastic.h</innerfile>
+    <innerfile refid="_marmot_material_hypo_elastic_8h">MarmotMaterialHypoElastic.h</innerfile>
+    <innerfile refid="_marmot_material_hypo_elastic_a_d_8h">MarmotMaterialHypoElasticAD.h</innerfile>
+    <innerfile refid="_marmot_material_mechanical_8h">MarmotMaterialMechanical.h</innerfile>
+    <innerfile refid="_marmot_prony_series_8h">MarmotPronySeries.h</innerfile>
+    <innerfile refid="_marmot_state_var_vector_manager_8h">MarmotStateVarVectorManager.h</innerfile>
+    <innerfile refid="_marmot_utility_8h">MarmotUtility.h</innerfile>
+    <innerfile refid="_marmot_viscoelasticity_8h">MarmotViscoelasticity.h</innerfile>
+    <innerfile refid="_marmot_voigt_8h">MarmotVoigt.h</innerfile>
+    <innerfile refid="_menetrey_willam_8h">MenetreyWillam.h</innerfile>
+    <innerfile refid="_newmark_beta_integrator_8h">NewmarkBetaIntegrator.h</innerfile>
+    <innerfile refid="_perez_fouget_substepper_explicit_mark_i_i_8h">PerezFougetSubstepperExplicitMarkII.h</innerfile>
+    <innerfile refid="_perez_fouget_substepper_mark_i_i_8h">PerezFougetSubstepperMarkII.h</innerfile>
+    <innerfile refid="_perez_fouget_substepper_time_8h">PerezFougetSubstepperTime.h</innerfile>
+    <innerfile refid="_yield_surface_combination_manager_8h">YieldSurfaceCombinationManager.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/"/>
+  </compounddef>
+</doxygen>

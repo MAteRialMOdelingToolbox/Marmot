@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotMechanicsCore_2doc_2DOCUMENTATION_8md" kind="file" language="Markdown">
+    <compoundname>DOCUMENTATION.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">##<sp/>MechanicsCore</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>continuummechanicsothers<sp/>Others</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Additional<sp/>implementations<sp/>for<sp/>Material<sp/>Models<sp/>based<sp/>on<sp/>Plasticity<sp/>Theory</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Duvaut<sp/>Lions<sp/>Viscosity</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>DuvautLionsViscosity.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Menetrey<sp/>Willam<sp/>Yield<sp/>Surfaces</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MenetreyWillam.h</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Yield<sp/>Surface<sp/>Combination<sp/>Manager</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Necessary<sp/>for<sp/>multisurface<sp/>plasticity<sp/>material<sp/>models.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>YieldSurfaceCombinationManager.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>mechanicalmaterials<sp/>Mechanical<sp/>Material<sp/>Models</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Abstract<sp/>base<sp/>class<sp/>for<sp/>mechanical<sp/>materials<sp/>with<sp/>scalar<sp/>nonlocal<sp/>interaction.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotMaterialMechanical</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>hypoelastic<sp/>Hypoelastic<sp/>Material<sp/>Models</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotMaterialHypoElastic</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Derived<sp/>abstract<sp/>base<sp/>class<sp/>for<sp/>elastic<sp/>materials<sp/>expressed<sp/>purely<sp/>in<sp/>rate<sp/>form.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Basic<sp/>Theory</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>general,<sp/>the<sp/>nominal<sp/>stress<sp/>rate<sp/>tensor<sp/>\f$<sp/>\sigRate<sp/>\f$<sp/>can<sp/>be<sp/>written<sp/>as<sp/>a<sp/>function<sp/>of<sp/>the<sp/>nominal<sp/>stress<sp/>tensor<sp/>\f$<sp/>\sig<sp/>\f$,<sp/>the<sp/>stretching<sp/>rate<sp/>tensor<sp/>\f$<sp/>\epsRate<sp/>\f$<sp/>and<sp/>the<sp/>time<sp/>\f$<sp/>t<sp/>\f$.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[<sp/><sp/>\displaystyle<sp/>\sigRate<sp/>=<sp/>f(<sp/>\sig,<sp/>\epsRate,<sp/>t,<sp/>...)<sp/>\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>course<sp/>of<sp/>numerical<sp/>time<sp/>integration,<sp/>this<sp/>relation<sp/>will<sp/>be<sp/>formulated<sp/>incrementally<sp/>as</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[<sp/><sp/>\displaystyle<sp/>\Delta<sp/>\sig<sp/>=<sp/>f<sp/>(<sp/>\sig_n,<sp/>\Delta\eps,<sp/>\Delta<sp/>t,<sp/>t_n,<sp/>...)<sp/>\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">with</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[<sp/><sp/>\displaystyle<sp/>\Delta\eps<sp/>=<sp/><sp/>\epsRate\,<sp/>\Delta<sp/>t<sp/>\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">and<sp/>the<sp/>algorithmic<sp/>tangent</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[<sp/>\displaystyle<sp/>\frac{d<sp/>\sig<sp/>}{d<sp/>\eps<sp/>}<sp/>=<sp/><sp/>\frac{d<sp/>\Delta<sp/>\sig<sp/>}{d<sp/>\Delta<sp/>\eps<sp/>}<sp/>\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>formulation<sp/>is<sp/>compatible<sp/>with<sp/>an<sp/>Abaqus<sp/>interface.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>hyperelastic<sp/>Hyperelastic<sp/>Material<sp/>Models</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Basic<sp/>Theory</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotMaterialHyperElastic</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Derived<sp/>abstract<sp/>base<sp/>class<sp/>for<sp/>_simple_,<sp/>purely<sp/>hyperelastic<sp/>materials<sp/>to<sp/>be<sp/>used<sp/>for<sp/>finite<sp/>elements<sp/>based<sp/>on<sp/>the<sp/>total<sp/>lagrangian<sp/>kinematic<sp/>description<sp/>(TL<sp/>elements).<sp/>The<sp/>second<sp/>Piola<sp/>-<sp/>Kirchhoff<sp/>stress<sp/>tensor<sp/>\f$<sp/>S<sp/>\f$<sp/>will<sp/>be<sp/>derived<sp/>by</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[<sp/>\displaystyle<sp/>S<sp/>=<sp/>\frac{\partial<sp/>f(\boldsymbol{E},t<sp/>)}{\partial<sp/>\boldsymbol{E}}<sp/>\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">with<sp/>the<sp/>Green<sp/>-<sp/>Lagrange<sp/>strain<sp/>tensor<sp/>\f$<sp/>\boldsymbol{E}<sp/>\f$</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>\displaystyle<sp/>E<sp/><sp/>=<sp/>\frac{1}{2}\,\left(\boldsymbol{F}^T\cdot<sp/>\boldsymbol{F}<sp/>-<sp/>\boldsymbol{I}<sp/>\right)</highlight></codeline>
+<codeline><highlight class="normal">\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">as<sp/>work<sp/>conjugated<sp/>measure<sp/>and<sp/>the<sp/>variable<sp/>\f$<sp/>\boldsymbol{F}<sp/>\f$<sp/>denoting<sp/>the<sp/>deformation<sp/>gradient.</highlight></codeline>
+<codeline><highlight class="normal">The<sp/>algorithmic<sp/>tangent<sp/>will<sp/>be<sp/>calculated<sp/>by</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>\displaystyle<sp/>\frac{d<sp/>\boldsymbol{S}}{d<sp/>\boldsymbol{E}}</highlight></codeline>
+<codeline><highlight class="normal">\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>gradmechanicalmaterials<sp/>Gradient<sp/>Enhanced<sp/>Mechanical<sp/>Material<sp/>Models</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotMaterialGradientEnhancedMechanical</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Base<sp/>class<sp/>for<sp/>mechanical<sp/>materials<sp/>with<sp/>gradient<sp/>enhanced<sp/>regularization<sp/>to<sp/>assure<sp/>mesh<sp/>indepency<sp/>in<sp/>finite<sp/>element<sp/>simulations.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>gradhypoelastic<sp/>Gradient<sp/>Enhanced<sp/>Hypoelastic<sp/>Material<sp/>Models</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Basic<sp/>Theory</highlight></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotMaterialGradientEnhancedHypoElastic</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>substepper<sp/>Substepping<sp/>Algorithms</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Adaptive<sp/>Substepper</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Substepper<sp/>for<sp/>Implicit<sp/>Return<sp/>Mapping<sp/>Algorithms</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>AdaptiveSubstepper.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Adaptive<sp/>Substepper,<sp/>employing<sp/>an<sp/>error<sp/>estimation<sp/>and<sp/>Richardson<sp/>extrapolation<sp/>for<sp/>an<sp/>implicit<sp/>return<sp/>mapping<sp/>algorithm.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Substepper<sp/>for<sp/>Semi<sp/>-<sp/>Explicit<sp/>Return<sp/>Mapping<sp/>Algorithms</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>AdaptiveSubstepperExplicit.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Adaptive<sp/>Substepper,<sp/>employing<sp/>an<sp/>error<sp/>estimation<sp/>and<sp/>Richardson<sp/>extrapolation<sp/>for<sp/>an<sp/>semi<sp/>-<sp/>explicit<sp/>return<sp/>mapping<sp/>algorithm.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Perez<sp/>Fouget<sp/>Substepper</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Substepper<sp/>for<sp/>Implicit<sp/>Return<sp/>Mapping<sp/>Algorithms</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>PerezFougetSubstepperMarkII.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Perez<sp/>Fouget<sp/>Substepper<sp/>for<sp/>elastoplastic<sp/>materials<sp/>with<sp/>an<sp/>implicit<sp/>return<sp/>mapping<sp/>algorithm.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Substepper<sp/>for<sp/>Semi<sp/>-<sp/>Explicit<sp/>Return<sp/>Mapping<sp/>Algorithms</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>PerezFougetSubstepperExplicitMarkII.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Perez<sp/>Fouget<sp/>Substepper<sp/>for<sp/>semi<sp/>-<sp/>explicit<sp/>elastoplastic<sp/>materials.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Modified<sp/>Version<sp/>to<sp/>Consider<sp/>Time-Variant<sp/>Elastic<sp/>Stiffness<sp/>Tensor</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>PerezFougetSubstepperTime.h</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>hugheswinget<sp/>Hughes<sp/>Winget</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>HughesWinget.h</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\page<sp/>voigtnotation<sp/>Voigt<sp/>Notation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>%Marmot,<sp/>Voigt<sp/>notation<sp/>is<sp/>used<sp/>to<sp/>simplify<sp/>tensorial<sp/>operations<sp/>including<sp/>second<sp/>order<sp/>tensors<sp/>like<sp/>stress<sp/>and<sp/>strain<sp/>and<sp/>fourth<sp/>order<sp/>tensors<sp/>like<sp/>stiffness<sp/>and<sp/>compliance.</highlight></codeline>
+<codeline><highlight class="normal">For<sp/>instance,<sp/>tensor<sp/>products<sp/>are<sp/>written<sp/>as<sp/>vector<sp/>matrix<sp/>products.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Namespace:**<sp/>\ref<sp/>Marmot::ContinuumMechanics::VoigtNotation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">**Implementation:**<sp/>\ref<sp/>MarmotVoigt.h</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Cauchy<sp/>stress<sp/>tensor</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[\displaystyle</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\sig<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{11}<sp/>&amp;<sp/>\sigma_{12}<sp/>&amp;<sp/>\sigma_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{21}<sp/>&amp;<sp/>\sigma_{22}<sp/>&amp;<sp/>\sigma_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{31}<sp/>&amp;<sp/>\sigma_{32}<sp/>&amp;<sp/>\sigma_{33}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\rightarrow</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{11}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{22}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{33}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{12}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal">\f]</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Linearized<sp/>strain<sp/>tensor</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[\displaystyle</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\eps<sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{11}<sp/>&amp;<sp/>\varepsilon_{12}<sp/>&amp;<sp/>\varepsilon_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{21}<sp/>&amp;<sp/>\varepsilon_{22}<sp/>&amp;<sp/>\varepsilon_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{31}<sp/>&amp;<sp/>\varepsilon_{32}<sp/>&amp;<sp/>\varepsilon_{33}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\rightarrow</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{11}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{22}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{33}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{12}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal">\f]</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Generalized<sp/>Hooke&apos;s<sp/>law</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">\f[</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\sig<sp/>=<sp/>\Cel<sp/>:<sp/>\eps<sp/>=<sp/>\mathbb{D}^{-1}<sp/>:<sp/>\eps<sp/>\rightarrow</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{11}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{22}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{33}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{12}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\sigma_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>=</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>D_{1111}<sp/>&amp;<sp/>D_{1122}<sp/>&amp;<sp/>D_{1133}<sp/>&amp;<sp/>2\,D_{1112}<sp/>&amp;<sp/>xD_{1113}<sp/>&amp;<sp/>D_{1123}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>D_{2211}<sp/>&amp;<sp/>D_{2222}<sp/>&amp;<sp/>D_{2233}<sp/>&amp;<sp/>2\,D_{2212}<sp/>&amp;<sp/>D_{2213}<sp/>&amp;<sp/>D_{2223}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>D_{3311}<sp/>&amp;<sp/>D_{3322}<sp/>&amp;<sp/>D_{3333}<sp/>&amp;<sp/>2\,D_{3312}<sp/>&amp;<sp/>D_{3313}<sp/>&amp;<sp/>D_{3323}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>2\,D_{1211}<sp/>&amp;<sp/>2\,D_{1222}<sp/>&amp;<sp/>2\,D_{1233}<sp/>&amp;<sp/>4\,D_{1212}<sp/>&amp;<sp/>2\,D_{1213}<sp/>&amp;<sp/>2\,D_{1223}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>2\,D_{1311}<sp/>&amp;<sp/>2\,D_{1322}<sp/>&amp;<sp/>2\,D_{1333}<sp/>&amp;<sp/>2\,D_{1312}<sp/>&amp;<sp/>4\,D_{1313}<sp/>&amp;<sp/>2\,D_{1323}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>2\,D_{2311}<sp/>&amp;<sp/>2\,D_{2322}<sp/>&amp;<sp/>2\,D_{2333}<sp/>&amp;<sp/>2\,D_{2312}<sp/>&amp;<sp/>2\,D_{2313}<sp/>&amp;<sp/>4\,D_{2323}<sp/>\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}^{-1}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\begin{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{11}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{22}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>\varepsilon_{33}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{12}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{13}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>2\,\varepsilon_{23}\\</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>\end{bmatrix}</highlight></codeline>
+<codeline><highlight class="normal">\f]</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/doc/DOCUMENTATION.md"/>
+  </compounddef>
+</doxygen>

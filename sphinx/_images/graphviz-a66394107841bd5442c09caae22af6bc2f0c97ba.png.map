@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="MarmotElement" alt="" coords="80,101,257,149"/>
+<area shape="rect" id="node2" title="MarmotElementSpatialWrapper" alt="" coords="5,5,332,53"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="171,54,171,86,166,86,166,54"/>
+</map>

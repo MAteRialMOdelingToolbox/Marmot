@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_d647151f6a680e6df066b219b13de0b4" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/materials/B4/src</compoundname>
+    <innerfile refid="B4_8cpp">B4.cpp</innerfile>
+    <innerfile refid="B4Registration_8cpp">B4Registration.cpp</innerfile>
+    <innerfile refid="B4Shrinkage_8cpp">B4Shrinkage.cpp</innerfile>
+    <innerfile refid="MarmotSolidification_8cpp">MarmotSolidification.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/src/"/>
+  </compounddef>
+</doxygen>

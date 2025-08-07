@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::SolidificationTheory::Result</compoundname>
+    <includes refid="MarmotSolidification_8h" local="no">MarmotSolidification.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a775ad5084e2d494e35cbd2285c0cb3ba" prot="public" static="no" mutable="no">
+        <type><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref></type>
+        <definition>Marmot::Vector6d Marmot::Materials::SolidificationTheory::Result::creepStrainIncrement</definition>
+        <argsstring></argsstring>
+        <name>creepStrainIncrement</name>
+        <qualifiedname>Marmot::Materials::SolidificationTheory::Result::creepStrainIncrement</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" line="63" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a15f2dbf8a45573bbd3f95f52696d6a54" prot="public" static="no" mutable="no">
+        <type><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents" kindref="compound">UniaxialComplianceComponents</ref></type>
+        <definition>UniaxialComplianceComponents Marmot::Materials::SolidificationTheory::Result::complianceComponents</definition>
+        <argsstring></argsstring>
+        <name>complianceComponents</name>
+        <qualifiedname>Marmot::Materials::SolidificationTheory::Result::complianceComponents</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" line="64" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>results of the Solidification Theory for a certain time step </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::SolidificationTheory::Result</label>
+        <link refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>complianceComponents</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::SolidificationTheory::UniaxialComplianceComponents</label>
+        <link refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" line="62" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h" bodystart="62" bodyend="65"/>
+    <listofallmembers>
+      <member refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a15f2dbf8a45573bbd3f95f52696d6a54" prot="public" virt="non-virtual"><scope>Marmot::Materials::SolidificationTheory::Result</scope><name>complianceComponents</name></member>
+      <member refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a775ad5084e2d494e35cbd2285c0cb3ba" prot="public" virt="non-virtual"><scope>Marmot::Materials::SolidificationTheory::Result</scope><name>creepStrainIncrement</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

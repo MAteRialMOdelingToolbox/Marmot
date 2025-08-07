@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_fastor_standard_tensors" kind="namespace" language="C++">
+    <compoundname>Marmot::FastorStandardTensors</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_fastor_standard_tensors_1_1_spatial3_d">Marmot::FastorStandardTensors::Spatial3D</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1af7db5f44a943a4a967b78b83ce4e9e42" prot="public" static="no">
+        <type>Fastor::Tensor&lt; double, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor3d =  Fastor::Tensor&lt; double, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor3d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor3d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a7ce3d36f5f3b545d636d13bee501d420" prot="public" static="no">
+        <type>Fastor::Tensor&lt; double, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor33d =  Fastor::Tensor&lt; double, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor33d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor33d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="38" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1ab304038cf8a25542db9b842136caa964" prot="public" static="no">
+        <type>Fastor::Tensor&lt; double, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor333d =  Fastor::Tensor&lt; double, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor333d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="39" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a65c78c55ef6ae2d308d54d2e8b214d67" prot="public" static="no">
+        <type>Fastor::Tensor&lt; double, 3, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor3333d =  Fastor::Tensor&lt; double, 3, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor3333d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor3333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="40" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a4469e98ebd6dd3ff0371607165fedc75" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor3t =  Fastor::Tensor&lt; T, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor3t</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor3t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1af247e2b29b4bc9e170538bb33421094c" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor33t =  Fastor::Tensor&lt; T, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor33t</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor33t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="45" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1aa1fb7bbdecc6aca659f47fe768c56f1d" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor333t =  Fastor::Tensor&lt; T, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor333t</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor333t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="47" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1af768231067623bc43d62cb462bee922e" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, 3, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::Tensor3333t =  Fastor::Tensor&lt; T, 3, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Tensor3333t</name>
+        <qualifiedname>Marmot::FastorStandardTensors::Tensor3333t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="49" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a52690671de57169e33fc74301755a302" prot="public" static="no">
+        <type>Fastor::TensorMap&lt; double, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::TensorMap3d =  Fastor::TensorMap&lt; double, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>TensorMap3d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::TensorMap3d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="51" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1acb0e551cebc79ad4b5f02087db075e72" prot="public" static="no">
+        <type>Fastor::TensorMap&lt; double, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::TensorMap33d =  Fastor::TensorMap&lt; double, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>TensorMap33d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::TensorMap33d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="52" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a072e9bb72e41973bad54b04e85198839" prot="public" static="no">
+        <type>Fastor::TensorMap&lt; double, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::TensorMap333d =  Fastor::TensorMap&lt; double, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>TensorMap333d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::TensorMap333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="53" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_fastor_tensor_basics_8h_1a59700181c81ecbf8d351da7a0e03a745" prot="public" static="no">
+        <type>Fastor::TensorMap&lt; double, 3, 3, 3, 3 &gt;</type>
+        <definition>using Marmot::FastorStandardTensors::TensorMap3333d =  Fastor::TensorMap&lt; double, 3, 3, 3, 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>TensorMap3333d</name>
+        <qualifiedname>Marmot::FastorStandardTensors::TensorMap3333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="54" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="35" column="3"/>
+  </compounddef>
+</doxygen>

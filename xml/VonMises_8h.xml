@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="VonMises_8h" kind="file" language="C++">
+    <compoundname>VonMises.h</compoundname>
+    <includes refid="MarmotMaterialHypoElastic_8h" local="yes">Marmot/MarmotMaterialHypoElastic.h</includes>
+    <includes refid="MarmotStateVarVectorManager_8h" local="yes">Marmot/MarmotStateVarVectorManager.h</includes>
+    <includes refid="MarmotTypedefs_8h" local="yes">Marmot/MarmotTypedefs.h</includes>
+    <includedby refid="VonMises_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp</includedby>
+    <includedby refid="VonMisesRegistration_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp</includedby>
+    <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotMaterial.h</label>
+        <link refid="MarmotMaterial_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotUtils.h</label>
+        <link refid="MarmotUtils_8h"/>
+      </node>
+      <node id="11">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotMaterialHypoElastic.h</label>
+        <link refid="MarmotMaterialHypoElastic_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotMaterialMechanical.h</label>
+        <link refid="MarmotMaterialMechanical_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Marmot/MarmotStateVarVectorManager.h</label>
+        <link refid="MarmotStateVarVectorManager_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h</label>
+        <link refid="VonMises_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="13">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="8">
+        <label>memory</label>
+      </node>
+      <node id="6">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>unordered_map</label>
+      </node>
+      <node id="14">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="10">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h</label>
+        <link refid="VonMises_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp</label>
+        <link refid="VonMises_8cpp"/>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp</label>
+        <link refid="VonMisesRegistration_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classMarmot_1_1Materials_1_1VonMisesModel" prot="public">Marmot::Materials::VonMisesModel</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager" prot="public">Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager</innerclass>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials">Marmot::Materials</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Matthias<sp/>Neuner<sp/>matthias.neuner@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotMaterialHypoElastic_8h" kindref="compound">Marmot/MarmotMaterialHypoElastic.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotStateVarVectorManager_8h" kindref="compound">Marmot/MarmotStateVarVectorManager.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotTypedefs_8h" kindref="compound">Marmot/MarmotTypedefs.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1Materials" kindref="compound">Marmot::Materials</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="classMarmot_1_1Materials_1_1VonMisesModel" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classMarmot_1_1Materials_1_1VonMisesModel" kindref="compound">VonMisesModel</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classMarmotMaterialHypoElastic" kindref="compound">MarmotMaterialHypoElastic</ref><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1ababd11360100202afc960452da26545b" kindref="member">computeStress</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stress,</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>dStress_dStrain,</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>dStrain,</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>timeOld,</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/>dT,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>pNewDT<sp/>)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d" kindref="member">getDensity</ref>()<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aac22a50e2634de7caf7af3d92063f7ff" kindref="member">VonMisesModelStateVarManager</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" kindref="member">MarmotStateVarVectorManager</ref><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="52" refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1a0fe8e031c6b51ef80983108dbadee4b6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1a0fe8e031c6b51ef80983108dbadee4b6" kindref="member">layout</ref><sp/>=<sp/><ref refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" kindref="member">makeLayout</ref>(<sp/>{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/>.name<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;kappa&quot;</highlight><highlight class="normal">,<sp/>.length<sp/>=<sp/>1<sp/>},</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aa5bd7193977af81ff8bda544e6df6462" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">&amp;<sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aa5bd7193977af81ff8bda544e6df6462" kindref="member">kappa</ref>;</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58" refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aac22a50e2634de7caf7af3d92063f7ff" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aac22a50e2634de7caf7af3d92063f7ff" kindref="member">VonMisesModelStateVarManager</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>theStateVarVector<sp/>)</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" kindref="member">MarmotStateVarVectorManager</ref>(<sp/>theStateVarVector,<sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1a0fe8e031c6b51ef80983108dbadee4b6" kindref="member">layout</ref><sp/>),<sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aa5bd7193977af81ff8bda544e6df6462" kindref="member">kappa</ref>(<sp/><ref refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" kindref="member">find</ref>(<sp/></highlight><highlight class="stringliteral">&quot;kappa&quot;</highlight><highlight class="normal"><sp/>)<sp/>){};</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61" refid="classMarmot_1_1Materials_1_1VonMisesModel_1a829187e2625a88c74d45f515f4ccaa3b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;<sp/>VonMisesModelStateVarManager<sp/>&gt;<sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1a829187e2625a88c74d45f515f4ccaa3b" kindref="member">managedStateVars</ref>;</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a" kindref="member">getNumberOfRequiredStateVars</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1a0fe8e031c6b51ef80983108dbadee4b6" kindref="member">VonMisesModelStateVarManager::layout</ref>.nRequiredStateVars;<sp/>}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1a40f9ce9ccc2fbb16b4136656916ebb5f" kindref="member">assignStateVars</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="classMarmotMaterial_1a3153122a8c7819cc306d6d35378cf414" kindref="member">stateVars</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" kindref="member">nStateVars</ref><sp/>)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structStateView" kindref="compound">StateView</ref><sp/><ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1ac35d22d569565f0afbb4b85e333082ce" kindref="member">getStateView</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>result<sp/>)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Materials</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h"/>
+  </compounddef>
+</doxygen>

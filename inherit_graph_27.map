@@ -1,9 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classMarmotElement.html" title=" " alt="" coords="33,157,147,184"/>
-<area shape="rect" id="node2" href="$classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html" title=" " alt="" coords="223,5,433,61"/>
-<area shape="rect" id="node4" href="$classMarmot_1_1Elements_1_1DisplacementFiniteElement.html" title=" " alt="" coords="223,85,433,126"/>
-<area shape="rect" id="node5" href="$classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement.html" title=" " alt="" coords="223,149,433,205"/>
-<area shape="rect" id="node6" href="$classMarmotElementSpatialWrapper.html" title=" " alt="" coords="227,229,429,256"/>
-<area shape="rect" id="node3" href="$classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement.html" title=" " alt="" coords="481,5,713,61"/>
-<area shape="rect" id="node7" href="$classMarmotGeometryElement.html" title=" " alt="" coords="5,85,175,126"/>
-</map>

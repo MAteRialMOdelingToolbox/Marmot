@@ -1,0 +1,991 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot" kind="namespace" language="C++">
+    <compoundname>Marmot</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_automatic_differentiation">Marmot::AutomaticDifferentiation</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_constants">Marmot::Constants</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_eigen_tensors">Marmot::EigenTensors</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_fastor_indices">Marmot::FastorIndices</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_fastor_standard_tensors">Marmot::FastorStandardTensors</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math">Marmot::Math</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_numerical_algorithms">Marmot::NumericalAlgorithms</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_fastor_tensor_basics_8h_1ab05d498f6a35b42d5315d67905a08c24" prot="public" static="no" strong="no">
+        <type></type>
+        <name>DimensionType</name>
+        <qualifiedname>Marmot::DimensionType</qualifiedname>
+        <enumvalue id="_marmot_fastor_tensor_basics_8h_1ab05d498f6a35b42d5315d67905a08c24aebe9b4f90e252c766f40e863c31a2c77" prot="public">
+          <name>U</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_fastor_tensor_basics_8h_1ab05d498f6a35b42d5315d67905a08c24aa621bfeba8c79a8c5bac30e0e2e1ba78" prot="public">
+          <name>W</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="294" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="294" bodyend="294"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a48144b7616079807fd550c92d142e9da" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 6 &gt; Marmot::Matrix6d</definition>
+        <argsstring></argsstring>
+        <name>Matrix6d</name>
+        <qualifiedname>Marmot::Matrix6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="35" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a0a2344556757165684203dfbb2e0ca1d" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 9 &gt; Marmot::Matrix69d</definition>
+        <argsstring></argsstring>
+        <name>Matrix69d</name>
+        <qualifiedname>Marmot::Matrix69d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="36" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1af33f8a23557bad80e7029e08e8a71591" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 9 &gt; Marmot::Matrix99d</definition>
+        <argsstring></argsstring>
+        <name>Matrix99d</name>
+        <qualifiedname>Marmot::Matrix99d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="37" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ad86d1ce5512561af7c3acc09ad35174f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 4 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 4 &gt; Marmot::Matrix34d</definition>
+        <argsstring></argsstring>
+        <name>Matrix34d</name>
+        <qualifiedname>Marmot::Matrix34d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="38" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a42cce1f9189e52b4cad0caef7ace17d2" prot="public" static="no">
+        <type>Eigen::Map&lt; Matrix6d &gt;</type>
+        <definition>typedef Eigen::Map&lt; Matrix6d &gt; Marmot::mMatrix6d</definition>
+        <argsstring></argsstring>
+        <name>mMatrix6d</name>
+        <qualifiedname>Marmot::mMatrix6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="39" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 3 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 3 &gt; Marmot::Matrix3d</definition>
+        <argsstring></argsstring>
+        <name>Matrix3d</name>
+        <qualifiedname>Marmot::Matrix3d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="40" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 1 &gt; Marmot::Vector3d</definition>
+        <argsstring></argsstring>
+        <name>Vector3d</name>
+        <qualifiedname>Marmot::Vector3d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="42" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a9ffd691bb9e3aad9fd71fc16249719e8" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 1 &gt; Marmot::Vector6d</definition>
+        <argsstring></argsstring>
+        <name>Vector6d</name>
+        <qualifiedname>Marmot::Vector6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="43" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a4ce7e7ee86e03692367287b279753666" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 7, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 7, 1 &gt; Marmot::Vector7d</definition>
+        <argsstring></argsstring>
+        <name>Vector7d</name>
+        <qualifiedname>Marmot::Vector7d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="44" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a628000a746eba1efd2097c3ee0f1254c" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 8, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 8, 1 &gt; Marmot::Vector8d</definition>
+        <argsstring></argsstring>
+        <name>Vector8d</name>
+        <qualifiedname>Marmot::Vector8d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="45" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a5e282d7f6d57c953f0aefc3f93409d7e" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 1 &gt; Marmot::Vector9d</definition>
+        <argsstring></argsstring>
+        <name>Vector9d</name>
+        <qualifiedname>Marmot::Vector9d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="46" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a36f845f22e27f753cf817c3fc6d7f355" prot="public" static="no">
+        <type>Eigen::Matrix&lt; int, 8, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; int, 8, 1 &gt; Marmot::Vector8i</definition>
+        <argsstring></argsstring>
+        <name>Vector8i</name>
+        <qualifiedname>Marmot::Vector8i</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="47" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a52af17682d28f0637862e50a5c0f8bfc" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 1, 6 &gt; Marmot::RowVector6d</definition>
+        <argsstring></argsstring>
+        <name>RowVector6d</name>
+        <qualifiedname>Marmot::RowVector6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="48" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a4e78d5e4bb006cdfd319f06ae686312f" prot="public" static="no">
+        <type>Eigen::Map&lt; Vector6d &gt;</type>
+        <definition>typedef Eigen::Map&lt; Vector6d &gt; Marmot::mVector6d</definition>
+        <argsstring></argsstring>
+        <name>mVector6d</name>
+        <qualifiedname>Marmot::mVector6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="49" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a5e77b34ec4d5628dc4a164a359a4fd22" prot="public" static="no">
+        <type>Eigen::Map&lt; Eigen::VectorXd &gt;</type>
+        <definition>typedef Eigen::Map&lt; Eigen::VectorXd &gt; Marmot::mVectorXd</definition>
+        <argsstring></argsstring>
+        <name>mVectorXd</name>
+        <qualifiedname>Marmot::mVectorXd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="50" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aab67dc8984f8afd2a802dce3128dd464" prot="public" static="no">
+        <type>Eigen::Map&lt; const Marmot::Vector6d &gt;</type>
+        <definition>typedef Eigen::Map&lt; const Marmot::Vector6d &gt; Marmot::mConstVector6d</definition>
+        <argsstring></argsstring>
+        <name>mConstVector6d</name>
+        <qualifiedname>Marmot::mConstVector6d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="51" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a69a44de0a03fcbdf397fa8e951889154" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 6 &gt; Marmot::Matrix36d</definition>
+        <argsstring></argsstring>
+        <name>Matrix36d</name>
+        <qualifiedname>Marmot::Matrix36d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="53" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aafff432cf7a4c6a916c625aa3f69a278" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 6 &gt; Marmot::Matrix36</definition>
+        <argsstring></argsstring>
+        <name>Matrix36</name>
+        <qualifiedname>Marmot::Matrix36</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="54" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a397580baed2ffbfc7230416de736742e" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 3 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 3 &gt; Marmot::Matrix63d</definition>
+        <argsstring></argsstring>
+        <name>Matrix63d</name>
+        <qualifiedname>Marmot::Matrix63d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="55" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a92e92658ec8f3b5f376dde69375da320" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 9 &gt; Marmot::Matrix9d</definition>
+        <argsstring></argsstring>
+        <name>Matrix9d</name>
+        <qualifiedname>Marmot::Matrix9d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="56" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a6381919ddfb218b0b24594f833bc97b6" prot="public" static="no">
+        <type>std::complex&lt; double &gt;</type>
+        <definition>typedef std::complex&lt; double &gt; Marmot::complexDouble</definition>
+        <argsstring></argsstring>
+        <name>complexDouble</name>
+        <qualifiedname>Marmot::complexDouble</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="59" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1affa6bc20e2333a803af3a115ce67eed5" prot="public" static="no">
+        <type>Eigen::Matrix&lt; complexDouble, 6, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; complexDouble, 6, 1 &gt; Marmot::Vector6cd</definition>
+        <argsstring></argsstring>
+        <name>Vector6cd</name>
+        <qualifiedname>Marmot::Vector6cd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="60" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a76293141af2ab8beafd9aed3ae8b1b1f" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, 6, 1 &gt;</type>
+        <definition>using Marmot::Vector6t =  Eigen::Matrix&lt; T, 6, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Vector6t</name>
+        <qualifiedname>Marmot::Vector6t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a84db4851c64a953358752fe25430f7ee" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, -1, 1 &gt;</type>
+        <definition>using Marmot::VectorXt =  Eigen::Matrix&lt; T, -1, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXt</name>
+        <qualifiedname>Marmot::VectorXt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="67" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1acbee7445de295709f4135cb148214f5e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="259" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="259" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a3c8ad58f567c8413437bf04497bed9f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::mapEigenToFastor</definition>
+        <argsstring>(Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="265" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="265" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1adb046a9afec8bb0bdf55590391802fce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, nRows &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, nRows &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="271" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="271" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a432e83a0c579f414f545e38c7bb28197" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::TensorMap&lt; T, nRows &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; T, nRows &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="277" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="277" bodyend="280"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ae9053ebd1defd0d42715851e68624d3f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="283" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="283" bodyend="286"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a61086290a551b3d41b384be7edcbc5a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>template&lt; typename, size_t... &gt; class</type>
+            <declname>TensorType</declname>
+            <defname>TensorType</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::copyFastorToColumnMajor</definition>
+        <argsstring>(T *target, const TensorType&lt; T, Rest... &gt; &amp;source)</argsstring>
+        <name>copyFastorToColumnMajor</name>
+        <qualifiedname>Marmot::copyFastorToColumnMajor</qualifiedname>
+        <param>
+          <type>T *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const TensorType&lt; T, Rest... &gt; &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="289" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="289" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a34408079f87a3b28e136d7245ad91c5d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>DimensionType...</type>
+            <declname>dims</declname>
+            <defname>dims</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>dims3D</declname>
+            <defname>dims3D</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::reduceTo2D</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, dims3D... &gt; &amp;theTensor3D)</argsstring>
+        <name>reduceTo2D</name>
+        <qualifiedname>Marmot::reduceTo2D</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, dims3D... &gt; &amp;</type>
+          <declname>theTensor3D</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="296" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="296" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a90efbee376206cce017a5a4c0a43d565" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::reduceTo2D</definition>
+        <argsstring>(const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor3D)</argsstring>
+        <name>reduceTo2D</name>
+        <qualifiedname>Marmot::reduceTo2D</qualifiedname>
+        <param>
+          <type>const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;</type>
+          <declname>theTensor3D</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="306" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="306" bodyend="310"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad1b062d270e79e79a1ea3b623b9ba98d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::const3</definition>
+        <argsstring>(size_t x)</argsstring>
+        <name>const3</name>
+        <qualifiedname>Marmot::const3</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="312" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="312" bodyend="315"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1afce96b45653e6918c9d2e16feb0e0237" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>dims2D</declname>
+            <defname>dims2D</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::expandTo3D</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, dims2D... &gt; &amp;theTensor2D)</argsstring>
+        <name>expandTo3D</name>
+        <qualifiedname>Marmot::expandTo3D</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, dims2D... &gt; &amp;</type>
+          <declname>theTensor2D</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="318" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="318" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a608845c3c341d32c4432c9abf4bb2f8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::expandTo3D</definition>
+        <argsstring>(const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor2D)</argsstring>
+        <name>expandTo3D</name>
+        <qualifiedname>Marmot::expandTo3D</qualifiedname>
+        <param>
+          <type>const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;</type>
+          <declname>theTensor2D</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="331" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="331" bodyend="335"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a1d6bef1a2dab561af43ae5cd570c0d4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::multiplyFastorTensorWithScalar</definition>
+        <argsstring>(Fastor::Tensor&lt; T, Rest... &gt; tensor, T scalar)</argsstring>
+        <name>multiplyFastorTensorWithScalar</name>
+        <qualifiedname>Marmot::multiplyFastorTensorWithScalar</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+          <declname>tensor</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="338" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="338" bodyend="349"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a5a497088b0941ceb489c234f0ca34dca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::einsum_ij_ij_hardcoded</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;A, const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;B)</argsstring>
+        <name>einsum_ij_ij_hardcoded</name>
+        <qualifiedname>Marmot::einsum_ij_ij_hardcoded</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="352" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="352" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a53b77e34e976cbebf5a2a1484488952f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::fastorTensorFromDoubleTensor</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>fastorTensorFromDoubleTensor</name>
+        <qualifiedname>Marmot::fastorTensorFromDoubleTensor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="367" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="367" bodyend="380"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a251a4e72c65e5221b1d07bc43eb949ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::fastorTensorFromDoubleTensorMap</definition>
+        <argsstring>(const Fastor::TensorMap&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>fastorTensorFromDoubleTensorMap</name>
+        <qualifiedname>Marmot::fastorTensorFromDoubleTensorMap</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="383" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="383" bodyend="396"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1acc8deec5875096e9aae6c710f89e0690" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::makeReal</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::makeReal</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="399" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="399" bodyend="410"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a6b27c38160146824cbd182e6753899ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; autodiff::dual, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; autodiff::dual, Rest... &gt; Marmot::makeDual</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</argsstring>
+        <name>makeDual</name>
+        <qualifiedname>Marmot::makeDual</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="413" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="413" bodyend="424"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a1272f1655d8334837578afe9ac2ca92d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt; Marmot::makeHigherOrderDual</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>makeHigherOrderDual</name>
+        <qualifiedname>Marmot::makeHigherOrderDual</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="427" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="427" bodyend="439"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a279263d82f5f86f5127f6840f9835bf0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>FastorStandardTensors::Tensor33t&lt; T &gt;</type>
+        <definition>FastorStandardTensors::Tensor33t&lt; T &gt; Marmot::symmetric</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;t)</argsstring>
+        <name>symmetric</name>
+        <qualifiedname>Marmot::symmetric</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="442" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="442" bodyend="446"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad8af416a52bd57f2eadaa0c931cd438e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>FastorStandardTensors::Tensor33t&lt; T &gt;</type>
+        <definition>FastorStandardTensors::Tensor33t&lt; T &gt; Marmot::deviatoric</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;t)</argsstring>
+        <name>deviatoric</name>
+        <qualifiedname>Marmot::deviatoric</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="449" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="449" bodyend="456"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="32" column="1"/>
+  </compounddef>
+</doxygen>

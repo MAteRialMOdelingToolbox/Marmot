@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="MarmotMaterial" alt="" coords="227,293,406,341"/>
+<area shape="rect" id="node2" title="MarmotMaterialHyperElastic" alt="" coords="5,101,308,149"/>
+<area shape="rect" id="node5" title="MarmotMaterialMechanical" alt="" coords="173,197,460,245"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="198,148,265,187,263,192,195,152"/>
+<area shape="rect" id="node3" title="MarmotMaterialHypoElastic" alt="" coords="331,101,624,149"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="439,152,370,192,368,187,436,148"/>
+<area shape="rect" id="node4" title="MarmotMaterialHypoElasticAD" alt="" coords="317,5,638,53"/>
+<area shape="poly" id="edge3" title="public&#45;inheritance" alt="" coords="480,54,480,86,475,86,475,54"/>
+<area shape="poly" id="edge4" title="public&#45;inheritance" alt="" coords="319,246,319,278,314,278,314,246"/>
+</map>

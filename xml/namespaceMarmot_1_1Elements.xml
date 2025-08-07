@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Elements" kind="namespace" language="C++">
+    <compoundname>Marmot::Elements</compoundname>
+    <innerclass refid="classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement" prot="public">Marmot::Elements::AxiSymmetricDisplacementFiniteStrainULElement</innerclass>
+    <innerclass refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" prot="public">Marmot::Elements::DisplacementFiniteElement</innerclass>
+    <innerclass refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" prot="public">Marmot::Elements::DisplacementFiniteStrainULElement</innerclass>
+    <innernamespace refid="namespaceMarmot_1_1Elements_1_1Registration">Marmot::Elements::Registration</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="49" column="1"/>
+  </compounddef>
+</doxygen>

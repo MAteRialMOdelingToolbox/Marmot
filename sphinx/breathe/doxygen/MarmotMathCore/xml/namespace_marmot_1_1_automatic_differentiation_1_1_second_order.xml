@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_automatic_differentiation_1_1_second_order" kind="namespace" language="C++">
+    <compoundname>Marmot::AutomaticDifferentiation::SecondOrder</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a81fa1bac17c8d27d45ecb414c659ce78" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; dual2nd(const Fastor::Tensor&lt; dual2nd, dim, dim &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::SecondOrder::tensor_to_scalar_function_type =  std::function&lt; dual2nd( const Fastor::Tensor&lt; dual2nd, dim, dim &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::SecondOrder::tensor_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="149" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a78715c46ca01c2e9a6f125b636af0664" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; dual2nd(const Fastor::Tensor&lt; dual2nd, dim, dim &gt; &amp;T, const dual2nd scalar) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::SecondOrder::tensor_and_scalar_to_scalar_function_type =  std::function&lt;
+        dual2nd( const Fastor::Tensor&lt; dual2nd, dim, dim &gt;&amp; T, const dual2nd scalar ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_and_scalar_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::SecondOrder::tensor_and_scalar_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="186" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a625b3988552211bfe44936bee620e32a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt; &gt;</type>
+        <definition>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt; &gt; Marmot::AutomaticDifferentiation::SecondOrder::d2f_dT2</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
+        <name>d2f_dT2</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::SecondOrder::d2f_dT2</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type&lt; dim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="152" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="152" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a0e87b1a80e0e084e1ee007e662f9e03e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, dim, dim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, dim, dim &gt; Marmot::AutomaticDifferentiation::SecondOrder::d2f_dTensor_dScalar</definition>
+        <argsstring>(const tensor_and_scalar_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T, const double scalar)</argsstring>
+        <name>d2f_dTensor_dScalar</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::SecondOrder::d2f_dTensor_dScalar</qualifiedname>
+        <param>
+          <type>const tensor_and_scalar_to_scalar_function_type&lt; dim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="190" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="190" bodyend="212"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="146" column="5"/>
+  </compounddef>
+</doxygen>

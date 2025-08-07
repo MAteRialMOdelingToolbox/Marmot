@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::DeformationMeasures</compoundname>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures_1_1FirstOrderDerived">Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures_1a64c531660e6ae1833c8ab1d97a1222b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+        <definition>Tensor33t&lt; T &gt; Marmot::ContinuumMechanics::DeformationMeasures::CauchyGreen</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; F_)</argsstring>
+        <name>CauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::DeformationMeasures::CauchyGreen</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+          <declname>F_</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="39" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="39" bodyend="44"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="33" column="3"/>
+  </compounddef>
+</doxygen>

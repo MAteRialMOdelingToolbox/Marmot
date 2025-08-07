@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint" kind="struct" language="C++" prot="private">
+    <compoundname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1aed89fe9298679403fb69d544393b363b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::weight</definition>
+        <argsstring></argsstring>
+        <name>weight</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::weight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="303" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="303" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ac51b78ee82ac12038d3cab22e38f821f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::JxW</definition>
+        <argsstring></argsstring>
+        <name>JxW</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::JxW</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="304" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="304" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a31257f6719d8c43cd1208ec6622e8f1a" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::xi</definition>
+        <argsstring></argsstring>
+        <name>xi</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::xi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="305" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ae81676de78db8d5e9d2cb153d89c5296" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::N</definition>
+        <argsstring></argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::N</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="306" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a7fda593baa4431f9b65fcb737a75326e" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::dNdXi</definition>
+        <argsstring></argsstring>
+        <name>dNdXi</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::dNdXi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="307" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a6ff7b22844adce965f463676c8563004" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::dx_dXi</definition>
+        <argsstring></argsstring>
+        <name>dx_dXi</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::dx_dXi</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="308" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ab5d310350848233eaa7e700f9daaea54" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::areaVector</definition>
+        <argsstring></argsstring>
+        <name>areaVector</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint::areaVector</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="309" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="302" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="302" bodyend="310"/>
+    <listofallmembers>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ab5d310350848233eaa7e700f9daaea54" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>areaVector</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a7fda593baa4431f9b65fcb737a75326e" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>dNdXi</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a6ff7b22844adce965f463676c8563004" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>dx_dXi</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ac51b78ee82ac12038d3cab22e38f821f" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>JxW</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1ae81676de78db8d5e9d2cb153d89c5296" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>N</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1aed89fe9298679403fb69d544393b363b" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>weight</name></member>
+      <member refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint_1a31257f6719d8c43cd1208ec6622e8f1a" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>xi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

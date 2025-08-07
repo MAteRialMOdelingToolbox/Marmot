@@ -1,0 +1,656 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Math" kind="namespace" language="C++">
+    <compoundname>Marmot::Math</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ad3a65166e9b849eb54ccef942368b6e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Math::isNaN</definition>
+        <argsstring>(T x)</argsstring>
+        <name>isNaN</name>
+        <qualifiedname>Marmot::Math::isNaN</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Check if value x is a valid floating point number </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="44" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1aa14a646adfd201e379c86f6bd85d942a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::linearInterpolation</definition>
+        <argsstring>(double x, double x0, double x1, double y0, double y1)</argsstring>
+        <name>linearInterpolation</name>
+        <qualifiedname>Marmot::Math::linearInterpolation</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>x0</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>x1</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y0</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>y1</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Linear interpolation at location x between two points (x0|y0) and (x1|y1) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="7" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="7" bodyend="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="51" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a20088570076b71e5f4f0bb08fa7ba44d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::exp</definition>
+        <argsstring>(double x)</argsstring>
+        <name>exp</name>
+        <qualifiedname>Marmot::Math::exp</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>exponential of value x with numerical limits check </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="13" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="13" bodyend="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="55" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ae070a2cdcdf4ae5cb71899ba67edc62e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::getExponentPowerTen</definition>
+        <argsstring>(const double x)</argsstring>
+        <name>getExponentPowerTen</name>
+        <qualifiedname>Marmot::Math::getExponentPowerTen</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>compute the exponent to the power of ten of an expression, e.g., 5*10^5 --&gt; return 5 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="43" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="43" bodyend="51" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="59" declcolumn="9"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a5a688bedd924217d02e9c1773907ee82" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::radToDeg</definition>
+        <argsstring>(const double alpha)</argsstring>
+        <name>radToDeg</name>
+        <qualifiedname>Marmot::Math::radToDeg</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>convert angle alpha in radiant to degree </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="63" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="63" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1aabc6dcb6af42136caacd1b79a1750b54" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::degToRad</definition>
+        <argsstring>(const double alpha)</argsstring>
+        <name>degToRad</name>
+        <qualifiedname>Marmot::Math::degToRad</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>convert angle alpha in degree to radiant </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="70" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="70" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a6df59eeb030f379b61b830c7bd115fe7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::macauly</definition>
+        <argsstring>(double scalar)</argsstring>
+        <name>macauly</name>
+        <qualifiedname>Marmot::Math::macauly</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Macaulay function applied to scalar </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="77" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="77" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a057c092d86779e08ca193ccc04f41901" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::heaviside</definition>
+        <argsstring>(double scalar)</argsstring>
+        <name>heaviside</name>
+        <qualifiedname>Marmot::Math::heaviside</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Heaviside function applied to scalar </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="84" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="84" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a986ba8aa6ef55e38d21228170220325b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::heavisideExclude0</definition>
+        <argsstring>(double scalar)</argsstring>
+        <name>heavisideExclude0</name>
+        <qualifiedname>Marmot::Math::heavisideExclude0</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="89" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="89" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1aeab5c0a8ec2b02dccbcabcec543f2765" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Marmot::Math::sgn</definition>
+        <argsstring>(const T &amp;val) noexcept</argsstring>
+        <name>sgn</name>
+        <qualifiedname>Marmot::Math::sgn</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Extract sign of value val </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="97" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="97" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a335a5f714ab10341744d8fea021e08dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::makeReal</definition>
+        <argsstring>(const double &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const double &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="37" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="37" bodyend="40" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="102" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1addb82ef87d972fcdc7123c0896eee245" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::makeReal</definition>
+        <argsstring>(const std::complex&lt; double &gt; &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const std::complex&lt; double &gt; &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="23" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="23" bodyend="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="103" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1affe40f6c8efff9f4b45aa107d84f035a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::makeReal</definition>
+        <argsstring>(const autodiff::real &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::real &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="28" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="28" bodyend="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="104" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a69172724abb6467891288c900d513c41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::makeReal</definition>
+        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="107" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="107" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a92d6268751bba3290bce9671666ae6fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>int...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, Rest... &gt;</type>
+        <definition>Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::makeReal</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, Rest... &gt; mat)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, Rest... &gt;</type>
+          <declname>mat</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="113" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="113" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ab39bca6f7dd1d9f60631cf267ec05847" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Math::makeReal</definition>
+        <argsstring>(Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>Eigen::Vector&lt; T, Eigen::Dynamic &gt;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="127" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="127" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a17783b288ece1a97c5a43490744c98c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, nRows, nCols &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nRows, nCols &gt; Marmot::Math::macaulyMatrix</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nRows, nCols &gt; &amp;mat)</argsstring>
+        <name>macaulyMatrix</name>
+        <qualifiedname>Marmot::Math::macaulyMatrix</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, nRows, nCols &gt; &amp;</type>
+          <declname>mat</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>apply Macaulay function to a matrix <xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>: Can be replaced easily with Eigen&apos;s array() functionality ??? </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="142" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="142" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a459bb7440ffa3c6e0af2dc7069973663" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename functionType</type>
+          </param>
+          <param>
+            <type>typename yType</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>yType</type>
+        <definition>yType Marmot::Math::explicitEuler</definition>
+        <argsstring>(yType yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</argsstring>
+        <name>explicitEuler</name>
+        <qualifiedname>Marmot::Math::explicitEuler</qualifiedname>
+        <param>
+          <type>yType</type>
+          <declname>yN</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>functionType</type>
+          <declname>fRate</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>fRateArgs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Explicit Euler integration of function fRate taking arguments fRateArgs and initial value a yN </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="156" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="156" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1aa70f058118d023378595a10df1872291" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ySize</declname>
+            <defname>ySize</defname>
+          </param>
+          <param>
+            <type>typename functionType</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, ySize, 1 &gt;</type>
+        <definition>Eigen::Matrix&lt; double, ySize, 1 &gt; Marmot::Math::semiImplicitEuler</definition>
+        <argsstring>(Eigen::Matrix&lt; double, ySize, 1 &gt; yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</argsstring>
+        <name>semiImplicitEuler</name>
+        <qualifiedname>Marmot::Math::semiImplicitEuler</qualifiedname>
+        <param>
+          <type>Eigen::Matrix&lt; double, ySize, 1 &gt;</type>
+          <declname>yN</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>functionType</type>
+          <declname>fRate</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>fRateArgs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Semi-implicit Euler integration of function fRate taking arguments fRateArgs and initial value yN using central difference scheme for computing <xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Replace inverse bei solving equation system? </para>
+<para>: Use external central difference function? </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="167" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="167" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a50eb2b47c8a8215c8edd2b67a3939183" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename functionType</type>
+          </param>
+          <param>
+            <type>typename yType</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>yType</type>
+        <definition>yType Marmot::Math::explicitEulerRichardson</definition>
+        <argsstring>(yType yN, const double dt, functionType fRate, Args &amp;&amp;... fRateArgs)</argsstring>
+        <name>explicitEulerRichardson</name>
+        <qualifiedname>Marmot::Math::explicitEulerRichardson</qualifiedname>
+        <param>
+          <type>yType</type>
+          <declname>yN</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>functionType</type>
+          <declname>fRate</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>fRateArgs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Explicit Euler integration with Richardson extrapolation of function fRate taking arguments fRateArgs and initial value yN </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="195" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="195" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ae0bc2ac83263a20489572132640c80e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>ySize</declname>
+            <defname>ySize</defname>
+          </param>
+          <param>
+            <type>typename functionType</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; Eigen::Matrix&lt; double, ySize, 1 &gt;, double &gt;</type>
+        <definition>std::tuple&lt; Eigen::Matrix&lt; double, ySize, 1 &gt;, double &gt; Marmot::Math::explicitEulerRichardsonWithErrorEstimator</definition>
+        <argsstring>(Eigen::Matrix&lt; double, ySize, 1 &gt; yN, const double dt, const double TOL, functionType fRate, Args &amp;&amp;... fRateArgs)</argsstring>
+        <name>explicitEulerRichardsonWithErrorEstimator</name>
+        <qualifiedname>Marmot::Math::explicitEulerRichardsonWithErrorEstimator</qualifiedname>
+        <param>
+          <type>Eigen::Matrix&lt; double, ySize, 1 &gt;</type>
+          <declname>yN</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dt</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>TOL</declname>
+        </param>
+        <param>
+          <type>functionType</type>
+          <declname>fRate</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>fRateArgs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Explicit Euler integration with error estimation based on Richardson extrapolation of function fRate taking arguments fRateArgs and initial value yN . </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="210" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="210" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ad3ad1d152a8910ba18d583323a662a9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
+        <definition>Matrix3d Marmot::Math::directionCosines</definition>
+        <argsstring>(const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>directionCosines</name>
+        <qualifiedname>Marmot::Math::directionCosines</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the directional cosines between a transformed and the global cartesian coordinate system. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="96" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="96" bodyend="109" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="246" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1af414d1d24c08314c9d16d36bc5a33ed4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
+        <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
+        <argsstring>(Vector3d &amp;normalVector)</argsstring>
+        <name>orthonormalCoordinateSystem</name>
+        <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
+        <param>
+          <type><ref refid="namespaceMarmot_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <declname>normalVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes an orthonormal coordinate system from an unit normal vector as <formula id="0">$ x_1 $</formula> - axis. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="53" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="53" bodyend="72" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="251" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1ac4c04c61c51f99273d455957b84675e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
+        <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
+        <argsstring>(const Vector3d &amp;n1, const Vector3d &amp;n2)</argsstring>
+        <name>orthonormalCoordinateSystem</name>
+        <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <declname>n1</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <declname>n2</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes an orthonormal coordinate system from two unit normal vectors as <formula id="0">$ x_1 $</formula> and <formula id="1">$ x_2 $</formula> - axis. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="74" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="74" bodyend="94" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="256" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Math_1a373a95bba3d9c90ecb6bcb0b2917286c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::makeReal</definition>
+        <argsstring>(const autodiff::dual &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::dual &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" line="32" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotMath.cpp" bodystart="32" bodyend="35"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="40" column="3"/>
+  </compounddef>
+</doxygen>

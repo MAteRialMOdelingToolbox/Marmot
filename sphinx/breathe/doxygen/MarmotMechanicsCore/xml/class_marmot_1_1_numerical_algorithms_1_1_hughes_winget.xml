@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::NumericalAlgorithms::HughesWinget</compoundname>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Formulation</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::Formulation</qualifiedname>
+        <enumvalue id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" prot="public">
+          <name>AbaqusLike</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="34" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="34" bodyend="37"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a25ba24e4640afbbb8f0d55c8d06488dd" prot="private" static="no" mutable="no">
+        <type>Formulation</type>
+        <definition>Formulation Marmot::NumericalAlgorithms::HughesWinget::theFormulation</definition>
+        <argsstring></argsstring>
+        <name>theFormulation</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::theFormulation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="51" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a6772d8d80fbdeccda47435a981e3b310" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::NumericalAlgorithms::HughesWinget::l</definition>
+        <argsstring></argsstring>
+        <name>l</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::l</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="52" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7367bfbf40976fb125fc215544b68cdd" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::NumericalAlgorithms::HughesWinget::dOmega</definition>
+        <argsstring></argsstring>
+        <name>dOmega</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::dOmega</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="53" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a1be9bcb215c08a15c743a297d764b9f4" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::NumericalAlgorithms::HughesWinget::dR</definition>
+        <argsstring></argsstring>
+        <name>dR</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::dR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="54" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7372f05f4c6989f3feb1531697a523aa" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::HughesWinget::dEps</definition>
+        <argsstring></argsstring>
+        <name>dEps</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::dEps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="55" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::HughesWinget::HughesWinget</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;FOld, const Eigen::Matrix3d &amp;FNew, Formulation formulation)</argsstring>
+        <name>HughesWinget</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::HughesWinget</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FOld</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FNew</declname>
+        </param>
+        <param>
+          <type>Formulation</type>
+          <declname>formulation</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="39" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a624f64f6906e6c77d6d530535c8eabe7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::HughesWinget::getStrainIncrement</definition>
+        <argsstring>()</argsstring>
+        <name>getStrainIncrement</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::getStrainIncrement</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="41" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a9ab00adf92045424b6833e55dd4ee12a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::NumericalAlgorithms::HughesWinget::getRotationIncrement</definition>
+        <argsstring>()</argsstring>
+        <name>getRotationIncrement</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::getRotationIncrement</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="42" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::HughesWinget::rotateTensor</definition>
+        <argsstring>(const Marmot::Vector6d &amp;tensor)</argsstring>
+        <name>rotateTensor</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::rotateTensor</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>tensor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="43" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::EigenTensors::Tensor633d</type>
+        <definition>Marmot::EigenTensors::Tensor633d Marmot::NumericalAlgorithms::HughesWinget::compute_dS_dF</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stress, const Eigen::Matrix3d &amp;FInv, const Marmot::Matrix6d &amp;dChauchyDEps)</argsstring>
+        <name>compute_dS_dF</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::compute_dS_dF</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Marmot::Matrix6d &amp;</type>
+          <declname>dChauchyDEps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="45" column="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::NumericalAlgorithms::HughesWinget::compute_dScalar_dF</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;FInv, const Marmot::Vector6d &amp;dScalarDEps)</argsstring>
+        <name>compute_dScalar_dF</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::HughesWinget::compute_dScalar_dF</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>dScalarDEps</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="48" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="32" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="32" bodyend="56"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>AbaqusLike</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>compute_dS_dF</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>compute_dScalar_dF</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7372f05f4c6989f3feb1531697a523aa" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>dEps</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7367bfbf40976fb125fc215544b68cdd" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>dOmega</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a1be9bcb215c08a15c743a297d764b9f4" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>dR</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>Formulation</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a9ab00adf92045424b6833e55dd4ee12a" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>getRotationIncrement</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a624f64f6906e6c77d6d530535c8eabe7" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>getStrainIncrement</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>HughesWinget</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a6772d8d80fbdeccda47435a981e3b310" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>l</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>rotateTensor</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a25ba24e4640afbbb8f0d55c8d06488dd" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::HughesWinget</scope><name>theFormulation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_30f29f6d12b394f0dd5732c45b9d7324" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src</compoundname>
+    <innerfile refid="MarmotFiniteStrainPlasticity_8cpp">MarmotFiniteStrainPlasticity.cpp</innerfile>
+    <innerfile refid="MarmotMaterialFiniteStrain_8cpp">MarmotMaterialFiniteStrain.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src/"/>
+  </compounddef>
+</doxygen>

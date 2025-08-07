@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interfaces &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Marmot
+              <img src="../_static/marmot_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-marmot-with-abaqus">How to use Marmot with Abaqus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-use-marmot-with-moose">How to use Marmot with MOOSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-your-custom-interface">Create your custom interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registering-a-material-or-finite-element">Registering a material or finite element</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Interfaces</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/interfaces.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interfaces">
+<h1>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h1>
+<p>\page interfaces Interfacing with Marmot</p>
+<p>There are several conventient ways to interface with Marmot.
+If you want to use Marmot in a finite element framework,
+you may want to try one of the existing available interfaces.</p>
+<section id="how-to-use-marmot-with-abaqus">
+<h2>How to use Marmot with Abaqus<a class="headerlink" href="#how-to-use-marmot-with-abaqus" title="Link to this heading"></a></h2>
+<p>The <a class="reference external" href="https://github.com/MAteRialMOdelingToolbox/Abaqus-MarmotInterface">Abaqus-MarmotInterface</a> allows to use <code class="docutils literal notranslate"><span class="pre">Marmot</span></code> in Abaqus simulations.</p>
+</section>
+<section id="how-to-use-marmot-with-moose">
+<h2>How to use Marmot with MOOSE<a class="headerlink" href="#how-to-use-marmot-with-moose" title="Link to this heading"></a></h2>
+<p>The <a class="reference external" href="https://github.com/matthiasneuner/chamois">chamois App</a> allows to use <code class="docutils literal notranslate"><span class="pre">Marmot</span></code> directly in <a class="reference external" href="https://github.com/idaholab/moose">MOOSE</a>.
+A singularity container recipe is <a class="reference external" href="https://github.com/matthiasneuner/chamois-singularity">available</a>.</p>
+</section>
+<section id="create-your-custom-interface">
+<h2>Create your custom interface<a class="headerlink" href="#create-your-custom-interface" title="Link to this heading"></a></h2>
+<p>To create your custom interface to Marmot, you can leverage the MarmotLibrary::MarmotMaterialFactory and MarmotLibrary::MarmotElementFactory factories to create
+instances of registered material models and finite elements.
+In general, specialized Marmot materials are derived from the general parent class MarmotMaterial, and
+Marmot finite elements are derived from the general parent class MarmotElement.
+In particular for Marmot materials, Marmot strongly makes use of inheritance to specialize
+on specific continuum theories, e.g., MarmotMaterialHypoElastic for hypoelastic materials.</p>
+<p>Base classes MarmotMaterial and MarmotElement are considered the most general description of materials and finite elements.
+In particular, MarmotMaterial essentially is only defined by a a identification number, a set of material properties and an internal state (represented by a set of state variables) and may describe any material, e.g., a mechanical, a thermal or a couple thermo-mechanical material.
+Similarly, MarmotElement makes no assumption on the actual physics described by the finite element, but may represent any finite element.</p>
+<p>For materials, physical interpretation is introduced by derivation and specialization of MarmotMaterial.
+For instance, the hypoelastic material MarmotMaterialHypoElastic (computes stresses in rate form) is derived from the more general MarmotMaterialMechanical (computes stresses from a deformation state), which itself is a specialization of MarmotMaterial (reads material properties and may have an internal state).</p>
+<p>Instances of MarmotMaterial are casted down to their specialization.
+For instance, following procedure may be employed to create an instance of a Marmot::Materials::LinearElastic material model,
+which belongs to the class of MarmotMaterialHypoElastic materials, and compute the current stress state:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get the unique material ID of the registered material &quot;LINEARELASTIC&quot;</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">materialCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MarmotMaterialFactory</span><span class="o">::</span><span class="n">getMaterialCodeFromName</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;LINEARELASTIC&quot;</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// Create the instance and cast to a hypoelastic material</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">MarmotMaterialHypoElastic</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">MarmotMaterialHypoElastic</span><span class="o">*&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">            </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotMaterialFactory</span><span class="o">::</span><span class="n">createMaterial</span><span class="p">(</span><span class="w"> </span><span class="n">materialCode</span><span class="p">,</span><span class="w"> </span><span class="n">materialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">nMaterialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">anArbitraryIdentificationCode</span><span class="w"> </span><span class="p">)));</span>
+
+<span class="c1">// assign a set of state vars</span>
+<span class="n">material</span><span class="o">-&gt;</span><span class="n">assignStateVars</span><span class="p">(</span><span class="n">stateVars</span><span class="p">,</span><span class="w"> </span><span class="n">nStateVars</span><span class="p">);</span>
+
+<span class="c1">// assign a characteristic length parameter (specific to hypoelastic materials)</span>
+<span class="n">material</span><span class="o">-&gt;</span><span class="n">setCharacteristicElementLength</span><span class="p">(</span><span class="n">theCharacteristicElementLength</span><span class="p">);</span>
+
+<span class="c1">// compute stresses</span>
+<span class="n">material</span><span class="o">-&gt;</span><span class="n">computeStress</span><span class="p">(</span><span class="n">stress_in_and_out</span><span class="p">,</span><span class="w"> </span><span class="n">dstress_dstrain_out</span><span class="p">,</span><span class="w">  </span><span class="n">dstrain_in</span><span class="p">,</span><span class="w"> </span><span class="n">time_in</span><span class="p">,</span><span class="w"> </span><span class="n">dtime_in</span><span class="p">,</span><span class="w"> </span><span class="n">pNewDT_in_and_out</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="registering-a-material-or-finite-element">
+<h2>Registering a material or finite element<a class="headerlink" href="#registering-a-material-or-finite-element" title="Link to this heading"></a></h2>
+<p>Materials and finite elements are registered using the MarmotMaterialFactory::registerMaterial and MarmotElementFactory::registerElement interfaces.
+Both functions take a unique name (a string chosen by the user), a unique integer identifier (chosen by the user), and factory functions.
+Those Factory functions are used by Marmot to create specific instances of the material or element,
+providing a custom element number (MarmotElement) or a material number and a set of material properties (MarmotMaterial).</p>
+<p>For instance, the 4 node, plane strain displacement finite element “CPE4” is registered as</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span>
+<span class="w">           </span><span class="n">Marmot</span><span class="o">::</span><span class="n">FiniteElement</span><span class="o">::</span><span class="n">Quadrature</span><span class="o">::</span><span class="n">IntegrationTypes</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span>
+<span class="w">           </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">SectionType</span><span class="w">                             </span><span class="n">sectionType</span><span class="w"> </span><span class="o">&gt;</span>
+<span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotElementFactory</span><span class="o">::</span><span class="n">elementFactoryFunction</span><span class="w"> </span><span class="n">makeFactoryFunction</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[](</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">elementID</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">MarmotElement</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">T</span><span class="p">(</span><span class="w"> </span><span class="n">elementID</span><span class="p">,</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span><span class="w"> </span><span class="n">sectionType</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="n">MarmotElementFactory</span><span class="o">::</span><span class="w"> </span><span class="n">registerElement</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;CPE4&quot;</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">ElementCode</span><span class="o">::</span><span class="n">CPE4</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">makeFactoryFunction</span><span class="o">&lt;</span><span class="w"> </span><span class="n">DisplacementFiniteElement</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">FullIntegration</span><span class="p">,</span>
+<span class="w">                                              </span><span class="n">DisplacementFiniteElement</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;::</span><span class="n">PlaneStrain</span><span class="w"> </span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>making use of an auxiliary factory function generator.</p>
+<p>Creating the specific instance and computing the kernel is easy as</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">elementCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">getElementCodeFromName</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;CPE4&quot;</span><span class="w"> </span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">elementNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// create the instance</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">theElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">MarmotElement</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotElementFactory</span><span class="o">::</span><span class="n">createElement</span><span class="p">(</span><span class="n">elementCode</span><span class="p">,</span><span class="w">  </span><span class="n">elementNumber</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// assign properties (e.g, thickness)</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">ElementProperties</span><span class="p">(</span><span class="w"> </span><span class="n">propertiesElement</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesElement</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// assign a material section</span>
+<span class="c1">// in the present case: a MarmotMaterial setion</span>
+<span class="c1">// MarmotElement takes care to create the required instances of MarmotMaterial</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">MarmotMaterialSection</span><span class="p">(</span><span class="w"> </span><span class="n">materialID</span><span class="p">,</span><span class="w"> </span><span class="n">propertiesMaterial</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesMaterial</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// assign state vars to the element</span>
+<span class="c1">// MarmotElement automatically assigns the state vars also to MarmotMaterial instances</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignStateVars</span><span class="p">(</span><span class="n">stateVars</span><span class="p">,</span><span class="w"> </span><span class="n">nStateVars</span><span class="p">);</span>
+
+<span class="c1">// initialization</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">initializeYourself</span><span class="p">(</span><span class="n">coordinates</span><span class="p">);</span>
+
+<span class="c1">// compute the kernel</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">computeYourself</span><span class="p">(</span><span class="n">U</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">dU</span><span class="p">,</span><span class="w"> </span><span class="n">rightHandSide</span><span class="p">,</span><span class="w"> </span><span class="n">KMatrix</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">dTime</span><span class="p">,</span><span class="w"> </span><span class="n">pNewDT</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

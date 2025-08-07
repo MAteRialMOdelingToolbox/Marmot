@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</compoundname>
+    <basecompoundref refid="classMarmotStateVarVectorManager" prot="public" virt="non-virtual">MarmotStateVarVectorManager</basecompoundref>
+    <includes refid="DisplacementFiniteStrainULElement_8h" local="no">DisplacementFiniteStrainULElement.h</includes>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a27b7672e48ab1441c3e831051cebaeca" prot="private" static="yes" mutable="no">
+        <type>const auto</type>
+        <definition>const auto Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::layout</definition>
+        <argsstring></argsstring>
+        <name>layout</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::layout</qualifiedname>
+        <initializer>= <ref refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" kindref="member">makeLayout</ref>( {
+          { .name = &quot;stress&quot;, .length = 9 },
+          { .name = &quot;F0 XX&quot;, .length = 1 },
+          { .name = &quot;F0 YY&quot;, .length = 1 },
+          { .name = &quot;F0 ZZ&quot;, .length = 1 },
+          { .name = &quot;begin of <ref refid="structMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1a1c221f71b761ded1f5c6e1c65229b3a5" kindref="member">material</ref> state&quot;, .length = 0 },
+        } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="102" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a448560ea578909fbb9a5871d1536413d" prot="public" static="no" mutable="no">
+        <type>Eigen::Map&lt; <ref refid="namespaceMarmot_1a5e282d7f6d57c953f0aefc3f93409d7e" kindref="member">Marmot::Vector9d</ref> &gt;</type>
+        <definition>Eigen::Map&lt; Marmot::Vector9d &gt; Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::stress</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="111" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a87c1c621032658b3a45338629776365d" prot="public" static="no" mutable="no">
+        <type>double &amp;</type>
+        <definition>double&amp; Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::F0_XX</definition>
+        <argsstring></argsstring>
+        <name>F0_XX</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::F0_XX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="112" column="39" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a805fdc56749c6b43da25be5a599c37b8" prot="public" static="no" mutable="no">
+        <type>double &amp;</type>
+        <definition>double&amp; Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::F0_YY</definition>
+        <argsstring></argsstring>
+        <name>F0_YY</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::F0_YY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="113" column="39" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1af4787b33be09a617c20dbed8f2b441f1" prot="public" static="no" mutable="no">
+        <type>double &amp;</type>
+        <definition>double&amp; Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::F0_ZZ</definition>
+        <argsstring></argsstring>
+        <name>F0_ZZ</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::F0_ZZ</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="114" column="39" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1ae144197809175827344d26a9bc0c0f2c" prot="public" static="no" mutable="no">
+        <type>Eigen::Map&lt; Eigen::VectorXd &gt;</type>
+        <definition>Eigen::Map&lt; Eigen::VectorXd &gt; Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::materialStateVars</definition>
+        <argsstring></argsstring>
+        <name>materialStateVars</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::materialStateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="115" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a2b9082b1c27f85c67487ece1622a0251" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>static int Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfRequiredStateVarsQuadraturePointOnly</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="117" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="117" bodyend="117"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a5cff8105fd3084e0f1cd0f9548b50e15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager::QPStateVarManager</definition>
+        <argsstring>(double *theStateVarVector, int nStateVars)</argsstring>
+        <name>QPStateVarManager</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager::QPStateVarManager</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>theStateVarVector</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="119" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="119" bodyend="126"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>theLayout</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotStateVarVectorManager::StateVarVectorLayout</label>
+        <link refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" line="100" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h" bodystart="100" bodyend="127"/>
+    <listofallmembers>
+      <member refid="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>contains</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a87c1c621032658b3a45338629776365d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>F0_XX</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a805fdc56749c6b43da25be5a599c37b8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>F0_YY</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1af4787b33be09a617c20dbed8f2b441f1" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>F0_ZZ</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>find</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a2b9082b1c27f85c67487ece1622a0251" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>getNumberOfRequiredStateVarsQuadraturePointOnly</name></member>
+      <member refid="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>getStateView</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a27b7672e48ab1441c3e831051cebaeca" prot="private" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>layout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" prot="protected" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>makeLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" prot="protected" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>MarmotStateVarVectorManager</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1ae144197809175827344d26a9bc0c0f2c" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>materialStateVars</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a5cff8105fd3084e0f1cd0f9548b50e15" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>QPStateVarManager</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager_1a448560ea578909fbb9a5871d1536413d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>stress</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" prot="protected" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>theLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" prot="protected" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteStrainULElement::QuadraturePoint::QPStateVarManager</scope><name>theStateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

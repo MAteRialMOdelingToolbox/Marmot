@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B4 model &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compressible Neo Hooke model" href="compressibleneohooke.html" />
+    <link rel="prev" title="Material models" href="materials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">B4 model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite Strain J2 Plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">B4 model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/b4.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="b4-model">
+<h1>B4 model<a class="headerlink" href="#b4-model" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The present model is based on the B4 model proposed by Bazant et al. (2015) generalized to 3D.
+The constitutive law is given in total form as</p>
+<div class="math notranslate nohighlight">
+\[\sig = \Cel : \epsE  = \Cel : \left( \eps - \epsVE - \epsF - \epsDC -\epsSHR \right)\]</div>
+<p>relating the nominal stress tensor <span class="math notranslate nohighlight">\(\sig\)</span>
+to the elastic strain tensor <span class="math notranslate nohighlight">\(\epsE\)</span>
+in terms of the fourth order stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B4E">
+<span id="_CPPv3N6Marmot9Materials2B4E"></span><span id="_CPPv2N6Marmot9Materials2B4E"></span><span id="Marmot::Materials::B4"></span><span class="target" id="classMarmot_1_1Materials_1_1B4"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B4</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B4E" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::B4:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fa76803209a85bceb22e9c5e813d49a103cf3d28.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::B4&quot; tooltip=&quot;Marmot::Materials::B4&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::B4:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-aff2a91aa8abba17681b030a08a53d780a9d1a6f.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::B4&quot; tooltip=&quot;Marmot::Materials::B4&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Materials::SolidificationTheory::KelvinChainProperties&quot; tooltip=&quot;Marmot::Materials::SolidificationTheory::KelvinChainProperties&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Materials::SolidificationTheory::Parameters&quot; tooltip=&quot;Marmot::Materials::SolidificationTheory::Parameters&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Implementation of a linear elastic material according to the <a class="reference internal" href="#classMarmot_1_1Materials_1_1B4"><span class="std std-ref">B4</span></a> model by Bazant et al. (2015) generalized for 3D stress states. </p>
+<p>For further information see b4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42B4EPKdii">
+<span id="_CPPv3N6Marmot9Materials2B42B4EPKdii"></span><span id="_CPPv2N6Marmot9Materials2B42B4EPKdii"></span><span id="Marmot::Materials::B4::B4__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a8e248b9c1f79112b6b49ed10d3901c27"></span><span class="sig-name descname"><span class="n"><span class="pre">B4</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42B4EPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B413computeStressEPdPdPKdPKdKdRd">
+<span id="_CPPv3N6Marmot9Materials2B413computeStressEPdPdPKdPKdKdRd"></span><span id="_CPPv2N6Marmot9Materials2B413computeStressEPdPdPKdPKdKdRd"></span><span id="Marmot::Materials::B4::computeStress__doubleP.doubleP.doubleCP.doubleCP.doubleC.doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a6933712c5a8f4da72673981748691658"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timeOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewDT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B413computeStressEPdPdPKdPKdKdRd" title="Link to this definition"></a><br /></dt>
+<dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – <strong>[inout]</strong> Cauchy stress </p></li>
+<li><p><strong>dStressDDstrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeOld</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
+<li><p><strong>dt</strong> – <strong>[in]</strong> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </p></li>
+<li><p><strong>pNewDT</strong> – <strong>[inout]</strong> Suggestion for a new time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B428getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot9Materials2B428getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials2B428getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::B4::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1aa3f38abc1541c0b457a64ba25f992fe4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B428getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B415assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot9Materials2B415assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials2B415assignStateVarsEPdi"></span><span id="Marmot::Materials::B4::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a898db99d30f6b14ac23d5f7512fcb66d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B415assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B412getStateViewERKNSt6stringE">
+<span id="_CPPv3N6Marmot9Materials2B412getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials2B412getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::B4::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a4d99bbc3c2924bf7f176c3efc10cbfa6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B412getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials2B43phiE2T_2T_dd">
+<span id="_CPPv3I0EN6Marmot9Materials2B43phiE2T_dd"></span><span id="_CPPv2I0EN6Marmot9Materials2B43phiE2T_dd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T_</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1B4_1aed4dd5498e97cbfdfb4f210fbe8bcda3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials2B43phiE2T_2T_dd" title="Marmot::Materials::B4::phi::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phi</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials2B43phiE2T_2T_dd" title="Marmot::Materials::B4::phi::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">xi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">xiZero</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials2B43phiE2T_2T_dd" title="Link to this definition"></a><br /></dt>
+<dd><p>drying creep compliance function </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42nuE">
+<span id="_CPPv3N6Marmot9Materials2B42nuE"></span><span id="_CPPv2N6Marmot9Materials2B42nuE"></span><span id="Marmot::Materials::B4::nu__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a2eaf3e988998391c4319a0b08ed74cda"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42nuE" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a2eaf3e988998391c4319a0b08ed74cda"><span class="std std-ref">nu</span></a> represents Poisson’s ratio for isotropic linear elasticity. It is a reference variable to materialProperties[0]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42q1E">
+<span id="_CPPv3N6Marmot9Materials2B42q1E"></span><span id="_CPPv2N6Marmot9Materials2B42q1E"></span><span id="Marmot::Materials::B4::q1__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1aeeead2058deed3952b66f803d7f8ec83"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">q1</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42q1E" title="Link to this definition"></a><br /></dt>
+<dd><p>asymptotic elastic compliance parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1aeeead2058deed3952b66f803d7f8ec83"><span class="std std-ref">q1</span></a> represents the first compliance parameter for Solidification Theory. It is a reference variable to materialProperties[1]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42q2E">
+<span id="_CPPv3N6Marmot9Materials2B42q2E"></span><span id="_CPPv2N6Marmot9Materials2B42q2E"></span><span id="Marmot::Materials::B4::q2__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1adbdc2fafba30e88c508bf959e5d665cb"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">q2</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42q2E" title="Link to this definition"></a><br /></dt>
+<dd><p>viscoelastic compliance parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1adbdc2fafba30e88c508bf959e5d665cb"><span class="std std-ref">q2</span></a> represents the second compliance parameter for Solidification Theory. It is a reference variable to materialProperties[2]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42q3E">
+<span id="_CPPv3N6Marmot9Materials2B42q3E"></span><span id="_CPPv2N6Marmot9Materials2B42q3E"></span><span id="Marmot::Materials::B4::q3__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a5e97ebd7f50331c4a9b3f492be3a5482"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">q3</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42q3E" title="Link to this definition"></a><br /></dt>
+<dd><p>viscoelastic compliance parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a5e97ebd7f50331c4a9b3f492be3a5482"><span class="std std-ref">q3</span></a> represents the third compliance parameter for Solidification Theory. It is a reference variable to materialProperties[3]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42q4E">
+<span id="_CPPv3N6Marmot9Materials2B42q4E"></span><span id="_CPPv2N6Marmot9Materials2B42q4E"></span><span id="Marmot::Materials::B4::q4__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a00f91333264db351d8e3d55312d352b6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">q4</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42q4E" title="Link to this definition"></a><br /></dt>
+<dd><p>flow compliance parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a00f91333264db351d8e3d55312d352b6"><span class="std std-ref">q4</span></a> represents the fourth compliance parameter for Solidification Theory. It is a reference variable to materialProperties[4]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B41nE">
+<span id="_CPPv3N6Marmot9Materials2B41nE"></span><span id="_CPPv2N6Marmot9Materials2B41nE"></span><span id="Marmot::Materials::B4::n__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a2968ffc5996bed644885803e598eeb6b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">n</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B41nE" title="Link to this definition"></a><br /></dt>
+<dd><p>log-power law exponent </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a2968ffc5996bed644885803e598eeb6b"><span class="std std-ref">n</span></a> represents the exponent of the log-power law used in the compliance function of the hardened constituent. It is a reference variable to materialProperties[5]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B41mE">
+<span id="_CPPv3N6Marmot9Materials2B41mE"></span><span id="_CPPv2N6Marmot9Materials2B41mE"></span><span id="Marmot::Materials::B4::m__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a67a53a3c509beadae9c4a04cbf474883"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">m</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B41mE" title="Link to this definition"></a><br /></dt>
+<dd><p>solidified volume exponent </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a67a53a3c509beadae9c4a04cbf474883"><span class="std std-ref">m</span></a> represents the exponent in the function describing the solidification of the material. It is a reference variable to materialProperties[6]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B412nKelvinBasicE">
+<span id="_CPPv3N6Marmot9Materials2B412nKelvinBasicE"></span><span id="_CPPv2N6Marmot9Materials2B412nKelvinBasicE"></span><span id="Marmot::Materials::B4::nKelvinBasic__sC"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a56873cc259f85e8f017a0506340ccf07"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nKelvinBasic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B412nKelvinBasicE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of Kelvin units to approximate the viscoelastic compliance </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a56873cc259f85e8f017a0506340ccf07"><span class="std std-ref">nKelvinBasic</span></a> the number of Kelvin units used to approximate the viscoelastic compliance. It is a reference variable to materialProperties[7]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B411minTauBasicE">
+<span id="_CPPv3N6Marmot9Materials2B411minTauBasicE"></span><span id="_CPPv2N6Marmot9Materials2B411minTauBasicE"></span><span id="Marmot::Materials::B4::minTauBasic__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ac0c99ec0c4d77b1ff26e89b62f9529a6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">minTauBasic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B411minTauBasicE" title="Link to this definition"></a><br /></dt>
+<dd><p>minimal retardation time used in the viscoelastic Kelvin chain </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1ac0c99ec0c4d77b1ff26e89b62f9529a6"><span class="std std-ref">minTauBasic</span></a> represents the minimal retardation time in days used in the Kelvin chain to approximate the viscoelastic compliance. It is a reference variable to materialProperties[8]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B433ultimateAutogenousShrinkageStrainE">
+<span id="_CPPv3N6Marmot9Materials2B433ultimateAutogenousShrinkageStrainE"></span><span id="_CPPv2N6Marmot9Materials2B433ultimateAutogenousShrinkageStrainE"></span><span id="Marmot::Materials::B4::ultimateAutogenousShrinkageStrain__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ab64c145db5d842309016125a9833d64e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ultimateAutogenousShrinkageStrain</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B433ultimateAutogenousShrinkageStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>ultimate autogenous shrinkage strain </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1ab64c145db5d842309016125a9833d64e"><span class="std std-ref">ultimateAutogenousShrinkageStrain</span></a> represents the ultimate autogenous shrinkage strain. It is a reference variable to materialProperties[9]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B427autogenousShrinkageHalfTimeE">
+<span id="_CPPv3N6Marmot9Materials2B427autogenousShrinkageHalfTimeE"></span><span id="_CPPv2N6Marmot9Materials2B427autogenousShrinkageHalfTimeE"></span><span id="Marmot::Materials::B4::autogenousShrinkageHalfTime__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a34c79d39639c628b547a3a7fea2b9940"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">autogenousShrinkageHalfTime</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B427autogenousShrinkageHalfTimeE" title="Link to this definition"></a><br /></dt>
+<dd><p>autogenous shrinkage half time </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a34c79d39639c628b547a3a7fea2b9940"><span class="std std-ref">autogenousShrinkageHalfTime</span></a> represents the autogenous shrinkage half time. It is a reference variable to materialProperties[10]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B45alphaE">
+<span id="_CPPv3N6Marmot9Materials2B45alphaE"></span><span id="_CPPv2N6Marmot9Materials2B45alphaE"></span><span id="Marmot::Materials::B4::alpha__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1acf0f49d27d16e09075100035730f1088"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">alpha</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B45alphaE" title="Link to this definition"></a><br /></dt>
+<dd><p>autogenous shrinkage material parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1acf0f49d27d16e09075100035730f1088"><span class="std std-ref">alpha</span></a> represents a cement type and concrete composition dependent material parameter for autogenous shrinkage. It is a reference variable to materialProperties[11]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42rtE">
+<span id="_CPPv3N6Marmot9Materials2B42rtE"></span><span id="_CPPv2N6Marmot9Materials2B42rtE"></span><span id="Marmot::Materials::B4::rt__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">rt</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42rtE" title="Link to this definition"></a><br /></dt>
+<dd><p>autogenous shrinkage material parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"><span class="std std-ref">rt</span></a> represents a cement type dependent material parameter for autogenous shrinkage. It is a reference variable to materialProperties[12]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B429ultimateDryingShrinkageStrainE">
+<span id="_CPPv3N6Marmot9Materials2B429ultimateDryingShrinkageStrainE"></span><span id="_CPPv2N6Marmot9Materials2B429ultimateDryingShrinkageStrainE"></span><span id="Marmot::Materials::B4::ultimateDryingShrinkageStrain__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a01437a79d71a5f2ba7f92ffdd218e22d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ultimateDryingShrinkageStrain</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B429ultimateDryingShrinkageStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>ultimate drying shrinkage strain </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a01437a79d71a5f2ba7f92ffdd218e22d"><span class="std std-ref">ultimateDryingShrinkageStrain</span></a> represents the ultimate drying shrinkage strain at zero relative ambient humidity. It is a reference variable to materialProperties[13]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B423dryingShrinkageHalfTimeE">
+<span id="_CPPv3N6Marmot9Materials2B423dryingShrinkageHalfTimeE"></span><span id="_CPPv2N6Marmot9Materials2B423dryingShrinkageHalfTimeE"></span><span id="Marmot::Materials::B4::dryingShrinkageHalfTime__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1aa426ea311744894b13f8f3fd504a8413"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">dryingShrinkageHalfTime</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B423dryingShrinkageHalfTimeE" title="Link to this definition"></a><br /></dt>
+<dd><p>drying shrinkage half time </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1aa426ea311744894b13f8f3fd504a8413"><span class="std std-ref">dryingShrinkageHalfTime</span></a> represents the drying shrinkage half time. It is a reference variable to materialProperties[14]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B411dryingStartE">
+<span id="_CPPv3N6Marmot9Materials2B411dryingStartE"></span><span id="_CPPv2N6Marmot9Materials2B411dryingStartE"></span><span id="Marmot::Materials::B4::dryingStart__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ac8145b7292e3cf837374ecf5d09a6e68"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">dryingStart</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B411dryingStartE" title="Link to this definition"></a><br /></dt>
+<dd><p>drying start time </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1ac8145b7292e3cf837374ecf5d09a6e68"><span class="std std-ref">dryingStart</span></a> represents start of drying in days. It is a reference variable to materialProperties[15]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B44hEnvE">
+<span id="_CPPv3N6Marmot9Materials2B44hEnvE"></span><span id="_CPPv2N6Marmot9Materials2B44hEnvE"></span><span id="Marmot::Materials::B4::hEnv__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a205cffffd999e64846595b8e54588af3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">hEnv</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B44hEnvE" title="Link to this definition"></a><br /></dt>
+<dd><p>relative ambient humidity </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a205cffffd999e64846595b8e54588af3"><span class="std std-ref">hEnv</span></a> represents relative ambient humidity. It is a reference variable to materialProperties[16]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42q5E">
+<span id="_CPPv3N6Marmot9Materials2B42q5E"></span><span id="_CPPv2N6Marmot9Materials2B42q5E"></span><span id="Marmot::Materials::B4::q5__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a4009fafd6a8d9dc86a95401fbfcfdee8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">q5</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42q5E" title="Link to this definition"></a><br /></dt>
+<dd><p>drying creep compliance parameter </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a4009fafd6a8d9dc86a95401fbfcfdee8"><span class="std std-ref">q5</span></a> represents drying creep compliance parameter. It is a reference variable to materialProperties[17]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B413nKelvinDryingE">
+<span id="_CPPv3N6Marmot9Materials2B413nKelvinDryingE"></span><span id="_CPPv2N6Marmot9Materials2B413nKelvinDryingE"></span><span id="Marmot::Materials::B4::nKelvinDrying__sC"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a0048fcbb0b0c2d37214f7d600c0e18f6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nKelvinDrying</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B413nKelvinDryingE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of Kelvin units to approximate the drying creep compliance </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a4009fafd6a8d9dc86a95401fbfcfdee8"><span class="std std-ref">q5</span></a> represents the number of Kelvin units to approximate the drying creep compliance function. It is a reference variable to materialProperties[18]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B412minTauDryingE">
+<span id="_CPPv3N6Marmot9Materials2B412minTauDryingE"></span><span id="_CPPv2N6Marmot9Materials2B412minTauDryingE"></span><span id="Marmot::Materials::B4::minTauDrying__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a43ff5b201e37bca31dcf5b035f9ee2e3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">minTauDrying</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B412minTauDryingE" title="Link to this definition"></a><br /></dt>
+<dd><p>minimal retardation time used in the drying creep Kelvin chain </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a43ff5b201e37bca31dcf5b035f9ee2e3"><span class="std std-ref">minTauDrying</span></a> represents the minimal retardation time used in the Kelvin chain to approximate the drying creep compliance function. It is a reference variable to materialProperties[19]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B48castTimeE">
+<span id="_CPPv3N6Marmot9Materials2B48castTimeE"></span><span id="_CPPv2N6Marmot9Materials2B48castTimeE"></span><span id="Marmot::Materials::B4::castTime__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a365005effccbb0d39e13d5ca14f7870d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">castTime</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B48castTimeE" title="Link to this definition"></a><br /></dt>
+<dd><p>time to start hydration </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a365005effccbb0d39e13d5ca14f7870d"><span class="std std-ref">castTime</span></a> represents the time at which hydration starts with respect to simulation time. It is a reference variable to materialProperties[20]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B410timeToDaysE">
+<span id="_CPPv3N6Marmot9Materials2B410timeToDaysE"></span><span id="_CPPv2N6Marmot9Materials2B410timeToDaysE"></span><span id="Marmot::Materials::B4::timeToDays__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a466f56c79a12adfdd3edeeb460b522f9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">timeToDays</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B410timeToDaysE" title="Link to this definition"></a><br /></dt>
+<dd><p>ratio of simulation time to days </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a466f56c79a12adfdd3edeeb460b522f9"><span class="std std-ref">timeToDays</span></a> represents the ratio of simulation time to days. It is a reference variable to materialProperties[21]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B415stateVarManagerE">
+<span id="_CPPv3N6Marmot9Materials2B415stateVarManagerE"></span><span id="_CPPv2N6Marmot9Materials2B415stateVarManagerE"></span><span id="Marmot::Materials::B4::stateVarManager__std::unique_ptr:B4StateVarManager:"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ae9317da309ae9d717b6cf90f4f703681"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials2B417B4StateVarManagerE" title="Marmot::Materials::B4::B4StateVarManager"><span class="n"><span class="pre">B4StateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVarManager</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B415stateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B424solidificationParametersE">
+<span id="_CPPv3N6Marmot9Materials2B424solidificationParametersE"></span><span id="_CPPv2N6Marmot9Materials2B424solidificationParametersE"></span><span id="Marmot::Materials::B4::solidificationParameters__SolidificationTheory::Parameters"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a4d8030c73e8943f389492acc6c975478"></span><span class="n"><span class="pre">SolidificationTheory</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Parameters</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solidificationParameters</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B424solidificationParametersE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B430solidificationKelvinPropertiesE">
+<span id="_CPPv3N6Marmot9Materials2B430solidificationKelvinPropertiesE"></span><span id="_CPPv2N6Marmot9Materials2B430solidificationKelvinPropertiesE"></span><span id="Marmot::Materials::B4::solidificationKelvinProperties__SolidificationTheory::KelvinChainProperties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a9bd463c2e8e4f231e9a9673b440888d1"></span><span class="n"><span class="pre">SolidificationTheory</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">KelvinChainProperties</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solidificationKelvinProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B430solidificationKelvinPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B423basicCreepElasticModuliE">
+<span id="_CPPv3N6Marmot9Materials2B423basicCreepElasticModuliE"></span><span id="_CPPv2N6Marmot9Materials2B423basicCreepElasticModuliE"></span><span id="Marmot::Materials::B4::basicCreepElasticModuli__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a3cfc840893f1c0cbd15f24118a71dbed"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepElasticModuli</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B423basicCreepElasticModuliE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B426basicCreepRetardationTimesE">
+<span id="_CPPv3N6Marmot9Materials2B426basicCreepRetardationTimesE"></span><span id="_CPPv2N6Marmot9Materials2B426basicCreepRetardationTimesE"></span><span id="Marmot::Materials::B4::basicCreepRetardationTimes__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a90abb8d24ffce29ee81933ebda4c0ac5"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepRetardationTimes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B426basicCreepRetardationTimesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-attributes">Private Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE">
+<span id="_CPPv3N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE"></span><span id="Marmot::Materials::B4::dryingCreepComplianceApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ad0dde9ac0a0a9026319624c81d075d34"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dryingCreepComplianceApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE">
+<span id="_CPPv3N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE"></span><span id="Marmot::Materials::B4::basicCreepComplianceApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a47de019b8c16d71edef8debf1a4a0e12"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepComplianceApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B417B4StateVarManagerE">
+<span id="_CPPv3N6Marmot9Materials2B417B4StateVarManagerE"></span><span id="_CPPv2N6Marmot9Materials2B417B4StateVarManagerE"></span><span id="Marmot::Materials::B4::B4StateVarManager"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B4StateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv427MarmotStateVarVectorManager" title="MarmotStateVarVectorManager"><span class="n"><span class="pre">MarmotStateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B417B4StateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::B4::B4StateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f20d0dec55cf4e1e1ecb279e9218bb28a71bc6a9.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::B4::B4StateVarManager&quot; tooltip=&quot;Marmot::Materials::B4::B4StateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::B4::B4StateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-b866462d1be9ed74fa978aed98528236af306041.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::B4::B4StateVarManager&quot; tooltip=&quot;Marmot::Materials::B4::B4StateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
+    &quot;3&quot; [label=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot; tooltip=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B417B4StateVarManager17B4StateVarManagerEPdi">
+<span id="_CPPv3N6Marmot9Materials2B417B4StateVarManager17B4StateVarManagerEPdi"></span><span id="_CPPv2N6Marmot9Materials2B417B4StateVarManager17B4StateVarManagerEPdi"></span><span id="Marmot::Materials::B4::B4StateVarManager::B4StateVarManager__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager_1ae8908efb4ec20247afeaf1a52915c803"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B4StateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nKelvinUnits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B417B4StateVarManager17B4StateVarManagerEPdi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B417B4StateVarManager15kelvinStateVarsE">
+<span id="_CPPv3N6Marmot9Materials2B417B4StateVarManager15kelvinStateVarsE"></span><span id="_CPPv2N6Marmot9Materials2B417B4StateVarManager15kelvinStateVarsE"></span><span id="Marmot::Materials::B4::B4StateVarManager::kelvinStateVars__KelvinChain::mapStateVarMatrix"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager_1a7485a7bff2105a61a92cc11f9edf9db4"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain17mapStateVarMatrixE" title="Marmot::Materials::KelvinChain::mapStateVarMatrix"><span class="n"><span class="pre">mapStateVarMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kelvinStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B417B4StateVarManager15kelvinStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B417B4StateVarManager6layoutE">
+<span id="_CPPv3N6Marmot9Materials2B417B4StateVarManager6layoutE"></span><span id="_CPPv2N6Marmot9Materials2B417B4StateVarManager6layoutE"></span><span id="Marmot::Materials::B4::B4StateVarManager::layout__autoC"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager_1aa3c79f95bc7305369b5329d84e787291"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><code class="docutils literal notranslate"><span class="pre">makeLayout(</span> <span class="pre">{{</span> <span class="pre">.name</span> <span class="pre">=</span> <span class="pre">&quot;kelvinStateVars&quot;,</span> <span class="pre">.length</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">},}</span> <span class="pre">)</span></code><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B417B4StateVarManager6layoutE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="materials.html" class="btn btn-neutral float-left" title="Material models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="compressibleneohooke.html" class="btn btn-neutral float-right" title="Compressible Neo Hooke model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

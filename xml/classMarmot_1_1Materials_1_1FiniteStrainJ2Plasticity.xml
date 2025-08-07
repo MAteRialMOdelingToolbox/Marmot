@@ -1,0 +1,837 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::FiniteStrainJ2Plasticity</compoundname>
+    <basecompoundref refid="classMarmotMaterialFiniteStrain" prot="public" virt="non-virtual">MarmotMaterialFiniteStrain</basecompoundref>
+    <includes refid="FiniteStrainJ2Plasticity_8h" local="no">FiniteStrainJ2Plasticity.h</includes>
+    <innerclass refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager" prot="public">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</innerclass>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af241e194ffa0091b0ed0ed6d80cca05d" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::K</definition>
+        <argsstring></argsstring>
+        <name>K</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::K</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="50" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a06ed636c2ffbb190168ef1bd37210222" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::G</definition>
+        <argsstring></argsstring>
+        <name>G</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::G</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="50" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ac7d70dd51d1b55b3a4c010e116b7f613" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::fy</definition>
+        <argsstring></argsstring>
+        <name>fy</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::fy</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="53" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aa74b22fbe3c96b4f692f87dc6f9fb784" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::fyInf</definition>
+        <argsstring></argsstring>
+        <name>fyInf</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::fyInf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="53" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8d32d996ff8e70aeed5366217d80a015" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::eta</definition>
+        <argsstring></argsstring>
+        <name>eta</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::eta</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="53" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a989af2d7a68835d72fa64611b54120c5" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::FiniteStrainJ2Plasticity::H</definition>
+        <argsstring></argsstring>
+        <name>H</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::H</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="53" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a2899614611d275d7410c8ad88ea021a1" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::FiniteStrainJ2Plasticity::implementationType</definition>
+        <argsstring></argsstring>
+        <name>implementationType</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::implementationType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="56" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7910b687083b42f69dbb800a15b8d191" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager" kindref="compound">FiniteStrainJ2PlasticityStateVarManager</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; FiniteStrainJ2PlasticityStateVarManager &gt; Marmot::Materials::FiniteStrainJ2Plasticity::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::stateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="100" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aff76dcef75e33d757316b16ad6859ad3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity</definition>
+        <argsstring>(const double *materialProperties, int nMaterialProperties, int materialLabel)</argsstring>
+        <name>FiniteStrainJ2Plasticity</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialLabel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="58" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="24" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a73e4c4ba13e91655b921d11c7ce1787e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStress</qualifiedname>
+        <reimplements refid="classMarmotMaterialFiniteStrain_1abb50397513fa2082f3f901efc323b8fe">computeStress</reimplements>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="60" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="38" bodyend="51"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a308024c4bc2667ac9da19c36040a17b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithScalarReturnMapping</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStressWithScalarReturnMapping</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithScalarReturnMapping</qualifiedname>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="64" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="52" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab3f35523cfdd769fbf4cd8ba36ad5239" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithFullReturnMapping</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStressWithFullReturnMapping</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithFullReturnMapping</qualifiedname>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="68" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="59" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a12b11aadca8877c987c9008dbfca7871" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAF</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStressFDAF</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAF</qualifiedname>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="72" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="191" bodyend="352"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1acd0c6ddabf26ebbcdbd077c5f4d68520" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAC</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStressFDAC</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAC</qualifiedname>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="76" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="353" bodyend="514"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8bede4f47b6993b44b9d2978c8329f02" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::computeStressCSDA</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStressCSDA</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeStressCSDA</qualifiedname>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1ConstitutiveResponse" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="structMarmotMaterialFiniteStrain_1_1AlgorithmicModuli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1Deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotMaterialFiniteStrain_1_1TimeIncrement" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="80" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="516" bodyend="676"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a772738c665da6e23fea781a527d2a0a4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Materials::FiniteStrainJ2Plasticity::getNumberOfRequiredStateVars</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a16e96c33fdc77ddd5aa98ffbbca1577d">getNumberOfRequiredStateVars</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="84" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="84" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a919a2545ce365585fe25fa7497fd7440" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::assignStateVars</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a9644446a593632d0da2462bdeb43e25c">assignStateVars</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="102" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="682" bodyend="690"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af652c8fa2c2664e80a66a4684665dd6d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structStateView" kindref="compound">StateView</ref></type>
+        <definition>StateView Marmot::Materials::FiniteStrainJ2Plasticity::getStateView</definition>
+        <argsstring>(const std::string &amp;result)</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::getStateView</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1acc7dfa70f71415b2c9b562a9fafe64d1">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="104" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="677" bodyend="680"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aed49aa303577337c673aacee3f54a88d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::FiniteStrainJ2Plasticity::initializeYourself</definition>
+        <argsstring>()</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::initializeYourself</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a9d6615f62d1e33ab694f3e889dba203f">initializeYourself</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="106" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp" bodystart="692" bodyend="695"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7b2090519af0e8c7dc6b953974653c6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; double, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, double &gt;</type>
+        <definition>std::tuple&lt; double, Tensor33d, double &gt; Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunction</definition>
+        <argsstring>(const Tensor33d &amp;Fe, const double betaP)</argsstring>
+        <name>yieldFunction</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunction</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>Fe</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="108" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="108" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a190ba39388668a757cd726fb090c30c3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;mandelStress, const T betaP)</argsstring>
+        <name>yieldFunctionFromStress</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt; &amp;</type>
+          <declname>mandelStress</declname>
+        </param>
+        <param>
+          <type>const T</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="128" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="128" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a23ca6d4a0906bb1bf48a44673415c553" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; double, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a65c78c55ef6ae2d308d54d2e8b214d67" kindref="member">Tensor3333d</ref>, double &gt;</type>
+        <definition>std::tuple&lt; double, Tensor33d, Tensor3333d, double &gt; Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</definition>
+        <argsstring>(const Tensor33d &amp;mandelStress, const double betaP)</argsstring>
+        <name>yieldFunctionFromStress</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>mandelStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="138" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="138" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a82c18a36b6b0bec286f472160db44b3e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; T, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;, T &gt;</type>
+        <definition>std::tuple&lt; T, Tensor33t&lt; T &gt;, T &gt; Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;mandelStress, const T betaP)</argsstring>
+        <name>yieldFunctionFromStressFirstOrderDerived</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt; &amp;</type>
+          <declname>mandelStress</declname>
+        </param>
+        <param>
+          <type>const T</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="161" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="161" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ada9603edf0333ac06ea294f9052d11f7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Materials::FiniteStrainJ2Plasticity::isYielding</definition>
+        <argsstring>(const Tensor33d &amp;Fe, const double betaP)</argsstring>
+        <name>isYielding</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::isYielding</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>Fe</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="177" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="177" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7050170ba2b009214be90f7f6742c6ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a65c78c55ef6ae2d308d54d2e8b214d67" kindref="member">Tensor3333d</ref> &gt;</type>
+        <definition>std::tuple&lt; Tensor33d, Tensor3333d &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStress</definition>
+        <argsstring>(const Tensor33d &amp;Fe)</argsstring>
+        <name>computeMandelStress</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStress</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>Fe</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="188" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="188" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af2ffb7b627c7b626f0e319cc997de2bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+        <definition>Tensor33t&lt; T &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStressOnly</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;Fe)</argsstring>
+        <name>computeMandelStressOnly</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStressOnly</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt; &amp;</type>
+          <declname>Fe</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="212" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="212" bodyend="224"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a52fad614ee4a6c1e64e708a468430b74" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaPOnly</definition>
+        <argsstring>(const T alphaP)</argsstring>
+        <name>computeBetaPOnly</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaPOnly</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>alphaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="227" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="227" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab38ec6037be8323b618af94895e95640" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; double, double &gt;</type>
+        <definition>std::tuple&lt; double, double &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaP</definition>
+        <argsstring>(const double alphaP)</argsstring>
+        <name>computeBetaP</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaP</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>alphaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="232" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="232" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a0a6fe26407bd4afd9e306bf58658d14b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; double, double &gt;</type>
+        <definition>std::tuple&lt; double, double &gt; Marmot::Materials::FiniteStrainJ2Plasticity::g</definition>
+        <argsstring>(const Tensor33d &amp;Fe_trial, const Tensor33d &amp;df_dS, double dLambda, double betaP)</argsstring>
+        <name>g</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::g</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>Fe_trial</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>df_dS</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dLambda</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="239" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="239" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a796cbf1732eb149bdfa95e6886b23f25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+        <definition>Tensor33t&lt; T &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection</definition>
+        <argsstring>(Tensor33t&lt; T &gt; Fe, T betaP)</argsstring>
+        <name>computeReturnMappingDirection</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection</qualifiedname>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+          <declname>Fe</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>betaP</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="258" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="258" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a5a0a05f484cb98aca3f6e113666ec91f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &gt;</type>
+        <definition>std::tuple&lt; Tensor33d, Tensor33d &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computePlasticIncrement</definition>
+        <argsstring>(Tensor33t&lt; T &gt; df_dS, T dLambda)</argsstring>
+        <name>computePlasticIncrement</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computePlasticIncrement</qualifiedname>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1FastorStandardTensors_1af247e2b29b4bc9e170538bb33421094c" kindref="member">Tensor33t</ref>&lt; T &gt;</type>
+          <declname>df_dS</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>dLambda</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="272" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="272" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a999f513b3b26b0e9874fd20bb16c919f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceMarmot_1a84db4851c64a953358752fe25430f7ee" kindref="member">VectorXt</ref>&lt; T &gt;</type>
+        <definition>VectorXt&lt; T &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVector</definition>
+        <argsstring>(const VectorXt&lt; T &gt; &amp;X, const Tensor33d &amp;FeTrial, const double alphaPTrial)</argsstring>
+        <name>computeResidualVector</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVector</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a84db4851c64a953358752fe25430f7ee" kindref="member">VectorXt</ref>&lt; T &gt; &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>FeTrial</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>alphaPTrial</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="285" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="285" bodyend="330"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a631a468733747f7162841272ce29c30a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::tuple&lt; Eigen::VectorXd, Eigen::MatrixXd &gt;</type>
+        <definition>std::tuple&lt; Eigen::VectorXd, Eigen::MatrixXd &gt; Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVectorAndTangent</definition>
+        <argsstring>(const Eigen::VectorXd &amp;X, const Tensor33d &amp;FeTrial, const double alphaPTrial)</argsstring>
+        <name>computeResidualVectorAndTangent</name>
+        <qualifiedname>Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVectorAndTangent</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>FeTrial</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>alphaPTrial</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="331" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="331" bodyend="411"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialFiniteStrain</label>
+        <link refid="classMarmotMaterialFiniteStrain"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialFiniteStrain</label>
+        <link refid="classMarmotMaterialFiniteStrain"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" line="45" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h" bodystart="45" bodyend="412"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a919a2545ce365585fe25fa7497fd7440" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>assignStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab38ec6037be8323b618af94895e95640" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeBetaP</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a52fad614ee4a6c1e64e708a468430b74" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeBetaPOnly</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7050170ba2b009214be90f7f6742c6ce" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeMandelStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af2ffb7b627c7b626f0e319cc997de2bb" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeMandelStressOnly</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1a4a01a294b939017ba5df1696ca78eadc" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computePlaneStrain</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1af49a9a663dd211156a0bd8d69d1a8a7e" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computePlaneStrain</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1adbd590a96ee0019180df52b4a7aea327" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computePlaneStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a5a0a05f484cb98aca3f6e113666ec91f" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computePlasticIncrement</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a999f513b3b26b0e9874fd20bb16c919f" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeResidualVector</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a631a468733747f7162841272ce29c30a" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeResidualVectorAndTangent</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a796cbf1732eb149bdfa95e6886b23f25" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeReturnMappingDirection</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a73e4c4ba13e91655b921d11c7ce1787e" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStress</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1aa194ee05fed72559f8de1a60d02d0172" prot="public" virt="virtual" ambiguityscope="MarmotMaterialFiniteStrain::"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8bede4f47b6993b44b9d2978c8329f02" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStressCSDA</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1acd0c6ddabf26ebbcdbd077c5f4d68520" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStressFDAC</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a12b11aadca8877c987c9008dbfca7871" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStressFDAF</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab3f35523cfdd769fbf4cd8ba36ad5239" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStressWithFullReturnMapping</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a308024c4bc2667ac9da19c36040a17b4" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>computeStressWithScalarReturnMapping</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8d32d996ff8e70aeed5366217d80a015" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>eta</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1a52e1c156df11bf9ca0e23026bcbffb5e" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aff76dcef75e33d757316b16ad6859ad3" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>FiniteStrainJ2Plasticity</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ac7d70dd51d1b55b3a4c010e116b7f613" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>fy</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aa74b22fbe3c96b4f692f87dc6f9fb784" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>fyInf</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a06ed636c2ffbb190168ef1bd37210222" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>G</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a0a6fe26407bd4afd9e306bf58658d14b" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>g</name></member>
+      <member refid="classMarmotMaterial_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>getAssignedStateVars</name></member>
+      <member refid="classMarmotMaterial_1a16ef751ebc410cb5173cb65a2e43e1ec" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>getDensity</name></member>
+      <member refid="classMarmotMaterial_1ac2e855ed98253c5f426735bc251771dd" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>getNumberOfAssignedStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a772738c665da6e23fea781a527d2a0a4" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af652c8fa2c2664e80a66a4684665dd6d" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>getStateView</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a989af2d7a68835d72fa64611b54120c5" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>H</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a2899614611d275d7410c8ad88ea021a1" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>implementationType</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aed49aa303577337c673aacee3f54a88d" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>initializeYourself</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ada9603edf0333ac06ea294f9052d11f7" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>isYielding</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af241e194ffa0091b0ed0ed6d80cca05d" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>K</name></member>
+      <member refid="classMarmotMaterialFiniteStrain_1a395b074d78052f5e58220cfeda65c5bd" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>MarmotMaterial</name></member>
+      <member refid="classMarmotMaterial_1a31bc9f9283f984f5d78685d82e764edd" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>materialNumber</name></member>
+      <member refid="classMarmotMaterial_1a0f631d6ec14531146ec683712a085960" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>materialProperties</name></member>
+      <member refid="classMarmotMaterial_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>nMaterialProperties</name></member>
+      <member refid="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>nStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7910b687083b42f69dbb800a15b8d191" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>stateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7b2090519af0e8c7dc6b953974653c6b" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>yieldFunction</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a190ba39388668a757cd726fb090c30c3" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>yieldFunctionFromStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a23ca6d4a0906bb1bf48a44673415c553" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>yieldFunctionFromStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a82c18a36b6b0bec286f472160db44b3e" prot="public" virt="non-virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>yieldFunctionFromStressFirstOrderDerived</name></member>
+      <member refid="classMarmotMaterial_1a33fd1c89a919e8b0d396eb846614c815" prot="public" virt="virtual"><scope>Marmot::Materials::FiniteStrainJ2Plasticity</scope><name>~MarmotMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

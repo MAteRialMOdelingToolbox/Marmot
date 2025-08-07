@@ -1,0 +1,17 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/HaighWestergaard.h" alt="" coords="282,101,582,149"/>
+<area shape="rect" id="node2" title="Marmot/MarmotVoigt.h" alt="" coords="309,197,556,245"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="435,150,435,182,430,182,430,150"/>
+<area shape="rect" id="node5" title="Marmot/MarmotMath.h" alt="" coords="29,293,276,341"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="384,152,299,200,241,242,190,285,187,281,238,238,296,195,381,148"/>
+<area shape="rect" id="node6" title="Marmot/MarmotTypedefs.h" alt="" coords="589,293,873,341"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="482,148,568,195,634,239,691,281,688,286,631,243,566,200,479,152"/>
+<area shape="rect" id="node4" title="Marmot/MarmotJournal.h" alt="" coords="300,293,565,341"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="435,246,435,278,430,278,430,246"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="363,249,237,291,235,285,362,243"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="508,243,643,286,642,291,506,249"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" alt="" coords="5,5,1073,53"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="514,56,472,93,468,89,511,52"/>
+<area shape="rect" id="node7" title="utility" alt="" coords="606,101,685,149"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="567,52,610,89,606,93,564,56"/>
+</map>

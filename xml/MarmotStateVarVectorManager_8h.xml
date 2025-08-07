@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotStateVarVectorManager_8h" kind="file" language="C++">
+    <compoundname>MarmotStateVarVectorManager.h</compoundname>
+    <includes refid="MarmotUtils_8h" local="yes">Marmot/MarmotUtils.h</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">string</includes>
+    <includes local="no">unordered_map</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="DisplacementFiniteElement_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h</includedby>
+    <includedby refid="DisplacementFiniteStrainULElement_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h</includedby>
+    <includedby refid="ADVonMises_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/include/Marmot/ADVonMises.h</includedby>
+    <includedby refid="B4_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/B4.h</includedby>
+    <includedby refid="FiniteStrainJ2Plasticity_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h</includedby>
+    <includedby refid="LinearViscoelasticPowerLaw_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/include/Marmot/LinearViscoelasticPowerLaw.h</includedby>
+    <includedby refid="VonMises_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>Marmot/MarmotUtils.h</label>
+        <link refid="MarmotUtils_8h"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h</label>
+        <link refid="MarmotStateVarVectorManager_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>memory</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+      <node id="5">
+        <label>unordered_map</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h</label>
+        <link refid="MarmotStateVarVectorManager_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h</label>
+        <link refid="DisplacementFiniteElement_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp</label>
+        <link refid="DisplacementFiniteElementRegistration_8cpp"/>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h</label>
+        <link refid="DisplacementFiniteStrainULElement_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp</label>
+        <link refid="DisplacementFiniteStrainULElement_8cpp"/>
+      </node>
+      <node id="6">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/include/Marmot/ADVonMises.h</label>
+        <link refid="ADVonMises_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMises.cpp</label>
+        <link refid="ADVonMises_8cpp"/>
+      </node>
+      <node id="8">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMisesRegistration.cpp</label>
+        <link refid="ADVonMisesRegistration_8cpp"/>
+      </node>
+      <node id="9">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/B4.h</label>
+        <link refid="B4_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4.cpp</label>
+        <link refid="B4_8cpp"/>
+      </node>
+      <node id="11">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp</label>
+        <link refid="B4Registration_8cpp"/>
+      </node>
+      <node id="12">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/include/Marmot/FiniteStrainJ2Plasticity.h</label>
+        <link refid="FiniteStrainJ2Plasticity_8h"/>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp</label>
+        <link refid="FiniteStrainJ2Plasticity_8cpp"/>
+      </node>
+      <node id="14">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2PlasticityRegistration.cpp</label>
+        <link refid="FiniteStrainJ2PlasticityRegistration_8cpp"/>
+      </node>
+      <node id="15">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/include/Marmot/LinearViscoelasticPowerLaw.h</label>
+        <link refid="LinearViscoelasticPowerLaw_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLaw.cpp</label>
+        <link refid="LinearViscoelasticPowerLaw_8cpp"/>
+      </node>
+      <node id="17">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLawRegistration.cpp</label>
+        <link refid="LinearViscoelasticPowerLawRegistration_8cpp"/>
+      </node>
+      <node id="18">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h</label>
+        <link refid="VonMises_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp</label>
+        <link refid="VonMises_8cpp"/>
+      </node>
+      <node id="20">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp</label>
+        <link refid="VonMisesRegistration_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classMarmotStateVarVectorManager" prot="public">MarmotStateVarVectorManager</innerclass>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" prot="protected">MarmotStateVarVectorManager::StateVarEntryDefinition</innerclass>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation" prot="protected">MarmotStateVarVectorManager::StateVarEntryLocation</innerclass>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" prot="protected">MarmotStateVarVectorManager::StateVarVectorLayout</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Matthias<sp/>Neuner<sp/>matthias.neuner@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotUtils_8h" kindref="compound">Marmot/MarmotUtils.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;unordered_map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="classMarmotStateVarVectorManager" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" kindref="member">MarmotStateVarVectorManager</ref><sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="41" refid="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/><ref refid="structStateView" kindref="compound">StateView</ref><sp/><ref refid="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" kindref="member">getStateView</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="42"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>entry<sp/>=<sp/><ref refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" kindref="member">theLayout</ref>.entries.at(<sp/>name<sp/>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref><sp/>+<sp/>entry.index,<sp/>entry.length<sp/>};</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">&amp;<sp/><ref refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" kindref="member">find</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name<sp/>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref>[<ref refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" kindref="member">theLayout</ref>.entries.at(<sp/>name<sp/>).index];<sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" kindref="member">contains</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>name<sp/>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" kindref="member">theLayout</ref>.entries.count(<sp/>name<sp/>);<sp/>}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="55" refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" kindref="compound">StateVarEntryDefinition</ref><sp/>{</highlight></codeline>
+<codeline lineno="56" refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition_1ab078bcd1432d8bce265780b1f30614b2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition_1ab078bcd1432d8bce265780b1f30614b2" kindref="member">name</ref>;</highlight></codeline>
+<codeline lineno="57" refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition_1a5dc3c2e6ae7017124a26ee5c08d4bb9e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition_1a5dc3c2e6ae7017124a26ee5c08d4bb9e" kindref="member">length</ref>;</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation" kindref="compound">StateVarEntryLocation</ref><sp/>{</highlight></codeline>
+<codeline lineno="62" refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation_1a64931f28694b5a7582ea2207bf0225b8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation_1a64931f28694b5a7582ea2207bf0225b8" kindref="member">index</ref>;</highlight></codeline>
+<codeline lineno="63" refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation_1a4941fde089ac245ca1b0e91e8f978162" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation_1a4941fde089ac245ca1b0e91e8f978162" kindref="member">length</ref>;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68" refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref><sp/>{</highlight></codeline>
+<codeline lineno="69" refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout_1a5af0d626c00ddde9d4c91ab3669a0bc4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;<sp/>std::string,<sp/>StateVarEntryLocation<sp/>&gt;<sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout_1a5af0d626c00ddde9d4c91ab3669a0bc4" kindref="member">entries</ref>;</highlight></codeline>
+<codeline lineno="70" refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout_1aec22f82dd4e3ab562445012e042a2dc9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout_1aec22f82dd4e3ab562445012e042a2dc9" kindref="member">nRequiredStateVars</ref>;</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref><sp/><ref refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" kindref="member">makeLayout</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;<sp/>StateVarEntryDefinition<sp/>&gt;&amp;<sp/>theEntries<sp/>)</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unordered_map&lt;<sp/>std::string,<sp/>StateVarEntryLocation<sp/>&gt;<sp/>theMap;</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sizeOccupied<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>theEntry<sp/>:<sp/>theEntries<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>nextLocation<sp/>=<sp/>sizeOccupied;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>theMap[theEntry.name]<sp/><sp/><sp/>=<sp/>{<sp/>nextLocation,<sp/>theEntry.length<sp/>};</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>sizeOccupied<sp/>+=<sp/>theEntry.length;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>{<sp/>theMap,<sp/>sizeOccupied<sp/>};</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref>;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref>&amp;<sp/><ref refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" kindref="member">theLayout</ref>;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" kindref="member">MarmotStateVarVectorManager</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref>&amp;<sp/>theLayout_<sp/>)</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref>(<sp/><ref refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" kindref="member">theStateVars</ref><sp/>),<sp/><ref refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" kindref="member">theLayout</ref>(<sp/>theLayout_<sp/>){};</highlight></codeline>
+<codeline lineno="94"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_numerical_algorithms" kind="namespace" language="C++">
+    <compoundname>Marmot::NumericalAlgorithms</compoundname>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper" prot="public">Marmot::NumericalAlgorithms::AdaptiveSubstepper</innerclass>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit" prot="public">Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</innerclass>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" prot="public">Marmot::NumericalAlgorithms::HughesWinget</innerclass>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper" prot="public">Marmot::NumericalAlgorithms::PerezFougetSubstepper</innerclass>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time" prot="public">Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</innerclass>
+    <innerclass refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager" prot="public">Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="32" column="3"/>
+  </compounddef>
+</doxygen>

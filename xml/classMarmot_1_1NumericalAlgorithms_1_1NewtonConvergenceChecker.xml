@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</compoundname>
+    <includes refid="NewtonConvergenceChecker_8h" local="no">NewtonConvergenceChecker.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ad8605aae8b895ed0600ac7c25bb66880" prot="private" static="no" mutable="no">
+        <type>const Eigen::VectorXd</type>
+        <definition>const Eigen::VectorXd Marmot::NumericalAlgorithms::NewtonConvergenceChecker::residualScaleVector</definition>
+        <argsstring></argsstring>
+        <name>residualScaleVector</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::residualScaleVector</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="34" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a622e44dd600da7b71575ade74ea2dd4f" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCycles</definition>
+        <argsstring></argsstring>
+        <name>nMaxNewtonCycles</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCycles</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="35" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1acd4b201bfb0b6e08effa680fe1489d99" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCyclesAlt</definition>
+        <argsstring></argsstring>
+        <name>nMaxNewtonCyclesAlt</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCyclesAlt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="36" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a8bf9da7eb37650032ec6241618743171" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTol</definition>
+        <argsstring></argsstring>
+        <name>newtonTol</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTol</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="37" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a6fd62e6a97833b98492f3bcc8b1fbf37" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTol</definition>
+        <argsstring></argsstring>
+        <name>newtonRTol</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTol</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="38" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a13782e51a5c34b7fd95313b975cc293e" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTolAlt</definition>
+        <argsstring></argsstring>
+        <name>newtonTolAlt</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTolAlt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="39" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a750be3f95eb419e13c55465590903829" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTolAlt</definition>
+        <argsstring></argsstring>
+        <name>newtonRTolAlt</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTolAlt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="40" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ad672a43f428fe56d5b60d00f592eb832" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::NewtonConvergenceChecker</definition>
+        <argsstring>(const Eigen::VectorXd &amp;residualScaleVector, int nMaxNewtonCycles, int nMaxNewtonCyclesAlt, double newtonTol, double newtonRTol, double newtonTolAlt, double newtonRTolAlt)</argsstring>
+        <name>NewtonConvergenceChecker</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::NewtonConvergenceChecker</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>residualScaleVector</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaxNewtonCycles</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaxNewtonCyclesAlt</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>newtonTol</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>newtonRTol</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>newtonTolAlt</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>newtonRTolAlt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/NewtonConvergenceChecker.cpp" bodystart="8" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ae6bc7b084c6bbd4d615fdf17135cc7f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::relativeNorm</definition>
+        <argsstring>(const Eigen::VectorXd &amp;increment, const Eigen::VectorXd &amp;reference)</argsstring>
+        <name>relativeNorm</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::relativeNorm</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>reference</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="51" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/NewtonConvergenceChecker.cpp" bodystart="25" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a0c83bb5716f67b9e4d5eb7b120565276" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::NewtonConvergenceChecker::residualNorm</definition>
+        <argsstring>(const Eigen::VectorXd &amp;Residual)</argsstring>
+        <name>residualNorm</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::residualNorm</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>Residual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="53" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/NewtonConvergenceChecker.cpp" bodystart="40" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1aafdaf780d88a50d18e2b2ef6085a630a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::NewtonConvergenceChecker::iterationFinished</definition>
+        <argsstring>(const Eigen::VectorXd &amp;residual, const Eigen::VectorXd &amp;X, const Eigen::VectorXd &amp;dX, int numberOfIterations)</argsstring>
+        <name>iterationFinished</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::iterationFinished</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>residual</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>dX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>numberOfIterations</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="55" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/NewtonConvergenceChecker.cpp" bodystart="45" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1aa61c80fd5f50e4cf3ea229b2e47f58c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::NewtonConvergenceChecker::isConverged</definition>
+        <argsstring>(const Eigen::VectorXd &amp;residual, const Eigen::VectorXd &amp;X, const Eigen::VectorXd &amp;dX, int numberOfIterations)</argsstring>
+        <name>isConverged</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::isConverged</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>residual</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>dX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>numberOfIterations</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="60" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/NewtonConvergenceChecker.cpp" bodystart="56" bodyend="73"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="32" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="32" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1aa61c80fd5f50e4cf3ea229b2e47f58c3" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>isConverged</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1aafdaf780d88a50d18e2b2ef6085a630a" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>iterationFinished</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ad672a43f428fe56d5b60d00f592eb832" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>NewtonConvergenceChecker</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a6fd62e6a97833b98492f3bcc8b1fbf37" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>newtonRTol</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a750be3f95eb419e13c55465590903829" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>newtonRTolAlt</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a8bf9da7eb37650032ec6241618743171" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>newtonTol</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a13782e51a5c34b7fd95313b975cc293e" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>newtonTolAlt</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a622e44dd600da7b71575ade74ea2dd4f" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>nMaxNewtonCycles</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1acd4b201bfb0b6e08effa680fe1489d99" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>nMaxNewtonCyclesAlt</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ae6bc7b084c6bbd4d615fdf17135cc7f1" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>relativeNorm</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1a0c83bb5716f67b9e4d5eb7b120565276" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>residualNorm</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1NewtonConvergenceChecker_1ad8605aae8b895ed0600ac7c25bb66880" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>residualScaleVector</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

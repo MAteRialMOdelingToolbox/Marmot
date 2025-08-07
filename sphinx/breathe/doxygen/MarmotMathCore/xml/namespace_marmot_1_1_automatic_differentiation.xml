@@ -1,0 +1,533 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_automatic_differentiation" kind="namespace" language="C++">
+    <compoundname>Marmot::AutomaticDifferentiation</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_automatic_differentiation_1_1_second_order">Marmot::AutomaticDifferentiation::SecondOrder</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; dual(const Fastor::Tensor&lt; dual, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type =  std::function&lt; dual( const Fastor::Tensor&lt; dual, Rest... &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="61" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; HigherOrderDual&lt; order, double &gt;( const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order =  std::function&lt; HigherOrderDual&lt; order, double &gt;(
+      const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type_arbitrary_dual_order</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="84" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1aee8267e1c1d89842e73fb874cdb80d0e" prot="public" static="no">
+        <type>std::function&lt; dual(const dual &amp;) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type =  std::function&lt; dual( const dual&amp; ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>scalar_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="138" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1ad17f2d76b0904d01b6249ada27eecdaf" prot="public" static="no">
+        <type>std::function&lt; dual2nd(const dual2nd &amp;) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type_2nd =  std::function&lt; dual2nd( const dual2nd&amp; ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>scalar_to_scalar_function_type_2nd</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type_2nd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="141" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a18ea932f42e59dd7f58875216ecd49e1" prot="public" static="no">
+        <type>std::function&lt; VectorXdual(const VectorXdual &amp;X) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::vector_to_vector_function_type_dual =  std::function&lt; VectorXdual( const VectorXdual&amp; X ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>vector_to_vector_function_type_dual</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::vector_to_vector_function_type_dual</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="144" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a8e858fa54bfb2c41332ce3dc7cf5e45c" prot="public" static="no">
+        <type>std::function&lt; VectorXdual2nd(const VectorXdual2nd &amp;X) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::vector_to_vector_function_type_dual2nd =  std::function&lt; VectorXdual2nd( const VectorXdual2nd&amp; X ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>vector_to_vector_function_type_dual2nd</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::vector_to_vector_function_type_dual2nd</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="147" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</definition>
+        <argsstring>(const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;in)</argsstring>
+        <name>increaseDualOrderWithShift</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="44" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="44" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T)</argsstring>
+        <name>df_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="64" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="64" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt;</type>
+        <definition>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
+        <argsstring>(const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T)</argsstring>
+        <name>df_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="88" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="88" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>RestF</declname>
+            <defname>RestF</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>RestT</declname>
+            <defname>RestT</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt;</type>
+        <definition>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt; Marmot::AutomaticDifferentiation::dF_dT</definition>
+        <argsstring>(std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T)</argsstring>
+        <name>dF_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::dF_dT</qualifiedname>
+        <param>
+          <type>std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, RestT... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="114" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="114" bodyend="144"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a37db7167c4a2d4cb39e61c2fec762760" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>dual2nd</type>
+        <definition>dual2nd Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</definition>
+        <argsstring>(const dual &amp;x)</argsstring>
+        <name>shiftTo2ndOrderDual</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</qualifiedname>
+        <param>
+          <type>const dual &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="40" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="40" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a0e33dd3b85e07ce522ba99b42af9565b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>VectorXdual2nd</type>
+        <definition>VectorXdual2nd Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</definition>
+        <argsstring>(const VectorXdual &amp;X)</argsstring>
+        <name>shiftTo2ndOrderDual</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</qualifiedname>
+        <param>
+          <type>const VectorXdual &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="41" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="41" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a965d13316fe41d118591690ba5928978" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>auto &amp;</type>
+        <definition>auto &amp; Marmot::AutomaticDifferentiation::valnode</definition>
+        <argsstring>(const Dual&lt; T, G &gt; &amp;dual)</argsstring>
+        <name>valnode</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::valnode</qualifiedname>
+        <param>
+          <type>const Dual&lt; T, G &gt; &amp;</type>
+          <declname>dual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="44" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="44" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a9ded965ad7faa15795d1ed43a1a26a4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>auto &amp;</type>
+        <definition>auto &amp; Marmot::AutomaticDifferentiation::valnode</definition>
+        <argsstring>(Dual&lt; T, G &gt; &amp;dual)</argsstring>
+        <name>valnode</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::valnode</qualifiedname>
+        <param>
+          <type>Dual&lt; T, G &gt; &amp;</type>
+          <declname>dual</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="56" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="56" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a9ad0d01310a119fdeb6dad14f737d478" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>autodiff::HigherOrderDual&lt; order+1, double &gt;</type>
+        <definition>autodiff::HigherOrderDual&lt; order+1, double &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</definition>
+        <argsstring>(const autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <name>increaseDualOrderWithShift</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</qualifiedname>
+        <param>
+          <type>const autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="69" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="69" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ad50a4452ffce2fcc7331b9873f0a6529" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>autodiff::HigherOrderDual&lt; order - 1, double &gt;</type>
+        <definition>autodiff::HigherOrderDual&lt; order - 1, double &gt; Marmot::AutomaticDifferentiation::decreaseDualOrder</definition>
+        <argsstring>(autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <name>decreaseDualOrder</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::decreaseDualOrder</qualifiedname>
+        <param>
+          <type>autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="87" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="87" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a19f193e335d4a3fac9f70a357057ab3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>autodiff::HigherOrderDual&lt; order - 1, double &gt;</type>
+        <definition>autodiff::HigherOrderDual&lt; order - 1, double &gt; Marmot::AutomaticDifferentiation::decreaseDualOrderWithShift</definition>
+        <argsstring>(autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <name>decreaseDualOrderWithShift</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::decreaseDualOrderWithShift</qualifiedname>
+        <param>
+          <type>autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="104" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="104" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ac362f99b3ea8baac95751c0ecd474165" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>Vector&lt; HigherOrderDual&lt; order+1, double &gt;, -1 &gt;</type>
+        <definition>Vector&lt; HigherOrderDual&lt; order+1, double &gt;, -1 &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</definition>
+        <argsstring>(const Vector&lt; HigherOrderDual&lt; order, double &gt;, -1 &gt; &amp;in)</argsstring>
+        <name>increaseDualOrderWithShift</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</qualifiedname>
+        <param>
+          <type>const Vector&lt; HigherOrderDual&lt; order, double &gt;, -1 &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="122" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="122" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ada497b02f84e8a978405d9eaa629d43b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::AutomaticDifferentiation::df_dx</definition>
+        <argsstring>(const scalar_to_scalar_function_type &amp;f, const double &amp;x)</argsstring>
+        <name>df_dx</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dx</qualifiedname>
+        <param>
+          <type>const scalar_to_scalar_function_type &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="139" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="139" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1abd064183bd43fcae3cd6078f9a150ab5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>dual</type>
+        <definition>dual Marmot::AutomaticDifferentiation::df_dx</definition>
+        <argsstring>(const scalar_to_scalar_function_type_2nd &amp;f, const dual &amp;x)</argsstring>
+        <name>df_dx</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dx</qualifiedname>
+        <param>
+          <type>const scalar_to_scalar_function_type_2nd &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const dual &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="142" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="142" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a37fa3eec636936303f0bb6ded3b3288d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; VectorXd, MatrixXd &gt;</type>
+        <definition>std::pair&lt; VectorXd, MatrixXd &gt; Marmot::AutomaticDifferentiation::dF_dX</definition>
+        <argsstring>(const vector_to_vector_function_type_dual &amp;F, const VectorXd &amp;X)</argsstring>
+        <name>dF_dX</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::dF_dX</qualifiedname>
+        <param>
+          <type>const vector_to_vector_function_type_dual &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="145" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="145" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1afe3a1926bfc33ef4201b9ddb3ffc3d19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; VectorXdual, MatrixXdual &gt;</type>
+        <definition>std::pair&lt; VectorXdual, MatrixXdual &gt; Marmot::AutomaticDifferentiation::dF_dX_2nd</definition>
+        <argsstring>(const vector_to_vector_function_type_dual2nd &amp;F, const VectorXdual &amp;X)</argsstring>
+        <name>dF_dX_2nd</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::dF_dX_2nd</qualifiedname>
+        <param>
+          <type>const vector_to_vector_function_type_dual2nd &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const VectorXdual &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="148" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="148" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="39" column="3"/>
+  </compounddef>
+</doxygen>

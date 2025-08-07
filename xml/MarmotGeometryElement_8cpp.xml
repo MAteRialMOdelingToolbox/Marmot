@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotGeometryElement_8cpp" kind="file" language="C++">
+    <compoundname>MarmotGeometryElement.cpp</compoundname>
+    <includes refid="MarmotGeometryElement_8h" local="yes">Marmot/MarmotGeometryElement.h</includes>
+    <incdepgraph>
+      <node id="10">
+        <label>Marmot/MarmotJournal.h</label>
+        <link refid="MarmotJournal_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotFiniteElement.h</label>
+        <link refid="MarmotFiniteElement_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotGeometryElement.h</label>
+        <link refid="MarmotGeometryElement_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotGeometryElement.cpp</label>
+        <link refid="MarmotGeometryElement_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="MarmotVoigt_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="6">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="19">
+        <label>algorithm</label>
+      </node>
+      <node id="17">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="20">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="18">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="16">
+        <label>cmath</label>
+      </node>
+      <node id="21">
+        <label>complex</label>
+      </node>
+      <node id="11">
+        <label>iostream</label>
+      </node>
+      <node id="22">
+        <label>map</label>
+      </node>
+      <node id="12">
+        <label>sstream</label>
+      </node>
+      <node id="13">
+        <label>string</label>
+      </node>
+      <node id="7">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="8">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotGeometryElement_8h" kindref="compound">Marmot/MarmotGeometryElement.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Eigen;</highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Template<sp/>Specialization<sp/>for<sp/>Shape<sp/>functions.</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>These<sp/>(full)<sp/>specializations<sp/>are<sp/>precompiled<sp/>into<sp/>the<sp/>current<sp/>static<sp/>marmotMechanics.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>Thus,<sp/>they<sp/>act<sp/>as<sp/>static<sp/>links<sp/>to<sp/>the<sp/>corresponding<sp/>FiniteElement<sp/>functions.</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>For<sp/>a<sp/>new<sp/>element,<sp/>please<sp/>specialize<sp/>ALL<sp/>functions.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Bar2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="16"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar2_1a5e2b890c91c0ffcfc6727723d22d95d7" kindref="member">Marmot::FiniteElement::Spatial1D::Bar2::N</ref>(<sp/>xi(<sp/>0<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="22"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad4_1a67c298defe1daafae86c7d5af1108d2b" kindref="member">Marmot::FiniteElement::Spatial2D::Quad4::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="28"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad8_1a29efde8252cce1d361b52910d7a5f359" kindref="member">Marmot::FiniteElement::Spatial2D::Quad8::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="30"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="34"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a4e029800f24cba1ee83b9a1078663bca" kindref="member">Marmot::FiniteElement::Spatial3D::Tetra4::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="36"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="40"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra10_1aa61b8ee103030d86d3b6f847f6a2e467" kindref="member">Marmot::FiniteElement::Spatial3D::Tetra10::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="46"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa8_1afc17ec3655d6863b6db3b3a5d710416c" kindref="member">Marmot::FiniteElement::Spatial3D::Hexa8::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="48"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::NSized</ref><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="52"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa20_1a4ca0e44409ae6ef6a3770041157efd22" kindref="member">Marmot::FiniteElement::Spatial3D::Hexa20::N</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="54"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Template<sp/>Specialization<sp/>for<sp/>Shape<sp/>functions<sp/>derivatives.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Bar2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="61"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial1D_1_1Bar2_1a1c15d7c8a1608a7944b967fc40f547ff" kindref="member">Marmot::FiniteElement::Spatial1D::Bar2::dNdXi</ref>(<sp/>xi(<sp/>0<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="67"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad4_1a4792fb78d565c443a8faa0609c13215b" kindref="member">Marmot::FiniteElement::Spatial2D::Quad4::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="73"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1_1Quad8_1aa87b75492a4f77536a093ff04446aa9e" kindref="member">Marmot::FiniteElement::Spatial2D::Quad8::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="79"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra4_1a872ae2ba2db31453c233fcbe427bd8de" kindref="member">Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="85"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Tetra10_1a9e54ae4e5432162afb9199a9bd9eca45" kindref="member">Marmot::FiniteElement::Spatial3D::Tetra10::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="87"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="91"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa8_1abcc74f713bfe55de59c4ce065a28dc9b" kindref="member">Marmot::FiniteElement::Spatial3D::Hexa8::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>XiSized&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="97"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1_1Hexa20_1ad6ad49f14faa50607c74c8de70651a23" kindref="member">Marmot::FiniteElement::Spatial3D::Hexa20::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="99"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Template<sp/>Specialization<sp/>for<sp/>B<sp/>Operator</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/>Note<sp/>that<sp/>partial<sp/>template<sp/>specialization<sp/>(i.e.,<sp/>for<sp/>all<sp/>nDim=2<sp/>and<sp/>all<sp/>nDim=3)<sp/>is<sp/>not<sp/>valid<sp/>for</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/>methods<sp/>(only<sp/>for<sp/>classes)<sp/>in<sp/>C++,<sp/>and,<sp/>hence,<sp/>the<sp/>B<sp/>Operator<sp/>must<sp/>be<sp/>specialized<sp/>for<sp/>each</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/>nDim/nNodes<sp/>combination<sp/>individually.</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>TODO:<sp/>Replace<sp/>by<sp/>constexpr<sp/>if<sp/>expression<sp/>for<sp/>each<sp/>dimension<sp/>-&gt;<sp/>get<sp/>rid<sp/>of<sp/>partial<sp/>specializations;<sp/>full</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/>specialization<sp/>should<sp/>be<sp/>possible</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Bar2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="115"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dNdX;</highlight></codeline>
+<codeline lineno="117"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="121"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1ada0d34515ab4a50ec6110fb2ab92f0e5" kindref="member">Marmot::FiniteElement::Spatial2D::B&lt; 4 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="123"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="127"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1ada0d34515ab4a50ec6110fb2ab92f0e5" kindref="member">Marmot::FiniteElement::Spatial2D::B&lt; 8 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="133"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1ae91a2140ff7f2d2a1b64a0265172076b" kindref="member">Marmot::FiniteElement::Spatial3D::B&lt; 4 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="139"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1ae91a2140ff7f2d2a1b64a0265172076b" kindref="member">Marmot::FiniteElement::Spatial3D::B&lt; 10 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="145"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1ae91a2140ff7f2d2a1b64a0265172076b" kindref="member">Marmot::FiniteElement::Spatial3D::B&lt; 8 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/>dNdX<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="151"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1ae91a2140ff7f2d2a1b64a0265172076b" kindref="member">Marmot::FiniteElement::Spatial3D::B&lt; 20 &gt;</ref>(<sp/>dNdX<sp/>);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Bar2</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 1, 2 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="159"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dNdX<sp/>*<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1EAS_1a8849b2e477cdf62cfca5cf2614256c91" kindref="member">F</ref>(<sp/>0,<sp/>0<sp/>);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 2, 4 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="166"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1adf88a1803e973583381698714dc1a4c3" kindref="member">Marmot::FiniteElement::Spatial2D::BGreen&lt; 4 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Quad8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 2, 8 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="173"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial2D_1adf88a1803e973583381698714dc1a4c3" kindref="member">Marmot::FiniteElement::Spatial2D::BGreen&lt; 8 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra4</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 3, 4 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="180"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a25bad83ac39f67fa7614d855c823a4b1" kindref="member">Marmot::FiniteElement::Spatial3D::BGreen&lt; 4 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="182"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Tetra10</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 3, 10 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="187"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a25bad83ac39f67fa7614d855c823a4b1" kindref="member">Marmot::FiniteElement::Spatial3D::BGreen&lt; 10 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa8</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 3, 8 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="194"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a25bad83ac39f67fa7614d855c823a4b1" kindref="member">Marmot::FiniteElement::Spatial3D::BGreen&lt; 8 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="196"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Hexa20</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;&gt;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::BSized</ref><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">MarmotGeometryElement&lt; 3, 20 &gt;::BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>dNdXiSized&amp;<sp/><sp/><sp/><sp/>dNdX,</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>JacobianSized&amp;<sp/>F<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="201"><highlight class="keyword"></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Spatial3D_1a25bad83ac39f67fa7614d855c823a4b1" kindref="member">Marmot::FiniteElement::Spatial3D::BGreen&lt; 20 &gt;</ref>(<sp/>dNdX,<sp/>F<sp/>);</highlight></codeline>
+<codeline lineno="203"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotGeometryElement.cpp"/>
+  </compounddef>
+</doxygen>

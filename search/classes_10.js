@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['uniaxialcompliancecomponents_1249',['UniaxialComplianceComponents',['../namespaceMarmot_1_1Materials_1_1SolidificationTheory.html#structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents',1,'Marmot::Materials::SolidificationTheory']]]
-];

@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_common_tensors" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::CommonTensors</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a19e903c99f721cb9a86a8613f35794a0" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::I2xI2</definition>
+        <argsstring></argsstring>
+        <name>I2xI2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::I2xI2</qualifiedname>
+        <initializer>= Initialize_I2xI2()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="38" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1aad74cf6891e87ab6df1f6db6ee2ccb86" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Isym</definition>
+        <argsstring></argsstring>
+        <name>Isym</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Isym</qualifiedname>
+        <initializer>= Initialize_Isym()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="41" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a39e22eecd0896eb7b3c4158fdb25340e" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Iskew</definition>
+        <argsstring></argsstring>
+        <name>Iskew</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Iskew</qualifiedname>
+        <initializer>= Initialize_Iskew()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="44" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1ab12fa46f0ae9374c111d07cfd88e44d6" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</definition>
+        <argsstring></argsstring>
+        <name>IFourthOrder</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</qualifiedname>
+        <initializer>= Initialize_IFourthOrder()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="47" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a488003e8a0f1a7cc17e2d27346b4aaea" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</definition>
+        <argsstring></argsstring>
+        <name>IFourthOrderTranspose</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</qualifiedname>
+        <initializer>= Initialize_IFourthOrderTranspose()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="50" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1ab61d497f8e353bb4bc27882c95128e9a" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor3333d</type>
+        <definition>const EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::dDeviatoricStress_dStress</definition>
+        <argsstring></argsstring>
+        <name>dDeviatoricStress_dStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::dDeviatoricStress_dStress</qualifiedname>
+        <initializer>= Initialize_dDeviatoricStress_dStress()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="53" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a127950653ef345e8a45df1e68393c6f1" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor333d</type>
+        <definition>const EigenTensors::Tensor333d Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</definition>
+        <argsstring></argsstring>
+        <name>LeviCivita3D</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</qualifiedname>
+        <initializer>= Initialize_LeviCivita3D()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="57" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1ad015d8c33b0fa498d7d134ff5eef088c" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor122d</type>
+        <definition>const EigenTensors::Tensor122d Marmot::ContinuumMechanics::CommonTensors::LeviCivita2D</definition>
+        <argsstring></argsstring>
+        <name>LeviCivita2D</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita2D</qualifiedname>
+        <initializer>= Initialize_LeviCivita2D()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="60" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a10408a9dd177b0db5d1090e60ebf7101" prot="public" static="no" mutable="no">
+        <type>const EigenTensors::Tensor33d</type>
+        <definition>const EigenTensors::Tensor33d Marmot::ContinuumMechanics::CommonTensors::I2</definition>
+        <argsstring></argsstring>
+        <name>I2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::I2</qualifiedname>
+        <initializer>= Initialize_I2()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="63" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_tensor_8h_1a294e73f136b9d0537eb4f44a8ccc069b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_I2xI2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="37" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="37" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1abe2ec276be4c69f07782ca5ea45208da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_Isym</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="40" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="40" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a6933ca3d6e37a17d22ebd6cb459b48f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_Iskew</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="43" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="43" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1ab947cce47c424defd38ea12a9361d99a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_IFourthOrder</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="46" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="46" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a7a0d6e2cef1957f9d6849c030048fe4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_IFourthOrderTranspose</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="49" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="49" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1af1b7284bd72f72f5c1a8eba5ff2777cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::CommonTensors::Initialize_dDeviatoricStress_dStress</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_dDeviatoricStress_dStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_dDeviatoricStress_dStress</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="52" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="52" declcolumn="44"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a277603293083202670dea34ba8419f52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor333d</type>
+        <definition>EigenTensors::Tensor333d Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_LeviCivita3D</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="56" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="56" declcolumn="43"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1aa71fa4e4ab90faf29c8b986cdd4d338f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor122d</type>
+        <definition>EigenTensors::Tensor122d Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita2D</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_LeviCivita2D</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita2D</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="59" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="59" declcolumn="43"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a7e62eda2768a59c6741e1c685bb025f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor33d</type>
+        <definition>EigenTensors::Tensor33d Marmot::ContinuumMechanics::CommonTensors::Initialize_I2</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_I2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_I2</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="62" column="42" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="62" declcolumn="42"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a5229823769d5624c62579865562937de" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::ContinuumMechanics::CommonTensors::getNumberOfDofForRotation</definition>
+        <argsstring>(int nDim)</argsstring>
+        <name>getNumberOfDofForRotation</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::getNumberOfDofForRotation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="65" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="65" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a7f73b30be7e214878bf9ce8e3daed929" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>sizeI</declname>
+            <defname>sizeI</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>sizeJ</declname>
+            <defname>sizeJ</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, sizeI *sizeJ, sizeI *sizeJ &gt;</type>
+        <definition>Eigen::Matrix&lt; double, sizeI *sizeJ, sizeI *sizeJ &gt; Marmot::ContinuumMechanics::CommonTensors::makeIndexSwapTensor</definition>
+        <argsstring>()</argsstring>
+        <name>makeIndexSwapTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::makeIndexSwapTensor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="74" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="74" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a025b1717b8d0c6288b7dd4ae6dabb8b0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; getNumberOfDofForRotation(nDim), nDim, nDim &gt; &gt;</type>
+        <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; getNumberOfDofForRotation(nDim), nDim, nDim &gt; &gt; Marmot::ContinuumMechanics::CommonTensors::getReferenceToCorrectLeviCivita</definition>
+        <argsstring>()</argsstring>
+        <name>getReferenceToCorrectLeviCivita</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::getReferenceToCorrectLeviCivita</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="109" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="109" bodyend="119"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="35" column="3"/>
+  </compounddef>
+</doxygen>

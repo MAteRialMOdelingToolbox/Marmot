@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::UniaxialStress</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1ad85ade68dbdb13a6679a15de717a8b75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent</definition>
+        <argsstring>(const Eigen::Ref&lt; const Matrix6d &gt; &amp;C)</argsstring>
+        <name>getUniaxialStressTangent</name>
+        <qualifiedname>Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent</qualifiedname>
+        <param>
+          <type>const Eigen::Ref&lt; const Matrix6d &gt; &amp;</type>
+          <declname>C</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Extract the uniaxial stress-strain tangent <formula id="0">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> from a given three-dimensional stiffness matrix.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3D stiffness matrix <formula id="1">$\mathbb{C}$</formula> given in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="40" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="40" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="33" column="3"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
+  <compound refid="class_marmot_element" kind="class"><name>MarmotElement</name>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461b" kind="enum"><name>StateTypes</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461ba9919c9bf8e81e625b0ef939135057c33" kind="enumvalue"><name>Sigma11</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461ba004802ab7fa7333f2ee4befa956fdf46" kind="enumvalue"><name>Sigma22</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461bafb0c1c00ee0276765fe91c1025f85eae" kind="enumvalue"><name>Sigma33</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461bad98c67ed44a4c287a2f0cc24f9f4b308" kind="enumvalue"><name>HydrostaticStress</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461babd03e131da1d15661c83709bd73e4b29" kind="enumvalue"><name>GeostaticStress</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461ba072722a8e13849214e5f9d9e91369638" kind="enumvalue"><name>MarmotMaterialStateVars</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461bac75fa00de9a254e2580be91551f64bbf" kind="enumvalue"><name>MarmotMaterialInitialization</name></member>
+    <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5" kind="enum"><name>DistributedLoadTypes</name></member>
+    <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a925aa06a4447e235a742f1402ec1317e" kind="enumvalue"><name>Pressure</name></member>
+    <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751" kind="enumvalue"><name>SurfaceTorsion</name></member>
+    <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a8b2fd18c8c59a5f5ad857989b54c1482" kind="enumvalue"><name>SurfaceTraction</name></member>
+    <member refid="class_marmot_element_1ae852bc0749f00720d9d07b6432bc77ab" kind="function"><name>~MarmotElement</name></member>
+    <member refid="class_marmot_element_1a7009a873b60e587bcad34151f92f7f4d" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_element_1a2d009fe01070ba3eb7709a900584da11" kind="function"><name>getNodeFields</name></member>
+    <member refid="class_marmot_element_1a63cb2bc783e871569531909f68649ebe" kind="function"><name>getDofIndicesPermutationPattern</name></member>
+    <member refid="class_marmot_element_1a99bcebd80c0c31c3e4705df9c37c41e6" kind="function"><name>getNNodes</name></member>
+    <member refid="class_marmot_element_1ad1a33ff7a88486bc689467fc931c207c" kind="function"><name>getNSpatialDimensions</name></member>
+    <member refid="class_marmot_element_1a17dc4c334219f62511f554133c00579c" kind="function"><name>getNDofPerElement</name></member>
+    <member refid="class_marmot_element_1ab38da2001626ad74a3bc4f95ba144a2f" kind="function"><name>getElementShape</name></member>
+    <member refid="class_marmot_element_1a51789466344c5a3437cd4e07d7996313" kind="function"><name>assignStateVars</name></member>
+    <member refid="class_marmot_element_1a2d05121938f57f6bc969774ac384f1e5" kind="function"><name>assignProperty</name></member>
+    <member refid="class_marmot_element_1accde07ef0b65f8ae46108fcbc793dc59" kind="function"><name>assignProperty</name></member>
+    <member refid="class_marmot_element_1ab43a5fd29bebd1d7b5129bcb51fb192b" kind="function"><name>assignNodeCoordinates</name></member>
+    <member refid="class_marmot_element_1ad2fee3bfc78fa49a28ceded4aaa3f836" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_element_1a8dada12f443d996232e95326b39abed7" kind="function"><name>setInitialConditions</name></member>
+    <member refid="class_marmot_element_1abbef3863159574d0bc93aa9c327cb493" kind="function"><name>computeYourself</name></member>
+    <member refid="class_marmot_element_1ac68956668d34ac2ddac545ff2ce56004" kind="function"><name>computeDistributedLoad</name></member>
+    <member refid="class_marmot_element_1aa0ef25e441523e4d36b748e83a4270b5" kind="function"><name>computeBodyForce</name></member>
+    <member refid="class_marmot_element_1aed752615a4b8434456de9baf1b5a9e24" kind="function"><name>computeLumpedInertia</name></member>
+    <member refid="class_marmot_element_1a898fde1c6644d2f2b5b10d6f6e6dd5fb" kind="function"><name>computeConsistentInertia</name></member>
+    <member refid="class_marmot_element_1a37cadc2b9f7d4a1dcaec9830409acaa6" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_element_1a6aec5b505f89d2fca61b77befd2f06b7" kind="function"><name>getCoordinatesAtCenter</name></member>
+    <member refid="class_marmot_element_1a5f54e04668ce71f4625a1ed876301d82" kind="function"><name>getCoordinatesAtQuadraturePoints</name></member>
+    <member refid="class_marmot_element_1ac11861d5a592a26562cae1abf2620d28" kind="function"><name>getNumberOfQuadraturePoints</name></member>
+  </compound>
+  <compound refid="class_marmot_library_1_1_marmot_element_factory" kind="class"><name>MarmotLibrary::MarmotElementFactory</name>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1ae394656803a0a24bf0d28d30b71e7835" kind="typedef"><name>elementFactoryFunction</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1a6717ae33a476b00ab5c8d416aab0eb13" kind="variable"><name>elementNameToCodeAssociation</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1a88b13cdb17d7a423496951d1e5a618c1" kind="variable"><name>elementFactoryFunctionByCode</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1a2019ce425f5e70a43311244bdb2ac5bb" kind="function"><name>MarmotElementFactory</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1a0e0a58a452ccb7810f4f15f54f8f39d1" kind="function"><name>getElementCodeFromName</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1aee09a186ffe83d877afa17edf24ca47c" kind="function"><name>createElement</name></member>
+    <member refid="class_marmot_library_1_1_marmot_element_factory_1a2bd350db17bb7f356272a58bc94b60aa" kind="function"><name>registerElement</name></member>
+  </compound>
+  <compound refid="class_marmot_material" kind="class"><name>MarmotMaterial</name>
+    <member refid="class_marmot_material_1a0f631d6ec14531146ec683712a085960" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_material_1a0b6c5faf3cb8abd50c67146dad8c175a" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_material_1a3153122a8c7819cc306d6d35378cf414" kind="variable"><name>stateVars</name></member>
+    <member refid="class_marmot_material_1a9b7554e1cb090e36004b1590f6cdb73c" kind="variable"><name>nStateVars</name></member>
+    <member refid="class_marmot_material_1a31bc9f9283f984f5d78685d82e764edd" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_material_1a395b074d78052f5e58220cfeda65c5bd" kind="function"><name>MarmotMaterial</name></member>
+    <member refid="class_marmot_material_1a33fd1c89a919e8b0d396eb846614c815" kind="function"><name>~MarmotMaterial</name></member>
+    <member refid="class_marmot_material_1a16e96c33fdc77ddd5aa98ffbbca1577d" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_material_1a9644446a593632d0da2462bdeb43e25c" kind="function"><name>assignStateVars</name></member>
+    <member refid="class_marmot_material_1acc7dfa70f71415b2c9b562a9fafe64d1" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_material_1a6ac833544ecb4bc447d73e1126b4a46a" kind="function"><name>getAssignedStateVars</name></member>
+    <member refid="class_marmot_material_1ac2e855ed98253c5f426735bc251771dd" kind="function"><name>getNumberOfAssignedStateVars</name></member>
+    <member refid="class_marmot_material_1a9d6615f62d1e33ab694f3e889dba203f" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_material_1a16ef751ebc410cb5173cb65a2e43e1ec" kind="function"><name>getDensity</name></member>
+  </compound>
+  <compound refid="class_marmot_library_1_1_marmot_material_factory" kind="class"><name>MarmotLibrary::MarmotMaterialFactory</name>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1a3e01b88a5e83b50fd7f36080fe91ef00" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1a6a4fc74ffd40c3334b05c50b5b6823bc" kind="variable"><name>materialNameToCodeAssociation</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1ac0a79d5afa4f8fb5a299d96e5f45cf55" kind="variable"><name>materialFactoryFunctionByCode</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1aaf60fde055aece6afe56579cf2e2b75a" kind="function"><name>MarmotMaterialFactory</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1ac35d1c3f7f439a1ab5fba679e33c07e6" kind="function"><name>getMaterialCodeFromName</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1afe0ab6d9fa686c579401d630bae804d8" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_library_1_1_marmot_material_factory_1a3a5ca7e1f28cc4b8f8a34fd035d1e738" kind="function"><name>registerMaterial</name></member>
+  </compound>
+  <compound refid="namespace_marmot_library" kind="namespace"><name>MarmotLibrary</name>
+  </compound>
+  <compound refid="_marmot_8h" kind="file"><name>Marmot.h</name>
+  </compound>
+  <compound refid="_marmot_element_8h" kind="file"><name>MarmotElement.h</name>
+  </compound>
+  <compound refid="_marmot_material_8h" kind="file"><name>MarmotMaterial.h</name>
+  </compound>
+  <compound refid="dir_d44c64559bbebec7f509842c48db8b23" kind="dir"><name>/home/runner/work/Marmot/Marmot/include</name>
+  </compound>
+  <compound refid="dir_6a0efcfc33c579c580af4998f714f1d6" kind="dir"><name>/home/runner/work/Marmot/Marmot/include/Marmot</name>
+  </compound>
+</doxygenindex>

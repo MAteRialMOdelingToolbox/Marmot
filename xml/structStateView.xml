@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="structStateView" kind="struct" language="C++" prot="public">
+    <compoundname>StateView</compoundname>
+    <includes refid="MarmotUtils_8h" local="no">MarmotUtils.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structStateView_1a36a36a4b042dd08eae9bbdc1071f4abb" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* StateView::stateLocation</definition>
+        <argsstring></argsstring>
+        <name>stateLocation</name>
+        <qualifiedname>StateView::stateLocation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" line="30" column="10" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structStateView_1aba92824616071cea7209bb5181cd55e0" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int StateView::stateSize</definition>
+        <argsstring></argsstring>
+        <name>stateSize</name>
+        <qualifiedname>StateView::stateSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" line="31" column="11" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" bodystart="31" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" line="29" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotUtils.h" bodystart="29" bodyend="32"/>
+    <listofallmembers>
+      <member refid="structStateView_1a36a36a4b042dd08eae9bbdc1071f4abb" prot="public" virt="non-virtual"><scope>StateView</scope><name>stateLocation</name></member>
+      <member refid="structStateView_1aba92824616071cea7209bb5181cd55e0" prot="public" virt="non-virtual"><scope>StateView</scope><name>stateSize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

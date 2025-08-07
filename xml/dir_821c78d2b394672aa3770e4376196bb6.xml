@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_821c78d2b394672aa3770e4376196bb6" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src</compoundname>
+    <innerfile refid="MarmotAutomaticDifferentiation_8cpp">MarmotAutomaticDifferentiation.cpp</innerfile>
+    <innerfile refid="MarmotMath_8cpp">MarmotMath.cpp</innerfile>
+    <innerfile refid="MarmotNumericalDifferentiation_8cpp">MarmotNumericalDifferentiation.cpp</innerfile>
+    <innerfile refid="MarmotNumericalIntegration_8cpp">MarmotNumericalIntegration.cpp</innerfile>
+    <innerfile refid="MarmotTensor_8cpp">MarmotTensor.cpp</innerfile>
+    <innerfile refid="NewtonConvergenceChecker_8cpp">NewtonConvergenceChecker.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/"/>
+  </compounddef>
+</doxygen>

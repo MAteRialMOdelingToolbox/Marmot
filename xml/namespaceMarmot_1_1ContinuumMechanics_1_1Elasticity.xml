@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Elasticity</compoundname>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Isotropic">Marmot::ContinuumMechanics::Elasticity::Isotropic</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1Orthotropic">Marmot::ContinuumMechanics::Elasticity::Orthotropic</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity_1_1TransverseIsotropic">Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="40" column="5"/>
+  </compounddef>
+</doxygen>

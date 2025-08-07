@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_a55c496f430aa4275197c786dabe211f" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/materials</compoundname>
+    <innerdir refid="dir_66ef614a772dffad2e180958dd6e79b3">/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic</innerdir>
+    <innerdir refid="dir_7ca8b55f8b1d4702ff1227ed6e19defa">/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises</innerdir>
+    <innerdir refid="dir_6966945b8e7b69101907236080328441">/home/runner/work/Marmot/Marmot/modules/materials/B4</innerdir>
+    <innerdir refid="dir_29de6dc9ea64e7254bbbda11ff5bd6c8">/home/runner/work/Marmot/Marmot/modules/materials/CompressibleNeoHooke</innerdir>
+    <innerdir refid="dir_984035e4ceb50f91b954fb0fb05c5bde">/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity</innerdir>
+    <innerdir refid="dir_d7d0bb0bcbd88dad2113f443530919ad">/home/runner/work/Marmot/Marmot/modules/materials/LinearElastic</innerdir>
+    <innerdir refid="dir_0ed2ed42fec84478d47cb7fd5e634746">/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw</innerdir>
+    <innerdir refid="dir_480ae59bc4698372f3423da8b38d3be1">/home/runner/work/Marmot/Marmot/modules/materials/VonMises</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/"/>
+  </compounddef>
+</doxygen>

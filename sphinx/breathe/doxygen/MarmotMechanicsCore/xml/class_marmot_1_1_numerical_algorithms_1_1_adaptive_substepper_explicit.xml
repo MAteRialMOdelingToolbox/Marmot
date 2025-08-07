@@ -1,0 +1,816 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</compoundname>
+    <templateparamlist>
+      <param>
+        <type>size_t</type>
+        <declname>materialTangentSize</declname>
+        <defname>materialTangentSize</defname>
+      </param>
+      <param>
+        <type>size_t</type>
+        <declname>nIntegrationDependentStateVars</declname>
+        <defname>nIntegrationDependentStateVars</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-type">
+      <memberdef kind="enum" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9" prot="private" static="no" strong="no">
+        <type></type>
+        <name>SubsteppingState</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::SubsteppingState</qualifiedname>
+        <enumvalue id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9ac23fac61657efb24e68f79676aa766d7" prot="private">
+          <name>FullStep</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9a681fdd75b0cda3b75a34477f7438b89e" prot="private">
+          <name>FirstHalfStep</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9acbd1ee0edf513366eb4e377e98594fc8" prot="private">
+          <name>SecondHalfStep</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="112" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="112" bodyend="112"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, materialTangentSize, materialTangentSize &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, materialTangentSize, materialTangentSize &gt; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::TangentSizedMatrix</definition>
+        <argsstring></argsstring>
+        <name>TangentSizedMatrix</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::TangentSizedMatrix</qualifiedname>
+        <briefdescription>
+<para>Matrix for describing the nonlinear equation system of the return mapping algorithm. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="43" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a18e757585a1694b5112c152b72641224" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, materialTangentSize, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, materialTangentSize, 6 &gt; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::MatrixStateStrain</definition>
+        <argsstring></argsstring>
+        <name>MatrixStateStrain</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::MatrixStateStrain</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="44" column="45" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae7500cb5b84cedd58fb2e4526f7c92f3" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::IntegrationStateVector</definition>
+        <argsstring></argsstring>
+        <name>IntegrationStateVector</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::IntegrationStateVector</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="45" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a1609c9587d364a95bfae3c1cf57b569a" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::initialStepSize</definition>
+        <argsstring></argsstring>
+        <name>initialStepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::initialStepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="84" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8131c893168effa6c680c2278311b577" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::minimumStepSize</definition>
+        <argsstring></argsstring>
+        <name>minimumStepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::minimumStepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="84" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6f7edfab60fc9994b0087668a88e7621" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::maxScaleUpFactor</definition>
+        <argsstring></argsstring>
+        <name>maxScaleUpFactor</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::maxScaleUpFactor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="84" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a70fdca9effd945b3a38935bf618b5624" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::scaleDownFactor</definition>
+        <argsstring></argsstring>
+        <name>scaleDownFactor</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::scaleDownFactor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="84" column="67" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab15ef9282e559df2fecd124ad5272b03" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::integrationErrorTolerance</definition>
+        <argsstring></argsstring>
+        <name>integrationErrorTolerance</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::integrationErrorTolerance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="84" column="83" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aadc4b8b54be4c536a309fae0b006ade3" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::nPassesToIncrease</definition>
+        <argsstring></argsstring>
+        <name>nPassesToIncrease</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::nPassesToIncrease</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="85" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af17614279095f8351a96edb4c749d470" prot="private" static="no" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::ignoreErrorToleranceOnMinimumStepSize</definition>
+        <argsstring></argsstring>
+        <name>ignoreErrorToleranceOnMinimumStepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::ignoreErrorToleranceOnMinimumStepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="86" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a5eae7b38760044227e8087c4e6c36a7a" prot="private" static="no" mutable="no">
+        <type>const Matrix6d &amp;</type>
+        <definition>const Matrix6d&amp; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::Cel</definition>
+        <argsstring></argsstring>
+        <name>Cel</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::Cel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="88" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ac3f877be1dfd17ce5f0cbfa6d53f93cc" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::currentProgress</definition>
+        <argsstring></argsstring>
+        <name>currentProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::currentProgress</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="89" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a7852f38203713d4c84446ed4dcaf192b" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::currentSubstepSize</definition>
+        <argsstring></argsstring>
+        <name>currentSubstepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::currentSubstepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="90" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abbe236370d44ed528ac247de92ad0f75" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::passedSubsteps</definition>
+        <argsstring></argsstring>
+        <name>passedSubsteps</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::passedSubsteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="91" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abea210af5f847b3293e1b9377b1e15f9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::substepIndex</definition>
+        <argsstring></argsstring>
+        <name>substepIndex</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::substepIndex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="92" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4623ffc89ba02065b1da9163e6729177" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::discardedDueToError</definition>
+        <argsstring></argsstring>
+        <name>discardedDueToError</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::discardedDueToError</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="93" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab5f1d2f889b673c58482483ec31968b1" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgress</definition>
+        <argsstring></argsstring>
+        <name>stressProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stressProgress</qualifiedname>
+        <briefdescription>
+<para>internal storages for the progress of the total increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="96" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afbaa60dde4f1df4da1fec91b21dfbd65" prot="private" static="no" mutable="no">
+        <type>IntegrationStateVector</type>
+        <definition>IntegrationStateVector Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgress</definition>
+        <argsstring></argsstring>
+        <name>stateProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stateProgress</qualifiedname>
+        <briefdescription>
+<para>internal storages for the progress of the total increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="98" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1add10f15d7cbe0b26fec08c74930bf642" prot="private" static="no" mutable="no">
+        <type>MatrixStateStrain</type>
+        <definition>MatrixStateStrain Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgress</definition>
+        <argsstring></argsstring>
+        <name>consistentTangentProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::consistentTangentProgress</qualifiedname>
+        <briefdescription>
+<para>internal storages for the progress of the total increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="100" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a81aad97c51acc09cf2607f179f267892" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressHalfTemp</definition>
+        <argsstring></argsstring>
+        <name>stressProgressHalfTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stressProgressHalfTemp</qualifiedname>
+        <briefdescription>
+<para>temporal storages, which are used until a cycle full/half/half has finished successfully </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="103" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a34db0a103644d29a78d6431aced6200c" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stressProgressFullTemp</definition>
+        <argsstring></argsstring>
+        <name>stressProgressFullTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stressProgressFullTemp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="103" column="45" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a0d5da0e0f016eb9c67f196bcefb13402" prot="private" static="no" mutable="no">
+        <type>IntegrationStateVector</type>
+        <definition>IntegrationStateVector Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressHalfTemp</definition>
+        <argsstring></argsstring>
+        <name>stateProgressHalfTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stateProgressHalfTemp</qualifiedname>
+        <briefdescription>
+<para>temporal storages, which are used until a cycle full/half/half has finished successfully </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="105" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05bd9b581b7bf74db3a33a6631fcb3d1" prot="private" static="no" mutable="no">
+        <type>IntegrationStateVector</type>
+        <definition>IntegrationStateVector Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::stateProgressFullTemp</definition>
+        <argsstring></argsstring>
+        <name>stateProgressFullTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::stateProgressFullTemp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="105" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa70379e5458513a3694b56ef3d958500" prot="private" static="no" mutable="no">
+        <type>MatrixStateStrain</type>
+        <definition>MatrixStateStrain Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressHalfTemp</definition>
+        <argsstring></argsstring>
+        <name>consistentTangentProgressHalfTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::consistentTangentProgressHalfTemp</qualifiedname>
+        <briefdescription>
+<para>temporal storages, which are used until a cycle full/half/half has finished successfully </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="107" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af4c8d5a3af9b1dc9b68aa785c82e1f21" prot="private" static="no" mutable="no">
+        <type>MatrixStateStrain</type>
+        <definition>MatrixStateStrain Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::consistentTangentProgressFullTemp</definition>
+        <argsstring></argsstring>
+        <name>consistentTangentProgressFullTemp</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::consistentTangentProgressFullTemp</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="107" column="57" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae41ab06bdb0d7a1e70425b1f4d2c8bfe" prot="private" static="no" mutable="no">
+        <type>SubsteppingState</type>
+        <definition>SubsteppingState Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::currentState</definition>
+        <argsstring></argsstring>
+        <name>currentState</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::currentState</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="113" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8d91f379631d3470ccc0e3a83be0eaa7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::AdaptiveSubstepperExplicit</definition>
+        <argsstring>(double initialStepSize, double minimumStepSize, double maxScaleUpFactor, double scaleDownFactor, double integrationErrorTolerance, int nPassesToIncrease, const Matrix6d &amp;Cel)</argsstring>
+        <name>AdaptiveSubstepperExplicit</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::AdaptiveSubstepperExplicit</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>initialStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>minimumStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>maxScaleUpFactor</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>scaleDownFactor</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>integrationErrorTolerance</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nPassesToIncrease</declname>
+        </param>
+        <param>
+          <type>const Matrix6d &amp;</type>
+          <declname>Cel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="47" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="124" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a67e94909dab57567fc90b9dbdd1a2b2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::setConvergedProgress</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stressOld, const IntegrationStateVector &amp;stateVarsOld)</argsstring>
+        <name>setConvergedProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::setConvergedProgress</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stressOld</declname>
+        </param>
+        <param>
+          <type>const IntegrationStateVector &amp;</type>
+          <declname>stateVarsOld</declname>
+        </param>
+        <briefdescription>
+<para>Set the current converged state. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="55" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="183" bodyend="188"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afe8273759cc89f396699141dc032e45f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::isFinished</definition>
+        <argsstring>()</argsstring>
+        <name>isFinished</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::isFinished</qualifiedname>
+        <briefdescription>
+<para>Check if the subincrementation is finished. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="191" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa42c04e599a415ba4cd7de151085b3dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::getNextSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>getNextSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getNextSubstep</qualifiedname>
+        <briefdescription>
+<para>get the next subincrement size </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="59" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="197" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae041e1ffe1aae505594a441c0b894c71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::getNumberOfSubsteps</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfSubsteps</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getNumberOfSubsteps</qualifiedname>
+        <briefdescription>
+<para>get the finished number of subincrements </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="61" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="439" bodyend="442"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a3a820809c2dde86e285f02d03aa46e18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::getNumberDiscardedSubstepsDueToError</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberDiscardedSubstepsDueToError</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getNumberDiscardedSubstepsDueToError</qualifiedname>
+        <briefdescription>
+<para>get the number of discarded subincrements </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="63" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="444" bodyend="447"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad3e90207057a3302b6b3b1cab8a5c286" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::finishSubstep</definition>
+        <argsstring>(const Marmot::Vector6d &amp;resultStress, const TangentSizedMatrix &amp;dXdY, const TangentSizedMatrix &amp;dYdXOld, const IntegrationStateVector &amp;stateVars)</argsstring>
+        <name>finishSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::finishSubstep</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>resultStress</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" kindref="member">TangentSizedMatrix</ref> &amp;</type>
+          <declname>dXdY</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" kindref="member">TangentSizedMatrix</ref> &amp;</type>
+          <declname>dYdXOld</declname>
+        </param>
+        <param>
+          <type>const IntegrationStateVector &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>finish a subincrement with plasticity </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="65" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="286" bodyend="365"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa951f4c37c4f806bd8c520e9d0401335" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::finishElasticSubstep</definition>
+        <argsstring>(const Marmot::Vector6d &amp;resultStress)</argsstring>
+        <name>finishElasticSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::finishElasticSubstep</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>resultStress</declname>
+        </param>
+        <briefdescription>
+<para>finish a subincrement with elasticity only </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="70" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="368" bodyend="395"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad48a4cabec5c265a71919669f6e9609f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::discardSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>discardSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::discardSubstep</qualifiedname>
+        <briefdescription>
+<para>discard the current subincrement </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="72" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="243" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4dd502a21030876c82e7a9553aed7d0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::repeatSubstep</definition>
+        <argsstring>(double decrementationFactor)</argsstring>
+        <name>repeatSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::repeatSubstep</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>decrementationFactor</declname>
+        </param>
+        <briefdescription>
+<para>repeat the current subincrement with a smaller step </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="74" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="272" bodyend="283"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a021e6ee2771a223b1cd5580be4af9cef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::getConvergedProgress</definition>
+        <argsstring>(Marmot::Vector6d &amp;stress, IntegrationStateVector &amp;stateVars)</argsstring>
+        <name>getConvergedProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getConvergedProgress</qualifiedname>
+        <param>
+          <type>Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>IntegrationStateVector &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>get the last converged state </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="77" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="220" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a39df4f3b78670b0c39407dcc0714c714" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; materialTangentSize, nIntegrationDependentStateVars &gt;::getCurrentTangentOperator</definition>
+        <argsstring>()</argsstring>
+        <name>getCurrentTangentOperator</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getCurrentTangentOperator</qualifiedname>
+        <briefdescription>
+<para>get the algorithmic tangent for the current state </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="79" column="14"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05e1f38f902b6ed3c11ab85c01a67c52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::getResults</definition>
+        <argsstring>(Marmot::Vector6d &amp;stress, Matrix6d &amp;consistentTangent, IntegrationStateVector &amp;stateVars)</argsstring>
+        <name>getResults</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::getResults</qualifiedname>
+        <param>
+          <type>Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>Matrix6d &amp;</type>
+          <declname>consistentTangent</declname>
+        </param>
+        <param>
+          <type>IntegrationStateVector &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Write the current results. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="81" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="398" bodyend="405"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8be3ddca9558bfab339932178a055f62" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const <ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" kindref="member">TangentSizedMatrix</ref> &amp;</type>
+        <definition>const AdaptiveSubstepperExplicit&lt; n, nState &gt;::TangentSizedMatrix &amp; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::IXX</definition>
+        <argsstring>()</argsstring>
+        <name>IXX</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::IXX</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="109" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="173" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6319a86418bf4bd799ee2207c4e07fd5" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const MatrixStateStrain &amp;</type>
+        <definition>const AdaptiveSubstepperExplicit&lt; n, nState &gt;::MatrixStateStrain &amp; Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::IX6</definition>
+        <argsstring>()</argsstring>
+        <name>IX6</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::IX6</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="110" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="161" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4ff633691171774063c121f680addfa9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::acceptSubstepWithFullStepOnly</definition>
+        <argsstring>()</argsstring>
+        <name>acceptSubstepWithFullStepOnly</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::acceptSubstepWithFullStepOnly</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="115" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="408" bodyend="418"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aaa8c1fd4f13eb8ddb292f48c1706b503" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit&lt; n, nState &gt;::splitCurrentSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>splitCurrentSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit::splitCurrentSubstep</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="116" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="421" bodyend="437"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" line="35" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepperExplicit.h" bodystart="35" bodyend="117"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4ff633691171774063c121f680addfa9" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>acceptSubstepWithFullStepOnly</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8d91f379631d3470ccc0e3a83be0eaa7" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>AdaptiveSubstepperExplicit</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a5eae7b38760044227e8087c4e6c36a7a" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>Cel</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1add10f15d7cbe0b26fec08c74930bf642" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>consistentTangentProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af4c8d5a3af9b1dc9b68aa785c82e1f21" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>consistentTangentProgressFullTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa70379e5458513a3694b56ef3d958500" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>consistentTangentProgressHalfTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ac3f877be1dfd17ce5f0cbfa6d53f93cc" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>currentProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae41ab06bdb0d7a1e70425b1f4d2c8bfe" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>currentState</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a7852f38203713d4c84446ed4dcaf192b" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>currentSubstepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4623ffc89ba02065b1da9163e6729177" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>discardedDueToError</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad48a4cabec5c265a71919669f6e9609f" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>discardSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa951f4c37c4f806bd8c520e9d0401335" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>finishElasticSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad3e90207057a3302b6b3b1cab8a5c286" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>finishSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9a681fdd75b0cda3b75a34477f7438b89e" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>FirstHalfStep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9ac23fac61657efb24e68f79676aa766d7" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>FullStep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a021e6ee2771a223b1cd5580be4af9cef" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getConvergedProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a39df4f3b78670b0c39407dcc0714c714" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getCurrentTangentOperator</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa42c04e599a415ba4cd7de151085b3dd" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getNextSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a3a820809c2dde86e285f02d03aa46e18" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getNumberDiscardedSubstepsDueToError</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae041e1ffe1aae505594a441c0b894c71" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getNumberOfSubsteps</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05e1f38f902b6ed3c11ab85c01a67c52" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>getResults</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af17614279095f8351a96edb4c749d470" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>ignoreErrorToleranceOnMinimumStepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a1609c9587d364a95bfae3c1cf57b569a" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>initialStepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab15ef9282e559df2fecd124ad5272b03" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>integrationErrorTolerance</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae7500cb5b84cedd58fb2e4526f7c92f3" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>IntegrationStateVector</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afe8273759cc89f396699141dc032e45f" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>isFinished</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6319a86418bf4bd799ee2207c4e07fd5" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>IX6</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8be3ddca9558bfab339932178a055f62" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>IXX</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a18e757585a1694b5112c152b72641224" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>MatrixStateStrain</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6f7edfab60fc9994b0087668a88e7621" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>maxScaleUpFactor</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8131c893168effa6c680c2278311b577" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>minimumStepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aadc4b8b54be4c536a309fae0b006ade3" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>nPassesToIncrease</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abbe236370d44ed528ac247de92ad0f75" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>passedSubsteps</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4dd502a21030876c82e7a9553aed7d0b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>repeatSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a70fdca9effd945b3a38935bf618b5624" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>scaleDownFactor</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9acbd1ee0edf513366eb4e377e98594fc8" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>SecondHalfStep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a67e94909dab57567fc90b9dbdd1a2b2b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>setConvergedProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aaa8c1fd4f13eb8ddb292f48c1706b503" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>splitCurrentSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afbaa60dde4f1df4da1fec91b21dfbd65" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stateProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05bd9b581b7bf74db3a33a6631fcb3d1" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stateProgressFullTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a0d5da0e0f016eb9c67f196bcefb13402" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stateProgressHalfTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab5f1d2f889b673c58482483ec31968b1" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stressProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a34db0a103644d29a78d6431aced6200c" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stressProgressFullTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a81aad97c51acc09cf2607f179f267892" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>stressProgressHalfTemp</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abea210af5f847b3293e1b9377b1e15f9" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>substepIndex</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>SubsteppingState</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</scope><name>TangentSizedMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

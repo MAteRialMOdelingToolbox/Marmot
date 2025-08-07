@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="continuummechanicsothers" kind="page">
+    <compoundname>continuummechanicsothers</compoundname>
+    <title>Others</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>s</para>
+<sect1 id="continuummechanicsothers_1autotoc_md2_1s1"><sect2 id="continuummechanicsothers_1autotoc_md2">
+<title>Additional implementations for Material Models based on Plasticity Theory</title><para><heading level="3">Duvaut Lions Viscosity</heading>
+</para>
+<para><bold>Implementation:</bold> <ref refid="DuvautLionsViscosity_8h" kindref="compound">DuvautLionsViscosity.h</ref></para>
+<para><heading level="3">Menetrey Willam Yield Surfaces</heading>
+</para>
+<para><bold>Implementation:</bold> <ref refid="MenetreyWillam_8h" kindref="compound">MenetreyWillam.h</ref></para>
+<para><heading level="3">Yield Surface Combination Manager</heading>
+</para>
+<para>Necessary for multisurface plasticity material models.</para>
+<para><bold>Implementation:</bold> <ref refid="YieldSurfaceCombinationManager_8h" kindref="compound">YieldSurfaceCombinationManager.h</ref> </para>
+</sect2></sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/doc/DOCUMENTATION.md"/>
+  </compounddef>
+</doxygen>

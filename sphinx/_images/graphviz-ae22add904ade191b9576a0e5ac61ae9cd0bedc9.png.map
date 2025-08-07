@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" alt="" coords="5,5,1125,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotVoigt.h" alt="" coords="442,101,688,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="568,54,568,86,562,86,562,54"/>
+<area shape="rect" id="node3" title="Marmot/MarmotJournal.h" alt="" coords="152,197,418,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="496,153,370,195,368,189,494,147"/>
+<area shape="rect" id="node4" title="Marmot/MarmotMath.h" alt="" coords="441,197,689,245"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="568,150,568,182,562,182,562,150"/>
+<area shape="rect" id="node5" title="Marmot/MarmotTypedefs.h" alt="" coords="713,197,996,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="638,147,769,190,767,195,636,153"/>
+</map>

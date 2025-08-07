@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmotJournal" kind="class" language="C++" prot="public">
+    <compoundname>MarmotJournal</compoundname>
+    <includes refid="MarmotJournal_8h" local="no">MarmotJournal.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classMarmotJournal_1a2bc6eb1e3722defb63a2747e188910d5" prot="private" static="no" mutable="no">
+        <type>std::ostream</type>
+        <definition>std::ostream MarmotJournal::output</definition>
+        <argsstring></argsstring>
+        <name>output</name>
+        <qualifiedname>MarmotJournal::output</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="49" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="classMarmotJournal_1aec32a294fda0f71118cc69ab8f5f8453" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classMarmotJournal" kindref="compound">MarmotJournal</ref> &amp;</type>
+        <definition>static MarmotJournal &amp; MarmotJournal::getInstance</definition>
+        <argsstring>()</argsstring>
+        <name>getInstance</name>
+        <qualifiedname>MarmotJournal::getInstance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="47" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classMarmotJournal_1acd37fb2c4858066bcac9377b09c7a5ac" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotJournal::MarmotJournal</definition>
+        <argsstring>()</argsstring>
+        <name>MarmotJournal</name>
+        <qualifiedname>MarmotJournal::MarmotJournal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="51" column="3"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmotJournal_1ae3bda2f1b17ff6fcc7d331b1d0b7a78e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotJournal::MarmotJournal</definition>
+        <argsstring>(MarmotJournal const &amp;)=delete</argsstring>
+        <name>MarmotJournal</name>
+        <qualifiedname>MarmotJournal::MarmotJournal</qualifiedname>
+        <param>
+          <type><ref refid="classMarmotJournal" kindref="compound">MarmotJournal</ref> const &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="54" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotJournal_1a146bd889594dd2d9408beed1259ae2a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotJournal::operator=</definition>
+        <argsstring>(MarmotJournal const &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>MarmotJournal::operator=</qualifiedname>
+        <param>
+          <type><ref refid="classMarmotJournal" kindref="compound">MarmotJournal</ref> const &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="55" column="8"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classMarmotJournal_1aba36e05ad5a8e246c89d687af76f76df" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void MarmotJournal::setMSGOutputDirection</definition>
+        <argsstring>(std::ostream &amp;newOutputStream)</argsstring>
+        <name>setMSGOutputDirection</name>
+        <qualifiedname>MarmotJournal::setMSGOutputDirection</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>newOutputStream</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="57" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotJournal_1a8c5a22ab8c67629c388d07747d8d8e11" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool MarmotJournal::warningToMSG</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>warningToMSG</name>
+        <qualifiedname>MarmotJournal::warningToMSG</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="59" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotJournal_1af95371cfa0570065da35eb3ba8b7aa69" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool MarmotJournal::notificationToMSG</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>notificationToMSG</name>
+        <qualifiedname>MarmotJournal::notificationToMSG</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="61" column="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" line="45" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotJournal.h" bodystart="45" bodyend="62"/>
+    <listofallmembers>
+      <member refid="classMarmotJournal_1aec32a294fda0f71118cc69ab8f5f8453" prot="private" virt="non-virtual"><scope>MarmotJournal</scope><name>getInstance</name></member>
+      <member refid="classMarmotJournal_1acd37fb2c4858066bcac9377b09c7a5ac" prot="private" virt="non-virtual"><scope>MarmotJournal</scope><name>MarmotJournal</name></member>
+      <member refid="classMarmotJournal_1ae3bda2f1b17ff6fcc7d331b1d0b7a78e" prot="public" virt="non-virtual"><scope>MarmotJournal</scope><name>MarmotJournal</name></member>
+      <member refid="classMarmotJournal_1af95371cfa0570065da35eb3ba8b7aa69" prot="public" virt="non-virtual"><scope>MarmotJournal</scope><name>notificationToMSG</name></member>
+      <member refid="classMarmotJournal_1a146bd889594dd2d9408beed1259ae2a5" prot="public" virt="non-virtual"><scope>MarmotJournal</scope><name>operator=</name></member>
+      <member refid="classMarmotJournal_1a2bc6eb1e3722defb63a2747e188910d5" prot="private" virt="non-virtual"><scope>MarmotJournal</scope><name>output</name></member>
+      <member refid="classMarmotJournal_1aba36e05ad5a8e246c89d687af76f76df" prot="public" virt="non-virtual"><scope>MarmotJournal</scope><name>setMSGOutputDirection</name></member>
+      <member refid="classMarmotJournal_1a8c5a22ab8c67629c388d07747d8d8e11" prot="public" virt="non-virtual"><scope>MarmotJournal</scope><name>warningToMSG</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

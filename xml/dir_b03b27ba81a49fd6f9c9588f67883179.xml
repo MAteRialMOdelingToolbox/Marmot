@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_b03b27ba81a49fd6f9c9588f67883179" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src</compoundname>
+    <innerfile refid="MarmotDofLayoutTools_8cpp">MarmotDofLayoutTools.cpp</innerfile>
+    <innerfile refid="MarmotEnhancedAssumedStrain_8cpp">MarmotEnhancedAssumedStrain.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElement1D_8cpp">MarmotFiniteElement1D.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElement2D_8cpp">MarmotFiniteElement2D.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElement3D_8cpp">MarmotFiniteElement3D.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElementBasic_8cpp">MarmotFiniteElementBasic.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElementBoundary_8cpp">MarmotFiniteElementBoundary.cpp</innerfile>
+    <innerfile refid="MarmotFiniteElementSpatialWrapper_8cpp">MarmotFiniteElementSpatialWrapper.cpp</innerfile>
+    <innerfile refid="MarmotGeometryElement_8cpp">MarmotGeometryElement.cpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/"/>
+  </compounddef>
+</doxygen>

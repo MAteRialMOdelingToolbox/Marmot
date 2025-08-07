@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" alt="" coords="5,5,1107,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotJournal.h" alt="" coords="274,101,539,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="520,56,458,95,455,91,517,52"/>
+<area shape="rect" id="node3" title="Marmot/MarmotTypedefs.h" alt="" coords="564,101,847,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="595,52,657,91,654,95,592,56"/>
+</map>

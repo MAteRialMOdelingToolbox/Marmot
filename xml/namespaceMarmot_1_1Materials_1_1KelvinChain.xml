@@ -1,0 +1,344 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Materials_1_1KelvinChain" kind="namespace" language="C++">
+    <compoundname>Marmot::Materials::KelvinChain</compoundname>
+    <innerclass refid="structMarmot_1_1Materials_1_1KelvinChain_1_1Factorial" prot="public">Marmot::Materials::KelvinChain::Factorial</innerclass>
+    <innerclass refid="structMarmot_1_1Materials_1_1KelvinChain_1_1Factorial_3_010_01_4" prot="public">Marmot::Materials::KelvinChain::Factorial&lt; 0 &gt;</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" prot="public" static="no">
+        <type>Eigen::VectorXd</type>
+        <definition>typedef Eigen::VectorXd Marmot::Materials::KelvinChain::Properties</definition>
+        <argsstring></argsstring>
+        <name>Properties</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::Properties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="38" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a9fc5728c546ccca8041fc22a969235fa" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; Properties &gt; Marmot::Materials::KelvinChain::mapProperties</definition>
+        <argsstring></argsstring>
+        <name>mapProperties</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::mapProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="39" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1ac6c31e76aceb440b9b6ea4aee7aae8f3" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt; Marmot::Materials::KelvinChain::StateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>StateVarMatrix</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::StateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="41" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a01798c882d4d09e944aaa13153c21079" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1ac6c31e76aceb440b9b6ea4aee7aae8f3" kindref="member">StateVarMatrix</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; StateVarMatrix &gt; Marmot::Materials::KelvinChain::mapStateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>mapStateVarMatrix</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::mapStateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="42" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a3f564758677f0016ead1ed7dc89fd610" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Materials::KelvinChain::evaluatePostWidderFormula</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</argsstring>
+        <name>evaluatePostWidderFormula</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::evaluatePostWidderFormula</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;(autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="55" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="55" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a7fddff12d5c5fcc1b6145e7b93fbcc3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Materials::KelvinChain::approximateZerothCompliance</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin, double spacing=10.)</argsstring>
+        <name>approximateZerothCompliance</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::approximateZerothCompliance</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;(autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tauMin</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+          <defval>10.</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="67" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="67" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a2f2efb416b0dab23259040740294e9e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+        <definition>Properties Marmot::Materials::KelvinChain::computeElasticModuli</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, Properties retardationTimes, bool gaussQuadrature=false)</argsstring>
+        <name>computeElasticModuli</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::computeElasticModuli</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;(autodiff::Real&lt; <ref refid="namespaceMarmot_1_1FastorIndices_1a85eb6106aac55482e62eaf6616b95050" kindref="member">k</ref>, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>gaussQuadrature</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="87" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="87" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1ad2bfc2546999dd6545dcf008b66e6798" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+        <definition>Properties Marmot::Materials::KelvinChain::generateRetardationTimes</definition>
+        <argsstring>(int n, double min, double spacing)</argsstring>
+        <name>generateRetardationTimes</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::generateRetardationTimes</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" line="10" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" bodystart="10" bodyend="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="110" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a59398da9ad5bc47468fef8fc9e6239f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::KelvinChain::updateStateVarMatrix</definition>
+        <argsstring>(const double dT, Properties elasticModuli, Properties retardationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, const Marmot::Vector6d &amp;dStress, const Marmot::Matrix6d &amp;unitComplianceMatrix)</argsstring>
+        <name>updateStateVarMatrix</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::updateStateVarMatrix</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; <ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1ac6c31e76aceb440b9b6ea4aee7aae8f3" kindref="member">StateVarMatrix</ref> &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref> &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a48144b7616079807fd550c92d142e9da" kindref="member">Marmot::Matrix6d</ref> &amp;</type>
+          <declname>unitComplianceMatrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="112" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="112" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1aac946db2dcafaf4619982a13535b6a5c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::KelvinChain::evaluateKelvinChain</definition>
+        <argsstring>(const double dT, Properties elasticModuli, Properties retardationTimes, StateVarMatrix stateVars, double &amp;uniaxialCompliance, Marmot::Vector6d &amp;dStrain, const double factor)</argsstring>
+        <name>evaluateKelvinChain</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::evaluateKelvinChain</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1ac6c31e76aceb440b9b6ea4aee7aae8f3" kindref="member">StateVarMatrix</ref></type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>uniaxialCompliance</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref> &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>factor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" line="18" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" bodystart="18" bodyend="36" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="119" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a24aa27592ecdf22a6880d8dbc64d37c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::KelvinChain::computeLambdaAndBeta</definition>
+        <argsstring>(double dT, double tau, double &amp;lambda, double &amp;beta)</argsstring>
+        <name>computeLambdaAndBeta</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::computeLambdaAndBeta</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>lambda</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>beta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" bodystart="57" bodyend="73" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="127" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Materials_1_1KelvinChain_1a504ae00b33225c5078df31382076fa3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::KelvinChain::updateStateVarMatrix</definition>
+        <argsstring>(double dT, Properties elasticModuli, Properties retardationTimes, Ref&lt; StateVarMatrix &gt; stateVars, const Vector6d &amp;dStress, const Matrix6d &amp;unitComplianceMatrix)</argsstring>
+        <name>updateStateVarMatrix</name>
+        <qualifiedname>Marmot::Materials::KelvinChain::updateStateVarMatrix</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">Properties</ref></type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>Ref&lt; <ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1ac6c31e76aceb440b9b6ea4aee7aae8f3" kindref="member">StateVarMatrix</ref> &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Vector6d</ref> &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1a48144b7616079807fd550c92d142e9da" kindref="member">Matrix6d</ref> &amp;</type>
+          <declname>unitComplianceMatrix</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" line="38" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/src/MarmotKelvinChain.cpp" bodystart="38" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="36" column="3"/>
+  </compounddef>
+</doxygen>

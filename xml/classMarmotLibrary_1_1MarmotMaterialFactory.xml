@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmotLibrary_1_1MarmotMaterialFactory" kind="class" language="C++" prot="public">
+    <compoundname>MarmotLibrary::MarmotMaterialFactory</compoundname>
+    <includes refid="Marmot_8h" local="no">Marmot.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classMarmotLibrary_1_1MarmotMaterialFactory_1a3e01b88a5e83b50fd7f36080fe91ef00" prot="public" static="no">
+        <type><ref refid="classMarmotMaterial" kindref="compound">MarmotMaterial</ref> *(*)(const double *materialProperties, int nMaterialProperties, int materialNumber)</type>
+        <definition>using MarmotLibrary::MarmotMaterialFactory::materialFactoryFunction =  MarmotMaterial* (*)( const double* materialProperties,
+                                                         int           nMaterialProperties,
+                                                         int           materialNumber )</definition>
+        <argsstring></argsstring>
+        <name>materialFactoryFunction</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::materialFactoryFunction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="45" column="5" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classMarmotLibrary_1_1MarmotMaterialFactory_1a6a4fc74ffd40c3334b05c50b5b6823bc" prot="private" static="yes" mutable="no">
+        <type>std::unordered_map&lt; std::string, int &gt;</type>
+        <definition>std::unordered_map&lt; std::string, int &gt; MarmotLibrary::MarmotMaterialFactory::materialNameToCodeAssociation</definition>
+        <argsstring></argsstring>
+        <name>materialNameToCodeAssociation</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::materialNameToCodeAssociation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="62" column="43" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmotLibrary_1_1MarmotMaterialFactory_1ac0a79d5afa4f8fb5a299d96e5f45cf55" prot="private" static="yes" mutable="no">
+        <type>std::unordered_map&lt; int, <ref refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a3e01b88a5e83b50fd7f36080fe91ef00" kindref="member">materialFactoryFunction</ref> &gt;</type>
+        <definition>std::unordered_map&lt; int, materialFactoryFunction &gt; MarmotLibrary::MarmotMaterialFactory::materialFactoryFunctionByCode</definition>
+        <argsstring></argsstring>
+        <name>materialFactoryFunctionByCode</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::materialFactoryFunctionByCode</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="63" column="31" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmotLibrary_1_1MarmotMaterialFactory_1aaf60fde055aece6afe56579cf2e2b75a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotLibrary::MarmotMaterialFactory::MarmotMaterialFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>MarmotMaterialFactory</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::MarmotMaterialFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="48" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classMarmotLibrary_1_1MarmotMaterialFactory_1ac35d1c3f7f439a1ab5fba679e33c07e6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>static int MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName</definition>
+        <argsstring>(const std::string &amp;materialName)</argsstring>
+        <name>getMaterialCodeFromName</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="50" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotLibrary_1_1MarmotMaterialFactory_1afe0ab6d9fa686c579401d630bae804d8" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classMarmotMaterial" kindref="compound">MarmotMaterial</ref> *</type>
+        <definition>static MarmotMaterial * MarmotLibrary::MarmotMaterialFactory::createMaterial</definition>
+        <argsstring>(int materialCode, const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>createMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::createMaterial</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>materialCode</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="52" column="27"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotLibrary_1_1MarmotMaterialFactory_1a3a5ca7e1f28cc4b8f8a34fd035d1e738" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool MarmotLibrary::MarmotMaterialFactory::registerMaterial</definition>
+        <argsstring>(int materialCode, const std::string &amp;materialName, materialFactoryFunction factoryFunction)</argsstring>
+        <name>registerMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFactory::registerMaterial</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>materialCode</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type><ref refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a3e01b88a5e83b50fd7f36080fe91ef00" kindref="member">materialFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="57" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/Marmot.h" bodystart="43" bodyend="64"/>
+    <listofallmembers>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1afe0ab6d9fa686c579401d630bae804d8" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>createMaterial</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1ac35d1c3f7f439a1ab5fba679e33c07e6" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>getMaterialCodeFromName</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1aaf60fde055aece6afe56579cf2e2b75a" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>MarmotMaterialFactory</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a3e01b88a5e83b50fd7f36080fe91ef00" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>materialFactoryFunction</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1ac0a79d5afa4f8fb5a299d96e5f45cf55" prot="private" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>materialFactoryFunctionByCode</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a6a4fc74ffd40c3334b05c50b5b6823bc" prot="private" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>materialNameToCodeAssociation</name></member>
+      <member refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a3a5ca7e1f28cc4b8f8a34fd035d1e738" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFactory</scope><name>registerMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

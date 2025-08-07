@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Elasticity::Orthotropic</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1a78c19737a02a2dae72187225c6e27286" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::ContinuumMechanics::Elasticity::Orthotropic::complianceTensor</definition>
+        <argsstring>(const double E1, const double E2, const double E3, const double nu12, const double nu23, const double nu13, const double G12, const double G23, const double G31)</argsstring>
+        <name>complianceTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Elasticity::Orthotropic::complianceTensor</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>E1</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>E2</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>E3</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu12</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu23</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu13</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G12</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G23</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G31</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the orthotropic compliance tensor defined in the principal directions of the material <formula id="45">$ x_1 $</formula>,  <formula id="46">$x_2 $</formula> and <formula id="35">$ x_3 $</formula> :          <formula id="47">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+                  \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{13}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                  \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                  \frac{-\nu_{13}}{E_3} &amp; \frac{-\nu_{23}}{E_3} &amp; \frac{1}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\
+                0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{13}} &amp; 0 \\
+                0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
+                  \end{bmatrix}
+\]</formula> from the following independent parameters: <table rows="10" cols="2"><row>
+<entry thead="yes"><para>Parameter </para>
+</entry><entry thead="yes"><para>Description </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="36">$ E_1 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="45">$ x_1 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="39">$ E_2 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="34">$ x_2 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="48">$ E_3 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="35">$ x_3 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="38">$ \nu_{12} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="45">$ x_1 $</formula> and <formula id="34">$ x_2 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="49">$ \nu_{13} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="45">$ x_1 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="40">$ \nu_{23} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="34">$ x_2 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="37">$ G_{12} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="45">$ x_1 $</formula> and <formula id="34">$ x_2 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="50">$ G_{13} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="45">$ x_1 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+</entry></row>
+<row>
+<entry thead="no"><para><formula id="41">$ G_{23} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="34">$ x_2 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+</entry></row>
+</table>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="207" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="207" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1ad347afe8317afe2bf11f9f7c8b76b153" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::ContinuumMechanics::Elasticity::Orthotropic::stiffnessTensor</definition>
+        <argsstring>(const double E1, const double E2, const double E3, const double nu12, const double nu23, const double nu13, const double G12, const double G23, const double G31)</argsstring>
+        <name>stiffnessTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Elasticity::Orthotropic::stiffnessTensor</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>E1</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>E2</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>E3</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu12</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu23</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>nu13</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G12</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G23</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G31</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the orthotropic stiffness tensor <formula id="43">$ \mathbb{C} $</formula> as inverse of the orthotropic compliance tensor <formula id="44">$ \mathbb{C}^{-1} $</formula>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="220" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="220" declcolumn="16"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Functions for the description of orthotropic elastic behavior. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="179" column="5"/>
+  </compounddef>
+</doxygen>

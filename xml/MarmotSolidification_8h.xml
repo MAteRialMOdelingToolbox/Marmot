@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotSolidification_8h" kind="file" language="C++">
+    <compoundname>MarmotSolidification.h</compoundname>
+    <includes refid="MarmotKelvinChain_8h" local="yes">Marmot/MarmotKelvinChain.h</includes>
+    <includedby refid="B4_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/B4.h</includedby>
+    <includedby refid="MarmotSolidification_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/B4/src/MarmotSolidification.cpp</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>Marmot/MarmotNumericalIntegration.h</label>
+        <link refid="MarmotNumericalIntegration_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotKelvinChain.h</label>
+        <link refid="MarmotKelvinChain_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h</label>
+        <link refid="MarmotSolidification_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="7">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="9">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="4">
+        <label>functional</label>
+      </node>
+      <node id="8">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/B4.h</label>
+        <link refid="B4_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h</label>
+        <link refid="MarmotSolidification_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4.cpp</label>
+        <link refid="B4_8cpp"/>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp</label>
+        <link refid="B4Registration_8cpp"/>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/B4/src/MarmotSolidification.cpp</label>
+        <link refid="MarmotSolidification_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" prot="public">Marmot::Materials::SolidificationTheory::Parameters</innerclass>
+    <innerclass refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties" prot="public">Marmot::Materials::SolidificationTheory::KelvinChainProperties</innerclass>
+    <innerclass refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents" prot="public">Marmot::Materials::SolidificationTheory::UniaxialComplianceComponents</innerclass>
+    <innerclass refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result" prot="public">Marmot::Materials::SolidificationTheory::Result</innerclass>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials">Marmot::Materials</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory">Marmot::Materials::SolidificationTheory</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Alexander<sp/>Dummer<sp/>alexander.dummer@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotKelvinChain_8h" kindref="compound">Marmot/MarmotKelvinChain.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1Materials" kindref="compound">Marmot::Materials</ref><sp/>{</highlight></codeline>
+<codeline lineno="32" refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory" kindref="compound">SolidificationTheory</ref><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" kindref="compound">Parameters</ref><sp/>{</highlight></codeline>
+<codeline lineno="36" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a3246915804353d0c46370f5263e36f20" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a3246915804353d0c46370f5263e36f20" kindref="member">q1</ref>;</highlight></codeline>
+<codeline lineno="37" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a6b8096ed5dbbcc8be9c61c1fd6e46fa1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a6b8096ed5dbbcc8be9c61c1fd6e46fa1" kindref="member">q2</ref>;</highlight></codeline>
+<codeline lineno="38" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a1c5afa64ea06a13884b01e1b1c2f1920" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a1c5afa64ea06a13884b01e1b1c2f1920" kindref="member">q3</ref>;</highlight></codeline>
+<codeline lineno="39" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1afd92fefb7734c8e2be1f89790efd3d1a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1afd92fefb7734c8e2be1f89790efd3d1a" kindref="member">q4</ref>;</highlight></codeline>
+<codeline lineno="40" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a608c38a0c425c4569dc7f3dc42f0a96c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a608c38a0c425c4569dc7f3dc42f0a96c" kindref="member">n</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.1;</highlight></codeline>
+<codeline lineno="41" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a842e7e99242d636b4ce3dc7dc4c33fce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a842e7e99242d636b4ce3dc7dc4c33fce" kindref="member">m</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.5;</highlight></codeline>
+<codeline lineno="42" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1ae494f51517d5c63aeb13fd81ce5e35d1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1ae494f51517d5c63aeb13fd81ce5e35d1" kindref="member">lambda0</ref><sp/>=<sp/>1.;</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties" kindref="compound">KelvinChainProperties</ref><sp/>{</highlight></codeline>
+<codeline lineno="49" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1ae946acb145f1499140101c9ec1a8a3b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1ae946acb145f1499140101c9ec1a8a3b3" kindref="member">E0</ref>;</highlight></codeline>
+<codeline lineno="50" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1aaf157597ce94f1252f79e00c4b010a5f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">KelvinChain::Properties</ref><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1aaf157597ce94f1252f79e00c4b010a5f" kindref="member">elasticModuli</ref>;</highlight></codeline>
+<codeline lineno="51" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1a5d07a43d3f837be024aeeefc07d519c5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Materials_1_1KelvinChain_1a4161f4ca08c7a35dd1dcd75e630f60f4" kindref="member">KelvinChain::Properties</ref><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties_1a5d07a43d3f837be024aeeefc07d519c5" kindref="member">retardationTimes</ref>;</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents" kindref="compound">UniaxialComplianceComponents</ref><sp/>{</highlight></codeline>
+<codeline lineno="56" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1a8732efd0e2adec77192fbd6e5488b93f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1a8732efd0e2adec77192fbd6e5488b93f" kindref="member">elastic</ref><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="57" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1abe45a5194132bef04c04332175db0dd7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1abe45a5194132bef04c04332175db0dd7" kindref="member">viscoelastic</ref><sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="58" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1aabb8ddbef352c81fa47cb32a14f025b9" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents_1aabb8ddbef352c81fa47cb32a14f025b9" kindref="member">flow</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result" kindref="compound">Result</ref><sp/>{</highlight></codeline>
+<codeline lineno="63" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a775ad5084e2d494e35cbd2285c0cb3ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a775ad5084e2d494e35cbd2285c0cb3ba" kindref="member">creepStrainIncrement</ref>;</highlight></codeline>
+<codeline lineno="64" refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a15f2dbf8a45573bbd3f95f52696d6a54" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1UniaxialComplianceComponents" kindref="compound">UniaxialComplianceComponents</ref><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result_1a15f2dbf8a45573bbd3f95f52696d6a54" kindref="member">complianceComponents</ref>;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Result" kindref="compound">Result</ref><sp/><ref refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory_1a1019eb20f7e42072c6dc3f052a3351c8" kindref="member">computeCreepStrainIncrementAndComplianceComponents</ref>(</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tStartDays,</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dTimeDays,</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>amplificationFactor,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a48144b7616079807fd550c92d142e9da" kindref="member">Marmot::Matrix6d</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>flowUnitCompliance,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1a9ffd691bb9e3aad9fd71fc16249719e8" kindref="member">Marmot::Vector6d</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stressOld,</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" kindref="compound">Parameters</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>parameters,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1KelvinChainProperties" kindref="compound">KelvinChainProperties</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>kelvinChainProperties,</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>KelvinChain::StateVarMatrix<sp/>&gt;&amp;<sp/>kelvinStateVars<sp/>);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory_1a1d8706b8cf523d6c8ef43099e0990a7d" kindref="member">solidifiedVolume</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>timeInDays,<sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" kindref="compound">Parameters</ref><sp/>params<sp/>);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory_1ab645f2ec1725c380d373c630e3162339" kindref="member">computeZerothElasticModul</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>tauMin,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>n,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>order<sp/>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>&gt;</highlight></codeline>
+<codeline lineno="85" refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory_1aec81eabb457a1f6c6d1e5c66e0d31d1c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory_1aec81eabb457a1f6c6d1e5c66e0d31d1c" kindref="member">phi</ref>(<sp/>T<sp/>xi,<sp/><ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters" kindref="compound">Parameters</ref><sp/>params<sp/>)</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>log(<sp/>1.<sp/>+<sp/>pow(<sp/>xi,<sp/>params.<ref refid="structMarmot_1_1Materials_1_1SolidificationTheory_1_1Parameters_1a608c38a0c425c4569dc7f3dc42f0a96c" kindref="member">n</ref><sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>SolidificationTheory</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Materials</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/include/Marmot/MarmotSolidification.h"/>
+  </compounddef>
+</doxygen>

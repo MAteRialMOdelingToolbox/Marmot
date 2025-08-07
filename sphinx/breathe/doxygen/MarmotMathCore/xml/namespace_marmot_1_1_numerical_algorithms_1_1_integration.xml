@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_numerical_algorithms_1_1_integration" kind="namespace" language="C++">
+    <compoundname>Marmot::NumericalAlgorithms::Integration</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717f" prot="public" static="no" strong="no">
+        <type></type>
+        <name>integrationRule</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Integration::integrationRule</qualifiedname>
+        <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa8e94aee33795bb24f71e6ef3b148327e" prot="public">
+          <name>midpoint</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa878be5199c1be129e57b47bfde9cf921" prot="public">
+          <name>trapezodial</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa6f22a55545873def28aeff360ea3cfd6" prot="public">
+          <name>simpson</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="37" bodyend="37"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_numerical_integration_8h_1aa814d97a479ef0c4db61d71fc715805a" prot="public" static="no">
+        <type>std::function&lt; double(const double x) &gt;</type>
+        <definition>using Marmot::NumericalAlgorithms::Integration::scalar_to_scalar_function_type =  std::function&lt; double( const double x ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>scalar_to_scalar_function_type</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Integration::scalar_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="35" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_integration_8h_1a16a28fd20646bef921bb8ed2912cb50c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::Integration::integrateScalarFunction</definition>
+        <argsstring>(scalar_to_scalar_function_type f, const std::tuple&lt; double, double &gt; integrationLimits, const int n, const integrationRule intRule)</argsstring>
+        <name>integrateScalarFunction</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Integration::integrateScalarFunction</qualifiedname>
+        <param>
+          <type>scalar_to_scalar_function_type</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; double, double &gt;</type>
+          <declname>integrationLimits</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>const integrationRule</type>
+          <declname>intRule</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="39" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" declline="39" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="33" column="3"/>
+  </compounddef>
+</doxygen>

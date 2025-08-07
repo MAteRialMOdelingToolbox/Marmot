@@ -1,0 +1,13 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Materials::B4" alt="" coords="800,5,1039,53"/>
+<area shape="rect" id="node2" title="Marmot::Materials::SolidificationTheory::KelvinChainProperties" alt="" coords="5,101,634,149"/>
+<area shape="poly" id="edge3" title="usage" alt="" coords="800,52,484,101,483,96,799,47"/>
+<area shape="rect" id="node3" title="Marmot::Materials::SolidificationTheory::Parameters" alt="" coords="657,101,1182,149"/>
+<area shape="poly" id="edge2" title="usage" alt="" coords="922,54,922,86,917,86,917,54"/>
+<area shape="rect" id="node5" title="MarmotMaterialHypoElastic" alt="" coords="1206,101,1500,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="1028,51,1231,95,1230,100,1027,57"/>
+<area shape="rect" id="node4" title="MarmotMaterial" alt="" coords="1264,293,1442,341"/>
+<area shape="rect" id="node6" title="MarmotMaterialMechanical" alt="" coords="1210,197,1496,245"/>
+<area shape="poly" id="edge4" title="public&#45;inheritance" alt="" coords="1356,150,1356,182,1350,182,1350,150"/>
+<area shape="poly" id="edge5" title="public&#45;inheritance" alt="" coords="1356,246,1356,278,1350,278,1350,246"/>
+</map>

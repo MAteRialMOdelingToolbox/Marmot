@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotNumericalDifferentiation_8h" kind="file" language="C++">
+    <compoundname>MarmotNumericalDifferentiation.h</compoundname>
+    <includes refid="MarmotMath_8h" local="yes">Marmot/MarmotMath.h</includes>
+    <includes refid="MarmotTypedefs_8h" local="yes">Marmot/MarmotTypedefs.h</includes>
+    <includes local="no">functional</includes>
+    <includedby refid="MarmotNumericalDifferentiationForFastor_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h</includedby>
+    <includedby refid="MarmotNumericalDifferentiation_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotNumericalDifferentiation.cpp</includedby>
+    <includedby refid="FiniteStrainJ2Plasticity_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp</includedby>
+    <incdepgraph>
+      <node id="3">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h</label>
+        <link refid="MarmotNumericalDifferentiation_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="7">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="11">
+        <label>algorithm</label>
+      </node>
+      <node id="9">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="12">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="10">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="4">
+        <label>cmath</label>
+      </node>
+      <node id="13">
+        <label>complex</label>
+      </node>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="8">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h</label>
+        <link refid="MarmotNumericalDifferentiation_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h</label>
+        <link refid="MarmotNumericalDifferentiationForFastor_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/src/MarmotNumericalDifferentiation.cpp</label>
+        <link refid="MarmotNumericalDifferentiation_8cpp"/>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2Plasticity.cpp</label>
+        <link refid="FiniteStrainJ2Plasticity_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1NumericalAlgorithms">Marmot::NumericalAlgorithms</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation">Marmot::NumericalAlgorithms::Differentiation</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex">Marmot::NumericalAlgorithms::Differentiation::Complex</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Alexander<sp/>Dummer<sp/>alexander.dummer@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotMath_8h" kindref="compound">Marmot/MarmotMath.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotTypedefs_8h" kindref="compound">Marmot/MarmotTypedefs.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot" kindref="compound">Marmot</ref><sp/>{</highlight></codeline>
+<codeline lineno="34" refid="namespaceMarmot_1_1NumericalAlgorithms" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation" kindref="compound">NumericalAlgorithms::Differentiation</ref><sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3589bd8fc3e0c821b0e51a9594ebc306" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3589bd8fc3e0c821b0e51a9594ebc306" kindref="member">scalar_to_scalar_function_type</ref><sp/>=<sp/>std::function&lt;<sp/>double(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="37" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1ac9b0be30ffd7559ab0a92eea4ee75f72" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1ac9b0be30ffd7559ab0a92eea4ee75f72" kindref="member">vector_to_vector_function_type</ref><sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3e2d0865fdcd10da6e0b263f686c4858" kindref="member">forwardDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3589bd8fc3e0c821b0e51a9594ebc306" kindref="member">scalar_to_scalar_function_type</ref>&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a7de02aa48201ccdb190450dcfd34fa97" kindref="member">centralDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3589bd8fc3e0c821b0e51a9594ebc306" kindref="member">scalar_to_scalar_function_type</ref>&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1ac30aa22a7012705933cae722441e8405" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a3e2d0865fdcd10da6e0b263f686c4858" kindref="member">forwardDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1ac9b0be30ffd7559ab0a92eea4ee75f72" kindref="member">vector_to_vector_function_type</ref>&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="43" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a9d471ea1961edac3a8c0b7883db494f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1a7de02aa48201ccdb190450dcfd34fa97" kindref="member">centralDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1ac9b0be30ffd7559ab0a92eea4ee75f72" kindref="member">vector_to_vector_function_type</ref>&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex" kindref="compound">Complex</ref><sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1ae67392e859d5c18f0943f1b74c12e71c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1ae67392e859d5c18f0943f1b74c12e71c" kindref="member">imaginaryUnit</ref><sp/>=<sp/>{<sp/>0,<sp/>1<sp/>};</highlight></codeline>
+<codeline lineno="48" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a6404fc111180740f6b006d16f9ba7615" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a6404fc111180740f6b006d16f9ba7615" kindref="member">complexUnit</ref><sp/><sp/><sp/>=<sp/>{<sp/>1,<sp/>1<sp/>};</highlight></codeline>
+<codeline lineno="49" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1ae0c370efd89ca4bad97eaa994f36036c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1ae0c370efd89ca4bad97eaa994f36036c" kindref="member">i_</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespaceMarmot_1_1Constants_1a33698d788303a9dd40c1489cdfba6aa7" kindref="member">Marmot::Constants::sqrt2</ref><sp/>/<sp/>2.<sp/>*<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a6404fc111180740f6b006d16f9ba7615" kindref="member">complexUnit</ref>;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a4a90e6de8284baeb8274c9ef1da60865" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a4a90e6de8284baeb8274c9ef1da60865" kindref="member">scalar_to_scalar_function_type</ref><sp/>=<sp/>std::function&lt;<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a28c6239f908d27d61a4fb860643e54a4" kindref="member">complexDouble</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a28c6239f908d27d61a4fb860643e54a4" kindref="member">complexDouble</ref><sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="52" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a172748ccbd9e78f7805463806da8abc2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a172748ccbd9e78f7805463806da8abc2" kindref="member">vector_to_vector_function_type</ref><sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXcd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXcd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a5ee4f2bd6a00a7f61d3670ef77fbbc4a" kindref="member">forwardDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a4a90e6de8284baeb8274c9ef1da60865" kindref="member">scalar_to_scalar_function_type</ref>&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="56" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a2c5dd9bde01d03a58662eb2f06c70e6c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::tuple&lt;<sp/>Eigen::VectorXd,<sp/>Eigen::MatrixXd<sp/>&gt;<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a5ee4f2bd6a00a7f61d3670ef77fbbc4a" kindref="member">forwardDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a172748ccbd9e78f7805463806da8abc2" kindref="member">vector_to_vector_function_type</ref>&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="59" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1aa36a3313864346a2aeacde16bdaca2ca" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1aa36a3313864346a2aeacde16bdaca2ca" kindref="member">centralDifference</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a172748ccbd9e78f7805463806da8abc2" kindref="member">vector_to_vector_function_type</ref>&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a1d374430c01a8b167504cc715f1997ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a1d374430c01a8b167504cc715f1997ad" kindref="member">fourthOrderAccurateDerivative</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1Complex_1a172748ccbd9e78f7805463806da8abc2" kindref="member">vector_to_vector_function_type</ref>&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Complex</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/>}<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>NumericalAlgorithms::Differentiation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h"/>
+  </compounddef>
+</doxygen>

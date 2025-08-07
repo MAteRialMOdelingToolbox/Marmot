@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</compoundname>
+    <includes refid="_perez_fouget_substepper_time_8h" local="no">PerezFougetSubstepperTime.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>sizeMaterialState</declname>
+        <defname>sizeMaterialState</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, sizeMaterialState, sizeMaterialState &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, sizeMaterialState, sizeMaterialState &gt; Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::TangentSizedMatrix</definition>
+        <argsstring></argsstring>
+        <name>TangentSizedMatrix</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::TangentSizedMatrix</qualifiedname>
+        <briefdescription>
+<para>Matrix to carry the Jacobian of a material state. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="47" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a43bbca3b43338dc1e65991ebc3ddc42f" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::initialStepSize</definition>
+        <argsstring></argsstring>
+        <name>initialStepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::initialStepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="68" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a365091690f04a2f2f2e1e1b57515e7c8" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::minimumStepSize</definition>
+        <argsstring></argsstring>
+        <name>minimumStepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::minimumStepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="68" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ab80ed2f5f2dfc18f87d7b7631f992f9f" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::scaleUpFactor</definition>
+        <argsstring></argsstring>
+        <name>scaleUpFactor</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::scaleUpFactor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="68" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae04f37932c2016df535116d80f1d088c" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::scaleDownFactor</definition>
+        <argsstring></argsstring>
+        <name>scaleDownFactor</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::scaleDownFactor</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="68" column="64" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad02efecc6d9208b1733918bfc0c1b493" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::nPassesToIncrease</definition>
+        <argsstring></argsstring>
+        <name>nPassesToIncrease</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::nPassesToIncrease</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="69" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1afaff708d5ae264800554573b6a2afd7b" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::currentProgress</definition>
+        <argsstring></argsstring>
+        <name>currentProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::currentProgress</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="71" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6c59795e24877c10121239e12fec1bcc" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::currentSubstepSize</definition>
+        <argsstring></argsstring>
+        <name>currentSubstepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::currentSubstepSize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="72" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad48d70e79239d90af2654fdfcfe3c442" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::passedSubsteps</definition>
+        <argsstring></argsstring>
+        <name>passedSubsteps</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::passedSubsteps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="73" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a4a2df541281c687c06338e59a7eb8ab7" prot="private" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" kindref="member">TangentSizedMatrix</ref></type>
+        <definition>TangentSizedMatrix Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::elasticTangent</definition>
+        <argsstring></argsstring>
+        <name>elasticTangent</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::elasticTangent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="75" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1af26e1bd110a359e0052317bf3f3fe19d" prot="private" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" kindref="member">TangentSizedMatrix</ref></type>
+        <definition>TangentSizedMatrix Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; sizeMaterialState &gt;::consistentTangent</definition>
+        <argsstring></argsstring>
+        <name>consistentTangent</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::consistentTangent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="76" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a00bf02f8bcb5d0606b87af3580ae2e23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::PerezFougetSubstepperTime</definition>
+        <argsstring>(double initialStepSize, double minimumStepSize, double scaleUpFactor, double scaleDownFactor, int nPassesToIncrease)</argsstring>
+        <name>PerezFougetSubstepperTime</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::PerezFougetSubstepperTime</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>initialStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>minimumStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>scaleUpFactor</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>scaleDownFactor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nPassesToIncrease</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="49" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="84" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad1417a78711b373e5302e2eb5e69e2ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::isFinished</definition>
+        <argsstring>()</argsstring>
+        <name>isFinished</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::isFinished</qualifiedname>
+        <briefdescription>
+<para>Check if the subincrementation has finished. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="55" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="104" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae23ba91e98f2af28c1208073e7f5263e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::getNextSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>getNextSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::getNextSubstep</qualifiedname>
+        <briefdescription>
+<para>get the next subincrement size </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="57" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="110" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a0d3a5781c19d78ced33492ccfdbf016f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::getFinishedProgress</definition>
+        <argsstring>()</argsstring>
+        <name>getFinishedProgress</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::getFinishedProgress</qualifiedname>
+        <briefdescription>
+<para>get the total finished progress of the subincrementation process </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="59" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="126" bodyend="129"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6e51af86e66b75b90dac81804b9b7b59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::decreaseSubstepSize</definition>
+        <argsstring>()</argsstring>
+        <name>decreaseSubstepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::decreaseSubstepSize</qualifiedname>
+        <briefdescription>
+<para>decrease the next subincrement </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="61" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="132" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1aae9eaf2b50e37019a7e2013e97ff3408" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::extendConsistentTangent</definition>
+        <argsstring>(const Matrix6d &amp;CelT)</argsstring>
+        <name>extendConsistentTangent</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::extendConsistentTangent</qualifiedname>
+        <param>
+          <type>const Matrix6d &amp;</type>
+          <declname>CelT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="63" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="146" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae6984bb1edfd72c01f9e6a89b39c7e5b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::extendConsistentTangent</definition>
+        <argsstring>(const Matrix6d &amp;CelT, const TangentSizedMatrix &amp;matTangent)</argsstring>
+        <name>extendConsistentTangent</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::extendConsistentTangent</qualifiedname>
+        <param>
+          <type>const Matrix6d &amp;</type>
+          <declname>CelT</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" kindref="member">TangentSizedMatrix</ref> &amp;</type>
+          <declname>matTangent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="64" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="154" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a25c3a2956314a3b4dc25b9cf2f8c06d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::NumericalAlgorithms::PerezFougetSubstepperTime&lt; s &gt;::consistentStiffness</definition>
+        <argsstring>()</argsstring>
+        <name>consistentStiffness</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime::consistentStiffness</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="65" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="162" bodyend="165"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Modified Version of the Perez-Fouget Substepper, to account for time-variant elastic Stiffness Tensor Cel(t_n+1) NO changes in algorithmic formulation!</para>
+<para>modifications:<itemizedlist>
+<listitem><para>elastic substep consistent tangent matrix update needs current Cel(t) for update</para>
+</listitem><listitem><para>No need for Cel for object construction anymore </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperTime.h" bodystart="43" bodyend="77"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a25c3a2956314a3b4dc25b9cf2f8c06d2" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>consistentStiffness</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1af26e1bd110a359e0052317bf3f3fe19d" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>consistentTangent</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1afaff708d5ae264800554573b6a2afd7b" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>currentProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6c59795e24877c10121239e12fec1bcc" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>currentSubstepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6e51af86e66b75b90dac81804b9b7b59" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>decreaseSubstepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a4a2df541281c687c06338e59a7eb8ab7" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>elasticTangent</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1aae9eaf2b50e37019a7e2013e97ff3408" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>extendConsistentTangent</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae6984bb1edfd72c01f9e6a89b39c7e5b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>extendConsistentTangent</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a0d3a5781c19d78ced33492ccfdbf016f" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>getFinishedProgress</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae23ba91e98f2af28c1208073e7f5263e" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>getNextSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a43bbca3b43338dc1e65991ebc3ddc42f" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>initialStepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad1417a78711b373e5302e2eb5e69e2ed" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>isFinished</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a365091690f04a2f2f2e1e1b57515e7c8" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>minimumStepSize</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad02efecc6d9208b1733918bfc0c1b493" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>nPassesToIncrease</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad48d70e79239d90af2654fdfcfe3c442" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>passedSubsteps</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a00bf02f8bcb5d0606b87af3580ae2e23" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>PerezFougetSubstepperTime</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae04f37932c2016df535116d80f1d088c" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>scaleDownFactor</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ab80ed2f5f2dfc18f87d7b7631f992f9f" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>scaleUpFactor</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</scope><name>TangentSizedMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

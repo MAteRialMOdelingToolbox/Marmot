@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location" kind="struct" language="C++" prot="protected">
+    <compoundname>MarmotStateVarVectorManager::StateVarEntryLocation</compoundname>
+    <includes refid="_marmot_state_var_vector_manager_8h" local="no">MarmotStateVarVectorManager.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a64931f28694b5a7582ea2207bf0225b8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MarmotStateVarVectorManager::StateVarEntryLocation::index</definition>
+        <argsstring></argsstring>
+        <name>index</name>
+        <qualifiedname>MarmotStateVarVectorManager::StateVarEntryLocation::index</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="62" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a4941fde089ac245ca1b0e91e8f978162" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MarmotStateVarVectorManager::StateVarEntryLocation::length</definition>
+        <argsstring></argsstring>
+        <name>length</name>
+        <qualifiedname>MarmotStateVarVectorManager::StateVarEntryLocation::length</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="63" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The location in the statevar vector consists of the index and its certain length. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="61" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="61" bodyend="64"/>
+    <listofallmembers>
+      <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a64931f28694b5a7582ea2207bf0225b8" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarEntryLocation</scope><name>index</name></member>
+      <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a4941fde089ac245ca1b0e91e8f978162" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarEntryLocation</scope><name>length</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1Materials_1_1VonMisesModel" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::VonMisesModel</compoundname>
+    <basecompoundref refid="classMarmotMaterialHypoElastic" prot="public" virt="non-virtual">MarmotMaterialHypoElastic</basecompoundref>
+    <includes refid="VonMises_8h" local="no">VonMises.h</includes>
+    <innerclass refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager" prot="public">Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager</innerclass>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Materials_1_1VonMisesModel_1a829187e2625a88c74d45f515f4ccaa3b" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager" kindref="compound">VonMisesModelStateVarManager</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; VonMisesModelStateVarManager &gt; Marmot::Materials::VonMisesModel::managedStateVars</definition>
+        <argsstring></argsstring>
+        <name>managedStateVars</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::managedStateVars</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="61" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1VonMisesModel_1ababd11360100202afc960452da26545b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::VonMisesModel::computeStress</definition>
+        <argsstring>(double *stress, double *dStress_dStrain, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT) override</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::computeStress</qualifiedname>
+        <reimplements refid="classMarmotMaterialHypoElastic_1a4751feeb33fc3205fc5c2b75fdc0d30c">computeStress</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDDStrain</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>timeOld</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>pNewDT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>For a given linearized strain increment <formula id="72">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="73">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Cauchy stress </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dStressDDstrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>linearized strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeOld</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Old (pseudo-)time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">pNewDT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Suggestion for a new time increment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="39" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp" bodystart="38" bodyend="140"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::VonMisesModel::getDensity</definition>
+        <argsstring>() override</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::getDensity</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a16ef751ebc410cb5173cb65a2e43e1ec">getDensity</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="47" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp" bodystart="31" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Materials::VonMisesModel::getNumberOfRequiredStateVars</definition>
+        <argsstring>() override</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a16e96c33fdc77ddd5aa98ffbbca1577d">getNumberOfRequiredStateVars</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="63" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1VonMisesModel_1a40f9ce9ccc2fbb16b4136656916ebb5f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::VonMisesModel::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars) override</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::assignStateVars</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1a9644446a593632d0da2462bdeb43e25c">assignStateVars</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="65" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp" bodystart="17" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Materials_1_1VonMisesModel_1ac35d22d569565f0afbb4b85e333082ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type><ref refid="structStateView" kindref="compound">StateView</ref></type>
+        <definition>StateView Marmot::Materials::VonMisesModel::getStateView</definition>
+        <argsstring>(const std::string &amp;result) override</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::VonMisesModel::getStateView</qualifiedname>
+        <reimplements refid="classMarmotMaterial_1acc7dfa70f71415b2c9b562a9fafe64d1">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>result</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="67" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMises.cpp" bodystart="26" bodyend="29"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::VonMisesModel</label>
+        <link refid="classMarmot_1_1Materials_1_1VonMisesModel"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialHypoElastic</label>
+        <link refid="classMarmotMaterialHypoElastic"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotMaterialMechanical</label>
+        <link refid="classMarmotMaterialMechanical"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::VonMisesModel</label>
+        <link refid="classMarmot_1_1Materials_1_1VonMisesModel"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialHypoElastic</label>
+        <link refid="classMarmotMaterialHypoElastic"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>MarmotMaterialMechanical</label>
+        <link refid="classMarmotMaterialMechanical"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" line="34" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/include/Marmot/VonMises.h" bodystart="34" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1a40f9ce9ccc2fbb16b4136656916ebb5f" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>assignStateVars</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1af526ea494a3ba4d70de3be5d2d55b5a0" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>characteristicElementLength</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1a5486a80660fa57833ce4a4a084d38d2c" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>computePlaneStress</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1aa90c4ada414a955753901c8c88628381" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>computePlaneStress</name></member>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1ababd11360100202afc960452da26545b" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>computeStress</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1acf6b9c6f3b81effab814390600e974fa" prot="public" virt="virtual" ambiguityscope="MarmotMaterialHypoElastic::"><scope>Marmot::Materials::VonMisesModel</scope><name>computeStress</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1a7e3bded903448a16ce9630978de16059" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>computeUniaxialStress</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1a74c12f7b78dc7da4559140b74b32a05c" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>computeUniaxialStress</name></member>
+      <member refid="classMarmotMaterial_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>getAssignedStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>getDensity</name></member>
+      <member refid="classMarmotMaterial_1ac2e855ed98253c5f426735bc251771dd" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>getNumberOfAssignedStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1ac35d22d569565f0afbb4b85e333082ce" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>getStateView</name></member>
+      <member refid="classMarmotMaterial_1a9d6615f62d1e33ab694f3e889dba203f" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>initializeYourself</name></member>
+      <member refid="classMarmot_1_1Materials_1_1VonMisesModel_1a829187e2625a88c74d45f515f4ccaa3b" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>managedStateVars</name></member>
+      <member refid="classMarmotMaterialMechanical_1a395b074d78052f5e58220cfeda65c5bd" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>MarmotMaterial</name></member>
+      <member refid="classMarmotMaterial_1a31bc9f9283f984f5d78685d82e764edd" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>materialNumber</name></member>
+      <member refid="classMarmotMaterial_1a0f631d6ec14531146ec683712a085960" prot="protected" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>materialProperties</name></member>
+      <member refid="classMarmotMaterial_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>nMaterialProperties</name></member>
+      <member refid="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>nStateVars</name></member>
+      <member refid="classMarmotMaterialHypoElastic_1aee2d34ac568027969f668999154b4b20" prot="public" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="classMarmotMaterial_1a3153122a8c7819cc306d6d35378cf414" prot="protected" virt="non-virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>stateVars</name></member>
+      <member refid="classMarmotMaterial_1a33fd1c89a919e8b0d396eb846614c815" prot="public" virt="virtual"><scope>Marmot::Materials::VonMisesModel</scope><name>~MarmotMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

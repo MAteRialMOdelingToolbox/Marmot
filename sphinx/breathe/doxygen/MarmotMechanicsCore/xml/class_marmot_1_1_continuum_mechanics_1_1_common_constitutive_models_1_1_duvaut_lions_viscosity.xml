@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</compoundname>
+    <includes refid="_duvaut_lions_viscosity_8h" local="no">DuvautLionsViscosity.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nMatTangentSize</declname>
+        <defname>nMatTangentSize</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1ae2af85711baa602eae4d1900f62a5332" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nMatTangentSize, nMatTangentSize &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nMatTangentSize, nMatTangentSize &gt; Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;::TangentSizedMatrix</definition>
+        <argsstring></argsstring>
+        <name>TangentSizedMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="46" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5bcf1ffacecee603485ae64c97cd0a1b" prot="private" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;::viscosity</definition>
+        <argsstring></argsstring>
+        <name>viscosity</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::viscosity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="43" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a96c647142dfe225d953258586962aac0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; s &gt;::DuvautLionsViscosity</definition>
+        <argsstring>(double viscosity)</argsstring>
+        <name>DuvautLionsViscosity</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::DuvautLionsViscosity</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>viscosity</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="48" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="72" bodyend="74"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5c3b16993b14335c654e530fbb509dac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; s &gt;::applyViscosityOnStateVar</definition>
+        <argsstring>(double stateVarTrial, double StateVarInf, double dT)</argsstring>
+        <name>applyViscosityOnStateVar</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::applyViscosityOnStateVar</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>stateVarTrial</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>StateVarInf</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="51">$\infty$</formula>, and timestep dt </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="53" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="77" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a87c566b6818bfbcbcd6266eb8395fe33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; s &gt;::applyViscosityOnStress</definition>
+        <argsstring>(const Marmot::Vector6d &amp;trialStress, const Marmot::Vector6d &amp;stressInf, double dT)</argsstring>
+        <name>applyViscosityOnStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::applyViscosityOnStress</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>trialStress</declname>
+        </param>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stressInf</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="51">$\infty$</formula>, and timestep dt </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="57" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="83" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>TangentSizedMatrix</type>
+        <definition>DuvautLionsViscosity&lt; s &gt;::TangentSizedMatrix Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; s &gt;::applyViscosityOnMatTangent</definition>
+        <argsstring>(const TangentSizedMatrix &amp;matTangentInv, double dT)</argsstring>
+        <name>applyViscosityOnMatTangent</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::applyViscosityOnMatTangent</qualifiedname>
+        <param>
+          <type>const TangentSizedMatrix &amp;</type>
+          <declname>matTangentInv</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="51">$\infty$</formula>, and timestep dt <xrefsect id="todo_1_todo000005"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
+</xrefdescription></xrefsect></para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="64" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="91" bodyend="96"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><xrefsect id="todo_1_todo000004"><xreftitle>Todo</xreftitle><xrefdescription><para>: Update member names to more descriptive ones </para>
+</xrefdescription></xrefsect></para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="39" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="39" bodyend="65"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>applyViscosityOnMatTangent</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5c3b16993b14335c654e530fbb509dac" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>applyViscosityOnStateVar</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a87c566b6818bfbcbcd6266eb8395fe33" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>applyViscosityOnStress</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a96c647142dfe225d953258586962aac0" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>DuvautLionsViscosity</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1ae2af85711baa602eae4d1900f62a5332" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>TangentSizedMatrix</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5bcf1ffacecee603485ae64c97cd0a1b" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</scope><name>viscosity</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,293 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="MarmotGeometryElement_8h" kind="file" language="C++">
+    <compoundname>MarmotGeometryElement.h</compoundname>
+    <includes refid="MarmotFiniteElement_8h" local="yes">Marmot/MarmotFiniteElement.h</includes>
+    <includes refid="MarmotTypedefs_8h" local="yes">Marmot/MarmotTypedefs.h</includes>
+    <includes refid="MarmotVoigt_8h" local="yes">Marmot/MarmotVoigt.h</includes>
+    <includes local="no">iostream</includes>
+    <includes local="no">map</includes>
+    <includedby refid="MarmotGeometryElement_8cpp" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotGeometryElement.cpp</includedby>
+    <includedby refid="DisplacementFiniteElement_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h</includedby>
+    <includedby refid="DisplacementFiniteStrainULElement_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h</includedby>
+    <incdepgraph>
+      <node id="9">
+        <label>Marmot/MarmotJournal.h</label>
+        <link refid="MarmotJournal_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotFiniteElement.h</label>
+        <link refid="MarmotFiniteElement_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h</label>
+        <link refid="MarmotGeometryElement_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="MarmotVoigt_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="5">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="18">
+        <label>algorithm</label>
+      </node>
+      <node id="16">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="19">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="17">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="15">
+        <label>cmath</label>
+      </node>
+      <node id="20">
+        <label>complex</label>
+      </node>
+      <node id="10">
+        <label>iostream</label>
+      </node>
+      <node id="21">
+        <label>map</label>
+      </node>
+      <node id="11">
+        <label>sstream</label>
+      </node>
+      <node id="12">
+        <label>string</label>
+      </node>
+      <node id="6">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="7">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h</label>
+        <link refid="MarmotGeometryElement_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotGeometryElement.cpp</label>
+        <link refid="MarmotGeometryElement_8cpp"/>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h</label>
+        <link refid="DisplacementFiniteElement_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp</label>
+        <link refid="DisplacementFiniteElementRegistration_8cpp"/>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/include/Marmot/DisplacementFiniteStrainULElement.h</label>
+        <link refid="DisplacementFiniteStrainULElement_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp</label>
+        <link refid="DisplacementFiniteStrainULElement_8cpp"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="classMarmotGeometryElement" prot="public">MarmotGeometryElement</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Matthias<sp/>Neuner<sp/>matthias.neuner@uibk.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>Magdalena<sp/>Schreter<sp/>magdalena.schreter@uibk.ac.at</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotFiniteElement_8h" kindref="compound">Marmot/MarmotFiniteElement.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotTypedefs_8h" kindref="compound">Marmot/MarmotTypedefs.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotVoigt_8h" kindref="compound">Marmot/MarmotVoigt.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;map&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>&gt;</highlight></codeline>
+<codeline lineno="36" refid="classMarmotGeometryElement" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classMarmotGeometryElement_1a3960a67539a05a65c7378fdb50839fc1" kindref="member">MarmotGeometryElement</ref><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>This<sp/>is<sp/>the<sp/>Geometry<sp/>Base<sp/>element,<sp/>which<sp/>serves<sp/>as<sp/>a<sp/>base<sp/>for<sp/>all<sp/>MarmotElements.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/><sp/><sp/>*<sp/>It<sp/>corresponds<sp/>to<sp/>the<sp/>GeometryElement<sp/>in<sp/>mpFEM,</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/><sp/><sp/>*<sp/>although<sp/>this<sp/>as<sp/>a<sp/>static<sp/>templated<sp/>version.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/><sp/><sp/>*<sp/>MarmotElements<sp/>(corresponding<sp/>do<sp/>DofElements<sp/>in<sp/>mpFEM)<sp/>can<sp/>inherit<sp/>from<sp/>this<sp/>element,</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/><sp/><sp/>*<sp/>and<sp/>access<sp/>shape<sp/>functions,<sp/>derivatives<sp/>and<sp/>B<sp/>Operator</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/><sp/><sp/>*<sp/>The<sp/>element<sp/>automatically<sp/>determines<sp/>its<sp/>shape<sp/>by<sp/>the<sp/>given<sp/><sp/>nDimension<sp/>and<sp/>number<sp/>of<sp/>nodes</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/><sp/><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*Typedefs*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*<sp/>static<sp/>constexpr<sp/>VoigtSize<sp/>voigtSize<sp/>=<sp/>(<sp/>(<sp/>(<sp/>nDim<sp/>*<sp/>nDim<sp/>)<sp/>+<sp/>nDim<sp/>)<sp/>/<sp/>2<sp/>);<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1ad2929e869c726f5ae5e7f2f5cb1f6f35" kindref="member">Marmot::ContinuumMechanics::VoigtNotation::VoigtSize</ref></highlight></codeline>
+<codeline lineno="51" refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" kindref="member">voigtSize</ref><sp/>=<sp/><ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation_1a43f9254e1161e4f4209858acbddca1ff" kindref="member">Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension</ref>(<sp/>nDim<sp/>);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="classMarmotGeometryElement_1a3e07541a98fa50fd0185a1eaa7de944b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1a3e07541a98fa50fd0185a1eaa7de944b" kindref="member">XiSized</ref>;</highlight></codeline>
+<codeline lineno="54" refid="classMarmotGeometryElement_1afdeb54141c32a13873565d829d151b88" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim<sp/>*<sp/>nNodes,<sp/>1<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1afdeb54141c32a13873565d829d151b88" kindref="member">CoordinateVector</ref>;</highlight></codeline>
+<codeline lineno="55" refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nDim<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">JacobianSized</ref>;</highlight></codeline>
+<codeline lineno="56" refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>nNodes<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">NSized</ref>;</highlight></codeline>
+<codeline lineno="57" refid="classMarmotGeometryElement_1afd772f275f4f47447b7dc79511457c2d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nNodes<sp/>*<sp/>nDim<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1afd772f275f4f47447b7dc79511457c2d" kindref="member">NBSized</ref>;</highlight></codeline>
+<codeline lineno="58" refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nNodes<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>;</highlight></codeline>
+<codeline lineno="59" refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>voigtSize,<sp/>nNodes<sp/>*<sp/>nDim<sp/>&gt;<sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">BSized</ref>;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*Properties*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" refkind="member"><highlight class="normal"><sp/><sp/>Eigen::Map&lt;<sp/>const<sp/>CoordinateVector<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" kindref="member">coordinates</ref>;</highlight></codeline>
+<codeline lineno="63" refid="classMarmotGeometryElement_1a8665d00fbb7607d30424b52957735ee4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17" kindref="member">Marmot::FiniteElement::ElementShapes</ref><sp/><ref refid="classMarmotGeometryElement_1a8665d00fbb7607d30424b52957735ee4" kindref="member">shape</ref>;</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*Methods*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="classMarmotGeometryElement_1a3960a67539a05a65c7378fdb50839fc1" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a3960a67539a05a65c7378fdb50839fc1" kindref="member">MarmotGeometryElement</ref>()</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" kindref="member">coordinates</ref>(<sp/>nullptr<sp/>),<sp/><ref refid="classMarmotGeometryElement_1a8665d00fbb7607d30424b52957735ee4" kindref="member">shape</ref>(<sp/><ref refid="namespaceMarmot" kindref="compound">Marmot</ref>::FiniteElement::getElementShapeByMetric(<sp/>nDim,<sp/>nNodes<sp/>)<sp/>){};</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="classMarmotGeometryElement_1a4cd99585349234f35d8ecd932ed7cf07" refkind="member"><highlight class="normal"><sp/><sp/>std::string<sp/><ref refid="classMarmotGeometryElement_1a4cd99585349234f35d8ecd932ed7cf07" kindref="member">getElementShape</ref>()</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="70"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1FiniteElement" kindref="compound">Marmot::FiniteElement</ref>;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::map&lt;<sp/>ElementShapes,<sp/>std::string<sp/>&gt;<sp/>shapes<sp/>=<sp/>{<sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17a4018f89c7e4bfdd56dd40fbf1208901d" kindref="member">Bar2</ref>,<sp/></highlight><highlight class="stringliteral">&quot;bar2&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17a93c291718d842b535d3f413c68c35be6" kindref="member">Quad4</ref>,<sp/></highlight><highlight class="stringliteral">&quot;quad4&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17a3f13fd59413a502a8a27ca9a546827b2" kindref="member">Quad8</ref>,<sp/></highlight><highlight class="stringliteral">&quot;quad8&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17a3c62d9c6f1ab8e6dc72d2efa9cbfde00" kindref="member">Tetra4</ref>,<sp/></highlight><highlight class="stringliteral">&quot;tetra4&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17acd8b0cc6878329ea51656dd8443487be" kindref="member">Tetra10</ref>,<sp/></highlight><highlight class="stringliteral">&quot;tetra10&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17a30e93914eaf9b412fc5004e979bf7603" kindref="member">Hexa8</ref>,<sp/></highlight><highlight class="stringliteral">&quot;hexa8&quot;</highlight><highlight class="normal"><sp/>},</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{<sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17afaa8e5d14e31451e845c4fa72393ef25" kindref="member">Hexa20</ref>,<sp/></highlight><highlight class="stringliteral">&quot;hexa20&quot;</highlight><highlight class="normal"><sp/>}<sp/>};</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>shapes[this-&gt;shape];</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="classMarmotGeometryElement_1a5a9e24c980ba393c64653c5129d00a8e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a5a9e24c980ba393c64653c5129d00a8e" kindref="member">assignNodeCoordinates</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coords<sp/>)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>(<sp/>&amp;<ref refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" kindref="member">coordinates</ref><sp/>)<sp/>Eigen::Map&lt;<sp/>const<sp/>CoordinateVector<sp/>&gt;(<sp/>coords<sp/>);</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*Please<sp/>specialize<sp/>these<sp/>functions<sp/>for<sp/>each<sp/>element<sp/>individially</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/>*.cpp<sp/>file.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/>*Fully<sp/>specialized<sp/>templates<sp/>are<sp/>precompiled<sp/>in<sp/>marmotMechanics<sp/>(rather<sp/>than<sp/>the<sp/>unspecialized<sp/>and</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/>*partially<sp/>specialized<sp/>templates)</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/><sp/><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">NSized</ref><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a3e07541a98fa50fd0185a1eaa7de944b" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94" refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">dNdXi</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a3e07541a98fa50fd0185a1eaa7de944b" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="95" refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">BSized</ref><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" kindref="member">B</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" kindref="member">dNdX</ref><sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="96" refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">BSized</ref><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" kindref="member">BGreen</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" kindref="member">dNdX</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">JacobianSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1adc166cf00081b31e4f0801895a015ae8" kindref="member">F</ref><sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">/*These<sp/>functions<sp/>are<sp/>equal<sp/>for<sp/>each<sp/>element<sp/>and<sp/>independent<sp/>of<sp/>node<sp/>number<sp/>and<sp/><sp/>nDimension*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="classMarmotGeometryElement_1a733156edccbe90f67b7b493a8a856831" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1afd772f275f4f47447b7dc79511457c2d" kindref="member">NBSized</ref><sp/><ref refid="classMarmotGeometryElement_1a733156edccbe90f67b7b493a8a856831" kindref="member">NB</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" kindref="member">NSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">N</ref><sp/>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a4de872cc0a8ec382f0e38d8dac17693c" kindref="member">Marmot::FiniteElement::NB&lt; nDim, nNodes &gt;</ref>(<sp/><ref refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" kindref="member">N</ref><sp/>);<sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="101" refid="classMarmotGeometryElement_1ade2259c2f3736e4624f1f7a0f7551064" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">JacobianSized</ref><sp/><ref refid="classMarmotGeometryElement_1ade2259c2f3736e4624f1f7a0f7551064" kindref="member">Jacobian</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">dNdXi</ref><sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="102"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a66f27f80c1a7588b81f5206c2324ef3b" kindref="member">Marmot::FiniteElement::Jacobian&lt; nDim, nNodes &gt;</ref>(<sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">dNdXi</ref>,<sp/><ref refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" kindref="member">coordinates</ref><sp/>);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref><sp/><ref refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" kindref="member">dNdX</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">dNdXi</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">JacobianSized</ref>&amp;<sp/>JacobianInverse<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="107"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(<sp/><ref refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kindref="member">dNdXi</ref>.transpose()<sp/>*<sp/>JacobianInverse<sp/>).transpose();</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="111" refid="classMarmotGeometryElement_1adc166cf00081b31e4f0801895a015ae8" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">JacobianSized</ref><sp/><ref refid="classMarmotGeometryElement_1adc166cf00081b31e4f0801895a015ae8" kindref="member">F</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">dNdXiSized</ref>&amp;<sp/><ref refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" kindref="member">dNdX</ref>,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="classMarmotGeometryElement_1afdeb54141c32a13873565d829d151b88" kindref="member">CoordinateVector</ref>&amp;<sp/>Q<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="112"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1a66f27f80c1a7588b81f5206c2324ef3b" kindref="member">Marmot::FiniteElement::Jacobian&lt; nDim, nNodes &gt;</ref>(<sp/><ref refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" kindref="member">dNdX</ref>,<sp/>Q<sp/>)<sp/>+<sp/>JacobianSized::Identity();</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" alt="" coords="5,5,1107,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotTypedefs.h" alt="" coords="414,101,698,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="559,54,559,86,553,86,553,54"/>
+</map>

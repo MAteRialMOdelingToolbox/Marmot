@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a80c1544e808a4714e5fc21f0d320fd17" prot="public" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::nPronyTerms</definition>
+        <argsstring></argsstring>
+        <name>nPronyTerms</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::nPronyTerms</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="38" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a050e4314ad75a330c5e3d900cf174681" prot="public" static="no" mutable="no">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::ultimateStiffnessMatrix</definition>
+        <argsstring></argsstring>
+        <name>ultimateStiffnessMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::ultimateStiffnessMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="39" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b" prot="public" static="no" mutable="no">
+        <type>Matrix&lt; double, 6, -1 &gt;</type>
+        <definition>Matrix&lt; double, 6, -1 &gt; Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyStiffnesses</definition>
+        <argsstring></argsstring>
+        <name>pronyStiffnesses</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyStiffnesses</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="40" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" prot="public" static="no" mutable="no">
+        <type>Matrix&lt; double, 6, -1 &gt;</type>
+        <definition>Matrix&lt; double, 6, -1 &gt; Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyRelaxationTimes</definition>
+        <argsstring></argsstring>
+        <name>pronyRelaxationTimes</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyRelaxationTimes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="41" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="37" bodyend="42"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a80c1544e808a4714e5fc21f0d320fd17" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>nPronyTerms</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>pronyRelaxationTimes</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>pronyStiffnesses</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a050e4314ad75a330c5e3d900cf174681" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>ultimateStiffnessMatrix</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

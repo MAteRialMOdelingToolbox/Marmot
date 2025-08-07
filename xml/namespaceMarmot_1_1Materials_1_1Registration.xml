@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Materials_1_1Registration" kind="namespace" language="C++">
+    <compoundname>Marmot::Materials::Registration</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1aa760d7af018a097029134735faceb3fc" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::base</definition>
+        <argsstring></argsstring>
+        <name>base</name>
+        <qualifiedname>Marmot::Materials::Registration::base</qualifiedname>
+        <initializer>= 11930000</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" line="12" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a3b98c8089d65f44b8270cb9b6df2477d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::code</definition>
+        <argsstring></argsstring>
+        <name>code</name>
+        <qualifiedname>Marmot::Materials::Registration::code</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" line="13" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" bodystart="13" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a53b4a6e75c4239acbc2b7169145a347d" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::ADLinearElasticCode</definition>
+        <argsstring></argsstring>
+        <name>ADLinearElasticCode</name>
+        <qualifiedname>Marmot::Materials::Registration::ADLinearElasticCode</qualifiedname>
+        <initializer>= <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1aa760d7af018a097029134735faceb3fc" kindref="member">base</ref> + <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a3b98c8089d65f44b8270cb9b6df2477d" kindref="member">code</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" line="14" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1ab6015594982b9d0ebe9e8679de599d4c" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::ADLinearElasticIsRegistered</definition>
+        <argsstring></argsstring>
+        <name>ADLinearElasticIsRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::ADLinearElasticIsRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a53b4a6e75c4239acbc2b7169145a347d" kindref="member">ADLinearElasticCode</ref>,
+                        &quot;ADLINEARELASTIC&quot;,
+                        <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1ADLinearElastic" kindref="compound">ADLinearElastic</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" line="16" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" bodystart="16" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a0caff92a7d603641c7d036ed7246e546" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::ADVonMisesCode</definition>
+        <argsstring></argsstring>
+        <name>ADVonMisesCode</name>
+        <qualifiedname>Marmot::Materials::Registration::ADVonMisesCode</qualifiedname>
+        <initializer>= <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1aa760d7af018a097029134735faceb3fc" kindref="member">base</ref> + <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a3b98c8089d65f44b8270cb9b6df2477d" kindref="member">code</ref></initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMisesRegistration.cpp" line="12" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMisesRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1acf2a63e521e4546e941b5cdf4d0d4d74" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::ADVonMisesIsRegistered</definition>
+        <argsstring></argsstring>
+        <name>ADVonMisesIsRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::ADVonMisesIsRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a0caff92a7d603641c7d036ed7246e546" kindref="member">ADVonMisesCode</ref>, &quot;ADVONMISES&quot;, <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1ADVonMises" kindref="compound">ADVonMises</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMisesRegistration.cpp" line="14" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/ADVonMises/src/ADVonMisesRegistration.cpp" bodystart="14" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1acd92af445107f72e752d590b81540d2e" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::B4Code</definition>
+        <argsstring></argsstring>
+        <name>B4Code</name>
+        <qualifiedname>Marmot::Materials::Registration::B4Code</qualifiedname>
+        <initializer>= 1193001</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp" line="6" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a0770e85f01f18420f3c1b895b03673cf" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::B4isRegistered</definition>
+        <argsstring></argsstring>
+        <name>B4isRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::B4isRegistered</qualifiedname>
+        <initializer>= <ref refid="classMarmotLibrary_1_1MarmotMaterialFactory_1a3a5ca7e1f28cc4b8f8a34fd035d1e738" kindref="member">MarmotMaterialFactory::registerMaterial</ref>( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1acd92af445107f72e752d590b81540d2e" kindref="member">B4Code</ref>,
+                                                              &quot;B4&quot;,
+                                                              <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1B4" kindref="compound">B4</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp" line="11" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/B4/src/B4Registration.cpp" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a8ce6ad017a69a256dac2bac77757344c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::CompressibleNeoHookeCode</definition>
+        <argsstring></argsstring>
+        <name>CompressibleNeoHookeCode</name>
+        <qualifiedname>Marmot::Materials::Registration::CompressibleNeoHookeCode</qualifiedname>
+        <initializer>= 11930000 + 12</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/CompressibleNeoHooke/src/CompressibleNeoHookeRegistration.cpp" line="8" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/CompressibleNeoHooke/src/CompressibleNeoHookeRegistration.cpp" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a066e3f4080a91d9143d4c7f5579783af" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::CompressibleNeoHookeRegistered</definition>
+        <argsstring></argsstring>
+        <name>CompressibleNeoHookeRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::CompressibleNeoHookeRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a8ce6ad017a69a256dac2bac77757344c" kindref="member">CompressibleNeoHookeCode</ref>,
+                        &quot;COMPRESSIBLENEOHOOKE&quot;,
+                        <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke" kindref="compound">CompressibleNeoHooke</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/CompressibleNeoHooke/src/CompressibleNeoHookeRegistration.cpp" line="12" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/CompressibleNeoHooke/src/CompressibleNeoHookeRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a98d8fa8930d665cce1864449dbbaf50a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::FiniteStrainJ2PlasticityCode</definition>
+        <argsstring></argsstring>
+        <name>FiniteStrainJ2PlasticityCode</name>
+        <qualifiedname>Marmot::Materials::Registration::FiniteStrainJ2PlasticityCode</qualifiedname>
+        <initializer>= 11930000 + 16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2PlasticityRegistration.cpp" line="8" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2PlasticityRegistration.cpp" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1ac653d35e1205e2640c9c963a06a2f78f" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::FiniteStrainJ2PlasticityRegistered</definition>
+        <argsstring></argsstring>
+        <name>FiniteStrainJ2PlasticityRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::FiniteStrainJ2PlasticityRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a98d8fa8930d665cce1864449dbbaf50a" kindref="member">FiniteStrainJ2PlasticityCode</ref>,
+                        &quot;FINITESTRAINJ2PLASTICITY&quot;,
+                        <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity" kindref="compound">FiniteStrainJ2Plasticity</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2PlasticityRegistration.cpp" line="12" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/FiniteStrainJ2Plasticity/src/FiniteStrainJ2PlasticityRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1ae17cd53ddfdce16b4323dc7abb9cdb6c" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::LinearElasticCode</definition>
+        <argsstring></argsstring>
+        <name>LinearElasticCode</name>
+        <qualifiedname>Marmot::Materials::Registration::LinearElasticCode</qualifiedname>
+        <initializer>= 1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/LinearElastic/src/LinearElasticRegistration.cpp" line="8" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/LinearElastic/src/LinearElasticRegistration.cpp" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a83c90ef5060c041497f22a51c47d7091" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::LinearElasticIsRegistered</definition>
+        <argsstring></argsstring>
+        <name>LinearElasticIsRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::LinearElasticIsRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1ae17cd53ddfdce16b4323dc7abb9cdb6c" kindref="member">LinearElasticCode</ref>,
+                        &quot;LINEARELASTIC&quot;,
+                        <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1LinearElastic" kindref="compound">LinearElastic</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/LinearElastic/src/LinearElasticRegistration.cpp" line="12" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/LinearElastic/src/LinearElasticRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a5d6fe86e357f7c9ac86c3c86c35a6681" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::LinearViscoelasticPowerLawCode</definition>
+        <argsstring></argsstring>
+        <name>LinearViscoelasticPowerLawCode</name>
+        <qualifiedname>Marmot::Materials::Registration::LinearViscoelasticPowerLawCode</qualifiedname>
+        <initializer>= 1193000 + 20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLawRegistration.cpp" line="6" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLawRegistration.cpp" bodystart="6" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a2b3d2de0f37dbf991fec7b6d2af0e8ce" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::LinearViscoelasticPowerLawisRegistered</definition>
+        <argsstring></argsstring>
+        <name>LinearViscoelasticPowerLawisRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::LinearViscoelasticPowerLawisRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+    registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a5d6fe86e357f7c9ac86c3c86c35a6681" kindref="member">LinearViscoelasticPowerLawCode</ref>,
+                      &quot;LINEARVISCOELASTICPOWERLAW&quot;,
+                      <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw" kindref="compound">LinearViscoelasticPowerLaw</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLawRegistration.cpp" line="10" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/LinearViscoelasticPowerLaw/src/LinearViscoelasticPowerLawRegistration.cpp" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1a4c5884f57554abbdbc127ab95479bfc3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::Registration::vonMisesCode</definition>
+        <argsstring></argsstring>
+        <name>vonMisesCode</name>
+        <qualifiedname>Marmot::Materials::Registration::vonMisesCode</qualifiedname>
+        <initializer>= 2</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp" line="8" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp" bodystart="8" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Materials_1_1Registration_1aa1de74a588f40d4b30b63f86a0fafbe9" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Materials::Registration::VonMisesIsRegistered</definition>
+        <argsstring></argsstring>
+        <name>VonMisesIsRegistered</name>
+        <qualifiedname>Marmot::Materials::Registration::VonMisesIsRegistered</qualifiedname>
+        <initializer>= MarmotMaterialFactory::
+      registerMaterial( <ref refid="namespaceMarmot_1_1Materials_1_1Registration_1a4c5884f57554abbdbc127ab95479bfc3" kindref="member">vonMisesCode</ref>, &quot;VONMISES&quot;, <ref refid="MarmotMaterialRegistrationHelper_8h_1ab3f518a1b89ccdcb284405e46a3e0e61" kindref="member">makeDefaultMarmotMaterialFactoryFunction</ref>&lt; class <ref refid="classMarmot_1_1Materials_1_1VonMisesModel" kindref="compound">VonMisesModel</ref> &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp" line="12" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/materials/VonMises/src/VonMisesRegistration.cpp" bodystart="12" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/materials/ADLinearElastic/src/ADLinearElasticRegistration.cpp" line="8" column="3"/>
+  </compounddef>
+</doxygen>

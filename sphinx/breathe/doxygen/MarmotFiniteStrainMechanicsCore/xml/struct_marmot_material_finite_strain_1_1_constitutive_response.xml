@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_finite_strain_1_1_constitutive_response" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialFiniteStrain::ConstitutiveResponse</compoundname>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; MarmotMaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::tau</definition>
+        <argsstring></argsstring>
+        <name>tau</name>
+        <qualifiedname>MarmotMaterialFiniteStrain::ConstitutiveResponse::tau</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="41" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1ac77093de78486135b29eb4186841703d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::rho</definition>
+        <argsstring></argsstring>
+        <name>rho</name>
+        <qualifiedname>MarmotMaterialFiniteStrain::ConstitutiveResponse::rho</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="42" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>MarmotMaterialFiniteStrain::ConstitutiveResponse::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="43" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="40" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="40" bodyend="44"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a" prot="public" virt="non-virtual"><scope>MarmotMaterialFiniteStrain::ConstitutiveResponse</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1ac77093de78486135b29eb4186841703d" prot="public" virt="non-virtual"><scope>MarmotMaterialFiniteStrain::ConstitutiveResponse</scope><name>rho</name></member>
+      <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d" prot="public" virt="non-virtual"><scope>MarmotMaterialFiniteStrain::ConstitutiveResponse</scope><name>tau</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

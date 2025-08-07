@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries</compoundname>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties" prot="public">Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_prony_series_8h_1a1170bd07fd7a83069a798b3699c77c89" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt; Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::StateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>StateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::StateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="44" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_prony_series_8h_1a481a6a7f467111c775dc5a2c18a979ef" prot="public" static="no">
+        <type>Eigen::Map&lt; StateVarMatrix &gt;</type>
+        <definition>typedef Eigen::Map&lt; StateVarMatrix &gt; Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::mapStateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>mapStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::mapStateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="45" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_prony_series_8h_1aa5b16d91c3cfbcbc30c893e6351ab508" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::evaluatePronySeries</definition>
+        <argsstring>(const Properties &amp;props, Vector6d &amp;stress, Matrix6d &amp;stiffness, Eigen::Ref&lt; mapStateVarMatrix &gt; stateVars, const Vector6d &amp;dStrain, const double dT, const bool updateStateVars=false)</argsstring>
+        <name>evaluatePronySeries</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::evaluatePronySeries</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties" kindref="compound">Properties</ref> &amp;</type>
+          <declname>props</declname>
+        </param>
+        <param>
+          <type>Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>Matrix6d &amp;</type>
+          <declname>stiffness</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; mapStateVarMatrix &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const bool</type>
+          <declname>updateStateVars</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="47" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" declline="47" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_prony_series_8h_1adb89adab7ab07742866e458ca0d5aacf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::updateStateVars</definition>
+        <argsstring>(const Properties &amp;props, Eigen::Ref&lt; mapStateVarMatrix &gt; stateVars, const Vector6d &amp;dStrain, const double dT)</argsstring>
+        <name>updateStateVars</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::updateStateVars</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties" kindref="compound">Properties</ref> &amp;</type>
+          <declname>props</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; mapStateVarMatrix &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="55" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" declline="55" declcolumn="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="33" column="3"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_scalar_to_tensor" kind="namespace" language="C++">
+    <compoundname>Marmot::NumericalAlgorithms::Differentiation::ScalarToTensor</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1a352bc4b86b91b3c93d9e508663243b31" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::NumericalAlgorithms::Differentiation::ScalarToTensor::forwardDifference</definition>
+        <argsstring>(const std::function&lt; Fastor::Tensor&lt; double, Rest... &gt;(const double) &gt; &amp;F, const double x)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::ScalarToTensor::forwardDifference</qualifiedname>
+        <param>
+          <type>const std::function&lt; Fastor::Tensor&lt; double, Rest... &gt;(const double) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="45" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="45" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1adc89d9db7ed59a9b334e5dc57cd742b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::NumericalAlgorithms::Differentiation::ScalarToTensor::centralDifference</definition>
+        <argsstring>(const std::function&lt; Fastor::Tensor&lt; double, Rest... &gt;(const double) &gt; &amp;F, const double x)</argsstring>
+        <name>centralDifference</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::ScalarToTensor::centralDifference</qualifiedname>
+        <param>
+          <type>const std::function&lt; Fastor::Tensor&lt; double, Rest... &gt;(const double) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="57" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="57" bodyend="66"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="42" column="5"/>
+  </compounddef>
+</doxygen>

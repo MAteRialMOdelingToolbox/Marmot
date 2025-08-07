@@ -1,0 +1,909 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Elements::DisplacementFiniteElement</compoundname>
+    <basecompoundref refid="classMarmotElement" prot="public" virt="non-virtual">MarmotElement</basecompoundref>
+    <basecompoundref refid="classMarmotGeometryElement" prot="public" virt="non-virtual">MarmotGeometryElement&lt; nDim, nNodes &gt;</basecompoundref>
+    <includes refid="DisplacementFiniteElement_8h" local="no">DisplacementFiniteElement.h</includes>
+    <innerclass refid="structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint" prot="public">Marmot::Elements::DisplacementFiniteElement::QuadraturePoint</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nNodes</declname>
+        <defname>nNodes</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3d" prot="public" static="no" strong="no">
+        <type></type>
+        <name>SectionType</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::SectionType</qualifiedname>
+        <enumvalue id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da55f140a064ba14f4b2c65357aa47c0af" prot="public">
+          <name>UniaxialStress</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da1eb30d13c6803abb7ef295f8423052ef" prot="public">
+          <name>PlaneStress</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da7151abd616f32fa8563e44b911ba478d" prot="public">
+          <name>PlaneStrain</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3dabe9738b2df45447aa88b7a5740d3be11" prot="public">
+          <name>Solid</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="55" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="55" bodyend="60"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a4597ba18f4c456e8b4149655b7023372" prot="public" static="no">
+        <type><ref refid="classMarmotGeometryElement" kindref="compound">MarmotGeometryElement</ref>&lt; nDim, nNodes &gt;</type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::ParentGeometryElement =  MarmotGeometryElement&lt; nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>ParentGeometryElement</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::ParentGeometryElement</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="65" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad71e0a1e26b5e81294ea0e74b8bcd067" prot="public" static="no">
+        <type>typename <ref refid="classMarmotGeometryElement_1ac56ffe4ec2075db94537960b7527bd9d" kindref="member">ParentGeometryElement::JacobianSized</ref></type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::JacobianSized =  typename ParentGeometryElement::JacobianSized</definition>
+        <argsstring></argsstring>
+        <name>JacobianSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::JacobianSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="66" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a84dbc08696994b6ddd94295f3f0e2c88" prot="public" static="no">
+        <type>typename <ref refid="classMarmotGeometryElement_1a72ffb6e31fe3aa68d05721f60d86bf44" kindref="member">ParentGeometryElement::dNdXiSized</ref></type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::dNdXiSized =  typename ParentGeometryElement::dNdXiSized</definition>
+        <argsstring></argsstring>
+        <name>dNdXiSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::dNdXiSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="67" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a9c2c17e4946091c2f711a79e4b88737e" prot="public" static="no">
+        <type>typename <ref refid="classMarmotGeometryElement_1a72aa85677e3478f670188650735c450e" kindref="member">ParentGeometryElement::BSized</ref></type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::BSized =  typename ParentGeometryElement::BSized</definition>
+        <argsstring></argsstring>
+        <name>BSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::BSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="68" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a614e8e0990c6cdc2eb8cfe612b96c9f2" prot="public" static="no">
+        <type>typename <ref refid="classMarmotGeometryElement_1a3e07541a98fa50fd0185a1eaa7de944b" kindref="member">ParentGeometryElement::XiSized</ref></type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::XiSized =  typename ParentGeometryElement::XiSized</definition>
+        <argsstring></argsstring>
+        <name>XiSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::XiSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="69" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a4148dde1048fe795456d281dec37d030" prot="public" static="no">
+        <type>Matrix&lt; double, <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a11940c5891a560bb89f5b9e57fb422d8" kindref="member">sizeLoadVector</ref>, 1 &gt;</type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::RhsSized =  Matrix&lt; double, sizeLoadVector, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>RhsSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::RhsSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="70" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31e32e5e35f36e4827f14ff446dac195" prot="public" static="no">
+        <type>Matrix&lt; double, <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a11940c5891a560bb89f5b9e57fb422d8" kindref="member">sizeLoadVector</ref>, <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a11940c5891a560bb89f5b9e57fb422d8" kindref="member">sizeLoadVector</ref> &gt;</type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::KeSizedMatrix =  Matrix&lt; double, sizeLoadVector, sizeLoadVector &gt;</definition>
+        <argsstring></argsstring>
+        <name>KeSizedMatrix</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::KeSizedMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="71" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a84d8575ecc8d1d902a7925882a47ff44" prot="public" static="no">
+        <type>Matrix&lt; double, <ref refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" kindref="member">ParentGeometryElement::voigtSize</ref>, <ref refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" kindref="member">ParentGeometryElement::voigtSize</ref> &gt;</type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::CSized =  Matrix&lt; double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize &gt;</definition>
+        <argsstring></argsstring>
+        <name>CSized</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::CSized</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="72" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a75614ece8fba9d7a8e0c4e6c61cd142a" prot="public" static="no">
+        <type>Matrix&lt; double, <ref refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" kindref="member">ParentGeometryElement::voigtSize</ref>, 1 &gt;</type>
+        <definition>using Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::Voigt =  Matrix&lt; double, ParentGeometryElement::voigtSize, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Voigt</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::Voigt</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="73" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a11940c5891a560bb89f5b9e57fb422d8" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::sizeLoadVector</definition>
+        <argsstring></argsstring>
+        <name>sizeLoadVector</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::sizeLoadVector</qualifiedname>
+        <initializer>= nNodes * nDim</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="62" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a736fbc5258927aa4f6f0dda6ad509abd" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::nCoordinates</definition>
+        <argsstring></argsstring>
+        <name>nCoordinates</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::nCoordinates</qualifiedname>
+        <initializer>= nNodes * nDim</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="63" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a60bcf95f6b5fcaed7b714fa0f44dec86" prot="public" static="no" mutable="no">
+        <type>Map&lt; const VectorXd &gt;</type>
+        <definition>Map&lt; const VectorXd &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::elementProperties</definition>
+        <argsstring></argsstring>
+        <name>elementProperties</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::elementProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="75" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a70d668b18b38a9ccb9added43bb7a516" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::elLabel</definition>
+        <argsstring></argsstring>
+        <name>elLabel</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::elLabel</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="76" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac28b6d017733a698ec51b4b55c7ec414" prot="public" static="no" mutable="no">
+        <type>const <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3d" kindref="member">SectionType</ref></type>
+        <definition>const SectionType Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::sectionType</definition>
+        <argsstring></argsstring>
+        <name>sectionType</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::sectionType</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="77" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a94329717c5a1ba51e6bbcb0f0ab50335" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint" kindref="compound">QuadraturePoint</ref> &gt;</type>
+        <definition>std::vector&lt; QuadraturePoint &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::qps</definition>
+        <argsstring></argsstring>
+        <name>qps</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::qps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="136" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a9d59ae1b35f1879a7d0b1f16dba0f43b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::DisplacementFiniteElement</definition>
+        <argsstring>(int elementID, FiniteElement::Quadrature::IntegrationTypes integrationType, SectionType sectionType)</argsstring>
+        <name>DisplacementFiniteElement</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::DisplacementFiniteElement</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>elementID</declname>
+        </param>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4b" kindref="member">FiniteElement::Quadrature::IntegrationTypes</ref></type>
+          <declname>integrationType</declname>
+        </param>
+        <param>
+          <type><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3d" kindref="member">SectionType</ref></type>
+          <declname>sectionType</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="138" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="223" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1add1beb852145cac80ccd674caa1ddb1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNumberOfRequiredStateVars</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplements refid="classMarmotElement_1a7009a873b60e587bcad34151f92f7f4d">getNumberOfRequiredStateVars</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="142" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="239" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad58214bc52b5e085c3acdf1ad78cbcb0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNodeFields</definition>
+        <argsstring>()</argsstring>
+        <name>getNodeFields</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNodeFields</qualifiedname>
+        <reimplements refid="classMarmotElement_1a2d009fe01070ba3eb7709a900584da11">getNodeFields</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="144" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="245" bodyend="257"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a52dc2772faad97b8288421f732d70f02" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getDofIndicesPermutationPattern</definition>
+        <argsstring>()</argsstring>
+        <name>getDofIndicesPermutationPattern</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getDofIndicesPermutationPattern</qualifiedname>
+        <reimplements refid="classMarmotElement_1a63cb2bc783e871569531909f68649ebe">getDofIndicesPermutationPattern</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="146" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="260" bodyend="268"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31c0bdb76c16cff3b51505b44348f46b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNNodes</definition>
+        <argsstring>()</argsstring>
+        <name>getNNodes</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNNodes</qualifiedname>
+        <reimplements refid="classMarmotElement_1a99bcebd80c0c31c3e4705df9c37c41e6">getNNodes</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="148" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="148" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac48bb27c11306e8da74eae11802b19e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNSpatialDimensions</definition>
+        <argsstring>()</argsstring>
+        <name>getNSpatialDimensions</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNSpatialDimensions</qualifiedname>
+        <reimplements refid="classMarmotElement_1ad1a33ff7a88486bc689467fc931c207c">getNSpatialDimensions</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="150" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="150" bodyend="150"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad956b188fee179afb928cff8b1df6a59" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNDofPerElement</definition>
+        <argsstring>()</argsstring>
+        <name>getNDofPerElement</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNDofPerElement</qualifiedname>
+        <reimplements refid="classMarmotElement_1a17dc4c334219f62511f554133c00579c">getNDofPerElement</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="152" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a82676e0dc81cbdf0d26eb498f832b142" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getElementShape</definition>
+        <argsstring>()</argsstring>
+        <name>getElementShape</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getElementShape</qualifiedname>
+        <reimplements refid="classMarmotElement_1ab38da2001626ad74a3bc4f95ba144a2f">getElementShape</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="154" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3014b1bffd3289b8abef63e171a34ce3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::assignStateVars</qualifiedname>
+        <reimplements refid="classMarmotElement_1a51789466344c5a3437cd4e07d7996313">assignStateVars</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="156" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="271" bodyend="280"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98934e0da59236159a49d3f6f494c034" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::assignProperty</definition>
+        <argsstring>(const ElementProperties &amp;marmotElementProperty)</argsstring>
+        <name>assignProperty</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::assignProperty</qualifiedname>
+        <reimplements refid="classMarmotElement_1a2d05121938f57f6bc969774ac384f1e5">assignProperty</reimplements>
+        <param>
+          <type>const <ref refid="classElementProperties" kindref="compound">ElementProperties</ref> &amp;</type>
+          <declname>marmotElementProperty</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="158" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="283" bodyend="287"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a957be4c370128837fdc97c32b954243f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::assignProperty</definition>
+        <argsstring>(const MarmotMaterialSection &amp;marmotElementProperty)</argsstring>
+        <name>assignProperty</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::assignProperty</qualifiedname>
+        <reimplements refid="classMarmotElement_1accde07ef0b65f8ae46108fcbc793dc59">assignProperty</reimplements>
+        <param>
+          <type>const <ref refid="classMarmotMaterialSection" kindref="compound">MarmotMaterialSection</ref> &amp;</type>
+          <declname>marmotElementProperty</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="160" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="290" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98a9993ac5fa4e39c2bf54d6411e64f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::assignNodeCoordinates</definition>
+        <argsstring>(const double *coordinates)</argsstring>
+        <name>assignNodeCoordinates</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::assignNodeCoordinates</qualifiedname>
+        <reimplements refid="classMarmotElement_1ab43a5fd29bebd1d7b5129bcb51fb192b">assignNodeCoordinates</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="162" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="314" bodyend="317"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad87745ce0f1345646df3699c259c1c8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::initializeYourself</definition>
+        <argsstring>()</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::initializeYourself</qualifiedname>
+        <reimplements refid="classMarmotElement_1ad2fee3bfc78fa49a28ceded4aaa3f836">initializeYourself</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="164" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="320" bodyend="342"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a8abd60a2f8ed3ab8534a7fa457956f42" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::setInitialConditions</definition>
+        <argsstring>(StateTypes state, const double *values)</argsstring>
+        <name>setInitialConditions</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::setInitialConditions</qualifiedname>
+        <reimplements refid="classMarmotElement_1a8dada12f443d996232e95326b39abed7">setInitialConditions</reimplements>
+        <param>
+          <type><ref refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461b" kindref="member">StateTypes</ref></type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>values</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="166" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="419" bodyend="450"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ab2d4085eb2384d724b516a9350189b3d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::computeDistributedLoad</definition>
+        <argsstring>(MarmotElement::DistributedLoadTypes loadType, double *P, double *K, const int elementFace, const double *load, const double *QTotal, const double *time, double dT)</argsstring>
+        <name>computeDistributedLoad</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::computeDistributedLoad</qualifiedname>
+        <reimplements refid="classMarmotElement_1ac68956668d34ac2ddac545ff2ce56004">computeDistributedLoad</reimplements>
+        <param>
+          <type><ref refid="classMarmotElement_1a023cde1fc79ae1457663aa0093e758f5" kindref="member">MarmotElement::DistributedLoadTypes</ref></type>
+          <declname>loadType</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>elementFace</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="168" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="453" bodyend="497"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a95e4e836e9ae9f111ae5b26083c4d607" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::computeBodyForce</definition>
+        <argsstring>(double *P, double *K, const double *load, const double *QTotal, const double *time, double dT)</argsstring>
+        <name>computeBodyForce</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::computeBodyForce</qualifiedname>
+        <reimplements refid="classMarmotElement_1aa0ef25e441523e4d36b748e83a4270b5">computeBodyForce</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="177" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="500" bodyend="512"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae49ca66a01e838600fde6170f1ff151c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::computeYourself</definition>
+        <argsstring>(const double *QTotal, const double *dQ, double *Pe, double *Ke, const double *time, double dT, double &amp;pNewdT)</argsstring>
+        <name>computeYourself</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::computeYourself</qualifiedname>
+        <reimplements refid="classMarmotElement_1abbef3863159574d0bc93aa9c327cb493">computeYourself</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>dQ</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>Pe</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>Ke</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>pNewdT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="184" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="345" bodyend="416"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abff72979bbc04bf804617e8d6becff95" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::computeConsistentInertia</definition>
+        <argsstring>(double *M)</argsstring>
+        <name>computeConsistentInertia</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::computeConsistentInertia</qualifiedname>
+        <reimplements refid="classMarmotElement_1a898fde1c6644d2f2b5b10d6f6e6dd5fb">computeConsistentInertia</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="192" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="515" bodyend="525"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac1c41e8caeb7ddd1cc8df254838984e8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::computeLumpedInertia</definition>
+        <argsstring>(double *M)</argsstring>
+        <name>computeLumpedInertia</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::computeLumpedInertia</qualifiedname>
+        <reimplements refid="classMarmotElement_1aed752615a4b8434456de9baf1b5a9e24">computeLumpedInertia</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="194" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="527" bodyend="537"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae5d58342d479c1e7e4170d8c151e7649" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="structStateView" kindref="compound">StateView</ref></type>
+        <definition>StateView Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, int qpNumber)</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getStateView</qualifiedname>
+        <reimplements refid="classMarmotElement_1a37cadc2b9f7d4a1dcaec9830409acaa6">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>qpNumber</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="196" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="196" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3d5dfa36bac08553bb9165ddb63080b2" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getCoordinatesAtCenter</definition>
+        <argsstring>()</argsstring>
+        <name>getCoordinatesAtCenter</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getCoordinatesAtCenter</qualifiedname>
+        <reimplements refid="classMarmotElement_1a6aec5b505f89d2fca61b77befd2f06b7">getCoordinatesAtCenter</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="215" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="540" bodyend="548"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a0de43b8a983edec8c7ff168701f3f79e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; double &gt; &gt; Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getCoordinatesAtQuadraturePoints</definition>
+        <argsstring>()</argsstring>
+        <name>getCoordinatesAtQuadraturePoints</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getCoordinatesAtQuadraturePoints</qualifiedname>
+        <reimplements refid="classMarmotElement_1a5f54e04668ce71f4625a1ed876301d82">getCoordinatesAtQuadraturePoints</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="217" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="551" bodyend="564"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a6350d216b326ae3abee2f5ab78b71cb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::getNumberOfQuadraturePoints</definition>
+        <argsstring>()</argsstring>
+        <name>getNumberOfQuadraturePoints</name>
+        <qualifiedname>Marmot::Elements::DisplacementFiniteElement::getNumberOfQuadraturePoints</qualifiedname>
+        <reimplements refid="classMarmotElement_1ac11861d5a592a26562cae1abf2620d28">getNumberOfQuadraturePoints</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="219" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="567" bodyend="570"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotElement</label>
+        <link refid="classMarmotElement"/>
+      </node>
+      <node id="3">
+        <label>MarmotGeometryElement&lt; nDim, nNodes &gt;</label>
+        <link refid="classMarmotGeometryElement"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotElement</label>
+        <link refid="classMarmotElement"/>
+      </node>
+      <node id="3">
+        <label>MarmotGeometryElement&lt; nDim, nNodes &gt;</label>
+        <link refid="classMarmotGeometryElement"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" line="52" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/include/Marmot/DisplacementFiniteElement.h" bodystart="52" bodyend="220"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98a9993ac5fa4e39c2bf54d6411e64f7" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>assignNodeCoordinates</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98934e0da59236159a49d3f6f494c034" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>assignProperty</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a957be4c370128837fdc97c32b954243f" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>assignProperty</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3014b1bffd3289b8abef63e171a34ce3" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>assignStateVars</name></member>
+      <member refid="classMarmotGeometryElement_1ab47875cbdc69b27f87395a0b30e3fe91" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1af2c548f51ac033990a4ffd4150e1cbe2" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a887f3638fde2bcfa521d790471c81f7d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a77b215c14237e170f8f96dc0a26c0ce3" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a1df5cc0076768231cd0035cf8d97d9e7" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a606b78fe24e41010bdaf4e59002b4a51" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a4f26fd425897b64bd953bab7546a5e05" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1a5496063af65fc5a3e3c8da951387bc5a" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>B</name></member>
+      <member refid="classMarmotGeometryElement_1ac4afff6d9d840bb7a6dddf36acb37364" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1a5b6fc0eb0144f605589278d05ab96e1f" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1afae66f832168fa8559d9ab6726a8ed29" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1a0676a5044848cc982e01b36db0eb8a92" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1a4dfa90c690fbe3213255e5f3d232982f" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1a8ed719e8e89cb25f81bc3e6cf0d9f535" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1aa06402e05ff05a9c6859caf6ab166869" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmotGeometryElement_1a4634f9d31883d68be1b432d6cf4acb47" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BGreen</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a9c2c17e4946091c2f711a79e4b88737e" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>BSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a95e4e836e9ae9f111ae5b26083c4d607" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>computeBodyForce</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abff72979bbc04bf804617e8d6becff95" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>computeConsistentInertia</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ab2d4085eb2384d724b516a9350189b3d" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>computeDistributedLoad</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac1c41e8caeb7ddd1cc8df254838984e8" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>computeLumpedInertia</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae49ca66a01e838600fde6170f1ff151c" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>computeYourself</name></member>
+      <member refid="classMarmotGeometryElement_1aca72d1711a7f59e1737331521df26032" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>coordinates</name></member>
+      <member refid="classMarmotGeometryElement_1afdeb54141c32a13873565d829d151b88" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>CoordinateVector</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a84d8575ecc8d1d902a7925882a47ff44" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>CSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a9d59ae1b35f1879a7d0b1f16dba0f43b" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>DisplacementFiniteElement</name></member>
+      <member refid="classMarmotElement_1a023cde1fc79ae1457663aa0093e758f5" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>DistributedLoadTypes</name></member>
+      <member refid="classMarmotGeometryElement_1a62587f81369a2adbd49d70491ca328c9" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdX</name></member>
+      <member refid="classMarmotGeometryElement_1af8a7333ba0d86fc0faf5ea4f751a0cc6" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1acddd828e6fad9a3494a914457000aed8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1a048301895d24cb59c8d27c0a4d5bf7a8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1a91d388f3e7d9aec9e2b33b127fe654d8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1ac7824cdeeebc2fde80c752165bfde513" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1a11ae25fe5b9cf1b1f68d4e770a34cd37" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1a24d334e6c94097b542767184686a637d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmotGeometryElement_1a83736688ed151237ae523c3919e707c5" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXi</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a84dbc08696994b6ddd94295f3f0e2c88" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>dNdXiSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a60bcf95f6b5fcaed7b714fa0f44dec86" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>elementProperties</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a70d668b18b38a9ccb9added43bb7a516" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>elLabel</name></member>
+      <member refid="classMarmotGeometryElement_1adc166cf00081b31e4f0801895a015ae8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>F</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461babd03e131da1d15661c83709bd73e4b29" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>GeostaticStress</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3d5dfa36bac08553bb9165ddb63080b2" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getCoordinatesAtCenter</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a0de43b8a983edec8c7ff168701f3f79e" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getCoordinatesAtQuadraturePoints</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a52dc2772faad97b8288421f732d70f02" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getDofIndicesPermutationPattern</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a82676e0dc81cbdf0d26eb498f832b142" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getElementShape</name></member>
+      <member refid="classMarmotGeometryElement_1a4cd99585349234f35d8ecd932ed7cf07" prot="public" virt="non-virtual" ambiguityscope="MarmotGeometryElement::"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getElementShape</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad956b188fee179afb928cff8b1df6a59" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNDofPerElement</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31c0bdb76c16cff3b51505b44348f46b" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNNodes</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad58214bc52b5e085c3acdf1ad78cbcb0" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNodeFields</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac48bb27c11306e8da74eae11802b19e5" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNSpatialDimensions</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a6350d216b326ae3abee2f5ab78b71cb1" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNumberOfQuadraturePoints</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1add1beb852145cac80ccd674caa1ddb1b" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae5d58342d479c1e7e4170d8c151e7649" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>getStateView</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461bad98c67ed44a4c287a2f0cc24f9f4b308" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>HydrostaticStress</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad87745ce0f1345646df3699c259c1c8f" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>initializeYourself</name></member>
+      <member refid="classMarmotGeometryElement_1ade2259c2f3736e4624f1f7a0f7551064" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Jacobian</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad71e0a1e26b5e81294ea0e74b8bcd067" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>JacobianSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31e32e5e35f36e4827f14ff446dac195" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>KeSizedMatrix</name></member>
+      <member refid="classMarmotGeometryElement_1a3960a67539a05a65c7378fdb50839fc1" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>MarmotGeometryElement</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461bac75fa00de9a254e2580be91551f64bbf" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>MarmotMaterialInitialization</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461ba072722a8e13849214e5f9d9e91369638" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>MarmotMaterialStateVars</name></member>
+      <member refid="classMarmotGeometryElement_1ae7cd968d0237f07c2e47388492fdf273" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a0f7376c12e63df1956a5483da6d71f2e" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a42fc4d31085529f15e55fde8c2a89239" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1ad7fcae920edcca84778b702330d0dd2c" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1ab43cc0726cd7dc1c2c8d12ef77d8eeae" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a4945fa4d20bed602cb2a5baf58426cae" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a0f4e7de4563d2d22a002efc020cebed5" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a9dbdc5f6f05389da382b6c2fdf9fbed9" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>N</name></member>
+      <member refid="classMarmotGeometryElement_1a733156edccbe90f67b7b493a8a856831" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>NB</name></member>
+      <member refid="classMarmotGeometryElement_1afd772f275f4f47447b7dc79511457c2d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>NBSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a736fbc5258927aa4f6f0dda6ad509abd" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>nCoordinates</name></member>
+      <member refid="classMarmotGeometryElement_1a7faa14b0ae0f2f84ff34f90a2708f25f" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>NSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a4597ba18f4c456e8b4149655b7023372" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>ParentGeometryElement</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da7151abd616f32fa8563e44b911ba478d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>PlaneStrain</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da1eb30d13c6803abb7ef295f8423052ef" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>PlaneStress</name></member>
+      <member refid="classMarmotElement_1a023cde1fc79ae1457663aa0093e758f5a925aa06a4447e235a742f1402ec1317e" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Pressure</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a94329717c5a1ba51e6bbcb0f0ab50335" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>qps</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a4148dde1048fe795456d281dec37d030" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>RhsSized</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3d" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>SectionType</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac28b6d017733a698ec51b4b55c7ec414" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>sectionType</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a8abd60a2f8ed3ab8534a7fa457956f42" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>setInitialConditions</name></member>
+      <member refid="classMarmotGeometryElement_1a8665d00fbb7607d30424b52957735ee4" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>shape</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461ba9919c9bf8e81e625b0ef939135057c33" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Sigma11</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461ba004802ab7fa7333f2ee4befa956fdf46" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Sigma22</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461bafb0c1c00ee0276765fe91c1025f85eae" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Sigma33</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a11940c5891a560bb89f5b9e57fb422d8" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>sizeLoadVector</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3dabe9738b2df45447aa88b7a5740d3be11" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Solid</name></member>
+      <member refid="classMarmotElement_1a4a399e8339bb2f93d379841bb252461b" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>StateTypes</name></member>
+      <member refid="classMarmotElement_1a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>SurfaceTorsion</name></member>
+      <member refid="classMarmotElement_1a023cde1fc79ae1457663aa0093e758f5a8b2fd18c8c59a5f5ad857989b54c1482" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>SurfaceTraction</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da55f140a064ba14f4b2c65357aa47c0af" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>UniaxialStress</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a75614ece8fba9d7a8e0c4e6c61cd142a" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>Voigt</name></member>
+      <member refid="classMarmotGeometryElement_1af573006ded976c7f3a7df763df72440f" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>voigtSize</name></member>
+      <member refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a614e8e0990c6cdc2eb8cfe612b96c9f2" prot="public" virt="non-virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>XiSized</name></member>
+      <member refid="classMarmotElement_1ae852bc0749f00720d9d07b6432bc77ab" prot="public" virt="virtual"><scope>Marmot::Elements::DisplacementFiniteElement</scope><name>~MarmotElement</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

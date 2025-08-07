@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_localization_analysis" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::LocalizationAnalysis</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_localization_8h_1a9692823e1e7ecc1cb29e22628c0b72b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Matrix3d</type>
+        <definition>Marmot::Matrix3d Marmot::ContinuumMechanics::LocalizationAnalysis::computeAcousticTensor</definition>
+        <argsstring>(const Marmot::Matrix6d &amp;materialTangent, const Marmot::Vector3d &amp;normalVector)</argsstring>
+        <name>computeAcousticTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::LocalizationAnalysis::computeAcousticTensor</qualifiedname>
+        <param>
+          <type>const Marmot::Matrix6d &amp;</type>
+          <declname>materialTangent</declname>
+        </param>
+        <param>
+          <type>const Marmot::Vector3d &amp;</type>
+          <declname>normalVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="34" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="34" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_localization_8h_1a2584a6773166e96f681967bc4e41090a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::ContinuumMechanics::LocalizationAnalysis::localizationChecker</definition>
+        <argsstring>(const Marmot::Matrix3d &amp;acousticTensor)</argsstring>
+        <name>localizationChecker</name>
+        <qualifiedname>Marmot::ContinuumMechanics::LocalizationAnalysis::localizationChecker</qualifiedname>
+        <param>
+          <type>const Marmot::Matrix3d &amp;</type>
+          <declname>acousticTensor</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="37" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="37" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_localization_8h_1a25f0c7c37fb9434b5d74af0a5b5c86d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector3d</type>
+        <definition>Marmot::Vector3d Marmot::ContinuumMechanics::LocalizationAnalysis::computeNormalVector</definition>
+        <argsstring>(double alpha, double beta)</argsstring>
+        <name>computeNormalVector</name>
+        <qualifiedname>Marmot::ContinuumMechanics::LocalizationAnalysis::computeNormalVector</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>alpha</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>beta</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="39" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="39" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_localization_8h_1af73e1300206b015b834ce93a24538060" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::LocalizationAnalysis::minimumDeterminantAcousticTensor</definition>
+        <argsstring>(const Marmot::Matrix6d &amp;materialTangent)</argsstring>
+        <name>minimumDeterminantAcousticTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::LocalizationAnalysis::minimumDeterminantAcousticTensor</qualifiedname>
+        <param>
+          <type>const Marmot::Matrix6d &amp;</type>
+          <declname>materialTangent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="41" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="41" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="32" column="3"/>
+  </compounddef>
+</doxygen>

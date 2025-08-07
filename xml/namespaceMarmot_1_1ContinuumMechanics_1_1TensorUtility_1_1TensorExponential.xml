@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::TensorUtility::TensorExponential</compoundname>
+    <innerclass refid="structMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential_1_1ExponentialMapFailed" prot="public">Marmot::ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed</innerclass>
+    <innerclass refid="structMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential_1_1TensorExponentialResult" prot="public">Marmot::ContinuumMechanics::TensorUtility::TensorExponential::TensorExponentialResult</innerclass>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential_1_1FirstOrderDerived">Marmot::ContinuumMechanics::TensorUtility::TensorExponential::FirstOrderDerived</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility_1_1TensorExponential_1ae0144a54498c8cd41838ee8117e708c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>tensorSize</declname>
+            <defname>tensorSize</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt;</type>
+        <definition>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; Marmot::ContinuumMechanics::TensorUtility::TensorExponential::computeTensorExponential</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;theTensor, int maxIterations, double tolerance, double alternativeTolerance)</argsstring>
+        <name>computeTensorExponential</name>
+        <qualifiedname>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::computeTensorExponential</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;</type>
+          <declname>theTensor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>maxIterations</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tolerance</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>alternativeTolerance</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="38" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="38" bodyend="85"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="34" column="5"/>
+  </compounddef>
+</doxygen>

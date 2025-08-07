@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</compoundname>
+    <includes refid="HaighWestergaard_8h" local="no">HaighWestergaard.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+        <defval>double</defval>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a2245136a4cde603f80c3289529b5ac76" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates&lt; T &gt;::xi</definition>
+        <argsstring></argsstring>
+        <name>xi</name>
+        <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::xi</qualifiedname>
+        <briefdescription>
+<para>Hydrostatic component <formula id="20">$\xi$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="46" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a5817a1a0513fc95b11943afe2c51c32a" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates&lt; T &gt;::rho</definition>
+        <argsstring></argsstring>
+        <name>rho</name>
+        <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::rho</qualifiedname>
+        <briefdescription>
+<para>Deviatoric radius <formula id="21">$\rho$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="48" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a479e94338e0892442f3864812d85165b" prot="public" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates&lt; T &gt;::theta</definition>
+        <argsstring></argsstring>
+        <name>theta</name>
+        <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::theta</qualifiedname>
+        <briefdescription>
+<para>Lode angle <formula id="22">$\theta$</formula> specified in radian. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="50" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Aggregate of the Haigh-Westergaard coordinates (invariants) <formula id="20">$\xi$</formula>, <formula id="21">$\rho$</formula>, <formula id="22">$\theta$</formula>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="43" bodyend="51"/>
+    <listofallmembers>
+      <member refid="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a5817a1a0513fc95b11943afe2c51c32a" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</scope><name>rho</name></member>
+      <member refid="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a479e94338e0892442f3864812d85165b" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</scope><name>theta</name></member>
+      <member refid="structMarmot_1_1ContinuumMechanics_1_1HaighWestergaard_1_1HaighWestergaardCoordinates_1a2245136a4cde603f80c3289529b5ac76" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</scope><name>xi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

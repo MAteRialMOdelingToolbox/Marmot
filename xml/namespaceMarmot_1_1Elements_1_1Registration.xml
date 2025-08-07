@@ -1,0 +1,524 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Elements_1_1Registration" kind="namespace" language="C++">
+    <compoundname>Marmot::Elements::Registration</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658" prot="public" static="no" strong="no">
+        <type></type>
+        <name>DisplacementElementCode</name>
+        <qualifiedname>Marmot::Elements::Registration::DisplacementElementCode</qualifiedname>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a353cbfe00b17059746048286c4a2dfde" prot="public">
+          <name>T2D2</name>
+          <initializer>= 202</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a2a2798496eea59725b0cfbddad4a1016" prot="public">
+          <name>CPS4</name>
+          <initializer>= 402</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a168628c498d13fb49b9929adef0b9931" prot="public">
+          <name>CPS8R</name>
+          <initializer>= 805</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a1326862b28cdbb89ead38b940dd27cfe" prot="public">
+          <name>CPE4</name>
+          <initializer>= 407</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a557b84420945190f4569085b48a3eeb3" prot="public">
+          <name>CPE8R</name>
+          <initializer>= 808</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658acd2be727967beccb64216dcfc5e3bd02" prot="public">
+          <name>CPE8</name>
+          <initializer>= 807</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658af52a05bd573ad3524dcd2fda6e728be5" prot="public">
+          <name>C3D8</name>
+          <initializer>= 803</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658ad4a1c55465fda8b1a0eab011e8a9efaa" prot="public">
+          <name>C3D8R</name>
+          <initializer>= 806</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658aa4a3990af32dc7bca1cfd3bd5f0691e0" prot="public">
+          <name>C3D20</name>
+          <initializer>= 2003</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658ae410e7ffae59bbbdb2586a36ca488b9d" prot="public">
+          <name>C3D20R</name>
+          <initializer>= 2006</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="8" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="8" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="enum" id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984" prot="public" static="no" strong="no">
+        <type></type>
+        <name>DisplacementFiniteStrainULElementCode</name>
+        <qualifiedname>Marmot::Elements::Registration::DisplacementFiniteStrainULElementCode</qualifiedname>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ac84183c1297ecd18ec577ce0aab3bfe3" prot="public">
+          <name>CPE8RUL</name>
+          <initializer>= CONCAT( 1193, 83801 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984a0ea5016054a27de405f8da6041d739ee" prot="public">
+          <name>C3D8UL</name>
+          <initializer>= CONCAT( 1193, 83301 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ae5ed3086da93d783ea615917fe1695ae" prot="public">
+          <name>C3D20UL</name>
+          <initializer>= CONCAT( 1193, 203301 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984adc0069c753651cf30e0051e5f8647734" prot="public">
+          <name>C3D20RUL</name>
+          <initializer>= CONCAT( 1193, 203601 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984af919be3c23fab76ce6f71e28e3961d3c" prot="public">
+          <name>CX8RUL</name>
+          <initializer>= CONCAT( 1193, 83901 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ab637e3782c060ada3b2a741ad9256670" prot="public">
+          <name>CX8UL</name>
+          <initializer>= CONCAT( 1193, 83101 )</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="8" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="8" bodyend="41"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1abb2dde20850d91be32e7cb5430ab3fab" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPS4_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPS4_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPS4_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPS4&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a2a2798496eea59725b0cfbddad4a1016" kindref="member">DisplacementElementCode::CPS4</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 4 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">FullIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 4 &gt;::PlaneStress &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="58" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a204e78ce7914d70dd9cfa81e526723e1" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPE4_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPE4_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPE4_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPE4&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a1326862b28cdbb89ead38b940dd27cfe" kindref="member">DisplacementElementCode::CPE4</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 4 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">FullIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 4 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="65" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1af629cd27632bfb8fd14f72539923564a" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPS8R_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPS8R_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPS8R_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPS8R&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a168628c498d13fb49b9929adef0b9931" kindref="member">DisplacementElementCode::CPS8R</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;::PlaneStress &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="72" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a440f2a99eaca8f31f072f7102eff4e8b" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPE8R_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPE8R_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPE8R_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPE8R&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a557b84420945190f4569085b48a3eeb3" kindref="member">DisplacementElementCode::CPE8R</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="79" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a3ac6c57c29e2c0e466b5ba15df697b49" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPE8_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPE8_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPE8_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPE8&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658acd2be727967beccb64216dcfc5e3bd02" kindref="member">DisplacementElementCode::CPE8</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">FullIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 2, 8 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="86" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a54f9e76136f9d1c86666e66b95312f7f" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D8_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D8_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D8_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D8&quot;, <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658af52a05bd573ad3524dcd2fda6e728be5" kindref="member">DisplacementElementCode::C3D8</ref>, []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+      return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3,
+                                            8 &gt;( elementID,
+                                                 <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,
+                                                 <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3, 8 &gt;::SectionType::Solid );
+    } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="93" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a12ef8b5ba5af40d698f2ce986d9d2969" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D20_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D20_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D20_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D20&quot;, <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658aa4a3990af32dc7bca1cfd3bd5f0691e0" kindref="member">DisplacementElementCode::C3D20</ref>, []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+      return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3,
+                                            20 &gt;( elementID,
+                                                  <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,
+                                                  <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3, 20 &gt;::SectionType::Solid );
+    } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="101" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1ac8ef2d69cfd408b307eb5fd7e0f41317" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D20R_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D20R_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D20R_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D20R&quot;, <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658ae410e7ffae59bbbdb2586a36ca488b9d" kindref="member">DisplacementElementCode::C3D20R</ref>, []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+      return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3, 20 &gt;( elementID,
+                                                     Marmot::FiniteElement::Quadrature::IntegrationTypes::
+                                                       <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,
+                                                     <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement" kindref="compound">DisplacementFiniteElement</ref>&lt; 3, 20 &gt;::SectionType::Solid );
+    } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="109" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1acbd148af00f525b3ac58d8173e178fbb" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::T2D2_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>T2D2_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::T2D2_isRegistered</qualifiedname>
+        <initializer>= <ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotLibrary::MarmotElementFactory::registerElement</ref>( &quot;T2D2&quot;,
+                                                                              <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac0f0689ebb3309d1d74c25d37c95a658a353cbfe00b17059746048286c4a2dfde" kindref="member">DisplacementElementCode::T2D2</ref>,
+                                                                              <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a9cf0f314944f896462f0522aa28cc198" kindref="member">generateT2D2</ref> )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="128" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1ac795e680cfa25b741b68ca24c18b0c60" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CX8RUL_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CX8RUL_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CX8RUL_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CX8RUL&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984af919be3c23fab76ce6f71e28e3961d3c" kindref="member">DisplacementFiniteStrainULElementCode::CX8RUL</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement" kindref="compound">AxiSymmetricDisplacementFiniteStrainULElement</ref>&lt; 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement" kindref="compound">AxiSymmetricDisplacementFiniteStrainULElement</ref>&lt; 8 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="55" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1aebb6e07bdc77a396715dac2bc1f33737" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CX8UL_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CX8UL_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CX8UL_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CX8UL&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ab637e3782c060ada3b2a741ad9256670" kindref="member">DisplacementFiniteStrainULElementCode::CX8UL</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement" kindref="compound">AxiSymmetricDisplacementFiniteStrainULElement</ref>&lt; 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">FullIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1AxiSymmetricDisplacementFiniteStrainULElement" kindref="compound">AxiSymmetricDisplacementFiniteStrainULElement</ref>&lt; 8 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="62" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a6f28ef985825965f5131f425bba24b10" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::CPE8RGradientEnhancedMicropolar_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>CPE8RGradientEnhancedMicropolar_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::CPE8RGradientEnhancedMicropolar_isRegistered</qualifiedname>
+        <initializer>= MarmotElementFactory::
+    registerElement( &quot;CPE8RUL&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ac84183c1297ecd18ec577ce0aab3bfe3" kindref="member">DisplacementFiniteStrainULElementCode::CPE8RUL</ref>,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt; <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt; 2, 8 &gt;,
+                                          <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,
+                                          <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt; 2, 8 &gt;::PlaneStrain &gt;() )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="69" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1ad5525af3edb9f2ab21316c64b144fd03" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D8UL_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D8UL_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D8UL_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D8UL&quot;, <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984a0ea5016054a27de405f8da6041d739ee" kindref="member">DisplacementFiniteStrainULElementCode::C3D8UL</ref>, []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+      return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt;
+        3,
+        8 &gt;( elementID,
+             <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,
+             <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt; 3, 8 &gt;::SectionType::Solid );
+    } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="76" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a51e36bde61d2fdb52bb3f9114fb6482e" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D20RUL_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D20RUL_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D20RUL_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D20RUL&quot;,
+                     <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984adc0069c753651cf30e0051e5f8647734" kindref="member">DisplacementFiniteStrainULElementCode::C3D20RUL</ref>,
+                     []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+                       return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt;
+                         3,
+                         20 &gt;( elementID,
+                               <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration</ref>,
+                               <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt; 3, 20 &gt;::SectionType::Solid );
+                     } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="85" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="namespaceMarmot_1_1Elements_1_1Registration_1a93c2c794e13b204e6c697ab849cbebd8" prot="public" static="yes" mutable="no">
+        <type>const bool</type>
+        <definition>const bool Marmot::Elements::Registration::C3D20UL_isRegistered</definition>
+        <argsstring></argsstring>
+        <name>C3D20UL_isRegistered</name>
+        <qualifiedname>Marmot::Elements::Registration::C3D20UL_isRegistered</qualifiedname>
+        <initializer>= MarmotLibrary::MarmotElementFactory::
+    registerElement( &quot;C3D20UL&quot;, <ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ae5ed3086da93d783ea615917fe1695ae" kindref="member">DisplacementFiniteStrainULElementCode::C3D20UL</ref>, []( int elementID ) -&gt; <ref refid="classMarmotElement" kindref="compound">MarmotElement</ref>* {
+      return new <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt;
+        3,
+        20 &gt;( elementID,
+              <ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,
+              <ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement" kindref="compound">DisplacementFiniteStrainULElement</ref>&lt; 3, 20 &gt;::SectionType::Solid );
+    } )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="96" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="96" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+          <param>
+            <type><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4b" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes</ref></type>
+            <declname>integrationType</declname>
+            <defname>integrationType</defname>
+          </param>
+          <param>
+            <type>typename T::SectionType</type>
+            <declname>sectionType</declname>
+            <defname>sectionType</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1ae394656803a0a24bf0d28d30b71e7835" kindref="member">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</ref></type>
+        <definition>MarmotLibrary::MarmotElementFactory::elementFactoryFunction Marmot::Elements::Registration::makeFactoryFunction</definition>
+        <argsstring>()</argsstring>
+        <name>makeFactoryFunction</name>
+        <qualifiedname>Marmot::Elements::Registration::makeFactoryFunction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="50" column="63" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="50" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1Elements_1_1Registration_1a9cf0f314944f896462f0522aa28cc198" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classMarmotElement" kindref="compound">MarmotElement</ref> *</type>
+        <definition>MarmotElement * Marmot::Elements::Registration::generateT2D2</definition>
+        <argsstring>(int elementID)</argsstring>
+        <name>generateT2D2</name>
+        <qualifiedname>Marmot::Elements::Registration::generateT2D2</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>elementID</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="117" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" bodystart="117" bodyend="126"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteElement/src/DisplacementFiniteElementRegistration.cpp" line="6" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmotStateVarVectorManager" kind="class" language="C++" prot="public">
+    <compoundname>MarmotStateVarVectorManager</compoundname>
+    <derivedcompoundref refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager" prot="public" virt="non-virtual">Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager" prot="public" virt="non-virtual">Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Materials_1_1ADVonMises_1_1ADVonMisesModelStateVarManager" prot="public" virt="non-virtual">Marmot::Materials::ADVonMises::ADVonMisesModelStateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager" prot="public" virt="non-virtual">Marmot::Materials::B4::B4StateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager" prot="public" virt="non-virtual">Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager" prot="public" virt="non-virtual">Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager</derivedcompoundref>
+    <derivedcompoundref refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager" prot="public" virt="non-virtual">Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager</derivedcompoundref>
+    <includes refid="MarmotStateVarVectorManager_8h" local="no">MarmotStateVarVectorManager.h</includes>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" prot="protected">MarmotStateVarVectorManager::StateVarEntryDefinition</innerclass>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarEntryLocation" prot="protected">MarmotStateVarVectorManager::StateVarEntryLocation</innerclass>
+    <innerclass refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" prot="protected">MarmotStateVarVectorManager::StateVarVectorLayout</innerclass>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" prot="protected" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* MarmotStateVarVectorManager::theStateVars</definition>
+        <argsstring></argsstring>
+        <name>theStateVars</name>
+        <qualifiedname>MarmotStateVarVectorManager::theStateVars</qualifiedname>
+        <briefdescription>
+<para>pointer to the first element in the statevar vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="87" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" prot="protected" static="no" mutable="no">
+        <type>const <ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref> &amp;</type>
+        <definition>const StateVarVectorLayout&amp; MarmotStateVarVectorManager::theLayout</definition>
+        <argsstring></argsstring>
+        <name>theLayout</name>
+        <qualifiedname>MarmotStateVarVectorManager::theLayout</qualifiedname>
+        <briefdescription>
+<para>a const reference to the respective layout </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="90" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structStateView" kindref="compound">StateView</ref></type>
+        <definition>StateView MarmotStateVarVectorManager::getStateView</definition>
+        <argsstring>(const std::string &amp;name) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>MarmotStateVarVectorManager::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>get a <ref refid="structStateView" kindref="compound">StateView</ref> for a statevar entry </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="41" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="41" bodyend="45"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; MarmotStateVarVectorManager::find</definition>
+        <argsstring>(const std::string &amp;name) const</argsstring>
+        <name>find</name>
+        <qualifiedname>MarmotStateVarVectorManager::find</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>get the reference to the first array element of an entry in the statevar vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="48" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="48" bodyend="48"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool MarmotStateVarVectorManager::contains</definition>
+        <argsstring>(const std::string &amp;name) const</argsstring>
+        <name>contains</name>
+        <qualifiedname>MarmotStateVarVectorManager::contains</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>check if the entry with name is managed </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="51" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="51" bodyend="51"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref></type>
+        <definition>static StateVarVectorLayout MarmotStateVarVectorManager::makeLayout</definition>
+        <argsstring>(const std::vector&lt; StateVarEntryDefinition &gt; &amp;theEntries)</argsstring>
+        <name>makeLayout</name>
+        <qualifiedname>MarmotStateVarVectorManager::makeLayout</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="structMarmotStateVarVectorManager_1_1StateVarEntryDefinition" kindref="compound">StateVarEntryDefinition</ref> &gt; &amp;</type>
+          <declname>theEntries</declname>
+        </param>
+        <briefdescription>
+<para>generate the statevar vector layout from a list of entries, defined by name and length </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="74" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="74" bodyend="84"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>MarmotStateVarVectorManager::MarmotStateVarVectorManager</definition>
+        <argsstring>(double *theStateVars, const StateVarVectorLayout &amp;theLayout_)</argsstring>
+        <name>MarmotStateVarVectorManager</name>
+        <qualifiedname>MarmotStateVarVectorManager::MarmotStateVarVectorManager</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>theStateVars</declname>
+        </param>
+        <param>
+          <type>const <ref refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout" kindref="compound">StateVarVectorLayout</ref> &amp;</type>
+          <declname>theLayout_</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="92" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="92" bodyend="93"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A convenience auxiliary class for managing multiple statevars with arbitrary length in a single consecutive double array. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Elements::DisplacementFiniteStrainULElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager</label>
+        <link refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1_1QuadraturePoint_1_1QPStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot::Materials::ADVonMises::ADVonMisesModelStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1ADVonMises_1_1ADVonMisesModelStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot::Materials::B4::B4StateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1B4_1_1B4StateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager</label>
+        <link refid="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>MarmotStateVarVectorManager</label>
+        <link refid="classMarmotStateVarVectorManager"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>theLayout</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotStateVarVectorManager::StateVarVectorLayout</label>
+        <link refid="structMarmotStateVarVectorManager_1_1StateVarVectorLayout"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="37" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="37" bodyend="94"/>
+    <listofallmembers>
+      <member refid="classMarmotStateVarVectorManager_1ad9ba60397f263318324192ce1fe81746" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>contains</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ad8bf865c6eb13081e0fea4d70eb1f989" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>find</name></member>
+      <member refid="classMarmotStateVarVectorManager_1aceff39cdfe989dc92a65a35b6a0202b2" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>getStateView</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a82db8384f80aa3ba337203e6f769ad84" prot="protected" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>makeLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a97534e3961835baf08ff7878e492611d" prot="protected" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>MarmotStateVarVectorManager</name></member>
+      <member refid="classMarmotStateVarVectorManager_1a979b9f2881a9a9f70b3894960a654058" prot="protected" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>theLayout</name></member>
+      <member refid="classMarmotStateVarVectorManager_1ae1e781d5051d5c858692be57f9a1277e" prot="protected" virt="non-virtual"><scope>MarmotStateVarVectorManager</scope><name>theStateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

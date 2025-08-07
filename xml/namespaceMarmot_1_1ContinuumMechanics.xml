@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics</compoundname>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1CommonConstitutiveModels">Marmot::ContinuumMechanics::CommonConstitutiveModels</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1CommonTensors">Marmot::ContinuumMechanics::CommonTensors</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1DeformationMeasures">Marmot::ContinuumMechanics::DeformationMeasures</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Elasticity">Marmot::ContinuumMechanics::Elasticity</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1EnergyDensityFunctions">Marmot::ContinuumMechanics::EnergyDensityFunctions</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain">Marmot::ContinuumMechanics::FiniteStrain</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1HaighWestergaard">Marmot::ContinuumMechanics::HaighWestergaard</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics">Marmot::ContinuumMechanics::Kinematics</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1LocalizationAnalysis">Marmot::ContinuumMechanics::LocalizationAnalysis</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStrain">Marmot::ContinuumMechanics::PlaneStrain</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1PlaneStress">Marmot::ContinuumMechanics::PlaneStress</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1StressMeasures">Marmot::ContinuumMechanics::StressMeasures</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1TensorUtility">Marmot::ContinuumMechanics::TensorUtility</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1UniaxialStress">Marmot::ContinuumMechanics::UniaxialStress</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Viscoelasticity">Marmot::ContinuumMechanics::Viscoelasticity</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation">Marmot::ContinuumMechanics::VoigtNotation</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

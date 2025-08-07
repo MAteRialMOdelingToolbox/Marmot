@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1Materials" kind="namespace" language="C++">
+    <compoundname>Marmot::Materials</compoundname>
+    <innerclass refid="classMarmot_1_1Materials_1_1ADLinearElastic" prot="public">Marmot::Materials::ADLinearElastic</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1ADVonMises" prot="public">Marmot::Materials::ADVonMises</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1B4" prot="public">Marmot::Materials::B4</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1CompressibleNeoHooke" prot="public">Marmot::Materials::CompressibleNeoHooke</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity" prot="public">Marmot::Materials::FiniteStrainJ2Plasticity</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1LinearElastic" prot="public">Marmot::Materials::LinearElastic</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw" prot="public">Marmot::Materials::LinearViscoelasticPowerLaw</innerclass>
+    <innerclass refid="classMarmot_1_1Materials_1_1VonMisesModel" prot="public">Marmot::Materials::VonMisesModel</innerclass>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1ADVonMisesConstants">Marmot::Materials::ADVonMisesConstants</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1KelvinChain">Marmot::Materials::KelvinChain</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1Registration">Marmot::Materials::Registration</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1Shrinkage">Marmot::Materials::Shrinkage</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1SolidificationTheory">Marmot::Materials::SolidificationTheory</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Materials_1_1VonMisesConstants">Marmot::Materials::VonMisesConstants</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

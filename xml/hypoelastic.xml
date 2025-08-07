@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="hypoelastic" kind="page">
+    <compoundname>hypoelastic</compoundname>
+    <title>Hypoelastic Material Models</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><bold>Implementation:</bold> <ref refid="classMarmotMaterialHypoElastic" kindref="compound">MarmotMaterialHypoElastic</ref></para>
+<para>Derived abstract base class for elastic materials expressed purely in rate form.</para>
+<sect1 id="hypoelastic_1autotoc_md3">
+<title>Basic Theory</title><para>In general, the nominal stress rate tensor <formula id="2">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="3">$ \sig $</formula>, the stretching rate tensor <formula id="4">$ \epsRate $</formula> and the time <formula id="5">$ t $</formula>.</para>
+<para><formula id="6">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
+<para>In course of numerical time integration, this relation will be formulated incrementally as</para>
+<para><formula id="7">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
+<para>with</para>
+<para><formula id="8">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
+<para>and the algorithmic tangent</para>
+<para><formula id="9">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
+<para>This formulation is compatible with an Abaqus interface. </para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/doc/DOCUMENTATION.md"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar" kind="namespace" language="C++">
+    <compoundname>Marmot::NumericalAlgorithms::Differentiation::TensorToScalar</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar_1a8446b188942866629cf20c02adf1ede4" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; double(const Fastor::Tensor&lt; double, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::tensor_to_scalar_function_type =  std::function&lt; double( const Fastor::Tensor&lt; double, Rest... &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::tensor_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="72" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar_1a331864b47921c33c5f9209904ffebae2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, dim, dim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, dim, dim &gt; Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::forwardDifference</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; dim, dim &gt; &amp;f, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::forwardDifference</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar_1a8446b188942866629cf20c02adf1ede4" kindref="member">tensor_to_scalar_function_type</ref>&lt; dim, dim &gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="97" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="97" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar_1a3af1b0d830b50a7569730255592eccdb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, dim, dim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, dim, dim &gt; Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::centralDifference</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; dim, dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
+        <name>centralDifference</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::TensorToScalar::centralDifference</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1NumericalAlgorithms_1_1Differentiation_1_1TensorToScalar_1a8446b188942866629cf20c02adf1ede4" kindref="member">tensor_to_scalar_function_type</ref>&lt; dim, dim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="118" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="118" bodyend="140"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="69" column="5"/>
+  </compounddef>
+</doxygen>

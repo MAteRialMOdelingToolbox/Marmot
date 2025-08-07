@@ -1,0 +1,439 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="DisplacementFiniteStrainULElement_8cpp" kind="file" language="C++">
+    <compoundname>DisplacementFiniteStrainULElement.cpp</compoundname>
+    <includes refid="DisplacementFiniteStrainULElement_8h" local="yes">Marmot/DisplacementFiniteStrainULElement.h</includes>
+    <includes refid="Marmot_8h" local="yes">Marmot/Marmot.h</includes>
+    <includes refid="MarmotFiniteElement_8h" local="yes">Marmot/MarmotFiniteElement.h</includes>
+    <incdepgraph>
+      <node id="3">
+        <label>Marmot/Marmot.h</label>
+        <link refid="Marmot_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotElement.h</label>
+        <link refid="MarmotElement_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotElementProperty.h</label>
+        <link refid="MarmotElementProperty_8h"/>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotJournal.h</label>
+        <link refid="MarmotJournal_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>Marmot/MarmotMaterial.h</label>
+        <link refid="MarmotMaterial_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Marmot/MarmotUtils.h</label>
+        <link refid="MarmotUtils_8h"/>
+      </node>
+      <node id="33">
+        <label>Marmot/MarmotFiniteElement.h</label>
+        <link refid="MarmotFiniteElement_8h"/>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>Marmot/MarmotGeometryElement.h</label>
+        <link refid="MarmotGeometryElement_8h"/>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="37">
+        <label>Marmot/MarmotMaterialFiniteStrain.h</label>
+        <link refid="MarmotMaterialFiniteStrain_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="16">
+        <label>Marmot/MarmotConstants.h</label>
+        <link refid="MarmotConstants_8h"/>
+        <childnode refid="17" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+        <link refid="MarmotFastorTensorBasics_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="26">
+        <label>Marmot/MarmotMath.h</label>
+        <link refid="MarmotMath_8h"/>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>Marmot/MarmotTensor.h</label>
+        <link refid="MarmotTensor_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="MarmotTypedefs_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>Marmot/MarmotGeostaticStress.h</label>
+        <link refid="MarmotGeostaticStress_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="39">
+        <label>Marmot/MarmotStateVarVectorManager.h</label>
+        <link refid="MarmotStateVarVectorManager_8h"/>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="25">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="MarmotVoigt_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/DisplacementFiniteStrainULElement.h</label>
+        <link refid="DisplacementFiniteStrainULElement_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="41" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp</label>
+        <link refid="DisplacementFiniteStrainULElement_8cpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="23">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="20">
+        <label>Fastor/Fastor.h</label>
+      </node>
+      <node id="38">
+        <label>Fastor/tensor/Tensor.h</label>
+      </node>
+      <node id="29">
+        <label>algorithm</label>
+      </node>
+      <node id="27">
+        <label>autodiff/forward/dual.hpp</label>
+      </node>
+      <node id="30">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="28">
+        <label>autodiff/forward/real.hpp</label>
+      </node>
+      <node id="17">
+        <label>cmath</label>
+      </node>
+      <node id="31">
+        <label>complex</label>
+      </node>
+      <node id="14">
+        <label>functional</label>
+      </node>
+      <node id="7">
+        <label>iostream</label>
+      </node>
+      <node id="35">
+        <label>map</label>
+      </node>
+      <node id="40">
+        <label>memory</label>
+      </node>
+      <node id="8">
+        <label>sstream</label>
+      </node>
+      <node id="11">
+        <label>stdexcept</label>
+      </node>
+      <node id="9">
+        <label>string</label>
+      </node>
+      <node id="41">
+        <label>type_traits</label>
+      </node>
+      <node id="15">
+        <label>unordered_map</label>
+      </node>
+      <node id="24">
+        <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="32">
+        <label>utility</label>
+      </node>
+      <node id="12">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespaceMarmot">Marmot</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Elements">Marmot::Elements</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1Elements_1_1Registration">Marmot::Elements::Registration</innernamespace>
+    <sectiondef kind="define">
+      <memberdef kind="define" id="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" prot="public" static="no">
+        <name>CONCAT</name>
+        <param><defname>a</defname></param>
+        <param><defname>b</defname></param>
+        <initializer>a##b</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" line="7" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp" bodystart="7" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&quot;<ref refid="DisplacementFiniteStrainULElement_8h" kindref="compound">Marmot/DisplacementFiniteStrainULElement.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="Marmot_8h" kindref="compound">Marmot/Marmot.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="MarmotFiniteElement_8h" kindref="compound">Marmot/MarmotFiniteElement.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceMarmot_1_1Elements_1_1Registration" kindref="compound">Marmot::Elements::Registration</ref><sp/>{</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>CONCAT(<sp/>a,<sp/>b<sp/>)<sp/>a##b</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984" kindref="member">DisplacementFiniteStrainULElementCode</ref><sp/>{</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>TAG<sp/>explanation</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>XXXXXX</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>||||||_<sp/><sp/><sp/><sp/>6:<sp/>formulation</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>|||||__<sp/><sp/><sp/><sp/>5:<sp/>formulation</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>||||___<sp/><sp/><sp/><sp/>4:<sp/>type<sp/>of<sp/>element</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>|||____<sp/><sp/><sp/><sp/>3:<sp/>active<sp/>fields</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>||_____<sp/><sp/><sp/><sp/>2:<sp/>number<sp/>of<sp/>nodes</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>|______<sp/><sp/><sp/><sp/>1:<sp/>number<sp/>of<sp/>nodes</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>formulation:<sp/><sp/><sp/><sp/><sp/>01<sp/>Update<sp/>Lagrangian</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>active<sp/>fields:<sp/><sp/><sp/>1:<sp/>displacement</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>type<sp/>of<sp/>element:<sp/>2:<sp/>2D<sp/>full<sp/>integration,<sp/>plane<sp/>stress</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3:<sp/>3D<sp/>full<sp/>integration,</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>5:<sp/>2D<sp/>red.<sp/>integration,<sp/>plane<sp/>stress</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>6:<sp/>3D<sp/>red.<sp/>integration</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>7:<sp/>2D<sp/>full<sp/>integration,<sp/>plane<sp/>strain</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>8:<sp/>2D<sp/>red.<sp/>integration,<sp/>plane<sp/>strain</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>9:<sp/>2D<sp/>red.<sp/>integration,<sp/>axisymmetric</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>1:<sp/>2D<sp/>full<sp/>integration,<sp/>axisymmetric</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ac84183c1297ecd18ec577ce0aab3bfe3" kindref="member">CPE8RUL</ref><sp/><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>83801<sp/>),</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984a0ea5016054a27de405f8da6041d739ee" kindref="member">C3D8UL</ref><sp/><sp/><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>83301<sp/>),</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ae5ed3086da93d783ea615917fe1695ae" kindref="member">C3D20UL</ref><sp/><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>203301<sp/>),</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984adc0069c753651cf30e0051e5f8647734" kindref="member">C3D20RUL</ref><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>203601<sp/>),</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984af919be3c23fab76ce6f71e28e3961d3c" kindref="member">CX8RUL</ref><sp/><sp/><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>83901<sp/>),</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ab637e3782c060ada3b2a741ad9256670" kindref="member">CX8UL</ref><sp/><sp/><sp/><sp/>=<sp/><ref refid="DisplacementFiniteStrainULElement_8cpp_1a88fa737059e67b4b17ec980e5877361e" kindref="member">CONCAT</ref>(<sp/>1193,<sp/>83101<sp/>),</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="preprocessor">#undef<sp/>CONCAT</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">T,</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4b" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes</ref><sp/>integrationType,</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T::SectionType<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sectionType<sp/>&gt;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1ae394656803a0a24bf0d28d30b71e7835" kindref="member">MarmotLibrary::MarmotElementFactory::elementFactoryFunction</ref><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>()</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>[](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>elementID<sp/>)<sp/>-&gt;<sp/>MarmotElement*<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>T(<sp/>elementID,<sp/>integrationType,<sp/>sectionType<sp/>);<sp/>};</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">MarmotLibrary;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot::FiniteElement::Quadrature;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ac795e680cfa25b741b68ca24c18b0c60" kindref="member">CX8RUL_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;CX8RUL&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984af919be3c23fab76ce6f71e28e3961d3c" kindref="member">DisplacementFiniteStrainULElementCode::CX8RUL</ref>,</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt;<sp/>AxiSymmetricDisplacementFiniteStrainULElement&lt;<sp/>8<sp/>&gt;,</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a35be5c2f425b1722c4aa1c80d054a788" kindref="member">AxiSymmetricDisplacementFiniteStrainULElement&lt; 8 &gt;::PlaneStrain</ref><sp/>&gt;()<sp/>);</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1aebb6e07bdc77a396715dac2bc1f33737" kindref="member">CX8UL_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;CX8UL&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ab637e3782c060ada3b2a741ad9256670" kindref="member">DisplacementFiniteStrainULElementCode::CX8UL</ref>,</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt;<sp/>AxiSymmetricDisplacementFiniteStrainULElement&lt;<sp/>8<sp/>&gt;,</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">FullIntegration</ref>,</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a35be5c2f425b1722c4aa1c80d054a788" kindref="member">AxiSymmetricDisplacementFiniteStrainULElement&lt; 8 &gt;::PlaneStrain</ref><sp/>&gt;()<sp/>);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a6f28ef985825965f5131f425bba24b10" kindref="member">CPE8RGradientEnhancedMicropolar_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;CPE8RUL&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ac84183c1297ecd18ec577ce0aab3bfe3" kindref="member">DisplacementFiniteStrainULElementCode::CPE8RUL</ref>,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a2d59229df4782b92ac25bf4f3891c3fa" kindref="member">makeFactoryFunction</ref>&lt;<sp/>DisplacementFiniteStrainULElement&lt;<sp/>2,<sp/>8<sp/>&gt;,</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">ReducedIntegration</ref>,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a35be5c2f425b1722c4aa1c80d054a788" kindref="member">DisplacementFiniteStrainULElement&lt; 2, 8 &gt;::PlaneStrain</ref><sp/>&gt;()<sp/>);</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1ad5525af3edb9f2ab21316c64b144fd03" kindref="member">C3D8UL_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotLibrary::MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;C3D8UL&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984a0ea5016054a27de405f8da6041d739ee" kindref="member">DisplacementFiniteStrainULElementCode::C3D8UL</ref>,<sp/>[](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>elementID<sp/>)<sp/>-&gt;<sp/>MarmotElement*<sp/>{</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DisplacementFiniteStrainULElement&lt;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3,</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>8<sp/>&gt;(<sp/>elementID,</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a75e9f999e13195f382a692d90f29a4fb" kindref="member">DisplacementFiniteStrainULElement&lt; 3, 8 &gt;::SectionType::Solid</ref><sp/>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a51e36bde61d2fdb52bb3f9114fb6482e" kindref="member">C3D20RUL_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotLibrary::MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;C3D20RUL&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984adc0069c753651cf30e0051e5f8647734" kindref="member">DisplacementFiniteStrainULElementCode::C3D20RUL</ref>,</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>elementID<sp/>)<sp/>-&gt;<sp/>MarmotElement*<sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DisplacementFiniteStrainULElement&lt;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3,</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>20<sp/>&gt;(<sp/>elementID,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration</ref>,</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a75e9f999e13195f382a692d90f29a4fb" kindref="member">DisplacementFiniteStrainULElement&lt; 3, 20 &gt;::SectionType::Solid</ref><sp/>);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/>);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a93c2c794e13b204e6c697ab849cbebd8" kindref="member">C3D20UL_isRegistered</ref><sp/>=<sp/><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">MarmotLibrary::MarmotElementFactory::</ref></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><ref refid="classMarmotLibrary_1_1MarmotElementFactory_1a2bd350db17bb7f356272a58bc94b60aa" kindref="member">    registerElement</ref>(<sp/></highlight><highlight class="stringliteral">&quot;C3D20UL&quot;</highlight><highlight class="normal">,<sp/><ref refid="namespaceMarmot_1_1Elements_1_1Registration_1a8ce373a2d5ddc2bfc72ec41b6ea56984ae5ed3086da93d783ea615917fe1695ae" kindref="member">DisplacementFiniteStrainULElementCode::C3D20UL</ref>,<sp/>[](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>elementID<sp/>)<sp/>-&gt;<sp/>MarmotElement*<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DisplacementFiniteStrainULElement&lt;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>3,</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>20<sp/>&gt;(<sp/>elementID,</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceMarmot_1_1FiniteElement_1_1Quadrature_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" kindref="member">Marmot::FiniteElement::Quadrature::IntegrationTypes::FullIntegration</ref>,</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classMarmot_1_1Elements_1_1DisplacementFiniteStrainULElement_1aa4182a61ba063a61affdac7763a4df12a75e9f999e13195f382a692d90f29a4fb" kindref="member">DisplacementFiniteStrainULElement&lt; 3, 20 &gt;::SectionType::Solid</ref><sp/>);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Elements::Registration</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/elements/DisplacementFiniteStrainULElement/src/DisplacementFiniteStrainULElement.cpp"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Kinematics</compoundname>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1DeformationGradient">Marmot::ContinuumMechanics::Kinematics::DeformationGradient</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1Strain">Marmot::ContinuumMechanics::Kinematics::Strain</innernamespace>
+    <innernamespace refid="namespaceMarmot_1_1ContinuumMechanics_1_1Kinematics_1_1VelocityGradient">Marmot::ContinuumMechanics::Kinematics::VelocityGradient</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="34" column="3"/>
+  </compounddef>
+</doxygen>

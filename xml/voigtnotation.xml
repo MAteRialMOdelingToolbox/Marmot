@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="voigtnotation" kind="page">
+    <compoundname>voigtnotation</compoundname>
+    <title>Voigt Notation</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>In Marmot, Voigt notation is used to simplify tensorial operations including second order tensors like stress and strain and fourth order tensors like stiffness and compliance. For instance, tensor products are written as vector matrix products.</para>
+<para><bold>Namespace:</bold> <ref refid="namespaceMarmot_1_1ContinuumMechanics_1_1VoigtNotation" kindref="compound">Marmot::ContinuumMechanics::VoigtNotation</ref></para>
+<para><bold>Implementation:</bold> <ref refid="MarmotVoigt_8h" kindref="compound">MarmotVoigt.h</ref></para>
+<sect1 id="voigtnotation_1autotoc_md13_1s1"><sect2 id="voigtnotation_1autotoc_md13">
+<title>Cauchy stress tensor</title><para><formula id="16">\[\displaystyle
+    \sig =
+    \begin{bmatrix}
+        \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13}\\
+        \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23}\\
+        \sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33}
+    \end{bmatrix}
+    \rightarrow
+    \begin{bmatrix}
+        \sigma_{11}\\
+        \sigma_{22}\\
+        \sigma_{33}\\
+        \sigma_{12}\\
+        \sigma_{13}\\
+        \sigma_{23}\\
+    \end{bmatrix}
+\]</formula></para>
+</sect2></sect1>
+<sect1 id="voigtnotation_1autotoc_md14_1s1"><sect2 id="voigtnotation_1autotoc_md14">
+<title>Linearized strain tensor</title><para><formula id="17">\[\displaystyle
+    \eps =
+    \begin{bmatrix}
+        \varepsilon_{11} &amp; \varepsilon_{12} &amp; \varepsilon_{13}\\
+        \varepsilon_{21} &amp; \varepsilon_{22} &amp; \varepsilon_{23}\\
+        \varepsilon_{31} &amp; \varepsilon_{32} &amp; \varepsilon_{33}
+    \end{bmatrix}
+    \rightarrow
+    \begin{bmatrix}
+        \varepsilon_{11}\\
+        \varepsilon_{22}\\
+        \varepsilon_{33}\\
+        2\,\varepsilon_{12}\\
+        2\,\varepsilon_{13}\\
+        2\,\varepsilon_{23}\\
+    \end{bmatrix}
+\]</formula></para>
+</sect2></sect1>
+<sect1 id="voigtnotation_1autotoc_md15_1s1"><sect2 id="voigtnotation_1autotoc_md15">
+<title>Generalized Hooke&apos;s law</title><para><formula id="18">\[    \sig = \Cel : \eps = \mathbb{D}^{-1} : \eps \rightarrow
+    \begin{bmatrix}
+        \sigma_{11}\\
+        \sigma_{22}\\
+        \sigma_{33}\\
+        \sigma_{12}\\
+        \sigma_{13}\\
+        \sigma_{23}\\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+    D_{1111} &amp; D_{1122} &amp; D_{1133} &amp; 2\,D_{1112} &amp; xD_{1113} &amp; D_{1123} \\
+    D_{2211} &amp; D_{2222} &amp; D_{2233} &amp; 2\,D_{2212} &amp; D_{2213} &amp; D_{2223} \\
+    D_{3311} &amp; D_{3322} &amp; D_{3333} &amp; 2\,D_{3312} &amp; D_{3313} &amp; D_{3323} \\
+    2\,D_{1211} &amp; 2\,D_{1222} &amp; 2\,D_{1233} &amp; 4\,D_{1212} &amp; 2\,D_{1213} &amp; 2\,D_{1223} \\
+    2\,D_{1311} &amp; 2\,D_{1322} &amp; 2\,D_{1333} &amp; 2\,D_{1312} &amp; 4\,D_{1313} &amp; 2\,D_{1323} \\
+    2\,D_{2311} &amp; 2\,D_{2322} &amp; 2\,D_{2333} &amp; 2\,D_{2312} &amp; 2\,D_{2313} &amp; 4\,D_{2323} \\
+    \end{bmatrix}^{-1}
+    \begin{bmatrix}
+        \varepsilon_{11}\\
+        \varepsilon_{22}\\
+        \varepsilon_{33}\\
+        2\,\varepsilon_{12}\\
+        2\,\varepsilon_{13}\\
+        2\,\varepsilon_{23}\\
+    \end{bmatrix}
+\]</formula> </para>
+</sect2></sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/doc/DOCUMENTATION.md"/>
+  </compounddef>
+</doxygen>

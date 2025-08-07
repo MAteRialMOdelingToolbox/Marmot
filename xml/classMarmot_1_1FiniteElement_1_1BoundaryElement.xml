@@ -1,0 +1,401 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1FiniteElement_1_1BoundaryElement" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::FiniteElement::BoundaryElement</compoundname>
+    <includes refid="MarmotFiniteElement_8h" local="no">MarmotFiniteElement.h</includes>
+    <innerclass refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint" prot="private">Marmot::FiniteElement::BoundaryElement::BoundaryElementQuadraturePoint</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a8dda0af5aec133d09f28d411ed5f124e" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::FiniteElement::BoundaryElement::nDim</definition>
+        <argsstring></argsstring>
+        <name>nDim</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::nDim</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="312" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="312" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a043703a45c47d7457e0963c512e51291" prot="private" static="no" mutable="no">
+        <type><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17" kindref="member">ElementShapes</ref></type>
+        <definition>ElementShapes Marmot::FiniteElement::BoundaryElement::boundaryShape</definition>
+        <argsstring></argsstring>
+        <name>boundaryShape</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::boundaryShape</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="314" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="314" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac840443b0c8e70446cbd898db889f34d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::FiniteElement::BoundaryElement::nNodes</definition>
+        <argsstring></argsstring>
+        <name>nNodes</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::nNodes</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="315" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="315" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a371e802538a2e7562d173670002604c9" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::FiniteElement::BoundaryElement::nParentCoordinates</definition>
+        <argsstring></argsstring>
+        <name>nParentCoordinates</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::nParentCoordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="316" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a2b1fb7fafe58eccb2cb530022098d645" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structMarmot_1_1FiniteElement_1_1BoundaryElement_1_1BoundaryElementQuadraturePoint" kindref="compound">BoundaryElementQuadraturePoint</ref> &gt;</type>
+        <definition>std::vector&lt; BoundaryElementQuadraturePoint &gt; Marmot::FiniteElement::BoundaryElement::quadraturePoints</definition>
+        <argsstring></argsstring>
+        <name>quadraturePoints</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::quadraturePoints</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="318" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="318" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a7c8083868cb49dbc4dc147b9a9766598" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXi</type>
+        <definition>Eigen::VectorXi Marmot::FiniteElement::BoundaryElement::mapBoundaryToParentScalar</definition>
+        <argsstring></argsstring>
+        <name>mapBoundaryToParentScalar</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::mapBoundaryToParentScalar</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="320" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad61d6bc8daadebf6d9ec1dbbb08eeaa8" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXi</type>
+        <definition>Eigen::VectorXi Marmot::FiniteElement::BoundaryElement::mapBoundaryToParentVectorial</definition>
+        <argsstring></argsstring>
+        <name>mapBoundaryToParentVectorial</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::mapBoundaryToParentVectorial</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="321" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="321" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a4607da5bd7b562d6131612b99c3fc18d" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::FiniteElement::BoundaryElement::coordinates</definition>
+        <argsstring></argsstring>
+        <name>coordinates</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::coordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="322" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="322" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac1c066c66f3e466257fc89a34fcd94ae" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::FiniteElement::BoundaryElement::BoundaryElement</definition>
+        <argsstring>(ElementShapes parentShape, int nDim, int parentFaceNumber, const Eigen::VectorXd &amp;parentCoordinates)</argsstring>
+        <name>BoundaryElement</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::BoundaryElement</qualifiedname>
+        <param>
+          <type><ref refid="namespaceMarmot_1_1FiniteElement_1a49b09e61f616525d0bb8d744c9d46b17" kindref="member">ElementShapes</ref></type>
+          <declname>parentShape</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>parentFaceNumber</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>parentCoordinates</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="325" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="10" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a71b0f046aa9089c5f32166f680e2f259" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>VectorXd Marmot::FiniteElement::BoundaryElement::computeScalarLoadVector</definition>
+        <argsstring>()</argsstring>
+        <name>computeScalarLoadVector</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeScalarLoadVector</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="330" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="124" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a0ae2278820b4c4d8fbf6fb2dff029d62" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>MatrixXd Marmot::FiniteElement::BoundaryElement::computeDScalarLoadVector_dCoordinates</definition>
+        <argsstring>()</argsstring>
+        <name>computeDScalarLoadVector_dCoordinates</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeDScalarLoadVector_dCoordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="331" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="139" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad0fc582a23fb22f32eecb4feccd7fd7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>VectorXd Marmot::FiniteElement::BoundaryElement::computeSurfaceNormalVectorialLoadVector</definition>
+        <argsstring>()</argsstring>
+        <name>computeSurfaceNormalVectorialLoadVector</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeSurfaceNormalVectorialLoadVector</qualifiedname>
+        <briefdescription>
+<para>compute the element load vector for a unit vectorial load normal to the surface. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="334" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="147" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1abfebecb5d42869277a124591497f2fc3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>MatrixXd Marmot::FiniteElement::BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates</definition>
+        <argsstring>()</argsstring>
+        <name>computeDSurfaceNormalVectorialLoadVector_dCoordinates</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="335" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="162" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac784a613d9d010521ef88babd55bb683" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>VectorXd Marmot::FiniteElement::BoundaryElement::computeVectorialLoadVector</definition>
+        <argsstring>(const Eigen::VectorXd &amp;direction)</argsstring>
+        <name>computeVectorialLoadVector</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeVectorialLoadVector</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+<para>compute the element load vector for a unit vectorial load in a given direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="338" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="206" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1abcc39de1f03974785132439be3a30368" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>MatrixXd Marmot::FiniteElement::BoundaryElement::computeDVectorialLoadVector_dCoordinates</definition>
+        <argsstring>(const Eigen::VectorXd &amp;direction)</argsstring>
+        <name>computeDVectorialLoadVector_dCoordinates</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::computeDVectorialLoadVector_dCoordinates</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="339" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="221" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad5c17e70323581f649323fa44ad796f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>VectorXd Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryScalar</definition>
+        <argsstring>(const Eigen::VectorXd &amp;parentVector)</argsstring>
+        <name>condenseParentToBoundaryScalar</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryScalar</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>parentVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+<para>Condense any scalar quantiaty parent vector to the corresponding boundary child vector (e.g. temperature fields ) dependent on the underlying indices mapping</para>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="341" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="229" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a2a6cfe9cd8c36a2bcea1943f1e43cf0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::FiniteElement::BoundaryElement::assembleIntoParentScalar</definition>
+        <argsstring>(const Eigen::VectorXd &amp;boundaryVector, Eigen::Ref&lt; Eigen::VectorXd &gt; ParentVector)</argsstring>
+        <name>assembleIntoParentScalar</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::assembleIntoParentScalar</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>boundaryVector</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::VectorXd &gt;</type>
+          <declname>ParentVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="342" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="242" bodyend="250"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a75cee9c72c5b1b2e92a4909a0b81507f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::FiniteElement::BoundaryElement::assembleIntoParentStiffnessScalar</definition>
+        <argsstring>(const Eigen::MatrixXd &amp;KBoundary, Eigen::Ref&lt; Eigen::MatrixXd &gt; KParent)</argsstring>
+        <name>assembleIntoParentStiffnessScalar</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::assembleIntoParentStiffnessScalar</qualifiedname>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>KBoundary</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::MatrixXd &gt;</type>
+          <declname>KParent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="344" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="252" bodyend="259"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ab4bee3d725969d8f42871a9c5333e6b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>VectorXd Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryVectorial</definition>
+        <argsstring>(const Eigen::VectorXd &amp;parentVector)</argsstring>
+        <name>condenseParentToBoundaryVectorial</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryVectorial</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>parentVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="346" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="261" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a36c0ba2b5f732d5d9a2094c5d8ccfea0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::FiniteElement::BoundaryElement::assembleIntoParentVectorial</definition>
+        <argsstring>(const Eigen::VectorXd &amp;boundaryVector, Eigen::Ref&lt; Eigen::VectorXd &gt; ParentVector)</argsstring>
+        <name>assembleIntoParentVectorial</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::assembleIntoParentVectorial</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>boundaryVector</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::VectorXd &gt;</type>
+          <declname>ParentVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="347" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="274" bodyend="282"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a6478b7b99d44168a707ecdd2f0e7af16" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::FiniteElement::BoundaryElement::assembleIntoParentStiffnessVectorial</definition>
+        <argsstring>(const Eigen::MatrixXd &amp;KBoundary, Eigen::Ref&lt; Eigen::MatrixXd &gt; KParent)</argsstring>
+        <name>assembleIntoParentStiffnessVectorial</name>
+        <qualifiedname>Marmot::FiniteElement::BoundaryElement::assembleIntoParentStiffnessVectorial</qualifiedname>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>KBoundary</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::MatrixXd &gt;</type>
+          <declname>KParent</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="349" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/src/MarmotFiniteElementBoundary.cpp" bodystart="284" bodyend="291"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="297" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="297" bodyend="351"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a2a6cfe9cd8c36a2bcea1943f1e43cf0e" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>assembleIntoParentScalar</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a75cee9c72c5b1b2e92a4909a0b81507f" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>assembleIntoParentStiffnessScalar</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a6478b7b99d44168a707ecdd2f0e7af16" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>assembleIntoParentStiffnessVectorial</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a36c0ba2b5f732d5d9a2094c5d8ccfea0" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>assembleIntoParentVectorial</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac1c066c66f3e466257fc89a34fcd94ae" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>BoundaryElement</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a043703a45c47d7457e0963c512e51291" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>boundaryShape</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a0ae2278820b4c4d8fbf6fb2dff029d62" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeDScalarLoadVector_dCoordinates</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1abfebecb5d42869277a124591497f2fc3" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeDSurfaceNormalVectorialLoadVector_dCoordinates</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1abcc39de1f03974785132439be3a30368" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeDVectorialLoadVector_dCoordinates</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a71b0f046aa9089c5f32166f680e2f259" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeScalarLoadVector</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad0fc582a23fb22f32eecb4feccd7fd7a" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeSurfaceNormalVectorialLoadVector</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac784a613d9d010521ef88babd55bb683" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>computeVectorialLoadVector</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad5c17e70323581f649323fa44ad796f0" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>condenseParentToBoundaryScalar</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ab4bee3d725969d8f42871a9c5333e6b3" prot="public" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>condenseParentToBoundaryVectorial</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a4607da5bd7b562d6131612b99c3fc18d" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>coordinates</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a7c8083868cb49dbc4dc147b9a9766598" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>mapBoundaryToParentScalar</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ad61d6bc8daadebf6d9ec1dbbb08eeaa8" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>mapBoundaryToParentVectorial</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a8dda0af5aec133d09f28d411ed5f124e" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>nDim</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1ac840443b0c8e70446cbd898db889f34d" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>nNodes</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a371e802538a2e7562d173670002604c9" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>nParentCoordinates</name></member>
+      <member refid="classMarmot_1_1FiniteElement_1_1BoundaryElement_1a2b1fb7fafe58eccb2cb530022098d645" prot="private" virt="non-virtual"><scope>Marmot::FiniteElement::BoundaryElement</scope><name>quadraturePoints</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

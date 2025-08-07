@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Elastic model &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Linear Elastic model (Automatic Differentiation)" href="adlinearelastic.html" />
+    <link rel="prev" title="Finite Strain J2 Plasticity model" href="finitestrainj2plasticity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite Strain J2 Plasticity model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Linear Elastic model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Linear Elastic model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/linearelastic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-elastic-model">
+<h1>Linear Elastic model<a class="headerlink" href="#linear-elastic-model" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The constitutive law is given in total form as</p>
+<div class="math notranslate nohighlight">
+\[\sig = \Cel : \eps\]</div>
+<p>relating the nominal stress tensor <span class="math notranslate nohighlight">\(\sig\)</span>
+to the linearized strain tensor <span class="math notranslate nohighlight">\(\eps\)</span>
+with the fourth order stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span>.
+The latter can be specified for isotropic, transversely isotropic
+or orthotropic material behavior as follows:</p>
+<section id="isotropic-behavior">
+<h3>Isotropic Behavior<a class="headerlink" href="#isotropic-behavior" title="Link to this heading"></a></h3>
+<p>Number of independent material parameters:      2</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Cel^{-1} = \begin{bmatrix}
+                                      \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G}
+                                  \end{bmatrix}\end{split}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\displaystyle G = \frac{E}{2\,(1 + \nu)}\]</div>
+</section>
+<section id="transversely-isotropic-behavior">
+<h3>Transversely Isotropic Behavior<a class="headerlink" href="#transversely-isotropic-behavior" title="Link to this heading"></a></h3>
+<p>In case of transversely isotropic behavior, the user defined normal vector specifies the <span class="math notranslate nohighlight">\(x_1\)</span> - axis
+of a local coordinate system, representing the principal material directions in which the material
+stiffness tensor is formulated. The isotropic plane is implementend with respect to the local <span class="math notranslate nohighlight">\(x_2\)</span> and <span class="math notranslate nohighlight">\(x_3\)</span> axes.</p>
+<p>Number of independent material parameters:      5</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Cel^{-1} = \begin{bmatrix}
+                                      \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
+                                  \end{bmatrix}\end{split}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}\]</div>
+</section>
+<section id="orthotropic-behavior">
+<h3>Orthotropic Behavior<a class="headerlink" href="#orthotropic-behavior" title="Link to this heading"></a></h3>
+<p>In case of orthotropic behavior, the user defined normal vector defines the <span class="math notranslate nohighlight">\(x_1\)</span> - axis
+of a local coordinate system, representing the principal material directions in which the material stiffness
+tensor is formulated</p>
+<p>Number of independent material parameters:      9</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbb{ C }^{-1} = \begin{bmatrix}
+                                      \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{13}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu_{13}}{E_3} &amp; \frac{-\nu_{23}}{E_3} &amp; \frac{1}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{13}} &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
+                                  \end{bmatrix}\end{split}\]</div>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElasticE">
+<span id="_CPPv3N6Marmot9Materials13LinearElasticE"></span><span id="_CPPv2N6Marmot9Materials13LinearElasticE"></span><span id="Marmot::Materials::LinearElastic"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LinearElastic</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElasticE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::LinearElastic:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-aeeb3c9599a3763fabde736471d6017f88caf520.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearElastic&quot; tooltip=&quot;Marmot::Materials::LinearElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::LinearElastic:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-aeeb3c9599a3763fabde736471d6017f88caf520.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearElastic&quot; tooltip=&quot;Marmot::Materials::LinearElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Implementation of a linear elastic material for 3D stress states. </p>
+<p>For further information see linearelastic. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic13LinearElasticEPKdii">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic13LinearElasticEPKdii"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic13LinearElasticEPKdii"></span><span id="Marmot::Materials::LinearElastic::LinearElastic__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a714c3b665c840958270f849a7350ae4f"></span><span class="sig-name descname"><span class="n"><span class="pre">LinearElastic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic13LinearElasticEPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4TypeE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4TypeE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4TypeE"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Type</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4TypeE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5"><span class="std std-ref">Type</span></a> of anisotropic behavior. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5"><span class="std std-ref">Type</span></a> is an enum class which involves the following case: </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4Type9IsotropicE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4Type9IsotropicE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4Type9IsotropicE"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5a14b5edf8fb82e568afeb4413c67fa479"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Isotropic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4Type9IsotropicE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of materialProperties equals 2. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4Type19TransverseIsotropicE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4Type19TransverseIsotropicE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4Type19TransverseIsotropicE"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5ac15c4051f65ee5eaca18f7e12d820f4e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TransverseIsotropic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4Type19TransverseIsotropicE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of materialProperties equals 8. 5 to describe the material behavior and 3 components of a normal vector. The latter corresponds to the x1 - axis of the principal material directions and defines the materials plane of isotropy (directions x2 and x3). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4Type11OrthotropicE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4Type11OrthotropicE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4Type11OrthotropicE"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5a5cdc1062d951d8d6709b94f439635a4c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Orthotropic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4Type11OrthotropicE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of materialProperties equals 12. 9 to describe material behavior and 3 components of a orthogonal vectors. The latter corresponds to the x1 and x2 of the principal material directions. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic13computeStressEPdPdPKdPKdKdRd">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic13computeStressEPdPdPKdPKdKdRd"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic13computeStressEPdPdPKdPKdKdRd"></span><span id="Marmot::Materials::LinearElastic::computeStress__doubleP.doubleP.doubleCP.doubleCP.doubleC.doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a3064926e24dbba5f5bf00cf05b190caa"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timeOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewDT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic13computeStressEPdPdPKdPKdKdRd" title="Link to this definition"></a><br /></dt>
+<dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – <strong>[inout]</strong> Cauchy stress </p></li>
+<li><p><strong>dStressDDstrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeOld</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
+<li><p><strong>dt</strong> – <strong>[in]</strong> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </p></li>
+<li><p><strong>pNewDT</strong> – <strong>[inout]</strong> Suggestion for a new time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic12getStateViewERKNSt6stringE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::LinearElastic::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1aa9e54614a9d9d56c3bcd0b8e76bcc9fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::LinearElastic::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1adfcfded914babfb1ac6e2e513cefc0e0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic10getDensityEv">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic10getDensityEv"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic10getDensityEv"></span><span id="Marmot::Materials::LinearElastic::getDensity"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a033164e592bad453127b4989821012bc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic10getDensityEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic15anisotropicTypeE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic15anisotropicTypeE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic15anisotropicTypeE"></span><span id="Marmot::Materials::LinearElastic::anisotropicType__Marmot::Materials::LinearElastic::Type"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1ad59b90f931b2f215d8a284095a5acc1f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials13LinearElasticE" title="Marmot::Materials::LinearElastic"><span class="n"><span class="pre">LinearElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials13LinearElastic4TypeE" title="Marmot::Materials::LinearElastic::Type"><span class="n"><span class="pre">Type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">anisotropicType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic15anisotropicTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1ad59b90f931b2f215d8a284095a5acc1f"><span class="std std-ref">anisotropicType</span></a> represents the directional dependence of the material behavior. It is a representative of the enum class <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a53c2c485fd4b63003c29db81451b7ed5"><span class="std std-ref">Type</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic2E1E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic2E1E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic2E1E"></span><span id="Marmot::Materials::LinearElastic::E1__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1aa7d28618a3c91c93347e04c13832e2d0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E1</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic2E1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in x1 - direction. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1aa7d28618a3c91c93347e04c13832e2d0"><span class="std std-ref">E1</span></a> represents the Young’s modulus effective in the direction of the x1 - axis of the user defined local coordinate system. It is a reference variable to materialProperties[0]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic2E2E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic2E2E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic2E2E"></span><span id="Marmot::Materials::LinearElastic::E2__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a694e1f7f1645bcfbb90f88404ef60545"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E2</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic2E2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in x2 - direction. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a694e1f7f1645bcfbb90f88404ef60545"><span class="std std-ref">E2</span></a> represents the Young’s modulus effective in the direction of the x2 - axis of a user defined local coordinate system. In case of isotropic behavior it is set to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1aa7d28618a3c91c93347e04c13832e2d0"><span class="std std-ref">E1</span></a> and does not need to be specified. Otherwise it is a reference variable to materialProperties[1]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic2E3E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic2E3E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic2E3E"></span><span id="Marmot::Materials::LinearElastic::E3__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1aa7e68b2129cee85418c3925f4ff295f3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E3</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic2E3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in x3 - direction. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1aa7e68b2129cee85418c3925f4ff295f3"><span class="std std-ref">E3</span></a> represents the Young’s modulus effective in the direction of the x3 - axis of a user defined local coordinate system. In case of orthotropic behavior it needs to be specified and is a reference variable to materialProperties[2].</p>
+<p>In case of transverse isotropic and isotropic behavior it is automatically set to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a694e1f7f1645bcfbb90f88404ef60545"><span class="std std-ref">E2</span></a> and does not need to be specified. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4nu12E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4nu12E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4nu12E"></span><span id="Marmot::Materials::LinearElastic::nu12__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a2d2fcda840fe1dc50ca3779036c1b00c"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu12</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4nu12E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio between axis x1 and x2. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a2d2fcda840fe1dc50ca3779036c1b00c"><span class="std std-ref">nu12</span></a> represents the Poisson’s ratio effective between the x1 and x2 - axis of the user defined local coordinate system. Depending on the anisotropic type it is a reference variable to:<ul class="simple">
+<li><p>Isotropic: materialProperties[1]</p></li>
+<li><p>TransverseIsotropic: materialProperties[2]</p></li>
+<li><p>Orthotropic: materialProperties[3]. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4nu23E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4nu23E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4nu23E"></span><span id="Marmot::Materials::LinearElastic::nu23__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a6e295e1289026907c0e8934f8c523511"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu23</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4nu23E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio between axis x2 and x3. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a6e295e1289026907c0e8934f8c523511"><span class="std std-ref">nu23</span></a> represents the Poisson’s ratio effective between the x2 and x3 - axis of the user defined local coordinate system. Depending on the anisotropic type it is a reference variable to:<ul class="simple">
+<li><p>TransverseIsotropic: materialProperties[3]</p></li>
+<li><p>Orthotropic: materialProperties[4].</p></li>
+</ul>
+</p>
+<p>In case of isotropic behavior it is set to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a2d2fcda840fe1dc50ca3779036c1b00c"><span class="std std-ref">nu12</span></a> and does not need to be specified. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic4nu13E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic4nu13E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic4nu13E"></span><span id="Marmot::Materials::LinearElastic::nu13__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1af46634fe3a8acddf636945e5fb3f0c9e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu13</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic4nu13E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio between axis x1 and x3. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1af46634fe3a8acddf636945e5fb3f0c9e"><span class="std std-ref">nu13</span></a> represents the Poisson’s ratio effective between the x1 and x3 - axis of the user defined local coordinate system. In case of orthotropic behavior it needs to be specified and is a reference variable to materialProperties[5].</p>
+<p>In case of transverse isotropic and isotropic behavior it is set to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a6e295e1289026907c0e8934f8c523511"><span class="std std-ref">nu23</span></a> and does not need to be specified. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic3G12E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic3G12E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic3G12E"></span><span id="Marmot::Materials::LinearElastic::G12__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a6dc687498e97cbc0237b16c42a3225e4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G12</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic3G12E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus between axis x1 and x2. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a6dc687498e97cbc0237b16c42a3225e4"><span class="std std-ref">G12</span></a> represents the Shear modulus effective between the x1 and x2 - axis of the user defined local coordinate system. In case of isotropic behavior, it does not need to be specified and is set to <span class="math notranslate nohighlight">\( \frac{E_1}{2 \cdot ( 1 + \nu_{12})}\)</span>. Otherwise, depending on the anisotropic type it is a reference variable to:<ul class="simple">
+<li><p>TransverseIsotropic: materialProperties[4].</p></li>
+<li><p>Orthotropic: materialProperties[6]. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic3G23E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic3G23E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic3G23E"></span><span id="Marmot::Materials::LinearElastic::G23__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1ae66bc606b4413c2ccac88852bf3bbc6b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G23</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic3G23E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus between axis x2 and x3. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1ae66bc606b4413c2ccac88852bf3bbc6b"><span class="std std-ref">G23</span></a> represents the Shear modulus effective between the x2 and x3 - axis of the user defined local coordinate system. Neither isotropic nor transversal isotropic behavior needs to be specified. In case of isotropic behavior it is set to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a6dc687498e97cbc0237b16c42a3225e4"><span class="std std-ref">G12</span></a> and in case of transverse isotropic behavior it is set to <span class="math notranslate nohighlight">\( \frac{E_2}{2 \cdot ( 1 + \nu_{23})}\)</span> In case of orthotropic behavior it is a reference variable to materialProperties[7]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic3G13E">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic3G13E"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic3G13E"></span><span id="Marmot::Materials::LinearElastic::G13__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a57e19e288d8e271a0bcaf1a93bdcae19"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">G13</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic3G13E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus between axis x1 and x3. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a57e19e288d8e271a0bcaf1a93bdcae19"><span class="std std-ref">G13</span></a> represents the Shear modulus effective between the x1 and x3 - axis of the user defined local coordinate system. Neither isotropic nor transversal isotropic behavior needs to be specified and it is set in both cases to <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a6dc687498e97cbc0237b16c42a3225e4"><span class="std std-ref">G12</span></a>. In case of orthotropic behavior it is a reference variable to materialProperties[8]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13LinearElastic21globalStiffnessTensorE">
+<span id="_CPPv3N6Marmot9Materials13LinearElastic21globalStiffnessTensorE"></span><span id="_CPPv2N6Marmot9Materials13LinearElastic21globalStiffnessTensorE"></span><span id="Marmot::Materials::LinearElastic::globalStiffnessTensor__Matrix6d"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearElastic_1a90c85db72cc76e26ebc83813fe0ba4c1"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">globalStiffnessTensor</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13LinearElastic21globalStiffnessTensorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Material stiffness tensor. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearElastic_1a90c85db72cc76e26ebc83813fe0ba4c1"><span class="std std-ref">globalStiffnessTensor</span></a> represents the materials stiffness tensor in voigt notation in the global coordinate system. It is calculated by the functions implemented in MarmotElasticity.h . </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="finitestrainj2plasticity.html" class="btn btn-neutral float-left" title="Finite Strain J2 Plasticity model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="adlinearelastic.html" class="btn btn-neutral float-right" title="Linear Elastic model (Automatic Differentiation)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

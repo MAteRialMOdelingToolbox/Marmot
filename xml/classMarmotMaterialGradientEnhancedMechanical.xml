@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmotMaterialGradientEnhancedMechanical" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>MarmotMaterialGradientEnhancedMechanical</compoundname>
+    <basecompoundref refid="classMarmotMaterial" prot="public" virt="non-virtual">MarmotMaterial</basecompoundref>
+    <derivedcompoundref refid="classMarmotMaterialGradientEnhancedHypoElastic" prot="public" virt="non-virtual">MarmotMaterialGradientEnhancedHypoElastic</derivedcompoundref>
+    <includes refid="MarmotMaterialGradientEnhancedMechanical_8h" local="no">MarmotMaterialGradientEnhancedMechanical.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmotMaterialGradientEnhancedMechanical_1ac157115118e42ceba1d5b2644b5f6a8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterialGradientEnhancedMechanical::computeStress</definition>
+        <argsstring>(double *stress, double &amp;K_local, double &amp;nonLocalRadius, double *dStressDDFNew, double *dK_localDDFNew, double *dStressDK, const double *FOld, const double *FNew, const double KOld, const double dK, const double *timeOld, const double dT, double &amp;pNewDT)=0</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>MarmotMaterialGradientEnhancedMechanical::computeStress</qualifiedname>
+        <reimplementedby refid="classMarmotMaterialGradientEnhancedHypoElastic_1aa23a40a19430dfc3cfdade3f8e768196">computeStress</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>K_local</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nonLocalRadius</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dK_localDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FOld</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FNew</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>KOld</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>timeOld</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>pNewDT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" line="45" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterialGradientEnhancedMechanical_1a04c2aeda657fd055424b54ba6bd03d0c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterialGradientEnhancedMechanical::computePlaneStress</definition>
+        <argsstring>(double *stress, double &amp;K_local, double &amp;nonLocalRadius, double *dStressDDFNew, double *dK_localDDFNew, double *dStressDK, const double *FOld, const double *FNew, double KOld, double dK, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
+        <name>computePlaneStress</name>
+        <qualifiedname>MarmotMaterialGradientEnhancedMechanical::computePlaneStress</qualifiedname>
+        <reimplementedby refid="classMarmotMaterialGradientEnhancedHypoElastic_1a04c2aeda657fd055424b54ba6bd03d0c">computePlaneStress</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>K_local</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nonLocalRadius</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dK_localDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FOld</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>KOld</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>timeOld</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>pNewDT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" line="59" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" bodystart="59" bodyend="71"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterialGradientEnhancedMechanical_1ae99e6dabadd66400cad0b421596ccd4d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterialGradientEnhancedMechanical::computeUniaxialStress</definition>
+        <argsstring>(double *stress, double &amp;K_local, double &amp;nonLocalRadius, double *dStressDDFNew, double *dK_localDDFNew, double *dStressDK, const double *FOld, const double *FNew, double KOld, double dK, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
+        <name>computeUniaxialStress</name>
+        <qualifiedname>MarmotMaterialGradientEnhancedMechanical::computeUniaxialStress</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>K_local</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>nonLocalRadius</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dK_localDDFNew</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dStressDK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FOld</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>FNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>KOld</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dK</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>timeOld</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>pNewDT</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" line="73" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" bodystart="73" bodyend="85"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmotMaterialGradientEnhancedMechanical_1a395b074d78052f5e58220cfeda65c5bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotMaterial::MarmotMaterial</definition>
+        <argsstring>(const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>MarmotMaterial</name>
+        <qualifiedname>MarmotMaterialGradientEnhancedMechanical::MarmotMaterial</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" line="43" column="3"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Abstract basic class for Mechanical materials with scalar nonlocal interaction.</para>
+<para>Formulated incrementally as σ_np, K_local_np = f (σ_n, dxdX_n, dxdX_np, Δt, t_n, , Kn, ΔK, K_local_n.. )</para>
+<para>Algorithmic tangents: dσdF = d σ_np d (dxdX_np) dK_LocaldF = d K_local_np d (dxdX_np) dσdK = d σ_np d ΔK </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="3">
+        <label>MarmotMaterialGradientEnhancedHypoElastic</label>
+        <link refid="classMarmotMaterialGradientEnhancedHypoElastic"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>MarmotMaterialGradientEnhancedMechanical</label>
+        <link refid="classMarmotMaterialGradientEnhancedMechanical"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>MarmotMaterial</label>
+        <link refid="classMarmotMaterial"/>
+      </node>
+      <node id="1">
+        <label>MarmotMaterialGradientEnhancedMechanical</label>
+        <link refid="classMarmotMaterialGradientEnhancedMechanical"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" line="40" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedMechanical.h" bodystart="40" bodyend="86"/>
+    <listofallmembers>
+      <member refid="classMarmotMaterial_1a9644446a593632d0da2462bdeb43e25c" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>assignStateVars</name></member>
+      <member refid="classMarmotMaterialGradientEnhancedMechanical_1a04c2aeda657fd055424b54ba6bd03d0c" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>computePlaneStress</name></member>
+      <member refid="classMarmotMaterialGradientEnhancedMechanical_1ac157115118e42ceba1d5b2644b5f6a8f" prot="public" virt="pure-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>computeStress</name></member>
+      <member refid="classMarmotMaterialGradientEnhancedMechanical_1ae99e6dabadd66400cad0b421596ccd4d" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>computeUniaxialStress</name></member>
+      <member refid="classMarmotMaterial_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>getAssignedStateVars</name></member>
+      <member refid="classMarmotMaterial_1a16ef751ebc410cb5173cb65a2e43e1ec" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>getDensity</name></member>
+      <member refid="classMarmotMaterial_1ac2e855ed98253c5f426735bc251771dd" prot="public" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>getNumberOfAssignedStateVars</name></member>
+      <member refid="classMarmotMaterial_1a16e96c33fdc77ddd5aa98ffbbca1577d" prot="public" virt="pure-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="classMarmotMaterial_1acc7dfa70f71415b2c9b562a9fafe64d1" prot="public" virt="pure-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>getStateView</name></member>
+      <member refid="classMarmotMaterial_1a9d6615f62d1e33ab694f3e889dba203f" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>initializeYourself</name></member>
+      <member refid="classMarmotMaterialGradientEnhancedMechanical_1a395b074d78052f5e58220cfeda65c5bd" prot="public" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>MarmotMaterial</name></member>
+      <member refid="classMarmotMaterial_1a31bc9f9283f984f5d78685d82e764edd" prot="public" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>materialNumber</name></member>
+      <member refid="classMarmotMaterial_1a0f631d6ec14531146ec683712a085960" prot="protected" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>materialProperties</name></member>
+      <member refid="classMarmotMaterial_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>nMaterialProperties</name></member>
+      <member refid="classMarmotMaterial_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>nStateVars</name></member>
+      <member refid="classMarmotMaterial_1a3153122a8c7819cc306d6d35378cf414" prot="protected" virt="non-virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>stateVars</name></member>
+      <member refid="classMarmotMaterial_1a33fd1c89a919e8b0d396eb846614c815" prot="public" virt="virtual"><scope>MarmotMaterialGradientEnhancedMechanical</scope><name>~MarmotMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

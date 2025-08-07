@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="gradmechanicalmaterials" kind="page">
+    <compoundname>gradmechanicalmaterials</compoundname>
+    <title>Gradient Enhanced Mechanical Material Models</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><bold>Implementation:</bold> <ref refid="classMarmotMaterialGradientEnhancedMechanical" kindref="compound">MarmotMaterialGradientEnhancedMechanical</ref></para>
+<para>Base class for mechanical materials with gradient enhanced regularization to assure mesh indepency in finite element simulations. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/doc/DOCUMENTATION.md"/>
+  </compounddef>
+</doxygen>

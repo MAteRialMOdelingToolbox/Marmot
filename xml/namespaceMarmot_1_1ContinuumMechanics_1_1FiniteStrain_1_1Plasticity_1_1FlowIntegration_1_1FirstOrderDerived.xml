@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived_1a61717d69b0655cad279856dae694d847" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a65c78c55ef6ae2d308d54d2e8b214d67" kindref="member">Tensor3333d</ref> &gt;</type>
+        <definition>std::pair&lt; Tensor33d, Tensor3333d &gt; Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::explicitIntegration</definition>
+        <argsstring>(const Tensor33d &amp;deltaGp)</argsstring>
+        <name>explicitIntegration</name>
+        <qualifiedname>Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::explicitIntegration</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>deltaGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src/MarmotFiniteStrainPlasticity.cpp" line="14" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src/MarmotFiniteStrainPlasticity.cpp" bodystart="14" bodyend="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" declline="47" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="namespaceMarmot_1_1ContinuumMechanics_1_1FiniteStrain_1_1Plasticity_1_1FlowIntegration_1_1FirstOrderDerived_1ac5090d6bd5c231cd5a3c780492eb8e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref>, <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a65c78c55ef6ae2d308d54d2e8b214d67" kindref="member">Tensor3333d</ref> &gt;</type>
+        <definition>std::pair&lt; Tensor33d, Tensor3333d &gt; Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap</definition>
+        <argsstring>(const Tensor33d &amp;deltaGp)</argsstring>
+        <name>exponentialMap</name>
+        <qualifiedname>Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap</qualifiedname>
+        <param>
+          <type>const <ref refid="namespaceMarmot_1_1FastorStandardTensors_1a7ce3d36f5f3b545d636d13bee501d420" kindref="member">Tensor33d</ref> &amp;</type>
+          <declname>deltaGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src/MarmotFiniteStrainPlasticity.cpp" line="22" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/src/MarmotFiniteStrainPlasticity.cpp" bodystart="22" bodyend="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" declline="49" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="46" column="7"/>
+  </compounddef>
+</doxygen>

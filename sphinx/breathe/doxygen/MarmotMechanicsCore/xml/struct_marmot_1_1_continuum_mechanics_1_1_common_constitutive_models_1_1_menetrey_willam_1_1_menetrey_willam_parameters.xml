@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</compoundname>
+    <includes refid="_menetrey_willam_8h" local="no">MenetreyWillam.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aff38ed242edbdb66c5160a122d6d4e38" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Af</definition>
+        <argsstring></argsstring>
+        <name>Af</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Af</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>additional parameter to capture the influence of the deviatoric stress invariant <formula id="159">$\rho$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="86" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aea58c0f33280a7cb9b98f1c7ae560960" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Bf</definition>
+        <argsstring></argsstring>
+        <name>Bf</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Bf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>addditional parameter to capture the influence of the deviatoric stress invariant <formula id="159">$\rho$</formula> and the lode angle </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="88" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a503531748cf305e6c3cde0132cb69509" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Cf</definition>
+        <argsstring></argsstring>
+        <name>Cf</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::Cf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>addditional parameter to capture the influence of the hydrostatic stress invariant <formula id="160">$\xi$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="90" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a39fa28871a18188b43ba0028e23cd381" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::m</definition>
+        <argsstring></argsstring>
+        <name>m</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::m</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Friction parameter <formula id="161">$m$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="92" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a401a2118a507a313abc8fdc932d6fff0" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::e</definition>
+        <argsstring></argsstring>
+        <name>e</name>
+        <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters::e</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Eccentricity parameter <formula id="152">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="162">$0.5\leq e
+\leq 1$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="93" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Aggregate of the parameters for the generalized strength criterion proposed by Menétrey and Willam. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="85" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="85" bodyend="96"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aff38ed242edbdb66c5160a122d6d4e38" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</scope><name>Af</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aea58c0f33280a7cb9b98f1c7ae560960" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</scope><name>Bf</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a503531748cf305e6c3cde0132cb69509" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</scope><name>Cf</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a401a2118a507a313abc8fdc932d6fff0" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</scope><name>e</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a39fa28871a18188b43ba0028e23cd381" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</scope><name>m</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

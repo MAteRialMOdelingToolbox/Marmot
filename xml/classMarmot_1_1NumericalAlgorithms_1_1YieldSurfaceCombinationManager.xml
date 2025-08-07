@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</compoundname>
+    <includes refid="YieldSurfaceCombinationManager_8h" local="no">YieldSurfaceCombinationManager.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nYieldSurfaces</declname>
+        <defname>nYieldSurfaces</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a44699f1f8fa22f1cf9311acb7c7e5250" prot="public" static="no">
+        <type>Eigen::Array&lt; bool, 1, nYieldSurfaces &gt;</type>
+        <definition>typedef Eigen::Array&lt; bool, 1, nYieldSurfaces &gt; Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; nYieldSurfaces &gt;::YieldSurfFlagArr</definition>
+        <argsstring></argsstring>
+        <name>YieldSurfFlagArr</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::YieldSurfFlagArr</qualifiedname>
+        <briefdescription>
+<para>An array to carry active/nonactive states of yield surfaces. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="45" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a4c08c14f06a50c1dbf99327644af0e4b" prot="public" static="no">
+        <type>Eigen::Array&lt; double, 1, nYieldSurfaces &gt;</type>
+        <definition>typedef Eigen::Array&lt; double, 1, nYieldSurfaces &gt; Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; nYieldSurfaces &gt;::YieldSurfResArr</definition>
+        <argsstring></argsstring>
+        <name>YieldSurfResArr</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::YieldSurfResArr</qualifiedname>
+        <briefdescription>
+<para>An array to carry values of yield functions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="47" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a4b7e9405a505eb7cd2a00658fd532ef2" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; nYieldSurfaces &gt;::idxUsedFlag</definition>
+        <argsstring></argsstring>
+        <name>idxUsedFlag</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::idxUsedFlag</qualifiedname>
+        <briefdescription>
+<para>Column in the <ref refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a44699f1f8fa22f1cf9311acb7c7e5250" kindref="member">YieldSurfFlagArr</ref> for marking a combination as used. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="39" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a7b3ee364c216aabb55ddec085b0fb7fd" prot="public" static="no" mutable="no">
+        <type>Eigen::Array&lt; bool,(1&lt;&lt; nYieldSurfaces) - 1,(nYieldSurfaces+1) &gt;</type>
+        <definition>Eigen::Array&lt; bool, ( 1 &lt;&lt; nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 ) &gt; Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; nYieldSurfaces &gt;::yieldSurfaceCombinations</definition>
+        <argsstring></argsstring>
+        <name>yieldSurfaceCombinations</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::yieldSurfaceCombinations</qualifiedname>
+        <briefdescription>
+<para>An array which contains every possible (reasonable) combination of yield surfaces. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="43" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a36ab7d695a33acb31494bbb359c271ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; n &gt;::YieldSurfaceCombinationManager</definition>
+        <argsstring>()</argsstring>
+        <name>YieldSurfaceCombinationManager</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::YieldSurfaceCombinationManager</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="49" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="63" bodyend="73"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1ac7fb245059d3a71cc9d8e76024851f66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; n &gt;::getAnotherYieldFlagCombination</definition>
+        <argsstring>(YieldSurfFlagArr &amp;activeSurfaces)</argsstring>
+        <name>getAnotherYieldFlagCombination</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::getAnotherYieldFlagCombination</qualifiedname>
+        <param>
+          <type><ref refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a44699f1f8fa22f1cf9311acb7c7e5250" kindref="member">YieldSurfFlagArr</ref> &amp;</type>
+          <declname>activeSurfaces</declname>
+        </param>
+        <briefdescription>
+<para>get another unused combination of yield surfaces </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="51" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="76" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1ad123c6b480d1e490e5b25ecc07335b9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; n &gt;::markYieldFlagCombinationAsUsed</definition>
+        <argsstring>(const YieldSurfFlagArr &amp;activeSurfaces)</argsstring>
+        <name>markYieldFlagCombinationAsUsed</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::markYieldFlagCombinationAsUsed</qualifiedname>
+        <param>
+          <type>const <ref refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a44699f1f8fa22f1cf9311acb7c7e5250" kindref="member">YieldSurfFlagArr</ref> &amp;</type>
+          <declname>activeSurfaces</declname>
+        </param>
+        <briefdescription>
+<para>set the current combination as used </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="53" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="96" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a1f8a7654554eb1b769b4a6583994734c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager&lt; n &gt;::resetUsedYieldFlagCombinations</definition>
+        <argsstring>()</argsstring>
+        <name>resetUsedYieldFlagCombinations</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager::resetUsedYieldFlagCombinations</qualifiedname>
+        <briefdescription>
+<para>reset all yieldsurfaces as unused </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="55" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="90" bodyend="93"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Manager for yield surface combinations for multisurface plasticity: Try different yield surface combinations and track already used combinations </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="37" bodyend="56"/>
+    <listofallmembers>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1ac7fb245059d3a71cc9d8e76024851f66" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>getAnotherYieldFlagCombination</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a4b7e9405a505eb7cd2a00658fd532ef2" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>idxUsedFlag</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1ad123c6b480d1e490e5b25ecc07335b9c" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>markYieldFlagCombinationAsUsed</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a1f8a7654554eb1b769b4a6583994734c" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>resetUsedYieldFlagCombinations</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a36ab7d695a33acb31494bbb359c271ba" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>YieldSurfaceCombinationManager</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a7b3ee364c216aabb55ddec085b0fb7fd" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>yieldSurfaceCombinations</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a44699f1f8fa22f1cf9311acb7c7e5250" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>YieldSurfFlagArr</name></member>
+      <member refid="classMarmot_1_1NumericalAlgorithms_1_1YieldSurfaceCombinationManager_1a4c08c14f06a50c1dbf99327644af0e4b" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>YieldSurfResArr</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

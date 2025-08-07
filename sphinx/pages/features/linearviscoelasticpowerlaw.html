@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Viscoelastic Power Law model &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Von Mises model" href="vonmises.html" />
+    <link rel="prev" title="Linear Elastic model (Automatic Differentiation)" href="adlinearelastic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite Strain J2 Plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Linear Viscoelastic Power Law model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Linear Viscoelastic Power Law model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/linearviscoelasticpowerlaw.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-viscoelastic-power-law-model">
+<h1>Linear Viscoelastic Power Law model<a class="headerlink" href="#linear-viscoelastic-power-law-model" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLawE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLawE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLawE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoelasticPowerLaw</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLawE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::LinearViscoelasticPowerLaw:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-87cea04b90fa2a3e8ca525a54b0187675c588441.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoelasticPowerLaw&quot; tooltip=&quot;Marmot::Materials::LinearViscoelasticPowerLaw&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::LinearViscoelasticPowerLaw:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-87cea04b90fa2a3e8ca525a54b0187675c588441.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoelasticPowerLaw&quot; tooltip=&quot;Marmot::Materials::LinearViscoelasticPowerLaw&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Implementation of a linear elastic material according to the <a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw"><span class="std std-ref">LinearViscoelasticPowerLaw</span></a> model by Bazant et al. (2015) generalized for 3D stress states. </p>
+<p>For further information see b4. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw26LinearViscoelasticPowerLawEPKdii">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw26LinearViscoelasticPowerLawEPKdii"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw26LinearViscoelasticPowerLawEPKdii"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLaw__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a4a67dec7649cb5efc8d8797baf7c93f3"></span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoelasticPowerLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw26LinearViscoelasticPowerLawEPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw13computeStressEPdPdPKdPKdKdRd">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw13computeStressEPdPdPKdPKdKdRd"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw13computeStressEPdPdPKdPKdKdRd"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::computeStress__doubleP.doubleP.doubleCP.doubleCP.doubleC.doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a42d89ace8620936fa91a2686df6094f0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timeOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewDT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw13computeStressEPdPdPKdPKdKdRd" title="Link to this definition"></a><br /></dt>
+<dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – <strong>[inout]</strong> Cauchy stress </p></li>
+<li><p><strong>dStressDDstrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeOld</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
+<li><p><strong>dt</strong> – <strong>[in]</strong> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </p></li>
+<li><p><strong>pNewDT</strong> – <strong>[inout]</strong> Suggestion for a new time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1ae125be550e9a756d522a5338dae04774"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a08dab7e70520a87d4c55b8a2ebfa3957"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1aca8046709f0297f78be42fc45334a565"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1EE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw1EE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw1EE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::E__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a8a350ac255db05aefae5cb44fcec40dc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1EE" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw2nuE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw2nuE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw2nuE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::nu__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a3184fcb0522c74d5bd879b7a27cb4fdf"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw2nuE" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1mE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw1mE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw1mE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::m__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1af0a0de96ef50a0f61b781fdb3bdb40a9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">m</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1mE" title="Link to this definition"></a><br /></dt>
+<dd><p>power law compliance parameter </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1nE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw1nE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw1nE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::n__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a55ec6d652b4070c9e9dbb46b9911dc08"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">n</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw1nE" title="Link to this definition"></a><br /></dt>
+<dd><p>power law exponent </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw7nKelvinE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw7nKelvinE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw7nKelvinE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::nKelvin__sC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a62757fda773192e743d8f302c30b01b6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nKelvin</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw7nKelvinE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of Kelvin units to approximate the viscoelastic compliance </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw6minTauE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw6minTauE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw6minTauE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::minTau__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a0fda87240408fe60d16a67d7800a48f4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">minTau</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw6minTauE" title="Link to this definition"></a><br /></dt>
+<dd><p>minimal retardation time used in the viscoelastic Kelvin chain </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw10timeToDaysE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw10timeToDaysE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw10timeToDaysE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::timeToDays__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1adc6c66ef089c4d2d365bdf1f8fe1f40c"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">timeToDays</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw10timeToDaysE" title="Link to this definition"></a><br /></dt>
+<dd><p>ratio of simulation time to days </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15stateVarManagerE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw15stateVarManagerE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw15stateVarManagerE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::stateVarManager__std::unique_ptr:LinearViscoelasticPowerLawStateVarManager:"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1abef4d01d0571d47d9aedfe793a179ac9"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManagerE" title="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager"><span class="n"><span class="pre">LinearViscoelasticPowerLawStateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVarManager</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15stateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw13elasticModuliE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw13elasticModuliE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw13elasticModuliE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::elasticModuli__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a182216843349aaaed2b9232070797089"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticModuli</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw13elasticModuliE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw16retardationTimesE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw16retardationTimesE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw16retardationTimesE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::retardationTimes__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1aa0006bb556f36391c6450909c54c5559"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">retardationTimes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw16retardationTimesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw27zerothKelvinChainComplianceE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw27zerothKelvinChainComplianceE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw27zerothKelvinChainComplianceE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::zerothKelvinChainCompliance__double"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1af2702f21719f734131f8291b28048036"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zerothKelvinChainCompliance</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw27zerothKelvinChainComplianceE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-attributes">Private Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw26powerLawApproximationOrderE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw26powerLawApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw26powerLawApproximationOrderE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::powerLawApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1ae86381df952b25959061c7f9ef48bfde"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">powerLawApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw26powerLawApproximationOrderE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManagerE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManagerE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManagerE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoelasticPowerLawStateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv427MarmotStateVarVectorManager" title="MarmotStateVarVectorManager"><span class="n"><span class="pre">MarmotStateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-10b48e1f7797e293873af7dccddb28d1e31e2627.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager&quot; tooltip=&quot;Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f0b65c167d29276b35b477df58e0ff260527c6ad.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager&quot; tooltip=&quot;Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
+    &quot;3&quot; [label=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot; tooltip=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager41LinearViscoelasticPowerLawStateVarManagerEPdi">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager41LinearViscoelasticPowerLawStateVarManagerEPdi"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager41LinearViscoelasticPowerLawStateVarManagerEPdi"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager::LinearViscoelasticPowerLawStateVarManager__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager_1ad6e75c353a4338bb6c78f11d7b90e597"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoelasticPowerLawStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nKelvinUnits</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager41LinearViscoelasticPowerLawStateVarManagerEPdi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager15kelvinStateVarsE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager15kelvinStateVarsE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager15kelvinStateVarsE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager::kelvinStateVars__KelvinChain::mapStateVarMatrix"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager_1a577405fbdfff71fbd1254a20c92cb3b2"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain17mapStateVarMatrixE" title="Marmot::Materials::KelvinChain::mapStateVarMatrix"><span class="n"><span class="pre">mapStateVarMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">kelvinStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager15kelvinStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager6layoutE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager6layoutE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager6layoutE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::LinearViscoelasticPowerLawStateVarManager::layout__autoC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1_1LinearViscoelasticPowerLawStateVarManager_1ad7a75ee30c161ecf26e96398ee3abe0b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><code class="docutils literal notranslate"><span class="pre">makeLayout(</span> <span class="pre">{{</span> <span class="pre">.name</span> <span class="pre">=</span> <span class="pre">&quot;kelvinStateVars&quot;,</span> <span class="pre">.length</span> <span class="pre">=</span> <span class="pre">0</span> <span class="pre">},}</span> <span class="pre">)</span></code><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw41LinearViscoelasticPowerLawStateVarManager6layoutE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="adlinearelastic.html" class="btn btn-neutral float-left" title="Linear Elastic model (Automatic Differentiation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vonmises.html" class="btn btn-neutral float-right" title="Von Mises model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
