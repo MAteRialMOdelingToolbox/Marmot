@@ -35,14 +35,14 @@
 
 namespace MarmotLibrary {
 
-/**
- * @class MarmotMaterialFactory
- * @brief Factory class for creating material instances.
- *
- * This class provides a mechanism to register materials by their code and name,
- * and to create material instances based on their properties.
- * It allows for dynamic material creation without hardcoding specific material types.
- */
+  /**
+   * @class MarmotMaterialFactory
+   * @brief Factory class for creating material instances.
+   *
+   * This class provides a mechanism to register materials by their code and name,
+   * and to create material instances based on their properties.
+   * It allows for dynamic material creation without hardcoding specific material types.
+   */
   class MarmotMaterialFactory {
   public:
     using materialFactoryFunction = MarmotMaterial* (*)( const double* materialProperties,
@@ -86,12 +86,12 @@ namespace MarmotLibrary {
     static std::unordered_map< int, materialFactoryFunction > materialFactoryFunctionByCode;
   };
 
-/**
- * @class MarmotElementFactory
- * @brief Factory class for creating element instances.
- * This class provides a mechanism to register elements by their code and name,
- * and to create element instances based on their properties.
- */
+  /**
+   * @class MarmotElementFactory
+   * @brief Factory class for creating element instances.
+   * This class provides a mechanism to register elements by their code and name,
+   * and to create element instances based on their properties.
+   */
 
   class MarmotElementFactory {
   public:

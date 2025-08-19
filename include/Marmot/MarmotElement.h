@@ -47,12 +47,12 @@ class MarmotElement {
 public:
   /** @brief Types of element state variables used in initialization and output. */
   enum StateTypes {
-    Sigma11,              ///< Stress component \f$\sigma_{11}\f$
-    Sigma22,              ///< Stress component \f$\sigma_{22}\f$
-    Sigma33,              ///< Stress component \f$\sigma_{33}\f$
-    HydrostaticStress,    ///< Hydrostatic stress state
-    GeostaticStress,      ///< Geostatic stress state
-    MarmotMaterialStateVars, ///< Generic material state variables
+    Sigma11,                     ///< Stress component \f$\sigma_{11}\f$
+    Sigma22,                     ///< Stress component \f$\sigma_{22}\f$
+    Sigma33,                     ///< Stress component \f$\sigma_{33}\f$
+    HydrostaticStress,           ///< Hydrostatic stress state
+    GeostaticStress,             ///< Geostatic stress state
+    MarmotMaterialStateVars,     ///< Generic material state variables
     MarmotMaterialInitialization ///< Initialization state for materials
   };
 

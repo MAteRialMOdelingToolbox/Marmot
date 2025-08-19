@@ -40,11 +40,11 @@
 class MarmotMaterial {
 
 protected:
-  const double* materialProperties; ///< Pointer to array of material property values.
+  const double* materialProperties;  ///< Pointer to array of material property values.
   const int     nMaterialProperties; ///< Number of material properties.
 
-  double* stateVars; ///< Pointer to array of state variables.
-  int     nStateVars; ///< Number of assigned state variables.
+  double* stateVars;                 ///< Pointer to array of state variables.
+  int     nStateVars;                ///< Number of assigned state variables.
 
 public:
   const int materialNumber; ///< Identifier for material type/implementation.
