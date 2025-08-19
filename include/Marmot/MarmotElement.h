@@ -43,7 +43,8 @@ public:
     HydrostaticStress,
     GeostaticStress,
     MarmotMaterialStateVars,
-    MarmotMaterialInitialization
+    MarmotMaterialInitialization,
+    HasEigenDeformation,
   };
 
   enum DistributedLoadTypes {
