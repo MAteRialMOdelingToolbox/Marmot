@@ -35,11 +35,14 @@
 
 namespace MarmotLibrary {
 
-  // MaterialFactory
-  //
-  // - Allows materials to register themselve with their name and ID
-  // - Allows the user to create instances of materials
-
+/**
+ * @class MarmotMaterialFactory
+ * @brief Factory class for creating material instances.
+ *
+ * This class provides a mechanism to register materials by their code and name,
+ * and to create material instances based on their properties.
+ * It allows for dynamic material creation without hardcoding specific material types.
+ */
   class MarmotMaterialFactory {
   public:
     using materialFactoryFunction = MarmotMaterial* (*)( const double* materialProperties,
@@ -47,13 +50,33 @@ namespace MarmotLibrary {
                                                          int           materialNumber );
     MarmotMaterialFactory()       = delete;
 
+    /**
+     * @brief Get the unique material code from its name.
+     * @param materialName Name of the material.
+     * @return Unique code associated with the material name, or -1 if not found.
+     */
     static int getMaterialCodeFromName( const std::string& materialName );
 
+    /**
+     * @brief Create a material instance based on its code and properties.
+     * @param materialCode Unique code for the material.
+     * @param materialProperties Array of material properties.
+     * @param nMaterialProperties Number of properties in the array.
+     * @param materialNumber Unique identifier for the material instance.
+     * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
+     */
     static MarmotMaterial* createMaterial( int           materialCode,
                                            const double* materialProperties,
                                            int           nMaterialProperties,
                                            int           materialNumber );
 
+    /**
+     * @brief Register a material with its code and factory function.
+     * @param materialCode Unique code for the material.
+     * @param materialName Name of the material.
+     * @param factoryFunction Function to create material instances.
+     * @return True if registration was successful, false if the code already exists.
+     */
     static bool registerMaterial( int                     materialCode,
                                   const std::string&      materialName,
                                   materialFactoryFunction factoryFunction );
@@ -63,20 +86,40 @@ namespace MarmotLibrary {
     static std::unordered_map< int, materialFactoryFunction > materialFactoryFunctionByCode;
   };
 
-  // ElementFactory
-  //
-  // - Allows elements to register themselve with their name and ID
-  // - Allows the user to create instances of elements
+/**
+ * @class MarmotElementFactory
+ * @brief Factory class for creating element instances.
+ * This class provides a mechanism to register elements by their code and name,
+ * and to create element instances based on their properties.
+ */
 
   class MarmotElementFactory {
   public:
     using elementFactoryFunction = MarmotElement* (*)( int elementNumber );
     MarmotElementFactory()       = delete;
 
+    /**
+     * @brief Get the unique element code from its name.
+     * @param elementName Name of the element.
+     * @return Unique code associated with the element name, or throws an exception if not found.
+     */
     static int getElementCodeFromName( const std::string& elementName );
 
+    /**
+     * @brief Create an element instance based on its code and number.
+     * @param elementCode Unique code for the element.
+     * @param elementNumber Unique identifier for the element instance.
+     * @return Pointer to the created MarmotElement instance, or nullptr if creation failed.
+     */
     static MarmotElement* createElement( int elementCode, int elementNumber );
 
+    /**
+     * @brief Register an element with its code and factory function.
+     * @param elementName Name of the element.
+     * @param elementCode Unique code for the element.
+     * @param factoryFunction Function to create element instances.
+     * @return True if registration was successful, false if the code already exists.
+     */
     static bool registerElement( const std::string&     elementName,
                                  int                    elementCode,
                                  elementFactoryFunction factoryFunction );

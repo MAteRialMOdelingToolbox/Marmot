@@ -26,6 +26,12 @@
  */
 #pragma once
 
+/* * @struct StateView
+ * @brief Structure to hold a pointer to the state location and its size.
+ *
+ * This structure is used to provide a view of the state variables in a finite element or material,
+ * allowing access to the state data without copying it.
+ */
 struct StateView {
   double* stateLocation;
   int     stateSize;

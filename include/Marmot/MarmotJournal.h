@@ -29,6 +29,12 @@
 #include <sstream>
 #include <string>
 
+/* * @class MakeString
+ * @brief Utility class for constructing strings with stream-like syntax.
+ *
+ * This class allows for easy string construction using the stream insertion operator.
+ * It can be used to build complex strings in a readable manner.
+ */
 class MakeString {
 public:
   std::stringstream stream;
@@ -42,6 +48,13 @@ public:
   }
 };
 
+/**
+ * @class MarmotJournal
+ * @brief Singleton class for managing output messages in the Marmot framework.
+ *
+ * This class provides a centralized way to handle warning and notification messages,
+ * allowing them to be directed to a specified output stream (e.g., console, file).
+ */
 class MarmotJournal {
 private:
   static MarmotJournal& getInstance();

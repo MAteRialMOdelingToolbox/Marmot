@@ -27,6 +27,10 @@
 #pragma once
 #include "Marmot/Marmot.h"
 
+/* * @brief Creates a default factory function for MarmotMaterial instances.
+ * @tparam T The type of the material to be created.
+ * @return A factory function that creates an instance of T using the provided material properties.
+ */
 template < typename T >
 MarmotLibrary::MarmotMaterialFactory::materialFactoryFunction makeDefaultMarmotMaterialFactoryFunction()
 {
