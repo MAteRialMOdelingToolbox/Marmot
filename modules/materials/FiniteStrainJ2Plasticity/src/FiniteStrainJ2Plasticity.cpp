@@ -6,13 +6,7 @@
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
 #include "Marmot/MarmotStressMeasures.h"
-#include "Marmot/MarmotVoigt.h"
-#include <Fastor/expressions/linalg_ops/unary_trans_op.h>
-#include <Fastor/tensor/Tensor.h>
-#include <Fastor/tensor_algebra/einsum_explicit.h>
-#include <Fastor/tensor_algebra/indicial.h>
 #include <autodiff/forward/dual/dual.hpp>
-#include <map>
 
 namespace Marmot::Materials {
 
@@ -31,7 +25,8 @@ namespace Marmot::Materials {
       fyInf( materialProperties[3] ),
       eta( materialProperties[4] ),
       H( materialProperties[5] ),
-      implementationType( materialProperties[6] )
+      implementationType( materialProperties[6] ),
+      density( nMaterialProperties > 7 ? materialProperties[7] : 0.0 ) // TODO: make mandatory material parameter
   {
   }
 
