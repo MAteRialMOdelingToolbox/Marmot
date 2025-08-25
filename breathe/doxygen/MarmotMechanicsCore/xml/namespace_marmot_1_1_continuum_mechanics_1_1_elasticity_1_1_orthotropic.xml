@@ -48,7 +48,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the orthotropic compliance tensor defined in the principal directions of the material <formula id="45">$ x_1 $</formula>,  <formula id="46">$x_2 $</formula> and <formula id="35">$ x_3 $</formula> :          <formula id="47">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para>Computes the orthotropic compliance tensor defined in the principal directions of the material <formula id="141">$ x_1 $</formula>,  <formula id="142">$x_2 $</formula> and <formula id="132">$ x_3 $</formula> :          <formula id="143">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                   \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{13}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
                   \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
                   \frac{-\nu_{13}}{E_3} &amp; \frac{-\nu_{23}}{E_3} &amp; \frac{1}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
@@ -61,40 +61,40 @@
 </entry><entry thead="yes"><para>Description </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="36">$ E_1 $</formula> </para>
-</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="45">$ x_1 $</formula> - direction </para>
+<entry thead="no"><para><formula id="133">$ E_1 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="141">$ x_1 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="39">$ E_2 $</formula> </para>
-</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="34">$ x_2 $</formula> - direction </para>
+<entry thead="no"><para><formula id="136">$ E_2 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="131">$ x_2 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="48">$ E_3 $</formula> </para>
-</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="35">$ x_3 $</formula> - direction </para>
+<entry thead="no"><para><formula id="144">$ E_3 $</formula> </para>
+</entry><entry thead="no"><para>Young&apos;s modulus effective in <formula id="132">$ x_3 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="38">$ \nu_{12} $</formula> </para>
-</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="45">$ x_1 $</formula> and <formula id="34">$ x_2 $</formula> - direction </para>
+<entry thead="no"><para><formula id="135">$ \nu_{12} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="141">$ x_1 $</formula> and <formula id="131">$ x_2 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="49">$ \nu_{13} $</formula> </para>
-</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="45">$ x_1 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+<entry thead="no"><para><formula id="145">$ \nu_{13} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="141">$ x_1 $</formula> and <formula id="132">$ x_3 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="40">$ \nu_{23} $</formula> </para>
-</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="34">$ x_2 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+<entry thead="no"><para><formula id="137">$ \nu_{23} $</formula> </para>
+</entry><entry thead="no"><para>Poisson&apos;s ratio effective between <formula id="131">$ x_2 $</formula> and <formula id="132">$ x_3 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="37">$ G_{12} $</formula> </para>
-</entry><entry thead="no"><para>Shear modulus effective between <formula id="45">$ x_1 $</formula> and <formula id="34">$ x_2 $</formula> - direction </para>
+<entry thead="no"><para><formula id="134">$ G_{12} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="141">$ x_1 $</formula> and <formula id="131">$ x_2 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="50">$ G_{13} $</formula> </para>
-</entry><entry thead="no"><para>Shear modulus effective between <formula id="45">$ x_1 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+<entry thead="no"><para><formula id="146">$ G_{13} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="141">$ x_1 $</formula> and <formula id="132">$ x_3 $</formula> - direction </para>
 </entry></row>
 <row>
-<entry thead="no"><para><formula id="41">$ G_{23} $</formula> </para>
-</entry><entry thead="no"><para>Shear modulus effective between <formula id="34">$ x_2 $</formula> and <formula id="35">$ x_3 $</formula> - direction </para>
+<entry thead="no"><para><formula id="138">$ G_{23} $</formula> </para>
+</entry><entry thead="no"><para>Shear modulus effective between <formula id="131">$ x_2 $</formula> and <formula id="132">$ x_3 $</formula> - direction </para>
 </entry></row>
 </table>
 </para>
@@ -148,7 +148,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the orthotropic stiffness tensor <formula id="43">$ \mathbb{C} $</formula> as inverse of the orthotropic compliance tensor <formula id="44">$ \mathbb{C}^{-1} $</formula>. </para>
+<para>Computes the orthotropic stiffness tensor <formula id="140">$ \mathbb{C} $</formula> as inverse of the orthotropic compliance tensor <formula id="80">$ \mathbb{C}^{-1} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

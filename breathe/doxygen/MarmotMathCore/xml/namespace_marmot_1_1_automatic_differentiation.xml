@@ -4,54 +4,6 @@
     <compoundname>Marmot::AutomaticDifferentiation</compoundname>
     <innernamespace refid="namespace_marmot_1_1_automatic_differentiation_1_1_second_order">Marmot::AutomaticDifferentiation::SecondOrder</innernamespace>
     <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" prot="public" static="no">
-        <templateparamlist>
-          <param>
-            <type>size_t...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>std::function&lt; dual(const Fastor::Tensor&lt; dual, Rest... &gt; &amp;T) &gt;</type>
-        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type =  std::function&lt; dual( const Fastor::Tensor&lt; dual, Rest... &gt;&amp; T ) &gt;</definition>
-        <argsstring></argsstring>
-        <name>tensor_to_scalar_function_type</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="61" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="61" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" prot="public" static="no">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>order</declname>
-            <defname>order</defname>
-          </param>
-          <param>
-            <type>size_t...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>std::function&lt; HigherOrderDual&lt; order, double &gt;( const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T) &gt;</type>
-        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order =  std::function&lt; HigherOrderDual&lt; order, double &gt;(
-      const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;</definition>
-        <argsstring></argsstring>
-        <name>tensor_to_scalar_function_type_arbitrary_dual_order</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="84" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="84" bodyend="-1"/>
-      </memberdef>
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1aee8267e1c1d89842e73fb874cdb80d0e" prot="public" static="no">
         <type>std::function&lt; dual(const dual &amp;) &gt;</type>
         <definition>using Marmot::AutomaticDifferentiation::scalar_to_scalar_function_type =  std::function&lt; dual( const dual&amp; ) &gt;</definition>
@@ -108,135 +60,56 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="147" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="147" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; dual(const Fastor::Tensor&lt; dual, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type =  std::function&lt; dual( const Fastor::Tensor&lt; dual, Rest... &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="61" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; HigherOrderDual&lt; order, double &gt;( const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order =  std::function&lt; HigherOrderDual&lt; order, double &gt;(
+      const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type_arbitrary_dual_order</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::tensor_to_scalar_function_type_arbitrary_dual_order</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="84" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>order</declname>
-            <defname>order</defname>
-          </param>
-          <param>
-            <type>size_t...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt;</type>
-        <definition>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</definition>
-        <argsstring>(const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;in)</argsstring>
-        <name>increaseDualOrderWithShift</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</qualifiedname>
-        <param>
-          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
-          <declname>in</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="44" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="44" bodyend="58"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
-        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
-        <argsstring>(const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T)</argsstring>
-        <name>df_dT</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
-        <param>
-          <type>const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;</type>
-          <declname>f</declname>
-        </param>
-        <param>
-          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
-          <declname>T</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="64" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="64" bodyend="81"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>order</declname>
-            <defname>order</defname>
-          </param>
-          <param>
-            <type>size_t...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt;</type>
-        <definition>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
-        <argsstring>(const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T)</argsstring>
-        <name>df_dT</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
-        <param>
-          <type>const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;</type>
-          <declname>f</declname>
-        </param>
-        <param>
-          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
-          <declname>T</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="88" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="88" bodyend="111"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t...</type>
-            <declname>RestF</declname>
-            <defname>RestF</defname>
-          </param>
-          <param>
-            <type>size_t...</type>
-            <declname>RestT</declname>
-            <defname>RestT</defname>
-          </param>
-        </templateparamlist>
-        <type>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt;</type>
-        <definition>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt; Marmot::AutomaticDifferentiation::dF_dT</definition>
-        <argsstring>(std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T)</argsstring>
-        <name>dF_dT</name>
-        <qualifiedname>Marmot::AutomaticDifferentiation::dF_dT</qualifiedname>
-        <param>
-          <type>std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;</type>
-          <declname>F</declname>
-        </param>
-        <param>
-          <type>const Fastor::Tensor&lt; double, RestT... &gt; &amp;</type>
-          <declname>T</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="114" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="114" bodyend="144"/>
-      </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a37db7167c4a2d4cb39e61c2fec762760" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>dual2nd</type>
         <definition>dual2nd Marmot::AutomaticDifferentiation::shiftTo2ndOrderDual</definition>
@@ -523,11 +396,138 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="148" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="148" declcolumn="15"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt; Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</definition>
+        <argsstring>(const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;in)</argsstring>
+        <name>increaseDualOrderWithShift</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::increaseDualOrderWithShift</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="44" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="44" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T)</argsstring>
+        <name>df_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="64" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="64" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt;</type>
+        <definition>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt; Marmot::AutomaticDifferentiation::df_dT</definition>
+        <argsstring>(const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T)</argsstring>
+        <name>df_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::df_dT</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="88" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="88" bodyend="111"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>RestF</declname>
+            <defname>RestF</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>RestT</declname>
+            <defname>RestT</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt;</type>
+        <definition>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt; Marmot::AutomaticDifferentiation::dF_dT</definition>
+        <argsstring>(std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T)</argsstring>
+        <name>dF_dT</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::dF_dT</qualifiedname>
+        <param>
+          <type>std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, RestT... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="114" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="114" bodyend="144"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="39" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="35" column="3"/>
   </compounddef>
 </doxygen>

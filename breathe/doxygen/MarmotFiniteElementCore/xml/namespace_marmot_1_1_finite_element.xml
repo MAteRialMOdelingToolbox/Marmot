@@ -107,46 +107,6 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1ae8aae9dc11c325daaeec7c26c3187167" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
-        <definition>const std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::FiniteElement::makeNodeFieldLayout</definition>
-        <argsstring>(const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
-        <name>makeNodeFieldLayout</name>
-        <qualifiedname>Marmot::FiniteElement::makeNodeFieldLayout</qualifiedname>
-        <param>
-          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
-          <declname>fieldSizes</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="36" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="36" declcolumn="23"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a5d1a7fd174313cd5714cbfdd4d3003b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>std::vector&lt; int &gt;</type>
-        <definition>std::vector&lt; int &gt; Marmot::FiniteElement::makeBlockedLayoutPermutationPattern</definition>
-        <argsstring>(const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
-        <name>makeBlockedLayoutPermutationPattern</name>
-        <qualifiedname>Marmot::FiniteElement::makeBlockedLayoutPermutationPattern</qualifiedname>
-        <param>
-          <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
-          <declname>nodeFields</declname>
-        </param>
-        <param>
-          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
-          <declname>fieldSizes</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="39" column="17" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="39" declcolumn="17"/>
-      </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a769a586beaa434927609968dfd2ea251" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>ElementShapes</type>
         <definition>ElementShapes Marmot::FiniteElement::getElementShapeByMetric</definition>
@@ -299,11 +259,51 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="87" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="87" declcolumn="21"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1ae8aae9dc11c325daaeec7c26c3187167" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>const std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::FiniteElement::makeNodeFieldLayout</definition>
+        <argsstring>(const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeNodeFieldLayout</name>
+        <qualifiedname>Marmot::FiniteElement::makeNodeFieldLayout</qualifiedname>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="36" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="36" declcolumn="23"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a5d1a7fd174313cd5714cbfdd4d3003b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::FiniteElement::makeBlockedLayoutPermutationPattern</definition>
+        <argsstring>(const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeBlockedLayoutPermutationPattern</name>
+        <qualifiedname>Marmot::FiniteElement::makeBlockedLayoutPermutationPattern</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
+          <declname>nodeFields</declname>
+        </param>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="39" column="17" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="39" declcolumn="17"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="34" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="35" column="3"/>
   </compounddef>
 </doxygen>

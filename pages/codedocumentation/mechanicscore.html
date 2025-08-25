@@ -1094,7 +1094,7 @@
 <p>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom. </p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000004"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000003"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>: Update member names to more descriptive ones </p>
 </dd></dl>
 
@@ -1131,7 +1131,7 @@
 <span id="_CPPv3N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd"></span><span id="_CPPv2N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd"></span><span id="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::applyViscosityOnMatTangent__TangentSizedMatrixCR.double"></span><span class="target" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9"></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity18TangentSizedMatrixE" title="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">applyViscosityOnMatTangent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity18TangentSizedMatrixE" title="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">matTangentInv</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd" title="Link to this definition"></a><br /></dt>
 <dd><p>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <span class="math notranslate nohighlight">\(\infty\)</span>, and timestep dt <dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000005"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000004"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>: Check if application to inverse can be replaced by application to non-inverse in general </p>
 </dd></dl>
 
@@ -1546,7 +1546,7 @@ l_{\text{nonlocal}} \]</div>
 <dd><p>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\)</span>.</p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000002"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000005"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>A default implementation is provided.</p>
 </dd></dl>
 
@@ -1572,7 +1572,7 @@ l_{\text{nonlocal}} \]</div>
 <dd><p>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\)</span>.</p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000003"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000006"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>Should we use function overloading in this case and simple also use computeStress for the function name?</p>
 </dd></dl>
 
@@ -4674,25 +4674,25 @@ l_{\text{nonlocal}} \]</div>
 <dd><p><dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Class</span> <a class="reference internal" href="#class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity"><span class="std std-ref"><span class="pre">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt;</span> <span class="pre">nMatTangentSize</span> <span class="pre">&gt;</span></span></a></dt>
-<dd><p><span class="target" id="todo_1_todo000004"></span>: Update member names to more descriptive ones  </p>
+<dd><p><span class="target" id="todo_1_todo000003"></span>: Update member names to more descriptive ones  </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9"><span class="std std-ref"><span class="pre">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt;</span> <span class="pre">nMatTangentSize</span> <span class="pre">&gt;::applyViscosityOnMatTangent</span></span></a>&#160; <span class="pre">(const</span> <span class="pre">TangentSizedMatrix</span> <span class="pre">&amp;matTangentInv,</span> <span class="pre">double</span> <span class="pre">dT)</span></dt>
-<dd><p><span class="target" id="todo_1_todo000005"></span>: Check if application to inverse can be replaced by application to non-inverse in general  </p>
+<dd><p><span class="target" id="todo_1_todo000004"></span>: Check if application to inverse can be replaced by application to non-inverse in general  </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_material_hyper_elastic_1a8572da8553b57740895ead92316f4cbd"><span class="std std-ref"><span class="pre">MarmotMaterialHyperElastic::computeStress</span></span></a>&#160; <span class="pre">(double</span> <span class="pre">*S,</span> <span class="pre">double</span> <span class="pre">*dSdE,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*FOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*FNew,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*timeOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">dT,</span> <span class="pre">double</span> <span class="pre">&amp;pNewDT)</span> <span class="pre">override</span></dt>
-<dd><p><span class="target" id="todo_1_todo000002"></span>A default implementation is provided. </p>
+<dd><p><span class="target" id="todo_1_todo000005"></span>A default implementation is provided. </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_material_hyper_elastic_1aab2db47ca209a86cfca449e456a1c8ee"><span class="std std-ref"><span class="pre">MarmotMaterialHyperElastic::computeStressPK2</span></span></a>&#160; <span class="pre">(double</span> <span class="pre">*S,</span> <span class="pre">double</span> <span class="pre">*dSdE,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*E,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*timeOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">dT,</span> <span class="pre">double</span> <span class="pre">&amp;pNewDT)=0</span></dt>
-<dd><p><span class="target" id="todo_1_todo000003"></span>Should we use function overloading in this case and simple also use computeStress for the function name? </p>
+<dd><p><span class="target" id="todo_1_todo000006"></span>Should we use function overloading in this case and simple also use computeStress for the function name? </p>
 </dd></dl>
 
 <dl>

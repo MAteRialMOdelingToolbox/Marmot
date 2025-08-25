@@ -22,7 +22,7 @@
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix <formula id="1">$\mathbb{C}$</formula> given in Voigt notation. </para>
+<para>3D stiffness matrix <formula id="108">$\mathbb{C}$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -45,7 +45,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Extract the plane strain derivitive of the stress in Voigt notation with respect to the deformation gradient <formula id="2">$F_{ij}$</formula> from the corresponding derivative in a 3d setting. </para>
+<para>Extract the plane strain derivitive of the stress in Voigt notation with respect to the deformation gradient <formula id="109">$F_{ij}$</formula> from the corresponding derivative in a 3d setting. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

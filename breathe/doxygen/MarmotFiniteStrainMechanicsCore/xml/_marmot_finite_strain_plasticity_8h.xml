@@ -26,8 +26,6 @@
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity">Marmot::ContinuumMechanics::FiniteStrain::Plasticity</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity_1_1_flow_integration">Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity_1_1_flow_integration_1_1_first_order_derived">Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived</innernamespace>
-    <innernamespace refid="namespace_fastor_standard_tensors">FastorStandardTensors</innernamespace>
-    <innernamespace refid="namespace_fastor">Fastor</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

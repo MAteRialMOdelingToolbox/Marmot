@@ -25,6 +25,8 @@
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions">Marmot::ContinuumMechanics::EnergyDensityFunctions</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_first_order_derived">Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_second_order_derived">Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived</innernamespace>
+    <innernamespace refid="namespace_fastor">Fastor</innernamespace>
+    <innernamespace refid="namespace_fastor_standard_tensors">FastorStandardTensors</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

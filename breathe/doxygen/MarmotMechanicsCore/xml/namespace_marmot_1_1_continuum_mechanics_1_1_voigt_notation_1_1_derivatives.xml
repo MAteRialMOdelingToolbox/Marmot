@@ -12,8 +12,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="103">$ \frac{d\, \sigma_m}{d\, \boldsymbol{\sigma}} $</formula> of the mean stress  <formula id="104">$ \sigma_m
-$</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula> </para>
+<para>Computes the derivative <formula id="51">$ \frac{d\, \sigma_m}{d\, \boldsymbol{\sigma}} $</formula> of the mean stress  <formula id="52">$ \sigma_m
+$</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -41,7 +41,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="105">$ \frac{d\, \rho}{d\, \boldsymbol{\sigma}}$</formula> of the haigh westergaard coordinate  <formula id="106">$\rho $</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula> </para>
+<para>Computes the derivative <formula id="53">$ \frac{d\, \rho}{d\, \boldsymbol{\sigma}}$</formula> of the haigh westergaard coordinate  <formula id="54">$\rho $</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -64,7 +64,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="107">$ \frac{d\, \theta}{d\, \boldsymbol{\sigma}}$</formula> of the haigh westergaard coordinate <formula id="108">$ \theta $</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula> </para>
+<para>Computes the derivative <formula id="55">$ \frac{d\, \theta}{d\, \boldsymbol{\sigma}}$</formula> of the haigh westergaard coordinate <formula id="56">$ \theta $</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -83,7 +83,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="109">$ \frac{d\, \theta}{d\, J_2}$</formula> of the haigh westergaard coordinate <formula id="108">$ \theta $</formula> with respect to the second deviatoric invariant <formula id="73">$ J_2 $</formula> </para>
+<para>Computes the derivative <formula id="57">$ \frac{d\, \theta}{d\, J_2}$</formula> of the haigh westergaard coordinate <formula id="56">$ \theta $</formula> with respect to the second deviatoric invariant <formula id="21">$ J_2 $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -102,7 +102,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="110">$ \frac{d\, \theta}{d\, J_3}$</formula> of the haigh westergaard coordinate <formula id="108">$ \theta $</formula> with respect to the third deviatoric invariant <formula id="99">$ J_3 $</formula> </para>
+<para>Computes the derivative <formula id="58">$ \frac{d\, \theta}{d\, J_3}$</formula> of the haigh westergaard coordinate <formula id="56">$ \theta $</formula> with respect to the third deviatoric invariant <formula id="47">$ J_3 $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -121,7 +121,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="111">$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_2}$</formula> of the haigh westergaard coordinate <formula id="112">$ \theta^{(\varepsilon)} $</formula> with respect to the second deviatoric invariant  <formula id="113">$J^{(\varepsilon)}_2 $</formula>. </para>
+<para>Computes the derivative <formula id="59">$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_2}$</formula> of the haigh westergaard coordinate <formula id="60">$ \theta^{(\varepsilon)} $</formula> with respect to the second deviatoric invariant  <formula id="61">$J^{(\varepsilon)}_2 $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -140,7 +140,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="114">$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_3}$</formula> of the haigh westergaard coordinate <formula id="112">$ \theta^{(\varepsilon)} $</formula> with respect to the third deviatoric invariant  <formula id="115">$J^{(\varepsilon)}_3 $</formula>. </para>
+<para>Computes the derivative <formula id="62">$ \frac{d\, \theta^{(\varepsilon)}}{d\, J^{(\varepsilon)}_3}$</formula> of the haigh westergaard coordinate <formula id="60">$ \theta^{(\varepsilon)} $</formula> with respect to the third deviatoric invariant  <formula id="63">$J^{(\varepsilon)}_3 $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -159,7 +159,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="116">$ \frac{d\, J_2}{d\, \boldsymbol{\sigma}}$</formula> of the second deviatoric invariant  <formula id="117">$J_2 $</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula>. </para>
+<para>Computes the derivative <formula id="64">$ \frac{d\, J_2}{d\, \boldsymbol{\sigma}}$</formula> of the second deviatoric invariant  <formula id="65">$J_2 $</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -178,7 +178,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="118">$ \frac{d\, J_3}{d\, \boldsymbol{\sigma}}$</formula> of the third deviatoric invariant  <formula id="119">$J_3 $</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula>. </para>
+<para>Computes the derivative <formula id="66">$ \frac{d\, J_3}{d\, \boldsymbol{\sigma}}$</formula> of the third deviatoric invariant  <formula id="67">$J_3 $</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -197,7 +197,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="120">$ \frac{d\, J^{(\varepsilon)}_2}{d\, \boldsymbol{\sigma}}$</formula> of the second deviatoric invariant <formula id="97">$ J^{(\varepsilon)}_2 $</formula> with respect to the voigt notated strain vector  <formula id="90">$\boldsymbol{\varepsilon} $</formula>. </para>
+<para>Computes the derivative <formula id="68">$ \frac{d\, J^{(\varepsilon)}_2}{d\, \boldsymbol{\sigma}}$</formula> of the second deviatoric invariant <formula id="45">$ J^{(\varepsilon)}_2 $</formula> with respect to the voigt notated strain vector  <formula id="38">$\boldsymbol{\varepsilon} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -216,7 +216,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="121">$ \frac{d\, J^{(\varepsilon)}_3}{d\, \boldsymbol{\sigma}}$</formula> of the third deviatoric invariant <formula id="101">$ J^{(\varepsilon)}_3 $</formula> with respect to the voigt notated strain vector  <formula id="90">$\boldsymbol{\varepsilon} $</formula>. </para>
+<para>Computes the derivative <formula id="69">$ \frac{d\, J^{(\varepsilon)}_3}{d\, \boldsymbol{\sigma}}$</formula> of the third deviatoric invariant <formula id="49">$ J^{(\varepsilon)}_3 $</formula> with respect to the voigt notated strain vector  <formula id="38">$\boldsymbol{\varepsilon} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -235,7 +235,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="122">$ \frac{d\, \theta^{(\varepsilon)}}{d\, \boldsymbol{\varepsilon}}$</formula> of the haigh westergaard coordinate <formula id="112">$ \theta^{(\varepsilon)} $</formula> with respect to the voigt notated strain vector  <formula id="90">$\boldsymbol{\varepsilon} $</formula> </para>
+<para>Computes the derivative <formula id="70">$ \frac{d\, \theta^{(\varepsilon)}}{d\, \boldsymbol{\varepsilon}}$</formula> of the haigh westergaard coordinate <formula id="60">$ \theta^{(\varepsilon)} $</formula> with respect to the voigt notated strain vector  <formula id="38">$\boldsymbol{\varepsilon} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -254,7 +254,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="123">$ \frac{d\, \sigma_I}{d\, \boldsymbol{\sigma}}$</formula> of the principal stresses  <formula id="124">$\sigma_I $</formula> with respect to the voigt notated stress vector <formula id="82">$ \boldsymbol{\sigma} $</formula> </para>
+<para>Computes the derivative <formula id="71">$ \frac{d\, \sigma_I}{d\, \boldsymbol{\sigma}}$</formula> of the principal stresses  <formula id="72">$\sigma_I $</formula> with respect to the voigt notated stress vector <formula id="30">$ \boldsymbol{\sigma} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -273,7 +273,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="125">$ \frac{d\, \varepsilon^{vol}_{\ominus}}{d\, \varepsilon_I}$</formula> of the volumetric strains in compression <formula id="126">$ \varepsilon^{vol}_{\ominus} $</formula> with respect to the principal strains  <formula id="127">$\varepsilon_I $</formula> </para>
+<para>Computes the derivative <formula id="73">$ \frac{d\, \varepsilon^{vol}_{\ominus}}{d\, \varepsilon_I}$</formula> of the volumetric strains in compression <formula id="74">$ \varepsilon^{vol}_{\ominus} $</formula> with respect to the principal strains  <formula id="75">$\varepsilon_I $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -296,10 +296,10 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="128">$ \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}}$</formula> of the voigt notated plastic strain vector <formula id="129">$ \boldsymbol{\varepsilon}^{p} $</formula> with respect to the voigt notated strain vector <formula id="130">$ \boldsymbol{\varepsilon} $</formula></para>
-<para><formula id="131">\[    \displaystyle \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}} = \boldsymbol{I} -
+<para>Computes the derivative <formula id="76">$ \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}}$</formula> of the voigt notated plastic strain vector <formula id="77">$ \boldsymbol{\varepsilon}^{p} $</formula> with respect to the voigt notated strain vector <formula id="78">$ \boldsymbol{\varepsilon} $</formula></para>
+<para><formula id="79">\[    \displaystyle \frac{d\, \boldsymbol{\varepsilon}^{p}}{d\, \boldsymbol{\varepsilon}} = \boldsymbol{I} -
 \mathbb{C}^{-1}\,\mathbb{C}^{(ep)} \]</formula></para>
-<para>using the elastic compliance tensor <formula id="44">$ \mathbb{C}^{-1} $</formula> and the elastoplastic stiffness tensor  <formula id="132">$\mathbb{C}^{(ep)} $</formula> </para>
+<para>using the elastic compliance tensor <formula id="80">$ \mathbb{C}^{-1} $</formula> and the elastoplastic stiffness tensor  <formula id="81">$\mathbb{C}^{(ep)} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -322,7 +322,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="133">$ \frac{d\, \Delta\, \varepsilon^{p, vol}}{d\, \boldsymbol{\varepsilon}}$</formula> of the volumetric plastic strain increment <formula id="134">$ \Delta\, \varepsilon^{p, vol}$</formula> with respect to the voigt notated strain vector <formula id="130">$ \boldsymbol{\varepsilon} $</formula> </para>
+<para>Computes the derivative <formula id="82">$ \frac{d\, \Delta\, \varepsilon^{p, vol}}{d\, \boldsymbol{\varepsilon}}$</formula> of the volumetric plastic strain increment <formula id="83">$ \Delta\, \varepsilon^{p, vol}$</formula> with respect to the voigt notated strain vector <formula id="78">$ \boldsymbol{\varepsilon} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -341,7 +341,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="135">$ \frac{d\, \varepsilon_I}{d\, \boldsymbol{\varepsilon}}$</formula> of the principal strains <formula id="136">$ \varepsilon_I $</formula> with respect to the voigt notated strain vector <formula id="130">$ \boldsymbol{\varepsilon} $</formula> </para>
+<para>Computes the derivative <formula id="84">$ \frac{d\, \varepsilon_I}{d\, \boldsymbol{\varepsilon}}$</formula> of the principal strains <formula id="85">$ \varepsilon_I $</formula> with respect to the voigt notated strain vector <formula id="78">$ \boldsymbol{\varepsilon} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -368,7 +368,7 @@ $</formula> with respect to the voigt notated stress vector <formula id="82">$ \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the derivative <formula id="137">$ \frac{d\, \Delta\, \varepsilon^{p, vol}_{\ominus}}{d\, \boldsymbol{\varepsilon}}$</formula> of the volumetric plastic strain increment in compression <formula id="138">$ \Delta\, \varepsilon^{p, vol}_{\ominus}$</formula> with respect to the voigt notated strain vector <formula id="130">$ \boldsymbol{\varepsilon} $</formula> </para>
+<para>Computes the derivative <formula id="86">$ \frac{d\, \Delta\, \varepsilon^{p, vol}_{\ominus}}{d\, \boldsymbol{\varepsilon}}$</formula> of the volumetric plastic strain increment in compression <formula id="87">$ \Delta\, \varepsilon^{p, vol}_{\ominus}$</formula> with respect to the voigt notated strain vector <formula id="78">$ \boldsymbol{\varepsilon} $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

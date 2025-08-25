@@ -32,7 +32,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transversely isotropic compliance tensor:          <formula id="33">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para>Computes the transversely isotropic compliance tensor:          <formula id="130">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; 0 &amp; 0 &amp; 0 \\
                       \frac{-\nu_{12}}{E_1} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
                       \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
@@ -40,9 +40,9 @@
                   0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 \\
                   0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
                                    \end{bmatrix}
-\]</formula> The isotropic plane is defined with respect to the <formula id="34">$ x_2 $</formula> and <formula id="35">$ x_3 $</formula> axes of a local coordinate system. It is computed from the young&apos;s modulus <formula id="36">$ E_1 $</formula>, the shear modulus <formula id="37">$ G_{12} $</formula> and poisson&apos;s ratio <formula id="38">$ \nu_{12} $</formula> effective out of the isotropic plane and the in - plane young&apos;s modulus <formula id="39">$ E_2 $</formula> and poisson&apos;s ratio <formula id="40">$ \nu_{23} $</formula>.</para>
-<para>The in - plane shear modulus <formula id="41">$ G_{23} $</formula> can be expressed by</para>
-<para><formula id="42">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
+\]</formula> The isotropic plane is defined with respect to the <formula id="131">$ x_2 $</formula> and <formula id="132">$ x_3 $</formula> axes of a local coordinate system. It is computed from the young&apos;s modulus <formula id="133">$ E_1 $</formula>, the shear modulus <formula id="134">$ G_{12} $</formula> and poisson&apos;s ratio <formula id="135">$ \nu_{12} $</formula> effective out of the isotropic plane and the in - plane young&apos;s modulus <formula id="136">$ E_2 $</formula> and poisson&apos;s ratio <formula id="137">$ \nu_{23} $</formula>.</para>
+<para>The in - plane shear modulus <formula id="138">$ G_{23} $</formula> can be expressed by</para>
+<para><formula id="139">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -78,7 +78,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transversely isotropic stiffness tensor <formula id="43">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="44">$ \mathbb{C}^{-1} $</formula>. </para>
+<para>Computes the transversely isotropic stiffness tensor <formula id="140">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="80">$ \mathbb{C}^{-1} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

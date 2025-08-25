@@ -109,14 +109,14 @@
     <member refid="_marmot_finite_element_8h_1a49b09e61f616525d0bb8d744c9d46b17afaa8e5d14e31451e845c4fa72393ef25" kind="enumvalue"><name>Hexa20</name></member>
     <member refid="_marmot_finite_element_8h_1a49b09e61f616525d0bb8d744c9d46b17a28ee34d99f61715c1f194924d58a8e3f" kind="enumvalue"><name>Hexa27</name></member>
     <member refid="_marmot_finite_element_8h_1a49b09e61f616525d0bb8d744c9d46b17a3a5c690b53886d3dcebb2dec4da89ee4" kind="enumvalue"><name>Hexa64</name></member>
-    <member refid="_marmot_dof_layout_tools_8h_1ae8aae9dc11c325daaeec7c26c3187167" kind="function"><name>makeNodeFieldLayout</name></member>
-    <member refid="_marmot_dof_layout_tools_8h_1a5d1a7fd174313cd5714cbfdd4d3003b1" kind="function"><name>makeBlockedLayoutPermutationPattern</name></member>
     <member refid="_marmot_finite_element_8h_1a769a586beaa434927609968dfd2ea251" kind="function"><name>getElementShapeByMetric</name></member>
     <member refid="_marmot_finite_element_8h_1a4de872cc0a8ec382f0e38d8dac17693c" kind="function"><name>NB</name></member>
     <member refid="_marmot_finite_element_8h_1a69b7aef9e084c8e6f2d4c0d9857358c5" kind="function"><name>NB</name></member>
     <member refid="_marmot_finite_element_8h_1a66f27f80c1a7588b81f5206c2324ef3b" kind="function"><name>Jacobian</name></member>
     <member refid="_marmot_finite_element_8h_1a4d998a75bf88c162719d2e2e36b8f7b6" kind="function"><name>Jacobian</name></member>
     <member refid="_marmot_finite_element_8h_1a18a41c28bffd439b63aad65a549d38e4" kind="function"><name>expandNodeIndicesToCoordinateIndices</name></member>
+    <member refid="_marmot_dof_layout_tools_8h_1ae8aae9dc11c325daaeec7c26c3187167" kind="function"><name>makeNodeFieldLayout</name></member>
+    <member refid="_marmot_dof_layout_tools_8h_1a5d1a7fd174313cd5714cbfdd4d3003b1" kind="function"><name>makeBlockedLayoutPermutationPattern</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kind="namespace"><name>Marmot::FiniteElement::EAS</name>
     <member refid="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aa" kind="enum"><name>EASType</name></member>

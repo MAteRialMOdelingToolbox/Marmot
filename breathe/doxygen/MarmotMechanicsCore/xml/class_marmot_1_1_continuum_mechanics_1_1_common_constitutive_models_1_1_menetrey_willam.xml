@@ -22,7 +22,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="152">$e$</formula>). </para>
+<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="153">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
@@ -40,7 +40,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="152">$e$</formula>). </para>
+<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="153">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
@@ -94,7 +94,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Constructor that takes the uniaxial tensile strength <formula id="149">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="150">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam param. </para>
+<para>Constructor that takes the uniaxial tensile strength <formula id="150">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="151">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam param. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -145,7 +145,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="151">$r$</formula> from the Lode angle <formula id="68">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters param. </para>
+<para>Compute the polar radius <formula id="152">$r$</formula> from the Lode angle <formula id="16">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters param. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -169,7 +169,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="151">$r$</formula> and its derivative <formula id="153">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="68">$\theta$</formula>. The eccentricity parameter will be used from the param struct. </para>
+<para>Compute the polar radius <formula id="152">$r$</formula> and its derivative <formula id="154">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="16">$\theta$</formula>. The eccentricity parameter will be used from the param struct. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -198,7 +198,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the yield function <formula id="155">$f$</formula> depending on the Haigh-Westergaard stress coordinates hw. <formula id="156">$f&lt;0$</formula> means no yielding while <formula id="157">$f\geq0$</formula> means yielding. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
+<para>Evaluate the yield function <formula id="156">$f$</formula> depending on the Haigh-Westergaard stress coordinates hw. <formula id="157">$f&lt;0$</formula> means no yielding while <formula id="158">$f\geq0$</formula> means yielding. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
 <para><simplesect kind="note"><para>The yield function can be also used as plastic potential function if needed. </para>
 </simplesect>
 </para>
@@ -230,7 +230,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="158">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
+<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="159">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -260,7 +260,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="151">$r$</formula> from the Lode angle <formula id="68">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="152">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="152">$r$</formula> from the Lode angle <formula id="16">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="153">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -288,7 +288,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="154">$r$$</formula> and its derivative <formula id="153">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="68">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="152">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="155">$r$$</formula> and its derivative <formula id="154">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="16">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="153">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -464,9 +464,9 @@
 <para>Generalized failure criterion proposed by Menétrey and Willam. </para>
     </briefdescription>
     <detaileddescription>
-<para>Implementation of the generalized failure criterion proposed by Menétrey and Willam    <formula id="146">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
+<para>Implementation of the generalized failure criterion proposed by Menétrey and Willam    <formula id="147">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
 \]</formula></para>
-<para>with the Haigh-Westergaard coordinates <formula id="147">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="148">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>).</para>
+<para>with the Haigh-Westergaard coordinates <formula id="148">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="149">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>).</para>
 <para><image type="html" name="yieldSurfaceDeviatoric_MenetreyWillam.png" width="75%"></image>
  <image type="latex" name="yieldSurfaceDeviatoric_MenetreyWillam.png" width="75%"></image>
 </para>
