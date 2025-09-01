@@ -544,18 +544,12 @@ void testRotation()
 
       Tensor33d stressNew = response.tau;
 
-      //
-     // Tensor33d stressRotated = einsum< iI, IJ, jJ, to_ij >( Q, stressUnrotated, Q );
-
       throwExceptionOnFailure( checkIfEqual( stressNew, stressUnrotated, 1e-10 ),
-                               "Test 8d: Objectivity test for arbitrary deformation and rotation around z-axis failed "
+                               "Test 8e: Isotropy test for arbitrary deformation failed "
                                "for "
                                "CompressibleNeoHooke "
                                "material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
-      std::cout << stressNew << std::endl;
-
-      std::cout << stressUnrotated << std::endl;
     }
 
   }
