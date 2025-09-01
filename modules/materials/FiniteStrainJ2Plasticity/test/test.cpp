@@ -6,6 +6,7 @@
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
 using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::FastorIndices;
 
 
 // 1. Test: Undeformed configuration
@@ -34,16 +35,9 @@ void testUndeformedResponse()
   mat.computeStress( response, tangent, def, timeInc );
 
   // Target Kirchoff stress values for the given deformation gradient and material parameters
-  Tensor33d stressTarget;
-  stressTarget( 0, 0 ) = 0.;
-  stressTarget( 0, 1 ) = 0.;
-  stressTarget( 0, 2 ) = 0.;
-  stressTarget( 1, 0 ) = 0.;
-  stressTarget( 1, 1 ) = 0.;
-  stressTarget( 1, 2 ) = 0.;
-  stressTarget( 2, 0 ) = 0.;
-  stressTarget( 2, 1 ) = 0.;
-  stressTarget( 2, 2 ) = 0.;
+  Tensor33d stressTarget( 0.0 );
+
+
 
   
 
