@@ -12,7 +12,7 @@ using namespace Marmot::FastorIndices;
 // 1. Test: Undeformed configuration
 void testUndeformedResponse()
 {
-  // idx 0 - Bulk modulus K, idx 1 - Shear modulus G in MPa
+  // idx 0 - Bulk modulus K, idx 1 - Shear modulus G
   std::array< double, 2 > materialProperties_ = { 3500, 1500 };
   const double            nMaterialProperties = 2;
   const int               elLabel             = 1;
@@ -33,7 +33,7 @@ void testUndeformedResponse()
   // Compute stress response
   mat.computeStress( response, tangent, def, timeInc );
 
-  // Target Kirchoff stress values for the given deformation gradient and material parameters
+  // Target Kirchhoff stress values for the given deformation gradient and material parameters
   Tensor33d stressTarget( 0.0 );
 
   // Compare computed stress to target stress values
@@ -42,51 +42,39 @@ void testUndeformedResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 2.
+// Test 2: Uniaxial stretch
 void testUniaxialStretchResponse()
 {
-  // idx 0 - Bulk modulus K, idx 1 - Shear modulus G in MPa
   std::array< double, 2 > materialProperties_ = { 3500, 1500 };
   const double            nMaterialProperties = 2;
   const int               elLabel             = 1;
 
-  // Create material instance
   CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
 
-  // Create deformation, time increment, response and tangent objects required for stress computation
   CompressibleNeoHooke::Deformation< 3 > def;
   CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
 
   CompressibleNeoHooke::ConstitutiveResponse< 3 > response;
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent;
 
-  // Prescribe a deformation gradient tensor F for the considered load case
   def.F = Marmot::FastorStandardTensors::Spatial3D::I;
-  def.F( 0, 0 ) += 0.2;
+  def.F( 0, 0 ) += 0.02;
 
-  // Compute stress response
   mat.computeStress( response, tangent, def, timeInc );
 
-  // Target Kirchoff stress values for the given deformation gradient and material parameters
-  Tensor33d stressTarget;
-  stressTarget( 0, 0 ) = 1042.00258647807;
-  stressTarget( 0, 1 ) = 0.;
-  stressTarget( 0, 2 ) = 0.;
-  stressTarget( 1, 0 ) = 0.;
-  stressTarget( 1, 1 ) = 457.540373427632;
-  stressTarget( 1, 2 ) = 0.;
-  stressTarget( 2, 0 ) = 0.;
-  stressTarget( 2, 1 ) = 0.;
-  stressTarget( 2, 2 ) = 457.540373427632;
+  Tensor33d stressTarget( 0.0 );
+  stressTarget( 0, 0 ) = 109.197470795418;
+  stressTarget( 1, 1 ) = 49.3922392274353;
+  stressTarget( 2, 2 ) = 49.3922392274353;
 
-  // Compare computed stress to target stress values
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
                            "Test 2: Uniaxial stretch deformation load case computation failed for "
                            "CompressibleNeoHooke material in " +
                              std::string( __PRETTY_FUNCTION__ ) );
+
 }
 
-// Test 3.
+// Test 3: Finite strain simple shear load case
 void testFiniteStrainShearResponse()
 {
 
@@ -107,15 +95,11 @@ void testFiniteStrainShearResponse()
 
   mat.computeStress( response, tangent, def, timeInc );
 
-  Tensor33d stressTarget;
+  Tensor33d stressTarget( 0.0 );
   stressTarget( 0, 0 ) = -20;
   stressTarget( 0, 1 ) = 300;
-  stressTarget( 0, 2 ) = 0.;
   stressTarget( 1, 0 ) = 300;
   stressTarget( 1, 1 ) = 40;
-  stressTarget( 1, 2 ) = 0.;
-  stressTarget( 2, 0 ) = 0.;
-  stressTarget( 2, 1 ) = 0.;
   stressTarget( 2, 2 ) = -20;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
@@ -124,7 +108,7 @@ void testFiniteStrainShearResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 4.
+// Test 4: Small strain simple shear load case
 void testSmallStrainShearResponse()
 {
 
@@ -145,15 +129,11 @@ void testSmallStrainShearResponse()
 
   mat.computeStress( response, tangent, def, timeInc );
 
-  Tensor33d stressTarget;
+  Tensor33d stressTarget( 0.0 );
   stressTarget( 0, 0 ) = -4.99994712299667e-10;
   stressTarget( 0, 1 ) = 0.0015;
-  stressTarget( 0, 2 ) = 0.;
   stressTarget( 1, 0 ) = 0.0015;
   stressTarget( 1, 1 ) = 9.99793777126387e-10;
-  stressTarget( 1, 2 ) = 0.;
-  stressTarget( 2, 0 ) = 0.;
-  stressTarget( 2, 1 ) = 0.;
   stressTarget( 2, 2 ) = -4.99994712299667e-10;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
@@ -161,7 +141,7 @@ void testSmallStrainShearResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 5.
+// Test 5: Hydrostatic load case
 void testHydrostaticResponse()
 {
 
@@ -184,15 +164,9 @@ void testHydrostaticResponse()
 
   mat.computeStress( response, tangent, def, timeInc );
 
-  Tensor33d stressTarget;
+  Tensor33d stressTarget( 0.0 );
   stressTarget( 0, 0 ) = 208.417157443082;
-  stressTarget( 0, 1 ) = 0.;
-  stressTarget( 0, 2 ) = 0.;
-  stressTarget( 1, 0 ) = 0.;
   stressTarget( 1, 1 ) = 208.417157443082;
-  stressTarget( 1, 2 ) = 0.;
-  stressTarget( 2, 0 ) = 0.;
-  stressTarget( 2, 1 ) = 0.;
   stressTarget( 2, 2 ) = 208.417157443082;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
@@ -201,7 +175,7 @@ void testHydrostaticResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 6.
+// Test 6: General deformation load case
 void testGeneralDeformationResponse()
 {
 
@@ -255,7 +229,7 @@ void testGeneralDeformationResponse()
                                  std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 7.
+// Test 7: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
 
@@ -434,7 +408,7 @@ void testRotation()
     }
   }
 
-  // Test 8d: Objectivity test for arbitrary deofmration and rotations about the z-axis
+  // Test 8d: Objectivity test for arbitrary deformation and rotations about the z-axis
   {
     std::array< double, 2 > materialProperties_ = { 3500, 1500 };
     const double            nMaterialProperties = 2;
@@ -495,7 +469,7 @@ void testRotation()
     }
   }
 
-  // Test 8e: Isotropy test for arbitrary deofmration
+  // Test 8e: Isotropy test for arbitrary deformation
   {
     std::array< double, 2 > materialProperties_ = { 3500, 1500 };
     const double            nMaterialProperties = 2;
