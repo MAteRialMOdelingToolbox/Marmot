@@ -1,3 +1,8 @@
+
+/** \file FiniteStrainJ2PlasticityRegistration.cpp
+ *  \brief Registers \c FINITESTRAINJ2PLASTICITY in the Marmot material factory.
+ */
+
 #include "Marmot/FiniteStrainJ2Plasticity.h"
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
 

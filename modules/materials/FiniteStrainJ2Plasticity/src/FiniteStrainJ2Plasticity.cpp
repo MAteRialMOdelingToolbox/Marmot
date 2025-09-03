@@ -1,3 +1,10 @@
+
+/** \file FiniteStrainJ2Plasticity.cpp
+ *  \brief Implementation of the finite-strain J2 plasticity model and algorithmic variants.
+ *  \details Assembles residuals/Jacobians for the return mapping, updates \c Fp and \c alphaP,
+ *  and forms the consistent algorithmic moduli.
+ */
+
 #include "Marmot/FiniteStrainJ2Plasticity.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
@@ -15,6 +22,8 @@ namespace Marmot::Materials {
   using namespace FastorIndices;
   using namespace FastorStandardTensors;
 
+  /** \brief Constructor; maps material property indices as documented in the header. */
+
   FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity( const double* materialProperties,
                                                       int           nMaterialProperties,
                                                       int           materialLabel )
@@ -30,16 +39,41 @@ namespace Marmot::Materials {
   {
   }
 
+  /** \brief Dispatch to the selected algorithm and compute stress/tangent. */
+
   void FiniteStrainJ2Plasticity::computeStress( ConstitutiveResponse< 3 >& response,
                                                 AlgorithmicModuli< 3 >&    tangents,
                                                 const Deformation< 3 >&    deformation,
                                                 const TimeIncrement&       timeIncrement )
   {
     switch ( implementationType ) {
-    case 0: computeStressWithScalarReturnMapping( response, tangents, deformation, timeIncrement ); break;
-    case 1: computeStressWithFullReturnMapping( response, tangents, deformation, timeIncrement ); break;
-    case 2: computeStressFDAF( response, tangents, deformation, timeIncrement ); break;
-    case 3: computeStressFDAC( response, tangents, deformation, timeIncrement ); break;
+
+      /** \brief Scalar-return mapping variant (not implemented; throws). */
+
+    case 0:
+      computeStressWithScalarReturnMapping( response, tangents, deformation, timeIncrement );
+      break;
+
+      /** \brief Full return mapping with analytic residual/Jacobian; consistent tangent. */
+
+    case 1:
+      computeStressWithFullReturnMapping( response, tangents, deformation, timeIncrement );
+      break;
+
+      /** \brief Return mapping; tangent via forward finite differences. */
+
+    case 2:
+      computeStressFDAF( response, tangents, deformation, timeIncrement );
+      break;
+
+      /** \brief Return mapping; tangent via central finite differences. */
+
+    case 3:
+      computeStressFDAC( response, tangents, deformation, timeIncrement );
+      break;
+
+      /** \brief Return mapping; tangent via complex-step differentiation. */
+
     case 4: computeStressCSDA( response, tangents, deformation, timeIncrement ); break;
     default: throw std::invalid_argument( "implementation type not supported" );
     };
@@ -669,10 +703,15 @@ namespace Marmot::Materials {
       tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) + einsum< ijKL, KLMN >( dTau_dFe_partial, dFe_dF );
     }
   }
+
+  /** \brief Forward named state view access to the state manager. */
+
   StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName )
   {
     return stateVars->getStateView( stateName );
   }
+
+  /** \brief Bind external storage for \c Fp and \c alphaP. */
 
   void FiniteStrainJ2Plasticity::assignStateVars( double* stateVars_, int nStateVars )
   {
@@ -683,6 +722,8 @@ namespace Marmot::Materials {
 
     this->stateVars = std::make_unique< FiniteStrainJ2PlasticityStateVarManager >( stateVars_ );
   }
+
+  /** \brief Initialize state: \c Fp = I, \c alphaP = 0. */
 
   void FiniteStrainJ2Plasticity::initializeYourself()
   {
