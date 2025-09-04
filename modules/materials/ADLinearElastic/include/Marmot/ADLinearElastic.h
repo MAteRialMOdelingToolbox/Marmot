@@ -45,7 +45,12 @@ namespace Marmot::Materials {
   public:
     using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
 
+    /// \brief Young's modulus
+
     const double& E;
+
+    /// \brief Poisson's ratio
+
     const double& nu;
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );

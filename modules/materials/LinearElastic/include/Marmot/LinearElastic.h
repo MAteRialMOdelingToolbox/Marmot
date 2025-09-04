@@ -45,7 +45,7 @@ namespace Marmot::Materials {
     LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
   protected:
-    /// \brief Type of anisotropic behavior.
+    /// \brief Type of isotropic and anisotropic behavior.
     /** #Type is an enum class which involves the following case:*/
 
     enum class Type {
