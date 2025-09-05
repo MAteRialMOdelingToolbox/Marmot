@@ -257,29 +257,21 @@ void testAlgorithmicTangent()
   tangentTarget( 0, 0, 0, 0 ) = 5450.8251046444;
   tangentTarget( 0, 0, 1, 1 ) = 2494.28143117259;
   tangentTarget( 0, 0, 2, 2 ) = 2450.93382241823;
-
   tangentTarget( 0, 1, 0, 1 ) = 1470.68247507597;
   tangentTarget( 0, 1, 1, 0 ) = 1456.26401943797;
-
   tangentTarget( 0, 2, 0, 2 ) = 1485.10093071397;
   tangentTarget( 0, 2, 2, 0 ) = 1456.26401943797;
-
   tangentTarget( 1, 0, 0, 1 ) = 1470.68247507597;
   tangentTarget( 1, 0, 1, 0 ) = 1456.26401943797;
-
   tangentTarget( 1, 1, 0, 0 ) = 2518.97728692678;
   tangentTarget( 1, 1, 1, 1 ) = 5416.51601207936;
   tangentTarget( 1, 1, 2, 2 ) = 2431.98918491329;
-
   tangentTarget( 1, 2, 1, 2 ) = 1485.10093071397;
   tangentTarget( 1, 2, 2, 1 ) = 1470.68247507597;
-
   tangentTarget( 2, 0, 0, 2 ) = 1485.10093071397;
   tangentTarget( 2, 0, 2, 0 ) = 1456.26401943797;
-
   tangentTarget( 2, 1, 1, 2 ) = 1485.10093071397;
   tangentTarget( 2, 1, 2, 1 ) = 1470.68247507597;
-
   tangentTarget( 2, 2, 0, 0 ) = 2499.46716543642;
   tangentTarget( 2, 2, 1, 1 ) = 2455.83221613793;
   tangentTarget( 2, 2, 2, 2 ) = 5383.05976216137;
