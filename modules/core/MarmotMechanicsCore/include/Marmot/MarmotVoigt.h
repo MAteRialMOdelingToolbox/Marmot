@@ -34,10 +34,11 @@
 
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
-/**
- * \brief This file includes functions needed for calculations with stress and strain tensors written in voigt notation.
- */
 namespace Marmot {
+  /**
+   * \namespace This namespace includes functions needed for calculations with stress and strain tensors written in
+   * voigt notation.
+   */
   namespace ContinuumMechanics::VoigtNotation {
 
     /* constexpr int VoigtSize = 6; */

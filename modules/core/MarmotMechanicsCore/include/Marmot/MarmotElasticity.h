@@ -42,7 +42,7 @@ namespace Marmot {
       /**
        * Computes the isotropic young's modulus E from the compression modulus K and shear modulus G
        *\f[
-          \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
+          \displaystyle E = \frac{9\,K\,G}{3\,K + G}
         \f]
        */
       double constexpr E( const double K, const double G )
@@ -53,7 +53,7 @@ namespace Marmot {
       /**
        * Computes the isotropic poisson's ratio \f$ \nu \f$ from the compression modulus K and shear modulus G
        *\f[
-         \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
+         \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
         \f]
        */
       double constexpr nu( const double K, const double G )
@@ -123,7 +123,7 @@ namespace Marmot {
       Matrix6d stiffnessTensor( const double E, const double nu );
 
       /**
-       *Computes the isotropic stiffness tensor \mathbb{ C } from the bulk modulus K and the shear modulus G.
+       *Computes the isotropic stiffness tensor \f$\mathbb{ C }\f$ from the bulk modulus K and the shear modulus G.
        */
       Matrix6d stiffnessTensorKG( const double K, const double G );
 
@@ -140,7 +140,7 @@ namespace Marmot {
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                        \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
                              \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
-                             \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
+                             \frac{-\nu_{12}}{E_1} & \frac{-\nu_{23}}{E_2} & \frac{1}{E_2} & 0 & 0 & 0 \\
                          0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
                          0 & 0 & 0 & 0 & \frac{1}{G_{12}} & 0 \\
                          0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}

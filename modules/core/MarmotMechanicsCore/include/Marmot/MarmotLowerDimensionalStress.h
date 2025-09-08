@@ -66,38 +66,60 @@ namespace Marmot::ContinuumMechanics {
   namespace PlaneStress {
 
     /**
-     * Extract the plane stress stiffness matrix from a given three-dimensional stiffness matrix.
+     * @brief Extract the plane stress stiffness matrix from a given three-dimensional stiffness matrix.
      *
-     * @param C 3D stiffness matrix \f$\mathbb{C}\f$ given in \ref voigtnotation "Voigt notation".
+     * @param C 3D stiffness matrix \f$ \mathbb{C} \f$ given in \ref voigtnotation "Voigt notation".
      */
     Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
 
     /**
-     * Extract the plane stress derivitive of the stress in Voigt notation with respect to the
-     * deformation gradient \f$F_{ij}\f$ from the corresponding derivative in a 3d setting.
+     * @brief Extract the plane stress derivitive of the stress in Voigt notation with respect to the deformation
+     * gradient \f$ F_{ij} \f$ from the corresponding derivative in a 3d setting.
      */
     EigenTensors::Tensor322d compute_dStress_dDeformationGradient(
       const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
 
     /**
-     * Compute the out-of-plane strain component \f$$\varepsilon_{33}\f$ for a given elastic strain,
-     * to compute the compensation for planeStress = Cel : (elasticStrain + compensationStrain)
+     * @brief Computes the out-of-plane strain correction component for plane stress conditions.
+     *
+     * This function calculates the compensation strain \f$ \varepsilon_{33}^\text{corr} \f$ for a given elastic strain
+     * \f$ \boldsymbol{\varepsilon}^{\text{el}} \f$, so that the resulting stress satisfies plane stress:
+     * \f[
+     *     \sigma^\text{plane} = \mathbb{C} : (\boldsymbol{\varepsilon}^{\text{el}} +
+     * \boldsymbol{\varepsilon}^{\text{corr}})
+     * \f]
+     *
+     * @param elasticStrain The in-plane elastic strain vector \f$ \boldsymbol{\varepsilon}^{\text{el}} \f$ (6
+     * components, Voigt notation).
+     * @param nu Poisson's ratio of the material.
+     * @return A 6-component strain vector \f$ \boldsymbol{\varepsilon}^{\text{corr}} \f$ containing the computed
+     * out-of-plane correction component (Voigt notation).
      */
     Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
 
-    /*
-     * Returns the transformation Matrix T which fulfills
-     * planeStressIncrement = C : (T : arbitraryStrainIncrement)
+    /**
+     * @brief Computes the transformation matrix for the plane stress tangent.
+     *
+     * This function returns the 6x6 transformation matrix \f$\mathbf{T}\f$ that relates
+     * an arbitrary strain increment to a plane stress increment via the material stiffness:
+     * \f[
+     *     \Delta \boldsymbol{\sigma}^{\text{plane}} = \mathbb{C} : (\mathbf{T} : \Delta
+     *     \boldsymbol{\varepsilon}^{\text{arbitrary}})
+     * \f]
+     *
+     * @param tangent The 6x6 material tangent stiffness matrix \f$\mathbf{C}\f$.
+     * @return The 6x6 transformation matrix \f$\mathbf{T}\f$ for plane stress correction.
      */
     Matrix6d planeStressTangentTransformationMatrix( const Matrix6d& tangent );
+
     /**
-     * Compute the derivative of the three-dimensional strain tensor with respect to the strain
+     * @brief Compute the derivative of the three-dimensional strain tensor with respect to the strain
      * tensor in a plane stress setting.
      */
     Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent );
+
     /**
-     * Compute the derivative of the three-dimensional stress tensor with respect to the plane
-     * stress tensor.
+     * Compute the derivative of the plane stress tensor with respect to the three-dimensional stress tensor.
      */
     Eigen::Matrix< double, 3, 6 > dStressPlaneStressDStress();
   } // namespace PlaneStress
