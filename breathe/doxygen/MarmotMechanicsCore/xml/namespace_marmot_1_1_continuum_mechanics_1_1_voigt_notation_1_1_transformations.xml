@@ -16,7 +16,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transformation matrix <formula id="88">$ R_{\varepsilon} $</formula> to transform a voigt notated strain vector  <formula id="38">$\boldsymbol{\varepsilon} $</formula> to another cartesian coordinate system </para>
+<para>Computes the transformation matrix <formula id="126">$ R_{\varepsilon} $</formula> to transform a voigt notated strain vector  <formula id="76">$\boldsymbol{\varepsilon} $</formula> to another cartesian coordinate system </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -35,7 +35,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transformation matrix <formula id="89">$ R_{\sigma} $</formula> to transform a voigt notated stress vector  <formula id="90">$\boldsymbol{\sigma} $</formula> to another cartesian coordinate system </para>
+<para>Computes the transformation matrix <formula id="127">$ R_{\sigma} $</formula> to transform a voigt notated stress vector  <formula id="128">$\boldsymbol{\sigma} $</formula> to another cartesian coordinate system </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -55,7 +55,7 @@
         </briefdescription>
         <detaileddescription>
 <para><verbatim>Returns the projection matrix to calculate the stress vector \f$ \boldsymbol{t}^{(n)} \f$ effective on a plane
-</verbatim> orientated with the normal vector <formula id="91">$ \boldsymbol{n} $</formula> from a voigt notated stress vector following cauchy&apos;s formula.   <formula id="92">\[\displaystyle t^{(n)}_i = \sigma_{ij}\,n_j
+</verbatim> orientated with the normal vector <formula id="129">$ \boldsymbol{n} $</formula> from a voigt notated stress vector following cauchy&apos;s formula.   <formula id="130">\[\displaystyle t^{(n)}_i = \sigma_{ij}\,n_j
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -75,7 +75,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Returns the projection matrix to calculate the strain vector <formula id="93">$ \boldsymbol{\varepsilon}^{(n)} $</formula> effective on a plane orientated with the normal vector <formula id="91">$ \boldsymbol{n} $</formula> from a voigt notated strain vector (see projectVoigtStressToPlane())). </para>
+<para>Returns the projection matrix to calculate the strain vector <formula id="131">$ \boldsymbol{\varepsilon}^{(n)} $</formula> effective on a plane orientated with the normal vector <formula id="129">$ \boldsymbol{n} $</formula> from a voigt notated strain vector (see projectVoigtStressToPlane())). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -99,7 +99,7 @@
         </briefdescription>
         <detaileddescription>
 <para><verbatim>Rotates a stress tensor \f$ \boldsymbol{\sigma} \f$ applying a rotation matrix \f$ \boldsymbol{Q} \f$ in voigt
-</verbatim> notation.   <formula id="94">\[\displaystyle \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \cdot \boldsymbol{\sigma} \cdot \boldsymbol{Q}^{T}
+</verbatim> notation.   <formula id="132">\[\displaystyle \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \cdot \boldsymbol{\sigma} \cdot \boldsymbol{Q}^{T}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>

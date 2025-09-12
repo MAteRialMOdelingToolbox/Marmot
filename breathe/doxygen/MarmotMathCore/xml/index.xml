@@ -417,20 +417,20 @@
     <member refid="_marmot_numerical_differentiation_8h_1a9d471ea1961edac3a8c0b7883db494f5" kind="function"><name>centralDifference</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_complex" kind="namespace"><name>Marmot::NumericalAlgorithms::Differentiation::Complex</name>
-    <member refid="_marmot_numerical_differentiation_8h_1a4a90e6de8284baeb8274c9ef1da60865" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
-    <member refid="_marmot_numerical_differentiation_8h_1a172748ccbd9e78f7805463806da8abc2" kind="typedef"><name>vector_to_vector_function_type</name></member>
     <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a28c6239f908d27d61a4fb860643e54a4" kind="typedef"><name>complexDouble</name></member>
     <member refid="_marmot_numerical_differentiation_for_fastor_8h_1ab209696084acc4914c384a05bc9412a8" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_numerical_differentiation_8h_1a4a90e6de8284baeb8274c9ef1da60865" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
+    <member refid="_marmot_numerical_differentiation_8h_1a172748ccbd9e78f7805463806da8abc2" kind="typedef"><name>vector_to_vector_function_type</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a6141fcf2345cd23bfba16145a51b183b" kind="variable"><name>imaginaryPerturbationSize</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a8eef6e1db32666b0bfd40472454844f9" kind="variable"><name>imaginaryPerturbation</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1ae67392e859d5c18f0943f1b74c12e71c" kind="variable"><name>imaginaryUnit</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a6404fc111180740f6b006d16f9ba7615" kind="variable"><name>complexUnit</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1ae0c370efd89ca4bad97eaa994f36036c" kind="variable"><name>i_</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a6141fcf2345cd23bfba16145a51b183b" kind="variable"><name>imaginaryPerturbationSize</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a8eef6e1db32666b0bfd40472454844f9" kind="variable"><name>imaginaryPerturbation</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a3f484b0d6ac480c257cc9add6aaf9746" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a5ee4f2bd6a00a7f61d3670ef77fbbc4a" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a2c5dd9bde01d03a58662eb2f06c70e6c" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1aa36a3313864346a2aeacde16bdaca2ca" kind="function"><name>centralDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a1d374430c01a8b167504cc715f1997ad" kind="function"><name>fourthOrderAccurateDerivative</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a3f484b0d6ac480c257cc9add6aaf9746" kind="function"><name>forwardDifference</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_complex_1_1_scalar_to_tensor" kind="namespace"><name>Marmot::NumericalAlgorithms::Differentiation::Complex::ScalarToTensor</name>
     <member refid="_marmot_numerical_differentiation_for_fastor_8h_1ad3e0986a6c6181e9b38534caf393122b" kind="function"><name>forwardDifference</name></member>

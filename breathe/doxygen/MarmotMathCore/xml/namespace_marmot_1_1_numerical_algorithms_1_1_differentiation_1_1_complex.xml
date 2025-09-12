@@ -6,34 +6,6 @@
     <innernamespace refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_complex_1_1_tensor_to_scalar">Marmot::NumericalAlgorithms::Differentiation::Complex::TensorToScalar</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_complex_1_1_tensor_to_tensor">Marmot::NumericalAlgorithms::Differentiation::Complex::TensorToTensor</innernamespace>
     <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a4a90e6de8284baeb8274c9ef1da60865" prot="public" static="no">
-        <type>std::function&lt; complexDouble(const complexDouble x) &gt;</type>
-        <definition>using Marmot::NumericalAlgorithms::Differentiation::Complex::scalar_to_scalar_function_type =  std::function&lt; complexDouble( const complexDouble x ) &gt;</definition>
-        <argsstring></argsstring>
-        <name>scalar_to_scalar_function_type</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::scalar_to_scalar_function_type</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="51" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="51" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a172748ccbd9e78f7805463806da8abc2" prot="public" static="no">
-        <type>std::function&lt; Eigen::VectorXcd(const Eigen::VectorXcd &amp;X) &gt;</type>
-        <definition>using Marmot::NumericalAlgorithms::Differentiation::Complex::vector_to_vector_function_type =  std::function&lt; Eigen::VectorXcd( const Eigen::VectorXcd&amp; X ) &gt;</definition>
-        <argsstring></argsstring>
-        <name>vector_to_vector_function_type</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::vector_to_vector_function_type</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="52" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="52" bodyend="-1"/>
-      </memberdef>
       <memberdef kind="typedef" id="_marmot_numerical_differentiation_for_fastor_8h_1a28c6239f908d27d61a4fb860643e54a4" prot="public" static="no">
         <type>std::complex&lt; double &gt;</type>
         <definition>using Marmot::NumericalAlgorithms::Differentiation::Complex::complexDouble =  std::complex&lt; double &gt;</definition>
@@ -70,8 +42,66 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="230" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="230" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a4a90e6de8284baeb8274c9ef1da60865" prot="public" static="no">
+        <type>std::function&lt; complexDouble(const complexDouble x) &gt;</type>
+        <definition>using Marmot::NumericalAlgorithms::Differentiation::Complex::scalar_to_scalar_function_type =  std::function&lt; complexDouble( const complexDouble x ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>scalar_to_scalar_function_type</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::scalar_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="51" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a172748ccbd9e78f7805463806da8abc2" prot="public" static="no">
+        <type>std::function&lt; Eigen::VectorXcd(const Eigen::VectorXcd &amp;X) &gt;</type>
+        <definition>using Marmot::NumericalAlgorithms::Differentiation::Complex::vector_to_vector_function_type =  std::function&lt; Eigen::VectorXcd( const Eigen::VectorXcd&amp; X ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>vector_to_vector_function_type</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::vector_to_vector_function_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="52" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
     </sectiondef>
     <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_numerical_differentiation_for_fastor_8h_1a6141fcf2345cd23bfba16145a51b183b" prot="public" static="yes" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbationSize</definition>
+        <argsstring></argsstring>
+        <name>imaginaryPerturbationSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbationSize</qualifiedname>
+        <initializer>= 1e-20</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="226" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="226" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_numerical_differentiation_for_fastor_8h_1a8eef6e1db32666b0bfd40472454844f9" prot="public" static="yes" mutable="no">
+        <type>const complexDouble</type>
+        <definition>const complexDouble Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbation</definition>
+        <argsstring></argsstring>
+        <name>imaginaryPerturbation</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbation</qualifiedname>
+        <initializer>= imaginaryPerturbationSize * imaginaryUnit</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="227" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="227" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="_marmot_numerical_differentiation_8h_1ae67392e859d5c18f0943f1b74c12e71c" prot="public" static="yes" mutable="no">
         <type>const std::complex&lt; double &gt;</type>
         <definition>const std::complex&lt; double &gt; Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryUnit</definition>
@@ -117,38 +147,37 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="49" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="49" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="_marmot_numerical_differentiation_for_fastor_8h_1a6141fcf2345cd23bfba16145a51b183b" prot="public" static="yes" mutable="no">
-        <type>const double</type>
-        <definition>const double Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbationSize</definition>
-        <argsstring></argsstring>
-        <name>imaginaryPerturbationSize</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbationSize</qualifiedname>
-        <initializer>= 1e-20</initializer>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="226" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="226" bodyend="-1"/>
-      </memberdef>
-      <memberdef kind="variable" id="_marmot_numerical_differentiation_for_fastor_8h_1a8eef6e1db32666b0bfd40472454844f9" prot="public" static="yes" mutable="no">
-        <type>const complexDouble</type>
-        <definition>const complexDouble Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbation</definition>
-        <argsstring></argsstring>
-        <name>imaginaryPerturbation</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryPerturbation</qualifiedname>
-        <initializer>= imaginaryPerturbationSize * imaginaryUnit</initializer>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="227" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="227" bodyend="-1"/>
-      </memberdef>
     </sectiondef>
     <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1a3f484b0d6ac480c257cc9add6aaf9746" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, dim, dim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, dim, dim &gt; Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type&lt; dim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="234" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="234" bodyend="252"/>
+      </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a5ee4f2bd6a00a7f61d3670ef77fbbc4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
         <definition>double Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference</definition>
@@ -237,40 +266,11 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="61" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="61" declcolumn="23"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1a3f484b0d6ac480c257cc9add6aaf9746" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>dim</declname>
-            <defname>dim</defname>
-          </param>
-        </templateparamlist>
-        <type>Fastor::Tensor&lt; double, dim, dim &gt;</type>
-        <definition>Fastor::Tensor&lt; double, dim, dim &gt; Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference</definition>
-        <argsstring>(const tensor_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
-        <name>forwardDifference</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference</qualifiedname>
-        <param>
-          <type>const tensor_to_scalar_function_type&lt; dim &gt; &amp;</type>
-          <declname>F</declname>
-        </param>
-        <param>
-          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
-          <declname>T</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="234" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="234" bodyend="252"/>
-      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="45" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="223" column="5"/>
   </compounddef>
 </doxygen>

@@ -9,6 +9,7 @@
     <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461babd03e131da1d15661c83709bd73e4b29" kind="enumvalue"><name>GeostaticStress</name></member>
     <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461ba072722a8e13849214e5f9d9e91369638" kind="enumvalue"><name>MarmotMaterialStateVars</name></member>
     <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461bac75fa00de9a254e2580be91551f64bbf" kind="enumvalue"><name>MarmotMaterialInitialization</name></member>
+    <member refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461ba8c5136208241c70d742b36e622275aba" kind="enumvalue"><name>HasEigenDeformation</name></member>
     <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5" kind="enum"><name>DistributedLoadTypes</name></member>
     <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a925aa06a4447e235a742f1402ec1317e" kind="enumvalue"><name>Pressure</name></member>
     <member refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751" kind="enumvalue"><name>SurfaceTorsion</name></member>
