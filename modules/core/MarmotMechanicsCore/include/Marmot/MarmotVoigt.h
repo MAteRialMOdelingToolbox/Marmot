@@ -58,12 +58,25 @@ namespace Marmot {
       return (VoigtSize)( ( ( x * x ) + x ) >> 1 );
     }
 
+    /// @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
+    /// @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
     extern const Marmot::Vector6d P;
+
+    /// @brief Predefined 6D vector with inverse scaling factor (0.5x) for shear components in Voigt notation.
+    /// @details The vector contains inverse scaling factors: {1, 1, 1, 0.5, 0.5, 0.5}.
     extern const Marmot::Vector6d PInv;
 
+    /// @brief Predefined 6D Vector representing the identity tensor in Voigt notation.
+    /// @details The vector contains ones in all components: {1, 1, 1, 0, 0, 0}.
     extern const Marmot::Vector6d I;
+
+    /// @brief Predefined 6D Vector representing the hydrostatic projection tensor in Voigt notation.
+    /// @details The vector contains: {1/3, 1/3, 1/3, 0, 0, 0}.
     extern const Marmot::Vector6d IHyd;
-    extern const Matrix6d         IDev;
+
+    /// @brief Deviatoric projection tensor in Voigt notation.
+    /// @details \f$ 6 \times 6 \f$ matrix.
+    extern const Matrix6d IDev;
 
     // Plane Stress handling
 
@@ -547,7 +560,14 @@ namespace Marmot {
        */
       double J3Strain( const Marmot::Vector6d& strain );
 
-      // principal values in voigt
+      /** @brief This is a fast implementation of the classical algorithm for determining the principal components of a
+       * symmetric 3x3 Matrix in Voigt notation (off diagonals expected with factor 1) as well as its respective
+       * derivatives
+       * @return A pair consisting of:
+       *         - An Eigen::Vector3d containing the principal values (not sorted)
+       *         - An Eigen::Matrix<double, 3, 6> containing the derivatives of the principal values with respect to the
+       * voigt notated input vector S
+       */
       std::pair< Eigen::Vector3d, Eigen::Matrix< double, 3, 6 > > principalValuesAndDerivatives(
         const Eigen::Matrix< double, 6, 1 >& S );
 
@@ -674,22 +694,28 @@ namespace Marmot {
       Matrix6d dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
 
       /**
-       * Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}}{d\, \boldsymbol{\varepsilon}}\f$ of the
-       * volumetric plastic strain increment \f$ \Delta\, \varepsilon^{p, vol}\f$ with respect to the voigt notated
+       * @brief Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}}{d\, \boldsymbol{\varepsilon}}\f$ of
+       * the volumetric plastic strain increment \f$ \Delta\, \varepsilon^{p, vol}\f$ with respect to the voigt notated
        * strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       * @return A \f$ 1 \times 6 \f$ row vector.
        */
       RowVector6d dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
 
       /**
-       * Computes the derivative \f$ \frac{d\, \varepsilon_I}{d\, \boldsymbol{\varepsilon}}\f$ of the principal strains
+       * @brief Computes the derivative \f$ \frac{d\, \varepsilon_I}{d\, \boldsymbol{\varepsilon}}\f$ of the principal
+       * strains
        * \f$ \varepsilon_I \f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       * @return A \f$ 3 \times 6 \f$ matrix containing the derivatives of the three principal strains with respect to
+       * the six components of the strain vector.
        */
       Marmot::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Vector6d& dEp );
 
       /**
-       * Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}_{\ominus}}{d\, \boldsymbol{\varepsilon}}\f$
-       * of the volumetric plastic strain increment in compression \f$ \Delta\, \varepsilon^{p, vol}_{\ominus}\f$ with
-       * respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon} \f$
+       * @brief Computes the derivative \f$ \frac{d\, \Delta\, \varepsilon^{p, vol}_{\ominus}}{d\,
+       * \boldsymbol{\varepsilon}}\f$ of the volumetric plastic strain increment in compression \f$ \Delta\,
+       * \varepsilon^{p, vol}_{\ominus}\f$ with respect to the voigt notated strain vector  \f$ \boldsymbol{\varepsilon}
+       * \f$
+       * @return A \f$ 1 \times 6 \f$ row vector.
        */
       RowVector6d dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
 
@@ -710,12 +736,9 @@ namespace Marmot {
       Matrix6d transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem );
 
       /**
-       * Returns the projection matrix to calculate the stress vector \f$ \boldsymbol{t}^{(n)} \f$ effective on a plane
-     orientated with the normal vector \f$ \boldsymbol{n} \f$ from a voigt notated stress vector following cauchy's
-     formula.
-       *\f[
-     \displaystyle t^{(n)}_i = \sigma_{ij}\,n_j
-        \f]
+       * @brief Returns the projection matrix \f$ \left [ 3 \times 6 \right ] \f$ to calculate the stress vector \f$
+       * \boldsymbol{t}^{(n)} \f$ effective on a plane orientated with the normal vector \f$ \boldsymbol{n} \f$ from a
+       * voigt notated stress vector following cauchy's formula.\f[ \displaystyle t^{(n)}_i = \sigma_{ij}\,n_j \f]
        */
       Matrix36d projectVoigtStressToPlane( const Vector3d& normalVector );
 
@@ -728,11 +751,9 @@ namespace Marmot {
 
       /**
        * Rotates a stress tensor \f$ \boldsymbol{\sigma} \f$ applying a rotation matrix \f$ \boldsymbol{Q} \f$ in voigt
-     notation.
-       *\f[
-     \displaystyle \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \cdot \boldsymbol{\sigma} \cdot \boldsymbol{Q}^{T}
-        \f]
-        */
+       * notation. \f[ \displaystyle \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \cdot \boldsymbol{\sigma} \cdot
+       * \boldsymbol{Q}^{T} \f]
+       */
       Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
 
     } // namespace Transformations

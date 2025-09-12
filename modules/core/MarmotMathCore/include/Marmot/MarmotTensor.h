@@ -34,32 +34,43 @@
 namespace Marmot {
   namespace ContinuumMechanics::CommonTensors {
 
-    EigenTensors::Tensor3333d              Initialize_I2xI2();
+    EigenTensors::Tensor3333d Initialize_I2xI2();
+    /**  @brief Fourth-order tensor I2xI2.
+     * @details Represents the outer product of the second-order identity tensor with itself (\f$\delta_{ij}\,
+     * \delta_{kl}\f$).
+     */
     inline const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
-    EigenTensors::Tensor3333d              Initialize_Isym();
+    EigenTensors::Tensor3333d Initialize_Isym();
+    /// @brief Symmetric fourth-order identity tensor (\f$ I_{ijkl}^{sym} \f$).
     inline const EigenTensors::Tensor3333d Isym = Initialize_Isym();
 
-    EigenTensors::Tensor3333d              Initialize_Iskew();
+    EigenTensors::Tensor3333d Initialize_Iskew();
+    /// @brief Skew-symmetric part of the fourth-order identity tensor.
     inline const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
 
-    EigenTensors::Tensor3333d              Initialize_IFourthOrder();
+    EigenTensors::Tensor3333d Initialize_IFourthOrder();
+    /// @brief Fourth-order identity tensor.
     inline const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
-    EigenTensors::Tensor3333d              Initialize_IFourthOrderTranspose();
+    EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose();
+    /// @brief Transposed fourth-order identity tensor.
     inline const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
-    EigenTensors::Tensor3333d              Initialize_dDeviatoricStress_dStress();
+    EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress();
+    /// @brief Derivative of the deviatoric stress with respect to stress.
     inline const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
-    ;
 
-    EigenTensors::Tensor333d              Initialize_LeviCivita3D();
+    EigenTensors::Tensor333d Initialize_LeviCivita3D();
+    /// @brief 3D Levi-Civita permutation tensor.
     inline const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
 
-    EigenTensors::Tensor122d              Initialize_LeviCivita2D();
+    EigenTensors::Tensor122d Initialize_LeviCivita2D();
+    /// @brief 2D Levi-Civita permutation tensor.
     inline const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
-    EigenTensors::Tensor33d              Initialize_I2();
+    EigenTensors::Tensor33d Initialize_I2();
+    /// @brief Second-order identity tensor.
     inline const EigenTensors::Tensor33d I2 = Initialize_I2();
 
     constexpr int getNumberOfDofForRotation( int nDim )
@@ -70,28 +81,37 @@ namespace Marmot {
         return 3;
     }
 
+    /**
+     * @brief Constructs an aux. matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors
+     * by multiplication
+     *
+     * The transformation is defined as:
+     * \f[
+     *   T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
+     * \f]
+     *
+     * @tparam sizeI Number of rows in the tensor index block.
+     * @tparam sizeJ Number of columns in the tensor index block.
+     * @return Eigen::Matrix<double, sizeI * sizeJ, sizeI * sizeJ>
+     *         The index swap tensor.
+     *
+     * @code
+     * Eigen::Matrix3d t;
+     * t << 1,2,3,
+     *      4,5,6,
+     *      7,8,9;
+     * const auto P = makeIndexSwapTensor<3,3>();
+     * std::cout << t.reshaped().transpose() << std::endl;
+     * std::cout << t.reshaped().transpose() * P << std::endl;
+     *
+     * // Output:
+     * // 1,4,7,2,5,8,3,6,9
+     * // 1,2,3,4,5,6,7,8,9
+     * @endcode
+     */
     template < int sizeI, int sizeJ >
     Eigen::Matrix< double, sizeI * sizeJ, sizeI * sizeJ > makeIndexSwapTensor()
     {
-      // Aux. Matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by
-      // multiplication ,
-      //
-      // T_(ij)(kl) * IndexSwapTensor_(kl)(lk) = T_(ij)(lk)
-      //
-      // For instance:
-      //
-      // Matrix3d t;
-      // t<<1,2,3,4,5,6,7,8,9;
-      // const auto P  = makeIndexSwapTensor<3,3>();
-      // std::cout << t.reshaped().transpose() << std::endl;
-      // std::cout << t.reshaped().transpose() * P << std::endl;
-      //
-      // Output:
-      //
-      // 1,4,7,2,5,8,3,6,9
-      // 1,2,3,4,5,6,7,8,9
-      //
-
       Eigen::Matrix< double, sizeI * sizeJ, sizeI * sizeJ > P;
 
       auto d = []( int a, int b ) -> double { return a == b ? 1.0 : 0.0; };
@@ -121,12 +141,28 @@ namespace Marmot {
   } // namespace ContinuumMechanics::CommonTensors
 
   namespace ContinuumMechanics::TensorUtility {
-
+    /// @brief Kronecker delta function δ_ab.
+    /// @return 1 if a == b, otherwise 0.
     constexpr int d( int a, int b )
     {
       return a == b ? 1 : 0;
     }
 
+    /**
+     * @brief Map an object's raw data as a fixed-size Eigen matrix.
+     *
+     * Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map directly
+     * references the storage returned by `t.data()`.
+     *
+     * @tparam x Number of rows (compile-time).
+     * @tparam y Number of columns (compile-time).
+     * @tparam T Object type, must define `Scalar` and provide `data()`.
+     * @param t Input object (non-const).
+     * @return `Eigen::Map<Eigen::Matrix<typename T::Scalar, x, y>>`.
+     *
+     * @note Caller must ensure `t.data()` has at least `x*y` elements
+     *       and matches Eigen’s default (column-major) layout.
+     */
     template < int x,
                int y,
                typename T,
@@ -136,12 +172,28 @@ namespace Marmot {
       return Eigen::Map< Eigen::Matrix< typename T::Scalar, x, y > >( t.data() );
     }
 
+    /**
+     * @brief Map an object's raw data as a fixed-size Eigen matrix (const version). For more details see the non-const
+     * version.
+     */
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )
     {
       return Eigen::Map< const Eigen::Matrix< typename T::Scalar, x, y > >( t.data() );
     }
 
+    /**
+     * @brief Flattens an Eigen object into a 1D column vector map.
+     *
+     * Creates an `Eigen::Map` that reinterprets the data of @p t as a
+     * column vector of size `RowsAtCompileTime * ColsAtCompileTime`.
+     * No copy is made; modifications through the map affect @p t.
+     *
+     * @tparam Derived Eigen matrix/array type (non-const).
+     * @param t Eigen object to be flattened.
+     * @return `Eigen::Map<Eigen::Matrix<Scalar, Rows*Cols, 1>>`
+     *         referencing the data of @p t.
+     */
     template < typename Derived,
                typename = std::enable_if< !std::is_const< std::remove_reference< Derived > >::value > >
     auto flatten( Derived& t )
@@ -151,6 +203,9 @@ namespace Marmot {
         t.data() );
     }
 
+    /**
+     * @brief Flattens an Eigen object into a 1D column vector map (const version).
+     */
     template < typename Derived, typename = void >
     auto flatten( const Derived& t )
     {
@@ -159,6 +214,17 @@ namespace Marmot {
         t.data() );
     }
 
+    /**
+     * @brief Build contraction dimension pairs for Eigen tensor operations.
+     *
+     * Generates an `Eigen::array<Eigen::IndexPair<int>, N>` from the
+     * compile-time parameter pack @p Pairs, where each consecutive pair
+     * defines a contraction index mapping. Evaluated entirely at compile time.
+     *
+     * @tparam Pairs Sequence of integers; must contain an even number of values
+     *         forming index pairs.
+     * @return Array of index pairs usable in Eigen tensor contraction.
+     */
     template < int... Pairs >
     constexpr auto contractionDims() // should be evaluated at compile time
     {
@@ -179,9 +245,29 @@ namespace Marmot {
       return result;
     }
 
+    /**
+     * @brief Compute the dyadic (outer) product of two 3D vectors.
+     *
+     * Forms a 3x3 matrix where each entry is given by \f$ v_1(i) \, v_2(j) \f$.
+     *
+     * @param vector1 First 3D vector.
+     * @param vector2 Second 3D vector.
+     * @return 3x3 matrix representing the dyadic product.
+     */
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 );
 
     namespace IndexNotation {
+      /**
+       * @brief Convert a Voigt index to tensor indices.
+       *
+       * Maps a Voigt notation index @p ij to the corresponding
+       * `(i, j)` tensor indices for a given dimension @p nDim.
+       *
+       * @tparam nDim Problem dimension (1, 2, or 3).
+       * @param ij Voigt index.
+       * @return Pair of tensor indices (i, j).
+       * @throws std::invalid_argument if @p nDim or @p ij is invalid.
+       */
       template < int nDim >
       constexpr std::pair< int, int > fromVoigt( int ij )
       {
@@ -209,6 +295,16 @@ namespace Marmot {
                                      << __PRETTY_FUNCTION__ << ": invalid dimension / voigt index specified" );
       }
 
+      /**
+       * @brief Maps tensor indices (i, j) to the corresponding Voigt
+       * notation index for a given dimension @p nDim.
+       *
+       * @tparam nDim Problem dimension (1, 2, or 3).
+       * @param i Row index of the tensor.
+       * @param j Column index of the tensor.
+       * @return Voigt index corresponding to (i, j).
+       * @throws std::invalid_argument if @p nDim is invalid.
+       */
       template < int nDim >
       constexpr int toVoigt( int i, int j )
       {
@@ -225,6 +321,17 @@ namespace Marmot {
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
       }
 
+      /**
+       * @brief Construct the Voigt mapping tensor.
+       *
+       * Creates a 3rd-order tensor that maps tensor indices (i, j)
+       * to their corresponding Voigt index. Each entry is 1 at
+       * `(toVoigt<nDim>(i, j), i, j)` and 0 elsewhere.
+       *
+       * @tparam nDim Problem dimension (1, 2, or 3).
+       * @return A tensor of shape (VoigtSize, nDim, nDim) encoding
+       *         the Voigt mapping.
+       */
       template < int nDim >
       Eigen::TensorFixedSize< double, Eigen::Sizes< VOIGTFROMDIM( nDim ), nDim, nDim > > voigtMap()
       {
