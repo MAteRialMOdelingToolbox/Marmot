@@ -45,6 +45,14 @@ namespace Marmot {
 
     enum VoigtSize { OneD = 1, TwoD = 3, ThreeD = 6, Axial = 4 };
 
+    /**
+     * @brief Computes the size of the Voigt notation array based on the spatial dimension.
+     *
+     * @param x The spatial dimension (e.g., 2 for 2D, 3 for 3D).
+     * @return The size of the Voigt notation array as a VoigtSize.
+     *
+     * @note The calculation is based on the formula: \f$ \frac{x * x + x}{2} \f$.
+     */
     constexpr VoigtSize voigtSizeFromDimension( int x )
     {
       return (VoigtSize)( ( ( x * x ) + x ) >> 1 );
@@ -273,10 +281,38 @@ namespace Marmot {
       return stress;
     }
 
+    /**
+     * @brief Converts a fourth-order stiffness tensor to its Voigt notation representation (\f$ 6 \times 6 \f$ matrix).
+     *
+     * @param C The fourth-order stiffness tensor represented as an Eigen::Tensor<double, 4>.
+     *
+     * @return An Eigen::Matrix<double, 6, 6> representing the stiffness tensor in Voigt notation.
+     *
+     * @note The input tensor `C` must follow the symmetry properties of a stiffness tensor for the
+     *       conversion to be valid (minor and major symmetry).
+     */
     Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Eigen::Tensor< double, 4 >& C );
 
+    /**
+     * @brief Converts a stiffness matrix in Voigt notation (\f$ 6 \times 6 \f$ matrix) to a 4th-order stiffness tensor
+     * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
+     *
+     * @param voigtStiffness The \f$ 6 \times 6 \f$ matrix representing the stiffness in Voigt notation.
+     *
+     * @return An Eigen::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor.
+     *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
+     */
     Eigen::Tensor< double, 4 > voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness );
 
+    /**
+     * @brief Converts a stress vector in Voigt notation to it's tensor representation.
+     *
+     * @tparam nDim The dimension of the stress matrix (1, 2, or 3).
+     * @param stress The input Voigt stress vector  of size `VOIGTFROMDIM(nDim) x 1`.
+     * @return A stress tensor of size \f$ nDim \times nDim \f$.
+     *
+     * @throws std::invalid_argument If `nDim` is not 1, 2, or 3.
+     */
     template < int nDim >
     Eigen::Matrix< double, nDim, nDim > stressMatrixFromVoigt(
       const Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 >& Voigt )
@@ -291,6 +327,20 @@ namespace Marmot {
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
+    /**
+     * @brief Converts a strain matrix to its Voigt notation representation.
+     *
+     * @tparam nDim The dimension of the strain matrix (1, 2, or 3).
+     * @param strain The input strain matrix of size `nDim x nDim`.
+     * @return A column vector of size `VOIGTFROMDIM(nDim) x 1` representing the strain in Voigt notation.
+     *
+     * @note
+     * - For `nDim == 1`, the Voigt vector contains only the single strain component.
+     * - For `nDim == 2`, the Voigt vector contains the normal strains and twice the shear strain.
+     * - For `nDim == 3`, the function delegates to `strainToVoigt` for conversion.
+     *
+     * @throws std::invalid_argument If `nDim` is not 1, 2, or 3.
+     */
     template < int nDim >
     Eigen::Matrix< double, VOIGTFROMDIM( nDim ), 1 > voigtFromStrainMatrix(
       const Eigen::Matrix< double, nDim, nDim >& strain )
