@@ -302,7 +302,7 @@ namespace Marmot {
      * @return An Eigen::Matrix<double, 6, 6> representing the stiffness tensor in Voigt notation.
      *
      * @note The input tensor `C` must follow the symmetry properties of a stiffness tensor for the
-     *       conversion to be valid (minor and major symmetry).
+     *       conversion to be valid (minor symmetry).
      */
     Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Eigen::Tensor< double, 4 >& C );
 
