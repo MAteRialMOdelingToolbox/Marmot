@@ -1,10 +1,3 @@
-
-/** \file CompressibleNeoHooke.cpp
- *  \brief Implementation of the compressible Neo-Hookean material.
- *  \details Reads \c K and \c G from \c materialProperties, evaluates energy derivatives,
- *  computes \f$\tau\f$ and the consistent \f$\partial \tau / \partial F\f$.
- */
-
 #include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"

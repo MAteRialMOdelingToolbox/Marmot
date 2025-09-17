@@ -1,8 +1,3 @@
-
-/** \file CompressibleNeoHookeRegistration.cpp
- *  \brief Registers \c COMPRESSIBLENEOHOOKE in the Marmot material factory.
- */
-
 #include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/MarmotMaterialRegistrationHelper.h"
 

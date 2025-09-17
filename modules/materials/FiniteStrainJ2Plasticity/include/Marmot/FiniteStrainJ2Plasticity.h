@@ -25,21 +25,6 @@
  * ---------------------------------------------------------------------
  */
 
-/** \file FiniteStrainJ2Plasticity.h
- *  \brief Finite-strain J2 plasticity with multiplicative split and return mapping.
- *  \details Implements \f$F=F_eF_p\f$, J2 yield in Mandel stress, hardening, and algorithmic
- *  variants for the tangent. State variables: \c Fp (9) and \c alphaP (1).
- *  \par Material parameters (by index)
- *   - [0] \c K      — bulk modulus [MPa]
- *   - [1] \c G      — shear modulus [MPa]
- *   - [2] \c fy     — initial yield stress [MPa]
- *   - [3] \c fyInf  — saturation level [MPa]
- *   - [4] \c eta    — viscosity/overstress parameter [-]
- *   - [5] \c H      — hardening modulus [MPa]
- *   - [6] \c implementationType — algorithm selector (see class docs)
- *   - [7] \c density — optional [kg/m^3], defaults to 0 if omitted
- */
-
 #pragma once
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
@@ -57,54 +42,81 @@ namespace Marmot::Materials {
   using namespace FastorStandardTensors;
   using namespace FastorIndices;
 
-  /** \class Marmot::Materials::FiniteStrainJ2Plasticity
-   *  \brief Rate-dependent finite-strain J2 plasticity (multiplicative decomposition).
-   *  \details Updates \c Fp and \c alphaP via return mapping and computes Kirchhoff stress \f$\tau\f$
-   *  with a consistent tangent. \c implementationType selects the algorithm:
-   *   - 0: \c computeStressWithScalarReturnMapping (currently throws "not implemented yet")
-   *   - 1: \c computeStressWithFullReturnMapping (analytic residual/Jacobian)
-   *   - 2: \c computeStressFDAF (tangent via forward differences)
-   *   - 3: \c computeStressFDAC (tangent via central differences)
-   *   - 4: \c computeStressCSDA (tangent via complex-step differentiation)
-   */
+
+/**
+ * \class Marmot::Materials::FiniteStrainJ2Plasticity
+ * \brief Finite-strain J2 plasticity with isotropic hardening, multiplicative split \f$\mathbf{F}=\mathbf{F}_e\mathbf{F}_p\f$.
+ *
+ * The elastic response uses the compressible Neo-Hookean Pence–Gou potential (variant B) with \c K and \c G.
+ * Plasticity is formulated in Mandel stress with an associated flow rule. The yield function is
+ * \f[
+ *   f = \frac{\rho}{f_y} - \sqrt{\frac{2}{3}}\,\frac{\beta_p}{f_y},
+ * \f]
+ * where \f$\rho=\|\mathrm{dev}(\mathbf{M})\|\f$ and \f$\beta_p\f$ is the current flow stress (isotropic hardening).
+ *
+ * \par Material parameters (indices in #materialProperties)
+ * - \c K   (#materialProperties[0]) — bulk modulus [Pa]
+ * - \c G   (#materialProperties[1]) — shear modulus [Pa]
+ * - \c fy  (#materialProperties[2]) — initial yield stress (reference) [Pa]
+ * - \c fyInf (#materialProperties[3]) — saturated (asymptotic) flow stress [Pa]
+ * - \c eta (#materialProperties[4]) — saturation rate parameter [-]
+ * - \c H   (#materialProperties[5]) — linear hardening modulus [Pa]
+ * - \c implementationType (#materialProperties[6]) — algorithm selector (see below)
+ * - \c density (optional, #materialProperties[7]) — mass density [kg/m^3]
+ *
+ * \par State variables
+ * - \c Fp (9 components) — plastic deformation gradient
+ * - \c alphaP (1) — accumulated plastic strain (hardening variable)
+ *
+ * \par Implementation variants (implementationType)
+ * - 0: scalar return mapping (not implemented)
+ * - 1: full return mapping with analytic linearization for \c dTau_dF
+ * - 2: FDAF — finite-difference (forward) linearization of the residual
+ * - 3: FDAC — finite-difference (central) linearization of the residual
+ * - 4: CSDA — complex-step differentiation (forward) of the residual
+ *
+ * \ingroup materials_plasticity
+ */
+
 
   class FiniteStrainJ2Plasticity : public MarmotMaterialFiniteStrain {
   public:
     using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
 
     // elastic constants
-    const double K, G;
+    const double K, G; /**< Elastic moduli: bulk \c K and shear \c G (from #materialProperties[0..1]). */
 
     // plasticity parameters
-    const double fy, fyInf, eta, H;
+    const double fy, fyInf, eta, H; /**< Isotropic hardening parameters (from #materialProperties[2..5]). */
 
     // implementation
-    const int implementationType;
+    const int implementationType; /**< Algorithm variant selector (from #materialProperties[6]). */
 
     // mass properties;
-    const double density;
+    const double density; /**< Mass density (optional; #materialProperties[7] if provided). */
 
-    /** \brief Construct the finite-strain J2 plasticity material.
-     *  \param materialProperties See file header for expected order/units.
-     *  \param nMaterialProperties Length of \c materialProperties.
-     *  \param materialLabel Identifier forwarded to the base class.
-     */
+/**
+ * \brief Construct the finite-strain J2 plasticity model.
+ * \param materialProperties Array with parameters: K, G, fy, fyInf, eta, H, implementationType, [density].
+ * \param nMaterialProperties Length of \p materialProperties.
+ * \param materialLabel User-defined material label (passed to base).
+ */    FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
-    /** \brief Compute stress/tangent and update state variables.
-     *  \param[out] response  \c tau, \c rho (if density is used), \c elasticEnergyDensity.
-     *  \param[out] tangents  Consistent \f$\partial \tau / \partial F\f$.
-     *  \param[in]  deformation Uses \c deformation.F.
-     *  \param[in]  timeIncrement Time stepping information (e.g., \c dt).
-     *  \throws std::invalid_argument if \c implementationType is unsupported.
-     */
 
+/**
+ * \brief Compute stress and tangent for the current step (dispatches by \c implementationType).
+ * \param[out] response  Populated with \c tau, \c elasticEnergyDensity, \c rho.
+ * \param[out] tangents  Populated with \c dTau_dF (algorithmic tangent).
+ * \param[in]  deformation Uses \c deformation.F.
+ * \param[in]  timeIncrement Current time step information.
+ * \throws std::invalid_argument If \c implementationType is not supported.
+ */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
                         const TimeIncrement&       timeIncrement );
 
-    /** \brief Scalar-return mapping variant (currently throws "not implemented yet"). */
+    /** \brief Scalar-return mapping variant (not yet implemented). */
 
     void computeStressWithScalarReturnMapping( ConstitutiveResponse< 3 >& response,
                                                AlgorithmicModuli< 3 >&    tangents,
@@ -118,21 +130,21 @@ namespace Marmot::Materials {
                                              const Deformation< 3 >&    deformation,
                                              const TimeIncrement&       timeIncrement );
 
-    /** \brief Return mapping; tangent via forward finite differences. */
+    /** \brief Full return mapping; algorithmic tangent via forward finite differences. */
 
     void computeStressFDAF( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Return mapping; tangent via central finite differences. */
+    /** \brief Full return mapping; algorithmic tangent via central finite differences. */
 
     void computeStressFDAC( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Return mapping; tangent via complex-step differentiation. */
+    /** \brief Full return mapping; algorithmic tangent via complex-step differentiation. */
 
     void computeStressCSDA( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
@@ -143,7 +155,7 @@ namespace Marmot::Materials {
 
     int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
 
-    /** \brief Material density [kg/m^3] if provided in \c materialProperties; otherwise \c 0. */
+    /** \brief Return the material density if provided in material parameters */
 
     double getDensity() { return density; }
 

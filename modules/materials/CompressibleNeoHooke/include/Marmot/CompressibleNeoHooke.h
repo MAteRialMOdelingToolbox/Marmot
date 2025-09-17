@@ -25,48 +25,61 @@
  * ---------------------------------------------------------------------
  */
 
-/** \file CompressibleNeoHooke.h
- *  \brief Compressible Neo-Hookean hyperelastic material (finite strain).
- *  \details Purely elastic model: computes Kirchhoff stress \f$\tau\f$ and consistent
- *  algorithmic moduli from a compressible energy density (Pence–Gou potential B).
- *  Material parameters are read from \c materialProperties as:
- *   - [0] \c K — bulk modulus [MPa]
- *   - [1] \c G — shear modulus [MPa]
- *  No history variables are used by this model.
- */
-
 #pragma once
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include <string>
 
 namespace Marmot::Materials {
 
-  /** \class Marmot::Materials::CompressibleNeoHooke
-   *  \brief Compressible Neo-Hookean hyperelastic material.
-   *  \details Implements stress and tangent via derivatives of the energy w.r.t.
-   *  the right Cauchy–Green tensor \f$C=F^\mathrm{T}F\f$. State vector is unused.
+  /**
+   * \class Marmot::Materials::CompressibleNeoHooke
+   * \brief Compressible Neo-Hookean hyperelastic material using the Pence–Gou potential (variant B).
+   *
+   * Computes Kirchhoff stress \f$\boldsymbol{\tau}\f$ and the algorithmic tangent
+   * \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$ from the deformation gradient \f$\mathbf{F}\f$. The strain
+   * energy is evaluated via `EnergyDensityFunctions::PenceGouPotentialB(K,G)`.
+   *
+   * \par Material parameters (indices in #materialProperties)
+   * - \c K (#materialProperties[0]) — bulk modulus [Pa]
+   * - \c G (#materialProperties[1]) — shear modulus [Pa]
+   *
+   * \par State variables
+   * None. \c nStateVarsRequired = 0.
+   *
+   * \par Outputs set on \c response
+   * - \c response.tau : Kirchhoff stress
+   * - \c response.elasticEnergyDensity : strain energy density
+   * - \c response.rho : set to 1.0 (density scaling not handled here)
+   *
+   * \ingroup materials_hyperelastic
    */
 
   class CompressibleNeoHooke : public MarmotMaterialFiniteStrain {
   public:
     using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
 
-    /** \brief Construct the compressible Neo-Hooke material.
-     *  \param materialProperties Expected order: \c { K, G } (both in MPa).
-     *  \param nMaterialProperties Number of entries in \c materialProperties (>=2).
-     *  \param materialLabel Identifier forwarded to the base class.
+    /**
+     * \brief Construct a CompressibleNeoHooke material.
+     * \param materialProperties Array with at least 2 entries: \c K at [0], \c G at [1].
+     * \param nMaterialProperties Length of \p materialProperties.
+     * \param materialLabel User-defined material label (passed to base).
      */
 
     CompressibleNeoHooke( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    static constexpr int nStateVarsRequired = 0;
+    static constexpr int nStateVarsRequired = 0; /**< Number of required state variables (none). */
 
-    /** \brief Compute Kirchhoff stress and consistent algorithmic moduli.
-     *  \param[out] response  Fills \c tau (Kirchhoff stress), \c rho (if used by framework),
-     *                        and \c elasticEnergyDensity.
-     *  \param[out] tangents  Consistent \f$\partial \tau / \partial F\f$.
-     *  \param[in]  deformation Uses \c deformation.F.
-     *  \param[in]  timeIncrement Provided for interface compatibility (not used here).
+    /**
+     * \brief Compute Kirchhoff stress and elastic tangent for the current configuration.
+     *
+     * Uses \f$\mathbf{C} = \mathbf{F}^\mathrm{T}\mathbf{F}\f$ and the Pence–Gou energy to obtain
+     * \f$\boldsymbol{\tau}\f$ and \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$.
+     *
+     * \param[out] response  Filled with \c tau, \c elasticEnergyDensity, \c rho.
+     * \param[out] tangents  Filled with \c dTau_dF.
+     * \param[in]  deformation  Contains deformation gradient tensor F.
+     * \param[in]  timeIncrement  Current time step information \c t and \c dT.
+     * \note No state variables are updated (purely elastic model).
      */
 
     void computeStress( ConstitutiveResponse< 3 >&,
@@ -74,20 +87,23 @@ namespace Marmot::Materials {
                         const Deformation< 3 >&,
                         const TimeIncrement& );
 
-    /** \brief Number of required state variables (always 0 for this elastic model). */
+    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; } /**< Always returns 0. */
 
-    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
-
-    /** \brief Assign external state storage (kept for interface compatibility; not used). */
-
+    /** \brief Attach external state storage (unused for this model; required for the interface).
+     *  \param stateVars Unused.
+     *  \param nStateVars Unused.
+     */
     void assignStateVars( double* stateVars, int nStateVars )
     {
       this->stateVars  = stateVars;
       this->nStateVars = nStateVars;
     };
 
-    /** \brief Return a named state view (none are defined for this model).
-     *  \throws std::out_of_range if \p stateName is unknown.
+    /**
+     * \brief Access a named state quantity.
+     * \param result Name of the state to view.
+     * \return A view into the requested state.
+     * \throws std::out_of_range If the state name is unknown (this model defines no states).
      */
 
     StateView getStateView( const std::string& result );
