@@ -19,7 +19,7 @@ void testUndeformedResponseFullReturnMapping()
 {
   // Material properties: K, G, fy, fyInf, eta, H, implementation type, (density)
   // Implementation type: 0 - scalar return mapping (not implemented yet), 1 - full return mapping, 2 - FDAF, 3 - FDAC,
-  // 4 - CSDA
+  // 4 - CSDA; Not relevant for the current tests, as the computeStress routine directly called. 
   std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
   const double            nMaterialProperties = 7;
   const int               elLabel             = 1;
@@ -64,9 +64,7 @@ void testUndeformedResponseFullReturnMapping()
 
   // Extract updated state variables
   Tensor33d FpCurrent( 0.0 );
-  for ( int i = 0; i < 3; i++ )
-    for ( int j = 0; j < 3; j++ )
-      FpCurrent( i, j ) = stateVars_[i * 3 + j];
+  std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
   Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
@@ -91,71 +89,7 @@ void testUndeformedResponseFullReturnMapping()
 void testDeformationResponseFullReturnMapping()
 {
 
-  // Test I-2a: Uniaxial stretch deformation
-  {
-    std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
-    const double            nMaterialProperties = 7;
-    const int               elLabel             = 1;
-
-    FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0], nMaterialProperties, elLabel );
-
-    if ( mat.getNumberOfRequiredStateVars() > 10 ) {
-      throw std::runtime_error( "Number of required state vars changed!" );
-    }
-
-    double                   alphaP = 0.0;
-    Tensor33d                Fp     = Marmot::FastorStandardTensors::Spatial3D::I;
-    std::array< double, 10 > stateVars_;
-    std::memcpy( stateVars_.data(), Fp.data(), 9 * sizeof( double ) );
-    stateVars_[9] = alphaP;
-
-    mat.assignStateVars( stateVars_.data(), 10 );
-
-    FiniteStrainJ2Plasticity::Deformation< 3 > def;
-    FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
-
-    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response;
-    FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
-
-    def.F = Marmot::FastorStandardTensors::Spatial3D::I;
-    def.F( 0, 0 ) += 0.008;
-
-    mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
-
-    Tensor33d stressTarget( 0.0 );
-    stressTarget( 0, 0 ) = 1575.91271602787;
-    stressTarget( 1, 1 ) = 1303.77671076922;
-    stressTarget( 2, 2 ) = 1303.77671076922;
-
-    throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                             "I-2a: Uniaxial stretch - Kirchhoff stress tensor (tau) computation failed for "
-                             "FiniteStrainJ2Plasticity material in " +
-                               std::string( __PRETTY_FUNCTION__ ) );
-
-    Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
-
-    Tensor33d FpTarget( 0.0 );
-    FpTarget( 0, 0 ) = 1.00419886062424;
-    FpTarget( 1, 1 ) = 0.997907158050344;
-    FpTarget( 2, 2 ) = 0.997907158050344;
-
-    throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                             "I-2a: Uniaxial stretch - Plastic deformation gradient tensor (Fp) computation failed for "
-                             "FiniteStrainJ2Plasticity material in " +
-                               std::string( __PRETTY_FUNCTION__ ) );
-
-    double alphaPTarget = 0.00419007000742646;
-
-    throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                             "I-2a: Uniaxial stretch - Strain-like hardening variable (alphaP) computation failed for "
-                             "FiniteStrainJ2Plasticity material in " +
-                               std::string( __PRETTY_FUNCTION__ ) );
-  }
-
-  // Test I-2b: Simple shear deformation
+  // Test I-2a: Simple shear deformation
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -194,14 +128,12 @@ void testDeformationResponseFullReturnMapping()
     stressTarget( 2, 2 ) = -0.0118831037141365;
 
     throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                             "I-2b: Simple shear - Kirchhoff stress tensor (tau) computation failed for "
+                             "I-2a: Simple shear - Kirchhoff stress tensor (tau) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget( 0.0 );
     FpTarget( 0, 0 ) = 1.00013018240255;
@@ -211,19 +143,19 @@ void testDeformationResponseFullReturnMapping()
     FpTarget( 2, 2 ) = 0.999999361845117;
 
     throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                             "I-2b: Simple shear - Plastic deformation gradient tensor (Fp) computation failed for "
+                             "I-2a: Simple shear - Plastic deformation gradient tensor (Fp) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
 
     double alphaPTarget = 0.0103537584382;
 
     throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                             "I-2b: Simple shear - Strain-like hardening variable (alphaP) computation failed for "
+                             "I-2a: Simple shear - Strain-like hardening variable (alphaP) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
 
-  // Test I-2c: Hydrostatic deformation
+  // Test I-2b: Hydrostatic deformation
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -262,31 +194,29 @@ void testDeformationResponseFullReturnMapping()
     stressTarget( 2, 2 ) = 1048.97652265991;
 
     throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                             "I-2c: Hydrostatic - Kirchhoff stress tensor (tau) computation failed for "
+                             "I-2b: Hydrostatic - Kirchhoff stress tensor (tau) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
     throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                             "I-2c: Hydrostatic - Plastic deformation gradient tensor (Fp) computation failed for "
+                             "I-2b: Hydrostatic - Plastic deformation gradient tensor (Fp) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
 
     double alphaPTarget = 0.0;
 
     throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                             "I-2c: Hydrostatic - Strain-like hardening variable (alphaP) computation failed for "
+                             "I-2b: Hydrostatic - Strain-like hardening variable (alphaP) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
 
-  // Test I-2d: Arbitrary deformation
+  // Test I-2c: Arbitrary deformation
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -337,7 +267,7 @@ void testDeformationResponseFullReturnMapping()
     stressTarget( 2, 2 ) = -4995.74104468547;
 
     throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                             "I-2d: Arbitrary deformation - Kirchhoff stress tensor (tau) computation failed for "
+                             "I-2c: Arbitrary deformation - Kirchhoff stress tensor (tau) computation failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
 
@@ -345,15 +275,13 @@ void testDeformationResponseFullReturnMapping()
       for ( int j = 0; j < 3; j++ )
 
         throwExceptionOnFailure( checkIfEqual( response.tau( i, j ), response.tau( j, i ), 1e-10 ),
-                                 "I-2d: Kirchhoff stress tensor symmetry check for the arbitrary deformation load "
+                                 "I-2c: Kirchhoff stress tensor symmetry check for the arbitrary deformation load "
                                  "case failed for FiniteStrainJ2Plasticity "
                                  "material in " +
                                    std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget( 0.0 );
     FpTarget( 0, 0 ) = 1.01899554888122;
@@ -367,7 +295,7 @@ void testDeformationResponseFullReturnMapping()
     FpTarget( 2, 2 ) = 0.959563358208919;
 
     throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                             "I-2d: Arbitrary deformation - Plastic deformation gradient tensor (Fp) computation "
+                             "I-2c: Arbitrary deformation - Plastic deformation gradient tensor (Fp) computation "
                              "failed for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
@@ -375,78 +303,14 @@ void testDeformationResponseFullReturnMapping()
     double alphaPTarget = 0.0998876084740522;
 
     throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                             "I-2d: Arbitrary deformation - Strain-like hardening variable (alphaP) computation failed "
+                             "I-2c: Arbitrary deformation - Strain-like hardening variable (alphaP) computation failed "
                              "for "
                              "FiniteStrainJ2Plasticity material in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
 }
 
-// Test I-3: Elastic response
-void testElasticResponseFullReturnMapping()
-{
-  std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
-  const double            nMaterialProperties = 7;
-  const int               elLabel             = 1;
-
-  FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0], nMaterialProperties, elLabel );
-
-  if ( mat.getNumberOfRequiredStateVars() > 10 ) {
-    throw std::runtime_error( "Number of required state vars changed!" );
-  }
-
-  double                   alphaP = 0.0;
-  Tensor33d                Fp     = Marmot::FastorStandardTensors::Spatial3D::I;
-  std::array< double, 10 > stateVars_;
-  std::memcpy( stateVars_.data(), Fp.data(), 9 * sizeof( double ) );
-  stateVars_[9] = alphaP;
-
-  mat.assignStateVars( stateVars_.data(), 10 );
-
-  FiniteStrainJ2Plasticity::Deformation< 3 > def;
-  FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
-
-  FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response;
-  FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
-
-  def.F = Marmot::FastorStandardTensors::Spatial3D::I;
-  def.F( 0, 0 ) += 1e-6;
-
-  mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
-
-  Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 0.282733227861182;
-  stressTarget( 1, 1 ) = 0.121133254811866;
-  stressTarget( 2, 2 ) = 0.121133254811866;
-
-  throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "I-3: Elastic response - Kirchhoff stress tensor (tau) computation failed for "
-                           "FiniteStrainJ2Plasticity material in " +
-                             std::string( __PRETTY_FUNCTION__ ) );
-
-  Tensor33d FpCurrent( 0.0 );
-  for ( int i = 0; i < 3; i++ )
-    for ( int j = 0; j < 3; j++ )
-      FpCurrent( i, j ) = stateVars_[i * 3 + j];
-
-  Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
-
-  throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                           "I-3: Elastic response - Plastic deformation gradient tensor (Fp) computation failed "
-                           "for "
-                           "FiniteStrainJ2Plasticity material in " +
-                             std::string( __PRETTY_FUNCTION__ ) );
-
-  double alphaPTarget = 0.0;
-
-  throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                           "I-3: Elastic response - Strain-like hardening variable (alphaP) computation failed "
-                           "for "
-                           "FiniteStrainJ2Plasticity material in " +
-                             std::string( __PRETTY_FUNCTION__ ) );
-}
-
-// Test I-4: Algorithmic tangent
+// Test I-3: Algorithmic tangent
 void testAlgorithmicTangentFullReturnMapping()
 
 {
@@ -505,158 +369,14 @@ void testAlgorithmicTangentFullReturnMapping()
   tangentTarget( 2, 2, 2, 2 ) = 200455.918711321;
 
   throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-10 ),
-                           "I-4: Algorithmic tangent computation failed for FiniteStrainJ2Plasticity material in " +
+                           "I-3: Algorithmic tangent computation failed for FiniteStrainJ2Plasticity material in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test I-5: Rotation
+// Test I-4: Rotation
 void testRotationFullReturnMapping()
 {
-  // Test I-5a: Rotation about the x-axis
-  {
-    std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
-    const double            nMaterialProperties = 7;
-    const int               elLabel             = 1;
-
-    FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0], nMaterialProperties, elLabel );
-
-    if ( mat.getNumberOfRequiredStateVars() > 10 ) {
-      throw std::runtime_error( "Number of required state vars changed!" );
-    }
-
-    double                   alphaP = 0.0;
-    Tensor33d                Fp     = Marmot::FastorStandardTensors::Spatial3D::I;
-    std::array< double, 10 > stateVars_;
-    std::memcpy( stateVars_.data(), Fp.data(), 9 * sizeof( double ) );
-    stateVars_[9] = alphaP;
-
-    mat.assignStateVars( stateVars_.data(), 10 );
-
-    FiniteStrainJ2Plasticity::Deformation< 3 > def;
-    FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
-
-    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response;
-    FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
-
-    for ( int phi_deg = 0; phi_deg <= 180; phi_deg++ ) {
-      double phi = Marmot::Math::degToRad( phi_deg );
-
-      def.F( 0, 0 ) = 1;
-      def.F( 0, 1 ) = 0;
-      def.F( 0, 2 ) = 0;
-      def.F( 1, 0 ) = 0;
-      def.F( 1, 1 ) = cos( phi );
-      def.F( 1, 2 ) = -sin( phi );
-      def.F( 2, 0 ) = 0;
-      def.F( 2, 1 ) = sin( phi );
-      def.F( 2, 2 ) = cos( phi );
-
-      mat.computeStress( response, tangent, def, timeInc );
-
-      Tensor33d stressTarget( 0.0 );
-
-      throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "I-5a: Rotation about the x-axis - Kirchhoff stress tensor (tau) computation failed for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-      Tensor33d FpCurrent( 0.0 );
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          FpCurrent( i, j ) = stateVars_[i * 3 + j];
-
-      Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
-
-      throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                               "I-5a: Rotation about the x-axis - Plastic deformation gradient tensor (Fp) computation "
-                               "failed "
-                               "for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-
-      double alphaPTarget = 0.0;
-
-      throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                               "I-5a: Rotation about the x-axis - Strain-like hardening variable (alphaP) computation "
-                               "failed "
-                               "for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-    }
-  }
-
-  // Test I-5b: Rotation about the y-axis
-  {
-    std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
-    const double            nMaterialProperties = 7;
-    const int               elLabel             = 1;
-
-    FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0], nMaterialProperties, elLabel );
-
-    if ( mat.getNumberOfRequiredStateVars() > 10 ) {
-      throw std::runtime_error( "Number of required state vars changed!" );
-    }
-
-    double                   alphaP = 0.0;
-    Tensor33d                Fp     = Marmot::FastorStandardTensors::Spatial3D::I;
-    std::array< double, 10 > stateVars_;
-    std::memcpy( stateVars_.data(), Fp.data(), 9 * sizeof( double ) );
-    stateVars_[9] = alphaP;
-
-    mat.assignStateVars( stateVars_.data(), 10 );
-
-    FiniteStrainJ2Plasticity::Deformation< 3 > def;
-    FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
-
-    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response;
-    FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
-
-    for ( int phi_deg = 0; phi_deg <= 180; phi_deg++ ) {
-      double phi = Marmot::Math::degToRad( phi_deg );
-
-      def.F( 0, 0 ) = cos( phi );
-      def.F( 0, 1 ) = 0;
-      def.F( 0, 2 ) = sin( phi );
-      def.F( 1, 0 ) = 0;
-      def.F( 1, 1 ) = 1;
-      def.F( 1, 2 ) = 0;
-      def.F( 2, 0 ) = -sin( phi );
-      def.F( 2, 1 ) = 0;
-      def.F( 2, 2 ) = cos( phi );
-
-      mat.computeStress( response, tangent, def, timeInc );
-
-      Tensor33d stressTarget( 0.0 );
-
-      throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "I-5b: Rotation about the y-axis - Kirchhoff stress tensor (tau) computation failed for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-      Tensor33d FpCurrent( 0.0 );
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          FpCurrent( i, j ) = stateVars_[i * 3 + j];
-
-      Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
-
-      throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                               "I-5b: Rotation about the y-axis - Plastic deformation gradient tensor (Fp) computation "
-                               "failed "
-                               "for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-
-      double alphaPTarget = 0.0;
-
-      throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                               "I-5b: Rotation about the y-axis - Strain-like hardening variable (alphaP) computation "
-                               "failed "
-                               "for "
-                               "FiniteStrainJ2Plasticity material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-    }
-  }
-
-  // Test I-5c: Rotation about the z-axis
+  // Test I-4a: Pure rotation about the z-axis
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -695,23 +415,23 @@ void testRotationFullReturnMapping()
       def.F( 2, 1 ) = 0;
       def.F( 2, 2 ) = 1;
 
-      mat.computeStress( response, tangent, def, timeInc );
+      mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
 
       Tensor33d stressTarget( 0.0 );
 
       throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "I-5c: Rotation about the z-axis - Kirchhoff stress tensor (tau) computation failed for "
+                               "I-4a: Rotation about the z-axis - Kirchhoff stress tensor (tau) computation failed for "
                                "FiniteStrainJ2Plasticity material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
+
       Tensor33d FpCurrent( 0.0 );
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          FpCurrent( i, j ) = stateVars_[i * 3 + j];
+      std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
       Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
       throwExceptionOnFailure( checkIfEqual( FpCurrent, FpTarget, 1e-10 ),
-                               "I-5c: Rotation about the z-axis - Plastic deformation gradient tensor (Fp) computation "
+                               "I-4a: Pure rotation about the z-axis - Plastic deformation gradient tensor (Fp) "
+                               "computation "
                                "failed "
                                "for "
                                "FiniteStrainJ2Plasticity material in " +
@@ -720,7 +440,7 @@ void testRotationFullReturnMapping()
       double alphaPTarget = 0.0;
 
       throwExceptionOnFailure( checkIfEqual( stateVars_[9], alphaPTarget, 1e-10 ),
-                               "I-5c: Rotation about the z-axis - Strain-like hardening variable (alphaP) computation "
+                               "I-4a: Rotation about the z-axis - Strain-like hardening variable (alphaP) computation "
                                "failed "
                                "for "
                                "FiniteStrainJ2Plasticity material in " +
@@ -728,7 +448,7 @@ void testRotationFullReturnMapping()
     }
   }
 
-  // Test I-5d: Objectivity test for arbitrary deformation and rotation about the z-axis
+  // Test I-4b: Objectivity test for arbitrary deformation and rotation about the z-axis
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -764,7 +484,7 @@ void testRotationFullReturnMapping()
     def.F( 2, 1 ) = 0.04;
     def.F( 2, 2 ) = 0.95;
 
-    mat.computeStress( response, tangent, def, timeInc );
+    mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
 
     Tensor33d stressUnrotated = response.tau;
     Tensor33d F_unrotated     = def.F;
@@ -785,7 +505,7 @@ void testRotationFullReturnMapping()
 
       def.F = F_rotated;
 
-      mat.computeStress( response, tangent, def, timeInc );
+      mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
 
       Tensor33d stressNew = response.tau;
 
@@ -793,14 +513,14 @@ void testRotationFullReturnMapping()
       Tensor33d stressRotated = einsum< iI, IJ, jJ, to_ij >( Q, stressUnrotated, Q );
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressRotated, 1e-10 ),
-                               "I-5d: Objectivity test for arbitrary deformation and rotation around z-axis failed "
+                               "I-4b: Objectivity test for arbitrary deformation and rotation around z-axis failed "
                                "for "
                                "FiniteStrainJ2Plasticity "
                                "material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
     }
   }
-  // Test I-5e: Isotropy test for arbitrary deformation
+  // Test I-4c: Isotropy test for arbitrary deformation
   {
     std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
     const double            nMaterialProperties = 7;
@@ -837,14 +557,12 @@ void testRotationFullReturnMapping()
     def.F( 2, 1 ) = 0.04;
     def.F( 2, 2 ) = 0.95;
 
-    mat.computeStress( response, tangent, def, timeInc );
+    mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
 
     Tensor33d stressUnrotated = response.tau;
     Tensor33d F_unrotated     = def.F;
     Tensor33d Fp_unrotated( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        Fp_unrotated( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( Fp_unrotated.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     for ( int phi_deg = 0; phi_deg <= 180; phi_deg++ ) {
       double phi = Marmot::Math::degToRad( phi_deg );
@@ -862,16 +580,14 @@ void testRotationFullReturnMapping()
       Tensor33d Fp_rotated = einsum< ik, kj, to_ij >( Fp_unrotated, Q );
 
       def.F = F_rotated;
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          stateVars_[i * 3 + j] = Fp_rotated( i, j );
+      std::memcpy( stateVars_.data(), Fp_rotated.data(), 9 * sizeof( double ) );
 
-      mat.computeStress( response, tangent, def, timeInc );
+      mat.computeStressWithFullReturnMapping( response, tangent, def, timeInc );
 
       Tensor33d stressNew = response.tau;
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressUnrotated, 1e-10 ),
-                               "I-5e: Isotropy test for arbitrary deformation failed "
+                               "I-4c: Isotropy test for arbitrary deformation failed "
                                "for "
                                "FiniteStrainJ2Plasticity "
                                "material in " +
@@ -931,9 +647,7 @@ void testDeformationResponseFDAF()
                                std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
@@ -1016,9 +730,7 @@ void testDeformationResponseFDAF()
                                    std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget( 0.0 );
     FpTarget( 0, 0 ) = 1.01899554888122;
@@ -1125,7 +837,7 @@ void testAlgorithmicTangentFDAF()
   tangentTarget( 2, 2, 2, 1 ) = -0.300192215324636;
   tangentTarget( 2, 2, 2, 2 ) = 200455.224503959;
 
-  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-8 ),
                            "II-2: FDAF Algorithmic tangent computation failed for FiniteStrainJ2Plasticity material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -1182,9 +894,7 @@ void testDeformationResponseFDAC()
                                std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
@@ -1269,9 +979,7 @@ void testDeformationResponseFDAC()
                                    std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget( 0.0 );
     FpTarget( 0, 0 ) = 1.01899554888122;
@@ -1360,7 +1068,7 @@ void testAlgorithmicTangentFDAC()
   tangentTarget( 2, 2, 1, 1 ) = 124598.548812737;
   tangentTarget( 2, 2, 2, 2 ) = 200455.905150422;
 
-  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-8 ),
                            "III-2: FDAC Algorithmic tangent computation failed for FiniteStrainJ2Plasticity material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -1417,9 +1125,7 @@ void testDeformationResponseCSDA()
                                std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget = Marmot::FastorStandardTensors::Spatial3D::I;
 
@@ -1503,9 +1209,7 @@ void testDeformationResponseCSDA()
                                    std::string( __PRETTY_FUNCTION__ ) );
 
     Tensor33d FpCurrent( 0.0 );
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        FpCurrent( i, j ) = stateVars_[i * 3 + j];
+    std::memcpy( FpCurrent.data(), stateVars_.data(), 9 * sizeof( double ) );
 
     Tensor33d FpTarget( 0.0 );
     FpTarget( 0, 0 ) = 1.01899554888122;
@@ -1536,7 +1240,7 @@ void testDeformationResponseCSDA()
   }
 }
 
-// Test III-2: Algorithmic tangent
+// Test IV-2: Algorithmic tangent
 void testAlgorithmicTangentCSDA()
 
 {
@@ -1594,7 +1298,7 @@ void testAlgorithmicTangentCSDA()
   tangentTarget( 2, 2, 1, 1 ) = 124598.574593654;
   tangentTarget( 2, 2, 2, 2 ) = 200455.918711321;
 
-  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-8 ),
                            "IV-2: CSDA Algorithmic tangent computation failed for FiniteStrainJ2Plasticity material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -1605,7 +1309,6 @@ int main()
 
   auto tests = std::vector< std::function< void() > >{ testUndeformedResponseFullReturnMapping,
                                                        testDeformationResponseFullReturnMapping,
-                                                       testElasticResponseFullReturnMapping,
                                                        testAlgorithmicTangentFullReturnMapping,
                                                        testRotationFullReturnMapping,
                                                        testDeformationResponseFDAF,

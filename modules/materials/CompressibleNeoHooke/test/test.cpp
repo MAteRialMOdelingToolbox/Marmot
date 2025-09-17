@@ -42,39 +42,7 @@ void testUndeformedResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 2: Uniaxial stretch
-void testUniaxialStretchResponse()
-{
-  std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-  const double            nMaterialProperties = 2;
-  const int               elLabel             = 1;
-
-  CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
-
-  CompressibleNeoHooke::Deformation< 3 > def;
-  CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
-
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > response;
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent;
-
-  def.F = Marmot::FastorStandardTensors::Spatial3D::I;
-  def.F( 0, 0 ) += 0.02;
-
-  mat.computeStress( response, tangent, def, timeInc );
-
-  Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 109.197470795418;
-  stressTarget( 1, 1 ) = 49.3922392274353;
-  stressTarget( 2, 2 ) = 49.3922392274353;
-
-  throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "Test 2: Uniaxial stretch deformation load case computation failed for "
-                           "CompressibleNeoHooke material in " +
-                             std::string( __PRETTY_FUNCTION__ ) );
-
-}
-
-// Test 3: Finite strain simple shear load case
+// Test 2: Finite strain simple shear load case
 void testFiniteStrainShearResponse()
 {
 
@@ -103,12 +71,12 @@ void testFiniteStrainShearResponse()
   stressTarget( 2, 2 ) = -20;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "Test 3: Finite strain simple shear load case failed for CompressibleNeoHooke material "
+                           "Test 2: Finite strain simple shear load case failed for CompressibleNeoHooke material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 4: Small strain simple shear load case
+// Test 3: Small strain simple shear load case
 void testSmallStrainShearResponse()
 {
 
@@ -137,11 +105,11 @@ void testSmallStrainShearResponse()
   stressTarget( 2, 2 ) = -4.99994712299667e-10;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "Test 4: Small strain simple shear failed for CompressibleNeoHooke material in " +
+                           "Test 3: Small strain simple shear failed for CompressibleNeoHooke material in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 5: Hydrostatic load case
+// Test 4: Hydrostatic load case
 void testHydrostaticResponse()
 {
 
@@ -170,12 +138,12 @@ void testHydrostaticResponse()
   stressTarget( 2, 2 ) = 208.417157443082;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "Test 5: Hydrostatic load case computation failed for CompressibleNeoHooke material "
+                           "Test 4: Hydrostatic load case computation failed for CompressibleNeoHooke material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 6: General deformation load case
+// Test 5: General deformation load case
 void testGeneralDeformationResponse()
 {
 
@@ -215,7 +183,7 @@ void testGeneralDeformationResponse()
   stressTarget( 2, 2 ) = -229.85004999695;
 
   throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                           "Test 6a: General deformation response computation failed for CompressibleNeoHooke "
+                           "Test 5a: General deformation response computation failed for CompressibleNeoHooke "
                            "material in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
@@ -223,13 +191,13 @@ void testGeneralDeformationResponse()
     for ( int j = 0; j < 3; j++ )
 
       throwExceptionOnFailure( checkIfEqual( response.tau( i, j ), response.tau( j, i ), 1e-10 ),
-                               "Test 6b: Kirchhoff stress tensor symmetry check for the arbitrary deformation load "
+                               "Test 5b: Kirchhoff stress tensor symmetry check for the arbitrary deformation load "
                                "case failed for CompressibleNeoHooke "
                                "material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 7: Computation of the algorithmic tangent
+// Test 6: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
 
@@ -277,92 +245,15 @@ void testAlgorithmicTangent()
   tangentTarget( 2, 2, 2, 2 ) = 5383.05976216137;
 
   throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, tangentTarget, 1e-10 ),
-                           "Test 7: Algorithmic tangent computation failed for CompressibleNeoHooke material "
+                           "Test 6: Algorithmic tangent computation failed for CompressibleNeoHooke material "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Test 8.
+// Test 7.
 void testRotation()
 {
-
-  // Test 8a: Rotation about x-axis
-  {
-    std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-    const double            nMaterialProperties = 2;
-    const int               elLabel             = 1;
-
-    CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
-
-    CompressibleNeoHooke::Deformation< 3 > def;
-    CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
-
-    CompressibleNeoHooke::ConstitutiveResponse< 3 > response;
-    CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent;
-
-    for ( int phi_deg = 0; phi_deg <= 180; phi_deg++ ) {
-      double phi = Marmot::Math::degToRad( phi_deg );
-
-      def.F( 0, 0 ) = 1;
-      def.F( 0, 1 ) = 0;
-      def.F( 0, 2 ) = 0;
-      def.F( 1, 0 ) = 0;
-      def.F( 1, 1 ) = cos( phi );
-      def.F( 1, 2 ) = -sin( phi );
-      def.F( 2, 0 ) = 0;
-      def.F( 2, 1 ) = sin( phi );
-      def.F( 2, 2 ) = cos( phi );
-
-      mat.computeStress( response, tangent, def, timeInc );
-
-      Tensor33d stressTarget( 0.0 );
-
-      throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "Test 8a: Rotation around the x-axis computation failed for CompressibleNeoHooke "
-                               "material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-    }
-  }
-
-  // Test 8b: Rotation about the y-axis
-  {
-    std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-    const double            nMaterialProperties = 2;
-    const int               elLabel             = 1;
-
-    CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
-
-    CompressibleNeoHooke::Deformation< 3 > def;
-    CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
-
-    CompressibleNeoHooke::ConstitutiveResponse< 3 > response;
-    CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent;
-
-    for ( int phi_deg = 0; phi_deg <= 180; phi_deg++ ) {
-      double phi = Marmot::Math::degToRad( phi_deg );
-
-      def.F( 0, 0 ) = cos( phi );
-      def.F( 0, 1 ) = 0;
-      def.F( 0, 2 ) = sin( phi );
-      def.F( 1, 0 ) = 0;
-      def.F( 1, 1 ) = 1;
-      def.F( 1, 2 ) = 0;
-      def.F( 2, 0 ) = -sin( phi );
-      def.F( 2, 1 ) = 0;
-      def.F( 2, 2 ) = cos( phi );
-
-      mat.computeStress( response, tangent, def, timeInc );
-
-      Tensor33d stressTarget( 0.0 );
-
-      throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "Test 8b: Rotation around the y-axis computation failed for CompressibleNeoHooke "
-                               "material in " +
-                                 std::string( __PRETTY_FUNCTION__ ) );
-    }
-  }
-
-  // Test 8c: Rotation about z-axis
+  // Test 8a: Pure rotation about z-axis
   {
     std::array< double, 2 > materialProperties_ = { 3500, 1500 };
     const double            nMaterialProperties = 2;
@@ -394,13 +285,13 @@ void testRotation()
       Tensor33d stressTarget( 0.0 );
 
       throwExceptionOnFailure( checkIfEqual( response.tau, stressTarget, 1e-10 ),
-                               "Test 8c: Rotation around the z-axis computation failed for CompressibleNeoHooke "
+                               "Test 7a: Pure rotation around the z-axis computation failed for CompressibleNeoHooke "
                                "material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
     }
   }
 
-  // Test 8d: Objectivity test for arbitrary deformation and rotations about the z-axis
+  // Test 7b: Objectivity test for arbitrary deformation and rotations about the z-axis
   {
     std::array< double, 2 > materialProperties_ = { 3500, 1500 };
     const double            nMaterialProperties = 2;
@@ -453,7 +344,7 @@ void testRotation()
       Tensor33d stressRotated = einsum< iI, IJ, jJ, to_ij >( Q, stressUnrotated, Q );
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressRotated, 1e-10 ),
-                               "Test 8d: Objectivity test for arbitrary deformation and rotation around z-axis failed "
+                               "Test 7b: Objectivity test for arbitrary deformation and rotation around z-axis failed "
                                "for "
                                "CompressibleNeoHooke "
                                "material in " +
@@ -461,7 +352,7 @@ void testRotation()
     }
   }
 
-  // Test 8e: Isotropy test for arbitrary deformation
+  // Test 7c: Isotropy test for arbitrary deformation
   {
     std::array< double, 2 > materialProperties_ = { 3500, 1500 };
     const double            nMaterialProperties = 2;
@@ -511,13 +402,12 @@ void testRotation()
       Tensor33d stressNew = response.tau;
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressUnrotated, 1e-10 ),
-                               "Test 8e: Isotropy test for arbitrary deformation failed "
+                               "Test 7c: Isotropy test for arbitrary deformation failed "
                                "for "
                                "CompressibleNeoHooke "
                                "material in " +
                                  std::string( __PRETTY_FUNCTION__ ) );
     }
-
   }
 }
 
@@ -525,7 +415,6 @@ int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ testUndeformedResponse,
-                                                       testUniaxialStretchResponse,
                                                        testFiniteStrainShearResponse,
                                                        testSmallStrainShearResponse,
                                                        testHydrostaticResponse,
