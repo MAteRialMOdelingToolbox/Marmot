@@ -42,42 +42,41 @@ namespace Marmot::Materials {
   using namespace FastorStandardTensors;
   using namespace FastorIndices;
 
-
-/**
- * \class Marmot::Materials::FiniteStrainJ2Plasticity
- * \brief Finite-strain J2 plasticity with isotropic hardening, multiplicative split \f$\mathbf{F}=\mathbf{F}_e\mathbf{F}_p\f$.
- *
- * The elastic response uses the compressible Neo-Hookean Pence–Gou potential (variant B) with \c K and \c G.
- * Plasticity is formulated in Mandel stress with an associated flow rule. The yield function is
- * \f[
- *   f = \frac{\rho}{f_y} - \sqrt{\frac{2}{3}}\,\frac{\beta_p}{f_y},
- * \f]
- * where \f$\rho=\|\mathrm{dev}(\mathbf{M})\|\f$ and \f$\beta_p\f$ is the current flow stress (isotropic hardening).
- *
- * \par Material parameters (indices in #materialProperties)
- * - \c K   (#materialProperties[0]) — bulk modulus [Pa]
- * - \c G   (#materialProperties[1]) — shear modulus [Pa]
- * - \c fy  (#materialProperties[2]) — initial yield stress (reference) [Pa]
- * - \c fyInf (#materialProperties[3]) — saturated (asymptotic) flow stress [Pa]
- * - \c eta (#materialProperties[4]) — saturation rate parameter [-]
- * - \c H   (#materialProperties[5]) — linear hardening modulus [Pa]
- * - \c implementationType (#materialProperties[6]) — algorithm selector (see below)
- * - \c density (optional, #materialProperties[7]) — mass density [kg/m^3]
- *
- * \par State variables
- * - \c Fp (9 components) — plastic deformation gradient
- * - \c alphaP (1) — accumulated plastic strain (hardening variable)
- *
- * \par Implementation variants (implementationType)
- * - 0: scalar return mapping (not implemented)
- * - 1: full return mapping with analytic linearization for \c dTau_dF
- * - 2: FDAF — finite-difference (forward) linearization of the residual
- * - 3: FDAC — finite-difference (central) linearization of the residual
- * - 4: CSDA — complex-step differentiation (forward) of the residual
- *
- * \ingroup materials_plasticity
- */
-
+  /**
+   * \class Marmot::Materials::FiniteStrainJ2Plasticity
+   * \brief Finite-strain J2 plasticity with isotropic hardening, multiplicative split
+   * \f$\mathbf{F}=\mathbf{F}_e\mathbf{F}_p\f$.
+   *
+   * The elastic response uses the compressible Neo-Hookean Pence–Gou potential (variant B) with \c K and \c G.
+   * Plasticity is formulated in Mandel stress with an associated flow rule. The yield function is
+   * \f[
+   *   f = \frac{\rho}{f_y} - \sqrt{\frac{2}{3}}\,\frac{\beta_p}{f_y},
+   * \f]
+   * where \f$\rho=\|\mathrm{dev}(\mathbf{M})\|\f$ and \f$\beta_p\f$ is the current flow stress (isotropic hardening).
+   *
+   * \par Material parameters (indices in #materialProperties)
+   * - \c K   (#materialProperties[0]) — bulk modulus [Pa]
+   * - \c G   (#materialProperties[1]) — shear modulus [Pa]
+   * - \c fy  (#materialProperties[2]) — initial yield stress (reference) [Pa]
+   * - \c fyInf (#materialProperties[3]) — saturated (asymptotic) flow stress [Pa]
+   * - \c eta (#materialProperties[4]) — saturation rate parameter [-]
+   * - \c H   (#materialProperties[5]) — linear hardening modulus [Pa]
+   * - \c implementationType (#materialProperties[6]) — algorithm selector (see below)
+   * - \c density (optional, #materialProperties[7]) — mass density [kg/m^3]
+   *
+   * \par State variables
+   * - \c Fp (9 components) — plastic deformation gradient
+   * - \c alphaP (1) — accumulated plastic strain (hardening variable)
+   *
+   * \par Implementation variants (implementationType)
+   * - 0: scalar return mapping (not implemented)
+   * - 1: full return mapping with analytic linearization for \c dTau_dF
+   * - 2: FDAF — finite-difference (forward) linearization of the residual
+   * - 3: FDAC — finite-difference (central) linearization of the residual
+   * - 4: CSDA — complex-step differentiation (forward) of the residual
+   *
+   * \ingroup materials_plasticity
+   */
 
   class FiniteStrainJ2Plasticity : public MarmotMaterialFiniteStrain {
   public:
@@ -95,22 +94,22 @@ namespace Marmot::Materials {
     // mass properties;
     const double density; /**< Mass density (optional; #materialProperties[7] if provided). */
 
-/**
- * \brief Construct the finite-strain J2 plasticity model.
- * \param materialProperties Array with parameters: K, G, fy, fyInf, eta, H, implementationType, [density].
- * \param nMaterialProperties Length of \p materialProperties.
- * \param materialLabel User-defined material label (passed to base).
- */    FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
+    /**
+     * \brief Construct the finite-strain J2 plasticity model.
+     * \param materialProperties Array with parameters: K, G, fy, fyInf, eta, H, implementationType, [density].
+     * \param nMaterialProperties Length of \p materialProperties.
+     * \param materialLabel User-defined material label (passed to base).
+     */
+    FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-
-/**
- * \brief Compute stress and tangent for the current step (dispatches by \c implementationType).
- * \param[out] response  Populated with \c tau, \c elasticEnergyDensity, \c rho.
- * \param[out] tangents  Populated with \c dTau_dF (algorithmic tangent).
- * \param[in]  deformation Uses \c deformation.F.
- * \param[in]  timeIncrement Current time step information.
- * \throws std::invalid_argument If \c implementationType is not supported.
- */
+    /**
+     * \brief Compute stress and tangent for the current step (dispatches by \c implementationType).
+     * \param[out] response  Populated with \c tau, \c elasticEnergyDensity, \c rho.
+     * \param[out] tangents  Populated with \c dTau_dF (algorithmic tangent).
+     * \param[in]  deformation Uses \c deformation.F.
+     * \param[in]  timeIncrement Current time step information.
+     * \throws std::invalid_argument If \c implementationType is not supported.
+     */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
@@ -123,28 +122,28 @@ namespace Marmot::Materials {
                                                const Deformation< 3 >&    deformation,
                                                const TimeIncrement&       timeIncrement );
 
-    /** \brief Full return mapping with analytic residual/Jacobian; produces a consistent tangent. */
+    /** \brief Full return mapping; derivatives computed analytically. */
 
     void computeStressWithFullReturnMapping( ConstitutiveResponse< 3 >& response,
                                              AlgorithmicModuli< 3 >&    tangents,
                                              const Deformation< 3 >&    deformation,
                                              const TimeIncrement&       timeIncrement );
 
-    /** \brief Full return mapping; algorithmic tangent via forward finite differences. */
+    /** \brief Full return mapping; derivatives approximated via forward finite differences. */
 
     void computeStressFDAF( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Full return mapping; algorithmic tangent via central finite differences. */
+    /** \brief Full return mapping; derivatives approximated via central finite differences. */
 
     void computeStressFDAC( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Full return mapping; algorithmic tangent via complex-step differentiation. */
+    /** \brief Full return mapping; derivatives via complex-step differentiation. */
 
     void computeStressCSDA( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
@@ -155,11 +154,11 @@ namespace Marmot::Materials {
 
     int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
 
-    /** \brief Return the material density if provided in material parameters */
+    /** \brief Return the material density if provided in the material parameters */
 
     double getDensity() { return density; }
 
-    /** \brief State variable manager for \c Fp and \c alphaP; provides named views and layout. */
+    /** \brief State variable manager for \c Fp and \c alphaP. */
 
     class FiniteStrainJ2PlasticityStateVarManager : public MarmotStateVarVectorManager {
 
@@ -190,15 +189,14 @@ namespace Marmot::Materials {
 
     StateView getStateView( const std::string& result );
 
-    /** \brief Initialize internal variables (\c Fp = I, \c alphaP = 0). */
+    /** \brief Initialize (\c Fp = I). */
 
     void initializeYourself();
 
-/** \brief Yield function in terms of \c Fe (via Mandel stress).
- *  \details Computes J2 yield value and first derivatives by chain rule via \c Fe.
- *  \param Fe     Elastic deformation gradient.
- *  \param betaP  Hardening measure.
- */
+    /** \brief Evaluate yield function and its first derivatives w.r.t. \c Fe and \c betaP.
+     *  \param Fe     Elastic deformation gradient.
+     *  \param betaP  Hardening parameter.
+     */
 
     std::tuple< double, Tensor33d, double > yieldFunction( const Tensor33d& Fe, const double betaP )
     {
@@ -220,8 +218,11 @@ namespace Marmot::Materials {
       return { f, df_dFe, df_dBetaP };
     }
 
-    /** \brief Yield function in terms of Mandel stress.
-     *  \return \c { f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP }.
+    /**
+     * \brief Yield function \c f(\c mandelStress,\c betaP) w.r.t. Mandel stress (templated).
+     * \tparam T Scalar type (double, autodiff dual, complex).
+     * \param mandelStress Mandel stress \c M.
+     * \param betaP        Hardening measure.
      */
 
     template < typename T >
@@ -235,11 +236,10 @@ namespace Marmot::Materials {
       return f;
     }
 
-/** \brief Yield function directly in Mandel stress.
- *  \param mandelStress Mandel stress \c M.
- *  \param betaP        Hardening measure.
- */
-
+    /** \brief Yield function w.r.t. Mandel stress.
+     *  \param mandelStress Mandel stress \c M.
+     *  \param betaP        Hardening measure.
+     */
 
     std::tuple< double, Tensor33d, Tensor3333d, double > yieldFunctionFromStress( const Tensor33d& mandelStress,
                                                                                   const double     betaP )
@@ -264,8 +264,10 @@ namespace Marmot::Materials {
       return { f, df_dMandel, d2f_dMandel_dMandel, -Constants::sqrt2_3 / fy };
     }
 
-    /** \brief Templated first-order yield function in Mandel stress (for AD/CS).
-     *  \return \c { f, df_dMandel, df_dBetaP }.
+    /**
+     * \brief First-order derivatives of \c f with respect to Mandel stress.
+     * \tparam T Scalar type (double, autodiff dual, complex, ...).
+     * \return \c { f, df_dMandel, df_dBetaP }.
      */
 
     template < typename T >
@@ -285,9 +287,8 @@ namespace Marmot::Materials {
       return { f, df_dMandel, T( -Constants::sqrt2_3 / fy ) };
     }
 
-/** \brief Check yield condition \c f(Fe,betaP) > 0.
- */
-
+    /** \brief Check yield condition \c f(Fe,betaP) > 0.
+     */
 
     bool isYielding( const Tensor33d& Fe, const double betaP )
     {
@@ -300,10 +301,7 @@ namespace Marmot::Materials {
         return false;
     }
 
-    /** \brief Compute Mandel stress from \c Fe and its derivative.
-     *  \return \c { mandel, dMandel_dFe }.
-     */
-
+    /** \brief Compute Mandel stress \c M = C_e : PK2(C_e) and its derivative w.r.t. \c Fe. */
     std::tuple< Tensor33d, Tensor3333d > computeMandelStress( const Tensor33d& Fe )
     {
       using namespace Marmot::ContinuumMechanics;
@@ -327,7 +325,7 @@ namespace Marmot::Materials {
       return { mandel, dMandel_dFe };
     }
 
-    /** \brief Templated Mandel stress from \c Fe (no derivatives). */
+    /** \brief Compute Mandel stress only (templated scalar type). */
 
     template < typename T >
     Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe )
@@ -344,7 +342,7 @@ namespace Marmot::Materials {
       return mandel;
     }
 
-    /** \brief Templated hardening measure \c beta(\c alphaP) (no derivatives). */
+    /** \brief Templated version of the hardening law returning \c beta only. */
 
     template < typename T >
     T computeBetaPOnly( const T alphaP )
@@ -353,8 +351,9 @@ namespace Marmot::Materials {
       return beta;
     }
 
-    /** \brief Hardening measure and derivative.
-     *  \return \c { beta, dBeta_dAlphaP }.
+    /**  \brief Isotropic hardening law
+     * \f$\beta(\alpha_p)=f_{y\infty}+(f_y-f_{y\infty})e^{-\eta\alpha_p}+H\,\alpha_p\f$. And its derivative w.r.t. \c
+     * alphaP.
      */
 
     std::tuple< double, double > computeBetaP( const double alphaP )
@@ -364,8 +363,7 @@ namespace Marmot::Materials {
       return { beta, dBetaP_dAlphaP };
     }
 
-    /** \brief Scalar residual for line search/Newton in \c dLambda.
-     *  \return \c { f, df_dLambda } evaluated at \c Fe_trial and \c dLambda.
+    /** \brief Scalar consistency function.
      */
 
     std::tuple< double, double > g( const Tensor33d& Fe_trial, const Tensor33d& df_dS, double dLambda, double betaP )
@@ -386,14 +384,11 @@ namespace Marmot::Materials {
       return { f, df_ddLambda };
     }
 
-/** \brief Flow direction for return mapping, \c df/dS (templated).
- *  \tparam T   Scalar type.
- *  \param Fe   Elastic deformation gradient.
- *  \param betaP Hardening measure.
- *  \return \c df/dS evaluated at the trial state.
- */
-
-
+    /** \brief Flow direction for return mapping, \c df/dS (templated).
+     *  \tparam T   Scalar type (double, AD, complex).
+     *  \param Fe   Elastic deformation gradient.
+     *  \param betaP Hardening measure.
+     */
     template < typename T >
     Tensor33t< T > computeReturnMappingDirection( Tensor33t< T > Fe, T betaP )
     {
@@ -409,7 +404,9 @@ namespace Marmot::Materials {
     }
 
     /** \brief Incremental plastic flow via exponential map.
-     *  \return \c { dFp, ddFp_dLambda } where \c ddFp_dLambda is assembled from \c ddFp_dGp and \c df_dS.
+     * \tparam T Scalar type (double, autodiff dual, complex, ...).
+     * \param df_dS Flow direction in Mandel stress space.
+     * \param dLambda Plastic multiplier increment.
      */
 
     template < typename T >
@@ -425,19 +422,17 @@ namespace Marmot::Materials {
       return { dFp, einsum< IJKL, KL >( ddFp_ddGp, df_dS ) };
     }
 
-
-/** \brief Residual vector for the full return mapping (templated).
- *  \details State vector \c X has 11 unknowns: 9 for \c Fe, 1 for \c alphaP, 1 for \c dLambda.
- *           Residual components:
- *            - \c R[0..8] : elastic part consistency (updated \c Fe vs trial),
- *            - \c R[9]    : \c alphaP update,
- *            - \c R[10]   : yield function \c f.
- *  \tparam T         Scalar type.
- *  \param X          State vector \c [Fe(9), alphaP, dLambda]^T.
- *  \param FeTrial    Trial elastic deformation gradient.
- *  \param alphaPTrial Trial accumulated plastic strain.
- *  \return Residual vector \c R (size 11).
- */
+    /** \brief Residual vector \c R for the full return mapping (templated).
+     *  \details State vector \c X has 11 unknowns: 9 for \c Fe, 1 for \c alphaP, 1 for \c dLambda.
+     *           Residual components:
+     *            - \c R[0..8] : elastic part consistency (updated \c Fe vs trial),
+     *            - \c R[9]    : \c alphaP update,
+     *            - \c R[10]   : yield function \c f.
+     *  \tparam T         Scalar type (double/dual/complex).
+     *  \param X          Current iterate of unknowns \c [Fe(9), alphaP, dLambda]^T.
+     *  \param FeTrial    Trial elastic deformation gradient.
+     *  \param alphaPTrial Trial accumulated plastic strain.
+     */
 
     template < typename T >
     VectorXt< T > computeResidualVector( const VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPTrial )
@@ -487,12 +482,11 @@ namespace Marmot::Materials {
       return R;
     }
 
-/** \brief Residual and Jacobian for the full return mapping (double precision).
- *  \param X           State vector \c [Fe(9), alphaP, dLambda]^T.
- *  \param FeTrial     Trial elastic deformation gradient.
- *  \param alphaPTrial Trial accumulated plastic strain.
- *  \return \c { R, dR_dX } with \c R size 11 and \c dR_dX (11x11).
- */
+    /** \brief Residual and Jacobian for the full return mapping (double precision).
+     *  \param X           State vector \c [Fe(9), alphaP, dLambda]^T.
+     *  \param FeTrial     Trial elastic deformation gradient.
+     *  \param alphaPTrial Trial accumulated plastic strain.
+     */
 
     std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVectorAndTangent( const Eigen::VectorXd& X,
                                                                                     const Tensor33d&       FeTrial,
