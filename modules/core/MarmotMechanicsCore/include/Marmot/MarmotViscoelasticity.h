@@ -37,13 +37,47 @@ namespace Marmot {
 
       namespace ComplianceFunctions {
 
+/**
+ * @brief Logarithmic power-law compliance function.
+ *
+ * Computes the compliance function
+ * \f[
+ *   \Phi(\tau) = m \, \ln\!\left( 1 + \tau^n \right),
+ * \f]
+ * creep for long times.
+ *
+ * @tparam T_ Scalar or autodiff type of the argument.
+ *
+ * @param[in] tau Retardation time or evaluation point.
+ * @param[in] m Scaling factor.
+ * @param[in] n Exponent controlling the growth rate.
+ *
+ * @return The compliance value \f$\Phi(\tau)\f$.
+ */
+
         template < typename T_ >
         T_ logPowerLaw( T_ tau, double m, double n )
         {
           T_ val = m * log( 1. + pow( tau, n ) );
           return val;
         }
-
+/**
+ * @brief Power-law compliance function.
+ *
+ * Computes the compliance function
+ * \f[
+ *   \Phi(\tau) = m \, \tau^n,
+ * \f]
+ * creep for short times.
+ *
+ * @tparam T_ Scalar or autodiff type of the argument.
+ *
+ * @param[in] tau Retardation time or evaluation point.
+ * @param[in] m Scaling factor.
+ * @param[in] n Exponent controlling the growth rate.
+ *
+ * @return The compliance value \f$\Phi(\tau)\f$.
+ */
         template < typename T_ >
         T_ powerLaw( T_ tau, double m, double n )
         {
