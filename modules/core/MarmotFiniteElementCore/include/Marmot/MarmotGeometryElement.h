@@ -95,6 +95,7 @@ public:
   dNdXiSized         dNdXi( const XiSized& xi ) const;
   BSized             B( const dNdXiSized& dNdX ) const;
   BSizedAxisymmetric B_axisymmetric( const dNdXiSized& dNdX, const NSized& N, const XiSized& x_gauss ) const;
+  BSized             B_bar( const dNdXiSized& dNdX, const dNdXiSized& dNdX0 ) const;
   BSized             BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const;
 
   /*These functions are equal for each element and independent of node number and  nDimension*/

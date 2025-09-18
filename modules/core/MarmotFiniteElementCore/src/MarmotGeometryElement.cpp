@@ -163,6 +163,13 @@ typename MarmotGeometryElement< 3, 8 >::BSized MarmotGeometryElement< 3, 8 >::B(
 {
   return Marmot::FiniteElement::Spatial3D::B< 8 >( dNdX );
 }
+// Hexa8 B-bar
+template <>
+typename MarmotGeometryElement< 3, 8 >::BSized MarmotGeometryElement< 3, 8 >::B_bar( const dNdXiSized& dNdX,
+                                                                                     const dNdXiSized& dNdX0 ) const
+{
+  return Marmot::FiniteElement::Spatial3D::B_bar< 8 >( dNdX, dNdX0 );
+}
 // Hexa20
 template <>
 typename MarmotGeometryElement< 3, 20 >::BSized MarmotGeometryElement< 3, 20 >::B( const dNdXiSized& dNdX ) const
