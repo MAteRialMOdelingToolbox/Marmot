@@ -33,23 +33,14 @@ namespace Marmot::Materials {
 
   /**
    * \class Marmot::Materials::CompressibleNeoHooke
-   * \brief Compressible Neo-Hookean hyperelastic material using the Pence–Gou potential (variant B).
+   * \brief Compressible Neo-Hookean hyperelastic material model (Pence–Gou potential, variant B).
    *
-   * Computes Kirchhoff stress \f$\boldsymbol{\tau}\f$ and the algorithmic tangent
-   * \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$ from the deformation gradient \f$\mathbf{F}\f$. The strain
-   * energy is evaluated via `EnergyDensityFunctions::PenceGouPotentialB(K,G)`.
-   *
-   * \par Material parameters (indices in #materialProperties)
-   * - \c K (#materialProperties[0]) — bulk modulus [Pa]
-   * - \c G (#materialProperties[1]) — shear modulus [Pa]
+   * \par Material parameters 
+   * - \b K - bulk modulus
+   * - \b G - shear modulus
    *
    * \par State variables
-   * None. \c nStateVarsRequired = 0.
-   *
-   * \par Outputs set on \c response
-   * - \c response.tau : Kirchhoff stress
-   * - \c response.elasticEnergyDensity : strain energy density
-   * - \c response.rho : set to 1.0 (density scaling not handled here)
+   * - No state variables required.
    *
    * \ingroup materials_hyperelastic
    */
@@ -60,26 +51,31 @@ namespace Marmot::Materials {
 
     /**
      * \brief Construct a CompressibleNeoHooke material.
-     * \param materialProperties Array with at least 2 entries: \c K at [0], \c G at [1].
-     * \param nMaterialProperties Length of \p materialProperties.
-     * \param materialLabel User-defined material label (passed to base).
+     * \param materialProperties Expects `K` at index 0 and `G` at index 1.
+     * \param nMaterialProperties Length of `materialProperties`.
+     * \param materialLabel Material label.
      */
 
     CompressibleNeoHooke( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    static constexpr int nStateVarsRequired = 0; /**< Number of required state variables (none). */
+    static constexpr int nStateVarsRequired = 0; /**< Number of required state variables (none here). */
 
     /**
-     * \brief Compute Kirchhoff stress and elastic tangent for the current configuration.
+     * \brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
      *
-     * Uses \f$\mathbf{C} = \mathbf{F}^\mathrm{T}\mathbf{F}\f$ and the Pence–Gou energy to obtain
-     * \f$\boldsymbol{\tau}\f$ and \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$.
-     *
-     * \param[out] response  Filled with \c tau, \c elasticEnergyDensity, \c rho.
-     * \param[out] tangents  Filled with \c dTau_dF.
-     * \param[in]  deformation  Contains deformation gradient tensor F.
-     * \param[in]  timeIncrement  Current time step information \c t and \c dT.
-     * \note No state variables are updated (purely elastic model).
+     * @param[in,out] response  
+     *   - `tau` - Kirchhoff stress tensor \f$\boldsymbol{\tau}\f$.
+     *   - `elasticEnergyDensity` - elastic energy density  \f$\psi\f$.
+     *   - `rho` - density (set to 1.0 here).  
+     * @param[in,out] tangents
+     *   - `dTau_dF` - algorithmic tangent \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$.
+     * @param[in]  deformation
+     *   - `F` - deformation gradient \f$\mathbf{F}\f$.  
+     * @param[in]  timeIncrement  
+     *   - `t` - old (pseudo-)time.
+     *   - `dT`- (pseudo-)time increment.
+     *   
+     * Template parameter `<3>` indicates 3D.
      */
 
     void computeStress( ConstitutiveResponse< 3 >&,
@@ -87,11 +83,11 @@ namespace Marmot::Materials {
                         const Deformation< 3 >&,
                         const TimeIncrement& );
 
-    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; } /**< Always returns 0. */
+    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; } /**< Get number of required state variables (always returns 0 here). */
 
     /** \brief Attach external state storage (unused for this model; required for the interface).
-     *  \param stateVars Unused.
-     *  \param nStateVars Unused.
+     *  \param stateVars Pointer to a contiguous array provided by the caller for internal state.
+     *  \param nStateVars Number of entries in that array.
      */
     void assignStateVars( double* stateVars, int nStateVars )
     {
@@ -100,10 +96,8 @@ namespace Marmot::Materials {
     };
 
     /**
-     * \brief Access a named state quantity.
+     * \brief Access a named state quantity (no states here).
      * \param result Name of the state to view.
-     * \return A view into the requested state.
-     * \throws std::out_of_range If the state name is unknown (this model defines no states).
      */
 
     StateView getStateView( const std::string& result );
