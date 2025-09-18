@@ -35,16 +35,15 @@ namespace Marmot {
                        xi(1),
                        xi(2);
 
-                    // clang-format on  
+          // clang-format on
 
-                    return N_;
+          return N_;
+        }
+        dNdXiSized dNdXi( const Vector3d& xi )
+        {
+          dNdXiSized dNdXi_;
 
-                }
-                dNdXiSized dNdXi ( const Vector3d& xi )
-                {
-                    dNdXiSized dNdXi_;
-
-                    // clang-format off
+          // clang-format off
                     dNdXi_ << -1,
                            1,
                            0,
@@ -213,17 +212,16 @@ namespace Marmot {
                        (1+xi (0)) * (1-xi (1)) * (1+xi (2)),
                        (1+xi (0)) * (1+xi (1)) * (1+xi (2)),
                        (1-xi (0)) * (1+xi (1)) * (1+xi (2));
-                    // clang-format on  
+          // clang-format on
 
-                    N_ *= 1./8;
-                    return N_;
+          N_ *= 1. / 8;
+          return N_;
+        }
+        dNdXiSized dNdXi( const Vector3d& xi )
+        {
+          dNdXiSized dNdXi_;
 
-                }
-                dNdXiSized dNdXi ( const Vector3d& xi )
-                {
-                    dNdXiSized dNdXi_;
-
-                    // clang-format off
+          // clang-format off
                     dNdXi_ <<
                         -1 * (1-xi (1)) * (1-xi (2)),
                         +1 * (1-xi (1)) * (1-xi (2)),

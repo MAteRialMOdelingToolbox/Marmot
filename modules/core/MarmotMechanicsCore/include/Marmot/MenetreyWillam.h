@@ -68,7 +68,7 @@ namespace Marmot {
      *   const double fc = 10.0;
      *   auto mw = MenetreyWillam( ft , MenetreyWillamType::MohrCoulomb, fc );
      *   const HaighWestergaard::HaighWestergaardCoordinates hw = { 1.0, -10, 0 };
-     *   if ( mw.yieldCriterion( hw ) >= 0 ) 
+     *   if ( mw.yieldCriterion( hw ) >= 0 )
      *     std::cout << "Material is yielding!" << std::endl;
      *   else
      *     std::cout << "Material is elastic!" << std::endl;

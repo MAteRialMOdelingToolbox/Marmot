@@ -3,8 +3,8 @@ set(MODULE_NAME
 
 set(MODULES_DEPENDENCIES
     MarmotMechanicsCore
-    MarmotFiniteElementCore 
-    MarmotFiniteStrainMechanicsCore 
+    MarmotFiniteElementCore
+    MarmotFiniteStrainMechanicsCore
     )
 
 set(DEPENDECIES_FULLFILLED TRUE)

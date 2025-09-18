@@ -22,15 +22,15 @@ namespace Marmot {
                 F <<    J(0,0)*J(0,0),    J(0,1)*J(0,1),        2*J(0,0)*J(0,1),
                         J(1,0)*J(1,0),    J(1,1)*J(1,1),        2*J(1,0)*J(1,1),
                         J(0,0)*J(1,0),    J(0,1)*J(1,1),        J(0,0)*J(1,1)+J(0,1)*J(1,0);
-                // clang-format on 
-                 
-                return F;
-            }
-            else if ( J.cols() == 3 ){
+        // clang-format on
 
-                Matrix6d  F;
-                // clang-format off
-                F.topLeftCorner(3,3) << 
+        return F;
+      }
+      else if ( J.cols() == 3 ) {
+
+        Matrix6d F;
+        // clang-format off
+                F.topLeftCorner(3,3) <<
                     J(0,0)*J(0,0),  J(0,1)*J(0,1),  J(0,2)*J(0,2),
                     J(1,0)*J(1,0),  J(1,1)*J(1,1),  J(1,2)*J(1,2),
                     J(2,0)*J(2,0),  J(2,1)*J(2,1),  J(2,2)*J(2,2);
@@ -44,7 +44,7 @@ namespace Marmot {
                     J(0,0)*J(1,0),  J(0,1)*J(1,1),  J(0,2)*J(1,2),
                     J(0,0)*J(2,0),  J(0,1)*J(2,1),  J(0,2)*J(2,2),
                     J(1,0)*J(2,0),  J(1,1)*J(2,1),  J(1,2)*J(2,2);
-                
+
                 F.bottomRightCorner(3,3) <<
                     J(0,0)*J(1,1)+J(0,1)*J(1,0),  J(0,0)*J(1,2)+J(0,2)*J(1,0),  J(0,1)*J(1,2)+J(0,2)*J(1,1),
                     J(0,0)*J(2,1)+J(0,1)*J(2,0),  J(0,0)*J(2,2)+J(0,2)*J(2,0),  J(0,1)*J(2,2)+J(0,2)*J(2,1),
@@ -87,7 +87,7 @@ namespace Marmot {
         // clang-format off
 
                                        E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
-                                       
+
                                        E_(0,3) = xi[0] * xi[1];
                                        E_(0,4) = xi[0] * xi[2];
 
@@ -106,7 +106,7 @@ namespace Marmot {
 
         // clang-format off
                                        E_.topLeftCorner(3,3).diagonal() <<  xi[0], xi[1], xi[2];
-                                       
+
                                        E_(0,3) = xi[1] * xi[0];
                                        E_(0,4) = xi[2] * xi[0];
 
@@ -137,8 +137,8 @@ namespace Marmot {
         Matrix< double, 3, 4 > E_;
 
         // clang-format off
-                        E_ <<   xi[0],      0,      0,      0,      
-                                0,          xi[1],  0,      0,     
+                        E_ <<   xi[0],      0,      0,      0,
+                                0,          xi[1],  0,      0,
                                 0,          0,      xi[0],  xi[1];
         // clang-format on
         return E_;

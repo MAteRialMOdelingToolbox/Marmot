@@ -18,11 +18,11 @@ jobs:
     steps:
         # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with: 
-          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets 
+        with:
+          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets
           submodules: true
       - name: update submodule
-        run: | 
+        run: |
              git config --global user.email "marmot@gmail.com"
              git config --global user.name "Alpine Marmot"
              git submodule update --remote
@@ -30,4 +30,4 @@ jobs:
              git add .
              git diff-index --quiet HEAD || git commit -m "update submodules"
              git status
-             git push 
+             git push

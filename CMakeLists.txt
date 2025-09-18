@@ -1,26 +1,26 @@
 #/* ---------------------------------------------------------------------
-# *                                       _   
-# *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_ 
+# *                                       _
+# *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
 # * | '_ ` _ \ / _` | '__| '_ ` _ \ / _ \| __|
-# * | | | | | | (_| | |  | | | | | | (_) | |_ 
+# * | | | | | | (_| | |  | | | | | | (_) | |_
 # * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
-# * 
+# *
 # * Unit of Strength of Materials and Structural Analysis
-# * University of Innsbruck, 
+# * University of Innsbruck,
 # * 2020 - today
-# * 
+# *
 # * festigkeitslehre@uibk.ac.at
-# * 
+# *
 # * Matthias Neuner matthias.neuner@uibk.ac.at
 # * Magdalena Schreter magdalena.schreter@uibk.ac.at
-# * 
+# *
 # * This file is part of the MAteRialMOdellingToolbox (marmot).
 # *
 # * This library is free software; you can redistribute it and/or
 # * modify it under the terms of the GNU Lesser General Public
 # * License as published by the Free Software Foundation; either
 # * version 2.1 of the License, or (at your option) any later version.
-# * 
+# *
 # * The full text of the license can be found in the file LICENSE.md at
 # * the top level directory of marmot.
 # * ---------------------------------------------------------------------
@@ -123,7 +123,7 @@ file(GLOB publicheaders "include/Marmot/*.h")
 
 
 
-# INSTALL MODULES 
+# INSTALL MODULES
 
 MACRO(SUBDIRLIST result curdir)
   FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
@@ -136,13 +136,13 @@ MACRO(SUBDIRLIST result curdir)
   SET(${result} ${dirlist})
 ENDMACRO()
 
-get_filename_component(COREPATH ${MODULES_DIR}/core ABSOLUTE) 
-get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE) 
-get_filename_component(PARTICLESPATH ${MODULES_DIR}/particles ABSOLUTE) 
-get_filename_component(MATERIALPOINTSPATH ${MODULES_DIR}/materialpoints ABSOLUTE) 
-get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE) 
-get_filename_component(CELLSPATH ${MODULES_DIR}/cells ABSOLUTE) 
-get_filename_component(CELLELEMENTSPATH ${MODULES_DIR}/cellelements ABSOLUTE) 
+get_filename_component(COREPATH ${MODULES_DIR}/core ABSOLUTE)
+get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE)
+get_filename_component(PARTICLESPATH ${MODULES_DIR}/particles ABSOLUTE)
+get_filename_component(MATERIALPOINTSPATH ${MODULES_DIR}/materialpoints ABSOLUTE)
+get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE)
+get_filename_component(CELLSPATH ${MODULES_DIR}/cells ABSOLUTE)
+get_filename_component(CELLELEMENTSPATH ${MODULES_DIR}/cellelements ABSOLUTE)
 
 SUBDIRLIST(COREDIRS ${COREPATH})
 SUBDIRLIST(MATERIALSDIRS ${MATERIALSPATH})
@@ -156,16 +156,16 @@ set(INSTALLED_MODULES "")
 set(INSTALLED_MODULE_PATHS "")
 message("+------------------------------------------------------------------------------+")
 
-message("checking for modules in 
-${COREPATH}. 
+message("checking for modules in
+${COREPATH}.
 "       "If you want to install a Marmot Core module, make sure it is in this directory.")
 foreach(DIRNAME ${COREDIRS})
-    get_filename_component(MODULEPATH "${COREPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${COREPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED CORE_MODULES)
             set(CORE_MODULES "all")
         endif()
-        if( CORE_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CORE_MODULES) 
+        if( CORE_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CORE_MODULES)
             message("--> found ${DIRNAME}")
             list(APPEND INSTALLED_MODULES ${DIRNAME})
             list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
@@ -174,11 +174,11 @@ foreach(DIRNAME ${COREDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${MATERIALSPATH}. 
+message("Checking for modules in
+${MATERIALSPATH}.
 "       "If you want to install a Marmot Material, make sure it is in this directory.")
 foreach(DIRNAME ${MATERIALSDIRS})
-    get_filename_component(MODULEPATH "${MATERIALSPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${MATERIALSPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED MATERIAL_MODULES)
             set(MATERIAL_MODULES "all")
@@ -192,11 +192,11 @@ foreach(DIRNAME ${MATERIALSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${ELEMENTSPATH}. 
+message("Checking for modules in
+${ELEMENTSPATH}.
 "       "If you want to install a Marmot Finite Element, make sure it is in this directory.")
 foreach(DIRNAME ${ELEMENTSDIRS})
-    get_filename_component(MODULEPATH "${ELEMENTSPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${ELEMENTSPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED ELEMENT_MODULES)
             set(ELEMENT_MODULES "all")
@@ -210,11 +210,11 @@ foreach(DIRNAME ${ELEMENTSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${PARTICLESPATH}. 
+message("Checking for modules in
+${PARTICLESPATH}.
 "       "If you want to install a Marmot Particle module, make sure it is in this directory.")
 foreach(DIRNAME ${PARTICLESDIRS})
-    get_filename_component(MODULEPATH "${PARTICLESPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${PARTICLESPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED PARTICLE_MODULES)
             set(PARTICLE_MODULES "all")
@@ -228,11 +228,11 @@ foreach(DIRNAME ${PARTICLESDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${MATERIALPOINTSPATH}. 
+message("Checking for modules in
+${MATERIALPOINTSPATH}.
 "       "If you want to install a Marmot Particle module, make sure it is in this directory.")
 foreach(DIRNAME ${MATERIALPOINTSDIRS})
-    get_filename_component(MODULEPATH "${MATERIALPOINTSPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${MATERIALPOINTSPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED MATERIALPOINT_MODULES)
             set(MATERIALPOINT_MODULES "all")
@@ -246,12 +246,12 @@ foreach(DIRNAME ${MATERIALPOINTSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${CELLSPATH}. 
+message("Checking for modules in
+${CELLSPATH}.
 "       "If you want to install a Marmot Cell module, make sure it is in this directory.")
 
 foreach(DIRNAME ${CELLSDIRS})
-    get_filename_component(MODULEPATH "${CELLSPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${CELLSPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED CELL_MODULES)
             set(CELL_MODULES "all")
@@ -265,12 +265,12 @@ foreach(DIRNAME ${CELLSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Checking for modules in 
-${CELLELEMENTSPATH}. 
+message("Checking for modules in
+${CELLELEMENTSPATH}.
 "       "If you want to install a Marmot CellElement module, make sure it is in this directory.")
 
 foreach(DIRNAME ${CELLELEMENTSDIRS})
-    get_filename_component(MODULEPATH "${CELLELEMENTSPATH}/${DIRNAME}" ABSOLUTE) 
+    get_filename_component(MODULEPATH "${CELLELEMENTSPATH}/${DIRNAME}" ABSOLUTE)
     if(EXISTS ${MODULEPATH}/module.cmake)
         if (NOT DEFINED CELLELEMENT_MODULES)
             set(CELLELEMENT_MODULES "all")
@@ -284,8 +284,8 @@ foreach(DIRNAME ${CELLELEMENTSDIRS})
 endforeach(DIRNAME)
 message("+------------------------------------------------------------------------------+")
 
-message("Now check if all of your modules are listed. If one is missing in this list 
-"       "despite being present in the correct directory, also check if the module has a 
+message("Now check if all of your modules are listed. If one is missing in this list
+"       "despite being present in the correct directory, also check if the module has a
 "       "proper module.cmake file.")
 
 message("+------------------------------------------------------------------------------+")

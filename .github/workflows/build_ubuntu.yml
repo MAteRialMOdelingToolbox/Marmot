@@ -18,9 +18,9 @@ jobs:
         shell: bash -l {0}
         run: |
           git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
-          cd eigen 
+          cd eigen
           mkdir build
-          cd build 
+          cd build
           cmake -DBUILD_TESTING=OFF  ..
           sudo make install
           cd ../..
@@ -35,7 +35,7 @@ jobs:
           cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
           sudo make install
           cd ../..
-          
+
       - name: Install Fastor
         shell: bash -l {0}
         run: |
@@ -48,8 +48,8 @@ jobs:
           cd ../..
 
       - uses: actions/checkout@v3
-        with: 
-          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets 
+        with:
+          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets
           submodules: true
 
       - name: Install Marmot
