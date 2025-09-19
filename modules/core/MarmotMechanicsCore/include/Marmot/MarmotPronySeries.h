@@ -95,16 +95,16 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
  * generalized Maxwell (Prony series) viscoelastic material, and optionally
  * updates the internal state variables.
  *
- * The stress is updated as
+ * In what follows we use indicial notation without the Einstein summation over repeated indices except explicitly stated. The stress is updated as
  * \f[
- *   \sigma^{k+1}_{ij} \;+=\; C^\infty_{ijkl} \, \Delta \varepsilon_{kl}
+ *   \sigma^{k+1}_{ij} =\; \sum_{k,l}C^\infty_{ijkl} \Delta \varepsilon_{kl}
  *          \;+\; \sum_{\mu=1}^{M} \left[
- *              \frac{\eta^\mu - \eta^\mu e^{-\Delta t / \tau^\mu}}{\Delta t}\,\Delta\varepsilon_{kl}
- *              \;-\; (\sigma^{ve,k}_{kl} - e^{-\Delta t/\tau^\mu} \sigma^{ve,k}_{kl})
+ *              \sum_{k,l}\eta^\mu_{ijkl}\left(1 - e^{-\Delta t / \tau^{\mu}_{ij}}\right)\frac{\Delta\varepsilon_{kl}}{\Delta t}
+ *              \;-\; \sigma^{ve,\mu}_{ij}\left(1 - e^{-\Delta t/\tau^\mu_{ij}}\right)
  *          \right],
- * \f]
- * where \f$C^\infty_{ijkl}\f$ is the ultimate stiffness, \f$\tau^\mu\f$ the relaxation
- * times, \f$\eta^\mu = \tau^\mu C^\mu_{ijkl}\f$ the effective viscosities, and \f$\sigma^{ve,k}_{kl}\f$
+ * \f] 
+ * where \f$C^\infty_{ijkl}\f$ is the ultimate stiffness, \f$\tau^\mu_{ij}\f$ the relaxation
+ * times for each strain component, \f$\eta^\mu_{ijkl} = \tau^\mu_{ij} C^\mu_{ijkl}\f$ the effective viscosities, and \f$\sigma^{ve,k}_{kl}\f$
  * the internal state variables.
  *
  * @param[in] props Prony series material properties (relaxation times,
@@ -117,6 +117,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
  * @param[in] dT Time increment.
  * @param[in] updateStateVars If true, update the state variables for the next step.
  */
+
     void evaluatePronySeries( const Properties&               props,
                               Vector6d&                       stress,
                               Matrix6d&                       stiffness,
@@ -128,12 +129,14 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
  * @brief Update the Prony series state variables.
  *
  * Propagates the internal viscoelastic state variables
- * \f$\sigma^{ve,k}_{kl}\f$ from time step \f$t^k\f$ to \f$t^{k+1}\f$ according to
+ *
+ * In what follows we don't use the Einstein summation over repeated indices, the products are to be taken as hadamard products except otherwise stated.
+ * \f$\sigma^{ve,\mu,k}_{kl}\f$ from time step \f$t^k\f$ to \f$t^{k+1}\f$ according to
  * \f[
- *   \sigma^{ve,k+1}_{kl} = e^{-\Delta t / \tau^\mu}\, \sigma^{ve,k}_{kl}
- *             + \left( \frac{\eta^\mu}{\Delta t}(1 - e^{-\Delta t / \tau^\mu}) \right)\Delta\varepsilon_{kl},
+ *   \sigma^{ve,\mu,k+1}_{kl} = e^{-\Delta t / \tau^\mu_{ij}}\, \sigma^{ve,\mu,k}_{kl}
+ *             + \sum_{k,l}\left( \frac{\eta^\mu_{ijkl}}{\Delta t}(1 - e^{-\Delta t / \tau^\mu_{ij}}) \right)\Delta\varepsilon_{kl},
  * \f]
- * where \f$\tau^\mu\f$ are the relaxation times and \f$\eta^\mu = \tau^\mu C^\mu_{ijkl}\f$.
+ * where \f$\tau^\mu_{ij}\f$ are the relaxation times and \f$\eta^\mu_{ij} = \tau^\mu_{ij} C^\mu_{ijkl}\f$.
  *
  * @param[in] props Prony series material properties (relaxation times,
  *                  stiffnesses, and number of terms).
