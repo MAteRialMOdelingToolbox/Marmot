@@ -3,56 +3,95 @@ Compressible Neo Hooke model
 
 Theory
 ------
-Background
-..........
-This is a standard hyperelastic baseline used to model moderately large deformations
-with a simple, robust constitutive response. We adopt an isochoric–volumetric split
-so that shear and volume changes are controlled independently by shear and bulk
-moduli. No history variables are involved (purely elastic), which makes the model
-fast and stable; it is also the elastic core used by several inelastic models.
 
-Kinematics
-..........
-With deformation gradient :math:`\mathbf F`, define the right Cauchy–Green tensor
-:math:`\mathbf C=\mathbf F^\mathrm T \mathbf F` and the Jacobian :math:`J=\det\mathbf F`.
+Hyperelastic materials are a class of constitutive models used to describe the elastic behavior of solids. 
+They postulate a strain-energy density function :math:`\Psi` from which stresses are obtained by differentiation with
+respect to appropriate strain measures.
+In finite strains we take :math:`\Psi=\Psi(\mathbf C)`, where the deformation
+gradient is :math:`\mathbf F`, the right Cauchy–Green tensor is :math:`\mathbf C=\mathbf F^{\mathsf T}\mathbf F`, and the Jacobian is
+:math:`J=\det\mathbf F`. The first invariant is :math:`I_1=\operatorname{tr}\mathbf C`.
 
-Strain energy and stresses
-..........................
-We use a compressible Neo-Hookean energy of the form
+The model implemented here is a compressible Neo-Hookean material with the Pence–Gou potential (variant B).
+An isochoric–volumetric split is defined by
 
 .. math::
 
-   \Psi(\mathbf C) \;=\; \tfrac{K}{2}\,\bigl(J-1\bigr)^2 \;+\; G\bigl(J^{-2/3}\,I_1(\mathbf C)-3\bigr),
+   \Psi(\mathbf C)
+   =
+   \Psi_d(I_1,J) + \Psi_h(J)
+   =
+   \frac{G}{2}\,\big(I_1\,J^{-2/3}-3\big)
+   +
+   \frac{K}{8}\,\big(J - J^{-1}\big)^2,
 
-with bulk modulus :math:`K`, shear modulus :math:`G`, and
-:math:`I_1(\mathbf C)=\mathrm{tr}\,\mathbf C`.
-The stresses follow from standard hyperelastic relations:
+where :math:`G` is the shear modulus and :math:`K` is the bulk modulus.
+
+The second Piola-Kirchhoff stress tensor follows from the potential as
 
 .. math::
 
-   \mathbf S \,=\, 2\,\frac{\partial \Psi}{\partial \mathbf C}, \qquad
-   \boldsymbol\tau \,=\, \mathbf F\,\mathbf S\,\mathbf F^\mathrm T,
+   \mathbf S = 2\,\frac{\partial \Psi}{\partial \mathbf C}.
 
-where :math:`\mathbf S` is the second Piola–Kirchhoff stress and
-:math:`\boldsymbol\tau` the Kirchhoff stress.
 
-Consistent tangent
-..................
-The FE solver uses the algorithmic (consistent) tangent
-:math:`\partial \boldsymbol\tau / \partial \mathbf F` derived from :math:`\Psi(\mathbf C)`.
-Because the model is purely elastic, no state updates are performed.
+The Kirchhoff and Cauchy stress tensors are obtained by push-forward:
 
-Material parameters and output
-..............................
-- Parameters: :math:`K` (bulk), :math:`G` (shear).
-- State: none.
-- Output per step: :math:`\boldsymbol\tau`, elastic energy density, consistent tangent.
+.. math::
 
-Notes
-.....
-A compact summary of this elastic baseline and its role inside finite-strain updates
-is given in Dummer et al. (2024, CMA), which we follow for consistency with the
-inelastic framework.
+   \boldsymbol{\tau} = \mathbf F\,\mathbf S\,\mathbf F^{\mathsf T},
+
+.. math::
+
+   \boldsymbol{\sigma} = J^{-1}\,\boldsymbol{\tau}.
+
+
+By using the chain rule, the first derivative of :math:`\Psi` with respect to :math:`\mathbf C` is
+
+.. math::
+
+   \frac{\partial \Psi}{\partial \mathbf C}
+   =
+   \frac{\partial \Psi}{\partial J}\,\frac{\partial J}{\partial \mathbf C}
+   +
+   \frac{\partial \Psi}{\partial I_1}\,\frac{\partial I_1}{\partial \mathbf C}
+   =
+   \Big[
+     \frac{K}{4}\,(J - J^{-1})\!\left(1+\frac{1}{J^{2}}\right)
+     - \frac{G}{3}\,I_1\,J^{-5/3}
+   \Big]\,
+   \frac{J}{2}\,\mathbf C^{-{\mathsf T}}
+   +
+   \frac{G}{2}\,J^{-2/3}\,\mathbf I.
+
+The resulting second Piola–Kirchhoff stress used in the implementation is
+
+.. math::
+
+   \mathbf S
+   =
+   G\,J^{-2/3}\Big(\mathbf I - \tfrac{1}{3}\,I_1\,\mathbf C^{-1}\Big)
+   +
+   \frac{K}{4}\,\big(J^{2}-J^{-2}\big)\,\mathbf C^{-1}.
+
+The second derivative of :math:`\Psi` with respect to :math:`\mathbf C` is
+
+.. math::
+
+   \frac{\partial^{2}\Psi}{\partial \mathbf C\,\partial \mathbf C}
+   =
+   \frac{\partial^{2}\Psi}{\partial J^{2}}\,
+   \frac{\partial J}{\partial \mathbf C}\otimes\frac{\partial J}{\partial \mathbf C}
+   +
+   \frac{\partial \Psi}{\partial J}\,
+   \frac{\partial^{2} J}{\partial \mathbf C\,\partial \mathbf C}
+   +
+   \frac{\partial^{2}\Psi}{\partial J\,\partial I_1}
+   \left(
+     \frac{\partial J}{\partial \mathbf C}\otimes\frac{\partial I_1}{\partial \mathbf C}
+     +
+     \frac{\partial I_1}{\partial \mathbf C}\otimes\frac{\partial J}{\partial \mathbf C}
+   \right).
+
+For infinitesimal strains this model reduces to linear isotropic elasticity.
 
 
 Implementation

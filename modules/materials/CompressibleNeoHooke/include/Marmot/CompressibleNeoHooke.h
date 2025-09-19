@@ -35,7 +35,7 @@ namespace Marmot::Materials {
    * \class Marmot::Materials::CompressibleNeoHooke
    * \brief Compressible Neo-Hookean hyperelastic material model (Pence–Gou potential, variant B).
    *
-   * \par Material parameters 
+   * \par Material parameters
    * - \b K - bulk modulus
    * - \b G - shear modulus
    *
@@ -63,18 +63,18 @@ namespace Marmot::Materials {
     /**
      * \brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
      *
-     * @param[in,out] response  
+     * @param[in,out] response
      *   - `tau` - Kirchhoff stress tensor \f$\boldsymbol{\tau}\f$.
      *   - `elasticEnergyDensity` - elastic energy density  \f$\psi\f$.
-     *   - `rho` - density (set to 1.0 here).  
+     *   - `rho` - density (unused here).
      * @param[in,out] tangents
      *   - `dTau_dF` - algorithmic tangent \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$.
      * @param[in]  deformation
-     *   - `F` - deformation gradient \f$\mathbf{F}\f$.  
-     * @param[in]  timeIncrement  
+     *   - `F` - deformation gradient \f$\mathbf{F}\f$.
+     * @param[in]  timeIncrement
      *   - `t` - old (pseudo-)time.
      *   - `dT`- (pseudo-)time increment.
-     *   
+     *
      * Template parameter `<3>` indicates 3D.
      */
 
@@ -83,9 +83,12 @@ namespace Marmot::Materials {
                         const Deformation< 3 >&,
                         const TimeIncrement& );
 
-    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; } /**< Get number of required state variables (always returns 0 here). */
+    int getNumberOfRequiredStateVars()
+    {
+      return this->nStateVarsRequired;
+    } /**< Get number of required state variables (always returns 0 here). */
 
-    /** \brief Attach external state storage (unused for this model; required for the interface).
+    /** \brief Bind external state storage (unused for this model; required for the interface).
      *  \param stateVars Pointer to a contiguous array provided by the caller for internal state.
      *  \param nStateVars Number of entries in that array.
      */
