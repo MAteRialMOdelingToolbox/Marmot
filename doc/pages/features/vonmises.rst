@@ -1,8 +1,11 @@
+.. _vonMisesModel:
+
 Von Mises model
 ===============
 
 Theory
 ------
+
 
 Elastoplastic Constitutive Relations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -32,14 +35,17 @@ is given as
 .. math:: f\left(\boldsymbol{\sigma},\kappa\right)
    = \sqrt{s_{ij}s_{ij}}-\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\kappa\right),
 
-where :math:`f_\mathrm{y}\left(\kappa\right)` is the yield stress under uniaxial tension, which depends on the hardening variable :math:`\kappa`.
+where :math:`f_\mathrm{y}\left(\kappa\right)` is the yield stress under uniaxial tension, which may depend on the hardening variable :math:`\kappa`.
 
 Flow Rule
 ^^^^^^^^^
 
 The model encompasses associated plastic flow, i.e., the plastic strain rate
 
-.. math:: \dot{\varepsilon}^\mathrm{p}_{ij}=\dot{\lambda}\frac{\partial{}f}{\partial{}\sigma_{ij}}
+.. math:: \dot{\varepsilon}^\mathrm{p}_{ij}
+   = \dot{\lambda}\frac{\partial{}f}{\partial{}\sigma_{ij}}
+   = \dot{\lambda}\frac{s_{ij}}{\sqrt{s_{ij}s_{ij}}}
+   = \dot{\lambda}\boldsymbol{n}
 
 is proportional to the partial derivatives of the yield function with respect to the stress tensor.
 The plastic multiplier :math:`\dot{\lambda}` is a proportionality constant.
@@ -62,9 +68,35 @@ The evolution of the hardening variable is given as
    = \sqrt{\frac{2}{3}\dot{\varepsilon}^\mathrm{p}_{ij}\dot{\varepsilon}^\mathrm{p}_{ij}}
    = \dot{\lambda}\sqrt{\frac{2}{3}}.
 
+Therein, the factor :math:`\sqrt{\frac{2}{3}}` ensures that :math:`\dot{\kappa}=\dot{\varepsilon}^\mathrm{p}_{11}` for uniaxial loading in :math:`x_1` direction.
 
 Implementation
 --------------
+
+.. Elastic predictor stress
+..
+.. .. math:: \boldsymbol{\sigma}^\mathrm{trial}
+..    = \boldsymbol{\sigma}^n + \boldsymbol{\mathsf{C}}^\mathrm{e}:\Delta\boldsymbol{\varepsilon}
+..
+.. .. math:: \boldsymbol{s}^\mathrm{trial}
+..    = \boldsymbol{s}^n + 2G\Delta\boldsymbol{e}
+..
+.. .. math:: \boldsymbol{\sigma}^\mathrm{trial}_\mathrm{m}
+..    = \boldsymbol{\sigma}^{n}_\mathrm{m} + K\Delta{}I_{1}^{\varepsilon}
+..
+.. .. math:: \boldsymbol{s}_{n+1}
+..    = \boldsymbol{s}^n + 2G\Delta\boldsymbol{e}^\mathrm{e} = \boldsymbol{s}^\mathrm{trial}-2G\Delta\boldsymbol{e}^\mathrm{p}
+..
+.. .. math:: \kappa_{n+1}
+..    = \kappa_n+\frac{2}{3}\Delta\lambda
+..
+.. A radial return mapping algorithm is employed to find the increment of the hardening variable :math:`\Delta\kappa`.
+..
+.. .. math:: g\left(\Delta\kappa_{n+1}\right)
+..    = \| \boldsymbol{s}^\mathrm{trial} \| -\sqrt{6}G\Delta\kappa -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\Delta\kappa\right)
+..    = 0
+..
+.. To this end, the yield condition
 
 .. doxygenclass:: Marmot::Materials::VonMisesModel
    :allow-dot-graphs:
