@@ -46,7 +46,10 @@ jobs:
           cmake -DBUILD_TESTING=OFF  ..
           sudo make install
           cd ../..
-
+          
+      - name: Check out Marmot
+        uses: actions/checkout@v4
+        
       - name: Install Marmot
         shell: bash -l {0}
         run: |
