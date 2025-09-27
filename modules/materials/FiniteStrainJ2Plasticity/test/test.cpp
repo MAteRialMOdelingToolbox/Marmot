@@ -19,7 +19,7 @@ void testUndeformedResponseFullReturnMapping()
 {
   // Material properties: K, G, fy, fyInf, eta, H, implementation type, (density)
   // Implementation type: 0 - scalar return mapping (not implemented yet), 1 - full return mapping, 2 - FDAF, 3 - FDAC,
-  // 4 - CSDA; Not relevant for the current tests, as the computeStress routine directly called. 
+  // 4 - CSDA; Not relevant for the current tests, as the computeStress routine directly called.
   std::array< double, 7 > materialProperties_ = { 175000, 80800, 260, 580, 9, 70, 1 };
   const double            nMaterialProperties = 7;
   const int               elLabel             = 1;
