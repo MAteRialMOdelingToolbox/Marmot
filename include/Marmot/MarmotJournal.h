@@ -29,7 +29,7 @@
 #include <sstream>
 #include <string>
 
-/* * @class MakeString
+/** @class MakeString
  * @brief Utility class for constructing strings with stream-like syntax.
  *
  * This class allows for easy string construction using the stream insertion operator.

@@ -51,9 +51,9 @@ public:
 
   /**
    * @brief Construct a material object.
-   * @param materialProperties Pointer to array of material properties.
-   * @param nMaterialProperties Number of material properties.
-   * @param materialNumber Unique identifier for the material.
+   * @param[in] materialProperties Pointer to array of material properties.
+   * @param[in] nMaterialProperties Number of material properties.
+   * @param[in] materialNumber Unique identifier for the material.
    */
   MarmotMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -67,14 +67,14 @@ public:
 
   /**
    * @brief Assign state variable array to material.
-   * @param stateVars Pointer to state variable array.
-   * @param nStateVars Number of state variables.
+   * @param[in,out] stateVars Pointer to state variable array.
+   * @param[in] nStateVars Number of state variables.
    */
   virtual void assignStateVars( double* stateVars, int nStateVars );
 
   /**
    * @brief Access material state variables by name.
-   * @param stateName Name of the requested state variable.
+   * @param[in] stateName Name of the requested state variable.
    * @return A view into the state variable array.
    */
   virtual StateView getStateView( const std::string& stateName ) = 0;

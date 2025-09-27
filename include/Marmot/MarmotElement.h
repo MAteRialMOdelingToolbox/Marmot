@@ -47,9 +47,9 @@ class MarmotElement {
 public:
   /** @brief Types of element state variables used in initialization and output. */
   enum StateTypes {
-    Sigma11,                     ///< Stress component \f$\sigma_{11}\f$
-    Sigma22,                     ///< Stress component \f$\sigma_{22}\f$
-    Sigma33,                     ///< Stress component \f$\sigma_{33}\f$
+    Sigma11,                     ///< Stress component \f$\\sigma_{11}\\f$
+    Sigma22,                     ///< Stress component \f$\\sigma_{22}\\f$
+    Sigma33,                     ///< Stress component \f$\\sigma_{33}\\f$
     HydrostaticStress,           ///< Hydrostatic stress state
     GeostaticStress,             ///< Geostatic stress state
     MarmotMaterialStateVars,     ///< Generic material state variables
@@ -95,26 +95,26 @@ public:
 
   /**
    * @brief Assign state variable array to element.
-   * @param stateVars Pointer to state variable array.
-   * @param nStateVars Number of state variables.
+   * @param[in,out] stateVars Pointer to state variable array.
+   * @param[in] nStateVars Number of state variables.
    */
   virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 
   /**
    * @brief Assign element property set.
-   * @param property Element property object containing material, geometry, etc.
+   * @param[in] property Element property object containing material, geometry, etc.
    */
   virtual void assignProperty( const ElementProperties& property );
 
   /**
    * @brief Assign material section property.
-   * @param property Material section definition (e.g. cross-sectional data).
+   * @param[in] property Material section definition (e.g. cross-sectional data).
    */
   virtual void assignProperty( const MarmotMaterialSection& property );
 
   /**
    * @brief Assign nodal coordinates to element.
-   * @param coordinates Pointer to array of nodal coordinates.
+   * @param[in] coordinates Pointer to array of nodal coordinates.
    */
   virtual void assignNodeCoordinates( const double* coordinates ) = 0;
 
@@ -123,20 +123,20 @@ public:
 
   /**
    * @brief Apply initial conditions to the element.
-   * @param state State type to be set.
-   * @param values Array of initial values.
+   * @param[in] state State type to be set.
+   * @param[in] values Array of initial values.
    */
   virtual void setInitialConditions( StateTypes state, const double* values ) = 0;
 
   /**
    * @brief Perform element computations (stiffness, residual, etc.).
-   * @param QTotal Total dof vector.
-   * @param dQ Incremental dof vector.
-   * @param Pint Internal force vector (output).
-   * @param K Stiffness matrix (output).
-   * @param time Current time.
-   * @param dT Time step size.
-   * @param pNewdT Suggested new time step size (output).
+   * @param[in] QTotal Total dof vector.
+   * @param[in] dQ Incremental dof vector.
+   * @param[out] Pint Internal force vector.
+   * @param[out] K Stiffness matrix.
+   * @param[in] time Current time.
+   * @param[in] dT Time step size.
+   * @param[out] pNewdT Suggested new time step size.
    */
   virtual void computeYourself( const double* QTotal,
                                 const double* dQ,
@@ -148,14 +148,14 @@ public:
 
   /**
    * @brief Compute contribution from distributed surface loads.
-   * @param loadType Type of load.
-   * @param Pext External load vector (output).
-   * @param K Stiffness matrix (output).
-   * @param elementFace Index of element face.
-   * @param load Applied load values.
-   * @param QTotal Total displacement vector.
-   * @param time Current time.
-   * @param dT Time step size.
+   * @param[in] loadType Type of load.
+   * @param[out] Pext External load vector.
+   * @param[out] K Stiffness matrix.
+   * @param[in] elementFace Index of element face.
+   * @param[in] load Applied load values.
+   * @param[in] QTotal Total dof vector.
+   * @param[in] time Current time.
+   * @param[in] dT Time step size.
    */
   virtual void computeDistributedLoad( DistributedLoadTypes loadType,
                                        double*              Pext,
@@ -168,12 +168,12 @@ public:
 
   /**
    * @brief Compute contribution from body forces.
-   * @param Pext External load vector (output).
-   * @param K Stiffness matrix (output).
-   * @param load Body force vector.
-   * @param QTotal Total displacement vector.
-   * @param time Current time.
-   * @param dT Time step size.
+   * @param[out] Pext External load vector.
+   * @param[out] K Stiffness matrix.
+   * @param[in] load Body force vector.
+   * @param[in] QTotal Total displacement vector.
+   * @param[in] time Current time.
+   * @param[in] dT Time step size.
    */
   virtual void computeBodyForce( double*       Pext,
                                  double*       K,
@@ -184,7 +184,7 @@ public:
 
   /**
    * @brief Compute lumped inertia matrix.
-   * @param I Inertia matrix (output).
+   * @param[out] I Inertia matrix.
    * @note Default implementation throws an exception.
    */
   virtual void computeLumpedInertia( double* I )
@@ -194,7 +194,7 @@ public:
 
   /**
    * @brief Compute consistent inertia matrix.
-   * @param I Inertia matrix (output).
+   * @param[out] I Inertia matrix.
    * @note Default implementation throws an exception.
    */
   virtual void computeConsistentInertia( double* I )
@@ -204,8 +204,8 @@ public:
 
   /**
    * @brief Access element state at a quadrature point.
-   * @param stateName Name of the state variable.
-   * @param quadraturePoint Index of quadrature point.
+   * @param[in] stateName Name of the state variable.
+   * @param[in] quadraturePoint Index of quadrature point.
    * @return View into state variable.
    */
   virtual StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;

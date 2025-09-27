@@ -27,7 +27,7 @@
  */
 #pragma once
 
-/* * @struct MarmotMaterialSection
+/** @struct MarmotMaterialSection
  * @brief Structure to hold material section properties.
  *
  * This structure is used to define a material section with its code and properties,
@@ -45,7 +45,7 @@ public:
       nMaterialProperties( nMaterialProperties ){};
 };
 
-/* * @struct ElementProperties
+/** @struct ElementProperties
  * @brief Structure to hold element properties.
  *
  * This structure is used to define properties of a finite element,

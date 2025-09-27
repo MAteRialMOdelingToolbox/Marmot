@@ -52,17 +52,17 @@ namespace MarmotLibrary {
 
     /**
      * @brief Get the unique material code from its name.
-     * @param materialName Name of the material.
+     * @param[in] materialName Name of the material.
      * @return Unique code associated with the material name, or -1 if not found.
      */
     static int getMaterialCodeFromName( const std::string& materialName );
 
     /**
      * @brief Create a material instance based on its code and properties.
-     * @param materialCode Unique code for the material.
-     * @param materialProperties Array of material properties.
-     * @param nMaterialProperties Number of properties in the array.
-     * @param materialNumber Unique identifier for the material instance.
+     * @param[in] materialCode Unique code for the material.
+     * @param[in] materialProperties Array of material properties.
+     * @param[in] nMaterialProperties Number of properties in the array.
+     * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
     static MarmotMaterial* createMaterial( int           materialCode,
@@ -72,9 +72,9 @@ namespace MarmotLibrary {
 
     /**
      * @brief Register a material with its code and factory function.
-     * @param materialCode Unique code for the material.
-     * @param materialName Name of the material.
-     * @param factoryFunction Function to create material instances.
+     * @param[in] materialCode Unique code for the material.
+     * @param[in] materialName Name of the material.
+     * @param[in] factoryFunction Function to create material instances.
      * @return True if registration was successful, false if the code already exists.
      */
     static bool registerMaterial( int                     materialCode,
@@ -100,24 +100,24 @@ namespace MarmotLibrary {
 
     /**
      * @brief Get the unique element code from its name.
-     * @param elementName Name of the element.
+     * @param[in] elementName Name of the element.
      * @return Unique code associated with the element name, or throws an exception if not found.
      */
     static int getElementCodeFromName( const std::string& elementName );
 
     /**
      * @brief Create an element instance based on its code and number.
-     * @param elementCode Unique code for the element.
-     * @param elementNumber Unique identifier for the element instance.
+     * @param[in] elementCode Unique code for the element.
+     * @param[in] elementNumber Unique identifier for the element instance.
      * @return Pointer to the created MarmotElement instance, or nullptr if creation failed.
      */
     static MarmotElement* createElement( int elementCode, int elementNumber );
 
     /**
      * @brief Register an element with its code and factory function.
-     * @param elementName Name of the element.
-     * @param elementCode Unique code for the element.
-     * @param factoryFunction Function to create element instances.
+     * @param[in] elementName Name of the element.
+     * @param[in] elementCode Unique code for the element.
+     * @param[in] factoryFunction Function to create element instances.
      * @return True if registration was successful, false if the code already exists.
      */
     static bool registerElement( const std::string&     elementName,

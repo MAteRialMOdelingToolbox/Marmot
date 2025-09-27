@@ -6,7 +6,7 @@ Requirements
 
 Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library,
 autodiff `autodiff <github.com/autodiff/autodiff>`_,
-and potentially `Fastor <https://github.com/romeric/Fastor>`_, depending on the requested modules.
+and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
@@ -48,7 +48,7 @@ Restart shell and activate conda
 
     export MARMOTROOT=$PWD
     conda activate
-    mamba install cmake make compilers 
+    mamba install cmake make compilers
 
 Get Eigen:
 
@@ -112,5 +112,5 @@ Get Marmot:
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
         ..
     make install
-    ctest --output-on-failure 
+    ctest --output-on-failure
 
