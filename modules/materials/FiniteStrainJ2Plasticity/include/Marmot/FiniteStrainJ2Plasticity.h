@@ -199,7 +199,7 @@ namespace Marmot::Materials {
 
       /** \brief Bind the manager to an external contiguous buffer holding (\c Fp,\c alphaP). */
       FiniteStrainJ2PlasticityStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), Fp( &find( "Fp" ) ), alphaP( find( "alphaP" ) ) {};
+        : MarmotStateVarVectorManager( theStateVarVector, layout ), Fp( &find( "Fp" ) ), alphaP( find( "alphaP" ) ){};
     };
     std::unique_ptr< FiniteStrainJ2PlasticityStateVarManager > stateVars;
 
