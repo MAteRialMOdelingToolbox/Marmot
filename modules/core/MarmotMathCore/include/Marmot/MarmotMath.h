@@ -310,7 +310,7 @@ namespace Marmot {
         fS.col( i ) = 1. / ( 2. * h ) * ( fRate( rightX, fRateArgs... ) - fRate( leftX, fRateArgs... ) );
       }
 
-      return yN + ( Iy - dt * fS ).colPivHouseholderQr.solve( Iy ) * dt * fRate( yN, fRateArgs... );
+      return yN + ( Iy - dt * fS ).colPivHouseholderQr().solve( Iy ) * dt * fRate( yN, fRateArgs... );
     }
 
     /**
