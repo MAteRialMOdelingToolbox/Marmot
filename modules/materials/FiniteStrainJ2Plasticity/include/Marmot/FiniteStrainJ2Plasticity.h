@@ -55,6 +55,9 @@ namespace Marmot::Materials {
     // implementation
     const int implementationType;
 
+    // mass properties;
+    const double density;
+
     FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
     void computeStress( ConstitutiveResponse< 3 >& response,
@@ -81,7 +84,10 @@ namespace Marmot::Materials {
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
-    int  getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
+
+    int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
+
+    double getDensity() { return density; }
 
     class FiniteStrainJ2PlasticityStateVarManager : public MarmotStateVarVectorManager {
 
