@@ -104,6 +104,28 @@ namespace Marmot {
       return voigtPlane;
     }
 
+    Vector4d voigtToAxisymmetricVoigt( const Vector6d& voigt )
+    {
+      // Converts full 3D Voigt vector to axisymmetric Voigt vector
+      /* Assumes Voigt order:
+         [0] ε_rr
+         [1] ε_zz
+         [2] ε_θθ
+         [3] γ_rz
+         [4] γ_rθ (ignored)
+         [5] γ_zθ (ignored)
+
+         Axisymmetric Voigt order:
+         [0] ε_rr
+         [1] ε_zz
+         [2] ε_θθ
+         [3] γ_rz
+      */
+      Vector4d voigtAxisym;
+      voigtAxisym << voigt[0], voigt[1], voigt[2], voigt[3];
+      return voigtAxisym;
+    }
+
     Vector6d planeVoigtToVoigt( const Vector3d& voigtPlane )
     {
       /* converts a 3d voigt Vector with notation
@@ -112,6 +134,20 @@ namespace Marmot {
          !!! Don't use if 3rd component is NOT ZERO !!!*/
       Vector6d voigt;
       voigt << voigtPlane[0], voigtPlane[1], 0, voigtPlane[2], 0, 0;
+      return voigt;
+    }
+
+    Vector6d axisymmetricVoigtToVoigt( const Vector4d& voigtAxisymmetric )
+    {
+      // Input: ε_rr, ε_zz, ε_tt (θθ), γ_rz
+      // Output: ε_rr, ε_zz, ε_tt, γ_rz, 0, 0
+      Vector6d voigt;
+      voigt << voigtAxisymmetric[0], // ε_rr
+        voigtAxisymmetric[1],        // ε_zz
+        voigtAxisymmetric[2],        // ε_θθ
+        voigtAxisymmetric[3],        // γ_rz
+        0.0,                         // γ_rθ
+        0.0;                         // γ_zθ
       return voigt;
     }
 
