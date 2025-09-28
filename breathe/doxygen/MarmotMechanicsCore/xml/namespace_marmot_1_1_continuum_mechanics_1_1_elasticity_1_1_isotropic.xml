@@ -20,7 +20,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic young&apos;s modulus E from the compression modulus K and shear modulus G   <formula id="133">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
+<para>Computes the isotropic young&apos;s modulus E from the compression modulus K and shear modulus G   <formula id="41">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -44,7 +44,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic poisson&apos;s ratio <formula id="134">$ \nu $</formula> from the compression modulus K and shear modulus G   <formula id="135">\[ \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
+<para>Computes the isotropic poisson&apos;s ratio <formula id="42">$ \nu $</formula> from the compression modulus K and shear modulus G   <formula id="43">\[ \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -68,7 +68,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic shear modulus G from the young&apos;s modulus E and poisson&apos;s ratio <formula id="134">$ \nu $</formula>.   <formula id="136">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
+<para>Computes the isotropic shear modulus G from the young&apos;s modulus E and poisson&apos;s ratio <formula id="42">$ \nu $</formula>.   <formula id="44">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -92,8 +92,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic lame parameter <formula id="137">$ \lambda $</formula> from the young&apos;s modulus E and poisson&apos;s ratio  <formula id="138">$ \nu
-$</formula>   <formula id="139">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
+<para>Computes the isotropic lame parameter <formula id="45">$ \lambda $</formula> from the young&apos;s modulus E and poisson&apos;s ratio  <formula id="46">$ \nu
+$</formula>   <formula id="47">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -117,7 +117,7 @@ $</formula>   <formula id="139">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic compliance tensor:          <formula id="140">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para>Computes the isotropic compliance tensor:          <formula id="48">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\
@@ -126,8 +126,8 @@ $</formula>   <formula id="139">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \
           0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G}
            \end{bmatrix}
 \]</formula></para>
-<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="134">$ \nu $</formula> with</para>
-<para><formula id="136">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
+<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="42">$ \nu $</formula> with</para>
+<para><formula id="44">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -151,7 +151,7 @@ $</formula>   <formula id="139">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic stiffness tensor:          <formula id="141">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
+<para>Computes the isotropic stiffness tensor:          <formula id="49">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
                                 1 &amp; \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                             \frac{\nu}{1-\nu} &amp; 1 &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                       \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
@@ -160,7 +160,7 @@ $</formula>   <formula id="139">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \
                                       0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1-2\,\nu}{2\,(1-\nu)}
                                  \end{bmatrix}
 \]</formula></para>
-<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="134">$ \nu $</formula>. </para>
+<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="42">$ \nu $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

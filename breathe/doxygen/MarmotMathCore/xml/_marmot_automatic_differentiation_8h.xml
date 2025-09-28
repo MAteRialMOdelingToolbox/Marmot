@@ -41,7 +41,6 @@
     </invincdepgraph>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_automatic_differentiation">Marmot::AutomaticDifferentiation</innernamespace>
-    <innernamespace refid="namespaceautodiff">autodiff</innernamespace>
     <innernamespace refid="namespace_eigen">Eigen</innernamespace>
     <briefdescription>
     </briefdescription>

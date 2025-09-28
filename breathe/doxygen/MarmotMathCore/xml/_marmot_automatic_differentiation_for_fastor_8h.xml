@@ -109,6 +109,7 @@
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_automatic_differentiation">Marmot::AutomaticDifferentiation</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_automatic_differentiation_1_1_second_order">Marmot::AutomaticDifferentiation::SecondOrder</innernamespace>
+    <innernamespace refid="namespaceautodiff">autodiff</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

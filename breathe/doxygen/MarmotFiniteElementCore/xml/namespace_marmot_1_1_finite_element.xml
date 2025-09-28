@@ -304,6 +304,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="31" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="34" column="3"/>
   </compounddef>
 </doxygen>

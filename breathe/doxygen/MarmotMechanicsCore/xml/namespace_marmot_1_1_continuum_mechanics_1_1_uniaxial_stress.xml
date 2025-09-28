@@ -16,13 +16,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Extract the uniaxial stress-strain tangent <formula id="175">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> from a given three-dimensional stiffness matrix.</para>
+<para>Extract the uniaxial stress-strain tangent <formula id="31">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> from a given three-dimensional stiffness matrix.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix <formula id="176">$\mathbb{C}$</formula> given in Voigt notation. </para>
+<para>3D stiffness matrix <formula id="32">$\mathbb{C}$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

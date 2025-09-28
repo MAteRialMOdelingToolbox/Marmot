@@ -74,12 +74,16 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1ad8af416a52bd57f2eadaa0c931cd438e" kind="function"><name>deviatoric</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_automatic_differentiation" kind="namespace"><name>Marmot::AutomaticDifferentiation</name>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1aee8267e1c1d89842e73fb874cdb80d0e" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad17f2d76b0904d01b6249ada27eecdaf" kind="typedef"><name>scalar_to_scalar_function_type_2nd</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a18ea932f42e59dd7f58875216ecd49e1" kind="typedef"><name>vector_to_vector_function_type_dual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a8e858fa54bfb2c41332ce3dc7cf5e45c" kind="typedef"><name>vector_to_vector_function_type_dual2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" kind="function"><name>dF_dT</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a37db7167c4a2d4cb39e61c2fec762760" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a0e33dd3b85e07ce522ba99b42af9565b" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a965d13316fe41d118591690ba5928978" kind="function"><name>valnode</name></member>
@@ -92,10 +96,6 @@
     <member refid="_marmot_automatic_differentiation_8h_1abd064183bd43fcae3cd6078f9a150ab5" kind="function"><name>df_dx</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a37fa3eec636936303f0bb6ded3b3288d" kind="function"><name>dF_dX</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1afe3a1926bfc33ef4201b9ddb3ffc3d19" kind="function"><name>dF_dX_2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" kind="function"><name>dF_dT</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_automatic_differentiation_1_1_second_order" kind="namespace"><name>Marmot::AutomaticDifferentiation::SecondOrder</name>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a81fa1bac17c8d27d45ecb414c659ce78" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
