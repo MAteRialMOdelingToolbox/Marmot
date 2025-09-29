@@ -40,10 +40,16 @@ namespace Marmot {
     namespace Elasticity::Isotropic {
 
       /**
-       * Computes the isotropic young's modulus E from the compression modulus K and shear modulus G
+       * \brief Computes the isotropic Young's modulus \f$ E \f$ from the compression modulus \f$ K \f$
+       * and shear modulus \f$ G \f$.
+       *
        *\f[
           \displaystyle E = \frac{9\,K\,G}{3\,K + G}
         \f]
+       *
+       * @param K Compression modulus \f$ K \f$.
+       * @param G Shear modulus \f$ G \f$.
+       * @return Young's modulus \f$ E \f$.
        */
       double constexpr E( const double K, const double G )
       {
@@ -51,10 +57,16 @@ namespace Marmot {
       }
 
       /**
-       * Computes the isotropic poisson's ratio \f$ \nu \f$ from the compression modulus K and shear modulus G
+       * \brief Computes the isotropic Poisson's ratio \f$ \nu \f$ from the compression modulus \f$ K \f$
+       * and shear modulus \f$ G \f$.
+       *
        *\f[
-         \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
-        \f]
+          \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
+         \f]
+       *
+       * @param K Compression modulus \f$ K \f$.
+       * @param G Shear modulus \f$ G \f$.
+       * @return Poisson's ratio \f$ \nu \f$.
        */
       double constexpr nu( const double K, const double G )
       {
@@ -62,22 +74,32 @@ namespace Marmot {
       }
 
       /**
-       * Computes the isotropic shear modulus G from the young's modulus E and poisson's ratio \f$ \nu \f$.
+       * \brief Computes the isotropic shear modulus \f$ G \f$ from the Young's modulus \f$ E \f$
+       * and Poisson's ratio \f$ \nu \f$.
+       *
        *\f[
          \displaystyle G = \frac{E}{2\,(1 + \nu)}
         \f]
-       */
+       * @param E Young's modulus \f$ E \f$.
+       * @param nu Poisson's ratio \f$ \nu \f$.
+       * @return Shear modulus \f$ G \f$.
+      */
       double constexpr shearModulus( const double E, const double nu )
       {
         return E / ( 2 * ( 1 + nu ) );
       }
 
       /**
-       * Computes the isotropic lame parameter \f$ \lambda \f$ from the young's modulus E and poisson's ratio \f$ \nu
-       \f$
+       * \brief Computes the isotropic Lamé parameter \f$ \lambda \f$ from the Young's modulus \f$ E \f$ and Poisson's
+       * ratio \f$ \nu \f$.
+       *
        *\f[
          \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
         \f]
+       *
+       * @param E Young's modulus \f$ E \f$.
+       * @param nu Poisson's ratio \f$ \nu \f$.
+       * @return Lamé parameter \f$ \lambda \f$.
        */
       double constexpr lameParameter( const double E, const double nu )
       {
@@ -85,7 +107,7 @@ namespace Marmot {
       }
 
       /**
-       *Computes the isotropic compliance tensor:
+       * \brief Computes the isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
        *\f[
          \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                         \frac{1}{E} & \frac{-\nu}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
@@ -96,17 +118,23 @@ namespace Marmot {
                   0 & 0 & 0 & 0 & 0 & \frac{1}{G}
                    \end{bmatrix}
         \f]
-
-        from the young's modulus E and the poisson's ratio \f$ \nu \f$ with
-
-        \f[
-         \displaystyle G = \frac{E}{2\,(1 + \nu)}
-        \f]
+       *
+       * with
+       *
+       * \f[
+       *   G = \frac{E}{2\,(1 + \nu)}.
+       * \f]
+       *
+       * @param E Young's modulus \f$E\f$.
+       * @param nu Poisson's ratio \f$\nu\f$.
+       * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
       Matrix6d complianceTensor( const double E, const double nu );
 
       /**
-       *Computes the isotropic stiffness tensor:
+       * \brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
+       * Young's modulus \f$E\f$ and Poisson's ratio \f$\nu\f$.
+       *
        *\f[
        \displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
                                        1 & \frac{\nu}{1-\nu} & \frac{\nu}{1-\nu} & 0 & 0 & 0 \\
@@ -118,12 +146,19 @@ namespace Marmot {
                                         \end{bmatrix}
         \f]
 
-       from the young's modulus E and the poisson's ratio \f$ \nu \f$.
-      */
+       * @param E Young's modulus \f$E\f$.
+       * @param nu Poisson's ratio \f$\nu\f$.
+       * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
+       */
       Matrix6d stiffnessTensor( const double E, const double nu );
 
       /**
-       *Computes the isotropic stiffness tensor \f$\mathbb{ C }\f$ from the bulk modulus K and the shear modulus G.
+       * \brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
+       * the bulk modulus \f$K\f$ and shear modulus \f$G\f$.
+       *
+       * @param K Bulk modulus \f$K\f$.
+       * @param G Shear modulus \f$G\f$.
+       * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
       Matrix6d stiffnessTensorKG( const double K, const double G );
 
@@ -135,7 +170,7 @@ namespace Marmot {
     namespace Elasticity::TransverseIsotropic {
 
       /**
-       *Computes the transversely isotropic compliance tensor:
+       * \brief Computes the transversely isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                        \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
@@ -146,16 +181,24 @@ namespace Marmot {
                          0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
                                           \end{bmatrix}
        \f]
-       *The isotropic plane is defined with respect to the  \f$ x_2 \f$ and \f$ x_3 \f$ axes of a local coordinate
-       system. It is computed from the young's modulus \f$ E_1 \f$, the shear modulus \f$ G_{12} \f$ and poisson's ratio
-       \f$ \nu_{12} \f$ effective out of the isotropic plane and the in - plane young's modulus \f$ E_2 \f$ and
-       poisson's ratio \f$ \nu_{23} \f$.
        *
-       *The in - plane shear modulus \f$ G_{23} \f$ can be expressed by
-
+       * The isotropic plane is defined with respect to the \f$x_2\f$–\f$x_3\f$ axes of a local coordinate system.
+       * The tensor is expressed in terms of the out-of-plane Young's modulus \f$E_1\f$, shear modulus \f$G_{12}\f$,
+       * and Poisson's ratio \f$\nu_{12}\f$, together with the in-plane Young's modulus \f$E_2\f$ and
+       * Poisson's ratio \f$\nu_{23}\f$.
+       *
+       *The in-plane shear modulus \f$ G_{23} \f$ is given by
+       *
        \f[
          \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
        \f]
+       *
+       * @param E1 Out-of-plane Young's modulus \f$E_1\f$.
+       * @param E2 In-plane Young's modulus \f$E_2\f$.
+       * @param nu12 Poisson's ratio \f$\nu_{12}\f$.
+       * @param nu23 Poisson's ratio \f$\nu_{23}\f$.
+       * @param G12 shear modulus \f$G_{12}\f$.
+       * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
       Matrix6d complianceTensor( const double E1,
                                  const double E2,
@@ -163,8 +206,15 @@ namespace Marmot {
                                  const double nu23,
                                  const double G12 );
       /**
-       * Computes the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
+       * \brief Computes the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
        * isotropic compliance tensor \f$ \mathbb{C}^{-1} \f$.
+       *
+       * @param E1 Out-of-plane Young's modulus \f$E_1\f$.
+       * @param E2 In-plane Young's modulus \f$E_2\f$.
+       * @param nu12 Poisson's ratio \f$\nu_{12}\f$.
+       * @param nu23 Poisson's ratio \f$\nu_{23}\f$.
+       * @param G12 shear modulus \f$G_{12}\f$.
+       * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
       Matrix6d stiffnessTensor( const double E1,
                                 const double E2,
@@ -178,8 +228,9 @@ namespace Marmot {
      */
     namespace Elasticity::Orthotropic {
       /**
-       *Computes the orthotropic compliance tensor defined in the principal directions of the material \f$ x_1 \f$, \f$
-       x_2 \f$ and \f$ x_3 \f$ :
+       * \brief Computes the orthotropic compliance tensor \f$\mathbb{C}^{-1}\f$,
+       * defined in the principal material directions \f$x_1\f$, \f$x_2\f$, and \f$x_3\f$.
+       *
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                          \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{13}}{E_3} & 0 & 0 & 0 \\
@@ -190,19 +241,17 @@ namespace Marmot {
                        0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}
                          \end{bmatrix}
         \f]
-       *from the following independent parameters:
-       *<table>
-       *<tr><th>Parameter        <th>Description
-       *<tr><td>\f$ E_1 \f$      <td> Young's modulus effective in \f$ x_1 \f$ - direction
-       *<tr><td>\f$ E_2 \f$      <td> Young's modulus effective in \f$ x_2 \f$ - direction
-       *<tr><td>\f$ E_3 \f$ 	 <td> Young's modulus effective in \f$ x_3 \f$ - direction
-       *<tr><td>\f$ \nu_{12} \f$ <td> Poisson's ratio effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction
-       *<tr><td>\f$ \nu_{13} \f$ <td> Poisson's ratio effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction
-       *<tr><td>\f$ \nu_{23} \f$ <td> Poisson's ratio effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction
-       *<tr><td>\f$ G_{12} \f$ <td> Shear modulus effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction
-       *<tr><td>\f$ G_{13} \f$ <td> Shear modulus effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction
-       *<tr><td>\f$ G_{23} \f$ <td> Shear modulus effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction
-       *</table>
+       *
+       * @param E1 Young's modulus \f$E_1\f$ in \f$ x_1 \f$ - direction.
+       * @param E2 Young's modulus \f$E_2\f$ in \f$ x_2 \f$ - direction.
+       * @param E3 Young's modulus \f$E_3\f$ in \f$ x_3 \f$ - direction.
+       * @param nu12 Poisson's ratio \f$\nu_{12}\f$ effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction.
+       * @param nu23 Poisson's ratio \f$\nu_{23}\f$ effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction.
+       * @param nu13 Poisson's ratio \f$\nu_{13}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
+       * @param G12 Shear modulus \f$G_{12}\f$ effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction.
+       * @param G23 Shear modulus \f$G_{23}\f$ effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction.
+       * @param G31 Shear modulus \f$G_{31}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
+       * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
       Matrix6d complianceTensor( const double E1,
                                  const double E2,
@@ -214,8 +263,20 @@ namespace Marmot {
                                  const double G23,
                                  const double G31 );
       /**
-       * Computes the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance tensor
+       * \brief Computes the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance
+       * tensor
        * \f$ \mathbb{C}^{-1} \f$.
+       *
+       * @param E1 Young's modulus \f$E_1\f$ in \f$ x_1 \f$ - direction.
+       * @param E2 Young's modulus \f$E_2\f$ in \f$ x_2 \f$ - direction.
+       * @param E3 Young's modulus \f$E_3\f$ in \f$ x_3 \f$ - direction.
+       * @param nu12 Poisson's ratio \f$\nu_{12}\f$ effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction.
+       * @param nu23 Poisson's ratio \f$\nu_{23}\f$ effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction.
+       * @param nu13 Poisson's ratio \f$\nu_{13}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
+       * @param G12 Shear modulus \f$G_{12}\f$ effective between \f$ x_1 \f$ and \f$ x_2 \f$ - direction.
+       * @param G23 Shear modulus \f$G_{23}\f$ effective between \f$ x_2 \f$ and \f$ x_3 \f$ - direction.
+       * @param G31 Shear modulus \f$G_{31}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
+       * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
       Matrix6d stiffnessTensor( const double E1,
                                 const double E2,

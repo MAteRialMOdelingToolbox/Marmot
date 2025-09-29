@@ -35,9 +35,9 @@ namespace Marmot {
       struct ExponentialMapFailed : std::exception {};
 
       /**
-       * @brief Compute the matrix exponential of a square tensor.
+       * @brief Computes the exponential of a square second rank tensor
        *
-       * Evaluates exp(@p theTensor) using a series expansion up to
+       * @details Evaluates exp(@p theTensor) using a series expansion up to
        * @p maxIterations or until the terms converge below @p tolerance.
        *
        * @tparam T Element type of the tensor.
@@ -106,7 +106,7 @@ namespace Marmot {
       };
 
       namespace FirstOrderDerived {
-        /// @brief Compute the matrix exponential and its first-order derivative.
+        /// @brief Computes the exponential of a square second rank tensor and its first-order derivative.
         /// @details See the documentation of `computeTensorExponential` without derivative
         ///          for additional details.
         template < typename T, size_t tensorSize >

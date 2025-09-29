@@ -33,46 +33,125 @@
 
 namespace Marmot {
   namespace ContinuumMechanics::CommonTensors {
-
+    /**
+     * @brief Initializes the fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
+     */
     EigenTensors::Tensor3333d Initialize_I2xI2();
-    /**  @brief Fourth-order tensor I2xI2.
-     * @details Represents the outer product of the second-order identity tensor with itself (\f$\delta_{ij}\,
-     * \delta_{kl}\f$).
+
+    /**
+     * @brief Fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
      */
     inline const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
 
+    /**
+     * @brief Initializes the symmetric fourth-order identity tensor \f$
+     * I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
+     */
     EigenTensors::Tensor3333d Initialize_Isym();
-    /// @brief Symmetric fourth-order identity tensor (\f$ I_{ijkl}^{sym} \f$).
+
+    /**
+     * @brief Symmetric fourth-order identity tensor
+     * \f$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
+     */
     inline const EigenTensors::Tensor3333d Isym = Initialize_Isym();
 
+    /**
+     * @brief Initializes the skew-symmetric fourth-order identity tensor
+     * \f$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
+     */
     EigenTensors::Tensor3333d Initialize_Iskew();
-    /// @brief Skew-symmetric part of the fourth-order identity tensor.
+
+    /** @brief Skew-symmetric part of the fourth-order identity tensor \f$
+     * I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
+     */
     inline const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
 
+    /**
+     * @brief Initializes the fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
+     */
     EigenTensors::Tensor3333d Initialize_IFourthOrder();
-    /// @brief Fourth-order identity tensor.
+
+    /**
+     * @brief Fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
+     */
     inline const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
+    /**
+     * @brief Initializes the transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
+     */
     EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose();
-    /// @brief Transposed fourth-order identity tensor.
+
+    /// @brief Transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
     inline const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
+    /**
+     * @brief Initializes the derivative tensor of deviatoric stress w.r.t. stress  \f$ \frac{\partial
+     * s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
+     */
     EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress();
-    /// @brief Derivative of the deviatoric stress with respect to stress.
+
+    /** @brief Derivative of the deviatoric stress with respect to stress \f$ \frac{\partial
+     * s_{ij}}{\partial\sigma_{kl}} =
+     * \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
+     */
     inline const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
 
+    /**
+     * @brief Initializes the 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
+     * @details A fully antisymmetric third-order tensor defined as
+     * \f[
+     *   \E_{ijk} =
+     *   \begin{cases}
+     *     +1 & \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+     *     -1 & \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     *      0 & \text{if any two indices are equal.}
+     *   \end{cases}
+     * \f]
+     */
     EigenTensors::Tensor333d Initialize_LeviCivita3D();
-    /// @brief 3D Levi-Civita permutation tensor.
+
+    /**
+     * @brief 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
+     * @copydetails Initialize_LeviCivita3D
+     */
     inline const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
 
+    /**
+     * @brief 2D Levi-Civita permutation tensor \f$E_{ij}\f$.
+     * @details A fully antisymmetric second-order tensor defined as
+     * \f[
+     *   \E_{ij} =
+     *   \begin{cases}
+     *     +1 & \text{if } (i,j) = (1,2), \\
+     *     -1 & \text{if } (i,j) = (2,1), \\
+     *      0 & \text{if } i=j.
+     *   \end{cases}
+     * \f]
+     * Commonly used to represent 2D cross products and rotations in tensor notation.
+     */
     EigenTensors::Tensor122d Initialize_LeviCivita2D();
-    /// @brief 2D Levi-Civita permutation tensor.
+
+    /**
+     * @brief 2D Levi-Civita permutation tensor \f$\varepsilon_{ij}\f$.
+     * @copydetails Initialize_LeviCivita2D
+     */
     inline const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
+    /**
+     * @brief Initializes the second-order identity tensor.
+     * @details \f$ I_{ij} = \delta_{ij} \f$.
+     */
     EigenTensors::Tensor33d Initialize_I2();
+
     /// @brief Second-order identity tensor.
+    /// @copydetails Initialize_I2
     inline const EigenTensors::Tensor33d I2 = Initialize_I2();
 
+    /**
+     * @brief Returns the number of rotational DOFs for the given dimension.
+     * @param nDim Problem dimension (2 or 3).
+     * @return 1 in 2D, 3 in 3D.
+     */
     constexpr int getNumberOfDofForRotation( int nDim )
     {
       if ( nDim == 2 )
@@ -125,6 +204,16 @@ namespace Marmot {
       return P;
     }
 
+    /**
+     * @brief Provides the reference Levi-Civita permutation tensor for the given spatial dimension.
+     *
+     * @tparam nDim Spatial dimension (2 or 3).
+     * @return The Levi-Civita tensor:
+     * - In 2D: \f$E_{ij}\f$, a second-order antisymmetric tensor with components
+     * \copydetails Initialize_LeviCivita2D
+     * - In 3D: \f$E_{ijk}\f$, a third-order antisymmetric tensor with components
+     * \copydetails Initialize_LeviCivita3D
+     */
     template < int nDim >
     constexpr Eigen::TensorFixedSize< double, Eigen::Sizes< getNumberOfDofForRotation( nDim ), nDim, nDim > > getReferenceToCorrectLeviCivita()
     // template <int nDim>
@@ -141,7 +230,7 @@ namespace Marmot {
   } // namespace ContinuumMechanics::CommonTensors
 
   namespace ContinuumMechanics::TensorUtility {
-    /// @brief Kronecker delta function δ_ab.
+    /// @brief Kronecker delta function \f$ \delta_{ab} \f$.
     /// @return 1 if a == b, otherwise 0.
     constexpr int d( int a, int b )
     {
@@ -151,13 +240,13 @@ namespace Marmot {
     /**
      * @brief Map an object's raw data as a fixed-size Eigen matrix.
      *
-     * Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map directly
-     * references the storage returned by `t.data()`.
+     * @details Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map
+     * directly references the storage returned by `t.data()`.
      *
      * @tparam x Number of rows (compile-time).
      * @tparam y Number of columns (compile-time).
      * @tparam T Object type, must define `Scalar` and provide `data()`.
-     * @param t Input object (non-const).
+     * @param t Input object.
      * @return `Eigen::Map<Eigen::Matrix<typename T::Scalar, x, y>>`.
      *
      * @note Caller must ensure `t.data()` has at least `x*y` elements
@@ -173,8 +262,8 @@ namespace Marmot {
     }
 
     /**
-     * @brief Map an object's raw data as a fixed-size Eigen matrix (const version). For more details see the non-const
-     * version.
+     * @brief Map an object's raw data as a fixed-size Eigen matrix (const version).
+     * \copydetails as
      */
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )
@@ -248,7 +337,7 @@ namespace Marmot {
     /**
      * @brief Compute the dyadic (outer) product of two 3D vectors.
      *
-     * Forms a 3x3 matrix where each entry is given by \f$ v_1(i) \, v_2(j) \f$.
+     * @details Forms a 3x3 matrix where each entry is given by \f$ a_{ij} = b_i c_j \f$.
      *
      * @param vector1 First 3D vector.
      * @param vector2 Second 3D vector.

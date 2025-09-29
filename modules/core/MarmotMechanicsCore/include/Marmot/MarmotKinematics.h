@@ -37,7 +37,7 @@ namespace Marmot {
        * @brief Computes the Green-Lagrange strain tensor from the deformation gradient.
        *
        * @param F The deformation gradient tensor as a 3x3 matrix.
-       * @return Marmot::Vector6d The Green-Lagrange strain tensor represented as a 6D vector in Voigt notation.
+       * @return The Green-Lagrange strain tensor represented as a 6D vector in Voigt notation.
        */
       Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F );
       /**
@@ -56,7 +56,7 @@ namespace Marmot {
        */
       extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > dOmega_dVelocityGradient;
 
-      /// @brief Tensor representing the derivative of the stretching rate with respect to the velocity gradient.
+      /** @brief Tensor representing the derivative of the stretching rate with respect to the velocity gradient.*/
       extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > dStretchingRate_dVelocityGradient;
     } // namespace VelocityGradient
 
