@@ -43,18 +43,6 @@
 #include <memory>
 #include <vector>
 
-/**
- * @file
- * @brief Displacement-based finite element (template).
- * @details
- * Provides a small-strain, displacement-based finite element for 1D, 2D, and 3D problems.
- * Supports section assumptions (uniaxial stress, plane stress, plane strain, solid),
- * manages quadrature-point state, interfaces to Marmot materials, and assembles internal
- * forces, stiffness, and mass matrices.
- *
- * This header is documented for Sphinx via Breathe and populated by Doxygen.
- */
-
 using namespace Marmot;
 using namespace Eigen;
 
@@ -78,8 +66,8 @@ namespace Marmot::Elements {
      * @brief Kinematic section assumption used by the element.
      * @details Controls which constitutive call is performed at quadrature points.
      * - UniaxialStress: 1D axial member.
-     * - PlaneStress: 2D membrane (sigma_zz = 0).
-     * - PlaneStrain: 2D continuum with epsilon_zz = 0.
+     * - PlaneStress: 2D continuum with \f$\sigma_{zz} = 0\f$.
+     * - PlaneStrain: 2D continuum with \f$\varepsilon_{zz}=0\f$.
      * - Solid: 3D solid continuum.
      */
     enum SectionType {
@@ -112,7 +100,8 @@ namespace Marmot::Elements {
     /**
      * @brief Data and state associated with a quadrature point.
      * @details Holds parent coordinates, integration weight, Jacobian determinant,
-     *          kinematic B-matrix, and a material instance with managed state variables.
+     *          kinematic (strain-displacement) B-matrix, and a material instance with
+     *          managed state variables.
      */
     struct QuadraturePoint {
 
@@ -125,8 +114,9 @@ namespace Marmot::Elements {
 
       /**
        * @brief Manager for per-quadrature-point state variables.
-       * @details Provides named accessors to stress, strain and the material state vector.
-       * The layout is [stress(6), strain(6), begin of material state(...)] in 3D Voigt notation.
+       * @details Provides named accessors to stress \f$\boldsymbol{\sigma}\f$, strain \f$\boldsymbol{\varepsilon}\f$
+       * and the material state vector. The layout is [stress(6), strain(6), begin of material state(...)]
+       * in 3D Voigt notation.
        */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
@@ -234,6 +224,11 @@ namespace Marmot::Elements {
 
     /**
      * @brief Assemble distributed surface loads on a boundary face.
+     * @details Pressure and traction contributions are integrated on the boundary \f$\Gamma_e\f$:
+     * \f[
+     * \mathbf{P}_e^{(p)} = - \int_{\Gamma_e} p\, \mathbf{N}^\mathsf{T} \mathbf{n}\, \mathrm{d}\Gamma,\qquad
+     * \mathbf{P}_e^{(t)} = \int_{\Gamma_e} \mathbf{N}^\mathsf{T} \mathbf{t}\, \mathrm{d}\Gamma.
+     * \f]
      * @param loadType Pressure or SurfaceTraction.
      * @param P Element RHS contribution (accumulated).
      * @param K Optional stiffness contribution (unused).
@@ -252,7 +247,10 @@ namespace Marmot::Elements {
                                  const double*                       time,
                                  double                              dT );
 
-    /** @brief Assemble body force contribution using N^T f. */
+    /**
+     * @brief Assemble body force contribution.
+     * @details Integrates \f$\mathbf{P}_e^{(b)} = \int_{\Omega_e} \mathbf{N}^\mathsf{T} \mathbf{f}\, \mathrm{d}\Omega\f$.
+     */
     void computeBodyForce( double*       P,
                            double*       K,
                            const double* load,
@@ -262,6 +260,13 @@ namespace Marmot::Elements {
 
     /**
      * @brief Compute internal force and consistent tangent stiffness.
+     * @details Uses the small-strain relation \f$\Delta\boldsymbol{\varepsilon}=\mathbf{B}\,\Delta\mathbf{u}\f$ and
+     * integrates
+     * \f[
+     * \mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \mathbf{C} \mathbf{B}\, J_0 w,\qquad
+     * \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\, J_0 w.
+     * \f]
+     * If \f$pNewdT<1\f$, the routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector.
      * @param dQ Incremental displacement.
      * @param Pe Internal force vector (accumulated).
@@ -278,10 +283,16 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
-    /** @brief Compute consistent mass matrix using material density. */
+    /**
+     * @brief Compute consistent mass matrix using material density.
+     * @details \f$\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$.
+     */
     void computeConsistentInertia( double* M );
 
-    /** @brief Compute lumped mass vector via row-sum of consistent mass. */
+    /**
+     * @brief Compute lumped mass vector via row-sum of consistent mass.
+     * @details \f$\mathbf{m}_e = \mathrm{rowsum}(\mathbf{M}_e)\f$.
+     */
     void computeLumpedInertia( double* M );
 
     /**
