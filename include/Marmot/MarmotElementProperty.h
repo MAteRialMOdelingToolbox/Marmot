@@ -27,6 +27,12 @@
  */
 #pragma once
 
+/** @struct MarmotMaterialSection
+ * @brief Structure to hold material section properties.
+ *
+ * This structure is used to define a material section with its code and properties,
+ * allowing for flexible material definitions in finite element analysis.
+ */
 class MarmotMaterialSection {
 public:
   int           materialCode;
@@ -39,6 +45,12 @@ public:
       nMaterialProperties( nMaterialProperties ){};
 };
 
+/** @struct ElementProperties
+ * @brief Structure to hold element properties.
+ *
+ * This structure is used to define properties of a finite element,
+ * allowing for flexible element definitions in finite element analysis.
+ */
 class ElementProperties {
 public:
   const double* elementProperties;

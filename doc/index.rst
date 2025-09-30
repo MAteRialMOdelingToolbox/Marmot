@@ -13,5 +13,4 @@ Marmot Documentation
    pages/interfaces
    pages/features
    pages/documentation
-   pages/contributors
    pages/publications
