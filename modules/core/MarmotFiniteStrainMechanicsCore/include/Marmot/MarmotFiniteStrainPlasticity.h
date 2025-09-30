@@ -37,6 +37,21 @@ namespace Marmot {
       using namespace FastorStandardTensors;
       using namespace Fastor;
 
+      /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
+       *  using the exponential map.
+       *
+       *  The exponential map is given by
+       *  \f[
+       *    \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+       *  \f]
+       *  where \f$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} \f$ is the incremental plastic velocity
+       * gradient.
+       *
+       *  @tparam T Scalar type.
+       *  @param dGp Incremental plastic velocity gradient.
+       *  @return Incremental plastic deformation gradient.
+       */
+
       template < typename T >
       Tensor33t< T > exponentialMap( const Tensor33t< T >& dGp )
       {
@@ -45,8 +60,34 @@ namespace Marmot {
         return out;
       }
       namespace FirstOrderDerived {
+
+        /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
+         *  using a first order approximation.
+         *  The first order approximation is given by
+         *  \f[
+         *    \Delta F_{\bar I J} = \left( \delta_{\bar K L} + \Delta \lambda \frac{\partial f}{\partial M_{\bar K
+         * L}}\right)_{J \bar{I}} \f] where \f$ \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} \f$ is the
+         * incremental plastic velocity gradient.
+         *
+         *  @param dGp Incremental plastic velocity gradient.
+         *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
+         * velocity gradient.
+         */
         std::pair< Tensor33d, Tensor3333d > explicitIntegration( const Tensor33d& deltaGp );
 
+        /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
+         *  using the exponential map.
+         *  The exponential map is given by
+         *  \f[
+         *    \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial f}{\partial M_{\bar I J}}\right)_{J \bar{I}}
+         *  \f]
+         *  where \f$ \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} \f$ is the incremental plastic velocity
+         * gradient.
+         *
+         *  @param dGp Incremental plastic velocity gradient.
+         *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
+         * velocity gradient.
+         */
         std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& deltaGp );
       } // namespace FirstOrderDerived
 
