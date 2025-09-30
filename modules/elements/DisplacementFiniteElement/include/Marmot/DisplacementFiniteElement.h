@@ -43,15 +43,45 @@
 #include <memory>
 #include <vector>
 
+/**
+ * @file
+ * @brief Displacement-based finite element (template).
+ * @details
+ * Provides a small-strain, displacement-based finite element for 1D, 2D, and 3D problems.
+ * Supports section assumptions (uniaxial stress, plane stress, plane strain, solid),
+ * manages quadrature-point state, interfaces to Marmot materials, and assembles internal
+ * forces, stiffness, and mass matrices.
+ *
+ * This header is documented for Sphinx via Breathe and populated by Doxygen.
+ */
+
 using namespace Marmot;
 using namespace Eigen;
 
 namespace Marmot::Elements {
 
+  /**
+   * @class Marmot::Elements::DisplacementFiniteElement
+   * @tparam nDim Number of spatial dimensions (1, 2, or 3).
+   * @tparam nNodes Number of element nodes.
+   * @brief Displacement-based finite element template.
+   * @details Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D
+   * formulations via a section assumption. Holds quadrature-point state and
+   * delegates constitutive updates to Marmot materials while assembling element
+   * residuals, tangents, and mass matrices.
+   */
   template < int nDim, int nNodes >
   class DisplacementFiniteElement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
 
   public:
+    /**
+     * @brief Kinematic section assumption used by the element.
+     * @details Controls which constitutive call is performed at quadrature points.
+     * - UniaxialStress: 1D axial member.
+     * - PlaneStress: 2D membrane (sigma_zz = 0).
+     * - PlaneStrain: 2D continuum with epsilon_zz = 0.
+     * - Solid: 3D solid continuum.
+     */
     enum SectionType {
       UniaxialStress,
       PlaneStress,
@@ -72,10 +102,18 @@ namespace Marmot::Elements {
     using CSized                = Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
     using Voigt                 = Matrix< double, ParentGeometryElement::voigtSize, 1 >;
 
+    /** Element-level properties (e.g., thickness for 2D, area for 1D). */
     Map< const VectorXd > elementProperties;
+    /** Element label (ID) used for logging and material creation. */
     const int             elLabel;
+    /** Section assumption applied by this element instance. */
     const SectionType     sectionType;
 
+    /**
+     * @brief Data and state associated with a quadrature point.
+     * @details Holds parent coordinates, integration weight, Jacobian determinant,
+     *          kinematic B-matrix, and a material instance with managed state variables.
+     */
     struct QuadraturePoint {
 
       const XiSized xi;
@@ -85,6 +123,11 @@ namespace Marmot::Elements {
       double J0xW;
       BSized B;
 
+      /**
+       * @brief Manager for per-quadrature-point state variables.
+       * @details Provides named accessors to stress, strain and the material state vector.
+       * The layout is [stress(6), strain(6), begin of material state(...)] in 3D Voigt notation.
+       */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
         inline const static auto layout = makeLayout( {
@@ -133,38 +176,73 @@ namespace Marmot::Elements {
         : xi( xi ), weight( weight ), detJ( 0.0 ), J0xW( 0.0 ), B( BSized::Zero() ){};
     };
 
+    /// Quadrature points owned by the element (one per integration point).
     std::vector< QuadraturePoint > qps;
 
+    /**
+     * @brief Construct element with ID, quadrature rule and section assumption.
+     * @param elementID Unique element label.
+     * @param integrationType Integration (quadrature) rule.
+     * @param sectionType Section assumption (1D/2D/3D).
+     */
     DisplacementFiniteElement( int                                         elementID,
                                FiniteElement::Quadrature::IntegrationTypes integrationType,
                                SectionType                                 sectionType );
 
+    /** @brief Total number of required state variables for this element (sum over all quadrature points). */
     int getNumberOfRequiredStateVars();
 
+    /** @brief Node-level fields exposed by the element. Returns ["displacement"] for each node. */
     std::vector< std::vector< std::string > > getNodeFields();
 
+    /** @brief Permutation pattern from local DOF ordering to solver ordering (identity by default). */
     std::vector< int > getDofIndicesPermutationPattern();
 
+    /** @brief Number of nodes of this element type. */
     int getNNodes() { return nNodes; }
 
+    /** @brief Number of spatial dimensions. */
     int getNSpatialDimensions() { return nDim; }
 
+    /** @brief Number of degrees of freedom per element (nNodes * nDim). */
     int getNDofPerElement() { return sizeLoadVector; }
 
+    /** @brief Geometric shape of the element (as reported by the parent geometry element). */
     std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
 
+    /** @brief Map the provided element state vector to all quadrature points. */
     void assignStateVars( double* stateVars, int nStateVars );
 
+    /** @brief Assign element properties (e.g., thickness in 2D, area in 1D). */
     void assignProperty( const ElementProperties& marmotElementProperty );
 
+    /** @brief Assign material section and instantiate per-quadrature-point materials. */
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
 
+    /** @brief Provide nodal coordinates to the parent geometry element. */
     void assignNodeCoordinates( const double* coordinates );
 
+    /** @brief Precompute geometry-related quantities at quadrature points (B, detJ, J0xW). */
     void initializeYourself();
 
+    /**
+     * @brief Initialize state or materials.
+     * @param state MarmotMaterialInitialization, GeostaticStress or MarmotMaterialStateVars.
+     * @param values For GeostaticStress: [sigmaY(z1), y1, sigmaY(z2), y2, kx, kz].
+     */
     void setInitialConditions( StateTypes state, const double* values );
 
+    /**
+     * @brief Assemble distributed surface loads on a boundary face.
+     * @param loadType Pressure or SurfaceTraction.
+     * @param P Element RHS contribution (accumulated).
+     * @param K Optional stiffness contribution (unused).
+     * @param elementFace Boundary face index.
+     * @param load Pressure magnitude or traction vector (size nDim).
+     * @param QTotal Total DOF vector (unused).
+     * @param time Current time data forwarded to materials.
+     * @param dT Time increment.
+     */
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
@@ -174,6 +252,7 @@ namespace Marmot::Elements {
                                  const double*                       time,
                                  double                              dT );
 
+    /** @brief Assemble body force contribution using N^T f. */
     void computeBodyForce( double*       P,
                            double*       K,
                            const double* load,
@@ -181,6 +260,16 @@ namespace Marmot::Elements {
                            const double* time,
                            double        dT );
 
+    /**
+     * @brief Compute internal force and consistent tangent stiffness.
+     * @param QTotal Total displacement vector.
+     * @param dQ Incremental displacement.
+     * @param Pe Internal force vector (accumulated).
+     * @param Ke Tangent stiffness matrix (accumulated).
+     * @param time Time data forwarded to materials.
+     * @param dT Time increment.
+     * @param pNewdT Suggested scaling of dT by the material; if reduced (<1), the routine returns early.
+     */
     void computeYourself( const double* QTotal,
                           const double* dQ,
                           double*       Pe,
@@ -189,10 +278,16 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
+    /** @brief Compute consistent mass matrix using material density. */
     void computeConsistentInertia( double* M );
 
+    /** @brief Compute lumped mass vector via row-sum of consistent mass. */
     void computeLumpedInertia( double* M );
 
+    /**
+     * @brief Access a named state view at a quadrature point.
+     * @note Using "sdv" returns the raw material state vector and is deprecated.
+     */
     StateView getStateView( const std::string& stateName, int qpNumber )
     {
       const auto& qp = qps[qpNumber];
@@ -212,10 +307,13 @@ namespace Marmot::Elements {
       }
     }
 
+    /** @brief Get physical coordinates at the element center. */
     std::vector< double > getCoordinatesAtCenter();
 
+    /** @brief Get physical coordinates at each quadrature point. */
     std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
 
+    /** @brief Number of quadrature points of this element. */
     int getNumberOfQuadraturePoints();
   };
 
