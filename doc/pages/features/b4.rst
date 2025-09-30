@@ -14,6 +14,87 @@ The constitutive law is given in total form as
 relating the nominal stress tensor :math:`\sig`
 to the elastic strain tensor :math:`\epsE`
 in terms of the fourth order stiffness tensor :math:`\Cel`.
+Where
+:math:`\eps` is the total strain,
+:math:`\epsVE` is the viscoelastic strain,
+:math:`\epsF` is the viscous flow strain (with the sum of :math:`\epsVE` and :math:`\epsF` representing the basic creep strain),
+:math:`\epsDC` is the strain due to drying creep and
+:math:`\epsSHR` is the total shrinkage strain.
+A potential temperature dependence is not taking into account.
+
+The implementation of the evolution of the visoelastic strain is using a solidifying Kelvin chain according to Bazant and Jirasek (2018). The drying creep strain is computed using an aging Kelvin chain.
+
+The evolution of the instantaneous elastic strain and the basic creep strain are represented by the Solidification Theory generalized to three-dimensional stress states.
+The evolution of the instantaneous elastic strain :math:`\epsE` is expressed as
+
+.. math::
+
+   \epsERate(t) = q_1 \DelNu : \sigRate(t),
+
+in which :math:`q_1` denotes the age-independent asymptotic compliance and :math:`\DelNu` the unit compliance tensor.
+The evolution of the viscoelastic strain :math:`\epsVE` is defined as
+
+.. math::
+
+   \epsVERate(t) = \frac{1}{v(t)} \int_0^t \PhiRate(t-t') \DelNu : d\sig(t'),
+
+in terms of the solidified volume function :math:`v(t)` and the compliance rate of the hydrated constituent :math:`\PhiRate(t-t')`.
+The solidified volume function
+
+.. math::
+
+   v(t) =  \left[ \left( \frac{\lambda_0}{t} \right) ^m + \frac{q_3}{q_2} \right] ^{-1}
+
+represents the time-dependent aging of the material. Where :math:`\lambda_0` and :math:`m` are material parameters with default values :math:`\lambda_0 = 1 \; \mathrm{d}` and :math:`m = 0.5`.
+The anti-derivative of the compliance rate :math:`\PhiRate(t-t')` is defined as
+
+.. math::
+
+   \Phi(t-t') = q_2 \ln\left( 1 + \left( \frac{t-t'}{\lambda_0} \right) ^n \right),
+
+in which :math:`n` is the exponent of the log-power law, with the default value :math:`n = 0.1`.
+The evolution of the viscous strain :math:`\epsF` is governed by
+
+.. math::
+
+   \epsFRate(t) = q_4 \frac{1}{t} \DelNu : \sig(t).
+
+In the above equations, :math:`q_2`, :math:`q_3` and :math:`q_4` denote the compliance parameters.
+The evolution of the drying strain :math:`\epsDC` is described as
+
+.. math::
+
+   \epsDCRate (t) = \frac{1}{\exp(p_{\mathrm{5H}}/2)} \int_0^t \PhiRate_\mathrm{d}(t, t', t_0) \DelNu : d\sig(t'),
+
+where :math:`t_0` denotes the start of drying and :math:`p_{\mathrm{5H}}` is a cement type dependent parameter, which is set to :math:`p_{\mathrm{5H}} = 8` for slow and regular hardening cement. The anti-derivative of the drying creep compliance rate :math:`\PhiRate_d` is definded as
+
+.. math::
+
+   \Phi_d(t,t',t_0) = q_5 \sqrt{ \left\langle \exp\left( b \tanh \sqrt{\xi-\xi_0} \right) - \exp \left( b \tanh \sqrt{-\xi_0} \right) \right\rangle}
+
+in which :math:`q_5` is the drying creep parameter, :math:`\xi = (t-t')/\tau_{\mathrm{shr,d}}` and :math:`\xi_0 = (t_0-t')/\tau_{\mathrm{shr,d}}` are dimensionless times, and :math:`b= p_{\mathrm{5H}}(1-h_{\mathrm{env}})`, in which :math:`h_{\mathrm{env}}` is the ambient relative humidity.
+
+The total shrinkage strain :math:`\epsSHR` is assumed as the sum of the autogenous shrinkage strain :math:`\eps^\mathrm{shr,au}` and the drying shrinkage strain :math:`\eps^\mathrm{shr,d}`. The evolution of the autogenous shrinkage strain :math:`\eps^\mathrm{shr,au}` is described as
+
+.. math::
+
+   \eps^\mathrm{shr,au}(t) = \boldsymbol{\mathrm{I}} \eps^\mathrm{shr,au}_\infty \left[ 1+ \left( \frac{\tau_\mathrm{shr,au}}{t} \right) ^\alpha \right]^{-4.5}
+
+in which :math:`\boldsymbol{\mathrm{I}}` is the second order identity tensor, :math:`\eps^\mathrm{shr,au}_\infty`, :math:`\tau_\mathrm{shr,au}` and :math:`\alpha` are the ultimate autogenous shrinkage strain, the autogenous shrinkage halftime, and a parameter depending on the concrete composition and on the cement type, respectively.
+The evoluztion of the drying shrinkage strain :math:`\eps^\mathrm{shr,d}` is defined as
+
+.. math::
+
+   \eps^\mathrm{shr,d}(t) = \boldsymbol{\mathrm{I}} \eps^\mathrm{shr,d}_\infty k_\mathrm{h} \tanh \sqrt{\frac{\left \langle t-t_0 \right \rangle }{\tau_{shr,d}}}
+
+in which :math:`\eps^\mathrm{shr,d}_\infty` denotes the ultimate drying shrinkage strain at zero humidity and :math:`\tau_{shr,d}` the drying shrinkage halftime. The paramter :math:`k_{\mathrm{h}}` is given as
+
+.. math::
+
+   k_{\mathrm{h}}= \begin{cases}1-h_{\mathrm{env}}^3 & \text { if } h_{\mathrm{env}} \leq 0.98, \\ 12.94\left(1-h_{\mathrm{env}}\right)-0.2 & \text { otherwise, }\end{cases}
+
+where currently only the first variant is implemented.
+
 
 Implementation
 --------------

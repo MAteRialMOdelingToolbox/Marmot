@@ -100,9 +100,12 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
+    /// \brief Young's modulus of the #nKelvin Kelvin units
     KelvinChain::Properties elasticModuli;
+    /// \brief retardation times of the #nKelvin Kelvin units
     KelvinChain::Properties retardationTimes;
-    double                  zerothKelvinChainCompliance;
+    /// \brief compliance of the zeroth Kelvin unit aka spring
+    double zerothKelvinChainCompliance;
 
     static constexpr int powerLawApproximationOrder = 2;
   };

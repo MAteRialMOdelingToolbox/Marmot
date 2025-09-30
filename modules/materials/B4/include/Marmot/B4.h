@@ -107,7 +107,8 @@ namespace Marmot::Materials {
 
     /// \brief autogenous shrinkage material parameter
     const double& rt;
-    /**< #rt represents a cement type dependent material parameter for autogenous shrinkage.
+    /**< #rt represents a cement type dependent material parameter for autogenous shrinkage, whose value is #rt = -4.50
+     * for all cements.
      * It is a reference variable to #materialProperties[12]. */
 
     /// \brief ultimate drying shrinkage strain
@@ -190,14 +191,22 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
-    SolidificationTheory::Parameters            solidificationParameters;
+    /// \brief material parameters for Solidification Theory
+    SolidificationTheory::Parameters solidificationParameters;
+    /**
+     * \brief properties of the Kelvin chain for approximating
+     * the viscoelastic compliance of the %Solidification Theory */
     SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
 
+    /// \brief Young's modulus of the Kelvin units representing basic creep
     KelvinChain::Properties basicCreepElasticModuli;
+    /// \brief retardation times of the Kelvin units representing basic creep
     KelvinChain::Properties basicCreepRetardationTimes;
 
+    /// \brief approximation order of the Post-Widder formula for drying creep
     static constexpr int dryingCreepComplianceApproximationOrder = 5;
-    static constexpr int basicCreepComplianceApproximationOrder  = 2;
+    /// \brief approximation order of the Post-Widder formula for basic creep
+    static constexpr int basicCreepComplianceApproximationOrder = 2;
 
     /// \brief drying creep compliance function
     template < typename T_ >
