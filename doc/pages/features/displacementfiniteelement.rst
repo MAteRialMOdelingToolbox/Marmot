@@ -52,11 +52,11 @@ Here, :math:`t` denotes thickness and :math:`A` denotes cross-sectional area.
 Constitutive updates are carried out per quadrature point using a Marmot material model.
 
 - 3D solid: full 3D update returning :math:`\boldsymbol{\sigma}` and :math:`\mathbf{C}`.
-  
+
 - Plane stress: in-plane update consistent with :math:`\sigma_{zz}=0`.
-  
+
 - Plane strain: 3D update with reduction to a plane-strain tangent.
-  
+
 - 1D uniaxial stress: scalar update consistent with axial behavior.
 
 Each quadrature point stores stress, strain and a material state vector; the element

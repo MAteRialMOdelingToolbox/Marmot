@@ -93,9 +93,9 @@ namespace Marmot::Elements {
     /** Element-level properties (e.g., thickness for 2D, area for 1D). */
     Map< const VectorXd > elementProperties;
     /** Element label (ID) used for logging and material creation. */
-    const int             elLabel;
+    const int elLabel;
     /** Section assumption applied by this element instance. */
-    const SectionType     sectionType;
+    const SectionType sectionType;
 
     /**
      * @brief Data and state associated with a quadrature point.
@@ -249,7 +249,8 @@ namespace Marmot::Elements {
 
     /**
      * @brief Assemble body force contribution.
-     * @details Integrates \f$\mathbf{P}_e^{(b)} = \int_{\Omega_e} \mathbf{N}^\mathsf{T} \mathbf{f}\, \mathrm{d}\Omega\f$.
+     * @details Integrates \f$\mathbf{P}_e^{(b)} = \int_{\Omega_e} \mathbf{N}^\mathsf{T} \mathbf{f}\,
+     * \mathrm{d}\Omega\f$.
      */
     void computeBodyForce( double*       P,
                            double*       K,
