@@ -36,6 +36,7 @@ namespace Marmot {
 
       using namespace FastorStandardTensors;
       using namespace Fastor;
+
       template < typename T >
       Tensor33t< T > exponentialMap( const Tensor33t< T >& dGp )
       {

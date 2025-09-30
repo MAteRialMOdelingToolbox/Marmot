@@ -36,6 +36,11 @@ class MarmotMaterialFiniteStrain : public MarmotMaterial {
      Abstract basic class for mechanical materials in the finite strain regime
   */
 public:
+  /** @struct ConstitutiveResponse
+   * @brief Constitutive response of a material at given state.
+   *
+   *  Contains stress, density and elastic energy density.
+   * */
   template < int nDim >
   struct ConstitutiveResponse {
     Fastor::Tensor< double, nDim, nDim > tau;                  // kirchhoff stress
@@ -48,11 +53,21 @@ public:
     Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF; // tangent operator w.r.t. deformation gradient
   };
 
+  /** @struct Deformation
+   * @brief Represents the deformation state of a material.
+   *
+   * This struct holds the deformation gradient tensor (F) which describes the local deformation of a material.
+   */
   template < int nDim >
   struct Deformation {
     Fastor::Tensor< double, nDim, nDim > F;
   };
 
+  /** @struct TimeIncrement
+   * @brief Represents a time increment in a simulation.
+   *
+   * This struct holds information about the current time and the time step size (dT).
+   */
   struct TimeIncrement {
     const double time;
     const double dT;
@@ -60,6 +75,16 @@ public:
 
   using MarmotMaterial::MarmotMaterial;
 
+  /** @brief Computes the Kirchhoff stress given the deformation and time increment.
+   * @param[inout] response Constitutive response of the material
+   * @param[out] tangents Algorithmic moduli
+   * @param[in] deformation Deformation state
+   * @param[in] timeIncrement Time increment
+   *
+   *
+   *
+   *  Pure virtual function, must be implemented by derived classes.
+   * */
   virtual void computeStress( ConstitutiveResponse< 3 >& response,
                               AlgorithmicModuli< 3 >&    tangents,
                               const Deformation< 3 >&,
