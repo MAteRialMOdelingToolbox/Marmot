@@ -10,6 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -69,7 +70,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 </ul>
 
@@ -171,17 +171,40 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv">
 <span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1ae125be550e9a756d522a5338dae04774"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of state variables required by the material. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi">
 <span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1a08dab7e70520a87d4c55b8a2ebfa3957"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Assign state variable array to material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE">
 <span id="_CPPv3N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::LinearViscoelasticPowerLaw::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticPowerLaw_1aca8046709f0297f78be42fc45334a565"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoelasticPowerLaw12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Access material state variables by name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateName</strong> – <strong>[in]</strong> Name of the requested state variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A view into the state variable array. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -328,7 +351,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+    <p>&#169; Copyright 2025, University of Innsbruck, BOKU Vienna and other authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

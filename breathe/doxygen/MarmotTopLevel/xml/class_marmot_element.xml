@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_element" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>MarmotElement</compoundname>
+    <includes refid="_marmot_element_8h" local="no">MarmotElement.h</includes>
     <sectiondef kind="public-type">
       <memberdef kind="enum" id="class_marmot_element_1a4a399e8339bb2f93d379841bb252461b" prot="public" static="no" strong="no">
         <type></type>
@@ -64,12 +65,13 @@
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Types of element state variables used in initialization and output. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="39" bodyend="48"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="49" column="3" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="49" bodyend="59"/>
       </memberdef>
       <memberdef kind="enum" id="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5" prot="public" static="no" strong="no">
         <type></type>
@@ -78,6 +80,7 @@
         <enumvalue id="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a925aa06a4447e235a742f1402ec1317e" prot="public">
           <name>Pressure</name>
           <briefdescription>
+<para>Pressure load (normal to surface) </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -85,6 +88,7 @@
         <enumvalue id="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a4002f1bd91f22e359d70842adba84751" prot="public">
           <name>SurfaceTorsion</name>
           <briefdescription>
+<para>Surface torsional load. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -92,17 +96,19 @@
         <enumvalue id="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5a8b2fd18c8c59a5f5ad857989b54c1482" prot="public">
           <name>SurfaceTraction</name>
           <briefdescription>
+<para>Surface traction vector. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Types of distributed loads applicable to element boundaries. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="50" column="3" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="50" bodyend="54"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="62" column="3" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="62" bodyend="66"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -113,12 +119,13 @@
         <name>~MarmotElement</name>
         <qualifiedname>MarmotElement::~MarmotElement</qualifiedname>
         <briefdescription>
+<para>Virtual destructor for safe polymorphic cleanup. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="56" column="11"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="69" column="11"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a7009a873b60e587bcad34151f92f7f4d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -129,10 +136,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of state variables required by the element. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="58" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="72" column="15"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a2d009fe01070ba3eb7709a900584da11" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
@@ -141,12 +151,16 @@
         <name>getNodeFields</name>
         <qualifiedname>MarmotElement::getNodeFields</qualifiedname>
         <briefdescription>
+<para>Get the nodal field names (e.g. displacement, rotation). </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>A 2D vector of strings representing the fields per node. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="60" column="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="78" column="23"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a63cb2bc783e871569531909f68649ebe" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; int &gt;</type>
@@ -155,12 +169,16 @@
         <name>getDofIndicesPermutationPattern</name>
         <qualifiedname>MarmotElement::getDofIndicesPermutationPattern</qualifiedname>
         <briefdescription>
+<para>Get permutation pattern for degrees of freedom. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Vector of indices describing the permutation. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="62" column="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="84" column="23"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a99bcebd80c0c31c3e4705df9c37c41e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -171,10 +189,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of nodes in the element. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="64" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="87" column="15"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ad1a33ff7a88486bc689467fc931c207c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -185,10 +206,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of spatial dimensions (2D/3D). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="66" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="90" column="15"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a17dc4c334219f62511f554133c00579c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -199,10 +223,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of degrees of freedom per element. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="68" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="93" column="15"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ab38da2001626ad74a3bc4f95ba144a2f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::string</type>
@@ -213,10 +240,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>String describing the element shape in Ensight Gold notation (e.g. &quot;quad4&quot;, &quot;hexa8&quot;). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="70" column="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="96" column="23"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a51789466344c5a3437cd4e07d7996313" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -233,12 +263,31 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
+<para>Assign state variable array to element. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="72" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="103" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a2d05121938f57f6bc969774ac384f1e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -251,12 +300,23 @@
           <declname>property</declname>
         </param>
         <briefdescription>
+<para>Assign element property set. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">property</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element property object containing material, geometry, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="74" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="109" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1accde07ef0b65f8ae46108fcbc793dc59" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -269,12 +329,23 @@
           <declname>property</declname>
         </param>
         <briefdescription>
+<para>Assign material section property. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">property</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material section definition (e.g. cross-sectional data). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="76" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="115" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ab43a5fd29bebd1d7b5129bcb51fb192b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -287,12 +358,23 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
+<para>Assign nodal coordinates to element. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to array of nodal coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="78" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="121" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ad2fee3bfc78fa49a28ceded4aaa3f836" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -301,12 +383,13 @@
         <name>initializeYourself</name>
         <qualifiedname>MarmotElement::initializeYourself</qualifiedname>
         <briefdescription>
+<para>Initialize element state and internal variables. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="80" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="124" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a8dada12f443d996232e95326b39abed7" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -315,7 +398,7 @@
         <name>setInitialConditions</name>
         <qualifiedname>MarmotElement::setInitialConditions</qualifiedname>
         <param>
-          <type>StateTypes</type>
+          <type><ref refid="class_marmot_element_1a4a399e8339bb2f93d379841bb252461b" kindref="member">StateTypes</ref></type>
           <declname>state</declname>
         </param>
         <param>
@@ -323,12 +406,31 @@
           <declname>values</declname>
         </param>
         <briefdescription>
+<para>Apply initial conditions to the element. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State type to be set. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of initial values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="82" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="131" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1abbef3863159574d0bc93aa9c327cb493" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -365,12 +467,71 @@
           <declname>pNewdT</declname>
         </param>
         <briefdescription>
+<para>Perform element computations (stiffness, residual, etc.). </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total dof vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental dof vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">Pint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Internal force vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stiffness matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">pNewdT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Suggested new time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="84" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="143" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ac68956668d34ac2ddac545ff2ce56004" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -379,7 +540,7 @@
         <name>computeDistributedLoad</name>
         <qualifiedname>MarmotElement::computeDistributedLoad</qualifiedname>
         <param>
-          <type>DistributedLoadTypes</type>
+          <type><ref refid="class_marmot_element_1a023cde1fc79ae1457663aa0093e758f5" kindref="member">DistributedLoadTypes</ref></type>
           <declname>loadType</declname>
         </param>
         <param>
@@ -411,12 +572,79 @@
           <declname>dT</declname>
         </param>
         <briefdescription>
+<para>Compute contribution from distributed surface loads. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">loadType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of load. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">Pext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stiffness matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elementFace</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of element face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Applied load values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total dof vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="92" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="162" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1aa0ef25e441523e4d36b748e83a4270b5" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -449,12 +677,63 @@
           <declname>dT</declname>
         </param>
         <briefdescription>
+<para>Compute contribution from body forces. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">Pext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stiffness matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Body force vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total displacement vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="101" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="180" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1aed752615a4b8434456de9baf1b5a9e24" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -467,12 +746,25 @@
           <declname>I</declname>
         </param>
         <briefdescription>
+<para>Compute lumped inertia matrix. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">I</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inertia matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Default implementation throws an exception. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="108" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="108" bodyend="111"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="192" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="192" bodyend="195"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a898fde1c6644d2f2b5b10d6f6e6dd5fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -485,12 +777,25 @@
           <declname>I</declname>
         </param>
         <briefdescription>
+<para>Compute consistent inertia matrix. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">I</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inertia matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Default implementation throws an exception. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="113" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="113" bodyend="116"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="202" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="202" bodyend="205"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a37cadc2b9f7d4a1dcaec9830409acaa6" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>StateView</type>
@@ -507,12 +812,33 @@
           <declname>quadraturePoint</declname>
         </param>
         <briefdescription>
+<para>Access element state at a quadrature point. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">quadraturePoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of quadrature point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View into state variable. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="118" column="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="213" column="21"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a6aec5b505f89d2fca61b77befd2f06b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; double &gt;</type>
@@ -521,12 +847,16 @@
         <name>getCoordinatesAtCenter</name>
         <qualifiedname>MarmotElement::getCoordinatesAtCenter</qualifiedname>
         <briefdescription>
+<para>Get coordinates of element center. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Vector of coordinates at element centroid. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="120" column="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="219" column="23"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1a5f54e04668ce71f4625a1ed876301d82" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
@@ -535,12 +865,16 @@
         <name>getCoordinatesAtQuadraturePoints</name>
         <qualifiedname>MarmotElement::getCoordinatesAtQuadraturePoints</qualifiedname>
         <briefdescription>
+<para>Get coordinates of quadrature points. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>2D vector of coordinates at quadrature points. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="122" column="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="225" column="23"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_element_1ac11861d5a592a26562cae1abf2620d28" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -551,17 +885,22 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of quadrature points used by the element. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="124" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="228" column="15"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Abstract base class for finite elements in the Marmot framework. </para>
     </briefdescription>
     <detaileddescription>
+<para>This class defines the generic interface for finite elements, including methods for state variable handling, geometry, degrees of freedom, initialization, loading, and numerical integration. Concrete element implementations must override the pure virtual functions. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="36" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="36" bodyend="125"/>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" line="45" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotElement.h" bodystart="45" bodyend="229"/>
     <listofallmembers>
       <member refid="class_marmot_element_1ab43a5fd29bebd1d7b5129bcb51fb192b" prot="public" virt="pure-virtual"><scope>MarmotElement</scope><name>assignNodeCoordinates</name></member>
       <member refid="class_marmot_element_1a2d05121938f57f6bc969774ac384f1e5" prot="public" virt="virtual"><scope>MarmotElement</scope><name>assignProperty</name></member>

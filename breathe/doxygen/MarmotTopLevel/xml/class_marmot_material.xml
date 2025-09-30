@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_material" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>MarmotMaterial</compoundname>
+    <includes refid="_marmot_material_8h" local="no">MarmotMaterial.h</includes>
     <sectiondef kind="protected-attrib">
       <memberdef kind="variable" id="class_marmot_material_1a0f631d6ec14531146ec683712a085960" prot="protected" static="no" mutable="no">
         <type>const double *</type>
@@ -10,12 +11,13 @@
         <name>materialProperties</name>
         <qualifiedname>MarmotMaterial::materialProperties</qualifiedname>
         <briefdescription>
+<para>Pointer to array of material property values. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="35" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="35" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="43" column="16" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_material_1a0b6c5faf3cb8abd50c67146dad8c175a" prot="protected" static="no" mutable="no">
         <type>const int</type>
@@ -24,12 +26,13 @@
         <name>nMaterialProperties</name>
         <qualifiedname>MarmotMaterial::nMaterialProperties</qualifiedname>
         <briefdescription>
+<para>Number of material properties. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="36" column="17" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="36" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="44" column="17" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_material_1a3153122a8c7819cc306d6d35378cf414" prot="protected" static="no" mutable="no">
         <type>double *</type>
@@ -38,12 +41,13 @@
         <name>stateVars</name>
         <qualifiedname>MarmotMaterial::stateVars</qualifiedname>
         <briefdescription>
+<para>Pointer to array of state variables. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="38" column="10" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="38" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="46" column="10" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="46" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_material_1a9b7554e1cb090e36004b1590f6cdb73c" prot="protected" static="no" mutable="no">
         <type>int</type>
@@ -52,12 +56,13 @@
         <name>nStateVars</name>
         <qualifiedname>MarmotMaterial::nStateVars</qualifiedname>
         <briefdescription>
+<para>Number of assigned state variables. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="39" column="11" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="39" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="47" column="11" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="47" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-attrib">
@@ -68,12 +73,13 @@
         <name>materialNumber</name>
         <qualifiedname>MarmotMaterial::materialNumber</qualifiedname>
         <briefdescription>
+<para>Identifier for material type/implementation. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="42" column="13" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="42" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="50" column="13" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="50" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -96,12 +102,39 @@
           <declname>materialNumber</declname>
         </param>
         <briefdescription>
+<para>Construct a material object. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="44" column="3"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="58" column="3"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a33fd1c89a919e8b0d396eb846614c815" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -110,12 +143,13 @@
         <name>~MarmotMaterial</name>
         <qualifiedname>MarmotMaterial::~MarmotMaterial</qualifiedname>
         <briefdescription>
+<para>Virtual destructor for safe polymorphic cleanup. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="46" column="11"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="61" column="11"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a16e96c33fdc77ddd5aa98ffbbca1577d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -126,10 +160,13 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of state variables required by the material. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="48" column="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="66" column="15"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a9644446a593632d0da2462bdeb43e25c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -146,12 +183,31 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
+<para>Assign state variable array to material. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="50" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="73" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1acc7dfa70f71415b2c9b562a9fafe64d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>StateView</type>
@@ -164,12 +220,25 @@
           <declname>stateName</declname>
         </param>
         <briefdescription>
+<para>Access material state variables by name. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the requested state variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A view into the state variable array. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="52" column="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="80" column="21"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double *</type>
@@ -178,12 +247,16 @@
         <name>getAssignedStateVars</name>
         <qualifiedname>MarmotMaterial::getAssignedStateVars</qualifiedname>
         <briefdescription>
+<para>Get pointer to currently assigned state variables. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to state variable array. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="54" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="86" column="10"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1ac2e855ed98253c5f426735bc251771dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -192,12 +265,16 @@
         <name>getNumberOfAssignedStateVars</name>
         <qualifiedname>MarmotMaterial::getNumberOfAssignedStateVars</qualifiedname>
         <briefdescription>
+<para>Get number of assigned state variables. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Number of assigned state variables. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="56" column="7"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="92" column="7"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a9d6615f62d1e33ab694f3e889dba203f" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -206,12 +283,13 @@
         <name>initializeYourself</name>
         <qualifiedname>MarmotMaterial::initializeYourself</qualifiedname>
         <briefdescription>
+<para>Initialize material state (default: no action). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="58" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="97" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_1a16ef751ebc410cb5173cb65a2e43e1ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -220,19 +298,25 @@
         <name>getDensity</name>
         <qualifiedname>MarmotMaterial::getDensity</qualifiedname>
         <briefdescription>
+<para>Get material density. </para>
         </briefdescription>
         <detaileddescription>
+<para><simplesect kind="return"><para>Density value (default: 0 if not overridden). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="60" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="103" column="18"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Abstract base class for material models in the Marmot framework. </para>
     </briefdescription>
     <detaileddescription>
+<para>Provides a common interface for material models, including access to material properties, state variables, initialization, and density. Concrete material implementations must override the pure virtual functions. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="32" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="32" bodyend="61"/>
+    <location file="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" line="40" column="1" bodyfile="/home/runner/work/Marmot/Marmot/include/Marmot/MarmotMaterial.h" bodystart="40" bodyend="104"/>
     <listofallmembers>
       <member refid="class_marmot_material_1a9644446a593632d0da2462bdeb43e25c" prot="public" virt="virtual"><scope>MarmotMaterial</scope><name>assignStateVars</name></member>
       <member refid="class_marmot_material_1a6ac833544ecb4bc447d73e1126b4a46a" prot="public" virt="non-virtual"><scope>MarmotMaterial</scope><name>getAssignedStateVars</name></member>

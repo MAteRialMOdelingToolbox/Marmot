@@ -10,6 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=6bdb3f50" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -46,14 +47,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#third-party-dependencies">Third-party dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-install-marmot">How to install Marmot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-with-anaconda">Building with Anaconda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-steps">Installation steps</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Code documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 </ul>
 
@@ -73,7 +76,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/pages/installation.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/pages/installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -83,69 +86,114 @@
              
   <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
-<section id="third-party-dependencies">
-<h2>Third-party dependencies<a class="headerlink" href="#third-party-dependencies" title="Link to this heading"></a></h2>
-<p>Marmot requires the Eigen (&gt;3.3.8) and the autodiff (&gt;0.6.0) libraries:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://gitlab.com/libeigen/eigen.git
-<span class="nb">cd</span><span class="w"> </span>eigen
-mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span>..
-sudo<span class="w"> </span>make<span class="w"> </span>install
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/autodiff/autodiff.git
-<span class="nb">cd</span><span class="w"> </span>autodiff
-mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span>-DAUTODIFF_BUILD_TESTS<span class="o">=</span>OFF<span class="w"> </span>-DAUTODIFF_BUILD_PYTHON<span class="o">=</span>OFF<span class="w"> </span>-DAUTODIFF_BUILD_EXAMPLES<span class="o">=</span>OFF<span class="w"> </span>-DAUTODIFF_BUILD_DOCS<span class="o">=</span>OFF<span class="w"> </span>..
-sudo<span class="w"> </span>make<span class="w"> </span>install
-</pre></div>
-</div>
-<p>For anaconda users, those libraries can also be installed from the channels.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>Marmot itself requires the <a class="reference external" href="https://eigen.tuxfamily.org/">Eigen</a> library,
+autodiff <a class="reference external" href="github.com/autodiff/autodiff">autodiff</a>,
+and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
+<p>These are header-only libraries, so no compilation is required.</p>
 </section>
-<section id="how-to-install-marmot">
-<h2>How to install Marmot<a class="headerlink" href="#how-to-install-marmot" title="Link to this heading"></a></h2>
-<p>Marmot including all submodules can be installed with the following steps:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/MAteRialMOdelingToolbox/Marmot/
-<span class="nb">cd</span><span class="w"> </span>Marmot
-mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span>..
-make
-sudo<span class="w"> </span>make<span class="w"> </span>install
+<section id="building-with-anaconda">
+<h2>Building with Anaconda<a class="headerlink" href="#building-with-anaconda" title="Link to this heading"></a></h2>
+<p>Building with anaconda is the easiest way to get a working version of Marmot.</p>
+<p>Assuming that you are in an empty directory,
+you can quickly get a working version of Marmot in a Linux based
+environment:</p>
+<section id="installation-steps">
+<h3>Installation steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h3>
+<p>If necessary, get Miniforge:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> curl -L -O \</span>
+<span class="go">     https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh</span>
+<span class="go"> bash Miniforge3-Linux-aarch64.sh -b -p ./miniforge3</span>
 </pre></div>
 </div>
-<p>CMake options CORE_MODULES, ELEMENT_MODULES and MATERIAL_MODULES
-allow to specify the modules which should be compiled, either by passing a semicolon seperated list,
-option <strong>none</strong> or option <strong>all</strong> (default).
-For instance:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/MAteRialMOdelingToolbox/Marmot/
-<span class="nb">cd</span><span class="w"> </span>Marmot
-mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span><span class="se">\</span>
--DCORE_MODULES<span class="o">=</span><span class="s1">&#39;MarmotMechanicsCore;MarmotFiniteElementCore&#39;</span><span class="w"> </span><span class="se">\</span>
--DELEMENT_MODULES<span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="w"> </span><span class="se">\</span>
--DMATERIAL_MODULES<span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="w"> </span><span class="se">\</span>
-..
-make
-sudo<span class="w"> </span>make<span class="w"> </span>install
+</div>
+<p>Add conda to your environment:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Step 2</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
+<span class="go"> export PATH=$MARMOTROOT/miniforge3/bin:$PATH</span>
+<span class="go"> conda init --all</span>
+<span class="go"> exit</span>
 </pre></div>
 </div>
-<p>CMake option CMAKE_INSTALL_PREFIX allows to specify the installation directory.
-For instance:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--recurse-submodules<span class="w"> </span>https://github.com/MAteRialMOdelingToolbox/Marmot/
-<span class="nb">cd</span><span class="w"> </span>Marmot
-mkdir<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>build
-cmake<span class="w"> </span><span class="se">\</span>
--DCMAKE_INSTALL_PREFIX<span class="o">=</span>/your/special/installationdirectory<span class="w"> </span><span class="se">\</span>
-..
-make
-make<span class="w"> </span>install
+</div>
+<p>Restart shell and activate conda</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Step 3</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
+<span class="go"> conda activate</span>
+<span class="go"> mamba install cmake make compilers</span>
 </pre></div>
 </div>
+</div>
+<p>Get Eigen:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
+<span class="go"> git clone --branch 3.4.0  https://gitlab.com/libeigen/eigen.git</span>
+<span class="go"> cd eigen</span>
+<span class="go"> mkdir build</span>
+<span class="go"> cd build</span>
+<span class="go"> cmake \</span>
+<span class="go">     -DBUILD_TESTING=OFF  \</span>
+<span class="go">     -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \</span>
+<span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
+<span class="go">     ..</span>
+<span class="go"> make install</span>
+</pre></div>
+</div>
+</div>
+<p>Get autodiff:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Step 5</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
+<span class="go"> git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git</span>
+<span class="go"> cd autodiff</span>
+<span class="go"> mkdir build</span>
+<span class="go"> cd build</span>
+<span class="go"> cmake \</span>
+<span class="go">     -DAUTODIFF_BUILD_TESTS=OFF \</span>
+<span class="go">     -DAUTODIFF_BUILD_PYTHON=OFF \</span>
+<span class="go">     -DAUTODIFF_BUILD_EXAMPLES=OFF \</span>
+<span class="go">     -DAUTODIFF_BUILD_DOCS=OFF \</span>
+<span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
+<span class="go">     ..</span>
+<span class="go"> make install</span>
+</pre></div>
+</div>
+</div>
+<p>Get Fastor:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Step 6</span><a class="headerlink" href="#id6" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
+<span class="go"> git clone https://github.com/romeric/Fastor.git</span>
+<span class="go"> cd Fastor</span>
+<span class="go"> cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .</span>
+<span class="go"> make install</span>
+<span class="go"> cd ../</span>
+</pre></div>
+</div>
+</div>
+<p>Get Marmot:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Step 7</span><a class="headerlink" href="#id7" title="Link to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
+<span class="go"> git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git</span>
+<span class="go"> cd Marmot</span>
+<span class="go"> mkdir build</span>
+<span class="go"> cd build</span>
+<span class="go"> cmake \</span>
+<span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
+<span class="go">     ..</span>
+<span class="go"> make install</span>
+<span class="go"> ctest --output-on-failure</span>
+</pre></div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -160,7 +208,7 @@ make<span class="w"> </span>install
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, University of Innsbruck and other authors.</p>
+    <p>&#169; Copyright 2025, University of Innsbruck, BOKU Vienna and other authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
