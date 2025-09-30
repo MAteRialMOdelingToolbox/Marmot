@@ -17,7 +17,7 @@ void testTensorToScalar()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33d C = DeformationMeasures::CauchyGreen( F );
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
 
   // set material parameters
   const double K = 3500;
@@ -37,7 +37,7 @@ void testTensorToScalar()
 
   // extension in first direction
   F( 0, 0 ) += 1e-3;
-  C = DeformationMeasures::CauchyGreen( F );
+  C = DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
   auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
@@ -51,7 +51,7 @@ void testTensorToScalar()
 
   // shear deformation
   F( 0, 1 ) += 1e-3;
-  C = DeformationMeasures::CauchyGreen( F );
+  C = DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
   std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
@@ -76,7 +76,7 @@ void testTensorToScalarWith2ndOrderDuals()
   seed< 1 >( F_dual( 0, 0 ), 1 );
 
   // compute right Cauchy-Green tensor
-  Tensor33t< autodiff::dual > C_dual = DeformationMeasures::CauchyGreen( F_dual );
+  Tensor33t< autodiff::dual > C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
 
   // set material parameters
   const double K = 3500;
@@ -99,7 +99,7 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // extension in first direction
   F_dual( 0, 0 ) += 1e-3;
-  C_dual = DeformationMeasures::CauchyGreen( F_dual );
+  C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
   std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
@@ -113,7 +113,7 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // shear deformation
   F_dual( 0, 1 ) += 1e-3;
-  C_dual = DeformationMeasures::CauchyGreen( F_dual );
+  C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
   std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
@@ -132,7 +132,7 @@ void testTensorToTensor()
 
   std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& F_ ) {
-      Tensor33t< autodiff::dual > C = DeformationMeasures::CauchyGreen( F_ );
+      Tensor33t< autodiff::dual > C = DeformationMeasures::rightCauchyGreen( F_ );
       return C;
     };
 
@@ -140,7 +140,7 @@ void testTensorToTensor()
   auto [C, dC_dF] = dF_dT( f, F );
 
   // analytical solution
-  auto [C_analytical, dC_dF_analytical] = DeformationMeasures::FirstOrderDerived::CauchyGreen( F );
+  auto [C_analytical, dC_dF_analytical] = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F );
 
   // check results for C
   throwExceptionOnFailure( checkIfEqual< double >( C, C_analytical, 1e-12 ),
@@ -156,7 +156,7 @@ void testTensorToScalarSecondOrder()
 
   Tensor33d F;
   F.eye();
-  Tensor33d C = DeformationMeasures::CauchyGreen( F );
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
@@ -189,7 +189,7 @@ void testTensorToScalarSecondOrderMixed()
   F.eye();
   F( 1, 2 ) += 1e-4;
 
-  Tensor33d C = DeformationMeasures::CauchyGreen( F );
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;

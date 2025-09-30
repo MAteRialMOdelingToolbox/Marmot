@@ -7,7 +7,7 @@ using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics;
 using namespace Marmot::ContinuumMechanics::DeformationMeasures;
 
-void test_CauchyGreen()
+void test_rightCauchyGreen()
 {
   // Testcase 1: Identity matrix: F = I  -->  C = I
   {
@@ -18,7 +18,7 @@ void test_CauchyGreen()
           {0.,0.,1.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::CauchyGreen( F );
+    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     FastorStandardTensors::Tensor33t< double > C_expected;
     // clang-format off
@@ -40,7 +40,7 @@ void test_CauchyGreen()
           {0.,0.,4.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::CauchyGreen( F );
+    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     FastorStandardTensors::Tensor33t< double > C_expected;
     // clang-format off
@@ -62,7 +62,7 @@ void test_CauchyGreen()
           {0., 0., 1.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::CauchyGreen( F );
+    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     // Expected: C = F^T * F = [ [1,0,0; 1,1,0; 1,1,1] * [1,1,1; 0,1,1; 0,0,1] ]
     FastorStandardTensors::Tensor33t< double > C_expected;
@@ -88,7 +88,7 @@ void test_FirstOrderDerived()
           {0.,0.,1.} };
     // clang-format on
 
-    auto [C_computed, dC_dF_computed] = FirstOrderDerived::CauchyGreen( F );
+    auto [C_computed, dC_dF_computed] = FirstOrderDerived::rightCauchyGreen( F );
 
     // C = F^T * F -> when F is diagonal: C_II = F_II^2
     FastorStandardTensors::Tensor33t< double > C_expected( 0.0 );
@@ -122,7 +122,7 @@ void test_FirstOrderDerived()
 		      {0.,0.,4.} };
     // clang-format on
 
-    auto [C_computed, dC_dF_computed] = FirstOrderDerived::CauchyGreen( F );
+    auto [C_computed, dC_dF_computed] = FirstOrderDerived::rightCauchyGreen( F );
 
     // C = F^T * F -> when F is diagonal: C_II = F_II^2
     FastorStandardTensors::Tensor33t< double > C_expected( 0.0 );
@@ -156,7 +156,7 @@ void test_FirstOrderDerived()
 		      {0.,0.,1.} };
     // clang-format on
 
-    auto [C_computed, dC_dF_computed] = FirstOrderDerived::CauchyGreen( F );
+    auto [C_computed, dC_dF_computed] = FirstOrderDerived::rightCauchyGreen( F );
 
     // C = F^T * F = sum_i F_iI * F_iJ
     FastorStandardTensors::Tensor33t< double > C_expected( 0.0 );
@@ -186,7 +186,7 @@ void test_FirstOrderDerived()
 
 int main()
 {
-  auto tests = std::vector< std::function< void() > >{ test_CauchyGreen, test_FirstOrderDerived };
+  auto tests = std::vector< std::function< void() > >{ test_rightCauchyGreen, test_FirstOrderDerived };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

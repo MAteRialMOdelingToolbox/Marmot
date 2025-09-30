@@ -115,7 +115,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -156,7 +156,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -267,7 +267,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -313,7 +313,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -429,7 +429,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -475,7 +475,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -591,7 +591,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
@@ -637,7 +637,7 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
