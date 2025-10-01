@@ -47,99 +47,144 @@
 #include <vector>
 
 namespace Marmot::Elements {
-
+  /** \brief Implementation of a displacement-based finite element
+   * for geometrically nonlinear analysis.
+   *
+   * \tparam nDim   Number of spatial dimensions (1, 2, 3)
+   * \tparam nNodes Number of nodes of the element
+   */
   template < int nDim, int nNodes >
   class DisplacementFiniteStrainULElement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
 
   public:
+    /**
+     * #SectionType is an enum class which involves the following cases:*/
+
     enum SectionType {
-      PlaneStress,
-      PlaneStrain,
-      Solid,
+      PlaneStress, /**< Plane stress section for 2D elements. */
+      PlaneStrain, /**< Plane strain section for 2D elements. */
+      Solid,       /**< Solid (homogeneous) section for 1D, 2D and 3D elements. */
     };
 
+    /// \brief Displacement degrees of freedom per node
     static constexpr int nDofPerNodeU = nDim; // Displacement   field U
+    
+    /// \brief Total number of coordinates of the element
     static constexpr int nCoordinates = nNodes * nDim;
 
-    // block sizes
-
+    /// \brief Block size of element stiffness matrix and load vector for displacement field U
     static constexpr int bsU = nNodes * nDofPerNodeU;
 
+    /// \brief Size of element stiffness matrix and load vector
     static constexpr int sizeLoadVector = bsU;
 
+    /// \brief Starting index of displacement field U in element stiffness matrix and load vector
     static constexpr int idxU = 0;
 
+    /// \brief Parent element class for geometry related operations as, e.g., shape functions
     using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
+    /// \brief Material class for finite strain material formulations
     using Material              = MarmotMaterialFiniteStrain;
-
+    /// \brief Sized matrix type used for Jacobian matrix (inherited from ParentGeometryElement)
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
+    /// \brief Sized matrix type used for shape function matrix (inherited from ParentGeometryElement)
     using NSized        = typename ParentGeometryElement::NSized;
+    /// \brief Sized matrix typed used for shape function derivatives (inherited from ParentGeometryElement)
     using dNdXiSized    = typename ParentGeometryElement::dNdXiSized;
+    /// \brief Sized matrix type used for B matrix (inherited from ParentGeometryElement) (NOT USED!!!)
     using BSized        = typename ParentGeometryElement::BSized;
+    /// \brief Sized vector type used for local coordinates (inherited from ParentGeometryElement)
     using XiSized       = typename ParentGeometryElement::XiSized;
+    /// \brief Sized vector type used for the right hand side of the global equation system (negative element residual vector)
     using RhsSized      = Eigen::Matrix< double, sizeLoadVector, 1 >;
+    /// \brief Sized matrix type used for the element stiffness matrix
     using KSizedMatrix  = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
+    /// \brief Sized vector type used for the element displacement vector
     using USizedVector  = Eigen::Matrix< double, bsU, 1 >;
-
+    /// \brief Sized vector type used for force vectors
     using ForceSized = Eigen::Matrix< double, nDim, 1 >;
 
+    /// \brief Element properties as provided in the input file
     Eigen::Map< const Eigen::VectorXd > elementProperties;
-    const int                           elLabel;
-    const SectionType                   sectionType;
 
+    /// \brief Element label (ID)
+    const int                           elLabel;
+    /// \brief Section type of the element
+    const SectionType                   sectionType;
+    /// \brief Boolean for indicating whether initial deformation is considered or not
     bool hasEigenDeformation;
 
+    /// \brief Structure for storing quadrature point related information
     struct QuadraturePoint {
 
-      const XiSized xi;
-      const double  weight;
+      const XiSized xi; /**< Local coordinates of the quadrature point */
+      const double  weight; /**< Weight of the quadrature point */
 
-      dNdXiSized dNdX;
-      double     J0xW;
+      dNdXiSized dNdX; /**< Shape function derivatives w.r.t. material (undeformed) coordinates evaluated at the quadrature point */
+      double     J0xW; /**< Determinant of the undeformed Jacobian times quadrature weight */
 
+      /// \brief Manager class for handling state variables at the quadrature point
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
+        /// \brief Layout of the state variable vector at the quadrature point
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
-          { .name = "F0 XX", .length = 1 },
-          { .name = "F0 YY", .length = 1 },
-          { .name = "F0 ZZ", .length = 1 },
+          { .name = "F0 XX", .length = 1 }, 
+          { .name = "F0 YY", .length = 1 }, 
+          { .name = "F0 ZZ", .length = 1 }, 
           { .name = "begin of material state", .length = 0 },
         } );
 
       public:
-        Eigen::Map< Marmot::Vector9d > stress;
-        double&                        F0_XX;
-        double&                        F0_YY;
-        double&                        F0_ZZ;
-        Eigen::Map< Eigen::VectorXd >  materialStateVars;
+        Eigen::Map< Marmot::Vector9d > stress; /**< Stress tensor at the quadrature point */
+        double&                        F0_XX; /**< Deformation gradient component XX for prescribing an initial deformation state*/
+        double&                        F0_YY; /**< Deformation gradient component YY for prescribing an initial deformation state*/
+        double&                        F0_ZZ; /**< Deformation gradient component ZZ for prescribing an initial deformation state*/
+        Eigen::Map< Eigen::VectorXd >  materialStateVars; /**< Material state variables at the quadrature point */
 
+        /// \brief Method for getting the number of required state variables at the quadrature point only (without material state variables)
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
+        /** \brief Constructor of the state variable manager at the quadrature point
+         * \param theStateVarVector[in] Pointer to the state variable vector at the quadrature point
+         * \param nStateVars[in] Number of state variables at the quadrature point
+         */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
-            stress( &find( "stress" ) ),
-            F0_XX( find( "F0 XX" ) ),
-            F0_YY( find( "F0 YY" ) ),
-            F0_ZZ( find( "F0 ZZ" ) ),
-            materialStateVars( &find( "begin of material state" ),
+            stress( &find( "stress" ) ), 
+            F0_XX( find( "F0 XX" ) ),    
+            F0_YY( find( "F0 YY" ) ),    
+            F0_ZZ( find( "F0 ZZ" ) ),    
+            materialStateVars( &find( "begin of material state" ),  
                                nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
       };
 
+      /// \brief Managed state variables at the quadrature point
       std::unique_ptr< QPStateVarManager > managedStateVars;
 
+      /// \brief Material at the quadrature point
       std::unique_ptr< Material > material;
 
+      /** \brief Method for getting the number of required state variables at the quadrature point only
+       * \return Number of required state variables at the quadrature point only (without material state variables)
+       */
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
         return QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly();
       };
 
+      /** \brief Method for getting the total number of required state variables at the quadrature point
+       * \return Total number of required state variables at the quadrature point (including material state variables)
+       */
       int getNumberOfRequiredStateVars()
       {
         return getNumberOfRequiredStateVarsQuadraturePointOnly() + material->getNumberOfRequiredStateVars();
       };
 
+      /** \brief Method for assigning the state variable vector at the quadrature point
+       * \param stateVars[in] Pointer to the state variable vector at the quadrature point
+       * \param nStateVars[in] Number of state variables at the quadrature point
+       */
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
@@ -147,42 +192,99 @@ namespace Marmot::Elements {
                                    managedStateVars->materialStateVars.size() );
       }
 
+      /** \brief Constructor of the quadrature point
+       * \param xi[in] Local coordinates of the quadrature point
+       * \param weight[in] Weight of the quadrature point
+       * \note The shape function derivatives w.r.t. material (undeformed) coordinates and the determinant of the undeformed Jacobian times quadrature weight are initialized with zero values.
+       */
       QuadraturePoint( XiSized xi, double weight )
         : xi( xi ), weight( weight ), dNdX( dNdXiSized::Zero() ), J0xW( 0.0 ){};
     };
 
+    /// \brief List of quadrature points of the element
     std::vector< QuadraturePoint > qps;
 
+    /** \brief Constructor of the displacement-based finite strain element
+     * \param elementID[in] Element ID (label) of the element
+     * \param integrationType[in] Integration type of the element
+     * \param sectionType[in] Section type of the element
+     */
     DisplacementFiniteStrainULElement( int                                                 elementID,
                                        Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
                                        SectionType                                         sectionType );
 
+    /// \brief Method for getting the total number of required state variables of the element
     int getNumberOfRequiredStateVars();
 
+    /// \brief Method for getting the nodal fields of the element
     std::vector< std::vector< std::string > > getNodeFields();
 
+    /// \brief Method for getting the permutation pattern of the element degrees of freedom
     std::vector< int > getDofIndicesPermutationPattern();
 
+    /** \brief Method for getting the number of nodes of the element
+     * \return Number of nodes of the element
+     */
     int getNNodes() { return nNodes; }
 
+    /** \brief Method for getting the number of spatial dimensions of the element
+     * \return Number of spatial dimensions of the element
+     */
     int getNSpatialDimensions() { return nDim; }
 
+    /** \brief Method for getting the number of degrees of freedom per node of the element
+     * \return Number of degrees of freedom per node of the element
+     */
     int getNDofPerElement() { return sizeLoadVector; }
 
+    /** \brief Method for getting the shape of the element
+     * \return Shape of the element
+     */
     std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
 
+    /** \brief Method for assigning the state variable vector of the element
+     * \param managedStateVars[in] Pointer to the state variable vector of the element
+     * \param nStateVars[in] Number of state variables of the element
+     */
     void assignStateVars( double* managedStateVars, int nStateVars );
 
+    /** \brief Method for assigning the element properties of the element
+     * \param MarmotElementProperty[in] Element properties
+     */
     void assignProperty( const ElementProperties& MarmotElementProperty );
 
+    /** \brief Method for assigning the material section of the element
+     * \param MarmotElementProperty[in] Material section
+     */
     void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
 
+    /** \brief Method for assigning the nodal coordinates of the element
+     * \param coordinates[in] Pointer to the nodal coordinates of the element
+     */
     void assignNodeCoordinates( const double* coordinates );
 
+    /// \brief Method for initializing the element
     void initializeYourself();
 
+    /** \brief Method for setting the initial conditions of the element
+     * \param state[in] Type of the initial state
+     * \param values[in] Pointer to the values defining the initial state
+     */
     void setInitialConditions( StateTypes state, const double* values );
 
+    /** \brief Method for computing the contributions of distributed loads to the element residual vector and stiffness matrix
+     *
+     *  For a given distributed load vector \f$\bar{\mathbf{t}}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the distributed load contribution to the negative element residual vector (right hand side of global newton) \f$\int_\bar{A}\,\mathbf{N}_A\,\bar{t}_j\,d\bar{A}\f$ and the element stiffness matrix \f$-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} - \delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\f$.
+     *
+     * \param loadType[in] Type of the distributed load, e.g., pressure or surface traction
+     * \param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
+     * \param K[in,out] Pointer to the element stiffness matrix
+     * \param elementFace[in] Local face number of the element where the distributed load is applied
+     * \param load[in] Pointer to the distributed load vector
+     * \param QTotal[in] Pointer to the total element displacement vector at the current time step
+     * \param time[in] Pointer to the time at the beginning of the current time step
+     * \param dT[in] Length of the current time step
+     */
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
@@ -192,6 +294,17 @@ namespace Marmot::Elements {
                                  const double*                       time,
                                  double                              dT );
 
+    /** \brief Method for computing the contributions of body forces to the element residual vector and stiffness matrix
+     *
+     *  For a given body force vector \f$\mathbf{f}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the body force contribution for the element residual vector \f$\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$. The stiffness matrix contribution is zero and thus not computed.
+     *
+     * \param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
+     * \param K[in,out] Pointer to the element stiffness matrix
+     * \param load[in] Pointer to the body force vector
+     * \param QTotal[in] Pointer to the total element displacement vector at the current time step
+     * \param time[in] Pointer to the time at the beginning of the current time step
+     * \param dT[in] Length of the current time step
+     */
     void computeBodyForce( double*       P,
                            double*       K,
                            const double* load,
@@ -199,6 +312,18 @@ namespace Marmot::Elements {
                            const double* time,
                            double        dT );
 
+    /** \brief Method for computing the negative element residual vector (right hand side of global newton) and stiffness matrix
+     *
+     * For a given displacement \f$\mathbf{q}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the internal work contribution for the negative element residual vector \f$-\int_{V_0}\,\mathbf{N}_{A,i}\,\tau_{ij}\,dV_0\f$ and the element stiffness matrix \f$\int_{V_0}\,\mathbf{N}_{A,i}\,\frac{\partial \tau_{ij}}{\partial F_{kK}}\,\mathbf{N}_{B,K}\,-\,\mathbf{N}_{A,k\,}\mathbf{N}_{B,i}\,\tau_{ij}\,dV_0\f$.
+     *
+     * \param QTotal[in] Pointer to the total element displacement vector at the current time step
+     * \param dQ[in] Pointer to the increment of the element displacement vector at the current time step
+     * \param Pe[in,out] Pointer to the negative element residual vector (right hand side of global newton)
+     * \param Ke[in,out] Pointer to the element stiffness matrix
+     * \param time[in] Pointer to the time at the beginning of the current time step
+     * \param dT[in] Length of the current time step
+     * \param pNewdT[in,out] Suggested length of the next time step
+     */
     void computeYourself( const double* QTotal,
                           const double* dQ,
                           double*       Pe,
@@ -207,12 +332,26 @@ namespace Marmot::Elements {
                           double        dT,
                           double&       pNewdT );
 
+    /** \brief Method for getting a view to a state variable at a specific quadrature point of the element
+     * \param stateName[in] Name of the state variable
+     * \param qpNumber[in] Number of the quadrature point where the state variable is stored
+     * \return View to the requested state variable at the specified quadrature point
+     */
     StateView getStateView( const std::string& stateName, int qpNumber );
 
+    /** \brief Method for getting the coordinates of the element center
+     * \return Coordinates of the element center
+     */
     std::vector< double > getCoordinatesAtCenter();
 
+    /** \brief Method for getting the coordinates of all quadrature points of the element
+     * \return Coordinates of all quadrature points of the element
+     */
     std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
 
+    /** \brief Method for getting the number of quadrature points of the element
+     * \return Number of quadrature points of the element
+     */
     int getNumberOfQuadraturePoints();
   };
 
