@@ -4,6 +4,8 @@ Von Mises model (Automatic Differentiation)
 Theory
 ------
 
+See :ref:`vonMisesModel`.
+
 Implementation
 --------------
 
