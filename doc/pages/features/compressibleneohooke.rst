@@ -4,7 +4,7 @@ Compressible Neo Hooke model
 Theory
 ------
 
-Hyperelastic materials are a class of constitutive models used to describe the elastic behavior of solids. 
+Hyperelastic materials are a class of constitutive models used to describe the elastic behavior of solids.
 They postulate a strain-energy density function :math:`\Psi` from which stresses are obtained by differentiation with
 respect to appropriate strain measures.
 In finite strains we take :math:`\Psi=\Psi(\mathbf C)`, where the deformation
@@ -33,7 +33,7 @@ The second Piola-Kirchhoff stress tensor follows from the potential as
    \mathbf S = 2\,\frac{\partial \Psi}{\partial \mathbf C}.
 
 
-The Kirchhoff and Cauchy stress tensors are obtained by push-forward:
+The Kirchhoff and Cauchy stress tensors are obtained by push-forward operations:
 
 .. math::
 

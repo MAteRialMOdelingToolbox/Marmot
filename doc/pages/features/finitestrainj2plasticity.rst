@@ -40,13 +40,19 @@ Plastic admissibility is enforced by a J2 yield function in Mandel stress space 
 
    f(\mathbf{M}, \beta_p) = \frac{1}{f_y^0} \left(\sqrt{\mathbf{M}^{\text{dev}}:\mathbf{M}^{\text{dev}}} - \sqrt{\tfrac{2}{3}} \beta_p\right) \le 0,
 
-where :math:`\mathbf{M}^{\text{dev}} = \mathbf{M} - \frac{1}{3}\text{tr}(\mathbf{M})\mathbf{I}` is the deviatoric part of the Mandel stress. The hardening function is:
+where :math:`\mathbf{M}^{\text{dev}} = \mathbf{M} - \frac{1}{3}\text{tr}(\mathbf{M})\mathbf{I}` is the deviatoric part of the Mandel stress.
+
+
+The hardening function is:
 
 .. math::
 
    \beta_p(\alpha_p) = f_y^\infty + (f_y^0 - f_y^\infty) e^{-\eta \alpha_p} + H \alpha_p,
 
-with strain-like hardening internal variable :math:`\alpha_p`. Associated flow is used:
+with strain-like hardening internal variable :math:`\alpha_p`.
+
+
+Associated flow is used:
 
 .. math::
 
@@ -67,29 +73,41 @@ The Kirchhoff stress follows by push-forward from :math:`\mathbf{S}` with :math:
 
    \boldsymbol{\tau} = \mathbf{F}_e \, \mathbf{S} \, \mathbf{F}_e^{\mathsf{T}}
 
-Stress update (material point) uses a trial elastic split :math:`\mathbf{F}_e^{\rm tr}=\mathbf{F}\,\mathbf{F}_p^{\rm old\,-1}`, evaluation of :math:`f`, and, if plastic, a fully implicit return-mapping in the unknown vector
+Stress update at a material point proceeds by computing the trial elastic split :math:`\mathbf{F}_e^{\mathrm{tr}}=\mathbf{F}\,\big(\mathbf{F}_p^{\mathrm{old}}\big)^{-1}` and evaluating yield function :math:`f`. If plastic yielding occurs (:math:`f > 0`) a fully implicit return-mapping is solved for the unknown vector
 
 .. math::
 
-   \mathbf{X} = \begin{bmatrix} \mathbf{F}_{e,11} \\ \mathbf{F}_{e,12} \\ \vdots \\ \mathbf{F}_{e,33} \\ \alpha_p \\ \Delta\lambda \end{bmatrix},
+   \mathbf{X} = \begin{bmatrix} \mathbf{F}_{e,11} \\ \mathbf{F}_{e,12} \\ \vdots \\ \mathbf{F}_{e,33} \\ \alpha_p \\ \Delta\lambda \end{bmatrix}.
 
 A residual system :math:`\mathbf{R}(\mathbf{X})=\mathbf{0}` enforces (i) elastic–plastic kinematics, (ii) hardening update, and (iii) consistency :math:`f=0`. The plastic update of :math:`\mathbf{F}_p` uses the matrix exponential of the flow direction in Mandel-space:
 
 .. math::
 
-   \Delta\mathbf{F}_p = \exp\left(\Delta\lambda\,\frac{\partial f}{\partial \mathbf{M}}\right)
+   \Delta\mathbf{F}_p = \exp\left(\Delta\lambda\,\frac{\partial f}{\partial \mathbf{M}}\right),
+
+and the strain-like hardening variable is updated as:
 
 .. math::
 
    \Delta\alpha_p = -\Delta\lambda\,\frac{\partial f}{\partial \beta_p} = \frac{\Delta\lambda}{f_y^0} \sqrt{\frac{2}{3}}.
 
-After convergence, :math:`\mathbf{F}_p^{\rm new} = \Delta\mathbf{F}_p\,\mathbf{F}_p^{\rm old}`, and stresses/tangents are evaluated from the hyperelastic law at :math:`\mathbf{F}_e` consistent with the update.
+Upon convergence of the return-mapping algorithm, the plastic variables are updated according to:
+
+.. math::
+
+   \mathbf{F}_p^{\mathrm{new}} = \Delta\mathbf{F}_p\,\mathbf{F}_p^{\mathrm{old}},
+   \qquad
+   \alpha_p^{\mathrm{new}} = \alpha_p^{\mathrm{old}} - \Delta\lambda\,\frac{\partial f}{\partial \beta_p}
+   \;=\; \alpha_p^{\mathrm{old}} + \frac{\Delta\lambda}{f_y^0}\,\sqrt{\tfrac{2}{3}}.
+
+The elastic deformation gradient follows from the multiplicative split as :math:`\mathbf{F}_e^{\mathrm{new}}=\mathbf{F}\,(\mathbf{F}_p^{\mathrm{new}})^{-1}`, and the Kirchhoff stress and consistent algorithmic tangent are then computed from the hyperelastic constitutive law using :math:`\mathbf{F}_e^{\mathrm{new}}`.
+
 
 .. admonition:: Algorithm — Stress update
 
    **1. Trial state:**
 
-   - Compute trial elastic deformation gradient: :math:`\mathbf{F}_e^{\mathrm{tr}} = \mathbf{F} \mathbf{F}_p^{\mathrm{old},-1}`
+   - Compute trial elastic deformation gradient: :math:`\mathbf{F}_e^{\mathrm{tr}}=\mathbf{F}\,\big(\mathbf{F}_p^{\mathrm{old}}\big)^{-1}`
    - Evaluate Mandel stress: :math:`\mathbf{M}^{\mathrm{tr}} = \mathbf{C}_e^{\mathrm{tr}} \mathbf{S}^{\mathrm{tr}}`
    - Compute hardening stress: :math:`\beta_p = f_y^\infty + (f_y^0 - f_y^\infty) e^{-\eta \alpha_p^{\mathrm{old}}} + H \alpha_p^{\mathrm{old}}`
    - Evaluate yield function: :math:`f = \frac{1}{f_y^0}\left(||\mathbf{M}^{\mathrm{tr},\text{dev}}|| - \sqrt{\frac{2}{3}} \beta_p\right)`
@@ -111,13 +129,13 @@ After convergence, :math:`\mathbf{F}_p^{\rm new} = \Delta\mathbf{F}_p\,\mathbf{F
 
        - **Residual equations:**
 
-         - :math:`\mathbf{R}_1`: Elastic-plastic kinematics: :math:`\mathbf{F}_e - \mathbf{F} \mathbf{F}_p^{\mathrm{old}-1} (\Delta\mathbf{F}_p)^{-1} = \mathbf{0}`
+         - :math:`\mathbf{R}_1`: Elastic-plastic kinematics: :math:`\mathbf{F}_e\,\Delta\mathbf{F}_p - \mathbf{F}\,\big(\mathbf{F}_p^{\mathrm{old}}\big)^{-1} = \mathbf{0}`
          - :math:`\mathbf{R}_2`: Hardening evolution: :math:`\alpha_p - \alpha_p^{\mathrm{old}} - \frac{\Delta\lambda}{f_y^0} \sqrt{\frac{2}{3}} = 0`
          - :math:`\mathbf{R}_3`: Consistency condition: :math:`f(\mathbf{M}, \beta_p) = 0`
 
-       - **Newton iteration:** :math:`\mathbf{X}^{(k+1)} = \mathbf{X}^{(k)} - \left[\frac{\partial \mathbf{R}}{\partial \mathbf{X}}\right]^{-1} \mathbf{R}(\mathbf{X}^{(k)})`
+       - **Newton-Raphson iteration:** :math:`\mathbf{X}^{(k+1)} = \mathbf{X}^{(k)} - \left[\frac{\partial \mathbf{R}}{\partial \mathbf{X}}\right]^{-1} \mathbf{R}(\mathbf{X}^{(k)})`
 
-       - **Convergence criteria:** :math:`||\mathbf{R}|| < 10^{-12}` and :math:`||\Delta\mathbf{X}|| < 10^{-12}`
+       - **Convergence criteria:** :math:`||\mathbf{R}|| < \text{TOL}` and :math:`||\Delta\mathbf{X}|| < \text{TOL}`
 
      - Update plastic variables:
 

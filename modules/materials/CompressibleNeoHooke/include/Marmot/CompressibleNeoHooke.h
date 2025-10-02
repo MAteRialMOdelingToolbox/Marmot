@@ -82,15 +82,14 @@ namespace Marmot::Materials {
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
                         const TimeIncrement& );
-
-    int getNumberOfRequiredStateVars()
-    {
-      return this->nStateVarsRequired;
-    } /**< Get number of required state variables (always returns 0 here). */
+    /** \brief Number of required state variables.
+     *  @return Always 0 for this model.
+     */
+    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
 
     /** \brief Bind external state storage (unused for this model; required for the interface).
-     *  \param stateVars Pointer to a contiguous array provided by the caller for internal state.
-     *  \param nStateVars Number of entries in that array.
+     *  @param stateVars Pointer to a contiguous array provided by the caller for internal state.
+     *  @param nStateVars Number of entries in that array.
      */
     void assignStateVars( double* stateVars, int nStateVars )
     {
@@ -100,7 +99,8 @@ namespace Marmot::Materials {
 
     /**
      * \brief Access a named state quantity (no states here).
-     * \param result Name of the state to view.
+     * @param result Name of the state to view.
+     * @return Always an empty StateView since no states are used.
      */
 
     StateView getStateView( const std::string& result );

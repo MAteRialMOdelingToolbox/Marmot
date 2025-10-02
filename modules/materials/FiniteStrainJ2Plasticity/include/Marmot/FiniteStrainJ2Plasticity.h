@@ -64,7 +64,7 @@ namespace Marmot::Materials {
    * - \b alphaP  — strain-like hardening variable
    *
    * \par Implementation variants (implementationType)
-   * - \b 0: scalar return mapping (not implemented)
+   * - \b 0: scalar return mapping (not implemented yet)
    * - \b 1: Full return mapping; all derivatives computed analytically
    * - \b 2: FDAF — Full return mapping; derivatives approximated via forward finite differences
    * - \b 3: FDAC — Full return mapping; derivatives approximated via central finite differences
@@ -164,7 +164,7 @@ namespace Marmot::Materials {
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Full return mapping; derivatives via complex-step (CSDA).
+    /** \brief Full return mapping; derivatives via complex-step differentiation approximation (CSDA).
      *  Evaluates \f$\partial \mathbf{R}/\partial \mathbf{X}\f$ and \f$\partial^{2}\Psi/\partial \mathbf{C}_e\,\partial
      * \mathbf{C}_e\f$ using complex-step.
      */
@@ -174,7 +174,8 @@ namespace Marmot::Materials {
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** \brief Get the number of required state variables (9 for `Fp` and 1 for `alphaP`).
+    /** \brief Get the number of required state variables
+     * @return 10 (9 for `Fp` and 1 for `alphaP`).
      */
 
     int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
@@ -247,7 +248,7 @@ namespace Marmot::Materials {
     }
 
     /** \brief Yield function \f$f(\mathbf M,\beta_p)\f$ w.r.t. Mandel stress (templated).
-     *  @tparam T Scalar type (double, autodiff dual, complex).
+     *  @tparam T Scalar type (double, hyper-dual, complex).
      *  @param mandelStress Mandel stress \f$\mathbf M\f$.
      *  @param betaP        Stress-like hardening variable \f$\beta_p\f$.
      *  @return \f$f\f$.
@@ -294,7 +295,7 @@ namespace Marmot::Materials {
     }
 
     /** \brief First-order derivatives of \f$f(\mathbf M,\beta_p)\f$ w.r.t. \f$\mathbf M \f$.
-     *  @tparam T Scalar type (double, autodiff dual, complex).
+     *  @tparam T Scalar type (double, hyper-dual, complex).
      *  @param mandelStress Mandel stress \f$\mathbf M\f$.
      *  @param betaP        Stress-like hardening variable \f$\beta_p\f$.
      *  @return \f$\{\,f,\;\partial f/\partial \mathbf M,\;\partial f/\partial \beta_p\,\}\f$.
@@ -363,7 +364,7 @@ namespace Marmot::Materials {
     }
 
     /** \brief Compute Mandel stress only (templated scalar type).
-     * @tparam T Scalar type (double, AD, complex).
+     * @tparam T Scalar type (double, hyper-dual, complex).
      * @param Fe Elastic deformation gradient \f$\mathbf F_e\f$.
      * @return Mandel stress \f$\mathbf M\f$.
      * */
@@ -428,7 +429,7 @@ namespace Marmot::Materials {
     }
 
     /** \brief Flow direction for return mapping, \f$\partial f/\partial \mathbf S\f$ (templated).
-     *  @tparam T   Scalar type (double, AD, complex).
+     *  @tparam T   Scalar type (double, hyper-dual, complex).
      *  @param Fe   Elastic deformation gradient \f$\mathbf F_e\f$.
      *  @param betaP Stress-like hardening \f$\beta_p\f$.
      *  @return \f$\partial f/\partial \mathbf S\f$.
@@ -448,7 +449,7 @@ namespace Marmot::Materials {
     }
 
     /** \brief Incremental plastic flow via exponential map.
-     *  @tparam T    Scalar type (double, autodiff dual, complex).
+     *  @tparam T    Scalar type (double, hyper-dual, complex).
      *  @param df_dS Flow direction in Mandel-stress space \f$\partial f/\partial \mathbf S\f$.
      *  @param dLambda Plastic multiplier increment \f$\Delta\lambda\f$.
      *  @return \f$\{\,\Delta\mathbf F_p,\;\partial\Delta\mathbf F_p/\partial\mathbf S:\partial f/\partial\mathbf
@@ -468,12 +469,12 @@ namespace Marmot::Materials {
     }
 
     /** \brief Residual vector \f$\mathbf R(\mathbf X)\f$ for the full return mapping (templated).
-     *  \details State vector \f$\mathbf X\f$ has 11 unknowns: 9 for \f$\mathbf F_e\f$, 1 for \f$\alpha_p\f$, 1 for
+     *  \details Vector \f$\mathbf X\f$ has 11 unknowns: 9 for \f$\mathbf F_e\f$, 1 for \f$\alpha_p\f$, 1 for
      * \f$\Delta\lambda\f$. Residual components:
      *            - \f$R_{0..8}\f$: elastic consistency (updated \f$\mathbf F_e\f$ vs trial),
      *            - \f$R_{9}\f$: \f$\alpha_p\f$ update,
      *            - \f$R_{10}\f$: yield \f$f\f$.
-     *  @tparam T         Scalar type (double/dual/complex).
+     *  @tparam T         Scalar type (double, hyper-dual, complex).
      *  @param X          Current iterate \f$[\mathrm{vec}(\mathbf F_e),\;\alpha_p,\;\Delta\lambda]^\mathrm T\f$.
      *  @param FeTrial    Trial elastic deformation gradient \f$\mathbf F_e^\text{trial}\f$.
      *  @param alphaPTrial Trial strain-like hardening variable \f$\alpha_p^\text{trial}\f$.
