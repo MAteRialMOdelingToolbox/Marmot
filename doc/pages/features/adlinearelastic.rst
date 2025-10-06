@@ -1,6 +1,8 @@
 Linear Elastic model (Automatic Differentiation)
 ================================================
 
+This material is intended for demonstration purposes, to illustrate how to use the capabilities of the AD Material.
+
 Theory
 ------
 
@@ -13,7 +15,8 @@ The constitutive law is given in total form as
 relating the nominal stress tensor :math:`\sig`
 to the linearized strain tensor :math:`\eps`
 with the fourth order stiffness tensor :math:`\Cel`.
-The latter can be specified for isotropic material behavior as follows:
+For the given definitions it is important to note, that the Voigt notation is used.
+The stiffness tensor can be specified for isotropic material behavior as follows:
 
 Isotropic Behavior
 ..................
