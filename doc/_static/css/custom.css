@@ -1,0 +1,29 @@
+.caption-text {
+    font-size: normal;
+    font-style: normal;
+    text-align: left !important;
+    font-weight: bold;
+}
+
+.wy-nav-content {
+    max-width: 90%;
+}
+
+code.literal {
+    color: #5e81ac !important;
+    font-size: 0.9em;
+}
+
+.wy-side-nav-search{
+    background-color: #5e81ac;
+}
+
+.py{
+    font-family: monospace;
+    background-color: #eceff4;
+}
+
+.cpp{
+    font-family: monospace;
+    background-color: #eceff4;
+}
