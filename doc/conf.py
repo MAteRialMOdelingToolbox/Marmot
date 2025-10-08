@@ -18,7 +18,6 @@ html_theme = "sphinx_rtd_theme"
 
 # set logo
 html_logo = "../share/marmot_transparent.png"
-#html_logo = "../share/marmot_logo.png"
 
 # MathJaX configuration
 mathjax3_config = {
