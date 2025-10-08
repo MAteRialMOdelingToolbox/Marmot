@@ -2,7 +2,7 @@ Displacement Finite Strain Element
 ==================================
 
 Preliminaries
-------------- 
+-------------
 This element formulation is implemented in the class :cpp:class:`Marmot::Elements::DisplacementFiniteStrainULElement`, which represents a displacement-based finite element considering large deformations. The formulation is valid for general three-dimensional geometries and can be combined with arbitrary material models. It supports both body forces and surface tractions.
 
 This class inherits from the abstract base classes :cpp:class:`MarmotElement` and :cpp:class:`MarmotGeometryElement<nDim,nNodes>`, which provide common functionality for all finite elements in **Marmot**. In addition, it serves as a base class for specializations such as plane strain and axisymmetric elements.

@@ -68,7 +68,7 @@ namespace Marmot::Elements {
 
     /// @brief Displacement degrees of freedom per node
     static constexpr int nDofPerNodeU = nDim; // Displacement   field U
-    
+
     /// @brief Total number of coordinates of the element
     static constexpr int nCoordinates = nNodes * nDim;
 
@@ -84,21 +84,22 @@ namespace Marmot::Elements {
     /// @brief Parent element class for geometry related operations as, e.g., shape functions
     using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
     /// @brief Material class for finite strain material formulations
-    using Material              = MarmotMaterialFiniteStrain;
+    using Material = MarmotMaterialFiniteStrain;
     /// @brief Sized matrix type used for Jacobian matrix (inherited from ParentGeometryElement)
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
     /// @brief Sized matrix type used for shape function matrix (inherited from ParentGeometryElement)
-    using NSized        = typename ParentGeometryElement::NSized;
+    using NSized = typename ParentGeometryElement::NSized;
     /// @brief Sized matrix typed used for shape function derivatives (inherited from ParentGeometryElement)
-    using dNdXiSized    = typename ParentGeometryElement::dNdXiSized;
+    using dNdXiSized = typename ParentGeometryElement::dNdXiSized;
     /// @brief Sized vector type used for local coordinates (inherited from ParentGeometryElement)
-    using XiSized       = typename ParentGeometryElement::XiSized;
-    /// @brief Sized vector type used for the right hand side of the global equation system (negative element residual vector)
-    using RhsSized      = Eigen::Matrix< double, sizeLoadVector, 1 >;
+    using XiSized = typename ParentGeometryElement::XiSized;
+    /// @brief Sized vector type used for the right hand side of the global equation system (negative element residual
+    /// vector)
+    using RhsSized = Eigen::Matrix< double, sizeLoadVector, 1 >;
     /// @brief Sized matrix type used for the element stiffness matrix
-    using KSizedMatrix  = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
+    using KSizedMatrix = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
     /// @brief Sized vector type used for the element displacement vector
-    using USizedVector  = Eigen::Matrix< double, bsU, 1 >;
+    using USizedVector = Eigen::Matrix< double, bsU, 1 >;
     /// @brief Sized vector type used for force vectors
     using ForceSized = Eigen::Matrix< double, nDim, 1 >;
 
@@ -106,9 +107,9 @@ namespace Marmot::Elements {
     Eigen::Map< const Eigen::VectorXd > elementProperties;
 
     /// @brief Element label (ID)
-    const int                           elLabel;
+    const int elLabel;
     /// @brief Section type of the element
-    const SectionType                   sectionType;
+    const SectionType sectionType;
     /// @brief Boolean for indicating whether initial deformation is considered or not
     bool hasEigenDeformation;
 
@@ -116,11 +117,12 @@ namespace Marmot::Elements {
     /// @brief Structure for storing quadrature point related information
     struct QuadraturePoint {
 
-      const XiSized xi; /**< Local coordinates of the quadrature point */
+      const XiSized xi;     /**< Local coordinates of the quadrature point */
       const double  weight; /**< Weight of the quadrature point */
 
-      dNdXiSized dNdX; /**< Shape function derivatives w.r.t. material (undeformed) coordinates evaluated at the quadrature point */
-      double     J0xW; /**< Determinant of the undeformed Jacobian times quadrature weight */
+      dNdXiSized dNdX;      /**< Shape function derivatives w.r.t. material (undeformed) coordinates evaluated at the
+                               quadrature point */
+      double J0xW;          /**< Determinant of the undeformed Jacobian times quadrature weight */
 
       /// @class QPStateVarManager
       /// @brief Manager class for handling state variables at the quadrature point
@@ -129,20 +131,21 @@ namespace Marmot::Elements {
         /// @brief Layout of the state variable vector at the quadrature point
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
-          { .name = "F0 XX", .length = 1 }, 
-          { .name = "F0 YY", .length = 1 }, 
-          { .name = "F0 ZZ", .length = 1 }, 
+          { .name = "F0 XX", .length = 1 },
+          { .name = "F0 YY", .length = 1 },
+          { .name = "F0 ZZ", .length = 1 },
           { .name = "begin of material state", .length = 0 },
         } );
 
       public:
         Eigen::Map< Marmot::Vector9d > stress; /**< Stress tensor at the quadrature point */
-        double&                        F0_XX; /**< Deformation gradient component XX for prescribing an initial deformation state*/
-        double&                        F0_YY; /**< Deformation gradient component YY for prescribing an initial deformation state*/
-        double&                        F0_ZZ; /**< Deformation gradient component ZZ for prescribing an initial deformation state*/
-        Eigen::Map< Eigen::VectorXd >  materialStateVars; /**< Material state variables at the quadrature point */
+        double& F0_XX; /**< Deformation gradient component XX for prescribing an initial deformation state*/
+        double& F0_YY; /**< Deformation gradient component YY for prescribing an initial deformation state*/
+        double& F0_ZZ; /**< Deformation gradient component ZZ for prescribing an initial deformation state*/
+        Eigen::Map< Eigen::VectorXd > materialStateVars; /**< Material state variables at the quadrature point */
 
-        /// @brief Get number of required state variables at the quadrature point only (without material state variables)
+        /// @brief Get number of required state variables at the quadrature point only (without material state
+        /// variables)
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
         /** @brief Constructor of the state variable manager at the quadrature point
@@ -151,11 +154,11 @@ namespace Marmot::Elements {
          */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
-            stress( &find( "stress" ) ), 
-            F0_XX( find( "F0 XX" ) ),    
-            F0_YY( find( "F0 YY" ) ),    
-            F0_ZZ( find( "F0 ZZ" ) ),    
-            materialStateVars( &find( "begin of material state" ),  
+            stress( &find( "stress" ) ),
+            F0_XX( find( "F0 XX" ) ),
+            F0_YY( find( "F0 YY" ) ),
+            F0_ZZ( find( "F0 ZZ" ) ),
+            materialStateVars( &find( "begin of material state" ),
                                nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
       };
 
@@ -195,7 +198,8 @@ namespace Marmot::Elements {
       /** @brief Constructor of the quadrature point
        * @param xi[in] Local coordinates of the quadrature point
        * @param weight[in] Weight of the quadrature point
-       * @note The shape function derivatives w.r.t. material (undeformed) coordinates and the determinant of the undeformed Jacobian times quadrature weight are initialized with zero values.
+       * @note The shape function derivatives w.r.t. material (undeformed) coordinates and the determinant of the
+       * undeformed Jacobian times quadrature weight are initialized with zero values.
        */
       QuadraturePoint( XiSized xi, double weight )
         : xi( xi ), weight( weight ), dNdX( dNdXiSized::Zero() ), J0xW( 0.0 ){};
@@ -274,7 +278,11 @@ namespace Marmot::Elements {
 
     /** @brief Compute the contributions of distributed loads to the element residual vector and stiffness matrix
      *
-     *  For a given distributed load vector \f$\bar{\boldsymbol{t}}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the distributed load contribution to the negative element residual vector (right hand side of global newton) \f$\int_\bar{A}\,\mathbf{N}_A\,\bar{t}_j\,d\bar{A}\f$ and the element stiffness matrix \f$-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} - \delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\f$.
+     *  For a given distributed load vector \f$\bar{\boldsymbol{t}}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} =
+     * t^{(n)} + \Delta\,t\f$, compute the distributed load contribution to the negative element residual vector (right
+     * hand side of global newton) \f$\int_\bar{A}\,\mathbf{N}_A\,\bar{t}_j\,d\bar{A}\f$ and the element stiffness
+     * matrix \f$-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} -
+     * \delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\f$.
      *
      * @param loadType[in] Type of the distributed load, e.g., pressure or surface traction
      * @param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
@@ -296,7 +304,10 @@ namespace Marmot::Elements {
 
     /** @brief Compute the contributions of body forces to the element residual vector and stiffness matrix
      *
-     *  For a given body force vector \f$\mathbf{f}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the body force contribution for the negative element residual vector (right hand side of global newton) \f$\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$. The stiffness matrix contribution is zero and thus not computed.
+     *  For a given body force vector \f$\mathbf{f}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} +
+     * \Delta\,t\f$, compute the body force contribution for the negative element residual vector (right hand side of
+     * global newton) \f$\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$. The stiffness matrix contribution is zero and thus not
+     * computed.
      *
      * @param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
      * @param K[in,out] Pointer to the element stiffness matrix
@@ -314,7 +325,11 @@ namespace Marmot::Elements {
 
     /** @brief Compute the negative element residual vector (right hand side of global newton) and stiffness matrix
      *
-     * For a given displacement \f$\mathbf{q}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$, compute the internal work contribution for the negative element residual vector (right hand side of global newton) \f$-\int_{V_0}\,\mathbf{N}_{A,i}\,\tau_{ij}\,dV_0\f$ and the element stiffness matrix \f$\int_{V_0}\,\mathbf{N}_{A,i}\,\frac{\partial \tau_{ij}}{\partial F_{kK}}\,\mathbf{N}_{B,K}\,-\,\mathbf{N}_{A,k\,}\mathbf{N}_{B,i}\,\tau_{ij}\,dV_0\f$.
+     * For a given displacement \f$\mathbf{q}^{(n+1)}\f$ at the current time step \f$t^{(n+1)} = t^{(n)} + \Delta\,t\f$,
+     * compute the internal work contribution for the negative element residual vector (right hand side of global
+     * newton) \f$-\int_{V_0}\,\mathbf{N}_{A,i}\,\tau_{ij}\,dV_0\f$ and the element stiffness matrix
+     * \f$\int_{V_0}\,\mathbf{N}_{A,i}\,\frac{\partial \tau_{ij}}{\partial
+     * F_{kK}}\,\mathbf{N}_{B,K}\,-\,\mathbf{N}_{A,k\,}\mathbf{N}_{B,i}\,\tau_{ij}\,dV_0\f$.
      *
      * @param QTotal[in] Pointer to the total element displacement vector at the current time step
      * @param dQ[in] Pointer to the increment of the element displacement vector at the current time step
