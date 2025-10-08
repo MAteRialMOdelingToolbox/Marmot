@@ -14,12 +14,12 @@ Throughout the following derivations, Einstein summation convention is used, i.e
 
 Theory
 ------
-This element computes the element residual vector :math:`\mathbf{r}_{Aj}` and its derivative with respect to the nodal displacement vector :math:`\mathbf{q}_{Bk}`, i.e., the element stiffness matrix :math:`\partial \mathbf{r}_{Aj}/\partial \mathbf{q}_{Bk}` for a displacement-based finite element considering large deformations. The residual vector is derived by discretizing the weak form for linear momentum, given as
+This element computes the element contribution to the global residual vector :math:`\mathbf{r}_{Aj}` and its derivative with respect to the nodal displacement vector :math:`\mathbf{q}_{Bk}`, i.e., the element contribution to the global stiffness matrix :math:`\partial \mathbf{r}_{Aj}/\partial \mathbf{q}_{Bk}` for a displacement-based finite element considering large deformations. The global residual vector is derived by discretizing the weak form for linear momentum, given as
 
 .. math::
    \mathbf{r}_{Aj} = \int_{V_0}\,\mathbf{N}_{A,i}\,\tau_{ij}\,dV_0 - \int_{V_0}\,\mathbf{N}_{A}\,f_{j}\,dV_0 - \int_{\bar{A}}\, \mathbf{N}_A\, \bar{t}_j \, d\bar{A},
 
-with the Kirchhoff stress :math:`\tau_{ij} = J\,t_{ij}`, the body force :math:`f_j`, and the prescribed traction :math:`\bar{t}_j` on the Neumann boundary :math:`\bar{A}`. The element stiffness matrix is computed as
+with the Kirchhoff stress :math:`\tau_{ij} = J\,t_{ij}`, the body force :math:`f_j`, and the prescribed traction :math:`\bar{t}_j` on the Neumann boundary :math:`\bar{A}`. The global stiffness matrix is computed as
 
 .. math::
 
