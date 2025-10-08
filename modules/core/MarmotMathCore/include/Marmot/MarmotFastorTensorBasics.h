@@ -252,6 +252,15 @@ namespace Marmot {
     using to_kL   = Fastor::OIndex< k_, L_ >;
   } // namespace FastorIndices
 
+  /**
+   * @brief Map a Fastor Tensor (const) to an Eigen Map (row-major, const)
+   * @tparam T scalar type
+   * @tparam nRows number of rows
+   * @tparam nCols number of columns
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for second rank tensors (matrices) of size nRows x nCols.
+   */
   template < typename T,
              size_t nRows,
              size_t nCols,
@@ -261,37 +270,101 @@ namespace Marmot {
     return Eigen::Map< const Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
   }
 
+  /**
+   * @brief Map a Fastor Tensor to an Eigen Map (row-major)
+   * @tparam T scalar type
+   * @tparam nRows number of rows
+   * @tparam nCols number of columns
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for second rank tensors (matrices) of size nRows x nCols.
+   */
   template < typename T, size_t nRows, size_t nCols, typename = void >
   auto inline mapEigenToFastor( Fastor::Tensor< T, nRows, nCols >& fastor )
   {
     return Eigen::Map< Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
   }
 
+  /**
+   * @brief Map a Fastor Tensor to an Eigen Map (column vector)
+   * @tparam T scalar type
+   * @tparam nRows number of rows
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for first rank tensors (vectors) of size nRows.
+   */
   template < typename T, size_t nRows, typename = void >
   auto inline mapEigenToFastor( const Fastor::Tensor< T, nRows >& fastor )
   {
     return Eigen::Map< Eigen::Matrix< T, nRows, 1 > >( fastor.data() );
   }
 
+  /**
+   * @brief Map a Fastor TensorMap to an Eigen Map (column vector)
+   * @tparam T scalar type
+   * @tparam nRows number of rows
+   * @param fastor a Fastor TensorMap
+   * @return an Eigen Map
+   * @note This function works only for first rank tensors (vectors) of size nRows.
+   */
   template < typename T, size_t nRows, typename = void >
   auto inline mapEigenToFastor( const Fastor::TensorMap< T, nRows >& fastor )
   {
     return Eigen::Map< Eigen::Matrix< T, nRows, 1 > >( fastor.data() );
   }
 
+  /**
+   * @brief Map a Fastor TensorMap to an Eigen Map (row-major)
+   * @tparam T scalar type
+   * @tparam nRows number of rows
+   * @tparam nCols number of columns
+   * @param fastor a Fastor TensorMap
+   * @return an Eigen Map
+   *
+   * @note This function works only for second rank tensors (matrices) of size nRows x nCols.
+   *
+   */
   template < typename T, size_t nRows, size_t nCols, typename = void >
   auto inline mapEigenToFastor( const Fastor::TensorMap< T, nRows, nCols >& fastor )
   {
     return Eigen::Map< Eigen::Matrix< T, nRows, nCols, Eigen::RowMajor > >( fastor.data() );
   }
 
+  /**
+   * @brief Copy a Fastor tensor to a column-major array
+   * @tparam TensorType a Fastor tensor type
+   * @tparam T scalar type
+   * @tparam Rest a pack of sizes specifying the dimensions of the tensor
+   * @param target pointer to the target array
+   * @param source a Fastor tensor
+   */
   template < template < typename, size_t... > class TensorType, typename T, size_t... Rest >
   void inline copyFastorToColumnMajor( T* target, const TensorType< T, Rest... >& source )
   {
     ( Fastor::TensorMap< T, Rest... >( target ) ) = Fastor::torowmajor( source );
   }
 
-  enum DimensionType { U, W };
+  /**
+   * @brief Dimension types for reduceTo2D and expandTo3D
+   */
+  enum DimensionType {
+    U, ///> displacement dimension
+    W  ///> rotation dimension
+  };
+
+  /**
+   * @brief Reduce a 3D Fastor tensor to a 2D Fastor tensor
+   * @tparam dims a pack of DimensionType specifying the conversion from 3D to 2D
+   * @param T scalar type
+   * @tparam dims3D a pack of sizes specifying the dimensions of the 3D tensor
+   * @param theTensor3D a 3D input tensor
+   * @return the reduced 2D tensor
+   *
+   * This function is used to reduce a displacement and/or rotation tensor in 3D to a
+   * displacement and/or rotation tensor in 2D. The conversion is specified by the
+   * pack of DimensionType. For displacements (DimensionType U) the dimension is reduced from 3 to 2,
+   * for rotations (DimensionType W) the dimension is reduced from 3 to 1.
+   */
   template < DimensionType... dims, typename T, size_t... dims3D >
   auto inline reduceTo2D( const Fastor::Tensor< T, dims3D... >& theTensor3D )
   {
@@ -302,6 +375,13 @@ namespace Marmot {
     return theTensor3D( Fastor::fseq < dims == U ? 0 : 2, dims == U ? 2 : 3 > ()... );
   }
 
+  /**
+   * @brief Overload of reduceTo2d for AbstractTensor inputs
+   * @tparam Derived derived scalar type
+   * @tparam order order of the tensor
+   * @param theTensor3D a 3D input tensor
+   * @return the reduced 2D tensor
+   */
   template < typename Derived, size_t order >
   auto inline reduceTo2D( const Fastor::AbstractTensor< Derived, order >& theTensor3D )
   {
@@ -309,11 +389,29 @@ namespace Marmot {
     return reduceTo2D( result_type( theTensor3D ) );
   }
 
+  /**
+   * @brief Helper function to return 3 for any input size_t
+   * @param x input size_t
+   * @return always returns 3
+   */
   constexpr int const3( size_t x )
   {
     return 3;
   }
 
+  /**
+   * @brief Expand a 2D Fastor tensor to a 3D Fastor tensor
+   * @tparam dims a pack of DimensionType specifying the conversion from 2D to 3D
+   * @param T scalar type
+   * @tparam dims2D a pack of sizes specifying the dimensions of the 2D Tensor
+   * @param theTensor2D a 2D input tensor
+   * @return the expanded 3D tensor
+   *
+   * This function is used to expand a displacement and/or rotation tensor in 2D to a
+   * displacement and/or rotation tensor in 3D. The conversion is specified by the
+   * pack of DimensionType. For displacements (DimensionType U) the dimension is expanded from 2 to 3,
+   * for rotations (DimensionType W) the dimension is expanded from 1 to 3.
+   */
   template < typename T, size_t... dims2D >
   auto inline expandTo3D( const Fastor::Tensor< T, dims2D... >& theTensor2D )
   {
@@ -327,6 +425,13 @@ namespace Marmot {
     return theTensor3D;
   }
 
+  /**
+   * @brief Overload of expandTo3D for AbstractTensor inputs
+   * @tparam Derived derived scalar type
+   * @tparam order order of the tensor
+   * @param theTensor2D a 2D input tensor
+   * @return the expanded 3D tensor
+   */
   template < typename Derived, size_t order >
   auto inline expandTo3D( const Fastor::AbstractTensor< Derived, order >& theTensor2D )
   {
@@ -334,6 +439,16 @@ namespace Marmot {
     return expandTo3D( result_type( theTensor2D ) );
   }
 
+  /**
+   * @brief Multiply a Fastor tensor with a scalar
+   * @tparam T scalar type
+   * @tparam Rest a pack of sizes specifying the dimensions of the tensor
+   * @param tensor a Fastor tensor
+   * @param scalar a scalar
+   * @return the resulting Fastor tensor
+   *
+   * @note This function is a workaround for a bug in Fastor (issue #149).
+   */
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > multiplyFastorTensorWithScalar( Fastor::Tensor< T, Rest... > tensor, T scalar )
   {
@@ -348,6 +463,18 @@ namespace Marmot {
     return out;
   }
 
+  /** @brief Hardcoded implementation of the Einstein summation for two second order tensors
+   * @tparam T scalar type
+   * @param A first second order tensor
+   * @param B second second order tensor
+   * @return the resulting scalar
+   *
+   * This function computes the Einstein summation for two second order tensors A and B:
+   * \f$ C = A_{ij} B_{ij} \f$
+   *
+   * @note This function is a workaround for cases in which Fastor::to_scalar does not work.
+   * This is the case for example when T is autodiff::dual.
+   */
   template < typename T >
   T einsum_ij_ij_hardcoded( const FastorStandardTensors::Tensor33t< T >& A,
                             const FastorStandardTensors::Tensor33t< T >& B )
@@ -363,12 +490,19 @@ namespace Marmot {
     return result;
   }
 
+  /**
+   * @brief Construct a arbitrary type Fastor tensor from a Fastor double tensor
+   * @tparam T target scalar type
+   * @param Rest a pack of sizes specifying the dimensions of the tensor
+   * @param in a Fastor tensor of type double
+   * @return a Fastor tensor of type T
+   *
+   * @note This function is a workaround for lack of casting of pointer types
+   * e.g. no cast available for autodiff::dual* and double*
+   */
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
   {
-    // workaround for lack of casting of pointer types
-    // e.g. no cast available for autodiff::dual* and double*
-
     Fastor::Tensor< T, Rest... > out;
     T*                           out_data = out.data();
     double*                      in_data  = in.data();
@@ -379,12 +513,19 @@ namespace Marmot {
     return out;
   }
 
+  /**
+   * @brief Construct a arbitrary type Fastor tensor from a Fastor double tensor map
+   * @tparam T target scalar type
+   * @param Rest a pack of sizes specifying the dimensions of the tensor
+   * @param in a Fastor tensor map of type double
+   * @return a Fastor tensor of type T
+   *
+   * @note This function is a workaround for lack of casting of pointer types
+   * e.g. no cast available for autodiff::dual* and double*
+   */
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensorMap( const Fastor::TensorMap< double, Rest... >& in )
   {
-    // workaround for lack of casting of pointer types
-    // e.g. no cast available for autodiff::dual* and double*
-
     Fastor::Tensor< T, Rest... > out;
     T*                           out_data = out.data();
     double*                      in_data  = in.data();
@@ -395,6 +536,14 @@ namespace Marmot {
     return out;
   }
 
+  /**
+   * @brief Extract the real part of a Fastor tensor of arbitrary type
+   * @tparam T source scalar type
+   * @param Rest a pack of sizes specifying the dimensions of the tensor
+   * @param in a Fastor tensor of type T
+   * @return a Fastor tensor of type double
+   *
+   */
   template < typename T, size_t... Rest >
   Fastor::Tensor< double, Rest... > makeReal( const Fastor::Tensor< T, Rest... >& in )
   {
@@ -409,6 +558,14 @@ namespace Marmot {
     return out;
   }
 
+  /**
+   * @brief Construct a Fastor tensor of autodiff::dual from a Fastor tensor of arbitrary type
+   * @tparam T source scalar type
+   * @param Rest a pack of sizes specifying the dimensions of the tensor
+   * @param in a Fastor tensor of type T
+   * @return a Fastor tensor of type autodiff::dual
+   *
+   */
   template < typename T, size_t... Rest >
   Fastor::Tensor< autodiff::dual, Rest... > makeDual( const Fastor::Tensor< T, Rest... >& in )
   {
@@ -423,6 +580,14 @@ namespace Marmot {
     return out;
   }
 
+  /**
+   * @brief Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor
+   * @tparam order order of the HigherOrderDual
+   * @param Rest a pack of sizes specifying the dimensions of the tensor
+   * @param in a Fastor tensor of type double
+   * @return a Fastor tensor of type autodiff::HigherOrderDual
+   *
+   */
   template < size_t order, size_t... Rest >
   Fastor::Tensor< autodiff::HigherOrderDual< order, double >, Rest... > makeHigherOrderDual(
     const Fastor::Tensor< double, Rest... >& in )
@@ -438,6 +603,14 @@ namespace Marmot {
     return out;
   }
 
+  /**
+   * @brief Compute the symmetric part of a second order 3D Fastor tensor
+   * @tparam T scalar type
+   * @param t a second order Fastor tensor
+   * @return the symmetric part of the tensor
+   *
+   * It actually computes \f$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) \f$
+   */
   template < typename T >
   FastorStandardTensors::Tensor33t< T > symmetric( const FastorStandardTensors::Tensor33t< T >& t )
   {
@@ -445,6 +618,14 @@ namespace Marmot {
     return sym;
   }
 
+  /**
+   * @brief Compute the deviatoric part of a second order 3D Fastor tensor
+   * @tparam T scalar type
+   * @param t a second order Fastor tensor
+   * @return the deviatoric part of the tensor
+   *
+   * It actually computes \f$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}\f$
+   */
   template < typename T >
   FastorStandardTensors::Tensor33t< T > deviatoric( const FastorStandardTensors::Tensor33t< T >& t )
   {

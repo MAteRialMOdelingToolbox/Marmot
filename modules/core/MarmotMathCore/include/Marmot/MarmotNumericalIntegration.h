@@ -32,6 +32,7 @@
 namespace Marmot {
   namespace NumericalAlgorithms::Integration {
 
+    /** @brief Type alias for a function that takes a double and returns a double.*/
     using scalar_to_scalar_function_type = std::function< double( const double x ) >;
 
     /** @brief Enumeration of available numerical integration rules.
@@ -39,7 +40,14 @@ namespace Marmot {
      *  This enum defines the different numerical integration methods that can be used
      *  in the integrateScalarFunction function.
      */
-    enum integrationRule { midpoint, trapezodial, simpson };
+    enum integrationRule {
+      /// Midpoint rule for numerical integration
+      midpoint,
+      /// Trapezoidal rule for numerical integration
+      trapezodial,
+      /// Simpson's rule for numerical integration
+      simpson
+    };
 
     /** @brief Numerically integrates a scalar function over a specified interval using a chosen integration rule.
      *  @param f The scalar function to be integrated.
@@ -48,16 +56,16 @@ namespace Marmot {
      *  @param intRule The numerical integration rule to use (midpoint, trapezoidal, or Simpson's rule).
      *  @return The approximate value of the integral of f over the specified interval.
      *
-     *  This function approximates the integral of the given scalar function f over the interval
+     *  This function approximates the integral of the given scalar function @p f over the interval
      *  defined by integrationLimits using the specified numerical integration rule. The number
-     *  of subintervals n determines the accuracy of the approximation; a larger n generally
+     *  of subintervals n determines the accuracy of the approximation; a larger @p n generally
      *  leads to a more accurate result.
      *
      *  Example usage:
-     *  \code
+     *  ```cpp
      *  auto f = [](double x) { return x * x; }; // Function to integrate
      *  double result = integrateScalarFunction(f, std::make_tuple(0.0, 1.0), 100, integrationRule::simpson);
-     *  \endcode
+     *  ```
      */
     double integrateScalarFunction( scalar_to_scalar_function_type     f,
                                     const std::tuple< double, double > integrationLimits,

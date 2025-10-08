@@ -198,6 +198,9 @@ namespace Marmot {
       return out;
     }
 
+    /** @typedef scalar_to_scalar_function_type
+     *  @brief A type alias for a scalar-to-scalar function that takes and returns dual numbers
+     */
     using scalar_to_scalar_function_type = std::function< dual( const dual& ) >;
 
     /** @brief Computes the derivative of a scalar-to-scalar function at a given point using automatic differentiation
@@ -210,6 +213,9 @@ namespace Marmot {
      */
     double df_dx( const scalar_to_scalar_function_type& f, const double& x );
 
+    /** @typedef scalar_to_scalar_function_type_2nd
+     *  @brief A type alias for a scalar-to-scalar function that takes and returns second order dual numbers
+     */
     using scalar_to_scalar_function_type_2nd = std::function< dual2nd( const dual2nd& ) >;
 
     /** @brief Computes the derivative of a dual-valued scalar-to-scalar function at a given point using automatic
@@ -222,9 +228,11 @@ namespace Marmot {
      * derivative of the function at that point. Note that the function is 2nd order dual-valued, but the input is only
      * 1st order dual-valued.
      */
-
     dual df_dx( const scalar_to_scalar_function_type_2nd& f, const dual& x );
 
+    /** @typedef vector_to_vector_function_type_dual
+     *  @brief A type alias for a vector-to-vector function that takes and returns dual-valued vectors
+     */
     using vector_to_vector_function_type_dual = std::function< VectorXdual( const VectorXdual& X ) >;
 
     /** @brief Computes the Jacobian of a vector-to-vector function at a given point using automatic differentiation
@@ -238,6 +246,9 @@ namespace Marmot {
      */
     std::pair< VectorXd, MatrixXd > dF_dX( const vector_to_vector_function_type_dual& F, const VectorXd& X );
 
+    /** @typedef vector_to_vector_function_type_dual2nd
+     *  @brief A type alias for a vector-to-vector function that takes and returns second order dual-valued vectors
+     */
     using vector_to_vector_function_type_dual2nd = std::function< VectorXdual2nd( const VectorXdual2nd& X ) >;
 
     /** @brief Computes the Jacobian of a dual-valued vector-to-vector function at a given point using automatic

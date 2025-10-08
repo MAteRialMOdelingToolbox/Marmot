@@ -63,6 +63,10 @@ namespace Marmot {
       return out;
     }
 
+    /** @typedef tensor_to_scalar_function_type
+     *  @brief Alias for a function mapping a tensor to a scalar with dual numbers
+     *  @tparam Rest dimensions of the tensor
+     * */
     template < size_t... Rest >
     using tensor_to_scalar_function_type = std::function< dual( const Fastor::Tensor< dual, Rest... >& T ) >;
 
@@ -92,20 +96,16 @@ namespace Marmot {
       return df_dT;
     }
 
-    /** @brief Compute the gradient of a tensor-to-scalar function where the dual numbers in the tensor have arbitrary
-     * order
-     *  @tparam order current order of the dual numers in the tensor
+    /** @typedef tensor_to_scalar_function_type_arbitrary_dual_order
+     *  @brief A type alias for a function mapping a tensor to a scalar with dual numbers of arbitrary order
+     *  @tparam order current order of the dual numbers in the tensor
      *  @tparam Rest dimensions of the tensor
-     *  @param f function mapping a tensor to a scalar
-     *  @param T input tensor at which the gradient is evaluated
-     *  @return pair of function value and gradient of f with respect to T, same shape as T
-     */
+     * */
     template < size_t order, size_t... Rest >
     using tensor_to_scalar_function_type_arbitrary_dual_order = std::function< HigherOrderDual< order, double >(
       const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& T ) >;
 
-    /** @brief Compute the gradient of a tensor-to-scalar function where the dual numbers in the tensor have arbitrary
-     * order
+    /** @brief Compute the gradient of a tensor-to-scalar function where the with dual numbers of arbitrary order
      *  @tparam order current order of the dual numers in the tensor
      *  @tparam Rest dimensions of the tensor
      *  @param f function mapping a tensor to a scalar
@@ -180,6 +180,12 @@ namespace Marmot {
 
     namespace SecondOrder {
 
+      /** @typedef tensor_to_scalar_function_type
+       *  @brief Alias for a function mapping a tensor to a scalar with second order dual numbers
+       *  @tparam dim dimension of the input tensor (dim x dim)
+       *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
+       */
       template < size_t dim >
       using tensor_to_scalar_function_type = std::function< dual2nd( const Fastor::Tensor< dual2nd, dim, dim >& T ) >;
 
@@ -190,6 +196,8 @@ namespace Marmot {
        *  @return tuple of function value, first derivative and second derivative of F with respect to T
        *          first derivative has shape (dim, dim)
        *          second derivative has shape (dim, dim, dim, dim)
+       *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
        */
       template < size_t dim >
       std::tuple< double, Fastor::Tensor< double, dim, dim >, Fastor::Tensor< double, dim, dim, dim, dim > > d2f_dT2(
@@ -225,6 +233,16 @@ namespace Marmot {
         return { F_, dF_dT_, d2F_dT2 };
       }
 
+      /** @typedef tensor_and_scalar_to_scalar_function_type
+       *  @brief Alias for a function mapping a tensor and a scalar to a scalar with second order dual numbers
+       *  @tparam dim dimension of the input tensor (dim x dim)
+       *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
+       */
+      template < size_t dim >
+      using tensor_and_scalar_to_scalar_function_type = std::function<
+        dual2nd( const Fastor::Tensor< dual2nd, dim, dim >& T, const dual2nd scalar ) >;
+
       /** @brief Computes the mixed second derivative of a function that maps a tensor and a scalar to a scalar
        *  @tparam dim dimension of the input tensor (dim x dim)
        *  @param F function mapping a (dim x dim) tensor and a scalar to a scalar
@@ -232,11 +250,8 @@ namespace Marmot {
        *  @param scalar input scalar at which the derivative is evaluated
        *  @return mixed second derivative of F with respect to T and the scalar, has shape (dim, dim)
        *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
        */
-      template < size_t dim >
-      using tensor_and_scalar_to_scalar_function_type = std::function<
-        dual2nd( const Fastor::Tensor< dual2nd, dim, dim >& T, const dual2nd scalar ) >;
-
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > d2f_dTensor_dScalar( const tensor_and_scalar_to_scalar_function_type< dim >& F,
                                                               const Fastor::Tensor< double, dim, dim >&               T,
