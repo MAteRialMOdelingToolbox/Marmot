@@ -88,7 +88,7 @@ namespace Marmot {
      *  @param X The point at which the Jacobian matrix is to be approximated.
      *  @return The approximated Jacobian matrix of F at point X.
      *
-     *  It actually approximates the Jocobian matrix by
+     *  It actually approximates the Jacobian matrix by
      *  \f[
      *   J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
      *   \f]
