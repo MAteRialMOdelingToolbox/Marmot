@@ -125,6 +125,27 @@ namespace Marmot {
         }
         return B_;
       }
+      namespace axisymmetric {
+        constexpr int voigtSize = 4;
+
+        template < int nNodes >
+        Eigen::Matrix< double, voigtSize, nNodes * nDim > B( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
+                                                             const Eigen::Matrix< double, 1, nNodes >&    N,
+                                                             const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
+        {
+
+          Eigen::Matrix< double, voigtSize, nNodes* nDim >
+            B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+          for ( int i = 0; i < nNodes; i++ ) {
+            B_( 0, 2 * i )     = dNdX( 0, i );
+            B_( 1, 2 * i + 1 ) = dNdX( 1, i );
+            B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
+            B_( 3, 2 * i )     = dNdX( 1, i );
+            B_( 3, 2 * i + 1 ) = dNdX( 0, i );
+          }
+          return B_;
+        }
+      } // namespace axisymmetric
 
       template < int nNodes >
       Eigen::Matrix< double, voigtSize, nNodes * nDim > BGreen( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
@@ -194,6 +215,68 @@ namespace Marmot {
           B_( 0, nDim * i )     = dNdX( 0, i );
           B_( 1, nDim * i + 1 ) = dNdX( 1, i );
           B_( 2, nDim * i + 2 ) = dNdX( 2, i );
+          B_( 3, nDim * i + 0 ) = dNdX( 1, i );
+          B_( 3, nDim * i + 1 ) = dNdX( 0, i );
+          B_( 4, nDim * i + 0 ) = dNdX( 2, i );
+          B_( 4, nDim * i + 2 ) = dNdX( 0, i );
+          B_( 5, nDim * i + 1 ) = dNdX( 2, i );
+          B_( 5, nDim * i + 2 ) = dNdX( 1, i );
+        }
+
+        return B_;
+      }
+
+      template < int nNodes >
+      Eigen::Matrix< double, voigtSize, nNodes * nDim > B_bar( const Eigen::Matrix< double, nDim, nNodes >& dNdX,
+                                                               const Eigen::Matrix< double, nDim, nNodes >& dNdX0 )
+      {
+        // ABAQUS like notation of strain: ( ε11, ε22, ε33, γ12, γ13, γ23 )
+
+        // Implementation of selective reduced integration using the B-bar method (T.J.R. Hughes, 1980).
+        // The matrix dNdX0 is evaluated at the center of the element (Xi_i = 0).
+        // The B-bar method modifies the strain-displacement matrix (B matrix) such that the volumetric part
+        // of the strain is replaced by its average over all quadrature points. This technique helps to
+        // alleviate volumetric locking in nearly incompressible materials.
+        // The modified B matrix for the node a is defined as:
+        /*
+        B̄_a =
+            [ B5   B6   B8 ]
+            [ B4   B7   B8 ]
+            [ B4   B6   B9 ]
+            [ B2   B1    0 ]
+            [  0   B3   B2 ]
+            [ B3    0   B1 ]
+        */
+
+        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+
+        double B1, B2, B3, B4, B5, B6, B7, B8, B9;
+        double B1_bar, B2_bar, B3_bar;
+
+        for ( int i = 0; i < nNodes; i++ ) {
+          B1                    = dNdX( 0, i );
+          B2                    = dNdX( 1, i );
+          B3                    = dNdX( 2, i );
+          B1_bar                = dNdX0( 0, i );
+          B2_bar                = dNdX0( 1, i );
+          B3_bar                = dNdX0( 2, i );
+          B4                    = ( B1_bar - B1 ) / 3.;
+          B5                    = B1 + B4;
+          B6                    = ( B2_bar - B2 ) / 3.;
+          B7                    = B2 + B6;
+          B8                    = ( B3_bar - B3 ) / 3.;
+          B9                    = B3 + B8;
+          B_( 0, nDim * i )     = B5;
+          B_( 0, nDim * i + 1 ) = B6;
+          B_( 0, nDim * i + 2 ) = B8;
+          B_( 1, nDim * i )     = B4;
+          B_( 1, nDim * i + 1 ) = B7;
+          B_( 1, nDim * i + 2 ) = B8;
+          B_( 2, nDim * i )     = B4;
+          B_( 2, nDim * i + 1 ) = B6;
+          B_( 2, nDim * i + 2 ) = B9;
+
+          // shear part is the same as in the normal B matrix
           B_( 3, nDim * i + 0 ) = dNdX( 1, i );
           B_( 3, nDim * i + 1 ) = dNdX( 0, i );
           B_( 4, nDim * i + 0 ) = dNdX( 2, i );
@@ -332,6 +415,7 @@ namespace Marmot {
 
       /// compute the element load vector for a unit vectorial load normal to the surface.
       Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
+      Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
       Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
       /// compute the element load vector for a unit vectorial load in a given direction.

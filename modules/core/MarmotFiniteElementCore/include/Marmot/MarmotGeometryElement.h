@@ -57,6 +57,7 @@ public:
   typedef Eigen::Matrix< double, nDim, nNodes * nDim >      NBSized;
   typedef Eigen::Matrix< double, nDim, nNodes >             dNdXiSized;
   typedef Eigen::Matrix< double, voigtSize, nNodes * nDim > BSized;
+  typedef Eigen::Matrix< double, 4, nNodes * nDim >         BSizedAxisymmetric;
 
   /*Properties*/
   Eigen::Map< const CoordinateVector >       coordinates;
@@ -90,10 +91,12 @@ public:
    *Fully specialized templates are precompiled in marmotMechanics (rather than the unspecialized and
    *partially specialized templates)
    * */
-  NSized     N( const XiSized& xi ) const;
-  dNdXiSized dNdXi( const XiSized& xi ) const;
-  BSized     B( const dNdXiSized& dNdX ) const;
-  BSized     BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const;
+  NSized             N( const XiSized& xi ) const;
+  dNdXiSized         dNdXi( const XiSized& xi ) const;
+  BSized             B( const dNdXiSized& dNdX ) const;
+  BSizedAxisymmetric B_axisymmetric( const dNdXiSized& dNdX, const NSized& N, const XiSized& x_gauss ) const;
+  BSized             B_bar( const dNdXiSized& dNdX, const dNdXiSized& dNdX0 ) const;
+  BSized             BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const;
 
   /*These functions are equal for each element and independent of node number and  nDimension*/
   NBSized NB( const NSized& N ) const { return Marmot::FiniteElement::NB< nDim, nNodes >( N ); }
