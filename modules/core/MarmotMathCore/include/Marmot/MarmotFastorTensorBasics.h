@@ -348,8 +348,8 @@ namespace Marmot {
    * @brief Dimension types for reduceTo2D and expandTo3D
    */
   enum DimensionType {
-    U, ///> displacement dimension
-    W  ///> rotation dimension
+    U, ///< displacement dimension
+    W  ///< rotation dimension
   };
 
   /**
