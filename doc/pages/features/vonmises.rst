@@ -25,7 +25,7 @@ An implementation of classical J2 plasticity with isotropic hardening.
      - :math:`H_\mathrm{iso,lin}`
      - First hardening parameter [#f1]_
    * - 4
-     - :math:`f_\mathrm{y}^{0,\infty}`
+     - :math:`\Delta f_\mathrm{y}^{0,\infty}`
      - Second hardening parameter [#f1]_
    * - 5
      - :math:`\delta`
@@ -188,13 +188,22 @@ and substituting :math:`\Delta\lambda` with :math:`\sqrt{\frac{3}{2}}\Delta\kapp
 
 which can be solved numerically to obtain :math:`\Delta\kappa`.
 
+If :math:`\Delta\kappa` is known, the internal state variable is updated as
+
+.. math:: \kappa^{n+1} = \kappa^{n} + \Delta\kappa
+
+and the stress update is performed by exploiting :math:`\Delta\lambda=\sqrt{\frac{3}{2}}\Delta\kappa`
+
+.. math:: \boldsymbol{\sigma}^{n+1}
+   = \boldsymbol{\sigma}^\mathrm{trial} - 2G\Delta\lambda\frac{\boldsymbol{s}^{\mathrm{trial}}}{\|\boldsymbol{s}^{\mathrm{trial}}\|}
+
 Consistent Algorithmic Tangent Operator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The consistent tangent operator is given as
 
 .. math:: \frac{\partial{\boldsymbol{s}^{n+1}}}{\partial\boldsymbol{\varepsilon}^{n+1}}
-   = \mathbf{C}^\mathrm{e} - 2G\left( \left( 1+\frac{\partial f(\kappa^{n+1})}{\partial\kappa} \right)^{-1} -\frac{2G\Delta\lambda^{n+1}}{\|\boldsymbol{s}^\mathrm{trial}\|} \right) \boldsymbol{n}^{\mathrm{trial}}\otimes\boldsymbol{n}^{\mathrm{trial}} - \frac{4G^2\Delta\lambda}{\|\boldsymbol{s}^\mathrm{trial}\|}\boldsymbol{I}^{\mathrm{dev}}
+   = \mathbf{C}^\mathrm{e} - 2G\left( \left( 1+\frac{\partial f(\kappa^{n+1})}{\partial\kappa} \right)^{-1} -\frac{2G\Delta\lambda^{n+1}}{\|\boldsymbol{s}^\mathrm{trial}\|} \right) \boldsymbol{n}^{\mathrm{trial}}\otimes\boldsymbol{n}^{\mathrm{trial}} - \frac{4G^2\Delta\lambda}{\|\boldsymbol{s}^\mathrm{trial}\|}\boldsymbol{I}^{\mathrm{dev}}.
 
 .. doxygenclass:: Marmot::Materials::VonMisesModel
    :allow-dot-graphs:
