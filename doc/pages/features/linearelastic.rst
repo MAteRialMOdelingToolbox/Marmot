@@ -13,7 +13,8 @@ The constitutive law is given in total form as
 relating the nominal stress tensor :math:`\sig`
 to the linearized strain tensor :math:`\eps`
 with the fourth order stiffness tensor :math:`\Cel`.
-The latter can be specified for isotropic, transversely isotropic
+For the given definitions it is important to note, that the Voigt notation is used.
+The stiffness tensor can be specified for isotropic, transversely isotropic
 or orthotropic material behavior as follows:
 
 Isotropic Behavior
@@ -41,7 +42,7 @@ Transversely Isotropic Behavior
 In case of transversely isotropic behavior, the user defined normal vector specifies the :math:`x_1` - axis
 of a local coordinate system, representing the principal material directions in which the material
 stiffness tensor is formulated. The isotropic plane is implementend with respect to the local :math:`x_2` and :math:`x_3` axes.
-
+The two required vectors must be orthogonal to each other.
 
 Number of independent material parameters:	5
 
@@ -65,7 +66,8 @@ Orthotropic Behavior
 
 In case of orthotropic behavior, the user defined normal vector defines the :math:`x_1` - axis
 of a local coordinate system, representing the principal material directions in which the material stiffness
-tensor is formulated
+tensor is formulated.
+The two required vectors must be orthogonal to each other.
 
 Number of independent material parameters:	9
 
