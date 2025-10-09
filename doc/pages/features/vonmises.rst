@@ -143,6 +143,9 @@ as well as the consistency condition
 Implementation
 --------------
 
+The model is implemented using an (implicit) backward Euler integration scheme.
+Given the stress tensor :math:`\boldsymbol{\sigma}^{n}` and the value of the state variable :math:`\kappa^{n}` at time :math:`t^{n}` as well as an increment of the linearized strain tensor :math:`\Delta\boldsymbol{\varepsilon}=\boldsymbol{\varepsilon}^{n+1}-\boldsymbol{\varepsilon}^{n}`, an updated stress tensor :math:`\boldsymbol{\sigma}^{n+1}` as well as an updated value of the state variable :math:`\kappa^{n+1}` at time :math:`t^{n+1}` are calculated by means of the stress update algorithm outlined below.
+
 Stress Update Algorithm
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -159,20 +162,7 @@ and the hardening variable remains constant
 
 .. math:: \kappa_{n+1} = \kappa_n.
 
-If the trial stress satisfies the yield condition, i.e., :math:`f\left(\boldsymbol{\boldsymbol{\sigma}^\mathrm{trial}},\kappa_n\right)\geq0`, the step is treated as elastoplastic, triggering the radial return mapping algorithm outlined below.
-
-.. .. math:: \boldsymbol{s}^\mathrm{trial}
-..    = \boldsymbol{s}^n + 2G\Delta\boldsymbol{e}
-..
-.. .. math:: \boldsymbol{\sigma}^\mathrm{trial}_\mathrm{m}
-..    = \boldsymbol{\sigma}^{n}_\mathrm{m} + K\Delta{}{\varepsilon}_\mathrm{vol}
-..
-.. .. math:: \boldsymbol{s}_{n+1}
-..    = \boldsymbol{s}^n + 2G\Delta\boldsymbol{e}^\mathrm{e} = \boldsymbol{s}^\mathrm{trial}-2G\Delta\boldsymbol{e}^\mathrm{p}
-..
-..
-..
-..
+If the trial stress satisfies the yield condition, i.e., :math:`f\left(\boldsymbol{\boldsymbol{\sigma}^\mathrm{trial}},\kappa_n\right)\geq0`, the step is treated as elastoplastic, triggering the radial return mapping algorithm.
 
 The updated deviatoric stress :math:`\boldsymbol{s}^{n+1}` can be written as
 
@@ -199,7 +189,7 @@ and substituting :math:`\Delta\lambda` with :math:`\sqrt{\frac{3}{2}}\Delta\kapp
 
 which can be solved numerically to obtain :math:`\Delta\kappa`.
 
-If :math:`\Delta\kappa` is known, the internal state variable is updated as
+If :math:`\Delta\kappa` is known, the state variable is updated as
 
 .. math:: \kappa^{n+1} = \kappa^{n} + \Delta\kappa
 
