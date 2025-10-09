@@ -32,17 +32,17 @@
 namespace Marmot::Materials {
 
   /**
-   * \class Marmot::Materials::CompressibleNeoHooke
-   * \brief Compressible Neo-Hookean hyperelastic material model (Pence–Gou potential, variant B).
+   * @class Marmot::Materials::CompressibleNeoHooke
+   * @brief Compressible Neo-Hookean hyperelastic material model (Pence–Gou potential, variant B).
    *
-   * \par Material parameters
-   * - \b K - bulk modulus
-   * - \b G - shear modulus
+   * @par Material parameters
+   * - @b K - bulk modulus
+   * - @b G - shear modulus
    *
-   * \par State variables
+   * @par State variables
    * - No state variables required.
    *
-   * \ingroup materials_hyperelastic
+   * @ingroup materials_hyperelastic
    */
 
   class CompressibleNeoHooke : public MarmotMaterialFiniteStrain {
@@ -50,10 +50,10 @@ namespace Marmot::Materials {
     using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
 
     /**
-     * \brief Construct a CompressibleNeoHooke material.
-     * \param materialProperties Expects `K` at index 0 and `G` at index 1.
-     * \param nMaterialProperties Length of `materialProperties`.
-     * \param materialLabel Material label.
+     * @brief Construct a CompressibleNeoHooke material.
+     * @param materialProperties Expects @c K at index 0 and @c G at index 1.
+     * @param nMaterialProperties Length of @c materialProperties.
+     * @param materialLabel Material label.
      */
 
     CompressibleNeoHooke( const double* materialProperties, int nMaterialProperties, int materialLabel );
@@ -61,33 +61,33 @@ namespace Marmot::Materials {
     static constexpr int nStateVarsRequired = 0; /**< Number of required state variables (none here). */
 
     /**
-     * \brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
+     * @brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
      *
      * @param[in,out] response
-     *   - `tau` - Kirchhoff stress tensor \f$\boldsymbol{\tau}\f$.
-     *   - `elasticEnergyDensity` - elastic energy density  \f$\psi\f$.
-     *   - `rho` - density (unused here).
+     *   - @c tau - Kirchhoff stress tensor @f$\boldsymbol{\tau}@f$.
+     *   - @c elasticEnergyDensity - elastic energy density  @f$\psi@f$.
+     *   - @c rho - density (unused here).
      * @param[in,out] tangents
-     *   - `dTau_dF` - algorithmic tangent \f$\partial\boldsymbol{\tau}/\partial\mathbf{F}\f$.
+     *   - @c dTau_dF - algorithmic tangent @f$\partial\boldsymbol{\tau}/\partial\boldsymbol{F}@f$.
      * @param[in]  deformation
-     *   - `F` - deformation gradient \f$\mathbf{F}\f$.
+     *   - @c F - deformation gradient @f$\boldsymbol{F}@f$.
      * @param[in]  timeIncrement
-     *   - `t` - old (pseudo-)time.
-     *   - `dT`- (pseudo-)time increment.
+     *   - @c t - old (pseudo-)time.
+     *   - @c dT - (pseudo-)time increment.
      *
-     * Template parameter `<3>` indicates 3D.
+     * Template parameter @c <3> indicates 3D.
      */
 
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
                         const TimeIncrement& );
-    /** \brief Number of required state variables.
+    /** @brief Number of required state variables.
      *  @return Always 0 for this model.
      */
     int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
 
-    /** \brief Bind external state storage (unused for this model; required for the interface).
+    /** @brief Bind external state storage (unused for this model; required for the interface).
      *  @param stateVars Pointer to a contiguous array provided by the caller for internal state.
      *  @param nStateVars Number of entries in that array.
      */
@@ -98,7 +98,7 @@ namespace Marmot::Materials {
     };
 
     /**
-     * \brief Access a named state quantity (no states here).
+     * @brief Access a named state quantity (no states here).
      * @param result Name of the state to view.
      * @return Always an empty StateView since no states are used.
      */
