@@ -31,6 +31,17 @@ An implementation of classical J2 plasticity with isotropic hardening.
      - :math:`\delta`
      - Third hardening parameter [#f1]_
 
+.. list-table::
+   :header-rows: 1
+   :align: left
+
+   * - **State Variable**
+     - **Name**
+     - **Description**
+   * - :math:`\kappa`
+     - ``kappa``
+     - Hardening variable [#f1]_
+
 .. [#f1] see :ref:`vonMisesModel_hardening`.
 
 Theory
