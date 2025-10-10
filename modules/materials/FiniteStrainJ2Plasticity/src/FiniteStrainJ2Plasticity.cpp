@@ -36,10 +36,15 @@ namespace Marmot::Materials {
                                                 const TimeIncrement&       timeIncrement )
   {
     switch ( implementationType ) {
+
     case 0: computeStressWithScalarReturnMapping( response, tangents, deformation, timeIncrement ); break;
+
     case 1: computeStressWithFullReturnMapping( response, tangents, deformation, timeIncrement ); break;
+
     case 2: computeStressFDAF( response, tangents, deformation, timeIncrement ); break;
+
     case 3: computeStressFDAC( response, tangents, deformation, timeIncrement ); break;
+
     case 4: computeStressCSDA( response, tangents, deformation, timeIncrement ); break;
     default: throw std::invalid_argument( "implementation type not supported" );
     };
@@ -669,6 +674,7 @@ namespace Marmot::Materials {
       tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) + einsum< ijKL, KLMN >( dTau_dFe_partial, dFe_dF );
     }
   }
+
   StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName )
   {
     return stateVars->getStateView( stateName );
