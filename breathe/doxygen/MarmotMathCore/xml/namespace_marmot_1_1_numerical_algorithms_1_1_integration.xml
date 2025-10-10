@@ -10,6 +10,7 @@
         <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa8e94aee33795bb24f71e6ef3b148327e" prot="public">
           <name>midpoint</name>
           <briefdescription>
+<para>Midpoint rule for numerical integration. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -17,6 +18,7 @@
         <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa878be5199c1be129e57b47bfde9cf921" prot="public">
           <name>trapezodial</name>
           <briefdescription>
+<para>Trapezoidal rule for numerical integration. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -24,17 +26,20 @@
         <enumvalue id="_marmot_numerical_integration_8h_1a78e33745ac095dd6af7d3bd89810717fa6f22a55545873def28aeff360ea3cfd6" prot="public">
           <name>simpson</name>
           <briefdescription>
+<para>Simpson&apos;s rule for numerical integration. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Enumeration of available numerical integration rules. </para>
         </briefdescription>
         <detaileddescription>
+<para>This enum defines the different numerical integration methods that can be used in the integrateScalarFunction function. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="37" bodyend="37"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="43" bodyend="50"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="typedef">
@@ -45,12 +50,13 @@
         <name>scalar_to_scalar_function_type</name>
         <qualifiedname>Marmot::NumericalAlgorithms::Integration::scalar_to_scalar_function_type</qualifiedname>
         <briefdescription>
+<para>Type alias for a function that takes a double and returns a double. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="35" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="35" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="36" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" bodystart="36" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -77,12 +83,52 @@
           <declname>intRule</declname>
         </param>
         <briefdescription>
+<para>Numerically integrates a scalar function over a specified interval using a chosen integration rule. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The scalar function to be integrated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>integrationLimits</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple containing the lower and upper limits of integration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of subintervals to use for the integration (must be positive). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>intRule</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The numerical integration rule to use (midpoint, trapezoidal, or Simpson&apos;s rule). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximate value of the integral of f over the specified interval.</para>
+</simplesect>
+This function approximates the integral of the given scalar function <computeroutput>f</computeroutput> over the interval defined by integrationLimits using the specified numerical integration rule. The number of subintervals n determines the accuracy of the approximation; a larger <computeroutput>n</computeroutput> generally leads to a more accurate result.</para>
+<para>Example usage: <programlisting filename=".cpp"><codeline><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>[](</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x<sp/>*<sp/>x;<sp/>};<sp/></highlight><highlight class="comment">//<sp/>Function<sp/>to<sp/>integrate</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>result<sp/>=<sp/>integrateScalarFunction(f,<sp/>std::make_tuple(0.0,<sp/>1.0),<sp/>100,<sp/>integrationRule::simpson);</highlight></codeline>
+</programlisting> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="39" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" declline="39" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" line="70" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" declline="70" declcolumn="12"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

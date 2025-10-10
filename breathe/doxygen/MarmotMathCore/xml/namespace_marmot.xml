@@ -18,6 +18,7 @@
         <enumvalue id="_marmot_fastor_tensor_basics_8h_1ab05d498f6a35b42d5315d67905a08c24aebe9b4f90e252c766f40e863c31a2c77" prot="public">
           <name>U</name>
           <briefdescription>
+<para>displacement dimension </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -25,17 +26,19 @@
         <enumvalue id="_marmot_fastor_tensor_basics_8h_1ab05d498f6a35b42d5315d67905a08c24aa621bfeba8c79a8c5bac30e0e2e1ba78" prot="public">
           <name>W</name>
           <briefdescription>
+<para>rotation dimension </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Dimension types for reduceTo2D and expandTo3D. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="294" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="294" bodyend="294"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="350" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="350" bodyend="353"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="typedef">
@@ -417,12 +420,52 @@
           <declname>fastor</declname>
         </param>
         <briefdescription>
+<para>Map a Fastor Tensor (const) to an Eigen Map (row-major, const) </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="259" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="259" bodyend="262"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="268" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="268" bodyend="271"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a3c8ad58f567c8413437bf04497bed9f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -454,12 +497,52 @@
           <declname>fastor</declname>
         </param>
         <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (row-major) </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="265" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="265" bodyend="268"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="283" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="283" bodyend="286"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1adb046a9afec8bb0bdf55590391802fce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -486,12 +569,44 @@
           <declname>fastor</declname>
         </param>
         <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (column vector) </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for first rank tensors (vectors) of size nRows. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="271" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="271" bodyend="274"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="297" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="297" bodyend="300"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a432e83a0c579f414f545e38c7bb28197" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -518,12 +633,44 @@
           <declname>fastor</declname>
         </param>
         <briefdescription>
+<para>Map a Fastor TensorMap to an Eigen Map (column vector) </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor TensorMap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works only for first rank tensors (vectors) of size nRows. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="277" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="277" bodyend="280"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="311" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="311" bodyend="314"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ae9053ebd1defd0d42715851e68624d3f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -555,12 +702,52 @@
           <declname>fastor</declname>
         </param>
         <briefdescription>
+<para>Map a Fastor TensorMap to an Eigen Map (row-major) </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor TensorMap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map</para>
+</simplesect>
+<simplesect kind="note"><para>This function works only for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="283" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="283" bodyend="286"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="328" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="328" bodyend="331"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a61086290a551b3d41b384be7edcbc5a1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -592,12 +779,56 @@
           <declname>source</declname>
         </param>
         <briefdescription>
+<para>Copy a Fastor tensor to a column-major array. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TensorType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the target array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="289" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="289" bodyend="292"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="342" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="342" bodyend="345"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a34408079f87a3b28e136d7245ad91c5d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -625,12 +856,52 @@
           <declname>theTensor3D</declname>
         </param>
         <briefdescription>
+<para>Reduce a 3D Fastor tensor to a 2D Fastor tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of DimensionType specifying the conversion from 3D to 2D </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the 3D tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 3D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the reduced 2D tensor</para>
+</simplesect>
+This function is used to reduce a displacement and/or rotation tensor in 3D to a displacement and/or rotation tensor in 2D. The conversion is specified by the pack of DimensionType. For displacements (DimensionType U) the dimension is reduced from 3 to 2, for rotations (DimensionType W) the dimension is reduced from 3 to 1. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="296" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="296" bodyend="303"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="369" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="369" bodyend="376"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a90efbee376206cce017a5a4c0a43d565" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -653,12 +924,42 @@
           <declname>theTensor3D</declname>
         </param>
         <briefdescription>
+<para>Overload of reduceTo2d for AbstractTensor inputs. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Derived</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derived scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 3D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the reduced 2D tensor </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="306" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="306" bodyend="310"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="386" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="386" bodyend="390"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad1b062d270e79e79a1ea3b623b9ba98d" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -671,12 +972,25 @@
           <declname>x</declname>
         </param>
         <briefdescription>
+<para>Helper function to return 3 for any input size_t. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input size_t </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>always returns 3 </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="312" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="312" bodyend="315"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="397" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="397" bodyend="400"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1afce96b45653e6918c9d2e16feb0e0237" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -699,12 +1013,52 @@
           <declname>theTensor2D</declname>
         </param>
         <briefdescription>
+<para>Expand a 2D Fastor tensor to a 3D Fastor tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of DimensionType specifying the conversion from 2D to 3D </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the 2D Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 2D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the expanded 3D tensor</para>
+</simplesect>
+This function is used to expand a displacement and/or rotation tensor in 2D to a displacement and/or rotation tensor in 3D. The conversion is specified by the pack of DimensionType. For displacements (DimensionType U) the dimension is expanded from 2 to 3, for rotations (DimensionType W) the dimension is expanded from 1 to 3. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="318" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="318" bodyend="328"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="416" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="416" bodyend="426"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a608845c3c341d32c4432c9abf4bb2f8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -727,12 +1081,42 @@
           <declname>theTensor2D</declname>
         </param>
         <briefdescription>
+<para>Overload of expandTo3D for AbstractTensor inputs. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Derived</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derived scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 2D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the expanded 3D tensor </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="331" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="331" bodyend="335"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="436" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="436" bodyend="440"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a1d6bef1a2dab561af43ae5cd570c0d4b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -759,12 +1143,52 @@
           <declname>scalar</declname>
         </param>
         <briefdescription>
+<para>Multiply a Fastor tensor with a scalar. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a scalar </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the resulting Fastor tensor</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for a bug in Fastor (issue #149). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="338" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="338" bodyend="349"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="453" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="453" bodyend="464"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a5a497088b0941ceb489c234f0ca34dca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -786,12 +1210,45 @@
           <declname>B</declname>
         </param>
         <briefdescription>
+<para>Hardcoded implementation of the Einstein summation for two second order tensors. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first second order tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second second order tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the resulting scalar</para>
+</simplesect>
+This function computes the Einstein summation for two second order tensors A and B: <formula id="50">$ C = A_{ij} B_{ij} $</formula></para>
+<para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is autodiff::dual. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="352" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="352" bodyend="364"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="479" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="479" bodyend="491"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a53b77e34e976cbebf5a2a1484488952f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -814,12 +1271,44 @@
           <declname>in</declname>
         </param>
         <briefdescription>
+<para>Construct a arbitrary type Fastor tensor from a Fastor double tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type T</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="367" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="367" bodyend="380"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="504" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="504" bodyend="514"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a251a4e72c65e5221b1d07bc43eb949ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -842,12 +1331,44 @@
           <declname>in</declname>
         </param>
         <briefdescription>
+<para>Construct a arbitrary type Fastor tensor from a Fastor double tensor map. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor map of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type T</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="383" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="383" bodyend="396"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="527" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="527" bodyend="537"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1acc8deec5875096e9aae6c710f89e0690" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -870,12 +1391,42 @@
           <declname>in</declname>
         </param>
         <briefdescription>
+<para>Extract the real part of a Fastor tensor of arbitrary type. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type T </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type double </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="399" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="399" bodyend="410"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="548" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="548" bodyend="559"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a6b27c38160146824cbd182e6753899ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -898,12 +1449,42 @@
           <declname>in</declname>
         </param>
         <briefdescription>
+<para>Construct a Fastor tensor of autodiff::dual from a Fastor tensor of arbitrary type. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type T </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type autodiff::dual </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="413" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="413" bodyend="424"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="570" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="570" bodyend="581"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a1272f1655d8334837578afe9ac2ca92d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -928,12 +1509,42 @@
           <declname>in</declname>
         </param>
         <briefdescription>
+<para>Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the HigherOrderDual </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type autodiff::HigherOrderDual </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="427" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="427" bodyend="439"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="592" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="592" bodyend="604"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a279263d82f5f86f5127f6840f9835bf0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -951,12 +1562,34 @@
           <declname>t</declname>
         </param>
         <briefdescription>
+<para>Compute the symmetric part of a second order 3D Fastor tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a second order Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the symmetric part of the tensor</para>
+</simplesect>
+It actually computes <formula id="51">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="442" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="442" bodyend="446"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="615" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="615" bodyend="619"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad8af416a52bd57f2eadaa0c931cd438e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -974,12 +1607,34 @@
           <declname>t</declname>
         </param>
         <briefdescription>
+<para>Compute the deviatoric part of a second order 3D Fastor tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a second order Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the deviatoric part of the tensor</para>
+</simplesect>
+It actually computes <formula id="52">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="449" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="449" bodyend="456"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="630" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="630" bodyend="637"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

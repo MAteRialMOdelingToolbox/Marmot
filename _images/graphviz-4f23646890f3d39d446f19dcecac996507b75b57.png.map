@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" alt="" coords="5,5,1138,53"/>
+<area shape="rect" id="node2" title="Eigen/Core" alt="" coords="508,101,635,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="574,54,574,86,569,86,569,54"/>
+</map>

@@ -18,7 +18,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="225" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="225" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="276" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="276" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_numerical_differentiation_for_fastor_8h_1ab209696084acc4914c384a05bc9412a8" prot="public" static="no">
         <templateparamlist>
@@ -35,12 +35,23 @@
         <name>tensor_to_scalar_function_type</name>
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::tensor_to_scalar_function_type</qualifiedname>
         <briefdescription>
+<para>Type alias for a function that maps a tensor to a scalar using complex numbers. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimensions of the input Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="230" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="230" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="285" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="285" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a4a90e6de8284baeb8274c9ef1da60865" prot="public" static="no">
         <type>std::function&lt; complexDouble(const complexDouble x) &gt;</type>
@@ -49,12 +60,13 @@
         <name>scalar_to_scalar_function_type</name>
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::scalar_to_scalar_function_type</qualifiedname>
         <briefdescription>
+<para>Type definition for a function that maps a complex double to another complex double. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="51" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="51" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="112" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="112" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a172748ccbd9e78f7805463806da8abc2" prot="public" static="no">
         <type>std::function&lt; Eigen::VectorXcd(const Eigen::VectorXcd &amp;X) &gt;</type>
@@ -63,12 +75,13 @@
         <name>vector_to_vector_function_type</name>
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::vector_to_vector_function_type</qualifiedname>
         <briefdescription>
+<para>Type definition for a function that maps an Eigen complex vector to another Eigen complex vector. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="52" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="52" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="117" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="117" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -85,7 +98,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="226" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="226" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="277" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="277" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_numerical_differentiation_for_fastor_8h_1a8eef6e1db32666b0bfd40472454844f9" prot="public" static="yes" mutable="no">
         <type>const complexDouble</type>
@@ -100,7 +113,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="227" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="227" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="278" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="278" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_numerical_differentiation_8h_1ae67392e859d5c18f0943f1b74c12e71c" prot="public" static="yes" mutable="no">
         <type>const std::complex&lt; double &gt;</type>
@@ -110,12 +123,13 @@
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::imaginaryUnit</qualifiedname>
         <initializer>= { 0, 1 }</initializer>
         <briefdescription>
+<para>A variable representing <formula id="40">$ 0 + 1i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="47" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="47" bodyend="47"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="103" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="103" bodyend="103"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_numerical_differentiation_8h_1a6404fc111180740f6b006d16f9ba7615" prot="public" static="yes" mutable="no">
         <type>const std::complex&lt; double &gt;</type>
@@ -125,12 +139,13 @@
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::complexUnit</qualifiedname>
         <initializer>= { 1, 1 }</initializer>
         <briefdescription>
+<para>A variable representing <formula id="41">$ 1 + 1i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="48" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="48" bodyend="48"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="105" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="105" bodyend="105"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_numerical_differentiation_8h_1ae0c370efd89ca4bad97eaa994f36036c" prot="public" static="yes" mutable="no">
         <type>const std::complex&lt; double &gt;</type>
@@ -140,12 +155,13 @@
         <qualifiedname>Marmot::NumericalAlgorithms::Differentiation::Complex::i_</qualifiedname>
         <initializer>= Marmot::Constants::sqrt2 / 2. * complexUnit</initializer>
         <briefdescription>
+<para>A variable representing <formula id="42">$ \frac{\sqrt{2}}{2} (1+1i) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="49" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="49" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="107" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="107" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -171,12 +187,42 @@
           <declname>T</declname>
         </param>
         <briefdescription>
+<para>Approximates the derivative of a function mapping a tensor to a scalar using the complex step method. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimension of the input Tensor (assumed to be square) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function mapping a tensor to a scalar with complex numbers </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is evaluated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The derivative of the function F at the point T </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="234" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="234" bodyend="252"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="297" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="297" bodyend="315"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a5ee4f2bd6a00a7f61d3670ef77fbbc4a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -193,12 +239,37 @@
           <declname>x</declname>
         </param>
         <briefdescription>
+<para>Approximates the first derivative of a scalar function f at point x using the complex step method. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The scalar function for which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
+</simplesect>
+It actually computes   <formula id="43">\[ f&apos;(x) \approx \frac{\text{Im}(f(x + ih))}{h}
+\]</formula> with <formula id="44">$ h = 10^{-20} $</formula>.</para>
+<para><simplesect kind="note"><para>This method is highly accurate and does not suffer from subtractive cancellation errors, making it suitable for functions where high precision is required. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="54" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="54" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="134" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="134" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a2c5dd9bde01d03a58662eb2f06c70e6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; Eigen::VectorXd, Eigen::MatrixXd &gt;</type>
@@ -215,12 +286,37 @@
           <declname>X</declname>
         </param>
         <briefdescription>
+<para>Approximates the Jacobian matrix of a vector function F at point X using the complex step method. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector function for which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the function value at X and the approximated Jacobian matrix of F at point X.</para>
+</simplesect>
+It actually computes   <formula id="45">\[ J_{ij} \approx \frac{\text{Im}(F_i(X + ih e_j))}{h}
+\]</formula> with <formula id="44">$ h = 10^{-20} $</formula>, and <formula id="36">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+<para><simplesect kind="note"><para>This method is highly accurate and does not suffer from subtractive cancellation errors, making it suitable for functions where high precision is required. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="56" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="56" declcolumn="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="151" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="151" declcolumn="18"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1aa36a3313864346a2aeacde16bdaca2ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -237,12 +333,37 @@
           <declname>X</declname>
         </param>
         <briefdescription>
+<para>Approximates the Jacobian matrix of a vector function F at point X using the complex step method with central differences. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector function for which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
+</simplesect>
+It actually approximates the Jacobian matrix by   <formula id="46">\[ J_{ij} \approx \frac{\text{Im}(F_i(\boldsymbol{X} + Ih e_j) - F_i(\boldsymbol{X} - Ih e_j))}{2h}
+\]</formula> with <formula id="47">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="39">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="36">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+<para><simplesect kind="note"><para>The formula can be found in Lai et al. (2005) Equ. 19. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="59" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="59" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="170" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="170" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a1d374430c01a8b167504cc715f1997ad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -259,18 +380,47 @@
           <declname>X</declname>
         </param>
         <briefdescription>
+<para>Approximates the Jacobian matrix of a vector function F at point X using a fourth-order accurate complex step method. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector function for which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
+</simplesect>
+It actually approximates the Jacobian matrix by       <formula id="48">\[J_{ij} \approx \frac{\text{Im}(8 [
+F_i(\boldsymbol{X} + I/2h e_j) -
+F_i(\boldsymbol{X} - I/2h e_j)] -
+[F_i(\boldsymbol{X} + Ih e_j) +
+F_i(\boldsymbol{X} - Ih e_j)])}{3\sqrt{2}h}
+\]</formula> with <formula id="47">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="49">$ h = \sqrt{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="36">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+<para><simplesect kind="note"><para>The formula can be found in Lai et al. (2005) Equ. 24. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="61" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="61" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="192" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="192" declcolumn="23"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="223" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="274" column="5"/>
   </compounddef>
 </doxygen>

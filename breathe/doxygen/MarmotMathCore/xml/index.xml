@@ -86,7 +86,7 @@
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" kind="function"><name>dF_dT</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a37db7167c4a2d4cb39e61c2fec762760" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a0e33dd3b85e07ce522ba99b42af9565b" kind="function"><name>shiftTo2ndOrderDual</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1a965d13316fe41d118591690ba5928978" kind="function"><name>valnode</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a2dfa9ae7badec377cddd95c193df72a1" kind="function"><name>valnode</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a9ded965ad7faa15795d1ed43a1a26a4e" kind="function"><name>valnode</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a9ad0d01310a119fdeb6dad14f737d478" kind="function"><name>increaseDualOrderWithShift</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad50a4452ffce2fcc7331b9873f0a6529" kind="function"><name>decreaseDualOrder</name></member>

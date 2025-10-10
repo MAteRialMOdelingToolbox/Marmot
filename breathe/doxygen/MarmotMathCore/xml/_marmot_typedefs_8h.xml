@@ -7,9 +7,7 @@
     <includes local="yes">unsupported/Eigen/CXX11/Tensor</includes>
     <includedby refid="_marmot_math_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h</includedby>
     <includedby refid="_marmot_numerical_differentiation_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h</includedby>
-    <includedby refid="_marmot_numerical_differentiation_for_fastor_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h</includedby>
     <includedby refid="_marmot_tensor_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h</includedby>
-    <includedby refid="_newton_convergence_checker_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h</includedby>
     <incdepgraph>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h</label>
@@ -49,8 +47,6 @@
         <link refid="_marmot_math_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
         <childnode refid="5" relation="include">
         </childnode>
       </node>
@@ -81,16 +77,8 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
-        </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
-        </childnode>
-      </node>
-      <node id="9">
-        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h</label>
-        <link refid="_newton_convergence_checker_8h_source"/>
       </node>
     </invincdepgraph>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>

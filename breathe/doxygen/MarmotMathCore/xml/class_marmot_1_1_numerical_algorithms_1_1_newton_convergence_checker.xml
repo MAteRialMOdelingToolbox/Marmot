@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker" kind="class" language="C++" prot="public">
     <compoundname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</compoundname>
+    <includes refid="_newton_convergence_checker_8h" local="no">NewtonConvergenceChecker.h</includes>
     <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1ad8605aae8b895ed0600ac7c25bb66880" prot="private" static="no" mutable="no">
         <type>const Eigen::VectorXd</type>
@@ -10,12 +11,13 @@
         <name>residualScaleVector</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::residualScaleVector</qualifiedname>
         <briefdescription>
+<para>A vector to scale the residual for convergence checks. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="34" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="34" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="42" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="42" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a622e44dd600da7b71575ade74ea2dd4f" prot="private" static="no" mutable="no">
         <type>const int</type>
@@ -24,12 +26,13 @@
         <name>nMaxNewtonCycles</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCycles</qualifiedname>
         <briefdescription>
+<para>Maximum number of Newton cycles allowed. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="35" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="35" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="44" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1acd4b201bfb0b6e08effa680fe1489d99" prot="private" static="no" mutable="no">
         <type>const int</type>
@@ -38,12 +41,13 @@
         <name>nMaxNewtonCyclesAlt</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::nMaxNewtonCyclesAlt</qualifiedname>
         <briefdescription>
+<para>Maximum number of alternative Newton cycles allowed. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="36" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="36" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="46" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="46" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a8bf9da7eb37650032ec6241618743171" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -52,12 +56,13 @@
         <name>newtonTol</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTol</qualifiedname>
         <briefdescription>
+<para>Tolerance for the Newton convergence based on absolute residual norm. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="37" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="37" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="48" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a6fd62e6a97833b98492f3bcc8b1fbf37" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -66,12 +71,13 @@
         <name>newtonRTol</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTol</qualifiedname>
         <briefdescription>
+<para>Tolerance for the Newton convergence based on relative increment norm. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="38" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="38" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="50" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a13782e51a5c34b7fd95313b975cc293e" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -80,12 +86,13 @@
         <name>newtonTolAlt</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonTolAlt</qualifiedname>
         <briefdescription>
+<para>Alternative tolerance for the Newton convergence based on absolute residual norm. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="39" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="39" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="52" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a750be3f95eb419e13c55465590903829" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -94,12 +101,13 @@
         <name>newtonRTolAlt</name>
         <qualifiedname>Marmot::NumericalAlgorithms::NewtonConvergenceChecker::newtonRTolAlt</qualifiedname>
         <briefdescription>
+<para>Alternative tolerance for the Newton convergence based on relative increment norm. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="40" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="40" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="54" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="54" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -138,12 +146,71 @@
           <declname>newtonRTolAlt</declname>
         </param>
         <briefdescription>
+<para>Constructor for <ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker" kindref="compound">NewtonConvergenceChecker</ref>. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>residualScaleVector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A vector to scale the residual for convergence checks. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nMaxNewtonCycles</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of Newton cycles allowed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nMaxNewtonCyclesAlt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of alternative Newton cycles allowed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newtonTol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tolerance for the Newton convergence based on absolute residual norm. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newtonRTol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tolerance for the Newton convergence based on relative increment norm. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newtonTolAlt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Alternative tolerance for the Newton convergence based on absolute residual norm. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newtonRTolAlt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Alternative tolerance for the Newton convergence based on relative increment norm. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="43" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="67" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1ae6bc7b084c6bbd4d615fdf17135cc7f1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -160,12 +227,41 @@
           <declname>reference</declname>
         </param>
         <briefdescription>
+<para>Compute the relative norm of the increment with respect to a reference vector. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The increment vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>reference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The reference vector.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The relative norm is computed as        <formula id="24">\[\displaystyle
+r_{\rm rel} =
+\begin{cases}
+|| \Delta \boldsymbol{X} ||_2 &amp; \text{if } || \Delta \boldsymbol{X} ||_2 &lt; 10^{-14} \\
+0.0 &amp; \text{if } || \boldsymbol{X}_{\rm ref} ||_2 &lt; 10^{-12} \\
+\frac{ || \Delta \boldsymbol{X} ||_2 }{ || \boldsymbol{X}_{\rm ref} ||_2 } &amp; \text{else}
+\end{cases}
+\]</formula> where <formula id="25">$ || \square ||_2 $</formula> denotes the Euclidean norm.</para>
+<para><simplesect kind="return"><para>The relative norm of the increment. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="51" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="93" column="12"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a0c83bb5716f67b9e4d5eb7b120565276" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -178,12 +274,28 @@
           <declname>Residual</declname>
         </param>
         <briefdescription>
+<para>Compute the norm of the residual vector. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Residual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The residual vector.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The residual is first scaled by the residualScaleVector before computing the norm.</para>
+<para>This function computes   <formula id="26">\[r = \sqrt{ R^{\rm s}_i R^{\rm s}_i }  = || \boldsymbol{R}^{\rm s} ||_2
+\]</formula> where <formula id="27">$ R^{\rm s}_i = s_i R_i $</formula> (no summation over i) are the scaled residual components and <formula id="28">$ s_i $</formula> are the components of the residualScaleVector.</para>
+<para><simplesect kind="return"><para>The norm of the scaled residual. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="53" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="109" column="12"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1aafdaf780d88a50d18e2b2ef6085a630a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -208,12 +320,53 @@
           <declname>numberOfIterations</declname>
         </param>
         <briefdescription>
+<para>Check if the iteration has finished based on residuals and increments. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>residual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current residual vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current solution vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current increment vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfIterations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current iteration count. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the iteration has finished, false otherwise.</para>
+</simplesect>
+The iteration is considered finished if either the solution has converged or the maximum number of alternative Newton cycles has been excee:ed: <programlisting filename=".cpp"><codeline><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1aa61c80fd5f50e4cf3ea229b2e47f58c3" kindref="member">isConverged</ref>(<sp/>residual,<sp/>X,<sp/>dX,<sp/>numberOfIterations<sp/>)<sp/>||<sp/>numberOfIterations<sp/>&gt;<sp/>nMaxNewtonCyclesAlt<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+</programlisting> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="55" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="128" column="10"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1aa61c80fd5f50e4cf3ea229b2e47f58c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -238,19 +391,67 @@
           <declname>numberOfIterations</declname>
         </param>
         <briefdescription>
+<para>Check if the solution has converged based on residuals and increments. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>residual</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current residual vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current solution vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current increment vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>numberOfIterations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The current iteration count. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the solution has converged, false otherwise.</para>
+</simplesect>
+The solution is considered converged if both the absolute residual norm and the relative increment norm is below the specified tolerances. Alternative tolerances are used if the number of iterations exceeds nMaxNewtonCycles.</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>numberOfIterations<sp/>&lt;=<sp/>nMaxNewtonCycles<sp/>)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1ae6bc7b084c6bbd4d615fdf17135cc7f1" kindref="member">relativeNorm</ref>(<sp/>dX,<sp/>X<sp/>)<sp/>&lt;=<sp/>newtonRTol<sp/>&amp;&amp;<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a0c83bb5716f67b9e4d5eb7b120565276" kindref="member">residualNorm</ref>(<sp/>residual<sp/>)<sp/>&lt;=<sp/>newtonTol<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal">}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>numberOfIterations<sp/>&lt;=<sp/>nMaxNewtonCyclesAlt<sp/>+<sp/>1<sp/>){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1ae6bc7b084c6bbd4d615fdf17135cc7f1" kindref="member">relativeNorm</ref>(<sp/>dX,<sp/>X<sp/>)<sp/>&lt;=<sp/>newtonRTolAlt<sp/>&amp;&amp;<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1a0c83bb5716f67b9e4d5eb7b120565276" kindref="member">residualNorm</ref>(<sp/>residual<sp/>)<sp/>&lt;=<sp/>newtonTolAlt<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+</programlisting> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="60" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="156" column="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>A class to check convergence of Newton-Raphson iterations. This class provides methods to evaluate the convergence of Newton-Raphson iterations based on residual norms and relative increments. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="32" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="32" bodyend="64"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h" bodystart="39" bodyend="160"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1aa61c80fd5f50e4cf3ea229b2e47f58c3" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>isConverged</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_newton_convergence_checker_1aafdaf780d88a50d18e2b2ef6085a630a" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::NewtonConvergenceChecker</scope><name>iterationFinished</name></member>
