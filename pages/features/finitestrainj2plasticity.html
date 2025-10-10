@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finite Strain J2 Plasticity model &mdash; Marmot  documentation</title>
+  <title>Finite-strain J2 plasticity &mdash; Marmot  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -18,6 +18,8 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -52,7 +54,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Finite Strain J2 Plasticity model</a><ul>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Finite-strain J2 plasticity</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
@@ -87,7 +89,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
           <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
-      <li class="breadcrumb-item active">Finite Strain J2 Plasticity model</li>
+      <li class="breadcrumb-item active">Finite-strain J2 plasticity</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/pages/features/finitestrainj2plasticity.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -97,10 +99,162 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="finite-strain-j2-plasticity-model">
-<h1>Finite Strain J2 Plasticity model<a class="headerlink" href="#finite-strain-j2-plasticity-model" title="Link to this heading"></a></h1>
+  <section id="finite-strain-j2-plasticity">
+<h1>Finite-strain J2 plasticity<a class="headerlink" href="#finite-strain-j2-plasticity" title="Link to this heading"></a></h1>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>This model is a finite-strain hyperelastic-plastic J2 plasticity formulation with isotropic hardening.
+The strain energy potential is based on the compressible Neo-Hookean model (Pence–Gou, variant B).</p>
+<p>We assume the multiplicative split of the deformation gradient into elastic and plastic parts,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{F} = \boldsymbol{F}^{\rm e} \boldsymbol{F}^{\rm p},\qquad
+\boldsymbol{C}^{\rm e} = \big(\boldsymbol{F}^{\rm e})^{\mathsf{T}}\boldsymbol{F}^{\rm e},\qquad
+J^{\rm e} = \det \boldsymbol{F}^{\rm e},\qquad
+I_1^{\rm e} = \operatorname{tr}\boldsymbol{C}^{\rm e}.\]</div>
+<p>The Pence–Gou potential (variant B) applied to <span class="math notranslate nohighlight">\(\boldsymbol{C}^{\rm e}\)</span> reads:</p>
+<div class="math notranslate nohighlight">
+\[\Psi(\boldsymbol{C}^{\rm e}) = \Psi_{\rm d}(I_1^{\rm e}, J^{\rm e}) + \Psi_{\rm h}(J^{\rm e}) = \frac{G}{2} \left(I_1^{\rm e} (J^{\rm e})^{-2/3} - 3\right) + \frac{K}{8} \left(J^{\rm e} - (J^{\rm e})^{-1}\right)^2.\]</div>
+<p>From the potential we obtain the second Piola–Kirchhoff stress (elastic configuration)</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{S} = 2 \frac{\partial \Psi}{\partial \boldsymbol{C}^{\rm e}},\]</div>
+<p>and the Mandel stress in the intermediate configuration:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{M} = \boldsymbol{C}^{\rm e} \boldsymbol{S}.\]</div>
+<p>Plastic admissibility is enforced by a J2 yield function in Mandel stress space with a stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\rm p}(\alpha_{\rm p})\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f(\boldsymbol{M}, \beta_{\rm p}) = \frac{1}{f_{\rm y}^0} \left(\sqrt{\boldsymbol{M}^{\rm dev}:\boldsymbol{M}^{\rm dev}} - \sqrt{\tfrac{2}{3}} \beta_{\rm p}\right) \le 0,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{M}^{\rm dev} = \boldsymbol{M} - \frac{1}{3}\operatorname{tr}(\boldsymbol{M})\boldsymbol{I}\)</span> is the deviatoric part of the Mandel stress.</p>
+<p>The hardening function is:</p>
+<div class="math notranslate nohighlight">
+\[\beta_{\rm p}(\alpha_{\rm p}) = f_{\rm y}^\infty + (f_{\rm y}^0 - f_{\rm y}^\infty) e^{-\eta \alpha_{\rm p}} + H \alpha_{\rm p},\]</div>
+<p>with a strain-like hardening internal variable <span class="math notranslate nohighlight">\(\alpha_{\rm p}\)</span>.</p>
+<p>An associated flow is used:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{L}^{\rm p} = \dot{\lambda} \frac{\partial f}{\partial \boldsymbol{M}},
+\qquad
+\dot{\alpha}_{\rm p} = -\dot{\lambda} \frac{\partial f}{\partial \beta_{\rm p}}.\]</div>
+<p>The Karush-Kuhn-Tucker (KKT) conditions for plastic loading are:</p>
+<div class="math notranslate nohighlight">
+\[\dot{\lambda} \geq 0, \quad f \leq 0, \quad \dot{\lambda} f = 0.\]</div>
+<p>The Kirchhoff stress follows by push-forward from <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> with <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\tau} = \boldsymbol{F}^{\rm e} \, \boldsymbol{S} \, \big(\boldsymbol{F}^{\rm e})^{\mathsf{T}}.\]</div>
+<p>Stress update at a material point proceeds by computing the trial elastic split <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,tr}=\boldsymbol{F}\,\big(\boldsymbol{F}^{\rm p,old}\big)^{-1}\)</span> and evaluating the yield function <span class="math notranslate nohighlight">\(f\)</span>. If plastic yielding occurs (<span class="math notranslate nohighlight">\(f &gt; 0\)</span>) a fully implicit return-mapping is solved for the unknown vector</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol{X} = \begin{bmatrix} \boldsymbol{F}^{\rm e}_{11} \\ \boldsymbol{F}^{\rm e}_{12} \\ \vdots \\ \boldsymbol{F}^{\rm e}_{33} \\ \alpha_{\rm p} \\ \Delta\lambda \end{bmatrix}.\end{split}\]</div>
+<p>A residual system <span class="math notranslate nohighlight">\(\boldsymbol{R}(\boldsymbol{X})=\boldsymbol{0}\)</span> enforces (i) elastic–plastic kinematics, (ii) hardening update, and (iii) consistency <span class="math notranslate nohighlight">\(f=0\)</span>. The plastic update of <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p}\)</span> uses the matrix exponential of the flow direction in Mandel-space:</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol{F}^{\rm p} = \exp\left(\Delta\lambda\,\frac{\partial f}{\partial \boldsymbol{M}}\right),\]</div>
+<p>and the strain-like hardening variable is updated as:</p>
+<div class="math notranslate nohighlight">
+\[\Delta\alpha_{\rm p} = -\Delta\lambda\,\frac{\partial f}{\partial \beta_{\rm p}} = \frac{\Delta\lambda}{f_{\rm y}^0} \sqrt{\frac{2}{3}}.\]</div>
+<p>Upon convergence of the return-mapping algorithm, the plastic variables are updated according to:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{F}^{\rm p,new} = \Delta\boldsymbol{F}^{\rm p}\,\boldsymbol{F}^{\rm p,old},
+\qquad
+\alpha_{\rm p}^{\rm new} = \alpha_{\rm p}^{\rm old} - \Delta\lambda\,\frac{\partial f}{\partial \beta_{\rm p}}
+\;=\; \alpha_{\rm p}^{\rm old} + \frac{\Delta\lambda}{f_{\rm y}^0}\,\sqrt{\tfrac{2}{3}}.\]</div>
+<p>The elastic deformation gradient follows from the multiplicative split as <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new}=\boldsymbol{F}\,(\boldsymbol{F}^{\rm p,new})^{-1}\)</span>, and the Kirchhoff stress and consistent algorithmic tangent are then computed from the hyperelastic constitutive law using <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new}\)</span>.</p>
+<p>The consistent tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}}\)</span> is computed using the chain rule as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}}
+=
+\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{S}} : 2\,\frac{\partial^{2}\Psi}{\partial\boldsymbol{C}^{\rm e}\,\partial\boldsymbol{C}^{\rm e}} : \frac{\partial\boldsymbol{C}^{\rm e}}{\partial\boldsymbol{F}^{\rm e}} : \frac{\partial\boldsymbol{F}^{\rm e}}{\partial\boldsymbol{F}}
++
+\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}^{\rm e}} : \frac{\partial\boldsymbol{F}^{\rm e}}{\partial\boldsymbol{F}},\]</div>
+<p>where the individual terms are:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{S}} = \boldsymbol{F}^{\rm e} \otimes \boldsymbol{F}^{\rm e},\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^{2}\Psi}{\partial\boldsymbol{C}^{\rm e}\,\partial\boldsymbol{C}^{\rm e}}
+=
+\frac{\partial^{2}\Psi}{\partial (J^{\rm e})^{2}}\,
+\frac{\partial J^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}\otimes\frac{\partial J^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}
++
+\frac{\partial \Psi}{\partial J^{\rm e}}\,
+\frac{\partial^{2} J^{\rm e}}{\partial \boldsymbol{C}^{\rm e}\,\partial \boldsymbol{C}^{\rm e}}
++
+\frac{\partial^{2}\Psi}{\partial J^{\rm e}\,\partial I_1^{\rm e}}
+\left(
+  \frac{\partial J^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}\otimes\frac{\partial I_1^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}
+  +
+  \frac{\partial I_1^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}\otimes\frac{\partial J^{\rm e}}{\partial \boldsymbol{C}^{\rm e}}
+\right),\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{C}^{\rm e}}{\partial\boldsymbol{F}^{\rm e}} = (\boldsymbol{F}^{\rm e})^{\mathsf{T}}\otimes\boldsymbol{I} + \boldsymbol{I}\otimes(\boldsymbol{F}^{\rm e})^{\mathsf{T}},\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}^{\rm e}} = \frac{\partial}{\partial\boldsymbol{F}^{\rm e}}\left(\boldsymbol{F}^{\rm e}\,\boldsymbol{S}\,(\boldsymbol{F}^{\rm e})^{\mathsf{T}}\right) = \boldsymbol{I}\otimes(\boldsymbol{S}\boldsymbol{F}^{\rm e})^{\mathsf{T}} + (\boldsymbol{S}\boldsymbol{F}^{\rm e})\otimes\boldsymbol{I},\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\boldsymbol{F}^{\rm e}}{\partial\boldsymbol{F}} =
+\begin{cases}
+\boldsymbol{I} \otimes (\boldsymbol{F}^{\rm p,old})^{-\mathsf{T}} &amp; \text{ (for elastic step)} \\[0.5em]
+\text{extracted from } \frac{\partial\boldsymbol{X}}{\partial\boldsymbol{F}} &amp; \text{ (for plastic step)}
+\end{cases}.\end{split}\]</div>
+<p>For plastic step, <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{X}}{\partial\boldsymbol{F}}\)</span> is computed by solving the linear system <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{R}}{\partial\boldsymbol{X}} \frac{\partial\boldsymbol{X}}{\partial\boldsymbol{F}} = -\frac{\partial\boldsymbol{R}}{\partial\boldsymbol{F}}\)</span> using the converged Jacobian from the return mapping. Then <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{F}^{\rm e}}{\partial\boldsymbol{F}}\)</span> is extracted from the first 9 rows of <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{X}}{\partial\boldsymbol{F}}\)</span>.</p>
+<div class="admonition-stress-update-algorithm-at-a-quadrature-point-for-current-step-math-n-1 admonition">
+<p class="admonition-title">Stress update algorithm at a quadrature point for current step <span class="math notranslate nohighlight">\(n+1\)</span></p>
+<p>Notation: <span class="math notranslate nohighlight">\((\cdot)^{\rm old} := (\cdot)_n\)</span>, <span class="math notranslate nohighlight">\((\cdot)^{\rm new} := (\cdot)_{n+1}\)</span>.</p>
+<p><strong>Input (known quantities):</strong></p>
+<ul class="simple">
+<li><p>Current deformation gradient: <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p></li>
+<li><p>Plastic deformation gradient from previous step: <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p,old}\)</span></p></li>
+<li><p>Strain-like hardening variable from previous step: <span class="math notranslate nohighlight">\(\alpha_{\rm p}^{\rm old}\)</span></p></li>
+</ul>
+<p><strong>Trial elastic state:</strong></p>
+<ul>
+<li><p>Compute trial elastic deformation gradient: <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,tr}=\boldsymbol{F}\,\big(\boldsymbol{F}^{\rm p,old}\big)^{-1}\)</span></p></li>
+<li><p>Compute trial Mandel stress: <span class="math notranslate nohighlight">\(\boldsymbol{M}^{\rm tr} = \boldsymbol{C}^{\rm e,tr} \boldsymbol{S}^{\rm tr}\)</span></p></li>
+<li><p>Compute stress-like hardening variable: <span class="math notranslate nohighlight">\(\beta_{\rm p} = f_{\rm y}^\infty + (f_{\rm y}^0 - f_{\rm y}^\infty) e^{-\eta \alpha_{\rm p}^{\rm old}} + H \alpha_{\rm p}^{\rm old}\)</span></p></li>
+<li><p>Evaluate yield function: <span class="math notranslate nohighlight">\(f^{\rm tr} = \frac{1}{f_{\rm y}^0}\left(||\boldsymbol{M}^{\rm tr,dev}|| - \sqrt{\frac{2}{3}} \beta_{\rm p}\right)\)</span></p></li>
+<li><p><strong>If</strong> <span class="math notranslate nohighlight">\(f^{\rm tr} \leq 0\)</span> <strong>(elastic step):</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Accept the trial state:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new} = \boldsymbol{F}^{\rm e,tr}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p,new} = \boldsymbol{F}^{\rm p,old}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha_{\rm p}^{\rm new} = \alpha_{\rm p}^{\rm old}\)</span></p></li>
+</ul>
+</li>
+<li><p>Compute Kirchhoff stress <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> and consistent tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}}\)</span> using <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new}\)</span></p></li>
+<li><p><strong>Return</strong></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Return mapping:</strong></p>
+<ul class="simple">
+<li><p><strong>If</strong> <span class="math notranslate nohighlight">\(f^{\rm tr} &gt; 0\)</span> <strong>(plastic step):</strong></p>
+<ul>
+<li><p>Initialize unknowns: <span class="math notranslate nohighlight">\(\boldsymbol{X} = \{\boldsymbol{F}^{\rm e}_{11}, \boldsymbol{F}^{\rm e}_{12}, \ldots, \boldsymbol{F}^{\rm e}_{33}, \alpha_{\rm p}, \Delta\lambda\}^{\mathsf{T}}\)</span></p></li>
+<li><p>Solve nonlinear system <span class="math notranslate nohighlight">\(\boldsymbol{R}(\boldsymbol{X}) = \boldsymbol{0}\)</span> by Newton-Raphson iteration:</p>
+<ul>
+<li><p><strong>Residual equations:</strong></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{R}_1\)</span>: Elastic-plastic kinematics: <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e}\,\Delta\boldsymbol{F}^{\rm p} - \boldsymbol{F}\,\big(\boldsymbol{F}^{\rm p,old}\big)^{-1} = \boldsymbol{0}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{R}_2\)</span>: Hardening evolution: <span class="math notranslate nohighlight">\(\alpha_{\rm p} - \alpha_{\rm p}^{\rm old} - \frac{\Delta\lambda}{f_{\rm y}^0} \sqrt{\frac{2}{3}} = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{R}_3\)</span>: Consistency condition: <span class="math notranslate nohighlight">\(f(\boldsymbol{M}, \beta_{\rm p}) = 0\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Newton-Raphson iteration:</strong> <span class="math notranslate nohighlight">\(\boldsymbol{X}^{(k+1)} = \boldsymbol{X}^{(k)} - \left[\frac{\partial \boldsymbol{R}}{\partial \boldsymbol{X}}\right]^{-1} \boldsymbol{R}(\boldsymbol{X}^{(k)})\)</span></p></li>
+<li><p><strong>Convergence criteria:</strong> <span class="math notranslate nohighlight">\(||\boldsymbol{R}|| &lt; \text{TOL}\)</span> and <span class="math notranslate nohighlight">\(||\Delta\boldsymbol{X}|| &lt; \text{TOL}\)</span></p></li>
+</ul>
+</li>
+<li><p><strong>Upon convergence</strong>, update plastic variables:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Delta\boldsymbol{F}^{\rm p} = \exp\left(\Delta\lambda \frac{\partial f}{\partial \boldsymbol{M}}\right)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p,new} = \Delta\boldsymbol{F}^{\rm p} \boldsymbol{F}^{\rm p,old}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha_{\rm p}^{\rm new} = \alpha_{\rm p}^{\rm old} + \frac{\Delta\lambda}{f_{\rm y}^0} \sqrt{\frac{2}{3}}\)</span></p></li>
+</ul>
+</li>
+<li><p>Compute updated elastic deformation gradient: <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new} = \boldsymbol{F}\,(\boldsymbol{F}^{\rm p,new})^{-1}\)</span></p></li>
+<li><p>Compute Kirchhoff stress <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> and consistent tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}}\)</span> using <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e,new}\)</span></p></li>
+<li><p><strong>Return</strong></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Primary reference: A. Dummer, M. Neuner, P. Gamnitzer, G. Hofstetter (2024). Robust and efficient implementation of finite strain generalized continuum models for material failure: Analytical, numerical, and automatic differentiation with hyper-dual numbers. <em>Computer Methods in Applied Mechanics and Engineering</em> 426:116987.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -135,49 +289,132 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Finite-strain hyperelastic-plastic J2 model with isotropic hardening. </p>
+<p>Elastic law: hyperelastic, compressible Neo-Hookean (Pence–Gou potential, variant B).</p>
+<p><dl class="simple">
+<dt><strong>Material parameters</strong></dt><dd><p><ul class="simple">
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af241e194ffa0091b0ed0ed6d80cca05d"><span class="std std-ref">K</span></a></strong> — bulk modulus</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a06ed636c2ffbb190168ef1bd37210222"><span class="std std-ref">G</span></a></strong> — shear modulus</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ac7d70dd51d1b55b3a4c010e116b7f613"><span class="std std-ref">fy</span></a></strong> — initial yield stress (reference)</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aa74b22fbe3c96b4f692f87dc6f9fb784"><span class="std std-ref">fyInf</span></a></strong> — saturated (asymptotic) yield stress</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8d32d996ff8e70aeed5366217d80a015"><span class="std std-ref">eta</span></a></strong> — saturation rate parameter</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a989af2d7a68835d72fa64611b54120c5"><span class="std std-ref">H</span></a></strong> — linear hardening modulus</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a2899614611d275d7410c8ad88ea021a1"><span class="std std-ref">implementationType</span></a></strong> — algorithm selector (see below)</p></li>
+<li><p><strong><a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a42a9e910bd1292435517cf2f44c64050"><span class="std std-ref">density</span></a></strong> (optional) — density</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>State variables</strong></dt><dd><p><ul class="simple">
+<li><p><strong>Fp</strong> — plastic deformation gradient</p></li>
+<li><p><strong>alphaP</strong> — strain-like hardening variable</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>Implementation variants (implementationType)</strong></dt><dd><p><ul class="simple">
+<li><p><strong>0</strong>: scalar return mapping (not yet implemented)</p></li>
+<li><p><strong>1</strong>: Full return mapping; all derivatives computed analytically</p></li>
+<li><p><strong>2</strong>: FDAF — Full return mapping; derivatives approximated via forward finite differences</p></li>
+<li><p><strong>3</strong>: FDAC — Full return mapping; derivatives approximated via central finite differences</p></li>
+<li><p><strong>4</strong>: CSDA — Full return mapping; derivatives via complex-step differentiation </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity24FiniteStrainJ2PlasticityEPKdii">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity24FiniteStrainJ2PlasticityEPKdii"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity24FiniteStrainJ2PlasticityEPKdii"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aff76dcef75e33d757316b16ad6859ad3"></span><span class="sig-name descname"><span class="n"><span class="pre">FiniteStrainJ2Plasticity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity24FiniteStrainJ2PlasticityEPKdii" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Construct the finite-strain J2 plasticity model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – Array with parameters: <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af241e194ffa0091b0ed0ed6d80cca05d"><span class="std std-ref">K</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a06ed636c2ffbb190168ef1bd37210222"><span class="std std-ref">G</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ac7d70dd51d1b55b3a4c010e116b7f613"><span class="std std-ref">fy</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aa74b22fbe3c96b4f692f87dc6f9fb784"><span class="std std-ref">fyInf</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8d32d996ff8e70aeed5366217d80a015"><span class="std std-ref">eta</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a989af2d7a68835d72fa64611b54120c5"><span class="std std-ref">H</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a2899614611d275d7410c8ad88ea021a1"><span class="std std-ref">implementationType</span></a>, <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a42a9e910bd1292435517cf2f44c64050"><span class="std std-ref">density</span></a> (optional). </p></li>
+<li><p><strong>nMaterialProperties</strong> – Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p></li>
+<li><p><strong>materialLabel</strong> – Material label. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a73e4c4ba13e91655b921d11c7ce1787e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute the Kirchhoff stress and the algorithmic tangent for the current step. Performs an elastic trial; if yielding occurs, return mapping is performed. </p>
+<p>
+Template parameter <code class="docutils literal notranslate"><span class="pre">&lt;3&gt;</span></code> indicates 3D. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">tau</span></code> - Kirchhoff stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elasticEnergyDensity</span></code> - elastic energy density <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> - density (from material parameters if provided). </p></li>
+</ul>
+</p></li>
+<li><p><strong>tangents</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dTau_dF</span></code> - algorithmic tangent <span class="math notranslate nohighlight">\(\partial\boldsymbol{\tau}/\partial\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> - deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> - old (pseudo-)time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dT-</span></code> (pseudo-)time increment.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity36computeStressWithScalarReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity36computeStressWithScalarReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity36computeStressWithScalarReturnMappingER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithScalarReturnMapping__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a308024c4bc2667ac9da19c36040a17b4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressWithScalarReturnMapping</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity36computeStressWithScalarReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Scalar-return mapping variant; would solve a 1D consistency equation for <span class="math notranslate nohighlight">\(\Delta\lambda\)</span>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not yet implemented. </p>
+</div>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity34computeStressWithFullReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity34computeStressWithFullReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity34computeStressWithFullReturnMappingER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStressWithFullReturnMapping__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab3f35523cfdd769fbf4cd8ba36ad5239"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressWithFullReturnMapping</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity34computeStressWithFullReturnMappingER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Full return mapping; all derivatives computed analytically. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDAFER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDAFER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDAFER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAF__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a12b11aadca8877c987c9008dbfca7871"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressFDAF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDAFER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Full return mapping; derivatives via forward finite differences (FDAF). Approximates <span class="math notranslate nohighlight">\(\partial \boldsymbol{R}/\partial \boldsymbol{X}\)</span> and  <span class="math notranslate nohighlight">\(\partial^{2}\Psi/\partial
+\boldsymbol{C}^{\mathrm e}\,\partial \boldsymbol{C}^{\mathrm e}\)</span>. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDACER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDACER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDACER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStressFDAC__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1acd0c6ddabf26ebbcdbd077c5f4d68520"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressFDAC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressFDACER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Full return mapping; derivatives via central finite differences (FDAC). Approximates <span class="math notranslate nohighlight">\(\partial \boldsymbol{R}/\partial \boldsymbol{X}\)</span> and  <span class="math notranslate nohighlight">\(\partial^{2}\Psi/\partial
+\boldsymbol{C}^{\mathrm e}\,\partial \boldsymbol{C}^{\mathrm e}\)</span>. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressCSDAER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressCSDAER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressCSDAER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeStressCSDA__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8bede4f47b6993b44b9d2978c8329f02"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressCSDA</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity17computeStressCSDAER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Full return mapping; derivatives via complex-step differentiation approximation (CSDA). Evaluates <span class="math notranslate nohighlight">\(\partial \boldsymbol{R}/\partial \boldsymbol{X}\)</span> and  <span class="math notranslate nohighlight">\(\partial^{2}\Psi/\partial
+\boldsymbol{C}^{\mathrm e}\,\partial \boldsymbol{C}^{\mathrm e}\)</span> using complex-step. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity28getNumberOfRequiredStateVarsEv">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a772738c665da6e23fea781a527d2a0a4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
+<dd><p>Get the number of required state variables. </p>
+<dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of state variables required by the material. </p>
+<dd class="field-odd"><p>10 (9 for <code class="docutils literal notranslate"><span class="pre">Fp</span></code> and 1 for <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,24 +422,24 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity10getDensityEv">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity10getDensityEv"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity10getDensityEv"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::getDensity"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af3e73050f48359174bb426eac24cf3e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity10getDensityEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get material density. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Density value (default: 0 if not overridden). </p>
-</dd>
-</dl>
+<dd><p>Return the material density if provided in material parameters. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity15assignStateVarsEPdi">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity15assignStateVarsEPdi"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a919a2545ce365585fe25fa7497fd7440"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign state variable array to material. </p>
+<dd><p>Bind external storage for internal variables (<code class="docutils literal notranslate"><span class="pre">Fp</span></code>, <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>). </p>
+<p>
+Creates/updates the internal state manager that maps (<code class="docutils literal notranslate"><span class="pre">Fp</span></code>, <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>) onto this buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
-<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+<li><p><strong>stateVars</strong> – Pointer to a contiguous array provided by the caller. </p></li>
+<li><p><strong>nStateVars</strong> – Number of entries in that array. </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – If nStateVars &lt; <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a772738c665da6e23fea781a527d2a0a4"><span class="std std-ref">getNumberOfRequiredStateVars()</span></a>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -210,13 +447,13 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity12getStateViewERKNSt6stringE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af652c8fa2c2664e80a66a4684665dd6d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd><p>Access material state variables by name. </p>
+<dd><p>Expose a named view into the state vector. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stateName</strong> – <strong>[in]</strong> Name of the requested state variable. </p>
+<dd class="field-odd"><p><strong>result</strong> – One of: <code class="docutils literal notranslate"><span class="pre">Fp</span></code> (length 9), <code class="docutils literal notranslate"><span class="pre">alphaP</span></code> (length 1). </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A view into the state variable array. </p>
+<dd class="field-even"><p>A StateView object that provides access to the requested state variable; returns an empty view if <code class="docutils literal notranslate"><span class="pre">result</span></code> is unknown. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -224,78 +461,253 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity18initializeYourselfEv">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity18initializeYourselfEv"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity18initializeYourselfEv"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::initializeYourself"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aed49aa303577337c673aacee3f54a88d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Initialize material state (default: no action). </p>
+<dd><p>Initialize state (sets <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm p} = \boldsymbol I\)</span>) </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity13yieldFunctionERK9Tensor33dKd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity13yieldFunctionERK9Tensor33dKd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity13yieldFunctionERK9Tensor33dKd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunction__Tensor33dCR.doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7b2090519af0e8c7dc6b953974653c6b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yieldFunction</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity13yieldFunctionERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Yield function <span class="math notranslate nohighlight">\(f(\boldsymbol F^{\mathrm e},\beta_{\mathrm p})\)</span> and first derivatives. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Fe</strong> – Elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\{\,f,\;\partial f/\partial \boldsymbol F^{\mathrm e},\;\partial f/\partial \beta_{\mathrm p}\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressE1TRK9Tensor33tI1TEK1T">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33tI1TEK1T"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33tI1TEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a190ba39388668a757cd726fb090c30c3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yieldFunctionFromStress</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mandelStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressE1TRK9Tensor33tI1TEK1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Yield function <span class="math notranslate nohighlight">\(f(\boldsymbol M,\beta_p)\)</span> w.r.t. Mandel stress (templated). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mandelStress</strong> – Mandel stress <span class="math notranslate nohighlight">\(\boldsymbol M\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(f\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33dKd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33dKd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33dKd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStress__Tensor33dCR.doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a23ca6d4a0906bb1bf48a44673415c553"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yieldFunctionFromStress</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mandelStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity23yieldFunctionFromStressERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Yield function w.r.t. Mandel stress (double version). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mandelStress</strong> – Mandel stress <span class="math notranslate nohighlight">\(\boldsymbol M\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\{\,f,\;\partial f/\partial \boldsymbol M,\;\partial^2 f/\partial \boldsymbol M\partial \boldsymbol
+M,\;\partial f/\partial \beta_{\mathrm p}\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedERK9Tensor33tI1TEK1T"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedERK9Tensor33tI1TEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a82c18a36b6b0bec286f472160db44b3e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yieldFunctionFromStressFirstOrderDerived</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mandelStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::yieldFunctionFromStressFirstOrderDerived::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity40yieldFunctionFromStressFirstOrderDerivedENSt5tupleI1T9Tensor33tI1TE1TEERK9Tensor33tI1TEK1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>First-order derivatives of <span class="math notranslate nohighlight">\(f(\boldsymbol M,\beta_{\mathrm p})\)</span> w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol M \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mandelStress</strong> – Mandel stress <span class="math notranslate nohighlight">\(\boldsymbol M\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\{\,f,\;\partial f/\partial \boldsymbol M,\;\partial f/\partial \beta_{\mathrm p}\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity10isYieldingERK9Tensor33dKd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity10isYieldingERK9Tensor33dKd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity10isYieldingERK9Tensor33dKd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::isYielding__Tensor33dCR.doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ada9603edf0333ac06ea294f9052d11f7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isYielding</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity10isYieldingERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Check yield condition <span class="math notranslate nohighlight">\(f(\boldsymbol F^{\mathrm e},\beta_{\mathrm p})&gt;0\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Fe</strong> – Elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if yielding occurs, i.e. <span class="math notranslate nohighlight">\(f&gt;0\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity19computeMandelStressERK9Tensor33d">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity19computeMandelStressERK9Tensor33d"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity19computeMandelStressERK9Tensor33d"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStress__Tensor33dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a7050170ba2b009214be90f7f6742c6ce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMandelStress</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity19computeMandelStressERK9Tensor33d" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute Mandel stress <span class="math notranslate nohighlight">\(\boldsymbol M\)</span> and its derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Fe</strong> – Elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\{\,\boldsymbol M,\;\partial \boldsymbol M/\partial \boldsymbol F^{\mathrm e}\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyE9Tensor33tI1TERK9Tensor33tI1TE">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af2ffb7b627c7b626f0e319cc997de2bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStressOnly::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMandelStressOnly</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeMandelStressOnly::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computeMandelStressOnlyE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute Mandel stress only (templated scalar type). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Fe</strong> – Elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mandel stress <span class="math notranslate nohighlight">\(\boldsymbol M\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyE1TK1T">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyEK1T"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a52fad614ee4a6c1e64e708a468430b74"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyE1TK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaPOnly::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBetaPOnly</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyE1TK1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaPOnly::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">alphaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity16computeBetaPOnlyE1TK1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Isotropic hardening law. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>alphaP</strong> – Strain-like hardening variable <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}\)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Stress-like hardening variable <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity12computeBetaPEKd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity12computeBetaPEKd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity12computeBetaPEKd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeBetaP__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ab38ec6037be8323b618af94895e95640"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBetaP</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity12computeBetaPEKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Isotropic hardening law and its derivative. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>alphaP</strong> – Strain-like hardening variable <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}\)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\{\,\beta_{\mathrm p},\;\partial\beta_{\mathrm p}/\partial\alpha_{\mathrm p}\,\}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1gERK9Tensor33dRK9Tensor33ddd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity1gERK9Tensor33dRK9Tensor33ddd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity1gERK9Tensor33dRK9Tensor33ddd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::g__Tensor33dCR.Tensor33dCR.double.double"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a0a6fe26407bd4afd9e306bf58658d14b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe_trial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">df_dS</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dLambda</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1gERK9Tensor33dRK9Tensor33ddd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Scalar consistency function <span class="math notranslate nohighlight">\(g(\Delta\lambda)\)</span> and its derivative for the scalar-return mapping. </p>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE9Tensor33tI1TE1T">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE1T"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a796cbf1732eb149bdfa95e6886b23f25"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE9Tensor33tI1TE1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeReturnMappingDirection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE9Tensor33tI1TE1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">Fe</span></span>, <a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE9Tensor33tI1TE1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeReturnMappingDirection::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">betaP</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity29computeReturnMappingDirectionE9Tensor33tI1TE9Tensor33tI1TE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Flow direction for return mapping, <span class="math notranslate nohighlight">\(\partial f/\partial \boldsymbol S\)</span> (templated). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Fe</strong> – Elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>. </p></li>
+<li><p><strong>betaP</strong> – Stress-like hardening <span class="math notranslate nohighlight">\(\beta_{\mathrm p}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\partial f/\partial \boldsymbol S\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementENSt5tupleI9Tensor33d9Tensor33dEE9Tensor33tI1TE1T">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementE9Tensor33tI1TE1T"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementE9Tensor33tI1TE1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a5a0a05f484cb98aca3f6e113666ec91f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlasticIncrement</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementENSt5tupleI9Tensor33d9Tensor33dEE9Tensor33tI1TE1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computePlasticIncrement::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">df_dS</span></span>, <a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementENSt5tupleI9Tensor33d9Tensor33dEE9Tensor33tI1TE1T" title="Marmot::Materials::FiniteStrainJ2Plasticity::computePlasticIncrement::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dLambda</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity23computePlasticIncrementENSt5tupleI9Tensor33d9Tensor33dEE9Tensor33tI1TE1T" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Incremental plastic flow via exponential map. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>df_dS</strong> – Flow direction in Mandel-stress space <span class="math notranslate nohighlight">\(\partial f/\partial \boldsymbol S\)</span>. </p></li>
+<li><p><strong>dLambda</strong> – Plastic multiplier increment <span class="math notranslate nohighlight">\(\Delta\lambda\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\{\,\Delta\boldsymbol F^{\mathrm p},\;\partial\Delta\boldsymbol F^{\mathrm p}/\partial\boldsymbol
+S:\partial f/\partial\boldsymbol S\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorE8VectorXtI1TERK8VectorXtI1TERK9Tensor33dKd">
 <span id="_CPPv3I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorERK8VectorXtI1TERK9Tensor33dKd"></span><span id="_CPPv2I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorERK8VectorXtI1TERK9Tensor33dKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a999f513b3b26b0e9874fd20bb16c919f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot8VectorXtE" title="Marmot::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorE8VectorXtI1TERK8VectorXtI1TERK9Tensor33dKd" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeResidualVector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot8VectorXtE" title="Marmot::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorE8VectorXtI1TERK8VectorXtI1TERK9Tensor33dKd" title="Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVector::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPTrial</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials24FiniteStrainJ2Plasticity21computeResidualVectorE8VectorXtI1TERK8VectorXtI1TERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Residual vector <span class="math notranslate nohighlight">\(\boldsymbol R(\boldsymbol X)\)</span> for the full return mapping (templated). </p>
+<p>Vector <span class="math notranslate nohighlight">\(\boldsymbol X\)</span> has 11 unknowns: 9 for <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span>, 1 for <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}\)</span>, 1 for <span class="math notranslate nohighlight">\(\Delta\lambda\)</span>. Residual components:<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R_{0..8}\)</span>: elastic consistency (updated <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm e}\)</span> vs trial),</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_{9}\)</span>: <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}\)</span> update,</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_{10}\)</span>: yield <span class="math notranslate nohighlight">\(f\)</span>. </p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double, hyper-dual, complex). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>X</strong> – Current iterate  <span class="math notranslate nohighlight">\([\mathrm{vec}(\boldsymbol F^{\mathrm e}),\;\alpha_{\mathrm
+p},\;\Delta\lambda]^\mathrm T\)</span>. </p></li>
+<li><p><strong>FeTrial</strong> – Trial elastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^\text{e,trial}\)</span>. </p></li>
+<li><p><strong>alphaPTrial</strong> – Trial strain-like hardening variable <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}^\text{trial}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\boldsymbol R\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity31computeResidualVectorAndTangentERKN5Eigen8VectorXdERK9Tensor33dKd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity31computeResidualVectorAndTangentERKN5Eigen8VectorXdERK9Tensor33dKd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity31computeResidualVectorAndTangentERKN5Eigen8VectorXdERK9Tensor33dKd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::computeResidualVectorAndTangent__Eigen::VectorXdCR.Tensor33dCR.doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a631a468733747f7162841272ce29c30a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeResidualVectorAndTangent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPTrial</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity31computeResidualVectorAndTangentERKN5Eigen8VectorXdERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Residual <span class="math notranslate nohighlight">\(\boldsymbol R \)</span> and Jacobian <span class="math notranslate nohighlight">\(\partial\boldsymbol R/\partial\boldsymbol X\)</span> for the full return mapping (double precision). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Current iterate  <span class="math notranslate nohighlight">\([\mathrm{vec}(\boldsymbol F^{\mathrm e}),\;\alpha_{\mathrm
+p},\;\Delta\lambda]^\mathrm T\)</span>. </p></li>
+<li><p><strong>FeTrial</strong> – Trial elastic gradient <span class="math notranslate nohighlight">\(\boldsymbol F^\text{e,trial}\)</span>. </p></li>
+<li><p><strong>alphaPTrial</strong> – Trial strain-like hardening variable <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}^\text{trial}\)</span>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\{\,\boldsymbol R,\;\partial\boldsymbol R/\partial\boldsymbol X\,\}\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -303,42 +715,50 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1KE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity1KE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity1KE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::K__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1af241e194ffa0091b0ed0ed6d80cca05d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1KE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Bulk modulus (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[0]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1GE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity1GE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity1GE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::G__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a06ed636c2ffbb190168ef1bd37210222"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1GE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Shear modulus (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[1]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity2fyE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity2fyE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity2fyE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::fy__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1ac7d70dd51d1b55b3a4c010e116b7f613"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fy</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity2fyE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Initial yield stress (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[2]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity5fyInfE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity5fyInfE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity5fyInfE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::fyInf__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1aa74b22fbe3c96b4f692f87dc6f9fb784"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fyInf</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity5fyInfE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Saturated (asymptotic) yield stress (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[3]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity3etaE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity3etaE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity3etaE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::eta__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a8d32d996ff8e70aeed5366217d80a015"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eta</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity3etaE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Saturation rate parameter (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[4]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1HE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity1HE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity1HE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::H__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a989af2d7a68835d72fa64611b54120c5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">H</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity1HE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Linear hardening modulus (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[5]) </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity18implementationTypeE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity18implementationTypeE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity18implementationTypeE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::implementationType__iC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a2899614611d275d7410c8ad88ea021a1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">implementationType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity18implementationTypeE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Algorithm variant selector (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[6]). </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity7densityE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity7densityE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity7densityE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::density__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1a42a9e910bd1292435517cf2f44c64050"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">density</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity7densityE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Density (read from <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>[7]) (if provided). </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity9stateVarsE">
@@ -375,12 +795,14 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>State variable manager for <code class="docutils literal notranslate"><span class="pre">Fp</span></code> and <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>; provides named views and layout. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager39FiniteStrainJ2PlasticityStateVarManagerEPd">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager39FiniteStrainJ2PlasticityStateVarManagerEPd"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager39FiniteStrainJ2PlasticityStateVarManagerEPd"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::FiniteStrainJ2PlasticityStateVarManager__doubleP"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a50522dae9457bf4d8b1d580b846b6a25"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FiniteStrainJ2PlasticityStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager39FiniteStrainJ2PlasticityStateVarManagerEPd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Bind the manager to an external contiguous buffer holding (<code class="docutils literal notranslate"><span class="pre">Fp</span></code>, <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>). </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -388,12 +810,14 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager2FpE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager2FpE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager2FpE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::Fp__Fastor::TensorMap:double.3.3:"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1af091c3c33164345c9e214595e046d9b8"></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorMap</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fp</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager2FpE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Plastic deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F^{\mathrm p}\)</span>. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6alphaPE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6alphaPE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6alphaPE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::alphaP__doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1aa1ba8e49d3e9ebe9433444e671980476"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">alphaP</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6alphaPE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Strain-like hardening variable <span class="math notranslate nohighlight">\(\alpha_{\mathrm p}\)</span>. </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -401,7 +825,8 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6layoutE">
 <span id="_CPPv3N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6layoutE"></span><span id="_CPPv2N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6layoutE"></span><span id="Marmot::Materials::FiniteStrainJ2Plasticity::FiniteStrainJ2PlasticityStateVarManager::layout__autoC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity_1_1FiniteStrainJ2PlasticityStateVarManager_1a8ada4260920cc53b8419dbfe2b9e8f26"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><code class="docutils literal notranslate"><span class="pre">makeLayout(</span> <span class="pre">{{</span> <span class="pre">.name</span> <span class="pre">=</span> <span class="pre">&quot;Fp&quot;,</span> <span class="pre">.length</span> <span class="pre">=</span> <span class="pre">9</span> <span class="pre">},{</span> <span class="pre">.name</span> <span class="pre">=</span> <span class="pre">&quot;alphaP&quot;,</span> <span class="pre">.length</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">},}</span> <span class="pre">)</span></code><a class="headerlink" href="#_CPPv4N6Marmot9Materials24FiniteStrainJ2Plasticity39FiniteStrainJ2PlasticityStateVarManager6layoutE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Memory layout of internal variables: 9 for <code class="docutils literal notranslate"><span class="pre">Fp</span></code> and 1 for <code class="docutils literal notranslate"><span class="pre">alphaP</span></code> (total 10). </p>
+</dd></dl>
 
 </div>
 </dd></dl>

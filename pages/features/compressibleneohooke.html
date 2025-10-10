@@ -18,10 +18,12 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Finite Strain J2 Plasticity model" href="finitestrainj2plasticity.html" />
+    <link rel="next" title="Finite-strain J2 plasticity" href="finitestrainj2plasticity.html" />
     <link rel="prev" title="B4 model" href="b4.html" /> 
 </head>
 
@@ -56,7 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite Strain J2 Plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
@@ -101,6 +103,92 @@
 <h1>Compressible Neo Hooke model<a class="headerlink" href="#compressible-neo-hooke-model" title="Link to this heading"></a></h1>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>Hyperelastic materials are a class of constitutive models used to describe the elastic behavior of solids.
+They postulate a strain-energy density function <span class="math notranslate nohighlight">\(\Psi\)</span> from which stresses are obtained by differentiation with
+respect to appropriate strain measures.
+In finite strains we take <span class="math notranslate nohighlight">\(\Psi=\Psi(\boldsymbol C)\)</span>, where the deformation
+gradient is <span class="math notranslate nohighlight">\(\boldsymbol F\)</span>, the right Cauchy–Green tensor is <span class="math notranslate nohighlight">\(\boldsymbol C=\boldsymbol F^{\mathsf T}\boldsymbol F\)</span>, and the Jacobian is
+<span class="math notranslate nohighlight">\(J=\det\boldsymbol F\)</span>. The first invariant is <span class="math notranslate nohighlight">\(I_1=\operatorname{tr}\boldsymbol C\)</span>.</p>
+<p>The model implemented here is a compressible Neo-Hookean material with the Pence–Gou potential (variant B).
+An isochoric–volumetric split is defined by</p>
+<div class="math notranslate nohighlight">
+\[\Psi(\boldsymbol C)
+=
+\Psi_{\rm d}(I_1,J) + \Psi_{\rm h}(J)
+=
+\frac{G}{2}\,\big(I_1\,J^{-2/3}-3\big)
++
+\frac{K}{8}\,\big(J - J^{-1}\big)^2,\]</div>
+<p>where <span class="math notranslate nohighlight">\(G\)</span> is the shear modulus and <span class="math notranslate nohighlight">\(K\)</span> is the bulk modulus.</p>
+<p>The second Piola-Kirchhoff stress tensor follows from the potential as</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol S = 2\,\frac{\partial \Psi}{\partial \boldsymbol C}.\]</div>
+<p>The Kirchhoff and Cauchy stress tensors are obtained by push-forward operations:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\tau} = \boldsymbol F\,\boldsymbol S\,\boldsymbol F^{\mathsf T},\]</div>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma} = J^{-1}\,\boldsymbol{\tau}.\]</div>
+<p>Using the chain rule, the first derivative of <span class="math notranslate nohighlight">\(\Psi\)</span> with respect to <span class="math notranslate nohighlight">\(\boldsymbol C\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \Psi}{\partial \boldsymbol C}
+=
+\frac{\partial \Psi}{\partial J}\,\frac{\partial J}{\partial \boldsymbol C}
++
+\frac{\partial \Psi}{\partial I_1}\,\frac{\partial I_1}{\partial \boldsymbol C}
+=
+\Big[
+  \frac{K}{4}\,(J - J^{-1})\!\left(1+\frac{1}{J^{2}}\right)
+  - \frac{G}{3}\,I_1\,J^{-5/3}
+\Big]\,
+\frac{J}{2}\,\boldsymbol C^{-{\mathsf T}}
++
+\frac{G}{2}\,J^{-2/3}\,\boldsymbol I.\]</div>
+<p>The resulting second Piola–Kirchhoff stress used in the implementation is</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol S
+=
+G\,J^{-2/3}\Big(\boldsymbol I - \tfrac{1}{3}\,I_1\,\boldsymbol C^{-1}\Big)
++
+\frac{K}{4}\,\big(J^{2}-J^{-2}\big)\,\boldsymbol C^{-1},\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_1 = \operatorname{tr}\boldsymbol C\)</span>.</p>
+<p>The resulting Kirchhoff stress, after the push-forward operation <span class="math notranslate nohighlight">\(\boldsymbol{\tau} = \boldsymbol F\,\boldsymbol S\,\boldsymbol F^{\mathsf T}\)</span>, is:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\tau}
+=
+G\,J^{-2/3}\Big(\boldsymbol{b} - \tfrac{1}{3}\,\operatorname{tr}(\boldsymbol{b})\,\boldsymbol{I}\Big)
++
+\frac{K}{4}\,\big(J^{2}-J^{-2}\big)\,\boldsymbol{I},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{b} = \boldsymbol F\,\boldsymbol F^{\mathsf T}\)</span> is the left Cauchy-Green tensor.</p>
+<p>The consistent tangent with respect to the deformation gradient <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\tau}(\boldsymbol{S}(\boldsymbol{C}(\boldsymbol{F})), \boldsymbol{F})}{\partial\boldsymbol{F}}\)</span> is computed via the chain rule as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{F}}
+=
+2\,\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{S}} : \frac{\partial^{2}\Psi}{\partial\boldsymbol{C}\,\partial\boldsymbol{C}} : \frac{\partial\boldsymbol{C}}{\partial\boldsymbol{F}}
++
+\frac{\partial}{\partial\boldsymbol{F}}\left(\boldsymbol{F}\,\boldsymbol{S}\,\boldsymbol{F}^{\mathsf{T}}\right).\]</div>
+<p>The individual derivatives are:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\tau}}{\partial\boldsymbol{S}} = \boldsymbol{F}\otimes\boldsymbol{F},\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^{2}\Psi}{\partial \boldsymbol C\,\partial \boldsymbol C}
+=
+\frac{\partial^{2}\Psi}{\partial J^{2}}\,
+\frac{\partial J}{\partial \boldsymbol C}\otimes\frac{\partial J}{\partial \boldsymbol C}
++
+\frac{\partial \Psi}{\partial J}\,
+\frac{\partial^{2} J}{\partial \boldsymbol C\,\partial \boldsymbol C}
++
+\frac{\partial^{2}\Psi}{\partial J\,\partial I_1}
+\left(
+  \frac{\partial J}{\partial \boldsymbol C}\otimes\frac{\partial I_1}{\partial \boldsymbol C}
+  +
+  \frac{\partial I_1}{\partial \boldsymbol C}\otimes\frac{\partial J}{\partial \boldsymbol C}
+\right),\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{C}}{\partial\boldsymbol{F}} = \boldsymbol{F}^{\mathsf{T}}\otimes\boldsymbol{I} + \boldsymbol{I}\otimes\boldsymbol{F}^{\mathsf{T}},\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial\boldsymbol{F}}\left(\boldsymbol{F}\,\boldsymbol{S}\,\boldsymbol{F}^{\mathsf{T}}\right) = \boldsymbol{I}\otimes(\boldsymbol{S}\boldsymbol{F})^{\mathsf{T}} + \boldsymbol{S}\boldsymbol{F}\otimes\boldsymbol{I}.\]</div>
+<p>For infinitesimal strains, this model reduces to linear isotropic elasticity.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -135,24 +223,78 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Compressible Neo-Hookean hyperelastic material model (Pence–Gou potential, variant B). </p>
+<p><dl class="simple">
+<dt><strong>Material parameters</strong></dt><dd><p><ul class="simple">
+<li><p><strong>K</strong> - bulk modulus</p></li>
+<li><p><strong>G</strong> - shear modulus</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>State variables</strong></dt><dd><p><ul class="simple">
+<li><p>No state variables required. </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke20CompressibleNeoHookeEPKdii">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke20CompressibleNeoHookeEPKdii"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke20CompressibleNeoHookeEPKdii"></span><span id="Marmot::Materials::CompressibleNeoHooke::CompressibleNeoHooke__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1aeabc5e713e828211e53c10fb5bbd290f"></span><span class="sig-name descname"><span class="n"><span class="pre">CompressibleNeoHooke</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke20CompressibleNeoHookeEPKdii" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Construct a <a class="reference internal" href="#classMarmot_1_1Materials_1_1CompressibleNeoHooke"><span class="std std-ref">CompressibleNeoHooke</span></a> material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – Expects <code class="docutils literal notranslate"><span class="pre">K</span></code> at index 0 and <code class="docutils literal notranslate"><span class="pre">G</span></code> at index 1. </p></li>
+<li><p><strong>nMaterialProperties</strong> – Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p></li>
+<li><p><strong>materialLabel</strong> – Material label. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::CompressibleNeoHooke::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1ab4cb00bb8179e3ca752b612f25bb6c87"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute the Kirchhoff stress and the algorithmic tangent for the current step. </p>
+<p>
+Template parameter <code class="docutils literal notranslate"><span class="pre">&lt;3&gt;</span></code> indicates 3D. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">tau</span></code> - Kirchhoff stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elasticEnergyDensity</span></code> - elastic energy density <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> - density (unused here). </p></li>
+</ul>
+</p></li>
+<li><p><strong>tangents</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dTau_dF</span></code> - algorithmic tangent <span class="math notranslate nohighlight">\(\partial\boldsymbol{\tau}/\partial\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> - deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> - old (pseudo-)time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dT</span></code> - (pseudo-)time increment.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke28getNumberOfRequiredStateVarsEv">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::CompressibleNeoHooke::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1ad0a3542167ae56a08979b4883f5b8d13"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
+<dd><p>Number of required state variables. </p>
+<dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of state variables required by the material. </p>
+<dd class="field-odd"><p>Always 0 for this model. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -160,12 +302,12 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke15assignStateVarsEPdi">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke15assignStateVarsEPdi"></span><span id="Marmot::Materials::CompressibleNeoHooke::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1a758b5e27325c0489e9eaca551b51e059"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign state variable array to material. </p>
+<dd><p>Bind external state storage (unused for this model; required for the interface). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
-<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+<li><p><strong>stateVars</strong> – Pointer to a contiguous array provided by the caller for internal state. </p></li>
+<li><p><strong>nStateVars</strong> – Number of entries in that array. </p></li>
 </ul>
 </dd>
 </dl>
@@ -174,13 +316,13 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke12getStateViewERKNSt6stringE">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::CompressibleNeoHooke::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1a36b7de235163fe1ed6dd050bd84612cb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">result</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd><p>Access material state variables by name. </p>
+<dd><p>Access a named state quantity (no states here). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stateName</strong> – <strong>[in]</strong> Name of the requested state variable. </p>
+<dd class="field-odd"><p><strong>result</strong> – Name of the state to view. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A view into the state variable array. </p>
+<dd class="field-even"><p>Always an empty StateView since no states are used. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -191,7 +333,8 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials20CompressibleNeoHooke18nStateVarsRequiredE">
 <span id="_CPPv3N6Marmot9Materials20CompressibleNeoHooke18nStateVarsRequiredE"></span><span id="_CPPv2N6Marmot9Materials20CompressibleNeoHooke18nStateVarsRequiredE"></span><span id="Marmot::Materials::CompressibleNeoHooke::nStateVarsRequired__i"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleNeoHooke_1ad1d129f2d87ec181f808e1fbeb5476cb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nStateVarsRequired</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials20CompressibleNeoHooke18nStateVarsRequiredE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Number of required state variables (none here). </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -204,7 +347,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="b4.html" class="btn btn-neutral float-left" title="B4 model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="finitestrainj2plasticity.html" class="btn btn-neutral float-right" title="Finite Strain J2 Plasticity model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="finitestrainj2plasticity.html" class="btn btn-neutral float-right" title="Finite-strain J2 plasticity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
