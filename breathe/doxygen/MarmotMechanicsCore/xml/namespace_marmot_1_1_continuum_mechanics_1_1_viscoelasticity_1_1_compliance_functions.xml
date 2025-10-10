@@ -27,12 +27,52 @@
           <declname>n</declname>
         </param>
         <briefdescription>
+<para>Logarithmic power-law compliance function. </para>
         </briefdescription>
         <detaileddescription>
+<para>Computes the compliance function   <formula id="0">\[  \Phi(\tau) = m \, \ln\!\left( 1 + \tau^n \right),
+\]</formula> creep for long times.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar or autodiff type of the argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Retardation time or evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Exponent controlling the growth rate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The compliance value <formula id="1">$\Phi(\tau)$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="41" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="41" bodyend="45"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="59" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="59" bodyend="63"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a680c3eda9be51338682998b90ca75598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -58,12 +98,52 @@
           <declname>n</declname>
         </param>
         <briefdescription>
+<para>Power-law compliance function. </para>
         </briefdescription>
         <detaileddescription>
+<para>Computes the compliance function   <formula id="2">\[  \Phi(\tau) = m \, \tau^n,
+\]</formula> creep for short times.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar or autodiff type of the argument.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Retardation time or evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Exponent controlling the growth rate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The compliance value <formula id="1">$\Phi(\tau)$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="48" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="48" bodyend="52"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="82" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="82" bodyend="86"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

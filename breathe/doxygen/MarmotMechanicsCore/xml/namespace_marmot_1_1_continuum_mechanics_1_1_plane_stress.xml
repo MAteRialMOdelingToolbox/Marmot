@@ -22,7 +22,7 @@
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix <formula id="32">$\mathbb{C}$</formula> given in Voigt notation. </para>
+<para>3D stiffness matrix <formula id="35">$\mathbb{C}$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -45,7 +45,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Extract the plane stress derivitive of the stress in Voigt notation with respect to the deformation gradient <formula id="33">$F_{ij}$</formula> from the corresponding derivative in a 3d setting. </para>
+<para>Extract the plane stress derivitive of the stress in Voigt notation with respect to the deformation gradient <formula id="36">$F_{ij}$</formula> from the corresponding derivative in a 3d setting. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -68,7 +68,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the out-of-plane strain component <formula id="34">$$\varepsilon_{33}$</formula> for a given elastic strain, to compute the compensation for planeStress = Cel : (elasticStrain + compensationStrain) </para>
+<para>Compute the out-of-plane strain component <formula id="37">$$\varepsilon_{33}$</formula> for a given elastic strain, to compute the compensation for planeStress = Cel : (elasticStrain + compensationStrain) </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

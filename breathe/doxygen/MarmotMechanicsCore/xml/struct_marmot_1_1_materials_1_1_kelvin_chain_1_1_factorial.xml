@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial" kind="struct" language="C++" prot="public">
     <compoundname>Marmot::Materials::KelvinChain::Factorial</compoundname>
+    <includes refid="_marmot_kelvin_chain_8h" local="no">MarmotKelvinChain.h</includes>
     <templateparamlist>
       <param>
         <type>int</type>
@@ -28,14 +29,28 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="46" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="46" bodyend="46"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="86" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="86" bodyend="86"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Compile-time factorial. </para>
     </briefdescription>
     <detaileddescription>
+<para>Recursive template structure computing the factorial of N at compile time.</para>
+<para>Example: <programlisting><codeline><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>Factorial&lt;5&gt;::value;<sp/></highlight><highlight class="comment">//<sp/>f<sp/>=<sp/>120</highlight></codeline>
+</programlisting></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Non-negative integer whose factorial is to be computed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="45" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="45" bodyend="47"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="85" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="85" bodyend="87"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial_1a08f48c5caddb0efd16b1e71aa2ef102eadcbcebce91098bce3d6da9bec5e41773" prot="public" virt="non-virtual"><scope>Marmot::Materials::KelvinChain::Factorial</scope><name>value</name></member>
     </listofallmembers>

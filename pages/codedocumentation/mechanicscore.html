@@ -1152,7 +1152,20 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials11KelvinChain9FactorialE">
 <span id="_CPPv3I_iEN6Marmot9Materials11KelvinChain9FactorialE"></span><span id="_CPPv2I_iEN6Marmot9Materials11KelvinChain9FactorialE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Factorial</span></span></span><a class="headerlink" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain9FactorialE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_kelvin_chain_8h"><span class="std std-ref">MarmotKelvinChain.h</span></a>&gt;</em></div>
+<p>Compile-time factorial. </p>
+<p>Recursive template structure computing the factorial of N at compile time.</p>
+<p>Example: <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Factorial</span><span class="o">&lt;</span><span class="mi">5</span><span class="o">&gt;</span><span class="p">::</span><span class="n">value</span><span class="p">;</span> <span class="o">//</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">120</span>
+</pre></div>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> – Non-negative integer whose factorial is to be computed. </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp enum">
 <dt class="sig sig-object cpp">
@@ -1171,7 +1184,11 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot9Materials11KelvinChain9FactorialIXL0EEEE">
 <span id="_CPPv3IEN6Marmot9Materials11KelvinChain9FactorialIXL0EEEE"></span><span id="_CPPv2IEN6Marmot9Materials11KelvinChain9FactorialIX0EEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial_3_010_01_4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Factorial</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4IEN6Marmot9Materials11KelvinChain9FactorialIXL0EEEE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_kelvin_chain_8h"><span class="std std-ref">MarmotKelvinChain.h</span></a>&gt;</em></div>
+<p>Template specialization of <a class="reference internal" href="#struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial"><span class="std std-ref">Factorial</span></a> for 0. </p>
+<p>Defines the base case of the factorial recursion, setting 0! = 1. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp enum">
 <dt class="sig sig-object cpp">
@@ -2501,27 +2518,39 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties"></span><span class="target" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Properties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_prony_series_8h"><span class="std std-ref">MarmotPronySeries.h</span></a>&gt;</em></div>
+<p>Material properties for a generalized Maxwell (Prony series) model. </p>
+<p>This structure stores the parameters required for evaluating the viscoelastic stress response of a material represented by a Prony series expansion. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties11nPronyTermsE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties11nPronyTermsE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties11nPronyTermsE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::nPronyTerms__s"></span><span class="target" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a80c1544e808a4714e5fc21f0d320fd17"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nPronyTerms</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties11nPronyTermsE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Number of Prony series terms. </p>
+<p>Corresponds to the number of Maxwell branches in the generalized Maxwell model. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties23ultimateStiffnessMatrixE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties23ultimateStiffnessMatrixE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties23ultimateStiffnessMatrixE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::ultimateStiffnessMatrix__Matrix6d"></span><span class="target" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a050e4314ad75a330c5e3d900cf174681"></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ultimateStiffnessMatrix</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties23ultimateStiffnessMatrixE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Ultimate (equilibrium) stiffness matrix. </p>
+<p>Represents the stiffness contribution that persists at long times ( <span class="math notranslate nohighlight">\(t \to \infty\)</span>), outside the viscoelastic relaxation terms. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties16pronyStiffnessesE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties16pronyStiffnessesE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties16pronyStiffnessesE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyStiffnesses__Matrix:double.6.-1:"></span><span class="target" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b"></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pronyStiffnesses</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties16pronyStiffnessesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Stiffness matrices of each Prony series term. </p>
+<p>Stored as a block matrix of size <span class="math notranslate nohighlight">\(6 \times (6 \cdot nPronyTerms)\)</span>, with each <span class="math notranslate nohighlight">\(6\times 6\)</span> block corresponding to the stiffness matrix of one Maxwell branch. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties20pronyRelaxationTimesE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties20pronyRelaxationTimesE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties20pronyRelaxationTimesE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties::pronyRelaxationTimes__Matrix:double.6.-1:"></span><span class="target" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70"></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pronyRelaxationTimes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10Properties20pronyRelaxationTimesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Relaxation times of each Prony series term. </p>
+<p>Stored as a block matrix of size <span class="math notranslate nohighlight">\(6 \times (6 \cdot nPronyTerms)\)</span>, with each <span class="math notranslate nohighlight">\(6\times 6\)</span> block containing the relaxation times associated with one Maxwell branch. </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -3121,12 +3150,52 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_2T_dd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_dd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_dd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T_</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_viscoelasticity_8h_1a4c3917c5d6326d15b94d7d3cf3cc12e6"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_2T_dd" title="Marmot::ContinuumMechanics::Viscoelasticity::ComplianceFunctions::logPowerLaw::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">logPowerLaw</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_2T_dd" title="Marmot::ContinuumMechanics::Viscoelasticity::ComplianceFunctions::logPowerLaw::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tau</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">m</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions11logPowerLawE2T_2T_dd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Logarithmic power-law compliance function. </p>
+<p>Computes the compliance function   <div class="math notranslate nohighlight">
+\[  \Phi(\tau) = m \, \ln\!\left( 1 + \tau^n \right),
+\]</div>
+ creep for long times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T_</strong> – Scalar or autodiff type of the argument.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tau</strong> – <strong>[in]</strong> Retardation time or evaluation point. </p></li>
+<li><p><strong>m</strong> – <strong>[in]</strong> Scaling factor. </p></li>
+<li><p><strong>n</strong> – <strong>[in]</strong> Exponent controlling the growth rate.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The compliance value <span class="math notranslate nohighlight">\(\Phi(\tau)\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_2T_dd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_dd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_dd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T_</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_viscoelasticity_8h_1a680c3eda9be51338682998b90ca75598"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_2T_dd" title="Marmot::ContinuumMechanics::Viscoelasticity::ComplianceFunctions::powerLaw::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">powerLaw</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_2T_dd" title="Marmot::ContinuumMechanics::Viscoelasticity::ComplianceFunctions::powerLaw::T_"><span class="n"><span class="pre">T_</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tau</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">m</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics15Viscoelasticity19ComplianceFunctions8powerLawE2T_2T_dd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Power-law compliance function. </p>
+<p>Computes the compliance function   <div class="math notranslate nohighlight">
+\[  \Phi(\tau) = m \, \tau^n,
+\]</div>
+ creep for short times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T_</strong> – Scalar or autodiff type of the argument.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tau</strong> – <strong>[in]</strong> Retardation time or evaluation point. </p></li>
+<li><p><strong>m</strong> – <strong>[in]</strong> Scaling factor. </p></li>
+<li><p><strong>n</strong> – <strong>[in]</strong> Exponent controlling the growth rate.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The compliance value <span class="math notranslate nohighlight">\(\Phi(\tau)\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -3139,12 +3208,16 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries14StateVarMatrixE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries14StateVarMatrixE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries14StateVarMatrixE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::StateVarMatrix"></span><span class="target" id="_marmot_prony_series_8h_1a1170bd07fd7a83069a798b3699c77c89"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StateVarMatrix</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries14StateVarMatrixE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Matrix of viscoelastic state variables. </p>
+<p>Dynamic-size matrix of shape <span class="math notranslate nohighlight">\([6 \times n]\)</span>, where each <span class="math notranslate nohighlight">\(6\times 1\)</span> block corresponds to the internal state variables of a Maxwell branch in the Prony series. </p>
+</dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::mapStateVarMatrix"></span><span class="target" id="_marmot_prony_series_8h_1a481a6a7f467111c775dc5a2c18a979ef"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries14StateVarMatrixE" title="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::StateVarMatrix"><span class="n"><span class="pre">StateVarMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapStateVarMatrix</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Mapped view of a state variable matrix. </p>
+<p>Provides an Eigen::Map wrapper around a contiguous block of memory that stores state variables in the same layout as StateVarMatrix, avoiding copies. </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -3152,12 +3225,54 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries19evaluatePronySeriesERK10PropertiesR8Vector6dR8Matrix6dN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKdKb">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries19evaluatePronySeriesERK10PropertiesR8Vector6dR8Matrix6dN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKdKb"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries19evaluatePronySeriesERK10PropertiesR8Vector6dR8Matrix6dN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKdKb"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::evaluatePronySeries__PropertiesCR.Vector6dR.Matrix6dR.Eigen::Ref:mapStateVarMatrix:.Vector6dCR.doubleC.bC"></span><span class="target" id="_marmot_prony_series_8h_1aa5b16d91c3cfbcbc30c893e6351ab508"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluatePronySeries</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE" title="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">props</span></span>, <a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stiffness</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE" title="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::mapStateVarMatrix"><span class="n"><span class="pre">mapStateVarMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">updateStateVars</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries19evaluatePronySeriesERK10PropertiesR8Vector6dR8Matrix6dN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKdKb" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Evaluate the Prony series viscoelastic response. </p>
+<p>Computes the stress and tangent stiffness matrix contributions of a generalized Maxwell (Prony series) viscoelastic material, and optionally updates the internal state variables.</p>
+<p>In what follows we use indicial notation without the Einstein summation over repeated indices except explicitly stated. The stress is updated as       <div class="math notranslate nohighlight">
+\[ \sigma^{k+1}_{ij} =\; \sum_{k,l}C^\infty_{ijkl} \Delta \varepsilon_{kl}
+         \;+\; \sum_{\mu=1}^{M} \left[
+             \sum_{k,l}\eta^\mu_{ijkl}\left(1 - e^{-\Delta t /
+\tau^{\mu}_{ij}}\right)\frac{\Delta\varepsilon_{kl}}{\Delta t}
+             \;-\; \sigma^{ve,\mu}_{ij}\left(1 - e^{-\Delta t/\tau^\mu_{ij}}\right)
+         \right],
+\]</div>
+ where <span class="math notranslate nohighlight">\(C^\infty_{ijkl}\)</span> is the ultimate stiffness, <span class="math notranslate nohighlight">\(\tau^\mu_{ij}\)</span> the relaxation times for each strain component, <span class="math notranslate nohighlight">\(\eta^\mu_{ijkl} = \tau^\mu_{ij} C^\mu_{ijkl}\)</span> the effective viscosities, and <span class="math notranslate nohighlight">\(\sigma^{ve,k}_{kl}\)</span> the internal state variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>props</strong> – <strong>[in]</strong> Prony series material properties (relaxation times, stiffnesses, number of terms, and ultimate stiffness). </p></li>
+<li><p><strong>stress</strong> – <strong>[inout]</strong> 6-component stress vector to be updated. </p></li>
+<li><p><strong>stiffness</strong> – <strong>[inout]</strong> 6×6 tangent stiffness matrix to be updated. </p></li>
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> State variable matrix of size [6×(6·nPronyTerms)], storing internal viscoelastic strain-like variables. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Incremental strain vector (6-components). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+<li><p><strong>updateStateVars</strong> – <strong>[in]</strong> If true, update the state variables for the next step. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries15updateStateVarsERK10PropertiesN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKd">
 <span id="_CPPv3N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries15updateStateVarsERK10PropertiesN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKd"></span><span id="_CPPv2N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries15updateStateVarsERK10PropertiesN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKd"></span><span id="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::updateStateVars__PropertiesCR.Eigen::Ref:mapStateVarMatrix:.Vector6dCR.doubleC"></span><span class="target" id="_marmot_prony_series_8h_1adb89adab7ab07742866e458ca0d5aacf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updateStateVars</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries10PropertiesE" title="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">props</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries17mapStateVarMatrixE" title="Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::mapStateVarMatrix"><span class="n"><span class="pre">mapStateVarMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity11PronySeries15updateStateVarsERK10PropertiesN5Eigen3RefI17mapStateVarMatrixEERK8Vector6dKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Update the Prony series state variables. </p>
+<p>Propagates the internal viscoelastic state variables</p>
+<p>In what follows we don’t use the Einstein summation over repeated indices, the products are to be taken as hadamard products except otherwise stated. <span class="math notranslate nohighlight">\(\sigma^{ve,\mu,k}_{kl}\)</span> from time step <span class="math notranslate nohighlight">\(t^k\)</span> to <span class="math notranslate nohighlight">\(t^{k+1}\)</span> according to   <div class="math notranslate nohighlight">
+\[ \sigma^{ve,\mu,k+1}_{kl} = e^{-\Delta t / \tau^\mu_{ij}}\, \sigma^{ve,\mu,k}_{kl}
+            + \sum_{k,l}\left( \frac{\eta^\mu_{ijkl}}{\Delta t}(1 - e^{-\Delta t / \tau^\mu_{ij}})
+\right)\Delta\varepsilon_{kl}, \]</div>
+ where <span class="math notranslate nohighlight">\(\tau^\mu_{ij}\)</span> are the relaxation times and  <span class="math notranslate nohighlight">\(\eta^\mu_{ij} =
+\tau^\mu_{ij} C^\mu_{ijkl}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>props</strong> – <strong>[in]</strong> Prony series material properties (relaxation times, stiffnesses, and number of terms). </p></li>
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> State variable matrix of size [6×(6·nPronyTerms)], storing internal viscoelastic strain-like variables. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Incremental strain vector (6-components). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -3801,22 +3916,31 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain10PropertiesE"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain10PropertiesE"></span><span id="Marmot::Materials::KelvinChain::Properties"></span><span class="target" id="_marmot_kelvin_chain_8h_1a4161f4ca08c7a35dd1dcd75e630f60f4"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Properties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Vector of material properties. </p>
+<p>This namespace contains the functions that derive the equivalent Kelvin chain for a given compliance function</p>
+<p>Convenience typedef for an Eigen dynamic-size vector (<code class="docutils literal notranslate"><span class="pre">Eigen::VectorXd</span></code>) that holds the material or model parameters of the Kelvin chain. </p>
+</dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain13mapPropertiesE">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain13mapPropertiesE"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain13mapPropertiesE"></span><span id="Marmot::Materials::KelvinChain::mapProperties"></span><span class="target" id="_marmot_kelvin_chain_8h_1a9fc5728c546ccca8041fc22a969235fa"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain13mapPropertiesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Mapped view of material properties. </p>
+<p>Alias for <code class="docutils literal notranslate"><span class="pre">Eigen::Map&lt;Properties&gt;</span></code>, which allows mapping an existing contiguous memory block as a <code class="docutils literal notranslate"><span class="pre">Properties</span></code> vector without copying. </p>
+</dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain14StateVarMatrixE">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain14StateVarMatrixE"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain14StateVarMatrixE"></span><span id="Marmot::Materials::KelvinChain::StateVarMatrix"></span><span class="target" id="_marmot_kelvin_chain_8h_1ac6c31e76aceb440b9b6ea4aee7aae8f3"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StateVarMatrix</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain14StateVarMatrixE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Matrix of state variables. </p>
+<p>Alias for an Eigen matrix of shape 6 × N (<code class="docutils literal notranslate"><span class="pre">Eigen::Matrix&lt;double,</span> <span class="pre">6,</span> <span class="pre">Eigen::Dynamic&gt;</span></code>), storing viscoelastic strain variables for each Kelvin unit. </p>
+</dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain17mapStateVarMatrixE">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain17mapStateVarMatrixE"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain17mapStateVarMatrixE"></span><span id="Marmot::Materials::KelvinChain::mapStateVarMatrix"></span><span class="target" id="_marmot_kelvin_chain_8h_1a01798c882d4d09e944aaa13153c21079"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain14StateVarMatrixE" title="Marmot::Materials::KelvinChain::StateVarMatrix"><span class="n"><span class="pre">StateVarMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapStateVarMatrix</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain17mapStateVarMatrixE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Mapped view of the state variable matrix. </p>
+<p>Alias for <code class="docutils literal notranslate"><span class="pre">Eigen::Map&lt;StateVarMatrix&gt;</span></code>, allowing access to an existing state variable array as an Eigen matrix without copying. </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -3824,37 +3948,163 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd">
 <span id="_CPPv3I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd"></span><span id="_CPPv2I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_kelvin_chain_8h_1a3f564758677f0016ead1ed7dc89fd610"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluatePostWidderFormula</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd" title="Marmot::Materials::KelvinChain::evaluatePostWidderFormula::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd" title="Marmot::Materials::KelvinChain::evaluatePostWidderFormula::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tau</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain25evaluatePostWidderFormulaEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Evaluates the Post–Widder inversion formula to approximate the discrete retardance function <span class="math notranslate nohighlight">\(L_k(\tau)\)</span>. </p>
+<p>Evaluates the Post-Widder formula for deriving the equivalent retardance <span class="math notranslate nohighlight">\(L_\kappa(\tau)\)</span> of the discrete Kelvin Chain model, given the continuous description of the compliance  <div class="math notranslate nohighlight">
+\[\Phi(t) = \int_{\tau=0}^\infty
+L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</div>
+ according to the formula <div class="math notranslate nohighlight">
+\[L_k(\tau)=(-1)^{k-1}\frac{(-tk)^k\Phi^{(k)(t)}}{(k-1)!}\]</div>
+</p>
+<p>in the sense that <span class="math notranslate nohighlight">\(L_k(\tau)=\lim_{\kappa\to\infty}L_\kappa(\tau)\)</span> in the frequency domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>k</strong> – <span class="math notranslate nohighlight">\(k\)</span> integer defining the order of differentiation that corresponds to the <span class="math notranslate nohighlight">\(L_k\)</span> term in the sequence of the retardance approximation </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>phi</strong> – <strong>[in]</strong> compliance function whose discrete approximation is sought </p></li>
+<li><p><strong>tau</strong> – <strong>[in]</strong> the continuous variable in the frequency domain </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>val the value of the <span class="math notranslate nohighlight">\(L_k(\tau)\)</span> approximation. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd">
 <span id="_CPPv3I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd"></span><span id="_CPPv2I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_kelvin_chain_8h_1a7fddff12d5c5fcc1b6145e7b93fbcc3f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approximateZerothCompliance</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd" title="Marmot::Materials::KelvinChain::approximateZerothCompliance::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd" title="Marmot::Materials::KelvinChain::approximateZerothCompliance::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tauMin</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">spacing</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10.</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain27approximateZerothComplianceEdNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEEdd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the zeroth-order (instantaneous) elastic compliance by numerically integrating the retardance function. </p>
+<p>Approximates the instantaneous elastic compliance <span class="math notranslate nohighlight">\(\Phi_0=\frac{1}{E_0}\)</span>, <div class="math notranslate nohighlight">
+\[\frac{1}{E_0}=\int_{\tau=0}^{\tau}L(\tau)d\ln(\tau)\]</div>
+ It is used in order to avoid integrating over the origin of the frequency domain where <span class="math notranslate nohighlight">\(\int_0^{\tau_0}d\ln(\tau)\)</span> is singular.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The integral is evaluated numerically using Simpson’s rule via <code class="docutils literal notranslate"><span class="pre">NumericalAlgorithms::Integration::integrateScalarFunction</span></code>. The integration range <span class="math notranslate nohighlight">\([\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]\)</span> is chosen to avoid the logarithmic singularity at <span class="math notranslate nohighlight">\(\tau=0\)</span>. As Simpson’s rule is sensitive to changes in the sign of the summands, integration should be handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the future. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>k</strong> – <span class="math notranslate nohighlight">\(k\)</span> integer defining the order of differentiation for the <span class="math notranslate nohighlight">\(k-th\)</span> approximation of the retardance. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>phi</strong> – <strong>[in]</strong> compliance function whose discrete approximation is sought. </p></li>
+<li><p><strong>tauMin</strong> – <strong>[in]</strong> the minimum retardation time that is required to be of the same order or smaller than the total time of the analysis. </p></li>
+<li><p><strong>spacing</strong> – <strong>[in]</strong> the increment between two sunsequent retardation times </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>val the value of the zeroth compliance term.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliE10PropertiesNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb">
 <span id="_CPPv3I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb"></span><span id="_CPPv2I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliENSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_kelvin_chain_8h_1a2f2efb416b0dab23259040740294e9e6"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeElasticModuli</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliE10PropertiesNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb" title="Marmot::Materials::KelvinChain::computeElasticModuli::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Real</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliE10PropertiesNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb" title="Marmot::Materials::KelvinChain::computeElasticModuli::k"><span class="n"><span class="pre">k</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">retardationTimes</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">gaussQuadrature</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot9Materials11KelvinChain20computeElasticModuliE10PropertiesNSt8functionIFN8autodiff4RealI1kdEEN8autodiff4RealI1kdEEEEE10Propertiesb" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the discrete elastic moduli of the equivalent Kelvin chain from the <span class="math notranslate nohighlight">\(L_k\)</span> retardance approximation. </p>
+<p>Evaluates the elastic moduli based on the <span class="math notranslate nohighlight">\(L_k\)</span> approximation of the retardance, <div class="math notranslate nohighlight">
+\[ \frac{1}{E_\mu}=(\ln 10)L_k(\tau_\mu),\;\mu=1,2,...,M\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>k</strong> – <span class="math notranslate nohighlight">\(k\)</span> integer defining the order of differentiation for the <span class="math notranslate nohighlight">\(k-th\)</span> approximation of the retardance. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>phi</strong> – <strong>[in]</strong> compliance function whose discrete approximation is sought </p></li>
+<li><p><strong>retardationTimes</strong> – <strong>[in]</strong> the minimum retardation time that is required to be of the same order or smaller than the total time of the analysis </p></li>
+<li><p><strong>gaussQuadrature</strong> – <strong>[in]</strong> flag if on Gauss Quadrature is performed else the Post-Widder formula is applied. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>elasticModuli the discrete elastic moduli of the equivalt Kelvin chain. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain24generateRetardationTimesEidd">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain24generateRetardationTimesEidd"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain24generateRetardationTimesEidd"></span><span id="Marmot::Materials::KelvinChain::generateRetardationTimes__i.double.double"></span><span class="target" id="_marmot_kelvin_chain_8h_1ad2bfc2546999dd6545dcf008b66e6798"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">generateRetardationTimes</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">min</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">spacing</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain24generateRetardationTimesEidd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Generates a sequence of logarithmically spaced retardation times for the Kelvin chain model. </p>
+<p>This function evaluates the retardation times. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – <strong>[in]</strong> the number of kelvin units in the equivalent Kelvin chain. </p></li>
+<li><p><strong>min</strong> – <strong>[in]</strong> the first retardation time. </p></li>
+<li><p><strong>spacing</strong> – <strong>[in]</strong> the spacing between the retardation times. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>retardationTimes a vector containing the retardation time for each Kelvin unit in the Kelvin chain. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain20updateStateVarMatrixEKd10Properties10PropertiesN5Eigen3RefI14StateVarMatrixEERKN6Marmot8Vector6dERKN6Marmot8Matrix6dE">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain20updateStateVarMatrixEKd10Properties10PropertiesN5Eigen3RefI14StateVarMatrixEERKN6Marmot8Vector6dERKN6Marmot8Matrix6dE"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain20updateStateVarMatrixEKd10Properties10PropertiesN5Eigen3RefI14StateVarMatrixEERKN6Marmot8Vector6dERKN6Marmot8Matrix6dE"></span><span id="Marmot::Materials::KelvinChain::updateStateVarMatrix__doubleC.Properties.Properties.Eigen::Ref:StateVarMatrix:.Marmot::Vector6dCR.Marmot::Matrix6dCR"></span><span class="target" id="_marmot_kelvin_chain_8h_1a59398da9ad5bc47468fef8fc9e6239f0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updateStateVarMatrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">elasticModuli</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">retardationTimes</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain14StateVarMatrixE" title="Marmot::Materials::KelvinChain::StateVarMatrix"><span class="n"><span class="pre">StateVarMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">unitComplianceMatrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain20updateStateVarMatrixEKd10Properties10PropertiesN5Eigen3RefI14StateVarMatrixEERKN6Marmot8Vector6dERKN6Marmot8Matrix6dE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Updates the viscoelastic strain state variables for each Kelvin unit over a given time increment. </p>
+<p>For the given time increment <span class="math notranslate nohighlight">\(\Delta t_k\)</span> this function updates the visco-elastic state variables according to the update rule:  <div class="math notranslate nohighlight">
+\[\varepsilon^{ev,\mu,k+1}_{ij} = \frac{\lambda^{\mu
+k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{ij}\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dT</strong> – <strong>[in]</strong> the time increment. </p></li>
+<li><p><strong>elasticModuli</strong> – <strong>[in]</strong> vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain. </p></li>
+<li><p><strong>retardationTimes</strong> – <strong>[in]</strong> vector containing the retardation time for each Kelvin unit in the Kelvin chain. </p></li>
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> the <span class="math notranslate nohighlight">\([6\times \mu]\)</span> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </p></li>
+<li><p><strong>dStress</strong> – <strong>[in]</strong> the <span class="math notranslate nohighlight">\([6\times 1]\)</span> vector of the total stress increment. </p></li>
+<li><p><strong>unitComplianceMatrix</strong> – <strong>[in]</strong> the [6\times 6] compliance matrix of the material with unit compliance and given Poisson coeffiscient. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain19evaluateKelvinChainEKd10Properties10Properties14StateVarMatrixRdRN6Marmot8Vector6dEKd">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain19evaluateKelvinChainEKd10Properties10Properties14StateVarMatrixRdRN6Marmot8Vector6dEKd"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain19evaluateKelvinChainEKd10Properties10Properties14StateVarMatrixRdRN6Marmot8Vector6dEKd"></span><span id="Marmot::Materials::KelvinChain::evaluateKelvinChain__doubleC.Properties.Properties.StateVarMatrix.doubleR.Marmot::Vector6dR.doubleC"></span><span class="target" id="_marmot_kelvin_chain_8h_1aac946db2dcafaf4619982a13535b6a5c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateKelvinChain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">elasticModuli</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">retardationTimes</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials11KelvinChain14StateVarMatrixE" title="Marmot::Materials::KelvinChain::StateVarMatrix"><span class="n"><span class="pre">StateVarMatrix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">uniaxialCompliance</span></span>, <a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">factor</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain19evaluateKelvinChainEKd10Properties10Properties14StateVarMatrixRdRN6Marmot8Vector6dEKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Evaluates the viscoelastic response of the Kelvin chain over a time increment. </p>
+<p>For the given time increment <span class="math notranslate nohighlight">\(\Delta t_k\)</span> this function updates the visco-elastic state variables according to the update rule: <div class="math notranslate nohighlight">
+\[\overline{J}^k=\sum_{\mu=1}^M\frac{1-\lambda^{\mu,k}}{E^\mu}\]</div>
+ <div class="math notranslate nohighlight">
+\[\Delta\varepsilon^{'',k}_{ij} = \sum_{\mu=1}^M\left(1-\beta^{\mu,k}\right)\varepsilon^{ev,\kappa}_{ij}\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dT</strong> – <strong>[in]</strong> the time increment. </p></li>
+<li><p><strong>elasticModuli</strong> – <strong>[in]</strong> vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain. </p></li>
+<li><p><strong>retardationTimes</strong> – <strong>[in]</strong> vector containing the retardation time for each Kelvin unit in the Kelvin chain. </p></li>
+<li><p><strong>stateVars</strong> – <strong>[in]</strong> the <span class="math notranslate nohighlight">\([6\times \mu]\)</span> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </p></li>
+<li><p><strong>uniaxialCompliance</strong> – <strong>[inout]</strong> number containing the <span class="math notranslate nohighlight">\(\sum^M_{\mu=1}\frac{\lambda^{\mu, k}}{E_\mu}\)</span>. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[inout]</strong> the viscoelastic update of the strain based on the state variables of the Kelvin chain. </p></li>
+<li><p><strong>factor</strong> – <strong>[in]</strong> the solidification factor (in non aging viscoelasticity set to 1). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11KelvinChain20computeLambdaAndBetaEddRdRd">
 <span id="_CPPv3N6Marmot9Materials11KelvinChain20computeLambdaAndBetaEddRdRd"></span><span id="_CPPv2N6Marmot9Materials11KelvinChain20computeLambdaAndBetaEddRdRd"></span><span id="Marmot::Materials::KelvinChain::computeLambdaAndBeta__double.double.doubleR.doubleR"></span><span class="target" id="_marmot_kelvin_chain_8h_1a24aa27592ecdf22a6880d8dbc64d37c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLambdaAndBeta</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tau</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lambda</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">beta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11KelvinChain20computeLambdaAndBetaEddRdRd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the time-dependent relaxation factors <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> for a given Kelvin unit. </p>
+<p>This function evaluates the time parameters for each Kelvin chain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dT</strong> – <strong>[in]</strong> the time increment. </p></li>
+<li><p><strong>tau</strong> – <strong>[in]</strong> the retardation time for a given Kelvin unit. </p></li>
+<li><p><strong>lambda</strong> – <strong>[out]</strong> time dependent factor for each Kelvin unit. </p></li>
+<li><p><strong>beta</strong> – <strong>[out]</strong> time dependemnt factor for each Kelvin unit. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
