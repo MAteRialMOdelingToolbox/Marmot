@@ -42,6 +42,7 @@ mathjax3_config = {
             "CelInv": "\\mathbb{C}^{-1}",
             "DelNu": "\\mathbb{D}_\\nu",
             "PhiRate": "\\dot{\\Phi}",
+            "JRate": "\\dot{J}",
         },
     },
 }
