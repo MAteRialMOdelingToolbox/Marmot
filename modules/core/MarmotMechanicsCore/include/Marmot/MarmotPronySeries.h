@@ -33,18 +33,21 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
   namespace PronySeries {
     using namespace Marmot;
     using namespace Eigen;
+
     /**
      * @brief Material properties for a generalized Maxwell (Prony series) model.
      *
      * This structure stores the parameters required for evaluating the viscoelastic
      * stress response of a material represented by a Prony series expansion.
      */
+
     struct Properties {
       /**
        * @brief Number of Prony series terms.
        *
        * Corresponds to the number of Maxwell branches in the generalized Maxwell model.
        */
+
       size_t nPronyTerms;
       /**
        * @brief Ultimate (equilibrium) stiffness matrix.
@@ -52,6 +55,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * Represents the stiffness contribution that persists at long times
        * (\f$t \to \infty\f$), outside the viscoelastic relaxation terms.
        */
+
       Matrix6d ultimateStiffnessMatrix;
       /**
        * @brief Stiffness matrices of each Prony series term.
@@ -60,6 +64,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * with each \f$6\times 6\f$ block corresponding to the stiffness matrix
        * of one Maxwell branch.
        */
+
       Matrix< double, 6, -1 > pronyStiffnesses;
       /**
        * @brief Relaxation times of each Prony series term.
@@ -68,6 +73,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * with each \f$6\times 6\f$ block containing the relaxation times
        * associated with one Maxwell branch.
        */
+
       Matrix< double, 6, -1 > pronyRelaxationTimes;
     };
     /**
@@ -78,6 +84,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      * \f$6\times 1\f$ block corresponds to the internal state variables
      * of a Maxwell branch in the Prony series.
      */
+
     typedef Eigen::Matrix< double, 6, Eigen::Dynamic > StateVarMatrix;
     /**
      * @typedef mapStateVarMatrix
@@ -87,7 +94,9 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      * that stores state variables in the same layout as StateVarMatrix,
      * avoiding copies.
      */
+
     typedef Eigen::Map< StateVarMatrix > mapStateVarMatrix;
+
     /**
      * @brief Evaluate the Prony series viscoelastic response.
      *
@@ -125,6 +134,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
                               const Vector6d&                 dStrain,
                               const double                    dT,
                               const bool                      updateStateVars = false );
+
     /**
      * @brief Update the Prony series state variables.
      *

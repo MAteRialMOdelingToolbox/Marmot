@@ -85,16 +85,24 @@ namespace Marmot::Materials {
     struct Factorial {
       enum { value = N * Factorial< N - 1 >::value };
     };
-
+    /**
+     * @brief Template specialization of Factorial for 0.
+     *
+     * Defines the base case of the factorial recursion, setting 0! = 1.
+     */
     template <>
     struct Factorial< 0 > {
       enum { value = 1 };
     };
     /**
+     * @brief Evaluates the Post–Widder inversion formula to approximate the discrete retardance function
+     * \f$L_k(\tau)\f$.
+     *
      * Evaluates the Post-Widder formula for deriving the equivalent retardance \f$L_\kappa(\tau)\f$ of the discrete
      * Kelvin Chain model, given the continuous description of the compliance \f[\Phi(t) = \int_{\tau=0}^\infty
      * L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\f] according to the formula
      * \f[L_k(\tau)=(-1)^{k-1}\frac{(-tk)^k\Phi^{(k)(t)}}{(k-1)!}\f]
+     *
      * in the sense that \f$L_k(\tau)=\lim_{\kappa\to\infty}L_\kappa(\tau)\f$ in the frequency domain.
      * @tparam k \f$k\f$ integer defining the order of differentiation that corresponds to the \f$L_k\f$ term in the
      * sequence of the retardance approximation
@@ -113,10 +121,14 @@ namespace Marmot::Materials {
       return val;
     }
     /**
+     * @brief Computes the zeroth-order (instantaneous) elastic compliance by numerically integrating the retardance
+     * function.
+     *
      * Approximates the instantaneous elastic compliance \f$\Phi_0=\frac{1}{E_0}\f$,
      * \f[\frac{1}{E_0}=\int_{\tau=0}^{\tau}L(\tau)d\ln(\tau)\f]
-     * It is used in order to avoid indegrating over the origin of the frequency domain where
+     * It is used in order to avoid integrating over the origin of the frequency domain where
      * \f$\int_0^{\tau_0}d\ln(\tau)\f$ is singular.
+     *
      * @tparam k \f$k\f$ integer defining the order of differentiation for the \f$k-th\f$ approximation of the
      * retardance.
      * @param[in] phi compliance function whose discrete approximation is sought.
@@ -124,8 +136,14 @@ namespace Marmot::Materials {
      * time of the analysis.
      * @param[in] spacing the increment between two sunsequent retardation times
      * @return val the value of the zeroth compliance term.
+     *
+     * @note The integral is evaluated numerically using Simpson’s rule via
+     * `NumericalAlgorithms::Integration::integrateScalarFunction`. The integration range
+     * \f$[\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]\f$ is chosen to avoid the logarithmic singularity
+     * at \f$\tau=0\f$. As Simpson's rule is sensitive to changes in the sign of the summands, integration should be
+     * handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the
+     * future.
      */
-
     template < int k >
     double approximateZerothCompliance( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
                                         double tauMin,
@@ -146,10 +164,12 @@ namespace Marmot::Materials {
       return val;
     }
     /**
+     *  @brief Computes the discrete elastic moduli of the equivalent Kelvin chain from the \f$L_k\f$ retardance
+     * approximation.
+     *
      * Evaluates the elastic moduli based on the \f$L_k\f$ approximation of the retardance,
      * \f[ \frac{1}{E_\mu}=(\ln 10)L_k(\tau_\mu),\;\mu=1,2,...,M\f]
-     * It is used in order to avoid indegrating over the origin of the frequency domain where
-     * \f$\int_0^{\tau_0}d\ln(\tau)\f$ is singular.
+     *
      * @tparam k \f$k\f$ integer defining the order of differentiation for the \f$k-th\f$ approximation of the
      * retardance.
      * @param[in] phi compliance function whose discrete approximation is sought
@@ -183,6 +203,8 @@ namespace Marmot::Materials {
       return elasticModuli;
     }
     /**
+     * @brief Generates a sequence of logarithmically spaced retardation times for the Kelvin chain model.
+     *
      * This function evaluates the retardation times.
      * @param[in] n the number of kelvin units in the equivalent Kelvin chain.
      * @param[in] min the first retardation time.
@@ -192,9 +214,12 @@ namespace Marmot::Materials {
 
     Properties generateRetardationTimes( int n, double min, double spacing );
     /**
+     * @brief Updates the viscoelastic strain state variables for each Kelvin unit over a given time increment.
+     *
      * For the given time increment \f$\Delta t_k\f$ this function updates the visco-elastic state variables according
      * to the update rule: \f[\varepsilon^{ev,\mu,k+1}_{ij} = \frac{\lambda^{\mu
      * k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{ij}\f]
+     *
      * @param[in] dT the time increment.
      * @param[in] elasticModuli vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain.
      * @param[in] retardationTimes vector containing the retardation time for each Kelvin unit in the Kelvin chain.
@@ -212,9 +237,12 @@ namespace Marmot::Materials {
                                const Marmot::Vector6d&      dStress,
                                const Marmot::Matrix6d&      unitComplianceMatrix );
     /**
+     * @brief Evaluates the viscoelastic response of the Kelvin chain over a time increment.
+     *
      * For the given time increment \f$\Delta t_k\f$ this function updates the visco-elastic state variables according
      *to the update rule: \f[\overline{J}^k=\sum_{\mu=1}^M\frac{1-\lambda^{\mu,k}}{E^\mu}\f]
      *\f[\Delta\varepsilon^{'',k}_{ij} = \sum_{\mu=1}^M\left(1-\beta^{\mu,k}\right)\varepsilon^{ev,\kappa}_{ij}\f]
+     *
      * @param[in] dT the time increment.
      * @param[in] elasticModuli vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain.
      * @param[in] retardationTimes vector containing the retardation time for each Kelvin unit in the Kelvin chain.
@@ -233,6 +261,8 @@ namespace Marmot::Materials {
                               Marmot::Vector6d& dStrain,
                               const double      factor );
     /**
+     * @brief Computes the time-dependent relaxation factors \f$\lambda\f$ and \f$\beta\f$ for a given Kelvin unit.
+     *
      * This function evaluates the time parameters for each Kelvin chain.
      * @param[in] dT the time increment.
      * @param[in] tau the retardation time for a given Kelvin unit.
