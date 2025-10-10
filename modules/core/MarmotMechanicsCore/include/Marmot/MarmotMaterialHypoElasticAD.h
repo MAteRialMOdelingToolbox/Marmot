@@ -34,6 +34,15 @@ class MarmotMaterialHypoElasticAD : public MarmotMaterialHypoElastic {
 public:
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
+  /**
+   * Compute the Cauchy stress tensor given an increment of the linearized strain tensor.
+   *
+   * @param[in,out] stress  Cauchy stress tensor
+   * @param[in]             dStrain linearized strain increment
+   * @param[in]             timeOld Old (pseudo-)time
+   * @param[in]             dT (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]         pNewDT Suggestion for a new time increment
+   */
   virtual void computeStressAD( autodiff::dual*       stress,
                                 const autodiff::dual* dStrain,
                                 const double*         timeOld,
