@@ -18,6 +18,8 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -99,8 +101,33 @@
              
   <section id="linear-elastic-model-automatic-differentiation">
 <h1>Linear Elastic model (Automatic Differentiation)<a class="headerlink" href="#linear-elastic-model-automatic-differentiation" title="Link to this heading"></a></h1>
+<p>This material is intended for demonstration purposes, to illustrate how to use the capabilities of the AD Material.</p>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The constitutive law is given in total form as</p>
+<div class="math notranslate nohighlight">
+\[\sig = \Cel : \eps\]</div>
+<p>relating the nominal stress tensor <span class="math notranslate nohighlight">\(\sig\)</span>
+to the linearized strain tensor <span class="math notranslate nohighlight">\(\eps\)</span>
+with the fourth order stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span>.
+For the given definitions it is important to note, that the Voigt notation is used.
+The stiffness tensor can be specified for isotropic material behavior as follows:</p>
+<section id="isotropic-behavior">
+<h3>Isotropic Behavior<a class="headerlink" href="#isotropic-behavior" title="Link to this heading"></a></h3>
+<p>Number of independent material parameters:      2</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Cel^{-1} = \begin{bmatrix}
+                                      \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G} &amp; 0 \\
+                                      0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G}
+                                  \end{bmatrix}\end{split}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\displaystyle G = \frac{E}{2\,(1 + \nu)}\]</div>
+</section>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -157,12 +184,14 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials15ADLinearElastic1EE">
 <span id="_CPPv3N6Marmot9Materials15ADLinearElastic1EE"></span><span id="_CPPv2N6Marmot9Materials15ADLinearElastic1EE"></span><span id="Marmot::Materials::ADLinearElastic::E__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic_1ae4d108888b645944506c2460f839508e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials15ADLinearElastic1EE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Young’s modulus for isotropic materials. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials15ADLinearElastic2nuE">
 <span id="_CPPv3N6Marmot9Materials15ADLinearElastic2nuE"></span><span id="_CPPv2N6Marmot9Materials15ADLinearElastic2nuE"></span><span id="Marmot::Materials::ADLinearElastic::nu__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic_1a63e997ff462f29a80c3fc7730ebb6776"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials15ADLinearElastic2nuE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Poisson’s ratio for isotropic materials. </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
