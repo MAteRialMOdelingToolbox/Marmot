@@ -50,9 +50,9 @@ namespace Marmot::ContinuumMechanics {
      * \f]
      */
     template < typename T >
-    Tensor33t< T > rightCauchyGreen( const Tensor33t< T > F )
+    Tensor33t< T > rightCauchyGreen( const Tensor33t< T >& F )
     {
-      Tensor33t< T > C = einsum< iI, iJ >( F, F );
+      const Tensor33t< T > C = einsum< iI, iJ >( F, F );
       return C;
     }
 
@@ -71,9 +71,9 @@ namespace Marmot::ContinuumMechanics {
      * \f]
      */
     template < typename T >
-    Tensor33t< T > leftCauchyGreen( const Tensor33t< T > F )
+    Tensor33t< T > leftCauchyGreen( const Tensor33t< T >& F )
     {
-      Tensor33t< T > b = einsum< iI, JI >( F, F );
+      const Tensor33t< T > b = einsum< iJ, jJ >( F, F );
       return b;
     }
 
@@ -99,9 +99,9 @@ namespace Marmot::ContinuumMechanics {
        * \f]
        */
       template < typename T >
-      std::pair< Tensor33t< T >, Tensor3333t< T > > rightCauchyGreen( const Tensor33t< T > F )
+      std::pair< Tensor33t< T >, Tensor3333t< T > > rightCauchyGreen( const Tensor33t< T >& F )
       {
-        Tensor33t< T > C = einsum< iI, iJ >( F, F );
+        const Tensor33t< T > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
 
         const Tensor3333t< T > dC_dF = einsum< IK, kJ, to_IJkK >( Spatial3D::I, F ) +
                                        einsum< kI, JK, to_IJkK >( F, Spatial3D::I );
@@ -129,9 +129,9 @@ namespace Marmot::ContinuumMechanics {
        * \f]
        */
       template < typename T >
-      std::pair< Tensor33t< T >, Tensor3333t< T > > leftCauchyGreen( const Tensor33t< T > F )
+      std::pair< Tensor33t< T >, Tensor3333t< T > > leftCauchyGreen( const Tensor33t< T >& F )
       {
-        Tensor33t< T > b = einsum< iI, JI >( F, F );
+        Tensor33t< T > b = Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen( F );
 
         const Tensor3333t< T > db_dF = einsum< ik, jK, to_ijkK >( Spatial3D::I, F ) +
                                        einsum< iK, jk, to_ijkK >( F, Spatial3D::I );

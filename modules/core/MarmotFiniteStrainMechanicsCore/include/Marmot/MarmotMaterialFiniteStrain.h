@@ -131,7 +131,7 @@ public:
    * @param[in] deformation Deformation instance
    * @param[in] timeIncrement TimeIncrement instance
    *
-   * It uses the general 3D computesStress function for a plane strain Deformation.
+   * It uses the general 3D computeStress function for a plane strain Deformation.
    * The algorithmic tangent is modified according to plane strain conditions.
    */
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
@@ -146,7 +146,7 @@ public:
    * @param[in] timeIncrement TimeIncrement instance
    * @param[in] eigenDeformation Tuple representing eigen deformation in each spatial direction.
    *
-   * It uses the general 3D computesStress function for a plane strain Deformation.
+   * It uses the general 3D computeStress function for a plane strain Deformation.
    * The algorithmic tangent is modified according to plane strain conditions.
    */
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
@@ -161,7 +161,7 @@ public:
    * @param[in] deformation Deformation instance
    * @param[in] timeIncrement TimeIncrement instance
    *
-   * It uses the general 3D computesStress function and iteratively finds the out-of-plane deformation.
+   * It uses the general 3D computeStress function and iteratively finds the out-of-plane deformation.
    * The algorithmic tangent is modified according to plane stress conditions.
    */
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,

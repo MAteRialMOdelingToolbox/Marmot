@@ -37,16 +37,17 @@ namespace Marmot::ContinuumMechanics {
     using namespace FastorIndices;
     using namespace FastorStandardTensors;
 
-    /** @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.
+    /**
+     * @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.
      *
-     *  The Kirchoff stress is computed as
-     *  \f[
-     *    \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
-     *  \f]
-     *  or in index notation
-     *  \f[
-     *  \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
-     *  \f]
+     * The Kirchhoff stress is computed as
+     * \f[
+     *   \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+     * \f]
+     * or in index notation
+     * \f[
+     * \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+     * \f]
      *
      * @tparam T Scalar type, e.g. double, float
      * @param PK2 2nd Piola-Kirchhoff stress
@@ -66,15 +67,15 @@ namespace Marmot::ContinuumMechanics {
       /** @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the
        * respective partial derivatives.
        *
-       *  The Kirchoff stress is computed as
-       *  \f[
-       *    \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
-       *  \f]
-       *  or in index notation
-       *  \f[
-       *  \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
-       *  \f]
-       *  Additionally, the derivatives with respect to \f$ \boldsymbol{S} \f$ and \f$ \boldsymbol{F} \f$ are computed
+       * The Kirchoff stress is computed as
+       * \f[
+       *   \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+       * \f]
+       * or in index notation
+       * \f[
+       * \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+       * \f]
+       * Additionally, the derivatives with respect to \f$ \boldsymbol{S} \f$ and \f$ \boldsymbol{F} \f$ are computed
        * in index notation as \f[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \f] and \f[ \frac{\partial
        * \tau_{ij}}{\partial F_{kL}} = \delta_{ik} S_{LJ} F_{jJ} + F_{iI} S_{IL} \delta_{jk} \f]
        *

@@ -51,7 +51,6 @@ namespace Marmot {
        *  @param dGp Incremental plastic velocity gradient.
        *  @return Incremental plastic deformation gradient.
        */
-
       template < typename T >
       Tensor33t< T > exponentialMap( const Tensor33t< T >& dGp )
       {
@@ -69,7 +68,7 @@ namespace Marmot {
          * L}}\right)_{J \bar{I}} \f] where \f$ \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} \f$ is the
          * incremental plastic velocity gradient.
          *
-         *  @param dGp Incremental plastic velocity gradient.
+         *  @param deltaGp Incremental plastic velocity gradient.
          *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
          * velocity gradient.
          */
@@ -84,7 +83,7 @@ namespace Marmot {
          *  where \f$ \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} \f$ is the incremental plastic velocity
          * gradient.
          *
-         *  @param dGp Incremental plastic velocity gradient.
+         *  @param deltaGp Incremental plastic velocity gradient.
          *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
          * velocity gradient.
          */
