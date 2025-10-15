@@ -184,36 +184,22 @@ namespace Marmot::ContinuumMechanics {
       /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
        * derivative w.r.t. C
        *
-       *  The energy density function \f$W_b\f$ is given as
-       *  \f[
-       *    W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-       *  \f]
-       *  where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
-       *  \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+       * The energy density function \f$W_b\f$ is given as
+       * \f[
+       *   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+       * \f]
+       * where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+       * \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
        * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and
        * shear modulus, respectively.
        *
-       *  Additionally, the first derivative w.r.t. \f$\boldsymbol{C}\f$ is computed as
-       *  \f[
-       *    \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
-       * \boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \f] where \f[
-       *    \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
-       *  \f]
-       *  and
-       *  \f[
-       *    \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
-       *  \f]
-       * The second derivative w.r.t. \f$\boldsymbol{C}\f$ is computed as
+       * Additionally, the first and second derivative w.r.t. \f$\boldsymbol{C}\f$,
+       * i.e.,
        * \f[
-       *   \frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}} =
-       *   \frac{\partial^2 W_b}{\partial J^2} \frac{\partial J}{\partial \boldsymbol{C}} \otimes \frac{\partial
-       * J}{\partial \boldsymbol{C}} + \frac{\partial W_b}{\partial J} \frac{\partial^2 J}{\partial \boldsymbol{C}
-       * \partial \boldsymbol{C}} + \frac{\partial^2 W_b}{\partial J \partial I_1} \left( \frac{\partial J}{\partial
-       * \boldsymbol{C}} \otimes \frac{\partial I_1}{\partial \boldsymbol{C}} + \frac{\partial I_1}{\partial
-       * \boldsymbol{C}} \otimes \frac{\partial J}{\partial \boldsymbol{C}} \right) \f] where \f[ \frac{\partial^2
-       * J}{\partial \boldsymbol{C} \partial \boldsymbol{C}} = \frac{J}{4} \left( \boldsymbol{C}^{-1} \otimes
-       * \boldsymbol{C}^{-1} - 2 \, \boldsymbol{C}^{-1} \odot \boldsymbol{C}^{-1} \right) \f] and \f[ \boldsymbol{A}
-       * \odot \boldsymbol{B} = A_{iK} B_{jK} \f] is the symmetric tensor product.
+       * \frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+       * \frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
+       * \f]
+       * are computed.
        *
        * @tparam T Scalar type, e.g. double, float, etc.
        * @param C Right Cauchy-Green tensor

@@ -32,93 +32,152 @@
 
 class MarmotMaterialFiniteStrain : public MarmotMaterial {
 
-  /*
-     Abstract basic class for mechanical materials in the finite strain regime
-  */
+  /**
+   * @class MarmotMaterialFiniteStrain
+   * @brief Abstract basic class for mechanical materials in the finite strain regime
+   */
 public:
-  /** @struct ConstitutiveResponse
+  /**
+   * @struct ConstitutiveResponse
    * @brief Constitutive response of a material at given state.
+   * @tparam nDim Number of spatial dimensions (2 or 3).
    *
    *  Contains stress, density and elastic energy density.
-   * */
+   */
   template < int nDim >
   struct ConstitutiveResponse {
-    Fastor::Tensor< double, nDim, nDim > tau;                  // kirchhoff stress
-    double                               rho;                  // density
-    double                               elasticEnergyDensity; // elastic energy per unit volume
+    Fastor::Tensor< double, nDim, nDim > tau;                  ///< Kirchhoff stress
+    double                               rho;                  ///< mass density
+    double                               elasticEnergyDensity; ///< elastic energy per unit volume
   };
 
+  /**
+   * @struct AlgorithmicModuli
+   * @brief Algorithmic tangent moduli of a material.
+   * @tparam nDim Number of spatial dimensions (2 or 3).
+   *
+   * Contains the algorithmic tangent moduli \f$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}\f$
+   * with respect to the deformation gradient \f$\boldsymbol{F}\f$.
+   * */
   template < int nDim >
   struct AlgorithmicModuli {
-    Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF; // tangent operator w.r.t. deformation gradient
+    Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF; ///< tangent operator w.r.t. deformation gradient
   };
 
-  /** @struct Deformation
+  /**
+   * @struct Deformation
    * @brief Represents the deformation state of a material.
    *
-   * This struct holds the deformation gradient tensor (F) which describes the local deformation of a material.
+   * This struct holds the deformation gradient \f$\boldsymbol{F}\f$ which describes the local deformation of a
+   * material.
    */
   template < int nDim >
   struct Deformation {
-    Fastor::Tensor< double, nDim, nDim > F;
+    Fastor::Tensor< double, nDim, nDim > F; ///< deformation gradient
   };
 
-  /** @struct TimeIncrement
+  /**
+   * @struct TimeIncrement
    * @brief Represents a time increment in a simulation.
    *
-   * This struct holds information about the current time and the time step size (dT).
+   * This struct holds information about the current time
+   * and the time step size (dT).
    */
   struct TimeIncrement {
-    const double time;
-    const double dT;
+    const double time; ///< time at the beginning of the increment
+    const double dT;   ///< size of the time increment
   };
 
   using MarmotMaterial::MarmotMaterial;
 
-  /** @brief Computes the Kirchhoff stress given the deformation and time increment.
-   * @param[inout] response Constitutive response of the material
-   * @param[out] tangents Algorithmic moduli
-   * @param[in] deformation Deformation state
-   * @param[in] timeIncrement Time increment
+  /**
+   * @brief Updates the material state.
+   * @param[inout] response ConstitutiveResponse instance
+   * @param[out] tangents AlgorithmicModuli instance
+   * @param[in] deformation Deformation instance
+   * @param[in] timeIncrement TimeIncrement instance
    *
+   * Computes the Kirchhoff \f$\boldsymbol{\tau}\f$ stress
+   * from the deformation gradient \f$\boldsymbol{F}\f$ and the
+   * time increment \f$\Delta t\f$.
+   * It further updates the mass density \f$\rho\f$ and the elastic energy density.
+   * Additionally, computes the algorithmic tangent moduli
+   * \f$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}\f$.
    *
-   *
-   *  Pure virtual function, must be implemented by derived classes.
    * */
   virtual void computeStress( ConstitutiveResponse< 3 >& response,
                               AlgorithmicModuli< 3 >&    tangents,
                               const Deformation< 3 >&,
                               const TimeIncrement& ) = 0;
-
   /**
-   * Compute Stress, but account for eigen deformations (e.g, geostatic stress states). Modifies algorithmic tangent
-   * accordingly.*/
+   * @brief Computes the Kirchhoff stress given the deformation, time increment, and eigen deformation.
+   * @param[inout] response ConstitutiveResponse instance
+   * @param[out] tangents AlgorithmicModuli instance
+   * @param[in] deformation Deformation instance
+   * @param[in] timeIncrement TimeIncrement instance
+   * @param[in] eigenDeformation Tuple representing eigen deformation in each spatial direction.
+   *
+   */
   virtual void computeStress( ConstitutiveResponse< 3 >&                  response,
                               AlgorithmicModuli< 3 >&                     tangents,
                               const Deformation< 3 >&                     deformation,
                               const TimeIncrement&                        timeIncrement,
                               const std::tuple< double, double, double >& eigenDeformation );
 
+  /**
+   * @brief Compute stress under plane strain conditions.
+   * @param[inout] response ConstitutiveResponse instance
+   * @param[out] algorithmicModuli AlgorithmicModuli instance
+   * @param[in] deformation Deformation instance
+   * @param[in] timeIncrement TimeIncrement instance
+   *
+   * It uses the general 3D computesStress function for a plane strain Deformation.
+   * The algorithmic tangent is modified according to plane strain conditions.
+   */
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                    AlgorithmicModuli< 3 >&    algorithmicModuli,
                                    const Deformation< 3 >&    deformation,
                                    const TimeIncrement&       timeIncrement );
-  /***/
-  /* * Compute stress under plane strain conditions, but account for eigen deformations (e.g, geostatic stress
-   * states).*/
-  /* * Modifies algorithmic tangent accordingly.*/
+  /**
+   * @brief Compute stress under plane strain conditions with eigen deformation.
+   * @param[inout] response ConstitutiveResponse instance
+   * @param[out] algorithmicModuli AlgorithmicModuli instance
+   * @param[in] deformation Deformation instance
+   * @param[in] timeIncrement TimeIncrement instance
+   * @param[in] eigenDeformation Tuple representing eigen deformation in each spatial direction.
+   *
+   * It uses the general 3D computesStress function for a plane strain Deformation.
+   * The algorithmic tangent is modified according to plane strain conditions.
+   */
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
                                    AlgorithmicModuli< 3 >&                     algorithmicModuli,
                                    const Deformation< 3 >&                     deformation,
                                    const TimeIncrement&                        timeIncrement,
                                    const std::tuple< double, double, double >& eigenDeformation );
-
+  /**
+   * @brief Compute stress under plane stress conditions.
+   * @param[inout] response ConstitutiveResponse instance
+   * @param[out] algorithmicModuli AlgorithmicModuli instance
+   * @param[in] deformation Deformation instance
+   * @param[in] timeIncrement TimeIncrement instance
+   *
+   * It uses the general 3D computesStress function and iteratively finds the out-of-plane deformation.
+   * The algorithmic tangent is modified according to plane stress conditions.
+   */
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,
                                    AlgorithmicModuli< 2 >&    algorithmicModuli,
                                    const Deformation< 2 >&    deformation,
                                    const TimeIncrement&       timeIncrement );
-  /** Find for given eigen stress the appropriate eigen deformation.
-   * */
+
+  /**
+   * @brief Find the eigen deformation that corresponds to a given eigen stress.
+   * @param initialGuess Initial guess for the eigen deformation.
+   * @param eigenStress Target eigen stress.
+   * @return Eigen deformation that corresponds to the given eigen stress.
+   *
+   * This function iteratively finds the eigen deformation that corresponds to a given eigen stress.
+   * This is used e.g. for geostatic stress initialization.
+   */
   std::tuple< double, double, double > findEigenDeformationForEigenStress(
     const std::tuple< double, double, double >& initialGuess,
     const std::tuple< double, double, double >& eigenStress );
