@@ -811,7 +811,7 @@ namespace Marmot {
       Marmot::Vector6d dTheta_dStress( double theta, const Marmot::Vector6d& stress );
 
       /**
-       * @brief Computes the derivative        \f$ \frac{\partial \theta}{\partial J_2}\f$ of the lode angle \f$ \theta
+       * @brief Computes the derivative \f$ \frac{\partial \theta}{\partial J_2}\f$ of the lode angle \f$ \theta
        * \f$ with respect to the second deviatoric invariant \f$ J_2 \f$.
        * @param stress 6-component stress vector in Voigt notation.
        * @return Scalar derivative \f$ \tfrac{\partial \theta}{\partial J_2} \f$.
