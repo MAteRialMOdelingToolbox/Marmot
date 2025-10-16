@@ -47,10 +47,8 @@ jobs:
           sudo make install
           cd ../..
 
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.SECRET_UPDATE_SUBMODULES }} # stored in GitHub secrets
-          submodules: true
+      - name: Check out Marmot
+        uses: actions/checkout@v4
 
       - name: Install Marmot
         shell: bash -l {0}

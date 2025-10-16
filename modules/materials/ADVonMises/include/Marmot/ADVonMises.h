@@ -40,21 +40,27 @@ using namespace Marmot;
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a isotropic J2-plasticity  material
+   * @brief Implementation of a isotropic J2-plasticity  material
    * for 3D stress states using automatic differentiation.
-   *
    */
   class ADVonMises : public MarmotMaterialHypoElasticAD {
   public:
     using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
 
+    /// @brief Young’s modulus.
     const double& E;
+    /// @brief Poisson’s ratio.
     const double& nu;
+    /// @brief Initial yield stress.
     const double& yieldStress;
+    /// @brief First hardening parameter.
     const double& HLin;
+    /// @brief Second hardening parameter.
     const double& deltaYieldStress;
+    /// @brief Third hardening parameter.
     const double& delta;
-    const double  G;
+    /// @brief Shear modulus.
+    const double G;
 
     ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -72,6 +78,7 @@ namespace Marmot::Materials {
         { .name = "kappa", .length = 1 },
       } );
 
+      /// @brief Hardening variable.
       double& kappa;
 
       ADVonMisesModelStateVarManager( double* theStateVarVector )
@@ -85,6 +92,11 @@ namespace Marmot::Materials {
 
     StateView getStateView( const std::string& result ) override;
 
+    /**
+     * @brief Hardening function.
+     * @tparam[in] kappa Hardening variable.
+     * @returns Current yield stress.
+     */
     template < typename T >
     T fy( T kappa_ )
     {
@@ -92,11 +104,25 @@ namespace Marmot::Materials {
       return res;
     }
 
+    /**
+     * @brief Yield function.
+     * @tparam[in] rho Deviatoric radius (\f$\rho = ||s||\f$).
+     * @param[in] kappa Hardening variable.
+     * @returns Value of the yield function.
+     */
     template < typename T >
     T f( const T rho_, const double kappa_ )
     {
       return rho_ - Constants::sqrt2_3 * fy( kappa_ );
     }
+
+    /**
+     * @brief Objective function for stress update algorithm.
+     * @tparam[in] rhoTrial Deviatoric radius.
+     * @param[in] kappa Current value of the hardening variable.
+     * @tparam[in] deltaKappa Increment of the hardening variable.
+     * @returns Value of the yield function.
+     */
     template < typename T >
     T g( const T rhoTrial, const double kappa, const T deltaKappa )
     {
