@@ -95,10 +95,7 @@ namespace Marmot {
 
     Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem )
     {
-      Vector3d unitVectorX1;
-      unitVectorX1 << 1, 0, 0;
-
-      Matrix3d globalCoordinateSystem = orthonormalCoordinateSystem( unitVectorX1 );
+      Matrix3d globalCoordinateSystem = Matrix3d::Identity();
       Matrix3d directionCos;
 
       for ( int i = 0; i <= 2; i++ )

@@ -35,26 +35,108 @@ namespace Marmot::ContinuumMechanics {
     using namespace FastorIndices;
     using namespace FastorStandardTensors;
 
+    /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$.
+     * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+     * @param F Deformation gradient tensor
+     * @return The right Cauchy-Green tensor
+     *
+     * The right Cauchy-Green deformation tensor is defined as:
+     * \f[
+     *   \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+     * \f]
+     * or in index notation:
+     * \f[
+     *   C_{IJ} = F_{iI} F_{iJ}
+     * \f]
+     */
     template < typename T >
-    Tensor33t< T > CauchyGreen( const Tensor33t< T > F_ )
+    Tensor33t< T > rightCauchyGreen( const Tensor33t< T >& F )
     {
-      // C = F ^ T * F; C_IJ = F_iI F_iJ
-      Tensor33t< T > C = einsum< iI, iJ >( F_, F_ );
+      const Tensor33t< T > C = einsum< iI, iJ >( F, F );
       return C;
+    }
+
+    /** @brief Computes the left Cauchy-Green tensor \f$\boldsymbol{b}\f$.
+     * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+     * @param F Deformation gradient tensor
+     * @return The left Cauchy-Green tensor b
+     *
+     * The left Cauchy-Green deformation tensor is defined as:
+     * \f[
+     *   \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+     * \f]
+     * or in index notation:
+     * \f[
+     *   b_{ij} = F_{iI} F_{jI}
+     * \f]
+     */
+    template < typename T >
+    Tensor33t< T > leftCauchyGreen( const Tensor33t< T >& F )
+    {
+      const Tensor33t< T > b = einsum< iJ, jJ >( F, F );
+      return b;
     }
 
     namespace FirstOrderDerived {
 
+      /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$ and its derivative with respect to
+       * \f$\boldsymbol{F}\f$.
+       * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+       * @param F Deformation gradient tensor
+       * @returns A pair containing the right Cauchy-Green tensor C and its derivative with respect to F
+       *
+       * The right Cauchy-Green deformation tensor is defined as:
+       * \f[
+       *   \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+       * \f]
+       * or in index notation:
+       * \f[
+       *   C_{IJ} = F_{iI} F_{iJ}
+       * \f]
+       * The derivative of \f$\boldsymbol{C}\f$ with respect to \f$\boldsymbol{F}\f$ is given by:
+       * \f[
+       *  \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+       * \f]
+       */
       template < typename T >
-      std::pair< Tensor33t< T >, Tensor3333t< T > > CauchyGreen( const Tensor33t< T > F )
+      std::pair< Tensor33t< T >, Tensor3333t< T > > rightCauchyGreen( const Tensor33t< T >& F )
       {
-        Tensor33t< T > C = einsum< iI, iJ >( F, F );
+        const Tensor33t< T > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
 
-        // dC_IJ / dF_F_KL = dF_iI / dF_KL * F_iJ + F_iI * dF_iJ / dF_F_KL
         const Tensor3333t< T > dC_dF = einsum< IK, kJ, to_IJkK >( Spatial3D::I, F ) +
                                        einsum< kI, JK, to_IJkK >( F, Spatial3D::I );
 
         return { C, dC_dF };
+      }
+
+      /** @brief Computes the left Cauchy-Green tensor \f$\boldsymbol{b}\f$ and its derivative with respect to
+       * \f$\boldsymbol{F}\f$.
+       * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+       * @param F Deformation gradient tensor
+       * @return A pair containing the left Cauchy-Green tensor b and its derivative with respect to F
+       *
+       * The left Cauchy-Green deformation tensor is defined as:
+       * \f[
+       *   \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+       * \f]
+       * or in index notation:
+       * \f[
+       *   b_{ij} = F_{iI} F_{jI}
+       * \f]
+       * The derivative of \f$\boldsymbol{b}\f$ with respect to \f$\boldsymbol{F}\f$ is given by:
+       * \f[
+       *  \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+       * \f]
+       */
+      template < typename T >
+      std::pair< Tensor33t< T >, Tensor3333t< T > > leftCauchyGreen( const Tensor33t< T >& F )
+      {
+        Tensor33t< T > b = Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen( F );
+
+        const Tensor3333t< T > db_dF = einsum< ik, jK, to_ijkK >( Spatial3D::I, F ) +
+                                       einsum< iK, jk, to_ijkK >( F, Spatial3D::I );
+
+        return { b, db_dF };
       }
 
     } // namespace FirstOrderDerived

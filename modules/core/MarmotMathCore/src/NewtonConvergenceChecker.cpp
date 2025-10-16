@@ -1,5 +1,4 @@
 #include "Marmot/NewtonConvergenceChecker.h"
-#include <iostream>
 
 using namespace Eigen;
 

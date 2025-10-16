@@ -26,12 +26,9 @@
  */
 
 #pragma once
-#include "Fastor/Fastor.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
-#include "Marmot/MarmotTypedefs.h"
 #include <Fastor/config/macros.h>
 #include <Fastor/tensor/Tensor.h>
 #include <functional>
@@ -41,6 +38,14 @@ namespace Marmot {
 
     namespace ScalarToTensor {
 
+      /**
+       * @brief Approximates the derivative of a function mapping a scalar to a tensor
+       * using the forward difference method.
+       * @tparam Rest The dimensions of the output Tensor
+       * @param F The function mapping a scalar to a tensor
+       * @param x The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point x
+       */
       template < size_t... Rest >
       Fastor::Tensor< double, Rest... > forwardDifference(
         const std::function< Fastor::Tensor< double, Rest... >( const double ) >& F,
@@ -53,6 +58,14 @@ namespace Marmot {
         return dF_dx;
       }
 
+      /**
+       * @brief Approximates the derivative of a function mapping a scalar to a tensor
+       * using the central difference method.
+       * @tparam Rest The dimensions of the output Tensor
+       * @param F The function mapping a scalar to a tensor
+       * @param x The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point x
+       */
       template < size_t... Rest >
       Fastor::Tensor< double, Rest... > centralDifference(
         const std::function< Fastor::Tensor< double, Rest... >( const double ) >& F,
@@ -68,6 +81,10 @@ namespace Marmot {
 
     namespace TensorToScalar {
 
+      /**
+       * @brief Type alias for a function that maps a tensor to a scalar.
+       * @tparam Rest The dimensions of the input Tensor
+       */
       template < size_t... Rest >
       using tensor_to_scalar_function_type = std::function< double( const Fastor::Tensor< double, Rest... >& T ) >;
 
@@ -93,6 +110,14 @@ namespace Marmot {
       /*     T_right_data[T_right_mem_idx] -= h; */
       /*   } */
 
+      /**
+       * @brief Approximates the derivative of a function mapping a tensor to a scalar
+       * using the forward difference method.
+       * @tparam dim The dimension of the input Tensor (assumed to be square)
+       * @param f The function mapping a tensor to a scalar
+       * @param T The point at which the derivative is evaluated
+       * @return The derivative of the function f at the point T
+       */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim, dim >& f,
                                                             const Fastor::Tensor< double, dim, dim >&         T )
@@ -114,6 +139,14 @@ namespace Marmot {
         return dF_dT;
       }
 
+      /**
+       * @brief Approximates the derivative of a function mapping a tensor to a scalar
+       * using the central difference method.
+       * @tparam dim The dimension of the input Tensor (assumed to be square)
+       * @param F The function mapping a tensor to a scalar
+       * @param T The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point T
+       */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > centralDifference( const tensor_to_scalar_function_type< dim, dim >& F,
                                                             const Fastor::Tensor< double, dim, dim >&         T )
@@ -142,6 +175,15 @@ namespace Marmot {
 
     namespace TensorToTensor {
 
+      /**
+       * @brief Approximates the derivative of a function mapping a tensor to a tensor
+       * using the forward difference method.
+       * @tparam RestF The dimensions of the output Tensor
+       * @tparam RestT The dimensions of the input Tensor
+       * @param F The function mapping a tensor to a tensor
+       * @param T The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point T
+       */
       template < size_t... RestF, size_t... RestT >
       Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
         const std::function< Fastor::Tensor< double, RestF... >( const Fastor::Tensor< double, RestT... >& ) >& F,
@@ -177,6 +219,15 @@ namespace Marmot {
         return dF_dT;
       }
 
+      /**
+       * @brief Approximates the derivative of a function mapping a tensor to a tensor
+       * using the central difference method.
+       * @tparam Rest1 The dimensions of the output Tensor
+       * @tparam Rest2 The dimensions of the input Tensor
+       * @param F The function mapping a tensor to a tensor
+       * @param T The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point T
+       */
       template < size_t... Rest1, size_t... Rest2 >
       Fastor::Tensor< double, Rest1..., Rest2... > centralDifference(
         const std::function< Fastor::Tensor< double, Rest1... >( const Fastor::Tensor< double, Rest2... >& ) >& F,
@@ -226,10 +277,22 @@ namespace Marmot {
       static const double        imaginaryPerturbationSize = 1e-20;
       static const complexDouble imaginaryPerturbation     = imaginaryPerturbationSize * imaginaryUnit;
 
+      /**
+       * @brief Type alias for a function that maps a tensor to a scalar using complex numbers.
+       * @tparam dim The dimensions of the input Tensor
+       */
       template < size_t dim >
       using tensor_to_scalar_function_type = std::function< std::complex< double >(
         const Fastor::Tensor< std::complex< double >, dim, dim >& T ) >;
 
+      /**
+       * @brief Approximates the derivative of a function mapping a tensor to a scalar
+       * using the complex step method.
+       * @tparam dim The dimension of the input Tensor (assumed to be square)
+       * @param F The function mapping a tensor to a scalar with complex numbers
+       * @param T The point at which the derivative is evaluated
+       * @return The derivative of the function F at the point T
+       */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim >& F,
                                                             const Fastor::Tensor< double, dim, dim >&    T )
@@ -252,6 +315,14 @@ namespace Marmot {
       }
       namespace ScalarToTensor {
 
+        /**
+         * @brief Approximates the derivative of a function mapping a scalar to a tensor
+         * using the complex step method.
+         * @tparam Rest The dimensions of the output Tensor
+         * @param F The function mapping a scalar to a tensor with complex numbers
+         * @param x The point at which the derivative is evaluated
+         * @return A tuple containing the real part of F(x) and the derivative of F at the point x
+         */
         template < size_t... Rest >
         std::tuple< Fastor::Tensor< double, Rest... >, Fastor::Tensor< double, Rest... > > forwardDifference(
           const std::function< Fastor::Tensor< complexDouble, Rest... >( const complexDouble ) >& F,
@@ -276,6 +347,10 @@ namespace Marmot {
 
       namespace TensorToScalar {
 
+        /**
+         * @brief Type alias for a function that maps a tensor to a scalar using complex numbers.
+         * @tparam Rest The dimensions of the input Tensor
+         */
         template < size_t... Rest >
         using tensor_to_scalar_function_type = std::function< complexDouble(
           const Fastor::Tensor< complexDouble, Rest... >& T ) >;
@@ -315,6 +390,16 @@ namespace Marmot {
         }
       } // namespace TensorToScalar
       namespace TensorToTensor {
+
+        /**
+         * @brief Approximates the derivative of a function mapping a tensor to a tensor
+         * using the complex step method.
+         * @tparam RestF The dimensions of the output Tensor
+         * @tparam RestT The dimensions of the input Tensor
+         * @param F The function mapping a tensor to a tensor
+         * @param T The point at which the derivative is evaluated
+         * @return The derivative of the function F at the point T
+         */
         template < size_t... RestF, size_t... RestT >
         Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
           std::function<
