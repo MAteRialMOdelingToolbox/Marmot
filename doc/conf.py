@@ -17,7 +17,8 @@ copyright = "2025, University of Innsbruck, BOKU Vienna and other authors"
 html_theme = "sphinx_rtd_theme"
 
 # set logo
-html_logo = "../share/marmot_logo.png"
+
+html_logo = "../share/marmot_transparent.png"
 html_static_path = ["_static"]
 html_css_files = [
     "css/custom.css",
