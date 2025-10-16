@@ -30,7 +30,7 @@
 <para>Ultimate (equilibrium) stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Represents the stiffness contribution that persists at long times ( <formula id="218">$t \to \infty$</formula>), outside the viscoelastic relaxation terms. </para>
+<para>Represents the stiffness contribution that persists at long times ( <formula id="304">$t \to \infty$</formula>), outside the viscoelastic relaxation terms. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -46,7 +46,7 @@
 <para>Stiffness matrices of each Prony series term. </para>
         </briefdescription>
         <detaileddescription>
-<para>Stored as a block matrix of size <formula id="219">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="220">$6\times 6$</formula> block corresponding to the stiffness matrix of one Maxwell branch. </para>
+<para>Stored as a block matrix of size <formula id="305">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="306">$6\times 6$</formula> block corresponding to the stiffness matrix of one Maxwell branch. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -62,7 +62,7 @@
 <para>Relaxation times of each Prony series term. </para>
         </briefdescription>
         <detaileddescription>
-<para>Stored as a block matrix of size <formula id="219">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="220">$6\times 6$</formula> block containing the relaxation times associated with one Maxwell branch. </para>
+<para>Stored as a block matrix of size <formula id="305">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="306">$6\times 6$</formula> block containing the relaxation times associated with one Maxwell branch. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

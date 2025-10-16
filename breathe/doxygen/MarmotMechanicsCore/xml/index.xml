@@ -286,10 +286,14 @@
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ad123c6b480d1e490e5b25ecc07335b9c" kind="function"><name>markYieldFlagCombinationAsUsed</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a1f8a7654554eb1b769b4a6583994734c" kind="function"><name>resetUsedYieldFlagCombinations</name></member>
   </compound>
+  <compound refid="namespace_continuum_mechanics" kind="namespace"><name>ContinuumMechanics</name>
+  </compound>
+  <compound refid="namespace_continuum_mechanics_1_1_voigt_notation" kind="namespace"><name>ContinuumMechanics::VoigtNotation</name>
+  </compound>
   <compound refid="namespace_eigen" kind="namespace"><name>Eigen</name>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
-    <member refid="namespace_marmot_1a252d6a7dd503dee472f2d47ae9782b83" kind="function"><name>discardTheIncrement</name></member>
+    <member refid="_marmot_utility_8h_1a252d6a7dd503dee472f2d47ae9782b83" kind="function"><name>discardTheIncrement</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics" kind="namespace"><name>Marmot::ContinuumMechanics</name>
   </compound>
@@ -325,7 +329,6 @@
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_strain" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::Strain</name>
     <member refid="_marmot_kinematics_8h_1a87f54c1d86f7489b5cd21a4545ef4987" kind="function"><name>GreenLagrange</name></member>
-    <member refid="_marmot_kinematics_8h_1a31b53509041aa50af0e80b41a3dd0edb" kind="function"><name>dGreenLagrangedDeformationGradient</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_velocity_gradient" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::VelocityGradient</name>
     <member refid="_marmot_kinematics_8h_1a531f6b3c1d92095864941b0c3d5133ff" kind="variable"><name>dOmega_dVelocityGradient</name></member>

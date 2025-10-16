@@ -30,24 +30,70 @@
           <declname>G12</declname>
         </param>
         <briefdescription>
+<para>Computes the transversely isotropic compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transversely isotropic compliance tensor:          <formula id="77">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para><formula id="101">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; 0 &amp; 0 &amp; 0 \\
                       \frac{-\nu_{12}}{E_1} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
-                      \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
+                      \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{23}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
                   0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 &amp; 0 \\
                   0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{12}} &amp; 0 \\
                   0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
                                    \end{bmatrix}
-\]</formula> The isotropic plane is defined with respect to the <formula id="78">$ x_2 $</formula> and <formula id="79">$ x_3 $</formula> axes of a local coordinate system. It is computed from the young&apos;s modulus <formula id="80">$ E_1 $</formula>, the shear modulus <formula id="81">$ G_{12} $</formula> and poisson&apos;s ratio <formula id="82">$ \nu_{12} $</formula> effective out of the isotropic plane and the in - plane young&apos;s modulus <formula id="83">$ E_2 $</formula> and poisson&apos;s ratio <formula id="84">$ \nu_{23} $</formula>.</para>
-<para>The in - plane shear modulus <formula id="85">$ G_{23} $</formula> can be expressed by</para>
-<para><formula id="86">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
-\]</formula> </para>
+\]</formula></para>
+<para>The isotropic plane is defined with respect to the <formula id="102">$x_2$</formula>– <formula id="103">$x_3$</formula> axes of a local coordinate system. The tensor is expressed in terms of the out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>, shear modulus <formula id="105">$G_{12}$</formula>, and Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>, together with the in-plane Young&apos;s modulus <formula id="107">$E_2$</formula> and Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>.</para>
+<para>The in-plane shear modulus <formula id="109">$ G_{23} $</formula> is given by</para>
+<para><formula id="110">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>E2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>In-plane Young&apos;s modulus <formula id="107">$E_2$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu12</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu23</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G12</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>shear modulus <formula id="105">$G_{12}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="160" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="160" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="203" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="203" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic_1a68f0e46e202ca9545127a6fe44da3fde" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -76,13 +122,57 @@
           <declname>G12</declname>
         </param>
         <briefdescription>
+<para>Computes the transversely isotropic stiffness tensor <formula id="111">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="112">$ \mathbb{C}^{-1} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the transversely isotropic stiffness tensor <formula id="87">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="88">$ \mathbb{C}^{-1} $</formula>. </para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>E2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>In-plane Young&apos;s modulus <formula id="107">$E_2$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu12</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu23</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G12</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>shear modulus <formula id="105">$G_{12}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="169" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="169" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="219" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="219" declcolumn="16"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -90,6 +180,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="135" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="170" column="5"/>
   </compounddef>
 </doxygen>

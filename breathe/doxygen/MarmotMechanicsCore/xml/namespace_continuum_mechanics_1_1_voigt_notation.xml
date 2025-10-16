@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_continuum_mechanics_1_1_voigt_notation" kind="namespace" language="C++">
+    <compoundname>ContinuumMechanics::VoigtNotation</compoundname>
+    <briefdescription>
+<para>This namespace includes functions needed for calculations with stress and strain tensors written in voigt notation. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="39" column="1"/>
+  </compounddef>
+</doxygen>

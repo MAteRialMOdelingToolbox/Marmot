@@ -14,23 +14,25 @@
           <declname>C</declname>
         </param>
         <briefdescription>
+<para>Extracts the plane stress stiffness matrix from a 3D stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Extract the plane stress stiffness matrix from a given three-dimensional stiffness matrix.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix <formula id="35">$\mathbb{C}$</formula> given in Voigt notation. </para>
+<para>3D stiffness matrix ( <formula id="36">$6\times6$</formula>) in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
+<simplesect kind="return"><para>Plane stress stiffness matrix ( <formula id="37">$3\times3$</formula>) in Voigt notation. </para>
+</simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="73" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="73" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="91" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="91" declcolumn="21"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1aedc1da56d43d6cf710109d8d145e50c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor322d</type>
@@ -43,13 +45,26 @@
           <declname>dStressdDeformationGradient3D</declname>
         </param>
         <briefdescription>
+<para>Computes the plane stress derivative of the stress with respect to the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Extract the plane stress derivitive of the stress in Voigt notation with respect to the deformation gradient <formula id="36">$F_{ij}$</formula> from the corresponding derivative in a 3d setting. </para>
+<para>Reduces the 3D derivative of the stress tensor with respect to the deformation gradient <formula id="43">$ F_{ij} $</formula> to a plane stress setting.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dStressdDeformationGradient3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivative of 3D stress w.r.t. deformation gradient ( <formula id="44">$6 \times 3 \times 3$</formula> tensor). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reduced derivative of stress w.r.t. deformation gradient ( <formula id="45">$3 \times 2 \times 2$</formula> tensor) for plane stress. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="79" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="79" declcolumn="30"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="104" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="104" declcolumn="30"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a4ce34b18d99821ea0600ebfae9bd2f88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Marmot::Vector6d</type>
@@ -66,13 +81,36 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
+<para>Computes the out-of-plane strain correction component for plane stress conditions. </para>
         </briefdescription>
         <detaileddescription>
-<para>Compute the out-of-plane strain component <formula id="37">$$\varepsilon_{33}$</formula> for a given elastic strain, to compute the compensation for planeStress = Cel : (elasticStrain + compensationStrain) </para>
+<para>Determines the correction <formula id="46">$\varepsilon_{33}^{\text{corr}}$</formula> such that the resulting stress satisfies plane stress conditions. <formula id="47">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula>, so that the resulting stress satisfies plane stress:    <formula id="48">\[    \sigma^\text{plane} = \mathbb{C} : (\boldsymbol{\varepsilon}^{\text{el}} +
+\boldsymbol{\varepsilon}^{\text{corr}})
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>elasticStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The in-plane elastic strain vector <formula id="47">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula> (6 components, Voigt notation). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio of the material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 6-component strain vector <formula id="49">$ \boldsymbol{\varepsilon}^{\text{corr}} $</formula> containing the computed out-of-plane correction component <formula id="46">$\varepsilon_{33}^{\text{corr}}$</formula> (Voigt notation). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="86" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="86" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="124" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="124" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a676139dcddec2c89c78fc2fe0ae81308" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -85,12 +123,26 @@
           <declname>tangent</declname>
         </param>
         <briefdescription>
+<para>Computes the transformation matrix for the plane stress tangent. </para>
         </briefdescription>
         <detaileddescription>
+<para>Returns the 6x6 transformation matrix <formula id="50">$\mathbf{T}$</formula> relating arbitrary strain increments to plane stress increments using the material stiffness.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6x6 material tangent stiffness matrix ( <formula id="51">$\mathbf{C}$</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>6x6 transformation matrix ( <formula id="50">$\mathbf{T}$</formula>) for plane stress correction. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="92" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="92" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="135" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="135" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a4f94a4954bfa0c960cc4386e425b5f24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix&lt; double, 6, 3 &gt;</type>
@@ -103,13 +155,25 @@
           <declname>tangent</declname>
         </param>
         <briefdescription>
+<para>Computes the derivative of the 3D strain tensor with respect to the plane stress strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Compute the derivative of the three-dimensional strain tensor with respect to the strain tensor in a plane stress setting. </para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6x6 material tangent stiffness matrix ( <formula id="51">$\mathbf{C}$</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>6x3 matrix representing <formula id="52">$\frac{\partial \varepsilon_{3D}}{\partial \varepsilon_{\sigma_{plane}}}$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="97" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="97" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="143" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="143" declcolumn="19"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a16e505ff2bf94ba0933185e16105411b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
@@ -118,19 +182,22 @@
         <name>dStressPlaneStressDStress</name>
         <qualifiedname>Marmot::ContinuumMechanics::PlaneStress::dStressPlaneStressDStress</qualifiedname>
         <briefdescription>
+<para>Computes the derivative of the plane stress tensor with respect to the 3D stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Compute the derivative of the three-dimensional stress tensor with respect to the plane stress tensor. </para>
+<para><simplesect kind="return"><para>3x6 matrix representing <formula id="53">$\frac{\partial \sigma_{plane}}{\partial \sigma_{3D}}$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="102" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="102" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="150" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="150" declcolumn="19"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="66" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="83" column="3"/>
   </compounddef>
 </doxygen>

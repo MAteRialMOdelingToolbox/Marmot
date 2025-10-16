@@ -8,7 +8,7 @@
     <innernamespace refid="namespace_marmot_1_1_numerical_algorithms">Marmot::NumericalAlgorithms</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_time_integration">Marmot::TimeIntegration</innernamespace>
     <sectiondef kind="func">
-      <memberdef kind="function" id="namespace_marmot_1a252d6a7dd503dee472f2d47ae9782b83" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_utility_8h_1a252d6a7dd503dee472f2d47ae9782b83" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void Marmot::discardTheIncrement</definition>
         <argsstring>(double &amp;pNewDT, double value, const std::string &amp;message)</argsstring>
@@ -36,7 +36,6 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>This file includes functions needed for calculations with stress and strain tensors written in voigt notation. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>

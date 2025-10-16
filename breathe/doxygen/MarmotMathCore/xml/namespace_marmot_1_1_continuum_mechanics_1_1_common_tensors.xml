@@ -11,12 +11,13 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::I2xI2</qualifiedname>
         <initializer>= Initialize_I2xI2()</initializer>
         <briefdescription>
+<para>Fourth-order tensor <formula id="50">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="38" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="38" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="44" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1aad74cf6891e87ab6df1f6db6ee2ccb86" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor3333d</type>
@@ -26,12 +27,13 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Isym</qualifiedname>
         <initializer>= Initialize_Isym()</initializer>
         <briefdescription>
+<para>Symmetric fourth-order identity tensor <formula id="52">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="41" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="41" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="56" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="56" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1a39e22eecd0896eb7b3c4158fdb25340e" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor3333d</type>
@@ -41,12 +43,13 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Iskew</qualifiedname>
         <initializer>= Initialize_Iskew()</initializer>
         <briefdescription>
+<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="54">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="44" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="67" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="67" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1ab12fa46f0ae9374c111d07cfd88e44d6" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor3333d</type>
@@ -56,12 +59,13 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</qualifiedname>
         <initializer>= Initialize_IFourthOrder()</initializer>
         <briefdescription>
+<para>Fourth-order identity tensor <formula id="55">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="47" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="47" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="77" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="77" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1a488003e8a0f1a7cc17e2d27346b4aaea" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor3333d</type>
@@ -71,12 +75,13 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</qualifiedname>
         <initializer>= Initialize_IFourthOrderTranspose()</initializer>
         <briefdescription>
+<para>Transposed fourth-order identity tensor <formula id="56">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="50" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="50" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="85" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="85" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1ab61d497f8e353bb4bc27882c95128e9a" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor3333d</type>
@@ -86,12 +91,15 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::dDeviatoricStress_dStress</qualifiedname>
         <initializer>= Initialize_dDeviatoricStress_dStress()</initializer>
         <briefdescription>
+<para>Derivative of the deviatoric stress with respect to stress   <formula id="58">$ \frac{\partial
+s_{ij}}{\partial\sigma_{kl}} =
+\delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="53" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="53" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="97" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="97" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1a127950653ef345e8a45df1e68393c6f1" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor333d</type>
@@ -101,12 +109,20 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</qualifiedname>
         <initializer>= Initialize_LeviCivita3D()</initializer>
         <briefdescription>
+<para>3D Levi-Civita permutation tensor <formula id="59">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para>A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula>    </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="57" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="57" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="117" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="117" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1ad015d8c33b0fa498d7d134ff5eef088c" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor122d</type>
@@ -116,12 +132,20 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita2D</qualifiedname>
         <initializer>= Initialize_LeviCivita2D()</initializer>
         <briefdescription>
+<para>2D Levi-Civita permutation tensor <formula id="63">$\varepsilon_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para>A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.    </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="60" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="60" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="138" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="138" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_tensor_8h_1a10408a9dd177b0db5d1090e60ebf7101" prot="public" static="no" mutable="no">
         <type>const EigenTensors::Tensor33d</type>
@@ -131,12 +155,14 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::I2</qualifiedname>
         <initializer>= Initialize_I2()</initializer>
         <briefdescription>
+<para>Second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><formula id="64">$ I_{ij} = \delta_{ij} $</formula>.    </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="63" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="63" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="149" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="149" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -147,12 +173,13 @@
         <name>Initialize_I2xI2</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2</qualifiedname>
         <briefdescription>
+<para>Initializes the fourth-order tensor <formula id="50">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="37" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="37" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="39" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="39" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1abe2ec276be4c69f07782ca5ea45208da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor3333d</type>
@@ -161,12 +188,13 @@
         <name>Initialize_Isym</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym</qualifiedname>
         <briefdescription>
+<para>Initializes the symmetric fourth-order identity tensor  <formula id="51">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="40" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="40" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="50" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="50" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a6933ca3d6e37a17d22ebd6cb459b48f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor3333d</type>
@@ -175,12 +203,13 @@
         <name>Initialize_Iskew</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew</qualifiedname>
         <briefdescription>
+<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="53">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="43" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="43" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="62" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="62" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1ab947cce47c424defd38ea12a9361d99a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor3333d</type>
@@ -189,12 +218,13 @@
         <name>Initialize_IFourthOrder</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder</qualifiedname>
         <briefdescription>
+<para>Initializes the fourth-order identity tensor <formula id="55">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="46" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="46" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="72" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="72" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a7a0d6e2cef1957f9d6849c030048fe4f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor3333d</type>
@@ -203,12 +233,13 @@
         <name>Initialize_IFourthOrderTranspose</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose</qualifiedname>
         <briefdescription>
+<para>Initializes the transposed fourth-order identity tensor <formula id="56">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="49" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="49" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="82" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="82" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1af1b7284bd72f72f5c1a8eba5ff2777cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor3333d</type>
@@ -217,12 +248,14 @@
         <name>Initialize_dDeviatoricStress_dStress</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_dDeviatoricStress_dStress</qualifiedname>
         <briefdescription>
+<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="57">$ \frac{\partial
+s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="52" column="44" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="52" declcolumn="44"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="91" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="91" declcolumn="31"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a277603293083202670dea34ba8419f52" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor333d</type>
@@ -231,12 +264,20 @@
         <name>Initialize_LeviCivita3D</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D</qualifiedname>
         <briefdescription>
+<para>Initializes the 3D Levi-Civita permutation tensor <formula id="59">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para>A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="56" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="56" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="111" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="111" declcolumn="30"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1aa71fa4e4ab90faf29c8b986cdd4d338f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor122d</type>
@@ -245,12 +286,20 @@
         <name>Initialize_LeviCivita2D</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita2D</qualifiedname>
         <briefdescription>
+<para>2D Levi-Civita permutation tensor <formula id="61">$E_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para>A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="59" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="59" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="132" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="132" declcolumn="30"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a7e62eda2768a59c6741e1c685bb025f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>EigenTensors::Tensor33d</type>
@@ -259,12 +308,14 @@
         <name>Initialize_I2</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_I2</qualifiedname>
         <briefdescription>
+<para>Initializes the second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para><formula id="64">$ I_{ij} = \delta_{ij} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="62" column="42" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="62" declcolumn="42"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="144" column="29" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="144" declcolumn="29"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a5229823769d5624c62579865562937de" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -277,12 +328,25 @@
           <declname>nDim</declname>
         </param>
         <briefdescription>
+<para>Returns the number of rotational DOFs for the given dimension. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>1 in 2D, 3 in 3D. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="65" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="65" bodyend="71"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="156" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="156" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a7f73b30be7e214878bf9ce8e3daed929" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -303,12 +367,46 @@
         <name>makeIndexSwapTensor</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::makeIndexSwapTensor</qualifiedname>
         <briefdescription>
+<para>Constructs an aux. matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by multiplication. </para>
         </briefdescription>
         <detaileddescription>
+<para>The transformation is defined as:   <formula id="65">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
+\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>sizeI</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of rows in the tensor index block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sizeJ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of columns in the tensor index block. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Eigen::Matrix&lt;double, sizeI * sizeJ, sizeI * sizeJ&gt; The index swap tensor.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">Eigen::Matrix3d<sp/>t;</highlight></codeline>
+<codeline><highlight class="normal">t<sp/>&lt;&lt;<sp/>1,2,3,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>4,5,6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>7,8,9;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>P<sp/>=<sp/>makeIndexSwapTensor&lt;3,3&gt;();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>t.reshaped().transpose()<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>t.reshaped().transpose()<sp/>*<sp/>P<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Output:</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>1,4,7,2,5,8,3,6,9</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>1,2,3,4,5,6,7,8,9</highlight></codeline>
+</programlisting> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="74" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="74" bodyend="106"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="193" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="193" bodyend="206"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a025b1717b8d0c6288b7dd4ae6dabb8b0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -324,12 +422,41 @@
         <name>getReferenceToCorrectLeviCivita</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::getReferenceToCorrectLeviCivita</qualifiedname>
         <briefdescription>
+<para>Provides the reference Levi-Civita permutation tensor for the given spatial dimension. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The Levi-Civita tensor:<itemizedlist>
+<listitem><para>In 2D: <formula id="61">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.   </para>
+</listitem><listitem><para>In 3D: <formula id="59">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula>    </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="109" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="109" bodyend="119"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="219" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="219" bodyend="229"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

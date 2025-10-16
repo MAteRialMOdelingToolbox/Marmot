@@ -21,12 +21,44 @@
           <declname>ij</declname>
         </param>
         <briefdescription>
+<para>Convert a Voigt index to tensor indices. </para>
         </briefdescription>
         <detaileddescription>
+<para>Maps a Voigt notation index <computeroutput>ij</computeroutput> to the corresponding <computeroutput>(i, j)</computeroutput> tensor indices for a given dimension <computeroutput>nDim</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ij</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Voigt index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of tensor indices (i, j). </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>nDim</computeroutput> or <computeroutput>ij</computeroutput> is invalid. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="186" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="186" bodyend="210"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="363" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="363" bodyend="387"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a930cfeffbe0dc8d4266f80cacae0e1da" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -50,12 +82,51 @@
           <declname>j</declname>
         </param>
         <briefdescription>
+<para>Maps tensor indices (i, j) to the corresponding Voigt notation index for a given dimension <computeroutput>nDim</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row index of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>j</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Column index of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Voigt index corresponding to (i, j). </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>nDim</computeroutput> is invalid. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="213" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="213" bodyend="226"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="400" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="400" bodyend="413"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a033d62bc36b10a471ec07373704850cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -71,18 +142,32 @@
         <name>voigtMap</name>
         <qualifiedname>Marmot::ContinuumMechanics::TensorUtility::IndexNotation::voigtMap</qualifiedname>
         <briefdescription>
+<para>Construct the Voigt mapping tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para>Creates a 3rd-order tensor that maps tensor indices (i, j) to their corresponding Voigt index. Each entry is 1 at <computeroutput>(toVoigt&lt;nDim&gt;(i, j), i, j)</computeroutput> and 0 elsewhere.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor of shape (VoigtSize, nDim, nDim) encoding the Voigt mapping. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="229" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="229" bodyend="238"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="427" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="427" bodyend="436"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="184" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="350" column="5"/>
   </compounddef>
 </doxygen>

@@ -73,37 +73,35 @@
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics<sp/>{</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
 <codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">UniaxialStress<sp/>{</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>getUniaxialStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>Matrix6d<sp/>&gt;&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>UniaxialStress</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStrain<sp/>{</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
-<codeline lineno="58"><highlight class="normal"></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStrain();</highlight></codeline>
-<codeline lineno="64"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStrain</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="65"><highlight class="normal"></highlight></codeline>
-<codeline lineno="66"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStress<sp/>{</highlight></codeline>
-<codeline lineno="67"><highlight class="normal"></highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"></highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*</highlight></codeline>
-<codeline lineno="89"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>Returns<sp/>the<sp/>transformation<sp/>Matrix<sp/>T<sp/>which<sp/>fulfills</highlight></codeline>
-<codeline lineno="90"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>planeStressIncrement<sp/>=<sp/>C<sp/>:<sp/>(T<sp/>:<sp/>arbitraryStrainIncrement)</highlight></codeline>
-<codeline lineno="91"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/>Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStress(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/>dStressPlaneStressDStress();</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>getUniaxialStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>Matrix6d<sp/>&gt;&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>UniaxialStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStrain<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStrain();</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStrain</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStress<sp/>{</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStress(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/>dStressPlaneStressDStress();</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h"/>
   </compounddef>

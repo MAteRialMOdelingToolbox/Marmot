@@ -32,18 +32,20 @@
           <declname>tolerance</declname>
         </param>
         <briefdescription>
+<para>Computes the exponential of a square second rank tensor and its first-order derivative. </para>
         </briefdescription>
         <detaileddescription>
+<para>See the documentation of <computeroutput>computeTensorExponential</computeroutput> without derivative for additional details. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="95" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="95" bodyend="149"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="114" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="114" bodyend="168"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="93" column="7"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="108" column="7"/>
   </compounddef>
 </doxygen>

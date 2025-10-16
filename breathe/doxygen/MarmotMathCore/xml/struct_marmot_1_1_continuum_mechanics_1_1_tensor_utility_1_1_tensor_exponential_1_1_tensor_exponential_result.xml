@@ -25,7 +25,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="89" column="48" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="89" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="104" column="48" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_tensor_exponential_result_1a536400ff6637ca4e2a272d722452a61e" prot="public" static="no" mutable="no">
         <type>Fastor::Tensor&lt; T, tensorSize, tensorSize, tensorSize, tensorSize &gt;</type>
@@ -39,14 +39,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="90" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="90" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="105" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="105" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="88" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="88" bodyend="91"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="103" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="103" bodyend="106"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_tensor_exponential_result_1abac4a53c1c25e4f910531dd7aacb3c84" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::TensorExponentialResult</scope><name>theExponential</name></member>
       <member refid="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_tensor_exponential_result_1a536400ff6637ca4e2a272d722452a61e" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::TensorUtility::TensorExponential::TensorExponentialResult</scope><name>theExponentialDerivative</name></member>

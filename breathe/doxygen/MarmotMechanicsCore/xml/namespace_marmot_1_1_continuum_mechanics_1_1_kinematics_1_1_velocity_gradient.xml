@@ -10,12 +10,13 @@
         <name>dOmega_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dOmega_dVelocityGradient</qualifiedname>
         <briefdescription>
+<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="122">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="41" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="41" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="57" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="57" declcolumn="43"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_kinematics_8h_1ae337551640a03a2ea5bd5ed15f63961c" prot="public" static="no" extern="yes" mutable="no">
         <type>const Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt;</type>
@@ -24,18 +25,19 @@
         <name>dStretchingRate_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dStretchingRate_dVelocityGradient</qualifiedname>
         <briefdescription>
+<para>Tensor representing the derivative of the stretching rate with respect to the velocity gradient. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="43" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="43" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="60" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="60" declcolumn="43"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="40" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="52" column="5"/>
   </compounddef>
 </doxygen>

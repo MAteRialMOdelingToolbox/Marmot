@@ -18,14 +18,35 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic Young&apos;s modulus <formula id="84">$ E $</formula> from the compression modulus <formula id="85">$ K $</formula> and shear modulus <formula id="86">$ G $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic young&apos;s modulus E from the compression modulus K and shear modulus G   <formula id="68">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G)}
-\]</formula> </para>
+<para><formula id="87">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G}
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Compression modulus <formula id="85">$ K $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus <formula id="86">$ G $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="48" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="48" bodyend="51"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="54" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="54" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a9816087f223afacacbc1361ae03ef2a2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double constexpr</type>
@@ -42,14 +63,35 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic Poisson&apos;s ratio <formula id="88">$ \nu $</formula> from the compression modulus <formula id="85">$ K $</formula> and shear modulus <formula id="86">$ G $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic poisson&apos;s ratio <formula id="69">$ \nu $</formula> from the compression modulus K and shear modulus G   <formula id="70">\[ \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G)}
-\]</formula> </para>
+<para><formula id="89">\[  \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Compression modulus <formula id="85">$ K $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus <formula id="86">$ G $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="59" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="59" bodyend="62"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="71" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="71" bodyend="74"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1abd5af63b27f26503e1d51d4473706f3a" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double constexpr</type>
@@ -66,14 +108,34 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic shear modulus <formula id="86">$ G $</formula> from the Young&apos;s modulus <formula id="84">$ E $</formula> and Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic shear modulus G from the young&apos;s modulus E and poisson&apos;s ratio <formula id="69">$ \nu $</formula>.   <formula id="71">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
-\]</formula> </para>
+<para><formula id="90">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Shear modulus <formula id="86">$ G $</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="70" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="70" bodyend="73"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="87" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="87" bodyend="90"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1ac85dd648af70cdb91341fcc986402963" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double constexpr</type>
@@ -90,15 +152,35 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic Lamé parameter <formula id="91">$ \lambda $</formula> from the Young&apos;s modulus <formula id="84">$ E $</formula> and Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic lame parameter <formula id="72">$ \lambda $</formula> from the young&apos;s modulus E and poisson&apos;s ratio  <formula id="73">$ \nu
-$</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
-\]</formula> </para>
+<para><formula id="92">\[ \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Lamé parameter <formula id="91">$ \lambda $</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="82" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="82" bodyend="85"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="104" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" bodystart="104" bodyend="107"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a90fdc11919333788a03f41babbf21afe" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -115,9 +197,10 @@ $</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \n
           <declname>nu</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic compliance tensor:          <formula id="75">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para><formula id="94">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\
@@ -126,13 +209,33 @@ $</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \n
           0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G}
            \end{bmatrix}
 \]</formula></para>
-<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="69">$ \nu $</formula> with</para>
-<para><formula id="71">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
-\]</formula> </para>
+<para>with</para>
+<para><formula id="95">\[   G = \frac{E}{2\,(1 + \nu)}.
+\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Young&apos;s modulus <formula id="96">$E$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="106" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="106" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="132" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="132" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a8c6fc02e9c8552d1be0bf5135e5cab1f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -149,9 +252,10 @@ $</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \n
           <declname>nu</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic stiffness tensor <formula id="35">$\mathbb{C}$</formula> from Young&apos;s modulus <formula id="96">$E$</formula> and Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic stiffness tensor:          <formula id="76">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
+<para><formula id="98">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
                                 1 &amp; \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                             \frac{\nu}{1-\nu} &amp; 1 &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                       \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
@@ -160,11 +264,30 @@ $</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \n
                                       0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1-2\,\nu}{2\,(1-\nu)}
                                  \end{bmatrix}
 \]</formula></para>
-<para>from the young&apos;s modulus E and the poisson&apos;s ratio <formula id="69">$ \nu $</formula>. </para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Young&apos;s modulus <formula id="96">$E$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="123" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="123" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="153" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="153" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a77f29e67538be4839905b21b9678ab01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -181,13 +304,33 @@ $</formula>   <formula id="74">\[  \displaystyle \lambda = \frac{E\,\nu}{(1 + \n
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Computes the isotropic stiffness tensor <formula id="35">$\mathbb{C}$</formula> from the bulk modulus <formula id="99">$K$</formula> and shear modulus <formula id="100">$G$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the isotropic stiffness tensor \mathbb{ C } from the bulk modulus K and the shear modulus G. </para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus <formula id="99">$K$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus <formula id="100">$G$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="128" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="128" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" line="163" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h" declline="163" declcolumn="16"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

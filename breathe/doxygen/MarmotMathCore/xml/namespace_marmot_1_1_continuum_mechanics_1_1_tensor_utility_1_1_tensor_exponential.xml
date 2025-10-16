@@ -39,12 +39,76 @@
           <declname>alternativeTolerance</declname>
         </param>
         <briefdescription>
+<para>Computes the exponential of a square second rank tensor. </para>
         </briefdescription>
         <detaileddescription>
+<para>Evaluates exp(<computeroutput>theTensor</computeroutput>) using a series expansion up to <computeroutput>maxIterations</computeroutput> or until the terms converge below <computeroutput>tolerance</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element type of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tensorSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dimension of the square tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxIterations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of series terms to compute. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Convergence threshold for the series terms. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>alternativeTolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Secondary threshold to detect failure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tensor representing the exponential of <computeroutput>theTensor</computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_tensor_utility_1_1_tensor_exponential_1_1_exponential_map_failed" kindref="compound">ExponentialMapFailed</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If convergence is not achieved. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="38" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="38" bodyend="85"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="53" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="53" bodyend="100"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
