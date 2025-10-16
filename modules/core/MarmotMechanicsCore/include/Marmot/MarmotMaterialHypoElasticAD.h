@@ -34,6 +34,21 @@ class MarmotMaterialHypoElasticAD : public MarmotMaterialHypoElastic {
 public:
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
+  /**
+   * @brief Compute the Cauchy stress tensor \f$\boldsymbol{\sigma}\f$ given an increment of the linearized strain
+   * tensor \f$\Delta\boldsymbol{\varepsilon}\f$.
+   *
+   * Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the
+   * algorithmic tangent operator
+   * \f$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\f$ can be obtained by means
+   * of automatic differentiation.
+   *
+   * @param[in,out] stress  Cauchy stress tensor
+   * @param[in]             dStrain linearized strain increment
+   * @param[in]             timeOld Old (pseudo-)time
+   * @param[in]             dT (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+   * @param[in,out]         pNewDT Suggestion for a new time increment
+   */
   virtual void computeStressAD( autodiff::dual*       stress,
                                 const autodiff::dual* dStrain,
                                 const double*         timeOld,
