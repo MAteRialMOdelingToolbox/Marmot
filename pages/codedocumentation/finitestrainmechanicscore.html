@@ -18,6 +18,8 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -87,11 +89,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv46Marmot"><code class="docutils literal notranslate"><span class="pre">Marmot</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanicsE"><code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics19DeformationMeasuresE"><code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::DeformationMeasures</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenE9Tensor33tI1TEK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">CauchyGreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">rightCauchyGreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">leftCauchyGreen()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerivedE"><code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">CauchyGreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">rightCauchyGreen()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE"><code class="docutils literal notranslate"><span class="pre">leftCauchyGreen()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics22EnergyDensityFunctionsE"><code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::EnergyDensityFunctions</span></code></a><ul>
@@ -166,12 +170,23 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE">
 <span id="_CPPv3I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE"></span><span id="_CPPv2I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_marmot_material_finite_strain_1_1_algorithmic_moduli"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AlgorithmicModuli</span></span></span><a class="headerlink" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_finite_strain_8h"><span class="std std-ref">MarmotMaterialFiniteStrain.h</span></a>&gt;</em></div>
+<p>Algorithmic tangent moduli of a material. </p>
+<p>
+Contains the algorithmic tangent moduli <span class="math notranslate nohighlight">\(\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}\)</span> with respect to the deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDim</strong> – Number of spatial dimensions (2 or 3).</p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain17AlgorithmicModuli7dTau_dFE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain17AlgorithmicModuli7dTau_dFE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain17AlgorithmicModuli7dTau_dFE"></span><span id="MarmotMaterialFiniteStrain::AlgorithmicModuli::dTau_dF__Fastor::Tensor:double.nDim.nDim.nDim.nDim:"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_algorithmic_moduli_1ac80dc43e863ef0a9350f7eb73a723e82"></span><a class="reference internal" href="#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau_dF</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain17AlgorithmicModuli7dTau_dFE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>tangent operator w.r.t. deformation gradient </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -179,22 +194,35 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE">
 <span id="_CPPv3I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE"></span><span id="_CPPv2I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_marmot_material_finite_strain_1_1_constitutive_response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConstitutiveResponse</span></span></span><a class="headerlink" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_finite_strain_8h"><span class="std std-ref">MarmotMaterialFiniteStrain.h</span></a>&gt;</em></div>
+<p>Constitutive response of a material at given state. </p>
+<p>
+Contains stress, density and elastic energy density. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDim</strong> – Number of spatial dimensions (2 or 3).</p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse3tauE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain20ConstitutiveResponse3tauE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain20ConstitutiveResponse3tauE"></span><span id="MarmotMaterialFiniteStrain::ConstitutiveResponse::tau__Fastor::Tensor:double.nDim.nDim:"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d"></span><a class="reference internal" href="#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tau</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse3tauE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Kirchhoff stress. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse3rhoE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain20ConstitutiveResponse3rhoE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain20ConstitutiveResponse3rhoE"></span><span id="MarmotMaterialFiniteStrain::ConstitutiveResponse::rho__double"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1ac77093de78486135b29eb4186841703d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rho</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse3rhoE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>mass density </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse20elasticEnergyDensityE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain20ConstitutiveResponse20elasticEnergyDensityE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain20ConstitutiveResponse20elasticEnergyDensityE"></span><span id="MarmotMaterialFiniteStrain::ConstitutiveResponse::elasticEnergyDensity__double"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticEnergyDensity</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain20ConstitutiveResponse20elasticEnergyDensityE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>elastic energy per unit volume </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -202,12 +230,17 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE">
 <span id="_CPPv3I_iEN26MarmotMaterialFiniteStrain11DeformationE"></span><span id="_CPPv2I_iEN26MarmotMaterialFiniteStrain11DeformationE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_marmot_material_finite_strain_1_1_deformation"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Deformation</span></span></span><a class="headerlink" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_finite_strain_8h"><span class="std std-ref">MarmotMaterialFiniteStrain.h</span></a>&gt;</em></div>
+<p>Represents the deformation state of a material. </p>
+<p>This struct holds the deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> which describes the local deformation of a material. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain11Deformation1FE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain11Deformation1FE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain11Deformation1FE"></span><span id="MarmotMaterialFiniteStrain::Deformation::F__Fastor::Tensor:double.nDim.nDim:"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_deformation_1ae25c16182615666f73ba70264cf18fe1"></span><a class="reference internal" href="#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">F</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain11Deformation1FE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>deformation gradient </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -239,38 +272,116 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Abstract basic class for mechanical materials in the finite strain regime. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="MarmotMaterialFiniteStrain::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="class_marmot_material_finite_strain_1abb50397513fa2082f3f901efc323b8fe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="MarmotMaterialFiniteStrain::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Updates the material state. </p>
+<p>
+Computes the Kirchhoff <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> stress from the deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> and the time increment <span class="math notranslate nohighlight">\(\Delta t\)</span>. It further updates the mass density <span class="math notranslate nohighlight">\(\rho\)</span> and the elastic energy density. Additionally, computes the algorithmic tangent moduli <span class="math notranslate nohighlight">\(\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_constitutive_response"><span class="std std-ref">ConstitutiveResponse</span></a> instance </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_algorithmic_moduli"><span class="std std-ref">AlgorithmicModuli</span></a> instance </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a> instance </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="MarmotMaterialFiniteStrain::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CR"></span><span class="target" id="class_marmot_material_finite_strain_1a7b95a79c3b168a191b1c4b4d12de8bb1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="MarmotMaterialFiniteStrain::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute Stress, but account for eigen deformations (e.g, geostatic stress states). Modifies algorithmic tangent accordingly. </p>
+<dd><p>Computes the Kirchhoff stress given the deformation, time increment, and eigen deformation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_constitutive_response"><span class="std std-ref">ConstitutiveResponse</span></a> instance </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_algorithmic_moduli"><span class="std std-ref">AlgorithmicModuli</span></a> instance </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a> instance </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> instance </p></li>
+<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Tuple representing eigen deformation in each spatial direction. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="MarmotMaterialFiniteStrain::computePlaneStrain__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR"></span><span class="target" id="class_marmot_material_finite_strain_1a3591c120fa4762e4cf19be2365daa18f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStrain</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">algorithmicModuli</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="MarmotMaterialFiniteStrain::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute stress under plane strain conditions. </p>
+<p>
+It uses the general 3D computeStress function for a plane strain <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a>. The algorithmic tangent is modified according to plane strain conditions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_constitutive_response"><span class="std std-ref">ConstitutiveResponse</span></a> instance </p></li>
+<li><p><strong>algorithmicModuli</strong> – <strong>[out]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_algorithmic_moduli"><span class="std std-ref">AlgorithmicModuli</span></a> instance </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a> instance </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="MarmotMaterialFiniteStrain::computePlaneStrain__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CR"></span><span class="target" id="class_marmot_material_finite_strain_1aaafefec808af907a1229efec0d1ea4d1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStrain</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">algorithmicModuli</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="MarmotMaterialFiniteStrain::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStrainER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute stress under plane strain conditions with eigen deformation. </p>
+<p>
+It uses the general 3D computeStress function for a plane strain <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a>. The algorithmic tangent is modified according to plane strain conditions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_constitutive_response"><span class="std std-ref">ConstitutiveResponse</span></a> instance </p></li>
+<li><p><strong>algorithmicModuli</strong> – <strong>[out]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_algorithmic_moduli"><span class="std std-ref">AlgorithmicModuli</span></a> instance </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a> instance </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> instance </p></li>
+<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Tuple representing eigen deformation in each spatial direction.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStressER20ConstitutiveResponseIXL2EEER17AlgorithmicModuliIXL2EEERK11DeformationIXL2EEERK13TimeIncrement">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain18computePlaneStressER20ConstitutiveResponseIXL2EEER17AlgorithmicModuliIXL2EEERK11DeformationIXL2EEERK13TimeIncrement"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain18computePlaneStressER20ConstitutiveResponseIX2EER17AlgorithmicModuliIX2EERK11DeformationIX2EERK13TimeIncrement"></span><span id="MarmotMaterialFiniteStrain::computePlaneStress__ConstitutiveResponse:2:R.AlgorithmicModuli:2:R.Deformation:2:CR.TimeIncrementCR"></span><span class="target" id="class_marmot_material_finite_strain_1aae2399a95f2635e5acca212c8abd04c7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain20ConstitutiveResponseE" title="MarmotMaterialFiniteStrain::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain17AlgorithmicModuliE" title="MarmotMaterialFiniteStrain::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">algorithmicModuli</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN26MarmotMaterialFiniteStrain11DeformationE" title="MarmotMaterialFiniteStrain::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="MarmotMaterialFiniteStrain::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain18computePlaneStressER20ConstitutiveResponseIXL2EEER17AlgorithmicModuliIXL2EEERK11DeformationIXL2EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute stress under plane stress conditions. </p>
+<p>
+It uses the general 3D computeStress function and iteratively finds the out-of-plane deformation. The algorithmic tangent is modified according to plane stress conditions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_constitutive_response"><span class="std std-ref">ConstitutiveResponse</span></a> instance </p></li>
+<li><p><strong>algorithmicModuli</strong> – <strong>[out]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_algorithmic_moduli"><span class="std std-ref">AlgorithmicModuli</span></a> instance </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_deformation"><span class="std std-ref">Deformation</span></a> instance </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <a class="reference internal" href="#struct_marmot_material_finite_strain_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> instance</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain34findEigenDeformationForEigenStressERKNSt5tupleIdddEERKNSt5tupleIdddEE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain34findEigenDeformationForEigenStressERKNSt5tupleIdddEERKNSt5tupleIdddEE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain34findEigenDeformationForEigenStressERKNSt5tupleIdddEERKNSt5tupleIdddEE"></span><span id="MarmotMaterialFiniteStrain::findEigenDeformationForEigenStress__std::tuple:double.double.double:CR.std::tuple:double.double.double:CR"></span><span class="target" id="class_marmot_material_finite_strain_1a52e1c156df11bf9ca0e23026bcbffb5e"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">findEigenDeformationForEigenStress</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">initialGuess</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenStress</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain34findEigenDeformationForEigenStressERKNSt5tupleIdddEERKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
-<dd><p>Find for given eigen stress the appropriate eigen deformation. </p>
+<dd><p>Find the eigen deformation that corresponds to a given eigen stress. </p>
+<p>
+This function iteratively finds the eigen deformation that corresponds to a given eigen stress. This is used e.g. for geostatic stress initialization. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initialGuess</strong> – Initial guess for the eigen deformation. </p></li>
+<li><p><strong>eigenStress</strong> – Target eigen stress. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Eigen deformation that corresponds to the given eigen stress.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -279,17 +390,23 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain13TimeIncrementE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain13TimeIncrementE"></span><span id="MarmotMaterialFiniteStrain::TimeIncrement"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_time_increment"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimeIncrement</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrementE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_finite_strain_8h"><span class="std std-ref">MarmotMaterialFiniteStrain.h</span></a>&gt;</em></div>
+<p>Represents a time increment in a simulation. </p>
+<p>This struct holds information about the current time and the time step size (dT). </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrement4timeE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain13TimeIncrement4timeE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain13TimeIncrement4timeE"></span><span id="MarmotMaterialFiniteStrain::TimeIncrement::time__doubleC"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_time_increment_1ab2aa35cc6462ad388f7998839f3040a6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrement4timeE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>time at the beginning of the increment </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrement2dTE">
 <span id="_CPPv3N26MarmotMaterialFiniteStrain13TimeIncrement2dTE"></span><span id="_CPPv2N26MarmotMaterialFiniteStrain13TimeIncrement2dTE"></span><span id="MarmotMaterialFiniteStrain::TimeIncrement::dT__doubleC"></span><span class="target" id="struct_marmot_material_finite_strain_1_1_time_increment_1a44d07ea5334257c3765c75ad641ac059"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><a class="headerlink" href="#_CPPv4N26MarmotMaterialFiniteStrain13TimeIncrement2dTE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>size of the time increment </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -325,9 +442,54 @@
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenE9Tensor33tI1TEK9Tensor33tI1TE">
-<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenEK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenEK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1a64c531660e6ae1833c8ab1d97a1222b5"></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenE9Tensor33tI1TEK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::CauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenE9Tensor33tI1TEK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::CauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">F_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures11CauchyGreenE9Tensor33tI1TEK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE">
+<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1a0080300fe5519b00e72e1a4552b2d21e"></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rightCauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures16rightCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the right Cauchy-Green tensor <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>. </p>
+<p>
+The right Cauchy-Green deformation tensor is defined as:   <div class="math notranslate nohighlight">
+\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</div>
+ or in index notation:   <div class="math notranslate nohighlight">
+\[  C_{IJ} = F_{iI} F_{iJ}
+\]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (e.g., float, double, autodiff::dual) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>F</strong> – Deformation gradient tensor </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The right Cauchy-Green tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE">
+<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1a4d845ae8668dfc80fdb1bca26aa360f4"></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">leftCauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures15leftCauchyGreenE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the left Cauchy-Green tensor <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span>. </p>
+<p>
+The left Cauchy-Green deformation tensor is defined as:   <div class="math notranslate nohighlight">
+\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</div>
+ or in index notation:   <div class="math notranslate nohighlight">
+\[  b_{ij} = F_{iI} F_{jI}
+\]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (e.g., float, double, autodiff::dual) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>F</strong> – Deformation gradient tensor </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The left Cauchy-Green tensor b</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -338,9 +500,60 @@
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE">
-<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenEK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenEK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1a7c435347eb77e9167ff714385f6e35cb"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::CauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::CauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::CauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived11CauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEEK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE">
+<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1ae1be86d55b263215e0b5d58763f5ac22"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::rightCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::rightCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rightCauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::rightCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived16rightCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the right Cauchy-Green tensor <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> and its derivative with respect to <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p>
+<p>
+The right Cauchy-Green deformation tensor is defined as:   <div class="math notranslate nohighlight">
+\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</div>
+ or in index notation:   <div class="math notranslate nohighlight">
+\[  C_{IJ} = F_{iI} F_{iJ}
+\]</div>
+ The derivative of <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span> with respect to <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is given by:   <div class="math notranslate nohighlight">
+\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+\]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (e.g., float, double, autodiff::dual) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>F</strong> – Deformation gradient tensor </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pair containing the right Cauchy-Green tensor C and its derivative with respect to F</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE">
+<span id="_CPPv3I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_deformation_measures_8h_1a5baf88c57ed2c9d2f5688a8470664095"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::leftCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::leftCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">leftCauchyGreen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::leftCauchyGreen::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics19DeformationMeasures17FirstOrderDerived15leftCauchyGreenENSt4pairI9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the left Cauchy-Green tensor <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> and its derivative with respect to <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p>
+<p>
+The left Cauchy-Green deformation tensor is defined as:   <div class="math notranslate nohighlight">
+\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</div>
+ or in index notation:   <div class="math notranslate nohighlight">
+\[  b_{ij} = F_{iI} F_{jI}
+\]</div>
+ The derivative of <span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> with respect to <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> is given by:   <div class="math notranslate nohighlight">
+\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+\]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (e.g., float, double, autodiff::dual) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>F</strong> – Deformation gradient tensor </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pair containing the left Cauchy-Green tensor b and its derivative with respect to F</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -353,17 +566,80 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAE1TRK9Tensor33tI1TEKdKd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAERK9Tensor33tI1TEKdKd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAERK9Tensor33tI1TEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_energy_density_functions_8h_1ae0b66415bffd35bd37caede28c980e0e"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialA::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouPotentialA</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialA::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">G</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialAE1TRK9Tensor33tI1TEKdKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hyperelastic Energy Density Function Wa acc. Pence &amp; Gou (2015), Eq. (2.11) </p>
+<p>The energy density function <span class="math notranslate nohighlight">\(W_a\)</span> is given as   <div class="math notranslate nohighlight">
+\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
+\]</div>
+ where <span class="math notranslate nohighlight">\( I_1 = \text{tr}(\boldsymbol{C}) \)</span> is the first invariant of the right Cauchy-Green tensor <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \)</span>,  <span class="math notranslate nohighlight">\( J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) \)</span> is the determinant of the deformation gradient, and <span class="math notranslate nohighlight">\( K, G \)</span> are the bulk and shear modulus, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float, etc. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – Right Cauchy-Green tensor </p></li>
+<li><p><strong>K</strong> – Bulk modulus </p></li>
+<li><p><strong>G</strong> – Shear modulus </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Energy density </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBE1TRK9Tensor33tI1TEKdKd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_energy_density_functions_8h_1aadee8fcdff08e16df791b8eb4d1de3f9"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouPotentialB</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">G</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialBE1TRK9Tensor33tI1TEKdKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) </p>
+<p>The energy density function <span class="math notranslate nohighlight">\(W_b\)</span> is given as   <div class="math notranslate nohighlight">
+\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</div>
+ where <span class="math notranslate nohighlight">\( I_1 = \text{tr}(\boldsymbol{C}) \)</span> is the first invariant of the right Cauchy-Green tensor <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \)</span>,  <span class="math notranslate nohighlight">\( J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) \)</span> is the determinant of the deformation gradient, and <span class="math notranslate nohighlight">\( K, G \)</span> are the bulk and shear modulus, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float, etc. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – Right Cauchy-Green tensor </p></li>
+<li><p><strong>K</strong> – Bulk modulus </p></li>
+<li><p><strong>G</strong> – Shear modulus </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Energy density </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCE1TRK9Tensor33tI1TEKdKd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCERK9Tensor33tI1TEKdKd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCERK9Tensor33tI1TEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_energy_density_functions_8h_1ae55ac9c598341eca3f2982d5387830a1"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialC::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouPotentialC</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCE1TRK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialC::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">G</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18PenceGouPotentialCE1TRK9Tensor33tI1TEKdKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hyperelastic Energy Density Function Wc acc. Pence &amp; Gou (2015), Eq. (2.13) </p>
+<p>The energy density function <span class="math notranslate nohighlight">\(W_c\)</span> is given as   <div class="math notranslate nohighlight">
+\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
+\]</div>
+ where <span class="math notranslate nohighlight">\( I_1 = \text{tr}(\boldsymbol{C}) \)</span> is the first invariant of the right Cauchy-Green tensor <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \)</span>,  <span class="math notranslate nohighlight">\( J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) \)</span> is the determinant of the deformation gradient, and <span class="math notranslate nohighlight">\( K, G \)</span> are the bulk and shear modulus, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float, etc. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – Right Cauchy-Green tensor </p></li>
+<li><p><strong>K</strong> – Bulk modulus </p></li>
+<li><p><strong>G</strong> – Shear modulus </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Energy density </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -376,7 +652,38 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TEEERK9Tensor33tI1TEKdKd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_energy_density_functions_8h_1ad90fe082770de30a11d0af8f1d301105"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouPotentialB</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">G</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions17FirstOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TEEERK9Tensor33tI1TEKdKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first derivative w.r.t. C. </p>
+<p>The energy density function <span class="math notranslate nohighlight">\(W_b\)</span> is given as   <div class="math notranslate nohighlight">
+\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</div>
+ where <span class="math notranslate nohighlight">\( I_1 = \text{tr}(\boldsymbol{C}) \)</span> is the first invariant of the right Cauchy-Green tensor <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \)</span>,  <span class="math notranslate nohighlight">\( J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) \)</span> is the determinant of the deformation gradient, and <span class="math notranslate nohighlight">\( K, G \)</span> are the bulk and shear modulus, respectively.</p>
+<p>Additionally, the first derivative w.r.t. C is computed as   <div class="math notranslate nohighlight">
+\[   \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
+\boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \]</div>
+ where   <div class="math notranslate nohighlight">
+\[   \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
+\]</div>
+ and   <div class="math notranslate nohighlight">
+\[   \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
+\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float, etc. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – Right Cauchy-Green tensor </p></li>
+<li><p><strong>K</strong> – Bulk modulus </p></li>
+<li><p><strong>G</strong> – Shear modulus </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing energy density and its first derivative w.r.t. C </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -389,7 +696,33 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBERK9Tensor33tI1TEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_energy_density_functions_8h_1aad1774c5d8d6e561b83fcad98982a4d7"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouPotentialB</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd" title="Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">G</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics22EnergyDensityFunctions18SecondOrderDerived18PenceGouPotentialBENSt5tupleI1T9Tensor33tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TEKdKd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first and second derivative w.r.t. C. </p>
+<p>The energy density function <span class="math notranslate nohighlight">\(W_b\)</span> is given as   <div class="math notranslate nohighlight">
+\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</div>
+ where <span class="math notranslate nohighlight">\( I_1 = \text{tr}(\boldsymbol{C}) \)</span> is the first invariant of the right Cauchy-Green tensor <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \)</span>,  <span class="math notranslate nohighlight">\( J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) \)</span> is the determinant of the deformation gradient, and <span class="math notranslate nohighlight">\( K, G \)</span> are the bulk and shear modulus, respectively.</p>
+<p>Additionally, the first and second derivative w.r.t. <span class="math notranslate nohighlight">\(\boldsymbol{C}\)</span>, i.e.,    <div class="math notranslate nohighlight">
+\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+\frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
+\]</div>
+ are computed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float, etc. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>C</strong> – Right Cauchy-Green tensor </p></li>
+<li><p><strong>K</strong> – Bulk modulus </p></li>
+<li><p><strong>G</strong> – Shear modulus </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing energy density, its first and second derivative w.r.t. C </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -412,7 +745,23 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapE9Tensor33tI1TERK9Tensor33tI1TE">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_finite_strain_plasticity_8h_1ad35ebc36e298a4bf78bcbb7c92d7310e"></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exponentialMap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dGp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration14exponentialMapE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map.</p>
+<p>The exponential map is given by   <div class="math notranslate nohighlight">
+\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+\]</div>
+ where <span class="math notranslate nohighlight">\( \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} \)</span> is the incremental plastic velocity gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dGp</strong> – Incremental plastic velocity gradient. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Incremental plastic deformation gradient. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -425,12 +774,36 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived19explicitIntegrationERK9Tensor33d">
 <span id="_CPPv3N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived19explicitIntegrationERK9Tensor33d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived19explicitIntegrationERK9Tensor33d"></span><span id="Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::explicitIntegration__Tensor33dCR"></span><span class="target" id="_marmot_finite_strain_plasticity_8h_1a61717d69b0655cad279856dae694d847"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">explicitIntegration</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deltaGp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived19explicitIntegrationERK9Tensor33d" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the incremental plastic deformation gradient from the plastic velocity gradient using a first order approximation. The first order approximation is given by   <div class="math notranslate nohighlight">
+\[   \Delta F_{\bar I J} = \left( \delta_{\bar K L} + \Delta \lambda \frac{\partial f}{\partial M_{\bar K
+L}}\right)_{J \bar{I}} \]</div>
+ where <span class="math notranslate nohighlight">\( \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} \)</span> is the incremental plastic velocity gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deltaGp</strong> – Incremental plastic velocity gradient. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic velocity gradient. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived14exponentialMapERK9Tensor33d">
 <span id="_CPPv3N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived14exponentialMapERK9Tensor33d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived14exponentialMapERK9Tensor33d"></span><span id="Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap__Tensor33dCR"></span><span class="target" id="_marmot_finite_strain_plasticity_8h_1ac5090d6bd5c231cd5a3c780492eb8e04"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33d</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exponentialMap</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deltaGp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain10Plasticity15FlowIntegration17FirstOrderDerived14exponentialMapERK9Tensor33d" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map. The exponential map is given by   <div class="math notranslate nohighlight">
+\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial f}{\partial M_{\bar I J}}\right)_{J \bar{I}}
+\]</div>
+ where <span class="math notranslate nohighlight">\( \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} \)</span> is the incremental plastic velocity gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>deltaGp</strong> – Incremental plastic velocity gradient. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic velocity gradient. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -443,7 +816,29 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2E9Tensor33tI1TERK9Tensor33tI1TERK9Tensor33tI1TE">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2ERK9Tensor33tI1TERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2ERK9Tensor33tI1TERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_stress_measures_8h_1aaa9b15a4bdd9fe167f4d595ea9b3ffdb"></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2E9Tensor33tI1TERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KirchhoffStressFromPK2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2E9Tensor33tI1TERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">PK2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2E9Tensor33tI1TERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures22KirchhoffStressFromPK2E9Tensor33tI1TERK9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient. </p>
+<p>The Kirchhoff stress is computed as   <div class="math notranslate nohighlight">
+\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</div>
+ or in index notation   <div class="math notranslate nohighlight">
+\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PK2</strong> – 2nd Piola-Kirchhoff stress </p></li>
+<li><p><strong>F</strong> – Deformation gradient </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Kirchhoff stress </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -456,7 +851,34 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE">
 <span id="_CPPv3I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ERK9Tensor33tI1TERK9Tensor33tI1TE"></span><span id="_CPPv2I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ERK9Tensor33tI1TERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_stress_measures_8h_1af13ff0905773a2e71214f5c0deba67c4"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor3333t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KirchhoffStressFromPK2</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">PK2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor33t</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot18ContinuumMechanics14StressMeasures17FirstOrderDerived22KirchhoffStressFromPK2ENSt5tupleI9Tensor33tI1TE11Tensor3333tI1TE11Tensor3333tI1TEEERK9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the respective partial derivatives. </p>
+<p>The Kirchoff stress is computed as   <div class="math notranslate nohighlight">
+\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</div>
+ or in index notation   <div class="math notranslate nohighlight">
+\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+\]</div>
+ Additionally, the derivatives with respect to <span class="math notranslate nohighlight">\( \boldsymbol{S} \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span> are computed in index notation as <div class="math notranslate nohighlight">
+\[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \]</div>
+ and  <div class="math notranslate nohighlight">
+\[ \frac{\partial
+\tau_{ij}}{\partial F_{kL}} = \delta_{ik} S_{LJ} F_{jJ} + F_{iI} S_{IL} \delta_{jk} \]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type, e.g. double, float </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PK2</strong> – 2nd Piola-Kirchhoff stress </p></li>
+<li><p><strong>F</strong> – Deformation gradient </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing Kirchhoff stress and its derivatives w.r.t <span class="math notranslate nohighlight">\(\boldsymbol{S}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span></p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>

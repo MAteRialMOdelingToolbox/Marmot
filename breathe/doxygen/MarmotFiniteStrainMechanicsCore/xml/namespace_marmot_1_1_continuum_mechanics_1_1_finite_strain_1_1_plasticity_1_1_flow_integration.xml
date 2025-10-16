@@ -22,10 +22,34 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map.</para>
+<para>The exponential map is given by   <formula id="16">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+\]</formula> where <formula id="17">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dGp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental plastic velocity gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Incremental plastic deformation gradient. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="40" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" bodystart="40" bodyend="45"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="55" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" bodystart="55" bodyend="60"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

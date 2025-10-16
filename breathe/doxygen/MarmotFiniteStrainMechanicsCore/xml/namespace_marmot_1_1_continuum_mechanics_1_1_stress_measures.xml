@@ -24,12 +24,45 @@
           <declname>F</declname>
         </param>
         <briefdescription>
+<para>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
+<para>The Kirchhoff stress is computed as   <formula id="9">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</formula> or in index notation   <formula id="10">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>PK2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd Piola-Kirchhoff stress </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Kirchhoff stress </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="41" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" bodystart="41" bodyend="47"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="58" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" bodystart="58" bodyend="63"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

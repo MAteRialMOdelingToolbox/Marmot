@@ -23,18 +23,52 @@
           <declname>F</declname>
         </param>
         <briefdescription>
+<para>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the respective partial derivatives. </para>
         </briefdescription>
         <detaileddescription>
+<para>The Kirchoff stress is computed as   <formula id="9">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</formula> or in index notation   <formula id="10">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+\]</formula> Additionally, the derivatives with respect to <formula id="11">$ \boldsymbol{S} $</formula> and <formula id="12">$ \boldsymbol{F} $</formula> are computed in index notation as <formula id="13">\[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \]</formula> and  <formula id="14">\[ \frac{\partial
+\tau_{ij}}{\partial F_{kL}} = \delta_{ik} S_{LJ} F_{jJ} + F_{iI} S_{IL} \delta_{jk} \]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>PK2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>2nd Piola-Kirchhoff stress </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing Kirchhoff stress and its derivatives w.r.t <formula id="15">$\boldsymbol{S}$</formula> and <formula id="6">$\boldsymbol{F}$</formula> </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="52" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" bodystart="52" bodyend="69"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="89" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" bodystart="89" bodyend="103"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="49" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotStressMeasures.h" line="65" column="5"/>
   </compounddef>
 </doxygen>

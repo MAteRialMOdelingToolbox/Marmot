@@ -34,10 +34,12 @@
   <compound refid="namespace_marmot_1_1_continuum_mechanics" kind="namespace"><name>Marmot::ContinuumMechanics</name>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures" kind="namespace"><name>Marmot::ContinuumMechanics::DeformationMeasures</name>
-    <member refid="_marmot_deformation_measures_8h_1a64c531660e6ae1833c8ab1d97a1222b5" kind="function"><name>CauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a0080300fe5519b00e72e1a4552b2d21e" kind="function"><name>rightCauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a4d845ae8668dfc80fdb1bca26aa360f4" kind="function"><name>leftCauchyGreen</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures_1_1_first_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</name>
-    <member refid="_marmot_deformation_measures_8h_1a7c435347eb77e9167ff714385f6e35cb" kind="function"><name>CauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1ae1be86d55b263215e0b5d58763f5ac22" kind="function"><name>rightCauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a5baf88c57ed2c9d2f5688a8470664095" kind="function"><name>leftCauchyGreen</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions" kind="namespace"><name>Marmot::ContinuumMechanics::EnergyDensityFunctions</name>
     <member refid="_marmot_energy_density_functions_8h_1ae0b66415bffd35bd37caede28c980e0e" kind="function"><name>PenceGouPotentialA</name></member>

@@ -27,18 +27,62 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first and second derivative w.r.t. C. </para>
         </briefdescription>
         <detaileddescription>
+<para>The energy density function <formula id="28">$W_b$</formula> is given as   <formula id="35">\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>Additionally, the first and second derivative w.r.t. <formula id="0">$\boldsymbol{C}$</formula>, i.e.,    <formula id="36">\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+\frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
+\]</formula> are computed.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing energy density, its first and second derivative w.r.t. C </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="108" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="108" bodyend="140"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="212" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="212" bodyend="244"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="105" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="182" column="5"/>
   </compounddef>
 </doxygen>

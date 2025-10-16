@@ -29,12 +29,53 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Hyperelastic Energy Density Function Wa acc. Pence &amp; Gou (2015), Eq. (2.11) </para>
         </briefdescription>
         <detaileddescription>
+<para>The energy density function <formula id="22">$W_a$</formula> is given as   <formula id="23">\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
+\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Energy density </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="41" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="41" bodyend="50"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="57" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="57" bodyend="66"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_energy_density_functions_8h_1aadee8fcdff08e16df791b8eb4d1de3f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -60,12 +101,53 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) </para>
         </briefdescription>
         <detaileddescription>
+<para>The energy density function <formula id="28">$W_b$</formula> is given as   <formula id="29">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Energy density </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="54" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="54" bodyend="63"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="86" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="86" bodyend="95"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_energy_density_functions_8h_1ae55ac9c598341eca3f2982d5387830a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -91,12 +173,53 @@
           <declname>G</declname>
         </param>
         <briefdescription>
+<para>Hyperelastic Energy Density Function Wc acc. Pence &amp; Gou (2015), Eq. (2.13) </para>
         </briefdescription>
         <detaileddescription>
+<para>The energy density function <formula id="30">$W_c$</formula> is given as   <formula id="31">\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
+\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Energy density </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="67" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="67" bodyend="76"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="115" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="115" bodyend="124"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -3,34 +3,107 @@
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures_1_1_first_order_derived" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</compoundname>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a7c435347eb77e9167ff714385f6e35cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1ae1be86d55b263215e0b5d58763f5ac22" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename T</type>
           </param>
         </templateparamlist>
         <type>std::pair&lt; Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt;</type>
-        <definition>std::pair&lt; Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::CauchyGreen</definition>
-        <argsstring>(const Tensor33t&lt; T &gt; F)</argsstring>
-        <name>CauchyGreen</name>
-        <qualifiedname>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::CauchyGreen</qualifiedname>
+        <definition>std::pair&lt; Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::rightCauchyGreen</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>rightCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::rightCauchyGreen</qualifiedname>
         <param>
-          <type>const Tensor33t&lt; T &gt;</type>
+          <type>const Tensor33t&lt; T &gt; &amp;</type>
           <declname>F</declname>
         </param>
         <briefdescription>
+<para>Computes the right Cauchy-Green tensor <formula id="0">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="6">$\boldsymbol{F}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the right Cauchy-Green tensor C and its derivative with respect to F</para>
+</simplesect>
+The right Cauchy-Green deformation tensor is defined as:   <formula id="1">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</formula> or in index notation:   <formula id="2">\[  C_{IJ} = F_{iI} F_{iJ}
+\]</formula> The derivative of <formula id="0">$\boldsymbol{C}$</formula> with respect to <formula id="6">$\boldsymbol{F}$</formula> is given by:   <formula id="7">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+\]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="49" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="49" bodyend="58"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="102" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="102" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a5baf88c57ed2c9d2f5688a8470664095" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; Tensor33t&lt; T &gt;, Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::leftCauchyGreen</definition>
+        <argsstring>(const Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>leftCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived::leftCauchyGreen</qualifiedname>
+        <param>
+          <type>const Tensor33t&lt; T &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the left Cauchy-Green tensor <formula id="3">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="6">$\boldsymbol{F}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the left Cauchy-Green tensor b and its derivative with respect to F</para>
+</simplesect>
+The left Cauchy-Green deformation tensor is defined as:   <formula id="4">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</formula> or in index notation:   <formula id="5">\[  b_{ij} = F_{iI} F_{jI}
+\]</formula> The derivative of <formula id="3">$\boldsymbol{b}$</formula> with respect to <formula id="6">$\boldsymbol{F}$</formula> is given by:   <formula id="8">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="132" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="132" bodyend="140"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="46" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="80" column="5"/>
   </compounddef>
 </doxygen>
