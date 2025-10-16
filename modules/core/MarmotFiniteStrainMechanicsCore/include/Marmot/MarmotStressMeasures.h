@@ -37,10 +37,26 @@ namespace Marmot::ContinuumMechanics {
     using namespace FastorIndices;
     using namespace FastorStandardTensors;
 
+    /**
+     * @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.
+     *
+     * The Kirchhoff stress is computed as
+     * \f[
+     *   \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+     * \f]
+     * or in index notation
+     * \f[
+     * \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, float
+     * @param PK2 2nd Piola-Kirchhoff stress
+     * @param F Deformation gradient
+     * @return Kirchhoff stress
+     */
     template < typename T >
     Tensor33t< T > KirchhoffStressFromPK2( const Tensor33t< T >& PK2, const Tensor33t< T >& F )
     {
-      // tau = F * PK2 * F^T  = F_iI * S_IJ * F_Jj
       const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
 
       return tau;
@@ -48,6 +64,27 @@ namespace Marmot::ContinuumMechanics {
 
     namespace FirstOrderDerived {
 
+      /** @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the
+       * respective partial derivatives.
+       *
+       * The Kirchoff stress is computed as
+       * \f[
+       *   \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+       * \f]
+       * or in index notation
+       * \f[
+       * \tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+       * \f]
+       * Additionally, the derivatives with respect to \f$ \boldsymbol{S} \f$ and \f$ \boldsymbol{F} \f$ are computed
+       * in index notation as \f[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \f] and \f[ \frac{\partial
+       * \tau_{ij}}{\partial F_{kL}} = \delta_{ik} S_{LJ} F_{jJ} + F_{iI} S_{IL} \delta_{jk} \f]
+       *
+       * @tparam T Scalar type, e.g. double, float
+       * @param PK2 2nd Piola-Kirchhoff stress
+       * @param F Deformation gradient
+       * @return A tuple containing Kirchhoff stress and its derivatives w.r.t \f$\boldsymbol{S}\f$ and
+       * \f$\boldsymbol{F}\f$
+       */
       template < typename T >
       std::tuple< Tensor33t< T >, Tensor3333t< T >, Tensor3333t< T > > KirchhoffStressFromPK2(
         const Tensor33t< T >& PK2,
@@ -55,11 +92,8 @@ namespace Marmot::ContinuumMechanics {
       {
         const auto&          I   = Spatial3D::I;
         const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
-        /* const Tensor3333t< T > dTau_dPK2 = einsum< iK, jL, to_ijKL >( einsum< iI, IK >( F, I ), */
-        /*                                                               transpose( einsum< JL, jJ >( I, F ) ) ); */
+
         const Tensor3333t< T > dTau_dPK2 = einsum< iI, jJ, to_ijIJ >( F, F );
-        /* const Tensor3333t< T > dTau_dF   = einsum< iK, IL, IJ, jJ, to_ijKL >( I, I, PK2, F ) + */
-        /*                                  einsum< iI, IJ, jK, JL, to_ijKL >( F, PK2, I, I ); */
 
         const Tensor33t< T >   S_F     = einsum< KJ, jJ >( PK2, F );
         const Tensor3333t< T > dTau_dF = einsum< ik, jK, to_ijkK >( I, transpose( S_F ) ) +

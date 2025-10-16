@@ -36,8 +36,24 @@ namespace Marmot::ContinuumMechanics {
     using namespace Fastor;
     using namespace FastorStandardTensors;
 
+    /** @brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
+     *
+     *  The energy density function \f$W_a\f$ is given as
+     *  \f[
+     *    W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
+     *  \f]
+     *  where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+     *  \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+     * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and shear
+     * modulus, respectively.
+     *
+     * @tparam T Scalar type, e.g. double, float, etc.
+     * @param C Right Cauchy-Green tensor
+     * @param K Bulk modulus
+     * @param G Shear modulus
+     * @return Energy density
+     */
     template < typename T >
-    // \brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
     T PenceGouPotentialA( const Tensor33t< T >& C, const double K, const double G )
     {
 
@@ -49,8 +65,24 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
+    /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12)
+     *
+     *  The energy density function \f$W_b\f$ is given as
+     *  \f[
+     *    W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+     *  \f]
+     *  where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+     *  \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+     * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and shear
+     * modulus, respectively.
+     *
+     * @tparam T Scalar type, e.g. double, float, etc.
+     * @param C Right Cauchy-Green tensor
+     * @param K Bulk modulus
+     * @param G Shear modulus
+     * @return Energy density
+     */
     template < typename T >
-    // \brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12)
     T PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
     {
 
@@ -62,8 +94,24 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
+    /** @brief Hyperelastic Energy Density Function Wc acc. Pence & Gou (2015), Eq. (2.13)
+     *
+     *  The energy density function \f$W_c\f$ is given as
+     *  \f[
+     *    W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
+     *  \f]
+     *  where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+     *  \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+     * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and shear
+     * modulus, respectively.
+     *
+     * @tparam T Scalar type, e.g. double, float, etc.
+     * @param C Right Cauchy-Green tensor
+     * @param K Bulk modulus
+     * @param G Shear modulus
+     * @return Energy density
+     */
     template < typename T >
-    // \brief Hyperelastic Energy Density Function Wc acc. Pence & Gou (2015), Eq. (2.13)
     T PenceGouPotentialC( const Tensor33t< T >& C, const double K, const double G )
     {
 
@@ -77,6 +125,35 @@ namespace Marmot::ContinuumMechanics {
 
     namespace FirstOrderDerived {
 
+      /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first derivative
+       * w.r.t. C
+       *
+       *  The energy density function \f$W_b\f$ is given as
+       *  \f[
+       *    W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+       *  \f]
+       *  where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+       *  \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+       * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and
+       * shear modulus, respectively.
+       *
+       *  Additionally, the first derivative w.r.t. C is computed as
+       *  \f[
+       *    \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
+       * \boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \f] where \f[
+       *    \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
+       *  \f]
+       *  and
+       *  \f[
+       *    \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
+       *  \f]
+       *
+       * @tparam T Scalar type, e.g. double, float, etc.
+       * @param C Right Cauchy-Green tensor
+       * @param K Bulk modulus
+       * @param G Shear modulus
+       * @return A tuple containing energy density and its first derivative w.r.t. C
+       */
       template < typename T >
       std::tuple< T, Tensor33t< T > > PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
       {
@@ -104,6 +181,33 @@ namespace Marmot::ContinuumMechanics {
 
     namespace SecondOrderDerived {
 
+      /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
+       * derivative w.r.t. C
+       *
+       * The energy density function \f$W_b\f$ is given as
+       * \f[
+       *   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+       * \f]
+       * where \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ is the first invariant of the right Cauchy-Green tensor
+       * \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J = \sqrt{\det(\boldsymbol{C})} =
+       * \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$ K, G \f$ are the bulk and
+       * shear modulus, respectively.
+       *
+       * Additionally, the first and second derivative w.r.t. \f$\boldsymbol{C}\f$,
+       * i.e.,
+       * \f[
+       * \frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+       * \frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
+       * \f]
+       * are computed.
+       *
+       * @tparam T Scalar type, e.g. double, float, etc.
+       * @param C Right Cauchy-Green tensor
+       * @param K Bulk modulus
+       * @param G Shear modulus
+       * @return A tuple containing energy density, its first and second derivative w.r.t. C
+       *
+       */
       template < typename T >
       std::tuple< T, Tensor33t< T >, Tensor3333t< T > > PenceGouPotentialB( const Tensor33t< T >& C,
                                                                             const double          K,

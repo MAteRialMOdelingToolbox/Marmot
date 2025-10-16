@@ -350,7 +350,7 @@ namespace Marmot::Materials {
       using namespace Marmot::ContinuumMechanics;
       Tensor33d   Ce;
       Tensor3333d dCe_dFe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::CauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
       double      psi_;
       Tensor33d   dPsi_dCe;
@@ -378,7 +378,7 @@ namespace Marmot::Materials {
     Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe )
     {
       using namespace Marmot::ContinuumMechanics;
-      Tensor33t< T > Ce = DeformationMeasures::CauchyGreen( Fe );
+      Tensor33t< T > Ce = DeformationMeasures::rightCauchyGreen( Fe );
 
       T              psi_;
       Tensor33t< T > dPsi_dCe;
