@@ -262,7 +262,7 @@ namespace Marmot {
      * \end{bmatrix}^T
      * \end{aligned}
      * \f]
-     * @note Shear components in the Voigt vector (\f$\gamma_ { ij }\f$ ) are engineering strains,
+     * @note Shear components in the Voigt vector (\f$\gamma_{ij}\f$ ) are engineering strains,
      * which are twice the tensor shear components.
      */
     Marmot::Vector6d strainToVoigt( const Eigen::Matrix3d& strainTensor );
