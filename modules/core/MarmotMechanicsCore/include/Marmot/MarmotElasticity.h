@@ -35,12 +35,12 @@ namespace Marmot {
   namespace ContinuumMechanics {
 
     /**
-     * \brief Functions for the description of isotropic elastic behavior
+     * @brief Functions for the description of isotropic elastic behavior
      */
     namespace Elasticity::Isotropic {
 
       /**
-       * \brief Computes the isotropic Young's modulus \f$ E \f$ from the compression modulus \f$ K \f$
+       * @brief Computes the isotropic Young's modulus \f$ E \f$ from the compression modulus \f$ K \f$
        * and shear modulus \f$ G \f$.
        *
        *\f[
@@ -57,7 +57,7 @@ namespace Marmot {
       }
 
       /**
-       * \brief Computes the isotropic Poisson's ratio \f$ \nu \f$ from the compression modulus \f$ K \f$
+       * @brief Computes the isotropic Poisson's ratio \f$ \nu \f$ from the compression modulus \f$ K \f$
        * and shear modulus \f$ G \f$.
        *
        *\f[
@@ -74,7 +74,7 @@ namespace Marmot {
       }
 
       /**
-       * \brief Computes the isotropic shear modulus \f$ G \f$ from the Young's modulus \f$ E \f$
+       * @brief Computes the isotropic shear modulus \f$ G \f$ from the Young's modulus \f$ E \f$
        * and Poisson's ratio \f$ \nu \f$.
        *
        *\f[
@@ -90,7 +90,7 @@ namespace Marmot {
       }
 
       /**
-       * \brief Computes the isotropic Lamé parameter \f$ \lambda \f$ from the Young's modulus \f$ E \f$ and Poisson's
+       * @brief Computes the isotropic Lamé parameter \f$ \lambda \f$ from the Young's modulus \f$ E \f$ and Poisson's
        * ratio \f$ \nu \f$.
        *
        *\f[
@@ -107,7 +107,7 @@ namespace Marmot {
       }
 
       /**
-       * \brief Computes the isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
+       * @brief Computes the isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
        *\f[
          \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                         \frac{1}{E} & \frac{-\nu}{E} & \frac{-\nu}{E} & 0 & 0 & 0 \\
@@ -132,7 +132,7 @@ namespace Marmot {
       Matrix6d complianceTensor( const double E, const double nu );
 
       /**
-       * \brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
+       * @brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
        * Young's modulus \f$E\f$ and Poisson's ratio \f$\nu\f$.
        *
        *\f[
@@ -153,7 +153,7 @@ namespace Marmot {
       Matrix6d stiffnessTensor( const double E, const double nu );
 
       /**
-       * \brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
+       * @brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
        * the bulk modulus \f$K\f$ and shear modulus \f$G\f$.
        *
        * @param K Bulk modulus \f$K\f$.
@@ -165,12 +165,12 @@ namespace Marmot {
     } // namespace Elasticity::Isotropic
 
     /**
-     * \brief Functions for the description of transversely isotropic elastic behavior
+     * @brief Functions for the description of transversely isotropic elastic behavior
      */
     namespace Elasticity::TransverseIsotropic {
 
       /**
-       * \brief Computes the transversely isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
+       * @brief Computes the transversely isotropic compliance tensor \f$\mathbb{C}^{-1}\f$.
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                        \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{12}}{E_1} & 0 & 0 & 0 \\
@@ -206,7 +206,7 @@ namespace Marmot {
                                  const double nu23,
                                  const double G12 );
       /**
-       * \brief Computes the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
+       * @brief Computes the transversely isotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the transversely
        * isotropic compliance tensor \f$ \mathbb{C}^{-1} \f$.
        *
        * @param E1 Out-of-plane Young's modulus \f$E_1\f$.
@@ -224,11 +224,11 @@ namespace Marmot {
     } // namespace Elasticity::TransverseIsotropic
 
     /**
-     * \brief Functions for the description of orthotropic elastic behavior
+     * @brief Functions for the description of orthotropic elastic behavior
      */
     namespace Elasticity::Orthotropic {
       /**
-       * \brief Computes the orthotropic compliance tensor \f$\mathbb{C}^{-1}\f$,
+       * @brief Computes the orthotropic compliance tensor \f$\mathbb{C}^{-1}\f$,
        * defined in the principal material directions \f$x_1\f$, \f$x_2\f$, and \f$x_3\f$.
        *
        *\f[
@@ -263,7 +263,7 @@ namespace Marmot {
                                  const double G23,
                                  const double G31 );
       /**
-       * \brief Computes the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance
+       * @brief Computes the orthotropic stiffness tensor \f$ \mathbb{C} \f$ as inverse of the orthotropic compliance
        * tensor
        * \f$ \mathbb{C}^{-1} \f$.
        *

@@ -106,9 +106,10 @@ namespace Marmot {
       };
 
       namespace FirstOrderDerived {
-        /// @brief Computes the exponential of a square second rank tensor and its first-order derivative.
-        /// @details See the documentation of `computeTensorExponential` without derivative
-        ///          for additional details.
+        /** @brief Computes the exponential of a square second rank tensor and its first-order derivative.
+         * @details See the documentation of `computeTensorExponential` without derivative
+         *          for additional details.
+         */
         template < typename T, size_t tensorSize >
         TensorExponentialResult< T, tensorSize > computeTensorExponential(
           const Fastor::Tensor< T, tensorSize, tensorSize >& theTensor,

@@ -100,7 +100,7 @@ namespace Marmot {
      * @brief Initializes the 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
      * @details A fully antisymmetric third-order tensor defined as
      * \f[
-     *   \E_{ijk} =
+     *   E_{ijk} =
      *   \begin{cases}
      *     +1 & \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
      *     -1 & \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -120,7 +120,7 @@ namespace Marmot {
      * @brief 2D Levi-Civita permutation tensor \f$E_{ij}\f$.
      * @details A fully antisymmetric second-order tensor defined as
      * \f[
-     *   \E_{ij} =
+     *   E_{ij} =
      *   \begin{cases}
      *     +1 & \text{if } (i,j) = (1,2), \\
      *     -1 & \text{if } (i,j) = (2,1), \\
@@ -143,8 +143,9 @@ namespace Marmot {
      */
     EigenTensors::Tensor33d Initialize_I2();
 
-    /// @brief Second-order identity tensor.
-    /// @copydetails Initialize_I2
+    /** @brief Second-order identity tensor.
+     * @copydetails Initialize_I2
+     */
     inline const EigenTensors::Tensor33d I2 = Initialize_I2();
 
     /**
@@ -210,9 +211,9 @@ namespace Marmot {
      * @tparam nDim Spatial dimension (2 or 3).
      * @return The Levi-Civita tensor:
      * - In 2D: \f$E_{ij}\f$, a second-order antisymmetric tensor with components
-     * \copydetails Initialize_LeviCivita2D
+     * @copydetails Initialize_LeviCivita2D
      * - In 3D: \f$E_{ijk}\f$, a third-order antisymmetric tensor with components
-     * \copydetails Initialize_LeviCivita3D
+     * @copydetails Initialize_LeviCivita3D
      */
     template < int nDim >
     constexpr Eigen::TensorFixedSize< double, Eigen::Sizes< getNumberOfDofForRotation( nDim ), nDim, nDim > > getReferenceToCorrectLeviCivita()
@@ -230,8 +231,9 @@ namespace Marmot {
   } // namespace ContinuumMechanics::CommonTensors
 
   namespace ContinuumMechanics::TensorUtility {
-    /// @brief Kronecker delta function \f$ \delta_{ab} \f$.
-    /// @return 1 if a == b, otherwise 0.
+    /** @brief Kronecker delta function \f$ \delta_{ab} \f$.
+     * @return 1 if a == b, otherwise 0.
+     */
     constexpr int d( int a, int b )
     {
       return a == b ? 1 : 0;
@@ -263,7 +265,7 @@ namespace Marmot {
 
     /**
      * @brief Map an object's raw data as a fixed-size Eigen matrix (const version).
-     * \copydetails as
+     * @copydetails as
      */
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )

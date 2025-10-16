@@ -36,8 +36,9 @@
 
 namespace Marmot {
   /**
-   * \namespace This namespace includes functions needed for calculations with stress and strain tensors written in
-   * voigt notation.
+   * @namespace ContinuumMechanics::VoigtNotation
+   * @brief This namespace includes functions needed for calculations with stress and strain tensors written in voigt
+   * notation.
    */
   namespace ContinuumMechanics::VoigtNotation {
 
@@ -47,10 +48,8 @@ namespace Marmot {
 
     /**
      * @brief Computes the size of the Voigt notation array based on the spatial dimension.
-     *
      * @param x The spatial dimension (e.g., 2 for 2D, 3 for 3D).
      * @return The size of the Voigt notation array as a VoigtSize.
-     *
      * @note The calculation is based on the formula: \f$ \frac{x * x + x}{2} \f$.
      */
     constexpr VoigtSize voigtSizeFromDimension( int x )
@@ -58,31 +57,35 @@ namespace Marmot {
       return (VoigtSize)( ( ( x * x ) + x ) >> 1 );
     }
 
-    /// @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
-    /// @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
+    /** @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
+     * @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
+     */
     extern const Marmot::Vector6d P;
 
-    /// @brief Predefined 6D vector with inverse scaling factor (0.5x) for shear components in Voigt notation.
-    /// @details The vector contains inverse scaling factors: {1, 1, 1, 0.5, 0.5, 0.5}.
+    /** @brief Predefined 6D vector with inverse scaling factor (0.5x) for shear components in Voigt notation.
+     * @details The vector contains inverse scaling factors: {1, 1, 1, 0.5, 0.5, 0.5}.
+     */
     extern const Marmot::Vector6d PInv;
 
-    /// @brief Predefined 6D Vector representing the identity tensor in Voigt notation.
-    /// @details The vector contains ones in all components: {1, 1, 1, 0, 0, 0}.
+    /** @brief Predefined 6D Vector representing the identity tensor in Voigt notation.
+     * @details The vector contains ones in all components: {1, 1, 1, 0, 0, 0}.
+     */
     extern const Marmot::Vector6d I;
 
-    /// @brief Predefined 6D Vector representing the hydrostatic projection tensor in Voigt notation.
-    /// @details The vector contains: {1/3, 1/3, 1/3, 0, 0, 0}.
+    /** @brief Predefined 6D Vector representing the hydrostatic projection tensor in Voigt notation.
+     * @details The vector contains: {1/3, 1/3, 1/3, 0, 0, 0}.
+     */
     extern const Marmot::Vector6d IHyd;
 
-    /// @brief Deviatoric projection tensor in Voigt notation.
-    /// @details \f$ 6 \times 6 \f$ matrix.
+    /** @brief Deviatoric projection tensor in Voigt notation.
+     * @details \f$ 6 \times 6 \f$ matrix.
+     */
     extern const Matrix6d IDev;
 
     // Plane Stress handling
 
     /**
      * @brief Converts a 3D stress vector in Voigt notation to a plane stress vector.
-     *
      * @param voigt 6-component 3D stress vector in Voigt notation:
      * \f[
      * \begin{bmatrix}
@@ -90,52 +93,43 @@ namespace Marmot {
      * \end{bmatrix}^T
      * \f]
      * where \f$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\f$ in plane stress conditions.
-     *
      * @return 3-component plane stress vector in Voigt notation:
      * \f[
      * \begin{bmatrix}
      * \sigma_{11} & \sigma_{22} & \sigma_{12}
      * \end{bmatrix}^T
      * \f]
-     *
      * @note This function extracts only the in-plane components of a 3D stress vector.
      */
     Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
 
     /**
      * @brief Converts a plane stress vector in Voigt notation back to a 3D Voigt vector.
-     *
      * @param voigtPlane 3-component plane stress vector in Voigt notation:
      * \f[
      * \begin{bmatrix}
      * \sigma_{11} & \sigma_{22} & \sigma_{12}
      * \end{bmatrix}^T
      * \f]
-     *
      * @return 6-component 3D stress vector in Voigt notation:
      * \f[
      * \begin{bmatrix}
      * \sigma_{11} & \sigma_{22} & 0 & \sigma_{12} & 0 & 0
      * \end{bmatrix}^T
      * \f]
-     *
      * @note The out-of-plane components are set to zero, suitable for plane stress conditions.
      */
     Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
 
     /**
      * @brief Reduces a 3D Voigt vector to a lower-dimensional vector defined by `voigtSize`.
-     *
      * @tparam voigtSize Target Voigt dimension (1, 3, or 6).
      * @param Voigt3D Input 6-component 3D Voigt vector.
-     *
      * @return Reduced Voigt vector of size `voigtSize`.
-     *
      * @note Considered cases:
      * - `voigtSize = 1`: Returns the \f$\sigma_{11}\f$ component.
      * - `voigtSize = 3`: Returns the plane stress components using `voigtToPlaneVoigt()`.
      * - `voigtSize = 6`: Returns the input 3D vector unchanged.
-     *
      * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
      */
     template < enum VoigtSize voigtSize >
@@ -153,12 +147,9 @@ namespace Marmot {
 
     /**
      * @brief Constructs a 3D Voigt vector from a lower-dimensional Voigt vector.
-     *
      * @tparam voigtSize Dimension of the input Voigt vector (1, 3, or 6).
      * @param Voigt Input Voigt vector of size `voigtSize`.
-     *
      * @return 6-component 3D Voigt vector.
-     *
      * @note Considered cases:
      * - `voigtSize = 1`: Returns a 3D vector with only \f$\sigma_{11}\f$ non-zero:
      * \f[
@@ -168,7 +159,6 @@ namespace Marmot {
      * \f]
      * - `voigtSize = 3`: Returns a 3D Voigt vector by calling `planeVoigtToVoigt()`.
      * - `voigtSize = 6`: Returns the input vector unchanged.
-     *
      * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
      */
     template < enum VoigtSize voigtSize >
@@ -188,7 +178,6 @@ namespace Marmot {
 
     /**
      * @brief Converts a 6-component Voigt strain vector to a 3x3 strain tensor.
-     *
      * @tparam T Scalar type (e.g., double, float).
      * @param voigt 6-component strain vector in Voigt notation:
      * \f[
@@ -196,7 +185,6 @@ namespace Marmot {
      * \varepsilon_{11} & \varepsilon_{22} & \varepsilon_{33} & \gamma_{12} & \gamma_{13} & \gamma_{23}
      * \end{bmatrix}^T
      * \f]
-     *
      * @return 3x3 strain tensor:
      * \f[
      * \begin{bmatrix}
@@ -205,7 +193,6 @@ namespace Marmot {
      * \gamma_{13}/2 & \gamma_{23}/2 & \varepsilon_{33} \\
      * \end{bmatrix}
      * \f]
-     *
      * @note Shear components in Voigt notation are engineering strains and are halved in the resulting tensor.
      */
     template < typename T >
@@ -222,7 +209,6 @@ namespace Marmot {
 
     /**
      * @brief Converts a 6-component Voigt stress vector to a 3x3 stress tensor.
-     *
      * @tparam T Scalar type (e.g., double, float).
      * @param voigt 6-component stress vector in Voigt notation:
      * \f[
@@ -230,7 +216,6 @@ namespace Marmot {
      * \sigma_{11} & \sigma_{22} & \sigma_{33} & \sigma_{12} & \sigma_{13} & \sigma_{23}
      * \end{bmatrix}^T
      * \f]
-     *
      * @return 3x3 stress tensor:
      * \f[
      * \begin{bmatrix}
@@ -239,7 +224,6 @@ namespace Marmot {
      * \sigma_{13} & \sigma_{23} & \sigma_{33} \\
      * \end{bmatrix}
      * \f]
-     *
      */
     template < typename T >
     Eigen::Matrix< T, 3, 3 > voigtToStress( const Eigen::Matrix< T, 6, 1 >& voigt )
@@ -255,7 +239,6 @@ namespace Marmot {
 
     /**
      * @brief Converts a 3x3 strain tensor to a 6-component Voigt strain vector.
-     *
      * @param strainTensor 3x3 strain tensor:
      * \f[
      * \boldsymbol{\varepsilon} =
@@ -265,7 +248,6 @@ namespace Marmot {
      * \varepsilon_{31} & \varepsilon_{32} & \varepsilon_{33} \\
      * \end{bmatrix}
      * \f]
-     *
      * @return 6-component strain vector in Voigt notation:
      * \f[
      * \begin{aligned}
@@ -287,7 +269,6 @@ namespace Marmot {
 
     /**
      * @brief Converts a 3x3 stress tensor to a 6-component Voigt stress vector.
-     *
      * @tparam T Scalar type (e.g., double, float).
      * @param stressTensor 3x3 stress tensor:
      * \f[
@@ -298,7 +279,6 @@ namespace Marmot {
      * \sigma_{31} & \sigma_{32} & \sigma_{33} \\
      * \end{bmatrix}
      * \f]
-     *
      * @return 6-component stress vector in Voigt notation:
      * \f[
      * \boldsymbol{\sigma}^{\text{Voigt}} =
@@ -306,7 +286,6 @@ namespace Marmot {
      * \sigma_{11} & \sigma_{22} & \sigma_{33} & \sigma_{12} & \sigma_{13} & \sigma_{23}
      * \end{bmatrix}^T
      * \f]
-     *
      * @note Shear components are copied directly; no factor of 2 is applied.
      */
     template < typename T = double >
@@ -326,11 +305,8 @@ namespace Marmot {
 
     /**
      * @brief Converts a fourth-order stiffness tensor to its Voigt notation representation (\f$ 6 \times 6 \f$ matrix).
-     *
      * @param C The fourth-order stiffness tensor represented as an Eigen::Tensor<double, 4>.
-     *
      * @return An Eigen::Matrix<double, 6, 6> representing the stiffness tensor in Voigt notation.
-     *
      * @note The input tensor `C` must follow the symmetry properties of a stiffness tensor for the
      *       conversion to be valid (minor symmetry).
      */
@@ -339,9 +315,7 @@ namespace Marmot {
     /**
      * @brief Converts a stiffness matrix in Voigt notation (\f$ 6 \times 6 \f$ matrix) to a 4th-order stiffness tensor
      * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
-     *
      * @param voigtStiffness The \f$ 6 \times 6 \f$ matrix representing the stiffness in Voigt notation.
-     *
      * @return An Eigen::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor.
      *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
      */
@@ -350,12 +324,10 @@ namespace Marmot {
     /**
      * @brief Converts a stress vector in Voigt notation to its corresponding tensor form.
      *
-     * This function handles 1D, 2D, and 3D stress vectors in Voigt notation and returns
+     * @details This function handles 1D, 2D, and 3D stress vectors in Voigt notation and returns
      * the full symmetric stress tensor.
-     *
      * @tparam nDim Dimension of the stress tensor (1, 2, or 3).
      * @param Voigt Input stress vector in Voigt notation, size `VOIGTFROMDIM(nDim) x 1`:
-     *
      * - 1D: \f$ \boldsymbol{\sigma}^{\text{Voigt}} =
      *   \begin{bmatrix} \sigma_{11} \end{bmatrix}^T \f$
      * - 2D: \f$ \boldsymbol{\sigma}^{\text{Voigt}} =
@@ -363,11 +335,8 @@ namespace Marmot {
      * - 3D: \f$ \boldsymbol{\sigma}^{\text{Voigt}} =
      *   \begin{bmatrix} \sigma_{11} & \sigma_{22} & \sigma_{33} & \sigma_{12} & \sigma_{13} & \sigma_{23}
      * \end{bmatrix}^T \f$
-     *
      * @return Symmetric stress tensor of size \f$ nDim \times nDim \f$.
-     *
      * @throws std::invalid_argument If `nDim` is not 1, 2, or 3.
-     *
      * @note For 2D and 3D, the off-diagonal shear components in the tensor are taken
      *       directly from the Voigt vector (no factor of 2 applied).
      */
@@ -388,13 +357,11 @@ namespace Marmot {
     /**
      * @brief Converts a strain tensor to its corresponding Voigt notation vector.
      *
-     * This function supports 1D, 2D, and 3D strain tensors and returns the corresponding
+     * @details This function supports 1D, 2D, and 3D strain tensors and returns the corresponding
      * Voigt vector (column vector). Shear components are scaled appropriately for engineering strain.
-     *
      * @tparam nDim Dimension of the strain tensor (1, 2, or 3).
      * @param strain Input strain tensor of size `nDim x nDim`.
      * @return Column vector of size `VOIGTFROMDIM(nDim) x 1` representing the strain in Voigt notation.
-     *
      * - 1D: \f$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
      *   \begin{bmatrix} \varepsilon_{11} \end{bmatrix}^T \f$
      * - 2D: \f$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
@@ -427,14 +394,13 @@ namespace Marmot {
       /**
        * @brief Computes the principal strains by solving the eigenvalue problem.
        *
-       * This function computes the eigenvalues of the strain tensor reconstructed
+       * @details This function computes the eigenvalues of the strain tensor reconstructed
        * from the given Voigt strain vector. The eigenvalues correspond to the
        * principal strains \f$ \varepsilon_1, \varepsilon_2, \varepsilon_3 \f$:
        *\f[
            \displaystyle |\varepsilon_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
        \lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm} \varepsilon_1,\,
        \varepsilon_2,\, \varepsilon_3 \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return A 3D vector containing the principal strains (unsorted).
        */
@@ -443,7 +409,7 @@ namespace Marmot {
       /**
        * @brief Computes the principal stresses by solving the eigenvalue problem.
        *
-       * This function computes the eigenvalues of the stress tensor reconstructed
+       * @details This function computes the eigenvalues of the stress tensor reconstructed
        * from the given Voigt stress vector. The eigenvalues correspond to the
        * principal stresses \f$ \sigma_1, \sigma_2, \sigma_3 \f$:
        * \f[
@@ -459,7 +425,7 @@ namespace Marmot {
       /**
        * @brief Computes the principal strains from Haigh–Westergaard coordinates.
        *
-       * This function transforms the Haigh–Westergaard coordinates
+       * @details This function transforms the Haigh–Westergaard coordinates
        * \f$ (\xi, \rho, \theta) \f$ into the corresponding principal strains
        * \f$ \varepsilon_1, \varepsilon_2, \varepsilon_3 \f$ using:
        * \f[
@@ -482,10 +448,8 @@ namespace Marmot {
        *     -\sin\!\left(\tfrac{\pi}{6} + \theta\right)
        *   \end{bmatrix}
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return A 3D vector of the principal strains, sorted by magnitude.
-       *
        * @note The computation of \f$ \xi \f$, \f$ \rho \f$, and \f$ \theta \f$
        *       is performed in `haighWestergaardFromStrain()`.
        */
@@ -495,14 +459,13 @@ namespace Marmot {
       /**
        * @brief Computes the principal stress directions corresponding to the principal stresses.
        *
-       * This function solves the eigenvalue problem
+       * @details This function solves the eigenvalue problem
        * \f[
        *   \left( \boldsymbol{\sigma} - \sigma_k \cdot \boldsymbol{I} \right) \cdot
        *   \boldsymbol{x}^{(k)} = 0
        * \f]
        * to obtain the eigenvectors \f$ \boldsymbol{x}^{(k)} \f$ associated with
        * the principal stresses \f$ \sigma_k \f$.
-       *
        * @param stress 6-component stress vector in Voigt notation.
        * @return A 3x3 matrix whose columns are the principal stress directions (unsorted).
        */
@@ -511,13 +474,12 @@ namespace Marmot {
       /**
        * @brief Computes the equivalent von Mises stress.
        *
-       * Defined as:
+       * @details Defined as:
        * \f[
        *   \sigma_\text{eq} = \sqrt{3 \cdot J_2}
        * \f]
        * where \f$ J_2 \f$ is the second invariant of the deviatoric stress tensor
        * (see `J2()`).
-       *
        * @param stress 6-component stress vector in Voigt notation.
        * @return The von Mises equivalent stress.
        */
@@ -526,11 +488,10 @@ namespace Marmot {
       /**
        * @brief Computes the equivalent von Mises strain.
        *
-       * Based on the deviatoric strain tensor \f$ e_{ij} \f$:
+       * @details Based on the deviatoric strain tensor \f$ e_{ij} \f$:
        * \f[
        *   \varepsilon^\text{(eq)} = \sqrt{\tfrac{2}{3} \, e_{ij} e_{ij}}
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return The von Mises equivalent strain.
        */
@@ -539,11 +500,10 @@ namespace Marmot {
       /**
        * @brief Computes the Euclidean norm of the strain tensor.
        *
-       * Defined as:
+       * @details Defined as:
        * \f[
        *   ||\boldsymbol{\varepsilon}|| = \sqrt{ \varepsilon_{ij}\varepsilon_{ij}}
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param strain 6-component strain vector in Voigt notation.
        * @return The Euclidean norm of the strain tensor.
@@ -557,11 +517,10 @@ namespace Marmot {
       /**
        * @brief Computes the Euclidean norm of the stress tensor.
        *
-       * Defined as:
+       * @details Defined as:
        * \f[
        *   ||\boldsymbol{\sigma}|| = \sqrt{\sigma_{ij}\sigma_{ij}}
        * \f]
-       *
        * @param stress 6-component stress vector in Voigt notation.
        * @return The Euclidean norm of the stress tensor.
        */
@@ -571,14 +530,13 @@ namespace Marmot {
       /**
        * @brief Computes the volumetric plastic strain in compression.
        *
-       * Defined as:
+       * @details Defined as:
        * \f[
        *   \varepsilon^{\text{vol}}_{\ominus}
        *   = \sum_{i=1}^3 \left\langle -\varepsilon_i \right\rangle
        * \f]
        * where \f$ \varepsilon_i \f$ are the principal strains and
        * \f$ \langle \bullet \rangle \f$ denotes the Macaulay brackets.
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return The volumetric compressive strain.
        */
@@ -587,19 +545,17 @@ namespace Marmot {
       /**
        * @brief Computes the first invariant \f$ I_1 \f$ of the stress tensor.
        *
-       * The first invariant of the stress tensor \f$ \boldsymbol{\sigma} \f$ is the trace:
+       * @details The first invariant of the stress tensor \f$ \boldsymbol{\sigma} \f$ is the trace:
        * \f[
        *   I_1 = \operatorname{tr}(\boldsymbol{\sigma})
        *       = \sigma_{11} + \sigma_{22} + \sigma_{33}
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param stress 6-component stress vector in Voigt notation:
        *   \f$ \boldsymbol{\sigma}^{\text{Voigt}} =
        *     \begin{bmatrix}
        *       \sigma_{11} & \sigma_{22} & \sigma_{33} & \sigma_{12} & \sigma_{13} & \sigma_{23}
        *     \end{bmatrix}^T \f$
-       *
        * @return Value of the first invariant \f$ I_1 \f$.
        */
       template < typename T >
@@ -611,19 +567,17 @@ namespace Marmot {
       /**
        * @brief Computes the first invariant \f$ I^{(\varepsilon)}_1 \f$ of the strain tensor.
        *
-       * The first invariant of the strain tensor \f$ \boldsymbol{\varepsilon} \f$ is the trace:
+       * @details The first invariant of the strain tensor \f$ \boldsymbol{\varepsilon} \f$ is the trace:
        * \f[
        *   I^{(\varepsilon)}_1 = \operatorname{tr}(\boldsymbol{\varepsilon})
        *       = \varepsilon_{11} + \varepsilon_{22} + \varepsilon_{33}
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation:
        *   \f$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
        *     \begin{bmatrix}
        *       \varepsilon_{11} & \varepsilon_{22} & \varepsilon_{33} &
        *       \gamma_{12} & \gamma_{13} & \gamma_{23}
        *     \end{bmatrix}^T \f$
-       *
        * @return Value of the first strain invariant \f$ I^{(\varepsilon)}_1 \f$.
        */
       double I1Strain( const Marmot::Vector6d& strain ); //
@@ -631,18 +585,16 @@ namespace Marmot {
       /**
        * @brief Computes the second invariant \f$ I_2 \f$ of the stress tensor.
        *
-       * The second invariant of the stress tensor \f$ \boldsymbol{\sigma} \f$ is defined as:
+       * @details The second invariant of the stress tensor \f$ \boldsymbol{\sigma} \f$ is defined as:
        * \f[
        *   I_2 = \tfrac{1}{2}\left( \operatorname{tr}(\boldsymbol{\sigma})^2
        *         - \operatorname{tr}(\boldsymbol{\sigma}^2) \right)
        * \f]
-       *
        * In Voigt notation, this expands to:
        * \f[
        *   I_2 = \sigma_{11}\sigma_{22} + \sigma_{22}\sigma_{33} + \sigma_{33}\sigma_{11}
        *         - \sigma_{12}^2 - \sigma_{13}^2 - \sigma_{23}^2
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param stress 6-component stress vector in Voigt notation:
        *   \f$ \boldsymbol{\sigma}^{\text{Voigt}} =
@@ -663,7 +615,7 @@ namespace Marmot {
       /**
        * @brief Computes the second invariant \f$ I^{(\varepsilon)}_2 \f$ of the strain tensor.
        *
-       * For a strain tensor \f$ \boldsymbol{\varepsilon} \f$ in Voigt notation,
+       * @details For a strain tensor \f$ \boldsymbol{\varepsilon} \f$ in Voigt notation,
        * the second invariant is:
        * \f[
        *   I^{(\varepsilon)}_2 =
@@ -672,12 +624,10 @@ namespace Marmot {
        *     \varepsilon_{33}\varepsilon_{11}
        *     - \tfrac{1}{4}\left(\gamma_{12}^2 + \gamma_{13}^2 + \gamma_{23}^2\right)
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation:
        *   \f$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
        *     [ \varepsilon_{11}, \varepsilon_{22}, \varepsilon_{33},
        *       \gamma_{12}, \gamma_{13}, \gamma_{23} ]^T \f$
-       *
        * @return Value of the second invariant \f$ I^{(\varepsilon)}_2 \f$.
        */
       double I2Strain( const Marmot::Vector6d& strain );
@@ -685,11 +635,10 @@ namespace Marmot {
       /**
        * @brief Computes the third invariant \f$ I_3 \f$ of the stress tensor.
        *
-       * Defined as the determinant of the Cauchy stress tensor \f$ \boldsymbol{\sigma} \f$:
+       * @details Defined as the determinant of the Cauchy stress tensor \f$ \boldsymbol{\sigma} \f$:
        * \f[
        *   I_3 = \det(\boldsymbol{\sigma})
        * \f]
-       *
        * Expanded in Voigt notation:
        * \f[
        *   I_3 =
@@ -699,7 +648,6 @@ namespace Marmot {
        *     - \sigma_{22}\sigma_{13}^2
        *     - \sigma_{33}\sigma_{12}^2
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param stress 6-component stress vector in Voigt notation.
        * @return Value of the third invariant \f$ I_3 \f$.
@@ -715,11 +663,10 @@ namespace Marmot {
       /**
        * @brief Computes the third invariant \f$ I^{(\varepsilon)}_3 \f$ of the strain tensor.
        *
-       * The third invariant is given by the determinant of the strain tensor:
+       * @details The third invariant is given by the determinant of the strain tensor:
        * \f[
        *   I^{(\varepsilon)}_3 = \det(\boldsymbol{\varepsilon})
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the third strain invariant \f$ I^{(\varepsilon)}_3 \f$.
        */
@@ -728,11 +675,10 @@ namespace Marmot {
       /**
        * @brief Computes the second invariant \f$ J_2 \f$ of the deviatoric stress tensor.
        *
-       * For the deviatoric stress tensor \f$ \boldsymbol{s} \f$:
+       * @details For the deviatoric stress tensor \f$ \boldsymbol{s} \f$:
        * \f[
        *   J_2 = \tfrac{1}{3} I_1^2 - I_2
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param stress 6-component stress vector in Voigt notation.
        * @return Value of the second deviatoric invariant \f$ J_2 \f$ (clamped to non-negative).
@@ -749,13 +695,12 @@ namespace Marmot {
       /**
        * @brief Computes the second invariant \f$ J^{(\varepsilon)}_2 \f$ of the deviatoric strain tensor.
        *
-       * For the deviatoric strain tensor \f$ \boldsymbol{e} \f$:
+       * @details For the deviatoric strain tensor \f$ \boldsymbol{e} \f$:
        * \f[
        *   J^{(\varepsilon)}_2 =
        *     \tfrac{1}{3} \left(I^{(\varepsilon)}_1\right)^2
        *     - I^{(\varepsilon)}_2
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the second deviatoric strain invariant \f$ J^{(\varepsilon)}_2 \f$.
        */
@@ -764,11 +709,10 @@ namespace Marmot {
       /**
        * @brief Computes the third invariant \f$ J_3 \f$ of the deviatoric stress tensor.
        *
-       * For the deviatoric stress tensor \f$ \boldsymbol{s} \f$:
+       * @details For the deviatoric stress tensor \f$ \boldsymbol{s} \f$:
        * \f[
        *   J_3 = \tfrac{2}{27} I_1^3 - \tfrac{1}{3} I_1 I_2 + I_3
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param stress 6-component stress vector in Voigt notation.
        * @return Value of the third deviatoric stress invariant \f$ J_3 \f$.
@@ -792,7 +736,6 @@ namespace Marmot {
        * \f[
        *   J^{(\varepsilon)}_3 = \det(\boldsymbol{e})
        * \f]
-       *
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the third deviatoric strain invariant \f$ J^{(\varepsilon)}_3 \f$.
        */
@@ -801,10 +744,9 @@ namespace Marmot {
       /**
        * @brief Computes principal values and their derivatives for a symmetric 3×3 matrix in Voigt notation.
        *
-       * This routine implements a fast algorithm to compute the principal values
+       * @details This routine implements a fast algorithm to compute the principal values
        * (eigenvalues) of a symmetric second-order tensor in Voigt notation
        * (off-diagonal entries are expected without the factor of 2).
-       *
        * @param S 6-component symmetric matrix in Voigt notation.
        * @return A pair consisting of:
        *   - A vector containing the (unsorted) principal values.
@@ -826,7 +768,6 @@ namespace Marmot {
        * \f[
        *   \frac{\partial \sigma_m}{\partial \boldsymbol{\sigma}}
        * \f]
-       *
        * @return 6-component vector representing \f$ \tfrac{\partial \sigma_m}{\partial \boldsymbol{\sigma}} \f$
        *         in Voigt notation.
        */
@@ -839,14 +780,11 @@ namespace Marmot {
        * \f[
        *   \frac{\partial \rho}{\partial \boldsymbol{\sigma}}
        * \f]
-       *
        * @tparam T Scalar type (e.g., double, float).
        * @param rho Precomputed Haigh–Westergaard coordinate \f$ \rho \f$.
        * @param stress 6-component stress vector in Voigt notation.
-       *
        * @return 6-component vector of partial derivatives
        *         \f$ \tfrac{\partial \rho}{\partial \boldsymbol{\sigma}} \f$ in Voigt notation.
-       *
        * @note Returns zero if \f$ \rho \leq 10^{-16} \f$ to avoid division by zero.
        */
       template < typename T >
@@ -866,7 +804,6 @@ namespace Marmot {
        *
        * @param theta Lode angle \f$ \theta \f$.
        * @param stress 6-component stress vector in Voigt notation.
-       *
        * @return 6-component vector of partial derivatives
        *         \f$ \tfrac{\partial \theta}{\partial \boldsymbol{\sigma}} \f$ in Voigt notation.
        * @note Returns zero if \f$ \theta \leq 10^{-15} \f$ or if \f$ \theta \geq \frac{\pi}{3} - 10^{-15} \f$.
@@ -874,13 +811,8 @@ namespace Marmot {
       Marmot::Vector6d dTheta_dStress( double theta, const Marmot::Vector6d& stress );
 
       /**
-       * @brief Computes the derivative of the lode angle \f$ \theta \f$
-       *        with respect to the second deviatoric invariant \f$ J_2 \f$.
-       *
-       * \f[
-       *   \frac{\partial \theta}{\partial J_2}
-       * \f]
-       *
+       * @brief Computes the derivative        \f$ \frac{\partial \theta}{\partial J_2}\f$ of the lode angle \f$ \theta
+       * \f$ with respect to the second deviatoric invariant \f$ J_2 \f$.
        * @param stress 6-component stress vector in Voigt notation.
        * @return Scalar derivative \f$ \tfrac{\partial \theta}{\partial J_2} \f$.
        */
@@ -927,8 +859,7 @@ namespace Marmot {
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}}\f$ of the third deviatoric
-       * invariant
-       * \f$ J_3 \f$ with respect to the stress vector in Voigt notation.
+       * invariant \f$ J_3 \f$ with respect to the stress vector in Voigt notation.
        *
        * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
        * @return Vector of partial derivatives \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}} \f$ in Voigt
@@ -1002,14 +933,13 @@ namespace Marmot {
        * \boldsymbol{\varepsilon}} \f$ of the Voigt-notated plastic strain vector \f$ \boldsymbol{\varepsilon}^{p} \f$
        * with respect to the Voigt-notated total strain vector \f$ \boldsymbol{\varepsilon} \f$.
        *
-       * The relation used is
+       * @details The relation used is
        * \f[
        *   \frac{\partial \boldsymbol{\varepsilon}^{p}}{\partial \boldsymbol{\varepsilon}}
        *   \;=\; \boldsymbol{I} \;-\; \mathbb{C}^{-1}\,\mathbb{C}^{(ep)}
        * \f]
        * where \f$ \mathbb{C}^{-1} \f$ is the elastic compliance (6×6) and \f$ \mathbb{C}^{(ep)} \f$ the elastoplastic
        * stiffness (6×6).
-       *
        * @param CelInv Elastic compliance tensor \f$ \mathbb{C}^{-1} \f$ (6×6 matrix).
        * @param Cep Elastoplastic stiffness tensor \f$ \mathbb{C}^{(ep)} \f$ (6×6 matrix).
        * @return 6×6 matrix \f$ \partial \boldsymbol{\varepsilon}^{p} / \partial \boldsymbol{\varepsilon} \f$ in Voigt
@@ -1064,8 +994,8 @@ namespace Marmot {
        * @brief Computes the transformation matrix \f$ T_{\varepsilon} \f$ to rotate a strain vector in Voigt notation
        * into another Cartesian coordinate system.
        *
-       * This function modifies the stress transformation matrix \f$T_{\varepsilon}\f$ to account for the engineering
-       * shear convention used for strains in Voigt notation. Specifically:
+       * @details This function modifies the stress transformation matrix \f$T_{\varepsilon}\f$ to account for the
+       * engineering shear convention used for strains in Voigt notation. Specifically:
        * - The upper-right 3×3 block is scaled by 0.5
        * - The lower-left 3×3 block is scaled by 2
        *
@@ -1077,7 +1007,6 @@ namespace Marmot {
        * \f[
        *   \boldsymbol{\varepsilon}' \;=\; \boldsymbol{Q}\,\boldsymbol{\varepsilon}\,\boldsymbol{Q}^{T}
        * \f]
-       *
        * @param transformedCoordinateSystem 3×3 rotation matrix \f$\boldsymbol{Q}\f$ that maps from
        * the original to the target Cartesian basis.
        * @return 6×6 transformation matrix \f$T_{\varepsilon}\f$ that transforms strain vectors in Voigt notation.
@@ -1087,8 +1016,7 @@ namespace Marmot {
       /**
        * @brief Computes the transformation matrix \f$ T_{\sigma} \f$ to rotate a stress vector in Voigt notation
        * into another Cartesian coordinate system.
-       *
-       * This function builds the 6×6 transformation matrix from the direction cosines of the new basis:
+       * @details This function builds the 6×6 transformation matrix from the direction cosines of the new basis:
        * \f[
        *   \boldsymbol{\sigma}'_{\text{voigt}} \;=\; T_{\sigma}\,\boldsymbol{\sigma}_{\text{voigt}},
        * \f]
@@ -1096,7 +1024,6 @@ namespace Marmot {
        * \f[
        *   \boldsymbol{\sigma}' \;=\; \boldsymbol{Q}\,\boldsymbol{\sigma}\,\boldsymbol{Q}^{T}.
        * \f]
-       *
        * @param transformedCoordinateSystem 3×3 rotation matrix \f$\boldsymbol{Q}\f$ that maps from
        * the original to the target Cartesian basis.
        * @return 6×6 transformation matrix \f$T_{\sigma}\f$ that transforms stress vectors in Voigt notation.
@@ -1105,20 +1032,16 @@ namespace Marmot {
 
       /**
        * @brief Calculates the projection matrix for mapping Voigt stress to a traction vector.
-       *
-       * This function returns the \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$
+       * @details This function returns the \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$
        * that maps a **Voigt-notated stress vector** \f$\boldsymbol{\sigma}_{\text{voigt}} \in \mathbb{R}^6\f$
        * to the **traction vector** \f$\mathbf{t}^{(\mathbf{n})} \in \mathbb{R}^3\f$ on a plane with
        * an outward unit normal vector \f$\mathbf{n}\f$.
-       *
        * The relationship is given by:
        * \f[
        * \mathbf{t}^{(\mathbf{n})} = \mathbf{P}^{(\mathbf{n})} \, \boldsymbol{\sigma}_{\text{voigt}}.
        * \f]
-       *
        * This expression is mathematically equivalent to Cauchy's formula \f$ \boldsymbol{t}^{(n)}_i =
        * \sigma_{ji} \, n_j \f$.
-       *
        * @param normalVector The \f$3 \times 1\f$ **unit vector** \f$\mathbf{n}\f$ representing the **normal**
        * of the plane.
        * @return The \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$.
@@ -1127,9 +1050,8 @@ namespace Marmot {
 
       /**
        * @brief Calculates the projection matrix for mapping a Voigt strain vector to the strain on a plane.
-       *
-       * This function is similar to `projectVoigtStressToPlane` but for **strains** in voigt notation. For more
-       * details, see the documentation of `projectVoigtStressToPlane`.
+       * @details This function is similar to `projectVoigtStressToPlane` but for **strains** in voigt notation. For
+       * more details, see the documentation of `projectVoigtStressToPlane`.
        * @param normalVector The \f$3 \times 1\f$ **unit vector** \f$\mathbf{n}\f$ representing the **normal**
        * of the plane.
        * @return The \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$.
@@ -1138,14 +1060,12 @@ namespace Marmot {
 
       /**
        * @brief Rotates a stress tensor in Voigt notation.
-       *
-       * This function rotates a stress tensor \f$ \boldsymbol{\sigma} \f$ using a rotation matrix
+       * @details This function rotates a stress tensor \f$ \boldsymbol{\sigma} \f$ using a rotation matrix
        * \f$ \boldsymbol{Q} \f$, while keeping the tensor in **Voigt notation**.
        * The rotated stress \f$ \boldsymbol{\sigma}^{\prime} \f$ is computed as:
        * \f[
        * \boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \, \boldsymbol{\sigma} \, \boldsymbol{Q}^{T}.
        * \f]
-       *
        * @param Q A \f$3 \times 3\f$ rotation matrix \f$ \boldsymbol{Q} \f$.
        * @param stress A Voigt-notated stress vector \f$ \boldsymbol{\sigma} \in \mathbb{R}^6 \f$.
        * @return The rotated Voigt-notated stress vector \f$ \boldsymbol{\sigma}^{\prime} \in \mathbb{R}^6 \f$.
