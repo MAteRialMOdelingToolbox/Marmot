@@ -107,7 +107,7 @@ namespace Marmot::ContinuumMechanics {
     /**
      * @brief Computes the out-of-plane strain correction component for plane stress conditions.
      *
-     * @details @details Determines the correction \f$\varepsilon_{33}^{\text{corr}}\f$ such that the resulting
+     * @details Determines the correction \f$\varepsilon_{33}^{\text{corr}}\f$ such that the resulting
      * stress satisfies plane stress conditions.
      * \f$ \boldsymbol{\varepsilon}^{\text{el}} \f$, so that the resulting stress satisfies plane stress:
      * \f[
