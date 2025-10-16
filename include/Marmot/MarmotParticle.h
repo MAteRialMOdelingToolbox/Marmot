@@ -108,6 +108,9 @@ namespace Marmot::Meshfree {
     /// of the particle by shape functions.
     virtual void getVertexCoordinates( double* coordinates ) const = 0;
 
+    /// Get surface coordinates of a face of the particle (e.g., the face of a tetrahedron) for boundary loads
+    virtual void getFaceCoordinates( int faceID, double* coordinates ) const = 0;
+
     /// Get the coordinates of the center of the particle (e.g., the center of a tetrahedron)
     virtual void getCenterCoordinates( double* coordinates ) const = 0;
 
