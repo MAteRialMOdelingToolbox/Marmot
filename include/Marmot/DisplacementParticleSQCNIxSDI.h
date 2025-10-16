@@ -159,6 +159,18 @@ namespace Marmot::Meshfree {
 
     virtual void getVertexCoordinates( double* coordinates ) const override;
 
+    virtual void getFaceCoordinates( int faceID, double* coordinates ) const
+    {
+
+      Eigen::Map< Eigen::Matrix< double, nDim, 1 > > segmentCenter( coordinates );
+
+      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
+      getVertexCoordinates( vertexCoordinates.data() );
+
+      segmentCenter = 0.5 * ( vertexCoordinates.col( faceID % nVertices ) +
+                              vertexCoordinates.col( ( faceID - 1 ) % nVertices ) );
+    }
+
     virtual void getCenterCoordinates( double* coordinates ) const override
     {
       const VertexCoordinatesSized vertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +

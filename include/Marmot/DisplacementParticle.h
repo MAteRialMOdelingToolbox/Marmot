@@ -181,6 +181,11 @@ namespace Marmot::Meshfree {
 
     virtual void getVertexCoordinates( double* coordinates ) const override { _mp.getVertexCoordinates( coordinates ); }
 
+    virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
+    {
+      throw std::runtime_error( "Error: DisplacementParticle::getFaceCoordinates not implemented." );
+    }
+
     virtual void getCenterCoordinates( double* coordinates ) const override { getVertexCoordinates( coordinates ); }
 
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
