@@ -14,7 +14,7 @@
 <para>Matrix of viscoelastic state variables. </para>
         </briefdescription>
         <detaileddescription>
-<para>Dynamic-size matrix of shape <formula id="205">$[6 \times n]$</formula>, where each <formula id="206">$6\times 1$</formula> block corresponds to the internal state variables of a Maxwell branch in the Prony series. </para>
+<para>Dynamic-size matrix of shape <formula id="206">$[6 \times n]$</formula>, where each <formula id="207">$6\times 1$</formula> block corresponds to the internal state variables of a Maxwell branch in the Prony series. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -78,13 +78,13 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the stress and tangent stiffness matrix contributions of a generalized Maxwell (Prony series) viscoelastic material, and optionally updates the internal state variables.</para>
-<para>In what follows we use indicial notation without the Einstein summation over repeated indices except explicitly stated. The stress is updated as       <formula id="207">\[ \sigma^{k+1}_{ij} =\; \sum_{k,l}C^\infty_{ijkl} \Delta \varepsilon_{kl}
+<para>In what follows we use indicial notation without the Einstein summation over repeated indices except explicitly stated. The stress is updated as       <formula id="208">\[ \sigma^{k+1}_{ij} =\; \sum_{k,l}C^\infty_{ijkl} \Delta \varepsilon_{kl}
          \;+\; \sum_{\mu=1}^{M} \left[
              \sum_{k,l}\eta^\mu_{ijkl}\left(1 - e^{-\Delta t /
 \tau^{\mu}_{ij}}\right)\frac{\Delta\varepsilon_{kl}}{\Delta t}
              \;-\; \sigma^{ve,\mu}_{ij}\left(1 - e^{-\Delta t/\tau^\mu_{ij}}\right)
          \right],
-\]</formula> where <formula id="208">$C^\infty_{ijkl}$</formula> is the ultimate stiffness, <formula id="209">$\tau^\mu_{ij}$</formula> the relaxation times for each strain component, <formula id="210">$\eta^\mu_{ijkl} = \tau^\mu_{ij} C^\mu_{ijkl}$</formula> the effective viscosities, and <formula id="211">$\sigma^{ve,k}_{kl}$</formula> the internal state variables.</para>
+\]</formula> where <formula id="209">$C^\infty_{ijkl}$</formula> is the ultimate stiffness, <formula id="210">$\tau^\mu_{ij}$</formula> the relaxation times for each strain component, <formula id="211">$\eta^\mu_{ijkl} = \tau^\mu_{ij} C^\mu_{ijkl}$</formula> the effective viscosities, and <formula id="212">$\sigma^{ve,k}_{kl}$</formula> the internal state variables.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">props</parametername>
@@ -175,9 +175,9 @@
         </briefdescription>
         <detaileddescription>
 <para>Propagates the internal viscoelastic state variables</para>
-<para>In what follows we don&apos;t use the Einstein summation over repeated indices, the products are to be taken as hadamard products except otherwise stated. <formula id="212">$\sigma^{ve,\mu,k}_{kl}$</formula> from time step <formula id="213">$t^k$</formula> to <formula id="214">$t^{k+1}$</formula> according to   <formula id="215">\[ \sigma^{ve,\mu,k+1}_{kl} = e^{-\Delta t / \tau^\mu_{ij}}\, \sigma^{ve,\mu,k}_{kl}
+<para>In what follows we don&apos;t use the Einstein summation over repeated indices, the products are to be taken as hadamard products except otherwise stated. <formula id="213">$\sigma^{ve,\mu,k}_{kl}$</formula> from time step <formula id="214">$t^k$</formula> to <formula id="215">$t^{k+1}$</formula> according to   <formula id="216">\[ \sigma^{ve,\mu,k+1}_{kl} = e^{-\Delta t / \tau^\mu_{ij}}\, \sigma^{ve,\mu,k}_{kl}
             + \sum_{k,l}\left( \frac{\eta^\mu_{ijkl}}{\Delta t}(1 - e^{-\Delta t / \tau^\mu_{ij}})
-\right)\Delta\varepsilon_{kl}, \]</formula> where <formula id="209">$\tau^\mu_{ij}$</formula> are the relaxation times and  <formula id="216">$\eta^\mu_{ij} =
+\right)\Delta\varepsilon_{kl}, \]</formula> where <formula id="210">$\tau^\mu_{ij}$</formula> are the relaxation times and  <formula id="217">$\eta^\mu_{ij} =
 \tau^\mu_{ij} C^\mu_{ijkl}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>

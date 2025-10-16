@@ -89,7 +89,7 @@
 <parametername direction="inout">nonLocalRadius</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>nonlocal radius representing the tangent  <formula id="103">$\frac{d \Delta \kappa }{d \Delta
+<para>nonlocal radius representing the tangent  <formula id="104">$\frac{d \Delta \kappa }{d \Delta
 \bar{\kappa}}$</formula> </para>
 </parameterdescription>
 </parameteritem>
@@ -259,7 +259,7 @@
 <parametername direction="inout">nonLocalRadius</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>nonlocal radius representing the tangent  <formula id="103">$\frac{d \Delta \kappa }{d \Delta
+<para>nonlocal radius representing the tangent  <formula id="104">$\frac{d \Delta \kappa }{d \Delta
 \bar{\kappa}}$</formula> </para>
 </parameterdescription>
 </parameteritem>
@@ -472,15 +472,15 @@
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for gradient-enhanced hypo-elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="4">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="5">$ \sig $</formula>, the stretching rate tensor <formula id="6">$ \epsRate $</formula> the local variable <formula id="94">$\kappa$</formula>, the nonlocal variable <formula id="95">$\bar{\kappa}$</formula>, internal variables <formula id="96">$\boldsymbol{x}$</formula> and the time <formula id="7">$ t $</formula></para>
-<para><formula id="97">\[  \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="4">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="5">$ \sig $</formula>, the stretching rate tensor <formula id="6">$ \epsRate $</formula> the local variable <formula id="95">$\kappa$</formula>, the nonlocal variable <formula id="96">$\bar{\kappa}$</formula>, internal variables <formula id="97">$\boldsymbol{x}$</formula> and the time <formula id="7">$ t $</formula></para>
+<para><formula id="98">\[  \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="98">\[  \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t,
+<para><formula id="99">\[  \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t,
 t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="10">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula> <formula id="99">\[  \displaystyle \Delta\bar{\kappa} =   \dot{\bar{\kappa}}\, \Delta t \]</formula></para>
+<para><formula id="10">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula> <formula id="100">\[  \displaystyle \Delta\bar{\kappa} =   \dot{\bar{\kappa}}\, \Delta t \]</formula></para>
 <para>and the algorithmic tangents</para>
-<para><formula id="11">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula> <formula id="100">\[ \displaystyle \frac{d \sig }{d \bar{\kappa}} =  \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \]</formula> <formula id="101">\[ \displaystyle \frac{d \kappa }{d \eps }=  \frac{d \Delta \kappa }{d \Delta \eps } \]</formula>  <formula id="102">\[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}=  \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} =
+<para><formula id="11">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula> <formula id="101">\[ \displaystyle \frac{d \sig }{d \bar{\kappa}} =  \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \]</formula> <formula id="102">\[ \displaystyle \frac{d \kappa }{d \eps }=  \frac{d \Delta \kappa }{d \Delta \eps } \]</formula>  <formula id="103">\[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}=  \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} =
 l_{\text{nonlocal}} \]</formula> </para>
     </detaileddescription>
     <inheritancegraph>

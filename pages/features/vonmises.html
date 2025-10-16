@@ -100,12 +100,189 @@
            <div itemprop="articleBody">
              
   <section id="von-mises-model">
-<h1>Von Mises model<a class="headerlink" href="#von-mises-model" title="Link to this heading"></a></h1>
+<span id="vonmisesmodel"></span><h1>Von Mises model<a class="headerlink" href="#von-mises-model" title="Link to this heading"></a></h1>
+<p>An implementation of classical J2 plasticity with isotropic hardening.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Index</strong></p></th>
+<th class="head"><p><strong>Model Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(E\)</span></p></td>
+<td><p>Young’s modulus</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+<td><p>Poisson’s ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(f_\mathrm{y}^{0}\)</span></p></td>
+<td><p>Initial yield stress</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(H_\mathrm{iso,lin}\)</span></p></td>
+<td><p>First hardening parameter <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Delta f_\mathrm{y}^{0,\infty}\)</span></p></td>
+<td><p>Second hardening parameter <a class="footnote-reference brackets" href="#f1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(\delta\)</span></p></td>
+<td><p>Third hardening parameter <a class="footnote-reference brackets" href="#f1" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>State Variable</strong></p></th>
+<th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\kappa\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kappa</span></code></p></td>
+<td><p>Hardening variable <a class="footnote-reference brackets" href="#f1" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id3">3</a>,<a role="doc-backlink" href="#id4">4</a>)</span>
+<p>see <a class="reference internal" href="#vonmisesmodel-hardening"><span class="std std-ref">Hardening Law</span></a>.</p>
+</aside>
+</aside>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<section id="elastoplastic-constitutive-relations">
+<h3>Elastoplastic Constitutive Relations<a class="headerlink" href="#elastoplastic-constitutive-relations" title="Link to this heading"></a></h3>
+<p>The infinitesimal elastoplastic constitutive relations, which relate the stress and linearized strain rate tensors by means of the elastic continuum tangent operator, are given as</p>
+<div class="math notranslate nohighlight">
+\[\dot{\sigma}_{ij}
+= C^\mathrm{e}_{ijkl}\dot{\varepsilon}^\mathrm{e}_{kl}
+= C^\mathrm{e}_{ijkl}\left(\dot{\varepsilon}_{kl}-\dot{\varepsilon}^\mathrm{p}_{kl}\right).\]</div>
+<p>Therein, an additive split of the strain rate tensor in elastic and plastic parts is assumed.</p>
+<p>The elastic continuum tangent operator is given in terms of Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> and Poisson’s ratio <span class="math notranslate nohighlight">\(\nu\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[C^\mathrm{e}_{ijkl}
+= \frac{E\nu\,\delta_{ij}\delta_{kl}}{\left(1+\nu\right)\left(1-2\nu\right)} + \frac{E\left(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}\right)}{2\left(1+\nu\right)}\]</div>
+<p>Alternatively, the constitutive relations can be rewritten based on a volumetric-deviatoric split of the stress and strain rate tensors</p>
+<div class="math notranslate nohighlight">
+\[\dot{\sigma}_{ij}
+= \dot{p}\delta_{ij}+\dot{s}_{ij} \qquad\text{with}\quad \dot{p}=\frac{\dot{\sigma}_{ii}}{3}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\dot{\varepsilon}_{ij}
+= \frac{\dot{\varepsilon}_\mathrm{vol}}{3}\delta_{ij}+\dot{e}_{ij}
+= \left( \dot{\varepsilon}^\mathrm{e}_\mathrm{vol}+\dot{\varepsilon}^\mathrm{p}_\mathrm{vol} \right)\frac{\delta_{ij}}{3} + \dot{e}^\mathrm{e}_{ij}+\dot{e}^\mathrm{p}_{ij} \qquad\text{with}\quad \dot{\varepsilon}_\mathrm{vol}=\dot{\varepsilon}_{ii}\]</div>
+<p>as</p>
+<div class="math notranslate nohighlight">
+\[\dot{\sigma}_{ij}
+= \dot{p}\delta_{ij}+\dot{s}_{ij}
+= K \dot{\varepsilon}^\mathrm{e}_\mathrm{vol} + 2G \dot{e}^\mathrm{e}_{ij}\]</div>
+</section>
+<section id="yield-function">
+<h3>Yield Function<a class="headerlink" href="#yield-function" title="Link to this heading"></a></h3>
+<div class="math notranslate nohighlight">
+\[s_{ij} = \sigma_{ij}-\frac{1}{3}\sigma_{kk},\]</div>
+<p>The yield function, which is formulated in terms of the deviatoric part of the stress tensor is given as</p>
+<div class="math notranslate nohighlight">
+\[f\left(\boldsymbol{\sigma},\kappa\right)
+= \sqrt{s_{ij}s_{ij}}-\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\kappa\right),\]</div>
+<p>where <span class="math notranslate nohighlight">\(f_\mathrm{y}\left(\kappa\right)\)</span> is the yield stress under uniaxial tension, which may depend on the hardening variable <span class="math notranslate nohighlight">\(\kappa\)</span>.</p>
+</section>
+<section id="flow-rule">
+<h3>Flow Rule<a class="headerlink" href="#flow-rule" title="Link to this heading"></a></h3>
+<p>The model encompasses associated plastic flow, i.e., the plastic strain rate</p>
+<div class="math notranslate nohighlight">
+\[\dot{\varepsilon}^\mathrm{p}_{ij}
+= \dot{\lambda}\frac{\partial{}f}{\partial{}\sigma_{ij}}
+= \dot{\lambda}\frac{s_{ij}}{\sqrt{s_{ij}s_{ij}}}
+= \dot{\lambda}\boldsymbol{n}\]</div>
+<p>is proportional to the partial derivatives of the yield function with respect to the stress tensor.
+The plastic multiplier <span class="math notranslate nohighlight">\(\dot{\lambda}\)</span> is a proportionality constant.</p>
+</section>
+<section id="hardening-law">
+<span id="vonmisesmodel-hardening"></span><h3>Hardening Law<a class="headerlink" href="#hardening-law" title="Link to this heading"></a></h3>
+<p>The model includes non-linear isotropic hardening, which is controlled by the evolution of the yield stress as</p>
+<div class="math notranslate nohighlight">
+\[f_\mathrm{y}\left(\kappa\right)
+= f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right).\]</div>
+<p>Therein, <span class="math notranslate nohighlight">\(f_\mathrm{y}^0\)</span>, <span class="math notranslate nohighlight">\(H_\mathrm{iso,lin}\)</span>, <span class="math notranslate nohighlight">\(\Delta{}f_\mathrm{y}^{0,\infty}\)</span> and <span class="math notranslate nohighlight">\(\delta\)</span> are material parameters.</p>
+<img alt="../../_images/vonmises_hardening.svg" src="../../_images/vonmises_hardening.svg" />
+<p>The evolution of the hardening variable is given as</p>
+<div class="math notranslate nohighlight">
+\[\dot{\kappa}
+= \sqrt{\frac{2}{3}\dot{\varepsilon}^\mathrm{p}_{ij}\dot{\varepsilon}^\mathrm{p}_{ij}}
+= \dot{\lambda}\sqrt{\frac{2}{3}}.\]</div>
+<p>Therein, the factor <span class="math notranslate nohighlight">\(\sqrt{\frac{2}{3}}\)</span> ensures that <span class="math notranslate nohighlight">\(\dot{\kappa}\)</span> is equal to <span class="math notranslate nohighlight">\(\dot{\varepsilon}^\mathrm{p}_{11}\)</span> for uniaxial loading in <span class="math notranslate nohighlight">\(x_1\)</span> direction.</p>
+</section>
+<section id="loading-unloading-conditions-consistency-condition">
+<h3>Loading-Unloading Conditions, Consistency Condition<a class="headerlink" href="#loading-unloading-conditions-consistency-condition" title="Link to this heading"></a></h3>
+<p>The plastic multiplier and the yield function obey the Karush–Kuhn–Tucker conditions</p>
+<div class="math notranslate nohighlight">
+\[\dot{\lambda}f=0, \quad \dot{\lambda}\geq0, \quad f\leq0,\]</div>
+<p>as well as the consistency condition</p>
+<div class="math notranslate nohighlight">
+\[\dot{\lambda}\dot{f}=0.\]</div>
+</section>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The model is implemented using an (implicit) backward Euler integration scheme.
+Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}^{n}\)</span> and the value of the state variable <span class="math notranslate nohighlight">\(\kappa^{n}\)</span> at time <span class="math notranslate nohighlight">\(t^{n}\)</span> as well as an increment of the linearized strain tensor <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}=\boldsymbol{\varepsilon}^{n+1}-\boldsymbol{\varepsilon}^{n}\)</span>, an updated stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}^{n+1}\)</span> as well as an updated value of the state variable <span class="math notranslate nohighlight">\(\kappa^{n+1}\)</span> at time <span class="math notranslate nohighlight">\(t^{n+1}\)</span> are calculated by means of the stress update algorithm outlined below.</p>
+<section id="stress-update-algorithm">
+<h3>Stress Update Algorithm<a class="headerlink" href="#stress-update-algorithm" title="Link to this heading"></a></h3>
+<p>Given the strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span>, an elastic trial stress is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma}^\mathrm{trial}
+= \boldsymbol{\sigma}^n + \boldsymbol{C}^\mathrm{e}:\Delta\boldsymbol{\varepsilon}.\]</div>
+<p>If the trial stress does not satisfy the yield condition, i.e., <span class="math notranslate nohighlight">\(f\left(\boldsymbol{\boldsymbol{\sigma}^\mathrm{trial}},\kappa_n\right)&lt;0\)</span>, the step is treated as elastic, which means that the updated stress is equal to the trial stress</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma}^{n+1} = \boldsymbol{\sigma}^\mathrm{trial}\]</div>
+<p>and the hardening variable remains constant</p>
+<div class="math notranslate nohighlight">
+\[\kappa_{n+1} = \kappa_n.\]</div>
+<p>If the trial stress satisfies the yield condition, i.e., <span class="math notranslate nohighlight">\(f\left(\boldsymbol{\boldsymbol{\sigma}^\mathrm{trial}},\kappa_n\right)\geq0\)</span>, the step is treated as elastoplastic, triggering the radial return mapping algorithm.</p>
+<p>The updated deviatoric stress <span class="math notranslate nohighlight">\(\boldsymbol{s}^{n+1}\)</span> can be written as</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{s}^{n+1}
+= \boldsymbol{s}^{\mathrm{trial}} - 2G\Delta\boldsymbol{e}^\mathrm{p}
+= \boldsymbol{s}^{\mathrm{trial}} - 2G\Delta\lambda\boldsymbol{n}^{n+1}.\]</div>
+<p>Taking the norm on both sides results in</p>
+<div class="math notranslate nohighlight">
+\[\|\boldsymbol{s}^{n+1}\|
+= \|\boldsymbol{s}^{\mathrm{trial}}\| - 2G\Delta\lambda.\]</div>
+<p>Inserting the resulting expression for <span class="math notranslate nohighlight">\(\|\boldsymbol{s}^{n+1}\|\)</span> into the yield function <span class="math notranslate nohighlight">\(f^{n+1}\)</span></p>
+<div class="math notranslate nohighlight">
+\[f^{n+1}
+= \|\boldsymbol{s}^{n+1}\| -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\kappa^{n+1}\right)
+= 0\]</div>
+<p>and substituting <span class="math notranslate nohighlight">\(\Delta\lambda\)</span> with <span class="math notranslate nohighlight">\(\sqrt{\frac{3}{2}}\Delta\kappa\)</span> results in the scalar expression</p>
+<div class="math notranslate nohighlight">
+\[g\left(\Delta\kappa\right)
+= \|\boldsymbol{s}^\mathrm{trial}\| -\sqrt{6}G\Delta\kappa -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\Delta\kappa\right)
+= 0,\]</div>
+<p>which can be solved numerically to obtain <span class="math notranslate nohighlight">\(\Delta\kappa\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(\Delta\kappa\)</span> is known, the state variable is updated as</p>
+<div class="math notranslate nohighlight">
+\[\kappa^{n+1} = \kappa^{n} + \Delta\kappa\]</div>
+<p>and the stress update is performed by exploiting <span class="math notranslate nohighlight">\(\Delta\lambda=\sqrt{\frac{3}{2}}\Delta\kappa\)</span></p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma}^{n+1}
+= \boldsymbol{\sigma}^\mathrm{trial} - 2G\Delta\lambda\frac{\boldsymbol{s}^{\mathrm{trial}}}{\|\boldsymbol{s}^{\mathrm{trial}}\|}\]</div>
+</section>
+<section id="consistent-algorithmic-tangent-operator">
+<h3>Consistent Algorithmic Tangent Operator<a class="headerlink" href="#consistent-algorithmic-tangent-operator" title="Link to this heading"></a></h3>
+<p>The consistent tangent operator is given as</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial{\boldsymbol{s}^{n+1}}}{\partial\boldsymbol{\varepsilon}^{n+1}}
+= \mathbf{C}^\mathrm{e} - 2G\left( \left( 1+\frac{\partial f(\kappa^{n+1})}{\partial\kappa} \right)^{-1} -\frac{2G\Delta\lambda^{n+1}}{\|\boldsymbol{s}^\mathrm{trial}\|} \right) \boldsymbol{n}^{\mathrm{trial}}\otimes\boldsymbol{n}^{\mathrm{trial}} - \frac{4G^2\Delta\lambda}{\|\boldsymbol{s}^\mathrm{trial}\|}\boldsymbol{I}^{\mathrm{dev}}.\]</div>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModelE">
 <span id="_CPPv3N6Marmot9Materials13VonMisesModelE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModelE"></span><span id="Marmot::Materials::VonMisesModel"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VonMisesModel</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModelE" title="Link to this definition"></a><br /></dt>
@@ -141,6 +318,7 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>An implementation of classical J2 plasticity with isotropic hardening. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -166,8 +344,11 @@
 <span id="_CPPv3N6Marmot9Materials13VonMisesModel10getDensityEv"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel10getDensityEv"></span><span id="Marmot::Materials::VonMisesModel::getDensity"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel10getDensityEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get material density. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Density value (default: 0 if not overridden). </p>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if density is not defined. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density value. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -261,7 +442,8 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE">
 <span id="_CPPv3N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager::kappa__doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aa5bd7193977af81ff8bda544e6df6462"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">kappa</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Hardening parameter. </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -276,6 +458,7 @@
 
 </dd></dl>
 
+</section>
 </section>
 </section>
 

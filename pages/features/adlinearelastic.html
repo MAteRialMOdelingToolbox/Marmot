@@ -199,7 +199,20 @@ The stiffness tensor can be specified for isotropic material behavior as follows
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials15ADLinearElastic15computeStressADEPN8autodiff4dualEPKN8autodiff4dualEPKdKdRd">
 <span id="_CPPv3N6Marmot9Materials15ADLinearElastic15computeStressADEPN8autodiff4dualEPKN8autodiff4dualEPKdKdRd"></span><span id="_CPPv2N6Marmot9Materials15ADLinearElastic15computeStressADEPN8autodiff4dualEPKN8autodiff4dualEPKdKdRd"></span><span id="Marmot::Materials::ADLinearElastic::computeStressAD__autodiff::dualP.autodiff::dualCP.doubleCP.doubleC.doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic_1a22db08dc8c4fa0701e043567ad561273"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timeOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewDT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials15ADLinearElastic15computeStressADEPN8autodiff4dualEPKN8autodiff4dualEPKdKdRd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Compute the Cauchy stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}\)</span> given an increment of the linearized strain tensor <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span>. </p>
+<p>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span> can be obtained by means of automatic differentiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – <strong>[inout]</strong> Cauchy stress tensor </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeOld</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </p></li>
+<li><p><strong>pNewDT</strong> – <strong>[inout]</strong> Suggestion for a new time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials15ADLinearElastic12getStateViewERKNSt6stringE">

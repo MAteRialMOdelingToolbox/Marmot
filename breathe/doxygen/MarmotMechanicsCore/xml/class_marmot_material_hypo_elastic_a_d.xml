@@ -31,12 +31,56 @@
           <declname>pNewDT</declname>
         </param>
         <briefdescription>
+<para>Compute the Cauchy stress tensor <formula id="61">$\boldsymbol{\sigma}$</formula> given an increment of the linearized strain tensor <formula id="14">$\Delta\boldsymbol{\varepsilon}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
+<para>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <formula id="15">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula> can be obtained by means of automatic differentiation.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Cauchy stress tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>linearized strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeOld</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Old (pseudo-)time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">pNewDT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Suggestion for a new time increment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="37" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="52" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_material_hypo_elastic_a_d_1a8bab35fe61d2cb2a0b157832aa040e12" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -126,7 +170,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="43" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="58" column="16"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -179,7 +223,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="32" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" bodystart="32" bodyend="49"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" line="32" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h" bodystart="32" bodyend="64"/>
     <listofallmembers>
       <member refid="class_marmot_material_hypo_elastic_1af526ea494a3ba4d70de3be5d2d55b5a0" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElasticAD</scope><name>characteristicElementLength</name></member>
       <member refid="class_marmot_material_hypo_elastic_1a2c703a3ac8f0b1211402c28712ad9609" prot="public" virt="virtual"><scope>MarmotMaterialHypoElasticAD</scope><name>computePlaneStress</name></member>

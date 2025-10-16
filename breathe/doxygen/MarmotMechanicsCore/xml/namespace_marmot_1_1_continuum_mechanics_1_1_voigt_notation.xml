@@ -155,7 +155,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a 3D voigt notated vector to a plane stress vector.              <formula id="104">\[\displaystyle  \begin{bmatrix}
+<para>Converts a 3D voigt notated vector to a plane stress vector.              <formula id="105">\[\displaystyle  \begin{bmatrix}
   \sigma_{11}\\
   \sigma_{22}\\
   \sigma_{33} = 0\\
@@ -186,7 +186,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a voigt notated plane stress vector to a 3D vector.              <formula id="105">\[\displaystyle  \begin{bmatrix}
+<para>Converts a voigt notated plane stress vector to a 3D vector.              <formula id="106">\[\displaystyle  \begin{bmatrix}
   \sigma_{11}\\
   \sigma_{22}\\
   \sigma_{12}
@@ -226,7 +226,7 @@
         <detaileddescription>
 <para>Reduces a 3D voigt notated vector to a lower dimension defined by the template parameter &apos;voigtSize&apos;.</para>
 <para>Considered cases:<itemizedlist>
-<listitem><para>voigtSize <formula id="106">$ = 1 $</formula>:          <formula id="107">\[\displaystyle  \begin{bmatrix}
+<listitem><para>voigtSize <formula id="107">$ = 1 $</formula>:          <formula id="108">\[\displaystyle  \begin{bmatrix}
   \sigma_{11}\\
   \sigma_{22} = 0\\
   \sigma_{33} = 0\\
@@ -235,8 +235,8 @@
   \sigma_{23} = 0
      \end{bmatrix} \hspace{.5cm} \Rightarrow \hspace{.5cm} \sigma_{11}
 \]</formula></para>
-</listitem><listitem><para>voigtSize <formula id="108">$ = 3 $</formula>: Calls function voigtToPlaneVoigt().</para>
-</listitem><listitem><para>voigtSize <formula id="109">$ = 6 $</formula>: Returns the input vector </para>
+</listitem><listitem><para>voigtSize <formula id="109">$ = 3 $</formula>: Calls function voigtToPlaneVoigt().</para>
+</listitem><listitem><para>voigtSize <formula id="110">$ = 6 $</formula>: Returns the input vector </para>
 </listitem></itemizedlist>
 </para>
         </detaileddescription>
@@ -266,7 +266,7 @@
         <detaileddescription>
 <para>Computes a 3D voigt notated vector from a vector of lower dimension defined by the template parameter &apos;voigtSize&apos;.</para>
 <para>Considered cases:<itemizedlist>
-<listitem><para>voigtSize <formula id="106">$ = 1 $</formula>:          <formula id="110">\[ \displaystyle  \sigma_{11} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
+<listitem><para>voigtSize <formula id="107">$ = 1 $</formula>:          <formula id="111">\[ \displaystyle  \sigma_{11} \hspace{.5cm} \Rightarrow \hspace{.5cm} \begin{bmatrix}
                \sigma_{11}\\
                0\\
                0\\
@@ -275,8 +275,8 @@
                0
                        \end{bmatrix}
 \]</formula></para>
-</listitem><listitem><para>voigtSize <formula id="108">$ = 3 $</formula>: Calls function planeVoigtToVoigt().</para>
-</listitem><listitem><para>voigtSize <formula id="109">$ = 6 $</formula>: Returns the input vector </para>
+</listitem><listitem><para>voigtSize <formula id="109">$ = 3 $</formula>: Calls function planeVoigtToVoigt().</para>
+</listitem><listitem><para>voigtSize <formula id="110">$ = 6 $</formula>: Returns the input vector </para>
 </listitem></itemizedlist>
 </para>
         </detaileddescription>
@@ -302,7 +302,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a voigt notated strain vector to its corresponding strain tensor              <formula id="111">\[ \displaystyle  \begin{bmatrix}
+<para>Converts a voigt notated strain vector to its corresponding strain tensor              <formula id="112">\[ \displaystyle  \begin{bmatrix}
    \varepsilon_{11}\\
    \varepsilon_{22}\\
    \varepsilon_{33}\\
@@ -338,7 +338,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a voigt notated stress vector to its corresponding stress tensor              <formula id="112">\[ \displaystyle  \begin{bmatrix}
+<para>Converts a voigt notated stress vector to its corresponding stress tensor              <formula id="113">\[ \displaystyle  \begin{bmatrix}
    \sigma_{11}\\
    \sigma_{22}\\
    \sigma_{33}\\
@@ -369,7 +369,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a strain tensor to its corresponding voigt notated strain vector              <formula id="113">\[\displaystyle  \begin{bmatrix}
+<para>Converts a strain tensor to its corresponding voigt notated strain vector              <formula id="114">\[\displaystyle  \begin{bmatrix}
         \varepsilon_{11} &amp; \varepsilon_{12} &amp; \varepsilon_{13}\\
         \varepsilon_{21} &amp; \varepsilon_{22} &amp; \varepsilon_{23} \\
         \varepsilon_{31} &amp; \varepsilon_{32} &amp; \varepsilon_{33} \\
@@ -406,7 +406,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Converts a stress tensor to its corresponding voigt notated stress vector              <formula id="114">\[\displaystyle  \begin{bmatrix}
+<para>Converts a stress tensor to its corresponding voigt notated stress vector              <formula id="115">\[\displaystyle  \begin{bmatrix}
         \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13}\\
         \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\
         \sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33} \\
