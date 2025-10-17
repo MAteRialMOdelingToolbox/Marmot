@@ -20,7 +20,7 @@ Where
 :math:`\epsF` is the viscous flow strain (with the sum of :math:`\epsVE` and :math:`\epsF` representing the basic creep strain),
 :math:`\epsDC` is the strain due to drying creep and
 :math:`\epsSHR` is the total shrinkage strain.
-A potential temperature dependence is not taking into account.
+A potential temperature dependence is not taken into account.
 
 The implementation of the evolution of the visoelastic strain is using a solidifying Kelvin chain according to Bazant and Jirasek (2018). The drying creep strain is computed using an aging Kelvin chain.
 

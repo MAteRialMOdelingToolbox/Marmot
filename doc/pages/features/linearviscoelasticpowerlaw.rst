@@ -13,23 +13,24 @@ The constitutive law is given in total form as
 
 relating the nominal stress tensor :math:`\sig`
 to the elastic strain tensor :math:`\epsE`
-in terms of the fourth order stiffness tensor :math:`\Cel`.
+in terms of the isotropic fourth order stiffness tensor :math:`\Cel`.
 Where
 :math:`\eps` is the total strain and
 :math:`\epsVE` is the viscoelastic strain.
 
-The compliance function of the material is given as
+The rate of the compliance function of the material is given as
 
 .. math::
 
-   J(t) = \frac{1}{E} + m \left( \frac{t}{\tau}\right)^n,
+   \JRate(t) = n m \frac{t^{n-1}}{\tau^n},
 
 where
-:math:`t` is the time,
-:math:`E` is the Young's modulus,
+:math:`n` is the power law exponent,
 :math:`m` is the power law compliance parameter,
-:math:`n` is the power law exponent and
+:math:`t` is the time,
+and
 :math:`\tau` is a reference time.
+The viscoelastic compliance is approximated by a Kelvin Chain.
 
 The evolution of the viscoelastic strain :math:`\epsVE` is defined as
 
@@ -37,7 +38,13 @@ The evolution of the viscoelastic strain :math:`\epsVE` is defined as
 
    \epsVERate(t) = \int_0^t \JRate(t-t') \DelNu : d\sig(t'),
 
-in terms of the unit compliance tensor :math:`\DelNu`.
+in terms of the unit compliance tensor :math:`\DelNu`. The unit compliance tensor is defined as
+
+.. math::
+
+   \DelNu = \CelInv(E=1, \nu),
+
+with the Young's modulus :math:`E` and the Poisson's ratio :math:`\nu`.
 
 
 
