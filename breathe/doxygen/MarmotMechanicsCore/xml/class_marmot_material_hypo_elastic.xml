@@ -90,7 +90,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given deformation gradient at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="12">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{F}^{(n+1)}}$</formula>.</para>
+<para>For a given deformation gradient at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="31">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{F}^{(n+1)}}$</formula>.</para>
 <para><xrefsect id="todo_1_todo000003"><xreftitle>Todo</xreftitle><xrefdescription><para>A default implementation is provided.</para>
 </xrefdescription></xrefsect></para>
 <para><parameterlist kind="param"><parameteritem>
@@ -106,7 +106,7 @@
 <parametername direction="inout">dSdE</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the deformation gradient <formula id="13">$\boldsymbol{F}$</formula> </para>
+<para>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the deformation gradient <formula id="32">$\boldsymbol{F}$</formula> </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -190,7 +190,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given linearized strain increment <formula id="14">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="15">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para>For a given linearized strain increment <formula id="33">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="34">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">stress</parametername>
@@ -415,14 +415,14 @@
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="4">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="5">$ \sig $</formula>, the stretching rate tensor <formula id="6">$ \epsRate $</formula> and the time <formula id="7">$ t $</formula>.</para>
-<para><formula id="8">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="23">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="24">$ \sig $</formula>, the stretching rate tensor <formula id="25">$ \epsRate $</formula> and the time <formula id="26">$ t $</formula>.</para>
+<para><formula id="27">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="9">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
+<para><formula id="28">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="10">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
+<para><formula id="29">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
 <para>and the algorithmic tangent</para>
-<para><formula id="11">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
+<para><formula id="30">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
 <para>This formulation is compatible with an Abaqus interface. </para>
     </detaileddescription>
     <inheritancegraph>

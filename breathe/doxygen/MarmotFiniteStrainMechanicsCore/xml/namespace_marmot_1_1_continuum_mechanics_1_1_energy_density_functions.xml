@@ -32,9 +32,9 @@
 <para>Hyperelastic Energy Density Function Wa acc. Pence &amp; Gou (2015), Eq. (2.11) </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="22">$W_a$</formula> is given as   <formula id="23">\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
-\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="0">$W_a$</formula> is given as   <formula id="1">\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
+\]</formula> where <formula id="2">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="3">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="4">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="5">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -104,9 +104,9 @@
 <para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="28">$W_b$</formula> is given as   <formula id="29">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="6">$W_b$</formula> is given as   <formula id="7">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="2">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="3">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="4">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="5">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -176,9 +176,9 @@
 <para>Hyperelastic Energy Density Function Wc acc. Pence &amp; Gou (2015), Eq. (2.13) </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="30">$W_c$</formula> is given as   <formula id="31">\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
-\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="8">$W_c$</formula> is given as   <formula id="9">\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
+\]</formula> where <formula id="2">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="3">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="4">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="5">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>

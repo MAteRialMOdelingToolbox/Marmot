@@ -24,15 +24,15 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the stress coordinates in the Haigh-Westergaard space.</para>
-<para><simplesect kind="note"><para>The stress coordinates are computed from the invariants <formula id="78">$I_1,\,J_2,\,J_3$</formula> of the stress tensor as follows:</para>
+<para><simplesect kind="note"><para>The stress coordinates are computed from the invariants <formula id="3">$I_1,\,J_2,\,J_3$</formula> of the stress tensor as follows:</para>
 </simplesect>
-<formula id="79">\[\xi=I_1/\sqrt{3}\]</formula> <formula id="80">\[\rho=\sqrt{2\,J_2}\]</formula> <formula id="81">\[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\]</formula></para>
+<formula id="4">\[\xi=I_1/\sqrt{3}\]</formula> <formula id="5">\[\rho=\sqrt{2\,J_2}\]</formula> <formula id="6">\[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>stress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Stress tensor <formula id="82">$\sig$</formula> given in Voigt notation. </para>
+<para>Stress tensor <formula id="7">$\sig$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -63,7 +63,7 @@
 <parametername>strain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Strain tensor <formula id="83">$\eps$</formula> given in Voigt notation. </para>
+<para>Strain tensor <formula id="8">$\eps$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

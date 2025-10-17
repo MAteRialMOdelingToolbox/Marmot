@@ -18,8 +18,6 @@
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures">Marmot::ContinuumMechanics::DeformationMeasures</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures_1_1_first_order_derived">Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</innernamespace>
-    <innernamespace refid="namespace_fastor_indices">FastorIndices</innernamespace>
-    <innernamespace refid="namespace_fastor_standard_tensors">FastorStandardTensors</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

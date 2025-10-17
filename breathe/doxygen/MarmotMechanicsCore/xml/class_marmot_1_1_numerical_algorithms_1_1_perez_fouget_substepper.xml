@@ -2,7 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper" kind="class" language="C++" prot="public">
     <compoundname>Marmot::NumericalAlgorithms::PerezFougetSubstepper</compoundname>
-    <includes refid="_perez_fouget_substepper_explicit_mark_i_i_8h" local="no">PerezFougetSubstepperExplicitMarkII.h</includes>
+    <includes refid="_perez_fouget_substepper_mark_i_i_8h" local="no">PerezFougetSubstepperMarkII.h</includes>
     <templateparamlist>
       <param>
         <type>int</type>
@@ -11,6 +11,20 @@
       </param>
     </templateparamlist>
     <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt; Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::TangentSizedMatrix</definition>
+        <argsstring></argsstring>
+        <name>TangentSizedMatrix</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="42" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt;</type>
         <definition>typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt; Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::TangentSizedMatrix</definition>
@@ -39,20 +53,6 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="41" column="41" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="41" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt;</type>
-        <definition>typedef Eigen::Matrix&lt; double, nSizeMatTangent, nSizeMatTangent &gt; Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::TangentSizedMatrix</definition>
-        <argsstring></argsstring>
-        <name>TangentSizedMatrix</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="42" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="42" bodyend="-1"/>
-      </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a6a77df643fc3d9b6fa89aed8d134ef95" prot="private" static="no" mutable="no">
@@ -67,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="68" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="69" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1adf08d8d200ad249f7adc96a458eef2b3" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -81,7 +81,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="68" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="69" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab6e8fa58fef203d923abe32c30745359" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -95,7 +95,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="68" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="69" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a92d0782a57869d64f02f63584c6f6d3f" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -109,7 +109,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="68" column="64" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="69" column="64" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="69" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a31aa1abea64f53637d58b3541fc04692" prot="private" static="no" mutable="no">
         <type>const int</type>
@@ -123,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="69" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="69" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="70" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="70" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a67da42d150331a4781aa431ef93c8c2e" prot="private" static="no" mutable="no">
         <type>double</type>
@@ -137,7 +137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="71" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="71" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="72" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="72" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a12d313ee1b5010d70770ae7526e3f155" prot="private" static="no" mutable="no">
         <type>double</type>
@@ -151,7 +151,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="72" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="72" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="73" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="73" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a2dfbac2e6378980dbe2f9f23adc680f4" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -165,7 +165,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="73" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="73" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="74" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="74" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a3a478439f8ee26ef699077239f6f544f" prot="private" static="no" mutable="no">
         <type>const Matrix6d &amp;</type>
@@ -179,7 +179,21 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="75" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="75" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="76" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" prot="private" static="no" mutable="no">
+        <type>TangentSizedMatrix</type>
+        <definition>TangentSizedMatrix Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::consistentTangent</definition>
+        <argsstring></argsstring>
+        <name>consistentTangent</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentTangent</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="78" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="78" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a774e7268d9ced3aa61f246d10e727c1e" prot="private" static="no" mutable="no">
         <type>MatrixStateStrain</type>
@@ -223,20 +237,6 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="79" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="79" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" prot="private" static="no" mutable="no">
-        <type>TangentSizedMatrix</type>
-        <definition>TangentSizedMatrix Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::consistentTangent</definition>
-        <argsstring></argsstring>
-        <name>consistentTangent</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentTangent</qualifiedname>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="78" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="78" bodyend="-1"/>
-      </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a7c6b5868526644f901d726266ff009cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -275,7 +275,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="42" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="85" bodyend="107"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="84" bodyend="103"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab79e7997a4c056372aa793abe3edb331" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -284,13 +284,13 @@
         <name>isFinished</name>
         <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::isFinished</qualifiedname>
         <briefdescription>
-<para>check if subincrementation process has finished </para>
+<para>check if the subincrement process has finished </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="50" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="110" bodyend="114"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="51" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="106" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab9e4415b529945859a03232c6675e56a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -305,7 +305,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="52" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="117" bodyend="130"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="54" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="113" bodyend="126"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a675949cac7e8de8b343000c7c4b91ef8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -314,13 +314,13 @@
         <name>decreaseSubstepSize</name>
         <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::decreaseSubstepSize</qualifiedname>
         <briefdescription>
-<para>decrease the next subincrement </para>
+<para>decreas the subincrement size </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="54" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="133" bodyend="144"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="129" bodyend="140"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a27d20da83471ab632ed120d0b05253cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -335,7 +335,139 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="147" bodyend="150"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="60" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="143" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; n &gt;::finishSubstep</definition>
+        <argsstring>(const TangentSizedMatrix &amp;dXdY)</argsstring>
+        <name>finishSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishSubstep</qualifiedname>
+        <param>
+          <type>const TangentSizedMatrix &amp;</type>
+          <declname>dXdY</declname>
+        </param>
+        <briefdescription>
+<para>finish a subincrement, pass the inverse material tangent </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="63" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="149" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Matrix6d</type>
+        <definition>Matrix6d Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; n &gt;::consistentStiffness</definition>
+        <argsstring>()</argsstring>
+        <name>consistentStiffness</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentStiffness</qualifiedname>
+        <briefdescription>
+<para>get the overall consistent algorithmic tangent </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="66" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="161" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a1efc6ebb4b030b6f8d53050590f4fd76" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::PerezFougetSubstepper</definition>
+        <argsstring>(double initialStepSize, double minimumStepSize, double scaleUpFactor, double scaleDownFactor, int nPassesToIncrease, const Matrix6d &amp;Cel)</argsstring>
+        <name>PerezFougetSubstepper</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::PerezFougetSubstepper</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>initialStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>minimumStepSize</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>scaleUpFactor</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>scaleDownFactor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nPassesToIncrease</declname>
+        </param>
+        <param>
+          <type>const Matrix6d &amp;</type>
+          <declname>Cel</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="42" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a4cba185352e9312a12a53b9468ae4d91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::isFinished</definition>
+        <argsstring>()</argsstring>
+        <name>isFinished</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::isFinished</qualifiedname>
+        <briefdescription>
+<para>check if subincrementation process has finished </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="50" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::getNextSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>getNextSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::getNextSubstep</qualifiedname>
+        <briefdescription>
+<para>get the next subincrement size </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="52" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::decreaseSubstepSize</definition>
+        <argsstring>()</argsstring>
+        <name>decreaseSubstepSize</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::decreaseSubstepSize</qualifiedname>
+        <briefdescription>
+<para>decrease the next subincrement </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="54" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::finishElasticSubstep</definition>
+        <argsstring>()</argsstring>
+        <name>finishElasticSubstep</name>
+        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishElasticSubstep</qualifiedname>
+        <briefdescription>
+<para>finish an elastic only subincrement </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="57" column="10"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a46be9234ccca03554a2ed06ee13c84e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -377,9 +509,9 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="62" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="153" bodyend="158"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1aaebc5a982bb9825d3488ae3f3789fa18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
-        <definition>Matrix6d Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; n &gt;::consistentStiffness</definition>
+        <definition>Matrix6d Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::consistentStiffness</definition>
         <argsstring>()</argsstring>
         <name>consistentStiffness</name>
         <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentStiffness</qualifiedname>
@@ -390,162 +522,30 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="65" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="161" bodyend="164"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a1efc6ebb4b030b6f8d53050590f4fd76" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type></type>
-        <definition>Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::PerezFougetSubstepper</definition>
-        <argsstring>(double initialStepSize, double minimumStepSize, double scaleUpFactor, double scaleDownFactor, int nPassesToIncrease, const Matrix6d &amp;Cel)</argsstring>
-        <name>PerezFougetSubstepper</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::PerezFougetSubstepper</qualifiedname>
-        <param>
-          <type>double</type>
-          <declname>initialStepSize</declname>
-        </param>
-        <param>
-          <type>double</type>
-          <declname>minimumStepSize</declname>
-        </param>
-        <param>
-          <type>double</type>
-          <declname>scaleUpFactor</declname>
-        </param>
-        <param>
-          <type>double</type>
-          <declname>scaleDownFactor</declname>
-        </param>
-        <param>
-          <type>int</type>
-          <declname>nPassesToIncrease</declname>
-        </param>
-        <param>
-          <type>const Matrix6d &amp;</type>
-          <declname>Cel</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="43" column="5"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a4cba185352e9312a12a53b9468ae4d91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>bool</type>
-        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::isFinished</definition>
-        <argsstring>()</argsstring>
-        <name>isFinished</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::isFinished</qualifiedname>
-        <briefdescription>
-<para>check if the subincrement process has finished </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="51" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::getNextSubstep</definition>
-        <argsstring>()</argsstring>
-        <name>getNextSubstep</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::getNextSubstep</qualifiedname>
-        <briefdescription>
-<para>get the next subincrement size </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="54" column="12"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>bool</type>
-        <definition>bool Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::decreaseSubstepSize</definition>
-        <argsstring>()</argsstring>
-        <name>decreaseSubstepSize</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::decreaseSubstepSize</qualifiedname>
-        <briefdescription>
-<para>decreas the subincrement size </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="57" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::finishElasticSubstep</definition>
-        <argsstring>()</argsstring>
-        <name>finishElasticSubstep</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishElasticSubstep</qualifiedname>
-        <briefdescription>
-<para>finish an elastic only subincrement </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="60" column="10"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; n &gt;::finishSubstep</definition>
-        <argsstring>(const TangentSizedMatrix &amp;dXdY)</argsstring>
-        <name>finishSubstep</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishSubstep</qualifiedname>
-        <param>
-          <type>const TangentSizedMatrix &amp;</type>
-          <declname>dXdY</declname>
-        </param>
-        <briefdescription>
-<para>finish a subincrement, pass the inverse material tangent </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="63" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="149" bodyend="158"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1aaebc5a982bb9825d3488ae3f3789fa18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix6d</type>
-        <definition>Matrix6d Marmot::NumericalAlgorithms::PerezFougetSubstepper&lt; nSizeMatTangent &gt;::consistentStiffness</definition>
-        <argsstring>()</argsstring>
-        <name>consistentStiffness</name>
-        <qualifiedname>Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentStiffness</qualifiedname>
-        <briefdescription>
-<para>get the overall consistent algorithmic tangent </para>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="66" column="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="65" column="14"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version</para>
-<para>Substepper for (linear elastic) elastoplastic materials, implicit return mapping version </para>
+<para>Substepper for (linear elastic) elastoplastic materials, implicit return mapping version</para>
+<para>Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" line="37" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperExplicitMarkII.h" bodystart="37" bodyend="80"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/PerezFougetSubstepperMarkII.h" bodystart="39" bodyend="79"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a3a478439f8ee26ef699077239f6f544f" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>Cel</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>consistentStiffness</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1aaebc5a982bb9825d3488ae3f3789fa18" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>consistentStiffness</name></member>
-      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a993666eaf7fb10e8baee6e21e060feac" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>consistentTangent</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>consistentTangent</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a993666eaf7fb10e8baee6e21e060feac" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>consistentTangent</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a67da42d150331a4781aa431ef93c8c2e" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>currentProgress</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a12d313ee1b5010d70770ae7526e3f155" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>currentSubstepSize</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a675949cac7e8de8b343000c7c4b91ef8" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>decreaseSubstepSize</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>decreaseSubstepSize</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a27d20da83471ab632ed120d0b05253cc" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>finishElasticSubstep</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>finishElasticSubstep</name></member>
-      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a46be9234ccca03554a2ed06ee13c84e6" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>finishSubstep</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>finishSubstep</name></member>
+      <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a46be9234ccca03554a2ed06ee13c84e6" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>finishSubstep</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab9e4415b529945859a03232c6675e56a" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>getNextSubstep</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>getNextSubstep</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a774e7268d9ced3aa61f246d10e727c1e" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::PerezFougetSubstepper</scope><name>I76</name></member>

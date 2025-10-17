@@ -14,26 +14,26 @@
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
-<para>Computes the transformation matrix <formula id="262">$ T_{\varepsilon} $</formula> to rotate a strain vector in Voigt notation into another Cartesian coordinate system. </para>
+<para>Computes the transformation matrix <formula id="169">$ T_{\varepsilon} $</formula> to rotate a strain vector in Voigt notation into another Cartesian coordinate system. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function modifies the stress transformation matrix <formula id="263">$T_{\varepsilon}$</formula> to account for the engineering shear convention used for strains in Voigt notation. Specifically:<itemizedlist>
+<para>This function modifies the stress transformation matrix <formula id="170">$T_{\varepsilon}$</formula> to account for the engineering shear convention used for strains in Voigt notation. Specifically:<itemizedlist>
 <listitem><para>The upper-right 3×3 block is scaled by 0.5</para>
 </listitem><listitem><para>The lower-left 3×3 block is scaled by 2</para>
 </listitem></itemizedlist>
 </para>
-<para>This function builds the 6×6 transformation matrix from the direction cosines of the new basis:   <formula id="264">\[  \boldsymbol{\varepsilon}&apos;_{\text{voigt}} \;=\; T_{\varepsilon}\,\boldsymbol{\varepsilon}_{\text{voigt}}.
-\]</formula> which is equivalent to the tensor transformation   <formula id="265">\[  \boldsymbol{\varepsilon}&apos; \;=\; \boldsymbol{Q}\,\boldsymbol{\varepsilon}\,\boldsymbol{Q}^{T}
+<para>This function builds the 6×6 transformation matrix from the direction cosines of the new basis:   <formula id="171">\[  \boldsymbol{\varepsilon}&apos;_{\text{voigt}} \;=\; T_{\varepsilon}\,\boldsymbol{\varepsilon}_{\text{voigt}}.
+\]</formula> which is equivalent to the tensor transformation   <formula id="172">\[  \boldsymbol{\varepsilon}&apos; \;=\; \boldsymbol{Q}\,\boldsymbol{\varepsilon}\,\boldsymbol{Q}^{T}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>transformedCoordinateSystem</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3×3 rotation matrix <formula id="266">$\boldsymbol{Q}$</formula> that maps from the original to the target Cartesian basis. </para>
+<para>3×3 rotation matrix <formula id="173">$\boldsymbol{Q}$</formula> that maps from the original to the target Cartesian basis. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6×6 transformation matrix <formula id="263">$T_{\varepsilon}$</formula> that transforms strain vectors in Voigt notation. </para>
+<simplesect kind="return"><para>6×6 transformation matrix <formula id="170">$T_{\varepsilon}$</formula> that transforms strain vectors in Voigt notation. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -52,21 +52,21 @@
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
-<para>Computes the transformation matrix <formula id="267">$ T_{\sigma} $</formula> to rotate a stress vector in Voigt notation into another Cartesian coordinate system. </para>
+<para>Computes the transformation matrix <formula id="174">$ T_{\sigma} $</formula> to rotate a stress vector in Voigt notation into another Cartesian coordinate system. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function builds the 6×6 transformation matrix from the direction cosines of the new basis:   <formula id="268">\[  \boldsymbol{\sigma}&apos;_{\text{voigt}} \;=\; T_{\sigma}\,\boldsymbol{\sigma}_{\text{voigt}},
-\]</formula> which is equivalent to the tensor transformation   <formula id="269">\[  \boldsymbol{\sigma}&apos; \;=\; \boldsymbol{Q}\,\boldsymbol{\sigma}\,\boldsymbol{Q}^{T}.
+<para>This function builds the 6×6 transformation matrix from the direction cosines of the new basis:   <formula id="175">\[  \boldsymbol{\sigma}&apos;_{\text{voigt}} \;=\; T_{\sigma}\,\boldsymbol{\sigma}_{\text{voigt}},
+\]</formula> which is equivalent to the tensor transformation   <formula id="176">\[  \boldsymbol{\sigma}&apos; \;=\; \boldsymbol{Q}\,\boldsymbol{\sigma}\,\boldsymbol{Q}^{T}.
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>transformedCoordinateSystem</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3×3 rotation matrix <formula id="266">$\boldsymbol{Q}$</formula> that maps from the original to the target Cartesian basis. </para>
+<para>3×3 rotation matrix <formula id="173">$\boldsymbol{Q}$</formula> that maps from the original to the target Cartesian basis. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6×6 transformation matrix <formula id="270">$T_{\sigma}$</formula> that transforms stress vectors in Voigt notation. </para>
+<simplesect kind="return"><para>6×6 transformation matrix <formula id="177">$T_{\sigma}$</formula> that transforms stress vectors in Voigt notation. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -88,18 +88,18 @@
 <para>Calculates the projection matrix for mapping Voigt stress to a traction vector. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function returns the <formula id="271">$3 \times 6$</formula> projection matrix <formula id="272">$\mathbf{P}^{(\mathbf{n})}$</formula> that maps a <bold>Voigt-notated stress vector</bold> <formula id="273">$\boldsymbol{\sigma}_{\text{voigt}} \in \mathbb{R}^6$</formula> to the <bold>traction vector</bold> <formula id="274">$\mathbf{t}^{(\mathbf{n})} \in \mathbb{R}^3$</formula> on a plane with an outward unit normal vector <formula id="275">$\mathbf{n}$</formula>. The relationship is given by:   <formula id="276">\[\mathbf{t}^{(\mathbf{n})} = \mathbf{P}^{(\mathbf{n})} \, \boldsymbol{\sigma}_{\text{voigt}}.
-\]</formula> This expression is mathematically equivalent to Cauchy&apos;s formula  <formula id="277">$ \boldsymbol{t}^{(n)}_i =
+<para>This function returns the <formula id="178">$3 \times 6$</formula> projection matrix <formula id="179">$\mathbf{P}^{(\mathbf{n})}$</formula> that maps a <bold>Voigt-notated stress vector</bold> <formula id="180">$\boldsymbol{\sigma}_{\text{voigt}} \in \mathbb{R}^6$</formula> to the <bold>traction vector</bold> <formula id="181">$\mathbf{t}^{(\mathbf{n})} \in \mathbb{R}^3$</formula> on a plane with an outward unit normal vector <formula id="182">$\mathbf{n}$</formula>. The relationship is given by:   <formula id="183">\[\mathbf{t}^{(\mathbf{n})} = \mathbf{P}^{(\mathbf{n})} \, \boldsymbol{\sigma}_{\text{voigt}}.
+\]</formula> This expression is mathematically equivalent to Cauchy&apos;s formula  <formula id="184">$ \boldsymbol{t}^{(n)}_i =
 \sigma_{ji} \, n_j $</formula>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="278">$3 \times 1$</formula> <bold>unit vector</bold> <formula id="275">$\mathbf{n}$</formula> representing the <bold>normal</bold> of the plane. </para>
+<para>The <formula id="185">$3 \times 1$</formula> <bold>unit vector</bold> <formula id="182">$\mathbf{n}$</formula> representing the <bold>normal</bold> of the plane. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The <formula id="271">$3 \times 6$</formula> projection matrix <formula id="272">$\mathbf{P}^{(\mathbf{n})}$</formula>. </para>
+<simplesect kind="return"><para>The <formula id="178">$3 \times 6$</formula> projection matrix <formula id="179">$\mathbf{P}^{(\mathbf{n})}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -126,11 +126,11 @@
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="278">$3 \times 1$</formula> <bold>unit vector</bold> <formula id="275">$\mathbf{n}$</formula> representing the <bold>normal</bold> of the plane. </para>
+<para>The <formula id="185">$3 \times 1$</formula> <bold>unit vector</bold> <formula id="182">$\mathbf{n}$</formula> representing the <bold>normal</bold> of the plane. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The <formula id="271">$3 \times 6$</formula> projection matrix <formula id="272">$\mathbf{P}^{(\mathbf{n})}$</formula>. </para>
+<simplesect kind="return"><para>The <formula id="178">$3 \times 6$</formula> projection matrix <formula id="179">$\mathbf{P}^{(\mathbf{n})}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -156,13 +156,13 @@
 <para>Rotates a stress tensor in Voigt notation. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function rotates a stress tensor <formula id="184">$ \boldsymbol{\sigma} $</formula> using a rotation matrix <formula id="279">$ \boldsymbol{Q} $</formula>, while keeping the tensor in <bold>Voigt notation</bold>. The rotated stress <formula id="280">$ \boldsymbol{\sigma}^{\prime} $</formula> is computed as:   <formula id="281">\[\boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \, \boldsymbol{\sigma} \, \boldsymbol{Q}^{T}.
+<para>This function rotates a stress tensor <formula id="91">$ \boldsymbol{\sigma} $</formula> using a rotation matrix <formula id="186">$ \boldsymbol{Q} $</formula>, while keeping the tensor in <bold>Voigt notation</bold>. The rotated stress <formula id="187">$ \boldsymbol{\sigma}^{\prime} $</formula> is computed as:   <formula id="188">\[\boldsymbol{\sigma}^{\prime} = \boldsymbol{Q} \, \boldsymbol{\sigma} \, \boldsymbol{Q}^{T}.
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>Q</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>A <formula id="282">$3 \times 3$</formula> rotation matrix <formula id="279">$ \boldsymbol{Q} $</formula>. </para>
+<para>A <formula id="189">$3 \times 3$</formula> rotation matrix <formula id="186">$ \boldsymbol{Q} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -170,11 +170,11 @@
 <parametername>stress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>A Voigt-notated stress vector <formula id="283">$ \boldsymbol{\sigma} \in \mathbb{R}^6 $</formula>. </para>
+<para>A Voigt-notated stress vector <formula id="190">$ \boldsymbol{\sigma} \in \mathbb{R}^6 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The rotated Voigt-notated stress vector <formula id="284">$ \boldsymbol{\sigma}^{\prime} \in \mathbb{R}^6 $</formula>. </para>
+<simplesect kind="return"><para>The rotated Voigt-notated stress vector <formula id="191">$ \boldsymbol{\sigma}^{\prime} \in \mathbb{R}^6 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

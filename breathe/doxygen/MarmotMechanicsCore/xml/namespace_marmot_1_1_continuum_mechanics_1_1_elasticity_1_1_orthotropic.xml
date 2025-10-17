@@ -46,10 +46,10 @@
           <declname>G31</declname>
         </param>
         <briefdescription>
-<para>Computes the orthotropic compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula>, defined in the principal material directions <formula id="113">$x_1$</formula>, <formula id="102">$x_2$</formula>, and <formula id="103">$x_3$</formula>. </para>
+<para>Computes the orthotropic compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula>, defined in the principal material directions <formula id="255">$x_1$</formula>, <formula id="245">$x_2$</formula>, and <formula id="246">$x_3$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="114">\[  \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para><formula id="256">\[  \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                  \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_2} &amp; \frac{-\nu_{13}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
                  \frac{-\nu_{12}}{E_2} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
                  \frac{-\nu_{13}}{E_3} &amp; \frac{-\nu_{23}}{E_3} &amp; \frac{1}{E_3} &amp; 0 &amp; 0 &amp; 0 \\
@@ -63,7 +63,7 @@
 <parametername>E1</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="104">$E_1$</formula> in <formula id="115">$ x_1 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="247">$E_1$</formula> in <formula id="257">$ x_1 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -71,7 +71,7 @@
 <parametername>E2</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="107">$E_2$</formula> in <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="250">$E_2$</formula> in <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -79,7 +79,7 @@
 <parametername>E3</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="117">$E_3$</formula> in <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="259">$E_3$</formula> in <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -87,7 +87,7 @@
 <parametername>nu12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="249">$\nu_{12}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -95,7 +95,7 @@
 <parametername>nu23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula> effective between <formula id="116">$ x_2 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="251">$\nu_{23}$</formula> effective between <formula id="258">$ x_2 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -103,7 +103,7 @@
 <parametername>nu13</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="119">$\nu_{13}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="261">$\nu_{13}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -111,7 +111,7 @@
 <parametername>G12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="105">$G_{12}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Shear modulus <formula id="248">$G_{12}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -119,7 +119,7 @@
 <parametername>G23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="120">$G_{23}$</formula> effective between <formula id="116">$ x_2 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Shear modulus <formula id="262">$G_{23}$</formula> effective between <formula id="258">$ x_2 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -127,11 +127,11 @@
 <parametername>G31</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="121">$G_{31}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Shear modulus <formula id="263">$G_{31}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -182,7 +182,7 @@
           <declname>G31</declname>
         </param>
         <briefdescription>
-<para>Computes the orthotropic stiffness tensor <formula id="111">$ \mathbb{C} $</formula> as inverse of the orthotropic compliance tensor <formula id="112">$ \mathbb{C}^{-1} $</formula>. </para>
+<para>Computes the orthotropic stiffness tensor <formula id="254">$ \mathbb{C} $</formula> as inverse of the orthotropic compliance tensor <formula id="157">$ \mathbb{C}^{-1} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -190,7 +190,7 @@
 <parametername>E1</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="104">$E_1$</formula> in <formula id="115">$ x_1 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="247">$E_1$</formula> in <formula id="257">$ x_1 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -198,7 +198,7 @@
 <parametername>E2</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="107">$E_2$</formula> in <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="250">$E_2$</formula> in <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -206,7 +206,7 @@
 <parametername>E3</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="117">$E_3$</formula> in <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Young&apos;s modulus <formula id="259">$E_3$</formula> in <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -214,7 +214,7 @@
 <parametername>nu12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="249">$\nu_{12}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -222,7 +222,7 @@
 <parametername>nu23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula> effective between <formula id="116">$ x_2 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="251">$\nu_{23}$</formula> effective between <formula id="258">$ x_2 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -230,7 +230,7 @@
 <parametername>nu13</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="119">$\nu_{13}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Poisson&apos;s ratio <formula id="261">$\nu_{13}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -238,7 +238,7 @@
 <parametername>G12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="105">$G_{12}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="116">$ x_2 $</formula> - direction. </para>
+<para>Shear modulus <formula id="248">$G_{12}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="258">$ x_2 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -246,7 +246,7 @@
 <parametername>G23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="120">$G_{23}$</formula> effective between <formula id="116">$ x_2 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Shear modulus <formula id="262">$G_{23}$</formula> effective between <formula id="258">$ x_2 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -254,11 +254,11 @@
 <parametername>G31</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="121">$G_{31}$</formula> effective between <formula id="115">$ x_1 $</formula> and <formula id="118">$ x_3 $</formula> - direction. </para>
+<para>Shear modulus <formula id="263">$G_{31}$</formula> effective between <formula id="257">$ x_1 $</formula> and <formula id="260">$ x_3 $</formula> - direction. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Stiffness tensor <formula id="208">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>

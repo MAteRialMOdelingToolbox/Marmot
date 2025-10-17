@@ -105,7 +105,7 @@
         <qualifiedname>Marmot::Constants::sqrt3_8</qualifiedname>
         <initializer>= 0.61237243569579452454932101867647</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="0">$\sqrt{3/8}$</formula>. </para>
+<para>Constant expression for <formula id="47">$\sqrt{3/8}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -121,7 +121,7 @@
         <qualifiedname>Marmot::Constants::sqrt2_3</qualifiedname>
         <initializer>= 0.8164965809277260327324280249019</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="1">$\sqrt{2/3}$</formula>. </para>
+<para>Constant expression for <formula id="48">$\sqrt{2/3}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -137,7 +137,7 @@
         <qualifiedname>Marmot::Constants::sqrt3_2</qualifiedname>
         <initializer>= 1.2247448713915890490986420373529</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="2">$\sqrt{3/2}$</formula>. </para>
+<para>Constant expression for <formula id="49">$\sqrt{3/2}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -153,7 +153,7 @@
         <qualifiedname>Marmot::Constants::sqrt2</qualifiedname>
         <initializer>= 1.4142135623730950488016887242097</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="3">$\sqrt{2}$</formula>. </para>
+<para>Constant expression for <formula id="50">$\sqrt{2}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -169,7 +169,7 @@
         <qualifiedname>Marmot::Constants::sqrt3</qualifiedname>
         <initializer>= 1.7320508075688772935274463415059</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="4">$\sqrt{3}$</formula>. </para>
+<para>Constant expression for <formula id="51">$\sqrt{3}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -185,7 +185,7 @@
         <qualifiedname>Marmot::Constants::sqrt6</qualifiedname>
         <initializer>= 2.4494897427831780981972840747059</initializer>
         <briefdescription>
-<para>Constant expression for <formula id="5">$\sqrt{6}$</formula>. </para>
+<para>Constant expression for <formula id="52">$\sqrt{6}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

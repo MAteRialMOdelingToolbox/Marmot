@@ -43,8 +43,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="290">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
-<para><xrefsect id="todo_1_todo000005"><xreftitle>Todo</xreftitle><xrefdescription><para>A default implementation is provided.</para>
+<para>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="15">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
+<para><xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>A default implementation is provided.</para>
 </xrefdescription></xrefsect></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -59,7 +59,7 @@
 <parametername direction="inout">dSdE</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="291">$\boldsymbol{E}$</formula>. </para>
+<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="16">$\boldsymbol{E}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -142,8 +142,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="290">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
-<para><xrefsect id="todo_1_todo000006"><xreftitle>Todo</xreftitle><xrefdescription><para>Should we use function overloading in this case and simple also use computeStress for the function name?</para>
+<para>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="15">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
+<para><xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>Should we use function overloading in this case and simple also use computeStress for the function name?</para>
 </xrefdescription></xrefsect></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -158,7 +158,7 @@
 <parametername direction="inout">dSdE</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="291">$\boldsymbol{E}$</formula>. </para>
+<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="16">$\boldsymbol{E}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -282,13 +282,13 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>Derived abstract base class for <emphasis>simple</emphasis>, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor <formula id="213">$ S $</formula> will be derived by</para>
-<para><formula id="285">\[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \]</formula></para>
-<para>with the Green - Lagrange strain tensor <formula id="286">$ \boldsymbol{E} $</formula></para>
-<para><formula id="287">\[  \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
+<para>Derived abstract base class for <emphasis>simple</emphasis>, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor <formula id="9">$ S $</formula> will be derived by</para>
+<para><formula id="10">\[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \]</formula></para>
+<para>with the Green - Lagrange strain tensor <formula id="11">$ \boldsymbol{E} $</formula></para>
+<para><formula id="12">\[  \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
 \]</formula></para>
-<para>as work conjugated measure and the variable <formula id="288">$ \boldsymbol{F} $</formula> denoting the deformation gradient. The algorithmic tangent will be calculated by</para>
-<para><formula id="289">\[  \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
+<para>as work conjugated measure and the variable <formula id="13">$ \boldsymbol{F} $</formula> denoting the deformation gradient. The algorithmic tangent will be calculated by</para>
+<para><formula id="14">\[  \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
 \]</formula> </para>
     </detaileddescription>
     <inheritancegraph>

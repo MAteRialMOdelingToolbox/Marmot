@@ -24,10 +24,10 @@
 <para>Embeds a lower-dimensional square tensor into a 3x3 tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function takes an <formula id="123">$n \times n$</formula> tensor (with <formula id="124">$n=1,2,3$</formula>) and returns a 3x3 tensor:<itemizedlist>
-<listitem><para>For <formula id="125">$n=1$</formula>: the scalar is placed in the (0,0) entry of a 3x3 identity matrix.</para>
-</listitem><listitem><para>For <formula id="126">$n=2$</formula>: the 2x2 tensor is placed in the top-left block of a 3x3 identity matrix.</para>
-</listitem><listitem><para>For <formula id="127">$n=3$</formula>: the tensor is returned unchanged.</para>
+<para>This function takes an <formula id="18">$n \times n$</formula> tensor (with <formula id="19">$n=1,2,3$</formula>) and returns a 3x3 tensor:<itemizedlist>
+<listitem><para>For <formula id="20">$n=1$</formula>: the scalar is placed in the (0,0) entry of a 3x3 identity matrix.</para>
+</listitem><listitem><para>For <formula id="21">$n=2$</formula>: the 2x2 tensor is placed in the top-left block of a 3x3 identity matrix.</para>
+</listitem><listitem><para>For <formula id="22">$n=3$</formula>: the tensor is returned unchanged.</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -44,7 +44,7 @@
 <parametername>tensor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>An <formula id="123">$n \times n$</formula> tensor represented as Eigen::Matrix&lt;double,nDim,nDim&gt;. </para>
+<para>An <formula id="18">$n \times n$</formula> tensor represented as Eigen::Matrix&lt;double,nDim,nDim&gt;. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

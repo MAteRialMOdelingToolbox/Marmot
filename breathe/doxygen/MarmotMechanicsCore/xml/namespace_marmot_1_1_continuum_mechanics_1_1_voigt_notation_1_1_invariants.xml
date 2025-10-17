@@ -17,7 +17,7 @@
 <para>Computes the principal strains by solving the eigenvalue problem. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function computes the eigenvalues of the strain tensor reconstructed from the given Voigt strain vector. The eigenvalues correspond to the principal strains <formula id="162">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula>:    <formula id="163">\[    \displaystyle |\varepsilon_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+<para>This function computes the eigenvalues of the strain tensor reconstructed from the given Voigt strain vector. The eigenvalues correspond to the principal strains <formula id="69">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula>:    <formula id="70">\[    \displaystyle |\varepsilon_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
 \lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm} \varepsilon_1,\,
 \varepsilon_2,\, \varepsilon_3 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -50,7 +50,7 @@
 <para>Computes the principal stresses by solving the eigenvalue problem. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function computes the eigenvalues of the stress tensor reconstructed from the given Voigt stress vector. The eigenvalues correspond to the principal stresses <formula id="164">$ \sigma_1, \sigma_2, \sigma_3 $</formula>:    <formula id="165">\[    \displaystyle |\sigma_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+<para>This function computes the eigenvalues of the stress tensor reconstructed from the given Voigt stress vector. The eigenvalues correspond to the principal stresses <formula id="71">$ \sigma_1, \sigma_2, \sigma_3 $</formula>:    <formula id="72">\[    \displaystyle |\sigma_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
 \lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm}\sigma_1,\, \sigma_2,\, \sigma_3
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -83,7 +83,7 @@
 <para>Computes the principal strains from Haigh–Westergaard coordinates. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function transforms the Haigh–Westergaard coordinates <formula id="166">$ (\xi, \rho, \theta) $</formula> into the corresponding principal strains <formula id="162">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula> using:                    <formula id="167">\[  \begin{bmatrix}
+<para>This function transforms the Haigh–Westergaard coordinates <formula id="73">$ (\xi, \rho, \theta) $</formula> into the corresponding principal strains <formula id="69">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula> using:                    <formula id="74">\[  \begin{bmatrix}
     \varepsilon_{1} \\
     \varepsilon_{2} \\
     \varepsilon_{3}
@@ -112,7 +112,7 @@
 </parameterlist>
 <simplesect kind="return"><para>A 3D vector of the principal strains, sorted by magnitude. </para>
 </simplesect>
-<simplesect kind="note"><para>The computation of <formula id="168">$ \xi $</formula>, <formula id="169">$ \rho $</formula>, and <formula id="170">$ \theta $</formula> is performed in <computeroutput>haighWestergaardFromStrain()</computeroutput>. </para>
+<simplesect kind="note"><para>The computation of <formula id="75">$ \xi $</formula>, <formula id="76">$ \rho $</formula>, and <formula id="77">$ \theta $</formula> is performed in <computeroutput>haighWestergaardFromStrain()</computeroutput>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -134,9 +134,9 @@
 <para>Computes the principal stress directions corresponding to the principal stresses. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function solves the eigenvalue problem    <formula id="171">\[  \left( \boldsymbol{\sigma} - \sigma_k \cdot \boldsymbol{I} \right) \cdot
+<para>This function solves the eigenvalue problem    <formula id="78">\[  \left( \boldsymbol{\sigma} - \sigma_k \cdot \boldsymbol{I} \right) \cdot
   \boldsymbol{x}^{(k)} = 0
-\]</formula> to obtain the eigenvectors <formula id="172">$ \boldsymbol{x}^{(k)} $</formula> associated with the principal stresses <formula id="173">$ \sigma_k $</formula>. <parameterlist kind="param"><parameteritem>
+\]</formula> to obtain the eigenvectors <formula id="79">$ \boldsymbol{x}^{(k)} $</formula> associated with the principal stresses <formula id="80">$ \sigma_k $</formula>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>stress</parametername>
 </parameternamelist>
@@ -167,8 +167,8 @@
 <para>Computes the equivalent von Mises stress. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined as:   <formula id="174">\[  \sigma_\text{eq} = \sqrt{3 \cdot J_2}
-\]</formula> where <formula id="175">$ J_2 $</formula> is the second invariant of the deviatoric stress tensor (see <computeroutput>J2()</computeroutput>). <parameterlist kind="param"><parameteritem>
+<para>Defined as:   <formula id="81">\[  \sigma_\text{eq} = \sqrt{3 \cdot J_2}
+\]</formula> where <formula id="82">$ J_2 $</formula> is the second invariant of the deviatoric stress tensor (see <computeroutput>J2()</computeroutput>). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>stress</parametername>
 </parameternamelist>
@@ -199,7 +199,7 @@
 <para>Computes the equivalent von Mises strain. </para>
         </briefdescription>
         <detaileddescription>
-<para>Based on the deviatoric strain tensor <formula id="176">$ e_{ij} $</formula>:   <formula id="177">\[  \varepsilon^\text{(eq)} = \sqrt{\tfrac{2}{3} \, e_{ij} e_{ij}}
+<para>Based on the deviatoric strain tensor <formula id="83">$ e_{ij} $</formula>:   <formula id="84">\[  \varepsilon^\text{(eq)} = \sqrt{\tfrac{2}{3} \, e_{ij} e_{ij}}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
@@ -236,7 +236,7 @@
 <para>Computes the Euclidean norm of the strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined as:   <formula id="178">\[  ||\boldsymbol{\varepsilon}|| = \sqrt{ \varepsilon_{ij}\varepsilon_{ij}}
+<para>Defined as:   <formula id="85">\[  ||\boldsymbol{\varepsilon}|| = \sqrt{ \varepsilon_{ij}\varepsilon_{ij}}
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -277,7 +277,7 @@
 <para>Computes the Euclidean norm of the stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined as:   <formula id="179">\[  ||\boldsymbol{\sigma}|| = \sqrt{\sigma_{ij}\sigma_{ij}}
+<para>Defined as:   <formula id="86">\[  ||\boldsymbol{\sigma}|| = \sqrt{\sigma_{ij}\sigma_{ij}}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>stress</parametername>
@@ -309,9 +309,9 @@
 <para>Computes the volumetric plastic strain in compression. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined as:    <formula id="180">\[  \varepsilon^{\text{vol}}_{\ominus}
+<para>Defined as:    <formula id="87">\[  \varepsilon^{\text{vol}}_{\ominus}
   = \sum_{i=1}^3 \left\langle -\varepsilon_i \right\rangle
-\]</formula> where <formula id="181">$ \varepsilon_i $</formula> are the principal strains and <formula id="182">$ \langle \bullet \rangle $</formula> denotes the Macaulay brackets. <parameterlist kind="param"><parameteritem>
+\]</formula> where <formula id="88">$ \varepsilon_i $</formula> are the principal strains and <formula id="89">$ \langle \bullet \rangle $</formula> denotes the Macaulay brackets. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
 </parameternamelist>
@@ -344,10 +344,10 @@
           <declname>stress</declname>
         </param>
         <briefdescription>
-<para>Computes the first invariant <formula id="183">$ I_1 $</formula> of the stress tensor. </para>
+<para>Computes the first invariant <formula id="90">$ I_1 $</formula> of the stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>The first invariant of the stress tensor <formula id="184">$ \boldsymbol{\sigma} $</formula> is the trace:    <formula id="185">\[  I_1 = \operatorname{tr}(\boldsymbol{\sigma})
+<para>The first invariant of the stress tensor <formula id="91">$ \boldsymbol{\sigma} $</formula> is the trace:    <formula id="92">\[  I_1 = \operatorname{tr}(\boldsymbol{\sigma})
       = \sigma_{11} + \sigma_{22} + \sigma_{33}
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -363,14 +363,14 @@
 <parametername>stress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component stress vector in Voigt notation:    <formula id="186">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+<para>6-component stress vector in Voigt notation:    <formula id="93">$ \boldsymbol{\sigma}^{\text{Voigt}} =
     \begin{bmatrix}
       \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
     \end{bmatrix}^T $</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the first invariant <formula id="183">$ I_1 $</formula>. </para>
+<simplesect kind="return"><para>Value of the first invariant <formula id="90">$ I_1 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -389,17 +389,17 @@
           <declname>strain</declname>
         </param>
         <briefdescription>
-<para>Computes the first invariant <formula id="187">$ I^{(\varepsilon)}_1 $</formula> of the strain tensor. </para>
+<para>Computes the first invariant <formula id="94">$ I^{(\varepsilon)}_1 $</formula> of the strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>The first invariant of the strain tensor <formula id="188">$ \boldsymbol{\varepsilon} $</formula> is the trace:    <formula id="189">\[  I^{(\varepsilon)}_1 = \operatorname{tr}(\boldsymbol{\varepsilon})
+<para>The first invariant of the strain tensor <formula id="95">$ \boldsymbol{\varepsilon} $</formula> is the trace:    <formula id="96">\[  I^{(\varepsilon)}_1 = \operatorname{tr}(\boldsymbol{\varepsilon})
       = \varepsilon_{11} + \varepsilon_{22} + \varepsilon_{33}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component strain vector in Voigt notation:     <formula id="190">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+<para>6-component strain vector in Voigt notation:     <formula id="97">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
     \begin{bmatrix}
       \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp;
       \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
@@ -407,7 +407,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the first strain invariant <formula id="187">$ I^{(\varepsilon)}_1 $</formula>. </para>
+<simplesect kind="return"><para>Value of the first strain invariant <formula id="94">$ I^{(\varepsilon)}_1 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -431,12 +431,12 @@
           <declname>stress</declname>
         </param>
         <briefdescription>
-<para>Computes the second invariant <formula id="191">$ I_2 $</formula> of the stress tensor. </para>
+<para>Computes the second invariant <formula id="98">$ I_2 $</formula> of the stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>The second invariant of the stress tensor <formula id="184">$ \boldsymbol{\sigma} $</formula> is defined as:    <formula id="192">\[  I_2 = \tfrac{1}{2}\left( \operatorname{tr}(\boldsymbol{\sigma})^2
+<para>The second invariant of the stress tensor <formula id="91">$ \boldsymbol{\sigma} $</formula> is defined as:    <formula id="99">\[  I_2 = \tfrac{1}{2}\left( \operatorname{tr}(\boldsymbol{\sigma})^2
         - \operatorname{tr}(\boldsymbol{\sigma}^2) \right)
-\]</formula> In Voigt notation, this expands to:    <formula id="193">\[  I_2 = \sigma_{11}\sigma_{22} + \sigma_{22}\sigma_{33} + \sigma_{33}\sigma_{11}
+\]</formula> In Voigt notation, this expands to:    <formula id="100">\[  I_2 = \sigma_{11}\sigma_{22} + \sigma_{22}\sigma_{33} + \sigma_{33}\sigma_{11}
         - \sigma_{12}^2 - \sigma_{13}^2 - \sigma_{23}^2
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -452,14 +452,14 @@
 <parametername>stress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component stress vector in Voigt notation:    <formula id="186">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+<para>6-component stress vector in Voigt notation:    <formula id="93">$ \boldsymbol{\sigma}^{\text{Voigt}} =
     \begin{bmatrix}
       \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
     \end{bmatrix}^T $</formula></para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the second invariant <formula id="191">$ I_2 $</formula>. </para>
+<simplesect kind="return"><para>Value of the second invariant <formula id="98">$ I_2 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -478,10 +478,10 @@
           <declname>strain</declname>
         </param>
         <briefdescription>
-<para>Computes the second invariant <formula id="194">$ I^{(\varepsilon)}_2 $</formula> of the strain tensor. </para>
+<para>Computes the second invariant <formula id="101">$ I^{(\varepsilon)}_2 $</formula> of the strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>For a strain tensor <formula id="188">$ \boldsymbol{\varepsilon} $</formula> in Voigt notation, the second invariant is:       <formula id="195">\[  I^{(\varepsilon)}_2 =
+<para>For a strain tensor <formula id="95">$ \boldsymbol{\varepsilon} $</formula> in Voigt notation, the second invariant is:       <formula id="102">\[  I^{(\varepsilon)}_2 =
     \varepsilon_{11}\varepsilon_{22} +
     \varepsilon_{22}\varepsilon_{33} +
     \varepsilon_{33}\varepsilon_{11}
@@ -491,13 +491,13 @@
 <parametername>strain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component strain vector in Voigt notation:   <formula id="196">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+<para>6-component strain vector in Voigt notation:   <formula id="103">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
     [ \varepsilon_{11}, \varepsilon_{22}, \varepsilon_{33},
       \gamma_{12}, \gamma_{13}, \gamma_{23} ]^T $</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the second invariant <formula id="194">$ I^{(\varepsilon)}_2 $</formula>. </para>
+<simplesect kind="return"><para>Value of the second invariant <formula id="101">$ I^{(\varepsilon)}_2 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -521,11 +521,11 @@
           <declname>stress</declname>
         </param>
         <briefdescription>
-<para>Computes the third invariant <formula id="197">$ I_3 $</formula> of the stress tensor. </para>
+<para>Computes the third invariant <formula id="104">$ I_3 $</formula> of the stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined as the determinant of the Cauchy stress tensor <formula id="184">$ \boldsymbol{\sigma} $</formula>:   <formula id="198">\[  I_3 = \det(\boldsymbol{\sigma})
-\]</formula> Expanded in Voigt notation:        <formula id="199">\[  I_3 =
+<para>Defined as the determinant of the Cauchy stress tensor <formula id="91">$ \boldsymbol{\sigma} $</formula>:   <formula id="105">\[  I_3 = \det(\boldsymbol{\sigma})
+\]</formula> Expanded in Voigt notation:        <formula id="106">\[  I_3 =
     \sigma_{11}\sigma_{22}\sigma_{33}
     + 2\sigma_{12}\sigma_{13}\sigma_{23}
     - \sigma_{11}\sigma_{23}^2
@@ -549,7 +549,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the third invariant <formula id="197">$ I_3 $</formula>. </para>
+<simplesect kind="return"><para>Value of the third invariant <formula id="104">$ I_3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -568,10 +568,10 @@
           <declname>strain</declname>
         </param>
         <briefdescription>
-<para>Computes the third invariant <formula id="200">$ I^{(\varepsilon)}_3 $</formula> of the strain tensor. </para>
+<para>Computes the third invariant <formula id="107">$ I^{(\varepsilon)}_3 $</formula> of the strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>The third invariant is given by the determinant of the strain tensor:   <formula id="201">\[  I^{(\varepsilon)}_3 = \det(\boldsymbol{\varepsilon})
+<para>The third invariant is given by the determinant of the strain tensor:   <formula id="108">\[  I^{(\varepsilon)}_3 = \det(\boldsymbol{\varepsilon})
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
@@ -581,7 +581,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the third strain invariant <formula id="200">$ I^{(\varepsilon)}_3 $</formula>. </para>
+<simplesect kind="return"><para>Value of the third strain invariant <formula id="107">$ I^{(\varepsilon)}_3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -605,10 +605,10 @@
           <declname>stress</declname>
         </param>
         <briefdescription>
-<para>Computes the second invariant <formula id="175">$ J_2 $</formula> of the deviatoric stress tensor. </para>
+<para>Computes the second invariant <formula id="82">$ J_2 $</formula> of the deviatoric stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>For the deviatoric stress tensor <formula id="202">$ \boldsymbol{s} $</formula>:   <formula id="203">\[  J_2 = \tfrac{1}{3} I_1^2 - I_2
+<para>For the deviatoric stress tensor <formula id="109">$ \boldsymbol{s} $</formula>:   <formula id="110">\[  J_2 = \tfrac{1}{3} I_1^2 - I_2
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -627,7 +627,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the second deviatoric invariant <formula id="175">$ J_2 $</formula> (clamped to non-negative). </para>
+<simplesect kind="return"><para>Value of the second deviatoric invariant <formula id="82">$ J_2 $</formula> (clamped to non-negative). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -646,10 +646,10 @@
           <declname>strain</declname>
         </param>
         <briefdescription>
-<para>Computes the second invariant <formula id="204">$ J^{(\varepsilon)}_2 $</formula> of the deviatoric strain tensor. </para>
+<para>Computes the second invariant <formula id="111">$ J^{(\varepsilon)}_2 $</formula> of the deviatoric strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>For the deviatoric strain tensor <formula id="205">$ \boldsymbol{e} $</formula>:     <formula id="206">\[  J^{(\varepsilon)}_2 =
+<para>For the deviatoric strain tensor <formula id="112">$ \boldsymbol{e} $</formula>:     <formula id="113">\[  J^{(\varepsilon)}_2 =
     \tfrac{1}{3} \left(I^{(\varepsilon)}_1\right)^2
     - I^{(\varepsilon)}_2
 \]</formula> <parameterlist kind="param"><parameteritem>
@@ -661,7 +661,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the second deviatoric strain invariant <formula id="204">$ J^{(\varepsilon)}_2 $</formula>. </para>
+<simplesect kind="return"><para>Value of the second deviatoric strain invariant <formula id="111">$ J^{(\varepsilon)}_2 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -685,10 +685,10 @@
           <declname>stress</declname>
         </param>
         <briefdescription>
-<para>Computes the third invariant <formula id="207">$ J_3 $</formula> of the deviatoric stress tensor. </para>
+<para>Computes the third invariant <formula id="114">$ J_3 $</formula> of the deviatoric stress tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>For the deviatoric stress tensor <formula id="202">$ \boldsymbol{s} $</formula>:   <formula id="208">\[  J_3 = \tfrac{2}{27} I_1^3 - \tfrac{1}{3} I_1 I_2 + I_3
+<para>For the deviatoric stress tensor <formula id="109">$ \boldsymbol{s} $</formula>:   <formula id="115">\[  J_3 = \tfrac{2}{27} I_1^3 - \tfrac{1}{3} I_1 I_2 + I_3
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -707,7 +707,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the third deviatoric stress invariant <formula id="207">$ J_3 $</formula>. </para>
+<simplesect kind="return"><para>Value of the third deviatoric stress invariant <formula id="114">$ J_3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -726,10 +726,10 @@
           <declname>strain</declname>
         </param>
         <briefdescription>
-<para>Computes the third invariant <formula id="209">$ J^{(\varepsilon)}_3 $</formula> of the deviatoric strain tensor  <formula id="210">$\boldsymbol{e} $</formula>. </para>
+<para>Computes the third invariant <formula id="116">$ J^{(\varepsilon)}_3 $</formula> of the deviatoric strain tensor  <formula id="117">$\boldsymbol{e} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>The third invariant is obtained by reconstructing the strain tensor from Voigt notation and computing its determinant:   <formula id="211">\[  J^{(\varepsilon)}_3 = \det(\boldsymbol{e})
+<para>The third invariant is obtained by reconstructing the strain tensor from Voigt notation and computing its determinant:   <formula id="118">\[  J^{(\varepsilon)}_3 = \det(\boldsymbol{e})
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
@@ -739,7 +739,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Value of the third deviatoric strain invariant <formula id="209">$ J^{(\varepsilon)}_3 $</formula>. </para>
+<simplesect kind="return"><para>Value of the third deviatoric strain invariant <formula id="116">$ J^{(\varepsilon)}_3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -772,7 +772,7 @@
 </parameterlist>
 <simplesect kind="return"><para>A pair consisting of:<itemizedlist>
 <listitem><para>A vector containing the (unsorted) principal values.</para>
-</listitem><listitem><para>An <formula id="212">$ 3 \times 6 $</formula> matrix containing the derivatives of the principal values with respect to the Voigt components of <formula id="213">$ S $</formula>. </para>
+</listitem><listitem><para>An <formula id="119">$ 3 \times 6 $</formula> matrix containing the derivatives of the principal values with respect to the Voigt components of <formula id="9">$ S $</formula>. </para>
 </listitem></itemizedlist>
 </para>
 </simplesect>

@@ -18,17 +18,17 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic Young&apos;s modulus <formula id="84">$ E $</formula> from the compression modulus <formula id="85">$ K $</formula> and shear modulus <formula id="86">$ G $</formula>. </para>
+<para>Computes the isotropic Young&apos;s modulus <formula id="227">$ E $</formula> from the compression modulus <formula id="228">$ K $</formula> and shear modulus <formula id="229">$ G $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="87">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G}
+<para><formula id="230">\[  \displaystyle E = \frac{9\,K\,G}{3\,K + G}
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>K</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Compression modulus <formula id="85">$ K $</formula>. </para>
+<para>Compression modulus <formula id="228">$ K $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -36,11 +36,11 @@
 <parametername>G</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="86">$ G $</formula>. </para>
+<para>Shear modulus <formula id="229">$ G $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+<simplesect kind="return"><para>Young&apos;s modulus <formula id="227">$ E $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -63,17 +63,17 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic Poisson&apos;s ratio <formula id="88">$ \nu $</formula> from the compression modulus <formula id="85">$ K $</formula> and shear modulus <formula id="86">$ G $</formula>. </para>
+<para>Computes the isotropic Poisson&apos;s ratio <formula id="231">$ \nu $</formula> from the compression modulus <formula id="228">$ K $</formula> and shear modulus <formula id="229">$ G $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="89">\[  \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
+<para><formula id="232">\[  \displaystyle \nu = \frac{3\,K - 2\,G}{6\,K + 2\,G}
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>K</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Compression modulus <formula id="85">$ K $</formula>. </para>
+<para>Compression modulus <formula id="228">$ K $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -81,11 +81,11 @@
 <parametername>G</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="86">$ G $</formula>. </para>
+<para>Shear modulus <formula id="229">$ G $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+<simplesect kind="return"><para>Poisson&apos;s ratio <formula id="231">$ \nu $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -108,16 +108,16 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic shear modulus <formula id="86">$ G $</formula> from the Young&apos;s modulus <formula id="84">$ E $</formula> and Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+<para>Computes the isotropic shear modulus <formula id="229">$ G $</formula> from the Young&apos;s modulus <formula id="227">$ E $</formula> and Poisson&apos;s ratio <formula id="231">$ \nu $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="90">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
+<para><formula id="233">\[ \displaystyle G = \frac{E}{2\,(1 + \nu)}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>E</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+<para>Young&apos;s modulus <formula id="227">$ E $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -125,11 +125,11 @@
 <parametername>nu</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="231">$ \nu $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Shear modulus <formula id="86">$ G $</formula>. </para>
+<simplesect kind="return"><para>Shear modulus <formula id="229">$ G $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -152,17 +152,17 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic Lamé parameter <formula id="91">$ \lambda $</formula> from the Young&apos;s modulus <formula id="84">$ E $</formula> and Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+<para>Computes the isotropic Lamé parameter <formula id="234">$ \lambda $</formula> from the Young&apos;s modulus <formula id="227">$ E $</formula> and Poisson&apos;s ratio <formula id="231">$ \nu $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="92">\[ \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
+<para><formula id="235">\[ \displaystyle \lambda = \frac{E\,\nu}{(1 + \nu)(1 - 2\,\nu)}
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>E</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="84">$ E $</formula>. </para>
+<para>Young&apos;s modulus <formula id="227">$ E $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -170,11 +170,11 @@
 <parametername>nu</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="88">$ \nu $</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="231">$ \nu $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Lamé parameter <formula id="91">$ \lambda $</formula>. </para>
+<simplesect kind="return"><para>Lamé parameter <formula id="234">$ \lambda $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -197,10 +197,10 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula>. </para>
+<para>Computes the isotropic compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="94">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para><formula id="237">\[ \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E} &amp; \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{1}{E} &amp; \frac{-\nu}{E} &amp; 0 &amp; 0 &amp; 0 \\
                 \frac{-\nu}{E} &amp; \frac{-\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0 \\
@@ -210,14 +210,14 @@
            \end{bmatrix}
 \]</formula></para>
 <para>with</para>
-<para><formula id="95">\[   G = \frac{E}{2\,(1 + \nu)}.
+<para><formula id="238">\[   G = \frac{E}{2\,(1 + \nu)}.
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>E</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="96">$E$</formula>. </para>
+<para>Young&apos;s modulus <formula id="239">$E$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -225,11 +225,11 @@
 <parametername>nu</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="240">$\nu$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -252,10 +252,10 @@
           <declname>nu</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic stiffness tensor <formula id="35">$\mathbb{C}$</formula> from Young&apos;s modulus <formula id="96">$E$</formula> and Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
+<para>Computes the isotropic stiffness tensor <formula id="208">$\mathbb{C}$</formula> from Young&apos;s modulus <formula id="239">$E$</formula> and Poisson&apos;s ratio <formula id="240">$\nu$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="98">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
+<para><formula id="241">\[\displaystyle \mathbb{ C } = \frac{E\,(1-\nu)}{(1+\nu)(1-2\,\nu)} \begin{bmatrix}
                                 1 &amp; \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                             \frac{\nu}{1-\nu} &amp; 1 &amp; \frac{\nu}{1-\nu} &amp; 0 &amp; 0 &amp; 0 \\
                                       \frac{\nu}{1-\nu} &amp; \frac{\nu}{1-\nu} &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
@@ -269,7 +269,7 @@
 <parametername>E</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Young&apos;s modulus <formula id="96">$E$</formula>. </para>
+<para>Young&apos;s modulus <formula id="239">$E$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -277,11 +277,11 @@
 <parametername>nu</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="97">$\nu$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="240">$\nu$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Stiffness tensor <formula id="208">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -304,7 +304,7 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Computes the isotropic stiffness tensor <formula id="35">$\mathbb{C}$</formula> from the bulk modulus <formula id="99">$K$</formula> and shear modulus <formula id="100">$G$</formula>. </para>
+<para>Computes the isotropic stiffness tensor <formula id="208">$\mathbb{C}$</formula> from the bulk modulus <formula id="242">$K$</formula> and shear modulus <formula id="243">$G$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -312,7 +312,7 @@
 <parametername>K</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Bulk modulus <formula id="99">$K$</formula>. </para>
+<para>Bulk modulus <formula id="242">$K$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -320,11 +320,11 @@
 <parametername>G</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shear modulus <formula id="100">$G$</formula>. </para>
+<para>Shear modulus <formula id="243">$G$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Stiffness tensor <formula id="208">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>

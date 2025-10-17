@@ -8,16 +8,16 @@
     <detaileddescription>
 <para><variablelist>
 <varlistentry><term>Class <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity" kindref="compound">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;</ref>  </term></varlistentry>
-<listitem><para><anchor id="todo_1_todo000001"/>: Update member names to more descriptive ones  </para>
+<listitem><para><anchor id="todo_1_todo000005"/>: Update member names to more descriptive ones  </para>
 </listitem>
 <varlistentry><term>Member <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9" kindref="member">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;::applyViscosityOnMatTangent</ref>  (const TangentSizedMatrix &amp;matTangentInv, double dT)</term></varlistentry>
-<listitem><para><anchor id="todo_1_todo000002"/>: Check if application to inverse can be replaced by application to non-inverse in general  </para>
+<listitem><para><anchor id="todo_1_todo000006"/>: Check if application to inverse can be replaced by application to non-inverse in general  </para>
 </listitem>
 <varlistentry><term>Member <ref refid="class_marmot_material_hyper_elastic_1a8572da8553b57740895ead92316f4cbd" kindref="member">MarmotMaterialHyperElastic::computeStress</ref>  (double *S, double *dSdE, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</term></varlistentry>
-<listitem><para><anchor id="todo_1_todo000005"/>A default implementation is provided. </para>
+<listitem><para><anchor id="todo_1_todo000001"/>A default implementation is provided. </para>
 </listitem>
 <varlistentry><term>Member <ref refid="class_marmot_material_hyper_elastic_1aab2db47ca209a86cfca449e456a1c8ee" kindref="member">MarmotMaterialHyperElastic::computeStressPK2</ref>  (double *S, double *dSdE, const double *E, const double *timeOld, const double dT, double &amp;pNewDT)=0</term></varlistentry>
-<listitem><para><anchor id="todo_1_todo000006"/>Should we use function overloading in this case and simple also use computeStress for the function name? </para>
+<listitem><para><anchor id="todo_1_todo000002"/>Should we use function overloading in this case and simple also use computeStress for the function name? </para>
 </listitem>
 <varlistentry><term>Member <ref refid="class_marmot_material_hypo_elastic_1a5c718df3ee25eb2462b707d3e06c9621" kindref="member">MarmotMaterialHypoElastic::computeStress</ref>  (double *stress, double *dStressDDStrain, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</term></varlistentry>
 <listitem><para><anchor id="todo_1_todo000003"/>A default implementation is provided.</para>

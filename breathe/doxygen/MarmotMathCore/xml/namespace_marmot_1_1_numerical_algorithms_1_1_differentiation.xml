@@ -76,8 +76,8 @@
 </parameterlist>
 <simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
 </simplesect>
-It actually computes   <formula id="29">\[ f&apos;(x) \approx \frac{f(x + h) - f(x)}{h}
-\]</formula> with <formula id="30">$ h = \sqrt{\epsilon}\, \max(1,|x|) $</formula> and <formula id="31">$ \epsilon $</formula> being the machine precision. </para>
+It actually computes   <formula id="3">\[ f&apos;(x) \approx \frac{f(x + h) - f(x)}{h}
+\]</formula> with <formula id="4">$ h = \sqrt{\epsilon}\, \max(1,|x|) $</formula> and <formula id="5">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -120,8 +120,8 @@ It actually computes   <formula id="29">\[ f&apos;(x) \approx \frac{f(x + h) - f
 </parameterlist>
 <simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
 </simplesect>
-It actually approximates the first derivative by   <formula id="32">\[ f&apos;(x) \approx \frac{f(x + h) - f(x - h)}{2h}
-\]</formula> with <formula id="33">$ h = \sqrt[3]{\epsilon}\,\max( 1, |x|)$</formula> and <formula id="31">$ \epsilon $</formula> being the machine precision. </para>
+It actually approximates the first derivative by   <formula id="6">\[ f&apos;(x) \approx \frac{f(x + h) - f(x - h)}{2h}
+\]</formula> with <formula id="7">$ h = \sqrt[3]{\epsilon}\,\max( 1, |x|)$</formula> and <formula id="5">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -164,8 +164,8 @@ It actually approximates the first derivative by   <formula id="32">\[ f&apos;(x
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually computes   <formula id="34">\[  J_{ij} \approx \frac{F_i(X + h e_j) - F_i(X)}{h}
-\]</formula> with <formula id="35">$ h = \sqrt{\epsilon} (1 + |X_j|) $</formula>, <formula id="36">$ e_j $</formula> being the unit vector in the j-th direction, and  <formula id="37">$\epsilon $</formula> being the machine precision. </para>
+It actually computes   <formula id="8">\[  J_{ij} \approx \frac{F_i(X + h e_j) - F_i(X)}{h}
+\]</formula> with <formula id="9">$ h = \sqrt{\epsilon} (1 + |X_j|) $</formula>, <formula id="10">$ e_j $</formula> being the unit vector in the j-th direction, and  <formula id="11">$\epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -208,8 +208,8 @@ It actually computes   <formula id="34">\[  J_{ij} \approx \frac{F_i(X + h e_j) 
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually approximates the Jacobian matrix by   <formula id="38">\[  J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
-\]</formula> with <formula id="39">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, <formula id="36">$ e_j $</formula> being the unit vector in the j-th direction, and <formula id="31">$ \epsilon $</formula> being the machine precision. </para>
+It actually approximates the Jacobian matrix by   <formula id="12">\[  J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
+\]</formula> with <formula id="13">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, <formula id="10">$ e_j $</formula> being the unit vector in the j-th direction, and <formula id="5">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -220,6 +220,6 @@ It actually approximates the Jacobian matrix by   <formula id="38">\[  J_{ij} \a
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="37" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="34" column="3"/>
   </compounddef>
 </doxygen>

@@ -18,7 +18,7 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}"}}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -272,9 +272,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper14getNextSubstepEv"><code class="docutils literal notranslate"><span class="pre">getNextSubstep()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19decreaseSubstepSizeEv"><code class="docutils literal notranslate"><span class="pre">decreaseSubstepSize()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper20finishElasticSubstepEv"><code class="docutils literal notranslate"><span class="pre">finishElasticSubstep()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrixRK18TangentSizedMatrix"><code class="docutils literal notranslate"><span class="pre">finishSubstep()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"><code class="docutils literal notranslate"><span class="pre">consistentStiffness()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix"><code class="docutils literal notranslate"><span class="pre">finishSubstep()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"><code class="docutils literal notranslate"><span class="pre">consistentStiffness()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrixRK18TangentSizedMatrix"><code class="docutils literal notranslate"><span class="pre">finishSubstep()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper15initialStepSizeE"><code class="docutils literal notranslate"><span class="pre">initialStepSize</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper15minimumStepSizeE"><code class="docutils literal notranslate"><span class="pre">minimumStepSize</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13scaleUpFactorE"><code class="docutils literal notranslate"><span class="pre">scaleUpFactor</span></code></a></li>
@@ -284,9 +284,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper18currentSubstepSizeE"><code class="docutils literal notranslate"><span class="pre">currentSubstepSize</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper14passedSubstepsE"><code class="docutils literal notranslate"><span class="pre">passedSubsteps</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3CelE"><code class="docutils literal notranslate"><span class="pre">Cel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"><code class="docutils literal notranslate"><span class="pre">consistentTangent</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I76E"><code class="docutils literal notranslate"><span class="pre">I76</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I77E"><code class="docutils literal notranslate"><span class="pre">I77</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"><code class="docutils literal notranslate"><span class="pre">consistentTangent</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms25PerezFougetSubstepperTimeE"><code class="docutils literal notranslate"><span class="pre">Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</span></code></a><ul>
@@ -1095,7 +1095,7 @@
 <p>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom. </p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000001"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000005"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>: Update member names to more descriptive ones </p>
 </dd></dl>
 
@@ -1132,7 +1132,7 @@
 <span id="_CPPv3N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd"></span><span id="_CPPv2N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd"></span><span id="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::applyViscosityOnMatTangent__TangentSizedMatrixCR.double"></span><span class="target" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9"></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity18TangentSizedMatrixE" title="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">applyViscosityOnMatTangent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity18TangentSizedMatrixE" title="Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">matTangentInv</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics24CommonConstitutiveModels20DuvautLionsViscosity26applyViscosityOnMatTangentERK18TangentSizedMatrixd" title="Link to this definition"></a><br /></dt>
 <dd><p>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <span class="math notranslate nohighlight">\(\infty\)</span>, and timestep dt <dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000002"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000006"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>: Check if application to inverse can be replaced by application to non-inverse in general </p>
 </dd></dl>
 
@@ -1564,7 +1564,7 @@ l_{\text{nonlocal}} \]</div>
 <dd><p>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\)</span>.</p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000005"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000001"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>A default implementation is provided.</p>
 </dd></dl>
 
@@ -1590,7 +1590,7 @@ l_{\text{nonlocal}} \]</div>
 <dd><p>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}\)</span>.</p>
 <p><dl>
 <dt class="sig sig-object cpp">
-<a class="reference internal" href="#todo_1_todo000006"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
+<a class="reference internal" href="#todo_1_todo000002"><span class="std std-ref"><span class="pre">Todo:</span></span></a></dt>
 <dd><p>Should we use function overloading in this case and simple also use computeStress for the function name?</p>
 </dd></dl>
 
@@ -2223,9 +2223,9 @@ l_{\text{nonlocal}} \]</div>
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE">
 <span id="_CPPv3I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE"></span><span id="_CPPv2I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nSizeMatTangent</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PerezFougetSubstepper</span></span></span><a class="headerlink" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Link to this definition"></a><br /></dt>
 <dd><div class="docutils container">
-<em>#include &lt;<a class="reference internal" href="#_perez_fouget_substepper_explicit_mark_i_i_8h"><span class="std std-ref">PerezFougetSubstepperExplicitMarkII.h</span></a>&gt;</em></div>
-<p>Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version</p>
-<p>Substepper for (linear elastic) elastoplastic materials, implicit return mapping version </p>
+<em>#include &lt;<a class="reference internal" href="#_perez_fouget_substepper_mark_i_i_8h"><span class="std std-ref">PerezFougetSubstepperMarkII.h</span></a>&gt;</em></div>
+<p>Substepper for (linear elastic) elastoplastic materials, implicit return mapping version</p>
+<p>Substepper for (linear elastic) elastoplastic materials, semi-explicit return mapping version </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
@@ -2234,13 +2234,13 @@ l_{\text{nonlocal}} \]</div>
 <dd></dd></dl>
 
 <dl class="cpp type">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE">
-<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abce7ed899992c189a9a233ad0eef0e44"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MatrixStateStrain</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TangentSizedMatrix</span></span></span><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp type">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TangentSizedMatrix</span></span></span><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE">
+<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abce7ed899992c189a9a233ad0eef0e44"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot19NumericalAlgorithms21PerezFougetSubstepperE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::nSizeMatTangent"><span class="n"><span class="pre">nSizeMatTangent</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MatrixStateStrain</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -2254,7 +2254,7 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper10isFinishedEv">
 <span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper10isFinishedEv"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper10isFinishedEv"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::isFinished"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab79e7997a4c056372aa793abe3edb331"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isFinished</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper10isFinishedEv" title="Link to this definition"></a><br /></dt>
-<dd><p>check if subincrementation process has finished </p>
+<dd><p>check if the subincrement process has finished </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -2266,12 +2266,53 @@ l_{\text{nonlocal}} \]</div>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19decreaseSubstepSizeEv">
 <span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19decreaseSubstepSizeEv"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19decreaseSubstepSizeEv"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::decreaseSubstepSize"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a675949cac7e8de8b343000c7c4b91ef8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">decreaseSubstepSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19decreaseSubstepSizeEv" title="Link to this definition"></a><br /></dt>
-<dd><p>decrease the next subincrement </p>
+<dd><p>decreas the subincrement size </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper20finishElasticSubstepEv">
 <span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper20finishElasticSubstepEv"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper20finishElasticSubstepEv"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishElasticSubstep"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a27d20da83471ab632ed120d0b05253cc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finishElasticSubstep</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper20finishElasticSubstepEv" title="Link to this definition"></a><br /></dt>
+<dd><p>finish an elastic only subincrement </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix">
+<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishSubstep__TangentSizedMatrixCR"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finishSubstep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper18TangentSizedMatrixE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dXdY</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix" title="Link to this definition"></a><br /></dt>
+<dd><p>finish a subincrement, pass the inverse material tangent </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv">
+<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentStiffness"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec"></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentStiffness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv" title="Link to this definition"></a><br /></dt>
+<dd><p>get the overall consistent algorithmic tangent </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a1efc6ebb4b030b6f8d53050590f4fd76"></span><span class="sig-name descname"><span class="n"><span class="pre">PerezFougetSubstepper</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initialStepSize</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">minimumStepSize</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scaleUpFactor</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scaleDownFactor</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nPassesToIncrease</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Cel</span></span><span class="sig-paren">)</span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a4cba185352e9312a12a53b9468ae4d91"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isFinished</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>check if subincrementation process has finished </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNextSubstep</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>get the next subincrement size </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">decreaseSubstepSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>decrease the next subincrement </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finishElasticSubstep</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
 <dd><p>finish an elastic only subincrement </p>
 </dd></dl>
 
@@ -2290,50 +2331,9 @@ l_{\text{nonlocal}} \]</div>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv">
-<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentStiffness"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec"></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentStiffness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper19consistentStiffnessEv" title="Link to this definition"></a><br /></dt>
-<dd><p>get the consistent algorithmic tangent </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a1efc6ebb4b030b6f8d53050590f4fd76"></span><span class="sig-name descname"><span class="n"><span class="pre">PerezFougetSubstepper</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initialStepSize</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">minimumStepSize</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scaleUpFactor</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scaleDownFactor</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nPassesToIncrease</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Cel</span></span><span class="sig-paren">)</span><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a4cba185352e9312a12a53b9468ae4d91"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isFinished</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
-<dd><p>check if the subincrement process has finished </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNextSubstep</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
-<dd><p>get the next subincrement size </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">decreaseSubstepSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
-<dd><p>decreas the subincrement size </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finishElasticSubstep</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
-<dd><p>finish an elastic only subincrement </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix">
-<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::finishSubstep__TangentSizedMatrixCR"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finishSubstep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper18TangentSizedMatrixE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dXdY</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper13finishSubstepERK18TangentSizedMatrix" title="Link to this definition"></a><br /></dt>
-<dd><p>finish a subincrement, pass the inverse material tangent </p>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp">
 <span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1aaebc5a982bb9825d3488ae3f3789fa18"></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentStiffness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
-<dd><p>get the overall consistent algorithmic tangent </p>
+<dd><p>get the consistent algorithmic tangent </p>
 </dd></dl>
 
 </div>
@@ -2385,6 +2385,11 @@ l_{\text{nonlocal}} \]</div>
 <dd></dd></dl>
 
 <dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE">
+<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentTangent__TangentSizedMatrix"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89"></span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper18TangentSizedMatrixE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentTangent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I76E">
 <span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I76E"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I76E"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::I76__MatrixStateStrain"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a774e7268d9ced3aa61f246d10e727c1e"></span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain"><span class="n"><span class="pre">MatrixStateStrain</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I76</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper3I76E" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
@@ -2395,13 +2400,8 @@ l_{\text{nonlocal}} \]</div>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE">
-<span id="_CPPv3N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"></span><span id="_CPPv2N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE"></span><span id="Marmot::NumericalAlgorithms::PerezFougetSubstepper::consistentTangent__MatrixStateStrain"></span><span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a993666eaf7fb10e8baee6e21e060feac"></span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain"><span class="n"><span class="pre">MatrixStateStrain</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentTangent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17consistentTangentE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp var">
 <dt class="sig sig-object cpp">
-<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89"></span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper18TangentSizedMatrixE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::TangentSizedMatrix"><span class="n"><span class="pre">TangentSizedMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentTangent</span></span></span><br /></dt>
+<span class="target" id="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a993666eaf7fb10e8baee6e21e060feac"></span><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithms21PerezFougetSubstepper17MatrixStateStrainE" title="Marmot::NumericalAlgorithms::PerezFougetSubstepper::MatrixStateStrain"><span class="n"><span class="pre">MatrixStateStrain</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">consistentTangent</span></span></span><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -5854,25 +5854,25 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <dd><p><dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Class</span> <a class="reference internal" href="#class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity"><span class="std std-ref"><span class="pre">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt;</span> <span class="pre">nMatTangentSize</span> <span class="pre">&gt;</span></span></a></dt>
-<dd><p><span class="target" id="todo_1_todo000001"></span>: Update member names to more descriptive ones  </p>
+<dd><p><span class="target" id="todo_1_todo000005"></span>: Update member names to more descriptive ones  </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9"><span class="std std-ref"><span class="pre">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt;</span> <span class="pre">nMatTangentSize</span> <span class="pre">&gt;::applyViscosityOnMatTangent</span></span></a>&#160; <span class="pre">(const</span> <span class="pre">TangentSizedMatrix</span> <span class="pre">&amp;matTangentInv,</span> <span class="pre">double</span> <span class="pre">dT)</span></dt>
-<dd><p><span class="target" id="todo_1_todo000002"></span>: Check if application to inverse can be replaced by application to non-inverse in general  </p>
+<dd><p><span class="target" id="todo_1_todo000006"></span>: Check if application to inverse can be replaced by application to non-inverse in general  </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_material_hyper_elastic_1a8572da8553b57740895ead92316f4cbd"><span class="std std-ref"><span class="pre">MarmotMaterialHyperElastic::computeStress</span></span></a>&#160; <span class="pre">(double</span> <span class="pre">*S,</span> <span class="pre">double</span> <span class="pre">*dSdE,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*FOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*FNew,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*timeOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">dT,</span> <span class="pre">double</span> <span class="pre">&amp;pNewDT)</span> <span class="pre">override</span></dt>
-<dd><p><span class="target" id="todo_1_todo000005"></span>A default implementation is provided. </p>
+<dd><p><span class="target" id="todo_1_todo000001"></span>A default implementation is provided. </p>
 </dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">
 <span class="pre">Member</span> <a class="reference internal" href="#class_marmot_material_hyper_elastic_1aab2db47ca209a86cfca449e456a1c8ee"><span class="std std-ref"><span class="pre">MarmotMaterialHyperElastic::computeStressPK2</span></span></a>&#160; <span class="pre">(double</span> <span class="pre">*S,</span> <span class="pre">double</span> <span class="pre">*dSdE,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*E,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">*timeOld,</span> <span class="pre">const</span> <span class="pre">double</span> <span class="pre">dT,</span> <span class="pre">double</span> <span class="pre">&amp;pNewDT)=0</span></dt>
-<dd><p><span class="target" id="todo_1_todo000006"></span>Should we use function overloading in this case and simple also use computeStress for the function name? </p>
+<dd><p><span class="target" id="todo_1_todo000002"></span>Should we use function overloading in this case and simple also use computeStress for the function name? </p>
 </dd></dl>
 
 <dl>

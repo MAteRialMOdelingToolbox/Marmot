@@ -30,10 +30,10 @@
           <declname>G12</declname>
         </param>
         <briefdescription>
-<para>Computes the transversely isotropic compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula>. </para>
+<para>Computes the transversely isotropic compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="101">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
+<para><formula id="244">\[   \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
                 \frac{1}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{12}}{E_1} &amp; 0 &amp; 0 &amp; 0 \\
                       \frac{-\nu_{12}}{E_1} &amp; \frac{1}{E_2} &amp; \frac{-\nu_{23}}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
                       \frac{-\nu_{12}}{E_1} &amp; \frac{-\nu_{23}}{E_2} &amp; \frac{1}{E_2} &amp; 0 &amp; 0 &amp; 0 \\
@@ -42,16 +42,16 @@
                   0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{1}{G_{23}}
                                    \end{bmatrix}
 \]</formula></para>
-<para>The isotropic plane is defined with respect to the <formula id="102">$x_2$</formula>– <formula id="103">$x_3$</formula> axes of a local coordinate system. The tensor is expressed in terms of the out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>, shear modulus <formula id="105">$G_{12}$</formula>, and Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>, together with the in-plane Young&apos;s modulus <formula id="107">$E_2$</formula> and Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>.</para>
-<para>The in-plane shear modulus <formula id="109">$ G_{23} $</formula> is given by</para>
-<para><formula id="110">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
+<para>The isotropic plane is defined with respect to the <formula id="245">$x_2$</formula>– <formula id="246">$x_3$</formula> axes of a local coordinate system. The tensor is expressed in terms of the out-of-plane Young&apos;s modulus <formula id="247">$E_1$</formula>, shear modulus <formula id="248">$G_{12}$</formula>, and Poisson&apos;s ratio <formula id="249">$\nu_{12}$</formula>, together with the in-plane Young&apos;s modulus <formula id="250">$E_2$</formula> and Poisson&apos;s ratio <formula id="251">$\nu_{23}$</formula>.</para>
+<para>The in-plane shear modulus <formula id="252">$ G_{23} $</formula> is given by</para>
+<para><formula id="253">\[  \displaystyle G_{23} = \frac{E_2}{2\,(1 + \nu_{23})}
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>E1</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>. </para>
+<para>Out-of-plane Young&apos;s modulus <formula id="247">$E_1$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -59,7 +59,7 @@
 <parametername>E2</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>In-plane Young&apos;s modulus <formula id="107">$E_2$</formula>. </para>
+<para>In-plane Young&apos;s modulus <formula id="250">$E_2$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -67,7 +67,7 @@
 <parametername>nu12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="249">$\nu_{12}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -75,7 +75,7 @@
 <parametername>nu23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="251">$\nu_{23}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -83,11 +83,11 @@
 <parametername>G12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>shear modulus <formula id="105">$G_{12}$</formula>. </para>
+<para>shear modulus <formula id="248">$G_{12}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Compliance tensor <formula id="93">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Compliance tensor <formula id="236">$\mathbb{C}^{-1}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -122,7 +122,7 @@
           <declname>G12</declname>
         </param>
         <briefdescription>
-<para>Computes the transversely isotropic stiffness tensor <formula id="111">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="112">$ \mathbb{C}^{-1} $</formula>. </para>
+<para>Computes the transversely isotropic stiffness tensor <formula id="254">$ \mathbb{C} $</formula> as inverse of the transversely isotropic compliance tensor <formula id="157">$ \mathbb{C}^{-1} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -130,7 +130,7 @@
 <parametername>E1</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Out-of-plane Young&apos;s modulus <formula id="104">$E_1$</formula>. </para>
+<para>Out-of-plane Young&apos;s modulus <formula id="247">$E_1$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -138,7 +138,7 @@
 <parametername>E2</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>In-plane Young&apos;s modulus <formula id="107">$E_2$</formula>. </para>
+<para>In-plane Young&apos;s modulus <formula id="250">$E_2$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -146,7 +146,7 @@
 <parametername>nu12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="106">$\nu_{12}$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="249">$\nu_{12}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -154,7 +154,7 @@
 <parametername>nu23</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Poisson&apos;s ratio <formula id="108">$\nu_{23}$</formula>. </para>
+<para>Poisson&apos;s ratio <formula id="251">$\nu_{23}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -162,11 +162,11 @@
 <parametername>G12</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>shear modulus <formula id="105">$G_{12}$</formula>. </para>
+<para>shear modulus <formula id="248">$G_{12}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Stiffness tensor <formula id="35">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
+<simplesect kind="return"><para>Stiffness tensor <formula id="208">$\mathbb{C}$</formula> as a 6x6 matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>

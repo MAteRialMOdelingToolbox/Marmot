@@ -10,7 +10,7 @@
         <name>dOmega_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dOmega_dVelocityGradient</qualifiedname>
         <briefdescription>
-<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="122">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
+<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="17">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

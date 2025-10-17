@@ -16,8 +16,8 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using a first order approximation. The first order approximation is given by   <formula id="18">\[   \Delta F_{\bar I J} = \left( \delta_{\bar K L} + \Delta \lambda \frac{\partial f}{\partial M_{\bar K
-L}}\right)_{J \bar{I}} \]</formula> where <formula id="19">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using a first order approximation. The first order approximation is given by   <formula id="30">\[   \Delta F_{\bar I J} = \left( \delta_{\bar K L} + \Delta \lambda \frac{\partial f}{\partial M_{\bar K
+L}}\right)_{J \bar{I}} \]</formula> where <formula id="31">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>deltaGp</parametername>
@@ -48,8 +48,8 @@ L}}\right)_{J \bar{I}} \]</formula> where <formula id="19">$ \Delta \lambda \fra
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map. The exponential map is given by   <formula id="20">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial f}{\partial M_{\bar I J}}\right)_{J \bar{I}}
-\]</formula> where <formula id="21">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} $</formula> is the incremental plastic velocity gradient.</para>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map. The exponential map is given by   <formula id="32">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial f}{\partial M_{\bar I J}}\right)_{J \bar{I}}
+\]</formula> where <formula id="33">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} $</formula> is the incremental plastic velocity gradient.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>deltaGp</parametername>

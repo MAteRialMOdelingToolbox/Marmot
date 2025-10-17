@@ -18,7 +18,7 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}"}}}</script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}"}}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -109,7 +109,54 @@ The constitutive law is given in total form as</p>
 \[\sig = \Cel : \epsE  = \Cel : \left( \eps - \epsVE - \epsF - \epsDC -\epsSHR \right)\]</div>
 <p>relating the nominal stress tensor <span class="math notranslate nohighlight">\(\sig\)</span>
 to the elastic strain tensor <span class="math notranslate nohighlight">\(\epsE\)</span>
-in terms of the fourth order stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span>.</p>
+in terms of the fourth order stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span>.
+Where
+<span class="math notranslate nohighlight">\(\eps\)</span> is the total strain,
+<span class="math notranslate nohighlight">\(\epsVE\)</span> is the viscoelastic strain,
+<span class="math notranslate nohighlight">\(\epsF\)</span> is the viscous flow strain (with the sum of <span class="math notranslate nohighlight">\(\epsVE\)</span> and <span class="math notranslate nohighlight">\(\epsF\)</span> representing the basic creep strain),
+<span class="math notranslate nohighlight">\(\epsDC\)</span> is the strain due to drying creep and
+<span class="math notranslate nohighlight">\(\epsSHR\)</span> is the total shrinkage strain.
+A potential temperature dependence is not taken into account.</p>
+<p>The implementation of the evolution of the visoelastic strain is using a solidifying Kelvin chain according to Bazant and Jirasek (2018). The drying creep strain is computed using an aging Kelvin chain.</p>
+<p>The evolution of the instantaneous elastic strain and the basic creep strain are represented by the Solidification Theory generalized to three-dimensional stress states.
+The evolution of the instantaneous elastic strain <span class="math notranslate nohighlight">\(\epsE\)</span> is expressed as</p>
+<div class="math notranslate nohighlight">
+\[\epsERate(t) = q_1 \DelNu : \sigRate(t),\]</div>
+<p>in which <span class="math notranslate nohighlight">\(q_1\)</span> denotes the age-independent asymptotic compliance and <span class="math notranslate nohighlight">\(\DelNu\)</span> the unit compliance tensor.
+The evolution of the viscoelastic strain <span class="math notranslate nohighlight">\(\epsVE\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\epsVERate(t) = \frac{1}{v(t)} \int_0^t \PhiRate(t-t') \DelNu : d\sig(t'),\]</div>
+<p>in terms of the solidified volume function <span class="math notranslate nohighlight">\(v(t)\)</span> and the compliance rate of the hydrated constituent <span class="math notranslate nohighlight">\(\PhiRate(t-t')\)</span>.
+The solidified volume function</p>
+<div class="math notranslate nohighlight">
+\[v(t) =  \left[ \left( \frac{\lambda_0}{t} \right) ^m + \frac{q_3}{q_2} \right] ^{-1}\]</div>
+<p>represents the time-dependent aging of the material. Where <span class="math notranslate nohighlight">\(\lambda_0\)</span> and <span class="math notranslate nohighlight">\(m\)</span> are material parameters with default values <span class="math notranslate nohighlight">\(\lambda_0 = 1 \; \mathrm{d}\)</span> and <span class="math notranslate nohighlight">\(m = 0.5\)</span>.
+The anti-derivative of the compliance rate <span class="math notranslate nohighlight">\(\PhiRate(t-t')\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\Phi(t-t') = q_2 \ln\left( 1 + \left( \frac{t-t'}{\lambda_0} \right) ^n \right),\]</div>
+<p>in which <span class="math notranslate nohighlight">\(n\)</span> is the exponent of the log-power law, with the default value <span class="math notranslate nohighlight">\(n = 0.1\)</span>.
+The evolution of the viscous strain <span class="math notranslate nohighlight">\(\epsF\)</span> is governed by</p>
+<div class="math notranslate nohighlight">
+\[\epsFRate(t) = q_4 \frac{1}{t} \DelNu : \sig(t).\]</div>
+<p>In the above equations, <span class="math notranslate nohighlight">\(q_2\)</span>, <span class="math notranslate nohighlight">\(q_3\)</span> and <span class="math notranslate nohighlight">\(q_4\)</span> denote the compliance parameters.
+The evolution of the drying strain <span class="math notranslate nohighlight">\(\epsDC\)</span> is described as</p>
+<div class="math notranslate nohighlight">
+\[\epsDCRate (t) = \frac{1}{\exp(p_{\mathrm{5H}}/2)} \int_0^t \PhiRate_\mathrm{d}(t, t', t_0) \DelNu : d\sig(t'),\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_0\)</span> denotes the start of drying and <span class="math notranslate nohighlight">\(p_{\mathrm{5H}}\)</span> is a cement type dependent parameter, which is set to <span class="math notranslate nohighlight">\(p_{\mathrm{5H}} = 8\)</span> for slow and regular hardening cement. The anti-derivative of the drying creep compliance rate <span class="math notranslate nohighlight">\(\PhiRate_d\)</span> is definded as</p>
+<div class="math notranslate nohighlight">
+\[\Phi_d(t,t',t_0) = q_5 \sqrt{ \left\langle \exp\left( b \tanh \sqrt{\xi-\xi_0} \right) - \exp \left( b \tanh \sqrt{-\xi_0} \right) \right\rangle}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(q_5\)</span> is the drying creep parameter, <span class="math notranslate nohighlight">\(\xi = (t-t')/\tau_{\mathrm{shr,d}}\)</span> and <span class="math notranslate nohighlight">\(\xi_0 = (t_0-t')/\tau_{\mathrm{shr,d}}\)</span> are dimensionless times, and <span class="math notranslate nohighlight">\(b= p_{\mathrm{5H}}(1-h_{\mathrm{env}})\)</span>, in which <span class="math notranslate nohighlight">\(h_{\mathrm{env}}\)</span> is the ambient relative humidity.</p>
+<p>The total shrinkage strain <span class="math notranslate nohighlight">\(\epsSHR\)</span> is assumed as the sum of the autogenous shrinkage strain <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,au}\)</span> and the drying shrinkage strain <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,d}\)</span>. The evolution of the autogenous shrinkage strain <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,au}\)</span> is described as</p>
+<div class="math notranslate nohighlight">
+\[\eps^\mathrm{shr,au}(t) = \boldsymbol{\mathrm{I}} \eps^\mathrm{shr,au}_\infty \left[ 1+ \left( \frac{\tau_\mathrm{shr,au}}{t} \right) ^\alpha \right]^{-4.5}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\boldsymbol{\mathrm{I}}\)</span> is the second order identity tensor, <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,au}_\infty\)</span>, <span class="math notranslate nohighlight">\(\tau_\mathrm{shr,au}\)</span> and <span class="math notranslate nohighlight">\(\alpha\)</span> are the ultimate autogenous shrinkage strain, the autogenous shrinkage halftime, and a parameter depending on the concrete composition and on the cement type, respectively.
+The evoluztion of the drying shrinkage strain <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,d}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\eps^\mathrm{shr,d}(t) = \boldsymbol{\mathrm{I}} \eps^\mathrm{shr,d}_\infty k_\mathrm{h} \tanh \sqrt{\frac{\left \langle t-t_0 \right \rangle }{\tau_{shr,d}}}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\eps^\mathrm{shr,d}_\infty\)</span> denotes the ultimate drying shrinkage strain at zero humidity and <span class="math notranslate nohighlight">\(\tau_{shr,d}\)</span> the drying shrinkage halftime. The paramter <span class="math notranslate nohighlight">\(k_{\mathrm{h}}\)</span> is given as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k_{\mathrm{h}}= \begin{cases}1-h_{\mathrm{env}}^3 &amp; \text { if } h_{\mathrm{env}} \leq 0.98, \\ 12.94\left(1-h_{\mathrm{env}}\right)-0.2 &amp; \text { otherwise, }\end{cases}\end{split}\]</div>
+<p>where currently only the first variant is implemented.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -317,7 +364,7 @@ in terms of the fourth order stiffness tensor <span class="math notranslate nohi
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B42rtE">
 <span id="_CPPv3N6Marmot9Materials2B42rtE"></span><span id="_CPPv2N6Marmot9Materials2B42rtE"></span><span id="Marmot::Materials::B4::rt__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">rt</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B42rtE" title="Link to this definition"></a><br /></dt>
 <dd><p>autogenous shrinkage material parameter </p>
-<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"><span class="std std-ref">rt</span></a> represents a cement type dependent material parameter for autogenous shrinkage. It is a reference variable to materialProperties[12]. </p>
+<p><a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"><span class="std std-ref">rt</span></a> represents a cement type dependent material parameter for autogenous shrinkage, whose value is <a class="reference internal" href="#classMarmot_1_1Materials_1_1B4_1a945ef886c515f8d8fac13e0586dc8e8b"><span class="std std-ref">rt</span></a> = -4.50 for all cements. It is a reference variable to materialProperties[12]. </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -391,22 +438,26 @@ in terms of the fourth order stiffness tensor <span class="math notranslate nohi
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B424solidificationParametersE">
 <span id="_CPPv3N6Marmot9Materials2B424solidificationParametersE"></span><span id="_CPPv2N6Marmot9Materials2B424solidificationParametersE"></span><span id="Marmot::Materials::B4::solidificationParameters__SolidificationTheory::Parameters"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a4d8030c73e8943f389492acc6c975478"></span><span class="n"><span class="pre">SolidificationTheory</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Parameters</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solidificationParameters</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B424solidificationParametersE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>material parameters for Solidification Theory </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B430solidificationKelvinPropertiesE">
 <span id="_CPPv3N6Marmot9Materials2B430solidificationKelvinPropertiesE"></span><span id="_CPPv2N6Marmot9Materials2B430solidificationKelvinPropertiesE"></span><span id="Marmot::Materials::B4::solidificationKelvinProperties__SolidificationTheory::KelvinChainProperties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a9bd463c2e8e4f231e9a9673b440888d1"></span><span class="n"><span class="pre">SolidificationTheory</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">KelvinChainProperties</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solidificationKelvinProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B430solidificationKelvinPropertiesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>properties of the Kelvin chain for approximating the viscoelastic compliance of the Solidification Theory </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B423basicCreepElasticModuliE">
 <span id="_CPPv3N6Marmot9Materials2B423basicCreepElasticModuliE"></span><span id="_CPPv2N6Marmot9Materials2B423basicCreepElasticModuliE"></span><span id="Marmot::Materials::B4::basicCreepElasticModuli__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a3cfc840893f1c0cbd15f24118a71dbed"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepElasticModuli</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B423basicCreepElasticModuliE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Young’s modulus of the Kelvin units representing basic creep. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B426basicCreepRetardationTimesE">
 <span id="_CPPv3N6Marmot9Materials2B426basicCreepRetardationTimesE"></span><span id="_CPPv2N6Marmot9Materials2B426basicCreepRetardationTimesE"></span><span id="Marmot::Materials::B4::basicCreepRetardationTimes__KelvinChain::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a90abb8d24ffce29ee81933ebda4c0ac5"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChainE" title="Marmot::Materials::KelvinChain"><span class="n"><span class="pre">KelvinChain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11KelvinChain10PropertiesE" title="Marmot::Materials::KelvinChain::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepRetardationTimes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B426basicCreepRetardationTimesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>retardation times of the Kelvin units representing basic creep </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -414,12 +465,14 @@ in terms of the fourth order stiffness tensor <span class="math notranslate nohi
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE">
 <span id="_CPPv3N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE"></span><span id="Marmot::Materials::B4::dryingCreepComplianceApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1ad0dde9ac0a0a9026319624c81d075d34"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dryingCreepComplianceApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B439dryingCreepComplianceApproximationOrderE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>approximation order of the Post-Widder formula for drying creep </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE">
 <span id="_CPPv3N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE"></span><span id="Marmot::Materials::B4::basicCreepComplianceApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1B4_1a47de019b8c16d71edef8debf1a4a0e12"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basicCreepComplianceApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials2B438basicCreepComplianceApproximationOrderE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>approximation order of the Post-Widder formula for basic creep </p>
+</dd></dl>
 
 </div>
 <dl class="cpp class">

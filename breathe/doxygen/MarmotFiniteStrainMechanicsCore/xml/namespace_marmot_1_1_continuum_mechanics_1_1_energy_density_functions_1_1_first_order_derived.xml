@@ -30,12 +30,12 @@
 <para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first derivative w.r.t. C. </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="28">$W_b$</formula> is given as   <formula id="29">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-\]</formula> where <formula id="24">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="25">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="26">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="27">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
-<para>Additionally, the first derivative w.r.t. C is computed as   <formula id="32">\[   \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
-\boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \]</formula> where   <formula id="33">\[   \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
-\]</formula> and   <formula id="34">\[   \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
+<para>The energy density function <formula id="6">$W_b$</formula> is given as   <formula id="7">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="2">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="3">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="4">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="5">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>Additionally, the first derivative w.r.t. C is computed as   <formula id="10">\[   \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
+\boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \]</formula> where   <formula id="11">\[   \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
+\]</formula> and   <formula id="12">\[   \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
 \]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
