@@ -267,7 +267,7 @@ namespace Marmot::Elements {
      * \mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \mathbf{C} \mathbf{B}\, J_0 w,\qquad
      * \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\, J_0 w.
      * \f]
-     * If \f$pNewdT<1\f$, the routine returns early to signal time step reduction.
+     * If pNewdT<1, the routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector.
      * @param dQ Incremental displacement.
      * @param Pe Internal force vector (accumulated).
