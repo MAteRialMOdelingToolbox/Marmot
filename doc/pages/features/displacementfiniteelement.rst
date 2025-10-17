@@ -10,15 +10,15 @@ matrix B, and internal forces and consistent tangents are evaluated by Gauss qua
 
 .. math::
 
-   \Delta \boldsymbol{\varepsilon} = \mathbf{B}\, \Delta \mathbf{u}, \qquad
+   \Delta \eps = \mathbf{B}\, \Delta \mathbf{u}, \qquad
    \mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \mathbf{C}\, \mathbf{B}\, J_0 w, \qquad
-   \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \boldsymbol{\sigma}\, J_0 w.
+   \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \sig\, J_0 w.
 
-where :math:`\Delta \boldsymbol{\varepsilon}` is the small-strain increment vector (Voigt notation),
+where :math:`\Delta \eps` is the small-strain increment vector (Voigt notation),
 :math:`\mathbf{B}` is the strain–displacement matrix, :math:`\Delta \mathbf{u}` the nodal displacement increment;
 :math:`\mathbf{K}_e` the element tangent stiffness, :math:`\mathbf{C}` the consistent material tangent;
 :math:`J_0 = \det \mathbf{J}` the Jacobian determinant and :math:`w` the quadrature weight;
-:math:`\mathbf{P}_e` the element internal force vector, :math:`\boldsymbol{\sigma}` the Cauchy stress vector,
+:math:`\mathbf{P}_e` the element internal force vector, :math:`\sig` the Cauchy stress tensor in Voigt notation,
 and :math:`\sum_{qp}` denotes summation over quadrature points.
 
 The mass matrix and body-force vector are obtained from the expressions:
@@ -51,9 +51,9 @@ Here, :math:`t` denotes thickness and :math:`A` denotes cross-sectional area.
 
 Constitutive updates are carried out per quadrature point using a Marmot material model.
 
-- 3D solid: full 3D update returning :math:`\boldsymbol{\sigma}` and :math:`\mathbf{C}`.
+- 3D solid: full 3D update returning :math:`\boldsymbol{\sig}` and :math:`\mathbf{C}`.
 
-- Plane stress: in-plane update consistent with :math:`\sigma_{zz}=0`.
+- Plane stress: in-plane update consistent with :math:`\sig_{zz}=0`.
 
 - Plane strain: 3D update with reduction to a plane-strain tangent.
 

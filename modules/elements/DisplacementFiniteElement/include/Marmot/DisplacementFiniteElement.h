@@ -114,7 +114,7 @@ namespace Marmot::Elements {
 
       /**
        * @brief Manager for per-quadrature-point state variables.
-       * @details Provides named accessors to stress \f$\boldsymbol{\sigma}\f$, strain \f$\boldsymbol{\varepsilon}\f$
+       * @details Provides named accessors to stress \f$\sig\f$, strain \f$\eps\f$
        * and the material state vector. The layout is [stress(6), strain(6), begin of material state(...)]
        * in 3D Voigt notation.
        */
