@@ -65,10 +65,10 @@ namespace Marmot::Elements {
     /**
      * @brief Kinematic section assumption used by the element.
      * @details Controls which constitutive call is performed at quadrature points.
-     * - UniaxialStress: 1D axial member.
-     * - PlaneStress: 2D continuum with \f$\sigma_{zz} = 0\f$.
-     * - PlaneStrain: 2D continuum with \f$\varepsilon_{zz}=0\f$.
-     * - Solid: 3D solid continuum.
+     * - UniaxialStress
+     * - PlaneStress
+     * - PlaneStrain
+     * - Solid
      */
     enum SectionType {
       UniaxialStress,

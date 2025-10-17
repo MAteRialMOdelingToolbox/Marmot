@@ -49,15 +49,15 @@ For 2D and 1D problems, the integration measure :math:`J_0 w` is scaled by thick
 (2D), :math:`J_0 w \leftarrow J_0 w\, A` (1D).
 Here, :math:`t` denotes thickness and :math:`A` denotes cross-sectional area.
 
-Constitutive updates are carried out per quadrature point using a Marmot material model.
+Constitutive updates are carried out per quadrature point using a Marmot material model:
 
-- 3D solid: full 3D update returning :math:`\boldsymbol{\sig}` and :math:`\mathbf{C}`.
+- 3D solid
 
-- Plane stress: in-plane update consistent with :math:`\sig_{zz}=0`.
+- Plane stress
 
-- Plane strain: 3D update with reduction to a plane-strain tangent.
+- Plane strain
 
-- 1D uniaxial stress: scalar update consistent with axial behavior.
+- 1D uniaxial stress
 
 Each quadrature point stores stress, strain and a material state vector; the element
 accumulates the history incrementally and may suggest a reduced time step if required
