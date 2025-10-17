@@ -14,7 +14,7 @@ matrix B, and internal forces and consistent tangents are evaluated by Gauss qua
    \mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \mathbf{C}\, \mathbf{B}\, J_0 w, \qquad
    \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \sig\, J_0 w.
 
-where :math:`\Delta \eps` is the small-strain increment vector (Voigt notation),
+where :math:`\Delta \eps` is the linearized strain tensor in Voigt notation,
 :math:`\mathbf{B}` is the strain–displacement matrix, :math:`\Delta \mathbf{u}` the nodal displacement increment;
 :math:`\mathbf{K}_e` the element tangent stiffness, :math:`\mathbf{C}` the consistent material tangent;
 :math:`J_0 = \det \mathbf{J}` the Jacobian determinant and :math:`w` the quadrature weight;
