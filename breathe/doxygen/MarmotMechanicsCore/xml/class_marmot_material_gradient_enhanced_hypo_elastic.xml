@@ -89,7 +89,7 @@
 <parametername direction="inout">nonLocalRadius</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>nonlocal radius representing the tangent  <formula id="44">$\frac{d \Delta \kappa }{d \Delta
+<para>nonlocal radius representing the tangent  <formula id="137">$\frac{d \Delta \kappa }{d \Delta
 \bar{\kappa}}$</formula> </para>
 </parameterdescription>
 </parameteritem>
@@ -98,7 +98,7 @@
 <parametername direction="inout">dStressDDDeformationGradient</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of the Cauchy stress tensor with respect to the deformation gradient <formula id="32">$\boldsymbol{F}$</formula> </para>
+<para>Derivative of the Cauchy stress tensor with respect to the deformation gradient <formula id="13">$\boldsymbol{F}$</formula> </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -106,7 +106,7 @@
 <parametername direction="inout">dK_localDDeformationGradient</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of the local variable with respect to the deformation gradient <formula id="32">$\boldsymbol{F}$</formula> </para>
+<para>Derivative of the local variable with respect to the deformation gradient <formula id="13">$\boldsymbol{F}$</formula> </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -259,7 +259,7 @@
 <parametername direction="inout">nonLocalRadius</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>nonlocal radius representing the tangent  <formula id="44">$\frac{d \Delta \kappa }{d \Delta
+<para>nonlocal radius representing the tangent  <formula id="137">$\frac{d \Delta \kappa }{d \Delta
 \bar{\kappa}}$</formula> </para>
 </parameterdescription>
 </parameteritem>
@@ -472,15 +472,15 @@
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for gradient-enhanced hypo-elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="23">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="24">$ \sig $</formula>, the stretching rate tensor <formula id="25">$ \epsRate $</formula> the local variable <formula id="35">$\kappa$</formula>, the nonlocal variable <formula id="36">$\bar{\kappa}$</formula>, internal variables <formula id="37">$\boldsymbol{x}$</formula> and the time <formula id="26">$ t $</formula></para>
-<para><formula id="38">\[  \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="4">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="5">$ \sig $</formula>, the stretching rate tensor <formula id="6">$ \epsRate $</formula> the local variable <formula id="128">$\kappa$</formula>, the nonlocal variable <formula id="129">$\bar{\kappa}$</formula>, internal variables <formula id="130">$\boldsymbol{x}$</formula> and the time <formula id="7">$ t $</formula></para>
+<para><formula id="131">\[  \displaystyle \sigRate = f( \sig, \kappa, \epsRate, \dot{\bar{\kappa}}, \boldsymbol{x}, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="39">\[  \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t,
+<para><formula id="132">\[  \displaystyle \Delta \sig = f ( \sig_n, \kappa_n, \Delta\eps, \Delta\bar{\kappa}, \boldsymbol{x}_n, \Delta t,
 t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="29">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula> <formula id="40">\[  \displaystyle \Delta\bar{\kappa} =   \dot{\bar{\kappa}}\, \Delta t \]</formula></para>
+<para><formula id="10">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula> <formula id="133">\[  \displaystyle \Delta\bar{\kappa} =   \dot{\bar{\kappa}}\, \Delta t \]</formula></para>
 <para>and the algorithmic tangents</para>
-<para><formula id="30">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula> <formula id="41">\[ \displaystyle \frac{d \sig }{d \bar{\kappa}} =  \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \]</formula> <formula id="42">\[ \displaystyle \frac{d \kappa }{d \eps }=  \frac{d \Delta \kappa }{d \Delta \eps } \]</formula>  <formula id="43">\[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}=  \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} =
+<para><formula id="11">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula> <formula id="134">\[ \displaystyle \frac{d \sig }{d \bar{\kappa}} =  \frac{d \Delta \sig }{d \Delta \bar{\kappa}} \]</formula> <formula id="135">\[ \displaystyle \frac{d \kappa }{d \eps }=  \frac{d \Delta \kappa }{d \Delta \eps } \]</formula>  <formula id="136">\[ \displaystyle \frac{d \kappa }{d \bar{\kappa}}=  \frac{d \Delta \kappa }{d \Delta \bar{\kappa}} =
 l_{\text{nonlocal}} \]</formula> </para>
     </detaileddescription>
     <inheritancegraph>

@@ -82,7 +82,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="3">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -109,7 +109,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="3">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -132,7 +132,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt <xrefsect id="todo_1_todo000006"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
+<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="3">$\infty$</formula>, and timestep dt <xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
@@ -144,7 +144,7 @@
 <para>Implementation of Duvaut-Lions viscosity for a material with nMatTangentSize internal degrees of freedom. </para>
     </briefdescription>
     <detaileddescription>
-<para><xrefsect id="todo_1_todo000005"><xreftitle>Todo</xreftitle><xrefdescription><para>: Update member names to more descriptive ones </para>
+<para><xrefsect id="todo_1_todo000001"><xreftitle>Todo</xreftitle><xrefdescription><para>: Update member names to more descriptive ones </para>
 </xrefdescription></xrefsect></para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" line="39" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h" bodystart="39" bodyend="65"/>

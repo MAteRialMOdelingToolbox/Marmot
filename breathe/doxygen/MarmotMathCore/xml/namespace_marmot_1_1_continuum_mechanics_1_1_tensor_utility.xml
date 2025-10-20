@@ -20,7 +20,7 @@
           <declname>b</declname>
         </param>
         <briefdescription>
-<para>Kronecker delta function <formula id="45">$ \delta_{ab} $</formula>. </para>
+<para>Kronecker delta function <formula id="66">$ \delta_{ab} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>1 if a == b, otherwise 0. </para>
@@ -318,7 +318,7 @@
 <para>Compute the dyadic (outer) product of two 3D vectors. </para>
         </briefdescription>
         <detaileddescription>
-<para>Forms a 3x3 matrix where each entry is given by <formula id="46">$ a_{ij} = b_i c_j $</formula>.</para>
+<para>Forms a 3x3 matrix where each entry is given by <formula id="67">$ a_{ij} = b_i c_j $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>vector1</parametername>

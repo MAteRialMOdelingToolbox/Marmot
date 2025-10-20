@@ -267,7 +267,7 @@ Converts angle alpha given in degree to radiant. </para>
 </parameterlist>
 <simplesect kind="return"><para>Positive part of scalar</para>
 </simplesect>
-The Macaulay function, also as positive part operator, is defined as:       <formula id="53">\[\langle x \rangle =
+The Macaulay function, also as positive part operator, is defined as:       <formula id="6">\[\langle x \rangle =
 \begin{cases}
 x, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -303,7 +303,7 @@ x, &amp; x \geq 0 \\
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt;= 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function is defined as:       <formula id="54">\[H(x) =
+The Heaviside step function is defined as:       <formula id="7">\[H(x) =
 \begin{cases}
 1, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -339,7 +339,7 @@ The Heaviside step function is defined as:       <formula id="54">\[H(x) =
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt; 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function excluding zero is defined as:       <formula id="55">\[H(x) =
+The Heaviside step function excluding zero is defined as:       <formula id="8">\[H(x) =
 \begin{cases}
 1, &amp; x &gt; 0 \\
 0, &amp; x \leq 0
@@ -380,7 +380,7 @@ The Heaviside step function excluding zero is defined as:       <formula id="55"
 </parameterlist>
 <simplesect kind="return"><para>1 if val &gt; 0, -1 if val &lt; 0, 0 if val == 0</para>
 </simplesect>
-The sign function is defined as:        <formula id="56">\[ \text{sign}(x) =
+The sign function is defined as:        <formula id="9">\[ \text{sign}(x) =
  \begin{cases}
  1, &amp; x &gt; 0 \\
  0, &amp; x = 0 \\
@@ -762,7 +762,7 @@ Applies the Macaulay function element-wise to the input matrix.</para>
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method: <formula id="57">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="58">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="59">$ \Delta t $</formula> is the time step size, and <formula id="60">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
+This function computes one single time step using the explicit Euler method: <formula id="10">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="13">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -844,7 +844,7 @@ This function computes one single time step using the explicit Euler method: <fo
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="61">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="62">$\boldsymbol{y}_n $</formula> is the current value, <formula id="59">$ \Delta t $</formula> is the time step size, and <formula id="63">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
+This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="14">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="15">$\boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
 <para><xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Is this really semi-implicit? It looks like a fully implicit Euler step for linear systems. </para>
 <para>: Use external central difference function?</para>
 </xrefdescription></xrefsect></para>
@@ -952,9 +952,9 @@ This function computes one single time step using the implicit Euler method for 
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="64">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="17">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="58">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="59">$ \Delta t $</formula> is the time step size, and <formula id="63">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -1089,12 +1089,12 @@ f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="58">$ \bold
 </parameterlist>
 <simplesect kind="return"><para>Tuple containing the updated value after time step and the new time step size</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="65">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="18">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
 f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="58">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="59">$ \Delta t $</formula> is the current time step size, and <formula id="63">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
-<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance TOL. The new time step size is computed as:  <formula id="66">\[ \Delta t_{\text{new}} =
-\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="67">$ EST $</formula> is the estimated error.</para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the current time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
+<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance TOL. The new time step size is computed as:  <formula id="19">\[ \Delta t_{\text{new}} =
+\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="20">$ EST $</formula> is the estimated error.</para>
 <para><xrefsect id="todo_1_todo000003"><xreftitle>Todo</xreftitle><xrefdescription><para>: reuse explicitEulerRichardson function? </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
@@ -1144,7 +1144,7 @@ The direction cosines are computed as the dot products between the basis vectors
           <declname>normalVector</declname>
         </param>
         <briefdescription>
-<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="68">$x_1$</formula>-axis. </para>
+<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="21">$x_1$</formula>-axis. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1152,16 +1152,16 @@ The direction cosines are computed as the dot products between the basis vectors
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Input normal vector, which will be normalized and used as <formula id="68">$x_1$</formula>-axis. </para>
+<para>Input normal vector, which will be normalized and used as <formula id="21">$x_1$</formula>-axis. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Orthonormal coordinate system as a 3x3 matrix.</para>
 </simplesect>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="68">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="69">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="70">$x_3$</formula>-axis).</para>
+<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="21">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="22">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="23">$x_3$</formula>-axis).</para>
 </listitem></itemizedlist>
 </para>
 <para><simplesect kind="note"><para>Do not use this function if you want to control the direction of the axes in the plane orthogonal to the normal vector. </para>
@@ -1220,9 +1220,9 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
 </parameteritem>
 </parameterlist>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="68">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="69">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="70">$x_3$</formula>-axis). </para>
+<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="21">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="22">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="23">$x_3$</formula>-axis). </para>
 </listitem></itemizedlist>
 </para>
         </detaileddescription>

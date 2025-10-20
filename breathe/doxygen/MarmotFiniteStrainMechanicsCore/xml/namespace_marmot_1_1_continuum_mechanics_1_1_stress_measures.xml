@@ -27,8 +27,8 @@
 <para>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>The Kirchhoff stress is computed as   <formula id="16">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
-\]</formula> or in index notation   <formula id="17">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+<para>The Kirchhoff stress is computed as   <formula id="9">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</formula> or in index notation   <formula id="10">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
 \]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>

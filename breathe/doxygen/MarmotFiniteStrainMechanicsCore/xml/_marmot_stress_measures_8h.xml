@@ -24,7 +24,6 @@
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_stress_measures">Marmot::ContinuumMechanics::StressMeasures</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_stress_measures_1_1_first_order_derived">Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived</innernamespace>
-    <innernamespace refid="namespace_fastor_indices">FastorIndices</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

@@ -18,6 +18,8 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -95,6 +97,48 @@
 <h1>Displacement Finite Element<a class="headerlink" href="#displacement-finite-element" title="Link to this heading"></a></h1>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>This element implements a small-strain displacement-based Finite Element formulation.
+The incremental strain is computed from the displacement increment via the kinematic
+matrix B, and internal forces and consistent tangents are evaluated by Gauss quadrature.</p>
+<div class="math notranslate nohighlight">
+\[\Delta \eps = \mathbf{B}\, \Delta \mathbf{u}, \qquad
+\mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \mathbf{C}\, \mathbf{B}\, J_0 w, \qquad
+\mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T}\, \sig\, J_0 w.\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta \eps\)</span> is the linearized strain tensor in Voigt notation,
+<span class="math notranslate nohighlight">\(\mathbf{B}\)</span> is the strain–displacement matrix, <span class="math notranslate nohighlight">\(\Delta \mathbf{u}\)</span> the nodal displacement increment;
+<span class="math notranslate nohighlight">\(\mathbf{K}_e\)</span> the element tangent stiffness, <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> the consistent material tangent;
+<span class="math notranslate nohighlight">\(J_0 = \det \mathbf{J}\)</span> the Jacobian determinant and <span class="math notranslate nohighlight">\(w\)</span> the quadrature weight;
+<span class="math notranslate nohighlight">\(\mathbf{P}_e\)</span> the element internal force vector, <span class="math notranslate nohighlight">\(\sig\)</span> the Cauchy stress tensor in Voigt notation,
+and <span class="math notranslate nohighlight">\(\sum_{qp}\)</span> denotes summation over quadrature points.</p>
+<p>The mass matrix and body-force vector are obtained from the expressions:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T} \mathbf{N}\, J_0 w, \qquad
+\mathbf{P}_e^{(b)} = \sum_{qp} \mathbf{N}^\mathsf{T} \mathbf{f}\, J_0 w.\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{M}_e\)</span> is the consistent mass matrix, <span class="math notranslate nohighlight">\(\rho\)</span> the mass density,
+<span class="math notranslate nohighlight">\(\mathbf{N}\)</span> the shape-function matrix of the displacement field, and
+<span class="math notranslate nohighlight">\(\mathbf{f}\)</span> the body-force vector per unit volume.</p>
+<p>Surface tractions and pressures on a boundary face <span class="math notranslate nohighlight">\(\Gamma_e\)</span> are integrated as</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{P}_e^{(t)} = \int_{\Gamma_e} \mathbf{N}^\mathsf{T} \, \mathbf{t} \, \mathrm{d}\Gamma, \qquad
+\mathbf{P}_e^{(p)} = - \int_{\Gamma_e} p \, \mathbf{N}^\mathsf{T} \, \mathbf{n} \, \mathrm{d}\Gamma.\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Gamma_e\)</span> is the element boundary, <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> its outward unit normal,
+<span class="math notranslate nohighlight">\(\mathbf{t}\)</span> the surface traction vector, <span class="math notranslate nohighlight">\(p\)</span> the pressure magnitude, and
+<span class="math notranslate nohighlight">\(\mathbf{N}\)</span> the shape-function matrix. The minus sign for pressure follows
+an outward-normal convention.</p>
+<p>For 2D and 1D problems, the integration measure <span class="math notranslate nohighlight">\(J_0 w\)</span> is scaled by thickness
+<span class="math notranslate nohighlight">\(t\)</span> or cross-sectional area <span class="math notranslate nohighlight">\(A\)</span>, respectively: <span class="math notranslate nohighlight">\(J_0 w \leftarrow J_0 w\, t\)</span>
+(2D), <span class="math notranslate nohighlight">\(J_0 w \leftarrow J_0 w\, A\)</span> (1D).
+Here, <span class="math notranslate nohighlight">\(t\)</span> denotes thickness and <span class="math notranslate nohighlight">\(A\)</span> denotes cross-sectional area.</p>
+<p>Constitutive updates are carried out per quadrature point using a Marmot material model:</p>
+<ul class="simple">
+<li><p>3D solid</p></li>
+<li><p>Plane stress</p></li>
+<li><p>Plane strain</p></li>
+<li><p>1D uniaxial stress</p></li>
+</ul>
+<p>Each quadrature point stores stress, strain and a material state vector; the element
+accumulates the history incrementally and may suggest a reduced time step if required
+by the material.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -129,12 +173,31 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Displacement-based finite element template. </p>
+<p>
+Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulations via a section assumption. Holds quadrature-point state and delegates constitutive updates to Marmot materials while assembling element residuals, tangents, and mass matrices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Number of spatial dimensions (1, 2, or 3). </p></li>
+<li><p><strong>nNodes</strong> – Number of element nodes.</p></li>
+</ul>
+</dd>
+</dl>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp enum">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SectionType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE" title="Link to this definition"></a><br /></dt>
-<dd><p><em>Values:</em></p>
+<dd><p>Kinematic section assumption used by the element. </p>
+<p>Controls which constitutive call is performed at quadrature points.<ul class="simple">
+<li><p>UniaxialStress</p></li>
+<li><p>PlaneStress</p></li>
+<li><p>PlaneStrain</p></li>
+<li><p>Solid </p></li>
+</ul>
+</p>
+<p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionType14UniaxialStressE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement11SectionType14UniaxialStressE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement11SectionType14UniaxialStressE"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abc9550701c39e91da02eb22efdd69e3da55f140a064ba14f4b2c65357aa47c0af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UniaxialStress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionType14UniaxialStressE" title="Link to this definition"></a><br /></dt>
@@ -208,142 +271,99 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement25DisplacementFiniteElementEiN13FiniteElement10Quadrature16IntegrationTypesE11SectionType">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement25DisplacementFiniteElementEiN13FiniteElement10Quadrature16IntegrationTypesE11SectionType"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement25DisplacementFiniteElementEiN13FiniteElement10Quadrature16IntegrationTypesE11SectionType"></span><span id="Marmot::Elements::DisplacementFiniteElement::DisplacementFiniteElement__i.FiniteElement::Quadrature::IntegrationTypes.SectionType"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a9d59ae1b35f1879a7d0b1f16dba0f43b"></span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementFiniteElement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementID</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElementE" title="Marmot::FiniteElement"><span class="n"><span class="pre">FiniteElement</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10QuadratureE" title="Marmot::FiniteElement::Quadrature"><span class="n"><span class="pre">Quadrature</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature16IntegrationTypesE" title="Marmot::FiniteElement::Quadrature::IntegrationTypes"><span class="n"><span class="pre">IntegrationTypes</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">integrationType</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE" title="Marmot::Elements::DisplacementFiniteElement::SectionType"><span class="n"><span class="pre">SectionType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">sectionType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement25DisplacementFiniteElementEiN13FiniteElement10Quadrature16IntegrationTypesE11SectionType" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1add1beb852145cac80ccd674caa1ddb1b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of state variables required by the element. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNodeFields"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad58214bc52b5e085c3acdf1ad78cbcb0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNodeFields</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get the nodal field names (e.g. displacement, rotation). </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A 2D vector of strings representing the fields per node. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getDofIndicesPermutationPattern"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a52dc2772faad97b8288421f732d70f02"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDofIndicesPermutationPattern</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get permutation pattern for degrees of freedom. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Vector of indices describing the permutation. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNNodes"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31c0bdb76c16cff3b51505b44348f46b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNNodes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of nodes in the element. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNSpatialDimensions"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac48bb27c11306e8da74eae11802b19e5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNSpatialDimensions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of spatial dimensions (2D/3D). </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNDofPerElement"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad956b188fee179afb928cff8b1df6a59"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNDofPerElement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of degrees of freedom per element. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getElementShape"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a82676e0dc81cbdf0d26eb498f832b142"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getElementShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>String describing the element shape in Ensight Gold notation (e.g. “quad4”, “hexa8”). </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi">
-<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi"></span><span id="Marmot::Elements::DisplacementFiniteElement::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3014b1bffd3289b8abef63e171a34ce3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign state variable array to element. </p>
+<dd><p>Construct element with ID, quadrature rule and section assumption. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
-<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+<li><p><strong>elementID</strong> – Unique element label. </p></li>
+<li><p><strong>integrationType</strong> – Integration (quadrature) rule. </p></li>
+<li><p><strong>sectionType</strong> – Section assumption (1D/2D/3D). </p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1add1beb852145cac80ccd674caa1ddb1b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Total number of required state variables for this element (sum over all quadrature points). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNodeFields"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad58214bc52b5e085c3acdf1ad78cbcb0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNodeFields</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement13getNodeFieldsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Node-level fields exposed by the element. Returns [“displacement”] for each node. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getDofIndicesPermutationPattern"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a52dc2772faad97b8288421f732d70f02"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDofIndicesPermutationPattern</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement31getDofIndicesPermutationPatternEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Permutation pattern from local DOF ordering to solver ordering (identity by default). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNNodes"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a31c0bdb76c16cff3b51505b44348f46b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNNodes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement9getNNodesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of nodes of this element type. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNSpatialDimensions"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac48bb27c11306e8da74eae11802b19e5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNSpatialDimensions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement21getNSpatialDimensionsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of spatial dimensions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNDofPerElement"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad956b188fee179afb928cff8b1df6a59"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNDofPerElement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement17getNDofPerElementEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of degrees of freedom per element (nNodes * nDim). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getElementShape"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a82676e0dc81cbdf0d26eb498f832b142"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getElementShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15getElementShapeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Geometric shape of the element (as reported by the parent geometry element). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi"></span><span id="Marmot::Elements::DisplacementFiniteElement::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3014b1bffd3289b8abef63e171a34ce3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Map the provided element state vector to all quadrature points. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK17ElementProperties">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK17ElementProperties"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK17ElementProperties"></span><span id="Marmot::Elements::DisplacementFiniteElement::assignProperty__ElementPropertiesCR"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98934e0da59236159a49d3f6f494c034"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ElementProperties</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">marmotElementProperty</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK17ElementProperties" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign element property set. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>property</strong> – <strong>[in]</strong> Element property object containing material, geometry, etc. </p>
-</dd>
-</dl>
+<dd><p>Assign element properties (e.g., thickness in 2D, area in 1D). </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK21MarmotMaterialSection">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK21MarmotMaterialSection"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK21MarmotMaterialSection"></span><span id="Marmot::Elements::DisplacementFiniteElement::assignProperty__MarmotMaterialSectionCR"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a957be4c370128837fdc97c32b954243f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">MarmotMaterialSection</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">marmotElementProperty</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement14assignPropertyERK21MarmotMaterialSection" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign material section property. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>property</strong> – <strong>[in]</strong> Material section definition (e.g. cross-sectional data). </p>
-</dd>
-</dl>
+<dd><p>Assign material section and instantiate per-quadrature-point materials. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement21assignNodeCoordinatesEPKd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement21assignNodeCoordinatesEPKd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement21assignNodeCoordinatesEPKd"></span><span id="Marmot::Elements::DisplacementFiniteElement::assignNodeCoordinates__doubleCP"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a98a9993ac5fa4e39c2bf54d6411e64f7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignNodeCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement21assignNodeCoordinatesEPKd" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign nodal coordinates to element. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[in]</strong> Pointer to array of nodal coordinates. </p>
-</dd>
-</dl>
+<dd><p>Provide nodal coordinates to the parent geometry element. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement18initializeYourselfEv">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement18initializeYourselfEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement18initializeYourselfEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::initializeYourself"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ad87745ce0f1345646df3699c259c1c8f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Initialize element state and internal variables. </p>
+<dd><p>Precompute geometry-related quantities at quadrature points (B, detJ, J0xW). </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement20setInitialConditionsE10StateTypesPKd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement20setInitialConditionsE10StateTypesPKd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement20setInitialConditionsE10StateTypesPKd"></span><span id="Marmot::Elements::DisplacementFiniteElement::setInitialConditions__StateTypes.doubleCP"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a8abd60a2f8ed3ab8534a7fa457956f42"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialConditions</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StateTypes</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement20setInitialConditionsE10StateTypesPKd" title="Link to this definition"></a><br /></dt>
-<dd><p>Apply initial conditions to the element. </p>
+<dd><p>Initialize state or materials. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> – <strong>[in]</strong> State type to be set. </p></li>
-<li><p><strong>values</strong> – <strong>[in]</strong> Array of initial values. </p></li>
+<li><p><strong>state</strong> – MarmotMaterialInitialization, GeostaticStress or MarmotMaterialStateVars. </p></li>
+<li><p><strong>values</strong> – For GeostaticStress: [sigmaY(z1), y1, sigmaY(z2), y2, kx, kz]. </p></li>
 </ul>
 </dd>
 </dl>
@@ -352,18 +372,23 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement22computeDistributedLoadEN13MarmotElement20DistributedLoadTypesEPdPdKiPKdPKdPKdd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement22computeDistributedLoadEN13MarmotElement20DistributedLoadTypesEPdPdKiPKdPKdPKdd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement22computeDistributedLoadEN13MarmotElement20DistributedLoadTypesEPdPdKiPKdPKdPKdd"></span><span id="Marmot::Elements::DisplacementFiniteElement::computeDistributedLoad__MarmotElement::DistributedLoadTypes.doubleP.doubleP.iC.doubleCP.doubleCP.doubleCP.double"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ab2d4085eb2384d724b516a9350189b3d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoad</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/toplevel.html#_CPPv413MarmotElement" title="MarmotElement"><span class="n"><span class="pre">MarmotElement</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/toplevel.html#_CPPv4N13MarmotElement20DistributedLoadTypesE" title="MarmotElement::DistributedLoadTypes"><span class="n"><span class="pre">DistributedLoadTypes</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">loadType</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">P</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementFace</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement22computeDistributedLoadEN13MarmotElement20DistributedLoadTypesEPdPdKiPKdPKdPKdd" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute contribution from distributed surface loads. </p>
+<dd><p>Assemble distributed surface loads on a boundary face. </p>
+<p>Pressure and traction contributions are integrated on the boundary <span class="math notranslate nohighlight">\(\Gamma_e\)</span>:    <div class="math notranslate nohighlight">
+\[\mathbf{P}_e^{(p)} = - \int_{\Gamma_e} p\, \mathbf{N}^\mathsf{T} \mathbf{n}\, \mathrm{d}\Gamma,\qquad
+\mathbf{P}_e^{(t)} = \int_{\Gamma_e} \mathbf{N}^\mathsf{T} \mathbf{t}\, \mathrm{d}\Gamma.
+\]</div>
+ </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>loadType</strong> – <strong>[in]</strong> Type of load. </p></li>
-<li><p><strong>Pext</strong> – <strong>[out]</strong> External load vector. </p></li>
-<li><p><strong>K</strong> – <strong>[out]</strong> Stiffness matrix. </p></li>
-<li><p><strong>elementFace</strong> – <strong>[in]</strong> Index of element face. </p></li>
-<li><p><strong>load</strong> – <strong>[in]</strong> Applied load values. </p></li>
-<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dof vector. </p></li>
-<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
-<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size. </p></li>
+<li><p><strong>loadType</strong> – Pressure or SurfaceTraction. </p></li>
+<li><p><strong>P</strong> – Element RHS contribution (accumulated). </p></li>
+<li><p><strong>K</strong> – Optional stiffness contribution (unused). </p></li>
+<li><p><strong>elementFace</strong> – Boundary face index. </p></li>
+<li><p><strong>load</strong> – Pressure magnitude or traction vector (size nDim). </p></li>
+<li><p><strong>QTotal</strong> – Total DOF vector (unused). </p></li>
+<li><p><strong>time</strong> – Current time data forwarded to materials. </p></li>
+<li><p><strong>dT</strong> – Time increment. </p></li>
 </ul>
 </dd>
 </dl>
@@ -372,35 +397,30 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement16computeBodyForceEPdPdPKdPKdPKdd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement16computeBodyForceEPdPdPKdPKdPKdd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement16computeBodyForceEPdPdPKdPKdPKdd"></span><span id="Marmot::Elements::DisplacementFiniteElement::computeBodyForce__doubleP.doubleP.doubleCP.doubleCP.doubleCP.double"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a95e4e836e9ae9f111ae5b26083c4d607"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyForce</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">P</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement16computeBodyForceEPdPdPKdPKdPKdd" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute contribution from body forces. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Pext</strong> – <strong>[out]</strong> External load vector. </p></li>
-<li><p><strong>K</strong> – <strong>[out]</strong> Stiffness matrix. </p></li>
-<li><p><strong>load</strong> – <strong>[in]</strong> Body force vector. </p></li>
-<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total displacement vector. </p></li>
-<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
-<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size. </p></li>
-</ul>
-</dd>
-</dl>
+<dd><p>Assemble body force contribution. </p>
+<p>Integrates  <span class="math notranslate nohighlight">\(\mathbf{P}_e^{(b)} = \int_{\Omega_e} \mathbf{N}^\mathsf{T} \mathbf{f}\,
+\mathrm{d}\Omega\)</span>. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15computeYourselfEPKdPKdPdPdPKddRd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15computeYourselfEPKdPKdPdPdPKddRd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15computeYourselfEPKdPKdPdPdPKddRd"></span><span id="Marmot::Elements::DisplacementFiniteElement::computeYourself__doubleCP.doubleCP.doubleP.doubleP.doubleCP.double.doubleR"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae49ca66a01e838600fde6170f1ff151c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeYourself</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ke</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewdT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15computeYourselfEPKdPKdPdPdPKddRd" title="Link to this definition"></a><br /></dt>
-<dd><p>Perform element computations (stiffness, residual, etc.). </p>
+<dd><p>Compute internal force and consistent tangent stiffness. </p>
+<p>Uses the small-strain relation <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}=\mathbf{B}\,\Delta\mathbf{u}\)</span> and integrates    <div class="math notranslate nohighlight">
+\[\mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \mathbf{C} \mathbf{B}\, J_0 w,\qquad
+\mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\, J_0 w.
+\]</div>
+ If pNewdT&lt;1, the routine returns early to signal time step reduction. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dof vector. </p></li>
-<li><p><strong>dQ</strong> – <strong>[in]</strong> Incremental dof vector. </p></li>
-<li><p><strong>Pint</strong> – <strong>[out]</strong> Internal force vector. </p></li>
-<li><p><strong>K</strong> – <strong>[out]</strong> Stiffness matrix. </p></li>
-<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
-<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size. </p></li>
-<li><p><strong>pNewdT</strong> – <strong>[out]</strong> Suggested new time step size. </p></li>
+<li><p><strong>QTotal</strong> – Total displacement vector. </p></li>
+<li><p><strong>dQ</strong> – Incremental displacement. </p></li>
+<li><p><strong>Pe</strong> – Internal force vector (accumulated). </p></li>
+<li><p><strong>Ke</strong> – Tangent stiffness matrix (accumulated). </p></li>
+<li><p><strong>time</strong> – Time data forwarded to materials. </p></li>
+<li><p><strong>dT</strong> – Time increment. </p></li>
+<li><p><strong>pNewdT</strong> – Suggested scaling of dT by the material; if reduced (&lt;1), the routine returns early. </p></li>
 </ul>
 </dd>
 </dl>
@@ -409,80 +429,43 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement24computeConsistentInertiaEPd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement24computeConsistentInertiaEPd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement24computeConsistentInertiaEPd"></span><span id="Marmot::Elements::DisplacementFiniteElement::computeConsistentInertia__doubleP"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1abff72979bbc04bf804617e8d6becff95"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeConsistentInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">M</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement24computeConsistentInertiaEPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute consistent inertia matrix. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Default implementation throws an exception. </p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>I</strong> – <strong>[out]</strong> Inertia matrix. </p>
-</dd>
-</dl>
+<dd><p>Compute consistent mass matrix using material density. </p>
+<p><span class="math notranslate nohighlight">\(\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\)</span>. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement20computeLumpedInertiaEPd">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement20computeLumpedInertiaEPd"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement20computeLumpedInertiaEPd"></span><span id="Marmot::Elements::DisplacementFiniteElement::computeLumpedInertia__doubleP"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac1c41e8caeb7ddd1cc8df254838984e8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">M</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement20computeLumpedInertiaEPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute lumped inertia matrix. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Default implementation throws an exception. </p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>I</strong> – <strong>[out]</strong> Inertia matrix. </p>
-</dd>
-</dl>
+<dd><p>Compute lumped mass vector via row-sum of consistent mass. </p>
+<p><span class="math notranslate nohighlight">\(\mathbf{m}_e = \mathrm{rowsum}(\mathbf{M}_e)\)</span>. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement12getStateViewERKNSt6stringEi">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Elements::DisplacementFiniteElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ae5d58342d479c1e7e4170d8c151e7649"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Access element state at a quadrature point. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
-<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of quadrature point. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>View into state variable. </p>
-</dd>
-</dl>
+<dd><p>Access a named state view at a quadrature point. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using “sdv” returns the raw material state vector and is deprecated. </p>
+</div>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement22getCoordinatesAtCenterEv">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a3d5dfa36bac08553bb9165ddb63080b2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get coordinates of element center. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Vector of coordinates at element centroid. </p>
-</dd>
-</dl>
+<dd><p>Get physical coordinates at the element center. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement32getCoordinatesAtQuadraturePointsEv">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement32getCoordinatesAtQuadraturePointsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement32getCoordinatesAtQuadraturePointsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getCoordinatesAtQuadraturePoints"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a0de43b8a983edec8c7ff168701f3f79e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement32getCoordinatesAtQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get coordinates of quadrature points. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>2D vector of coordinates at quadrature points. </p>
-</dd>
-</dl>
+<dd><p>Get physical coordinates at each quadrature point. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement27getNumberOfQuadraturePointsEv">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement27getNumberOfQuadraturePointsEv"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement27getNumberOfQuadraturePointsEv"></span><span id="Marmot::Elements::DisplacementFiniteElement::getNumberOfQuadraturePoints"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a6350d216b326ae3abee2f5ab78b71cb1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement27getNumberOfQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of quadrature points used by the element. </p>
-</dd>
-</dl>
+<dd><p>Number of quadrature points of this element. </p>
 </dd></dl>
 
 </div>
@@ -491,22 +474,26 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement17elementPropertiesE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement17elementPropertiesE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement17elementPropertiesE"></span><span id="Marmot::Elements::DisplacementFiniteElement::elementProperties__Map:VectorXdC:"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a60bcf95f6b5fcaed7b714fa0f44dec86"></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elementProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement17elementPropertiesE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Element-level properties (e.g., thickness for 2D, area for 1D). </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement7elLabelE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement7elLabelE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement7elLabelE"></span><span id="Marmot::Elements::DisplacementFiniteElement::elLabel__iC"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a70d668b18b38a9ccb9added43bb7a516"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elLabel</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement7elLabelE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Element label (ID) used for logging and material creation. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement11sectionTypeE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement11sectionTypeE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement11sectionTypeE"></span><span id="Marmot::Elements::DisplacementFiniteElement::sectionType__SectionTypeC"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1ac28b6d017733a698ec51b4b55c7ec414"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement11SectionTypeE" title="Marmot::Elements::DisplacementFiniteElement::SectionType"><span class="n"><span class="pre">SectionType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sectionType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement11sectionTypeE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Section assumption applied by this element instance. </p>
+</dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement3qpsE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement3qpsE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement3qpsE"></span><span id="Marmot::Elements::DisplacementFiniteElement::qps__std::vector:QuadraturePoint:"></span><span class="target" id="classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a94329717c5a1ba51e6bbcb0f0ab50335"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15QuadraturePointE" title="Marmot::Elements::DisplacementFiniteElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">qps</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement3qpsE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Quadrature points owned by the element (one per integration point). </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -525,7 +512,9 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15QuadraturePointE">
 <span id="_CPPv3N6Marmot8Elements25DisplacementFiniteElement15QuadraturePointE"></span><span id="_CPPv2N6Marmot8Elements25DisplacementFiniteElement15QuadraturePointE"></span><span id="Marmot::Elements::DisplacementFiniteElement::QuadraturePoint"></span><span class="target" id="structMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadraturePoint</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Elements25DisplacementFiniteElement15QuadraturePointE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>Data and state associated with a quadrature point. </p>
+<p>Holds parent coordinates, integration weight, Jacobian determinant, kinematic (strain-displacement) B-matrix, and a material instance with managed state variables. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Elements25DisplacementFiniteElement15QuadraturePoint47getNumberOfRequiredStateVarsQuadraturePointOnlyEv">
@@ -615,6 +604,8 @@
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Manager for per-quadrature-point state variables. </p>
+<p>Provides named accessors to stress <span class="math notranslate nohighlight">\(\sig\)</span>, strain <span class="math notranslate nohighlight">\(\eps\)</span> and the material state vector. The layout is [<a class="reference internal" href="#classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager_1a2c8e025383aa0ebdce6196578a8b8359"><span class="std std-ref">stress(6)</span></a>, <a class="reference internal" href="#classMarmot_1_1Elements_1_1DisplacementFiniteElement_1_1QuadraturePoint_1_1QPStateVarManager_1a4cc2e26bc56e350d3ea241c70717e316"><span class="std std-ref">strain(6)</span></a>, begin of material state(…)] in 3D <a class="reference internal" href="#classMarmot_1_1Elements_1_1DisplacementFiniteElement_1a75614ece8fba9d7a8e0c4e6c61cd142a"><span class="std std-ref">Voigt</span></a> notation. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">

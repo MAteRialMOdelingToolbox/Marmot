@@ -11,7 +11,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::I2xI2</qualifiedname>
         <initializer>= Initialize_I2xI2()</initializer>
         <briefdescription>
-<para>Fourth-order tensor <formula id="29">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+<para>Fourth-order tensor <formula id="50">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -27,7 +27,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Isym</qualifiedname>
         <initializer>= Initialize_Isym()</initializer>
         <briefdescription>
-<para>Symmetric fourth-order identity tensor <formula id="31">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Symmetric fourth-order identity tensor <formula id="52">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -43,7 +43,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Iskew</qualifiedname>
         <initializer>= Initialize_Iskew()</initializer>
         <briefdescription>
-<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="33">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="54">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -59,7 +59,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrder</qualifiedname>
         <initializer>= Initialize_IFourthOrder()</initializer>
         <briefdescription>
-<para>Fourth-order identity tensor <formula id="34">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+<para>Fourth-order identity tensor <formula id="55">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -75,7 +75,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose</qualifiedname>
         <initializer>= Initialize_IFourthOrderTranspose()</initializer>
         <briefdescription>
-<para>Transposed fourth-order identity tensor <formula id="35">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+<para>Transposed fourth-order identity tensor <formula id="56">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -91,7 +91,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::dDeviatoricStress_dStress</qualifiedname>
         <initializer>= Initialize_dDeviatoricStress_dStress()</initializer>
         <briefdescription>
-<para>Derivative of the deviatoric stress with respect to stress   <formula id="37">$ \frac{\partial
+<para>Derivative of the deviatoric stress with respect to stress   <formula id="58">$ \frac{\partial
 s_{ij}}{\partial\sigma_{kl}} =
 \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
@@ -109,10 +109,10 @@ s_{ij}}{\partial\sigma_{kl}} =
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D</qualifiedname>
         <initializer>= Initialize_LeviCivita3D()</initializer>
         <briefdescription>
-<para>3D Levi-Civita permutation tensor <formula id="38">$E_{ijk}$</formula>. </para>
+<para>3D Levi-Civita permutation tensor <formula id="59">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric third-order tensor defined as        <formula id="39">\[  E_{ijk} =
+<para>A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -132,10 +132,10 @@ s_{ij}}{\partial\sigma_{kl}} =
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::LeviCivita2D</qualifiedname>
         <initializer>= Initialize_LeviCivita2D()</initializer>
         <briefdescription>
-<para>2D Levi-Civita permutation tensor <formula id="42">$\varepsilon_{ij}$</formula>. </para>
+<para>2D Levi-Civita permutation tensor <formula id="63">$\varepsilon_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric second-order tensor defined as        <formula id="41">\[  E_{ij} =
+<para>A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
@@ -158,7 +158,7 @@ s_{ij}}{\partial\sigma_{kl}} =
 <para>Second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="43">$ I_{ij} = \delta_{ij} $</formula>.    </para>
+<para><formula id="64">$ I_{ij} = \delta_{ij} $</formula>.    </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -173,7 +173,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_I2xI2</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2</qualifiedname>
         <briefdescription>
-<para>Initializes the fourth-order tensor <formula id="29">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+<para>Initializes the fourth-order tensor <formula id="50">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -188,7 +188,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_Isym</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym</qualifiedname>
         <briefdescription>
-<para>Initializes the symmetric fourth-order identity tensor  <formula id="30">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Initializes the symmetric fourth-order identity tensor  <formula id="51">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -203,7 +203,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_Iskew</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew</qualifiedname>
         <briefdescription>
-<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="32">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="53">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -218,7 +218,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_IFourthOrder</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder</qualifiedname>
         <briefdescription>
-<para>Initializes the fourth-order identity tensor <formula id="34">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+<para>Initializes the fourth-order identity tensor <formula id="55">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -233,7 +233,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_IFourthOrderTranspose</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose</qualifiedname>
         <briefdescription>
-<para>Initializes the transposed fourth-order identity tensor <formula id="35">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+<para>Initializes the transposed fourth-order identity tensor <formula id="56">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -248,7 +248,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_dDeviatoricStress_dStress</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_dDeviatoricStress_dStress</qualifiedname>
         <briefdescription>
-<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="36">$ \frac{\partial
+<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="57">$ \frac{\partial
 s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
@@ -264,10 +264,10 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
         <name>Initialize_LeviCivita3D</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D</qualifiedname>
         <briefdescription>
-<para>Initializes the 3D Levi-Civita permutation tensor <formula id="38">$E_{ijk}$</formula>. </para>
+<para>Initializes the 3D Levi-Civita permutation tensor <formula id="59">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric third-order tensor defined as        <formula id="39">\[  E_{ijk} =
+<para>A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -286,10 +286,10 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
         <name>Initialize_LeviCivita2D</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita2D</qualifiedname>
         <briefdescription>
-<para>2D Levi-Civita permutation tensor <formula id="40">$E_{ij}$</formula>. </para>
+<para>2D Levi-Civita permutation tensor <formula id="61">$E_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric second-order tensor defined as        <formula id="41">\[  E_{ij} =
+<para>A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
@@ -311,7 +311,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 <para>Initializes the second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="43">$ I_{ij} = \delta_{ij} $</formula>. </para>
+<para><formula id="64">$ I_{ij} = \delta_{ij} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -370,7 +370,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 <para>Constructs an aux. matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by multiplication. </para>
         </briefdescription>
         <detaileddescription>
-<para>The transformation is defined as:   <formula id="44">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
+<para>The transformation is defined as:   <formula id="65">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
 \]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -435,14 +435,14 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>The Levi-Civita tensor:<itemizedlist>
-<listitem><para>In 2D: <formula id="40">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="41">\[  E_{ij} =
+<listitem><para>In 2D: <formula id="61">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="62">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
      0 &amp; \text{if } i=j.
   \end{cases}
 \]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.   </para>
-</listitem><listitem><para>In 3D: <formula id="38">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="39">\[  E_{ijk} =
+</listitem><listitem><para>In 3D: <formula id="59">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="60">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\

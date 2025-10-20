@@ -207,8 +207,8 @@
   </compound>
   <compound refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper" kind="class"><name>Marmot::NumericalAlgorithms::PerezFougetSubstepper</name>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" kind="typedef"><name>TangentSizedMatrix</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abce7ed899992c189a9a233ad0eef0e44" kind="typedef"><name>MatrixStateStrain</name></member>
+    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" kind="typedef"><name>TangentSizedMatrix</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a6a77df643fc3d9b6fa89aed8d134ef95" kind="variable"><name>initialStepSize</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1adf08d8d200ad249f7adc96a458eef2b3" kind="variable"><name>minimumStepSize</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab6e8fa58fef203d923abe32c30745359" kind="variable"><name>scaleUpFactor</name></member>
@@ -218,23 +218,23 @@
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a12d313ee1b5010d70770ae7526e3f155" kind="variable"><name>currentSubstepSize</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a2dfbac2e6378980dbe2f9f23adc680f4" kind="variable"><name>passedSubsteps</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a3a478439f8ee26ef699077239f6f544f" kind="variable"><name>Cel</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" kind="variable"><name>consistentTangent</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a774e7268d9ced3aa61f246d10e727c1e" kind="variable"><name>I76</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a096fce47b630dec49c4fa386242303cc" kind="variable"><name>I77</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a993666eaf7fb10e8baee6e21e060feac" kind="variable"><name>consistentTangent</name></member>
+    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" kind="variable"><name>consistentTangent</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a7c6b5868526644f901d726266ff009cc" kind="function"><name>PerezFougetSubstepper</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab79e7997a4c056372aa793abe3edb331" kind="function"><name>isFinished</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab9e4415b529945859a03232c6675e56a" kind="function"><name>getNextSubstep</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a675949cac7e8de8b343000c7c4b91ef8" kind="function"><name>decreaseSubstepSize</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a27d20da83471ab632ed120d0b05253cc" kind="function"><name>finishElasticSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" kind="function"><name>finishSubstep</name></member>
+    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a46be9234ccca03554a2ed06ee13c84e6" kind="function"><name>finishSubstep</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec" kind="function"><name>consistentStiffness</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a1efc6ebb4b030b6f8d53050590f4fd76" kind="function"><name>PerezFougetSubstepper</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a4cba185352e9312a12a53b9468ae4d91" kind="function"><name>isFinished</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a5e7732ab00c07a65c3e283b156e2a538" kind="function"><name>getNextSubstep</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1abd4ac1b1512db9667e15a190e7e2047e" kind="function"><name>decreaseSubstepSize</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1acedcf315083f8b02ba5694f1623d0f7f" kind="function"><name>finishElasticSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a46be9234ccca03554a2ed06ee13c84e6" kind="function"><name>finishSubstep</name></member>
+    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" kind="function"><name>finishSubstep</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1aaebc5a982bb9825d3488ae3f3789fa18" kind="function"><name>consistentStiffness</name></member>
   </compound>
   <compound refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time" kind="class"><name>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</name>

@@ -17,7 +17,7 @@
         <name>xi</name>
         <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::xi</qualifiedname>
         <briefdescription>
-<para>Hydrostatic component <formula id="0">$\xi$</formula>. </para>
+<para>Hydrostatic component <formula id="31">$\xi$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -32,7 +32,7 @@
         <name>rho</name>
         <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::rho</qualifiedname>
         <briefdescription>
-<para>Deviatoric radius <formula id="1">$\rho$</formula>. </para>
+<para>Deviatoric radius <formula id="30">$\rho$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -47,7 +47,7 @@
         <name>theta</name>
         <qualifiedname>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates::theta</qualifiedname>
         <briefdescription>
-<para>Lode angle <formula id="2">$\theta$</formula> specified in radian. </para>
+<para>Lode angle <formula id="22">$\theta$</formula> specified in radian. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -59,7 +59,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>Aggregate of the Haigh-Westergaard coordinates (invariants) <formula id="0">$\xi$</formula>, <formula id="1">$\rho$</formula>, <formula id="2">$\theta$</formula>. </para>
+<para>Aggregate of the Haigh-Westergaard coordinates (invariants) <formula id="31">$\xi$</formula>, <formula id="30">$\rho$</formula>, <formula id="22">$\theta$</formula>. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="43" bodyend="51"/>
     <listofallmembers>

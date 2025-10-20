@@ -94,17 +94,17 @@
           <declname>tau</declname>
         </param>
         <briefdescription>
-<para>Evaluates the Post–Widder inversion formula to approximate the discrete retardance function <formula id="285">$L_k(\tau)$</formula>. </para>
+<para>Evaluates the Post–Widder inversion formula to approximate the discrete retardance function <formula id="54">$L_k(\tau)$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Evaluates the Post-Widder formula for deriving the equivalent retardance <formula id="286">$L_\kappa(\tau)$</formula> of the discrete Kelvin Chain model, given the continuous description of the compliance  <formula id="287">\[\Phi(t) = \int_{\tau=0}^\infty
-L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the formula <formula id="288">\[L_k(\tau)=(-1)^{k-1}\frac{(-tk)^k\Phi^{(k)(t)}}{(k-1)!}\]</formula></para>
-<para>in the sense that <formula id="289">$L_k(\tau)=\lim_{\kappa\to\infty}L_\kappa(\tau)$</formula> in the frequency domain. <parameterlist kind="templateparam"><parameteritem>
+<para>Evaluates the Post-Widder formula for deriving the equivalent retardance <formula id="55">$L_\kappa(\tau)$</formula> of the discrete Kelvin Chain model, given the continuous description of the compliance  <formula id="56">\[\Phi(t) = \int_{\tau=0}^\infty
+L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the formula <formula id="57">\[L_k(\tau)=(-1)^{k-1}\frac{(-tk)^k\Phi^{(k)(t)}}{(k-1)!}\]</formula></para>
+<para>in the sense that <formula id="58">$L_k(\tau)=\lim_{\kappa\to\infty}L_\kappa(\tau)$</formula> in the frequency domain. <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="290">$k$</formula> integer defining the order of differentiation that corresponds to the <formula id="291">$L_k$</formula> term in the sequence of the retardance approximation </para>
+<para><formula id="59">$k$</formula> integer defining the order of differentiation that corresponds to the <formula id="60">$L_k$</formula> term in the sequence of the retardance approximation </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -125,7 +125,7 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>val the value of the <formula id="285">$L_k(\tau)$</formula> approximation. </para>
+<simplesect kind="return"><para>val the value of the <formula id="54">$L_k(\tau)$</formula> approximation. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -163,13 +163,13 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
 <para>Computes the zeroth-order (instantaneous) elastic compliance by numerically integrating the retardance function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Approximates the instantaneous elastic compliance <formula id="292">$\Phi_0=\frac{1}{E_0}$</formula>, <formula id="293">\[\frac{1}{E_0}=\int_{\tau=0}^{\tau}L(\tau)d\ln(\tau)\]</formula> It is used in order to avoid integrating over the origin of the frequency domain where <formula id="294">$\int_0^{\tau_0}d\ln(\tau)$</formula> is singular.</para>
+<para>Approximates the instantaneous elastic compliance <formula id="61">$\Phi_0=\frac{1}{E_0}$</formula>, <formula id="62">\[\frac{1}{E_0}=\int_{\tau=0}^{\tau}L(\tau)d\ln(\tau)\]</formula> It is used in order to avoid integrating over the origin of the frequency domain where <formula id="63">$\int_0^{\tau_0}d\ln(\tau)$</formula> is singular.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="290">$k$</formula> integer defining the order of differentiation for the <formula id="295">$k-th$</formula> approximation of the retardance. </para>
+<para><formula id="59">$k$</formula> integer defining the order of differentiation for the <formula id="64">$k-th$</formula> approximation of the retardance. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -200,7 +200,7 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
 </parameterlist>
 <simplesect kind="return"><para>val the value of the zeroth compliance term.</para>
 </simplesect>
-<simplesect kind="note"><para>The integral is evaluated numerically using Simpson’s rule via <computeroutput>NumericalAlgorithms::Integration::integrateScalarFunction</computeroutput>. The integration range <formula id="296">$[\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]$</formula> is chosen to avoid the logarithmic singularity at <formula id="297">$\tau=0$</formula>. As Simpson&apos;s rule is sensitive to changes in the sign of the summands, integration should be handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the future. </para>
+<simplesect kind="note"><para>The integral is evaluated numerically using Simpson’s rule via <computeroutput>NumericalAlgorithms::Integration::integrateScalarFunction</computeroutput>. The integration range <formula id="65">$[\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]$</formula> is chosen to avoid the logarithmic singularity at <formula id="66">$\tau=0$</formula>. As Simpson&apos;s rule is sensitive to changes in the sign of the summands, integration should be handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the future. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -235,16 +235,16 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
           <defval>false</defval>
         </param>
         <briefdescription>
-<para>Computes the discrete elastic moduli of the equivalent Kelvin chain from the <formula id="291">$L_k$</formula> retardance approximation. </para>
+<para>Computes the discrete elastic moduli of the equivalent Kelvin chain from the <formula id="60">$L_k$</formula> retardance approximation. </para>
         </briefdescription>
         <detaileddescription>
-<para>Evaluates the elastic moduli based on the <formula id="291">$L_k$</formula> approximation of the retardance, <formula id="298">\[ \frac{1}{E_\mu}=(\ln 10)L_k(\tau_\mu),\;\mu=1,2,...,M\]</formula></para>
+<para>Evaluates the elastic moduli based on the <formula id="60">$L_k$</formula> approximation of the retardance, <formula id="67">\[ \frac{1}{E_\mu}=(\ln 10)L_k(\tau_\mu),\;\mu=1,2,...,M\]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="290">$k$</formula> integer defining the order of differentiation for the <formula id="295">$k-th$</formula> approximation of the retardance. </para>
+<para><formula id="59">$k$</formula> integer defining the order of differentiation for the <formula id="64">$k-th$</formula> approximation of the retardance. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -370,7 +370,7 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
 <para>Updates the viscoelastic strain state variables for each Kelvin unit over a given time increment. </para>
         </briefdescription>
         <detaileddescription>
-<para>For the given time increment <formula id="299">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule:  <formula id="300">\[\varepsilon^{ev,\mu,k+1}_{ij} = \frac{\lambda^{\mu
+<para>For the given time increment <formula id="68">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule:  <formula id="69">\[\varepsilon^{ev,\mu,k+1}_{ij} = \frac{\lambda^{\mu
 k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{ij}\]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -401,7 +401,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <parametername direction="inout">stateVars</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the <formula id="301">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
+<para>the <formula id="70">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -409,7 +409,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <parametername direction="in">dStress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the <formula id="302">$[6\times 1]$</formula> vector of the total stress increment. </para>
+<para>the <formula id="71">$[6\times 1]$</formula> vector of the total stress increment. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -465,7 +465,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <para>Evaluates the viscoelastic response of the Kelvin chain over a time increment. </para>
         </briefdescription>
         <detaileddescription>
-<para>For the given time increment <formula id="299">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule: <formula id="303">\[\overline{J}^k=\sum_{\mu=1}^M\frac{1-\lambda^{\mu,k}}{E^\mu}\]</formula> <formula id="304">\[\Delta\varepsilon^{&apos;&apos;,k}_{ij} = \sum_{\mu=1}^M\left(1-\beta^{\mu,k}\right)\varepsilon^{ev,\kappa}_{ij}\]</formula></para>
+<para>For the given time increment <formula id="68">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule: <formula id="72">\[\overline{J}^k=\sum_{\mu=1}^M\frac{1-\lambda^{\mu,k}}{E^\mu}\]</formula> <formula id="73">\[\Delta\varepsilon^{&apos;&apos;,k}_{ij} = \sum_{\mu=1}^M\left(1-\beta^{\mu,k}\right)\varepsilon^{ev,\kappa}_{ij}\]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dT</parametername>
@@ -495,7 +495,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <parametername direction="in">stateVars</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the <formula id="301">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
+<para>the <formula id="70">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -503,7 +503,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <parametername direction="inout">uniaxialCompliance</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>number containing the <formula id="305">$\sum^M_{\mu=1}\frac{\lambda^{\mu, k}}{E_\mu}$</formula>. </para>
+<para>number containing the <formula id="74">$\sum^M_{\mu=1}\frac{\lambda^{\mu, k}}{E_\mu}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -552,7 +552,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
           <declname>beta</declname>
         </param>
         <briefdescription>
-<para>Computes the time-dependent relaxation factors <formula id="306">$\lambda$</formula> and <formula id="307">$\beta$</formula> for a given Kelvin unit. </para>
+<para>Computes the time-dependent relaxation factors <formula id="75">$\lambda$</formula> and <formula id="76">$\beta$</formula> for a given Kelvin unit. </para>
         </briefdescription>
         <detaileddescription>
 <para>This function evaluates the time parameters for each Kelvin chain. <parameterlist kind="param"><parameteritem>
