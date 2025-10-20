@@ -102,6 +102,7 @@ namespace Marmot {
      * @note This function extracts only the in-plane components of a 3D stress vector.
      */
     Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
+    Vector4d        voigtToAxisymmetricVoigt( const Vector6d& voigt );
 
     /**
      * @brief Converts a plane stress vector in Voigt notation back to a 3D Voigt vector.
@@ -120,6 +121,7 @@ namespace Marmot {
      * @note The out-of-plane components are set to zero, suitable for plane stress conditions.
      */
     Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
+    Vector6d         axisymmetricVoigtToVoigt( const Vector4d& voigtAxisymmetric );
 
     /**
      * @brief Reduces a 3D Voigt vector to a lower-dimensional vector defined by `voigtSize`.
@@ -170,6 +172,8 @@ namespace Marmot {
         return planeVoigtToVoigt( Voigt );
       else if constexpr ( voigtSize == ThreeD )
         return Voigt;
+      else if constexpr ( voigtSize == Axial )
+        return axisymmetricVoigtToVoigt( Voigt );
       else
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
@@ -794,8 +798,23 @@ namespace Marmot {
           return Eigen::Matrix< T, 6, 1 >::Zero();
 
         Eigen::Matrix< T, 6, 1 > s = IDev * stress;
-
+        // P array results from the derivative of the double contraction s:s in voigt notation
         return T( 1. / rho ) * P.array() * s.array();
+      }
+      /**
+       * Computes the derivative \f$ \frac{d\, \varepsilon_\rho}{d\, \boldsymbol{\varepsilon}}\f$ of the haigh
+       * westergaard coordinate \f$
+       * \strain_\rho \f$ with respect to the voigt notated strain vector \f$ \boldsymbol{\varepsilon} \f$
+       */
+      template < typename T >
+      Eigen::Matrix< T, 6, 1 > dRhoStrain_dStrain( T rhoStrain, const Eigen::Matrix< T, 6, 1 >& strain )
+      {
+        if ( Marmot::Math::makeReal( rhoStrain ) <= 1e-16 )
+          return Eigen::Matrix< T, 6, 1 >::Zero();
+
+        Eigen::Matrix< T, 6, 1 > e = IDev * strain;
+        // P array results from the derivative of the double contraction e:e in voigt notation
+        return T( 1. / rhoStrain ) * PInv.array() * e.array();
       }
 
       /**
