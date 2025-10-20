@@ -13,6 +13,7 @@
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1acb844103828ae062c7635f14c5face0c" kind="function"><name>computeScalarLoadVector</name></member>
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1ad8b7c6791aa4fa03b62d8976b40280d6" kind="function"><name>computeDScalarLoadVector_dCoordinates</name></member>
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1acf174882af645b746a5aa5c51abc6830" kind="function"><name>computeSurfaceNormalVectorialLoadVector</name></member>
+    <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1a3e0ccc2344958b1a9344c8804fe405b9" kind="function"><name>computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements</name></member>
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1aec8fc36c103be14e70e96e02a8976e3d" kind="function"><name>computeDSurfaceNormalVectorialLoadVector_dCoordinates</name></member>
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1ae8e3057e1ac31331d7e0b2c71ad79b2c" kind="function"><name>computeVectorialLoadVector</name></member>
     <member refid="class_marmot_1_1_finite_element_1_1_boundary_element_1ae0d623e4334fe9e5270ba6dffb8a8b86" kind="function"><name>computeDVectorialLoadVector_dCoordinates</name></member>
@@ -74,6 +75,7 @@
     <member refid="class_marmot_geometry_element_1afd772f275f4f47447b7dc79511457c2d" kind="typedef"><name>NBSized</name></member>
     <member refid="class_marmot_geometry_element_1a72ffb6e31fe3aa68d05721f60d86bf44" kind="typedef"><name>dNdXiSized</name></member>
     <member refid="class_marmot_geometry_element_1a72aa85677e3478f670188650735c450e" kind="typedef"><name>BSized</name></member>
+    <member refid="class_marmot_geometry_element_1ad41fb2ee178ad16beb85d78a671469f8" kind="typedef"><name>BSizedAxisymmetric</name></member>
     <member refid="class_marmot_geometry_element_1af573006ded976c7f3a7df763df72440f" kind="variable"><name>voigtSize</name></member>
     <member refid="class_marmot_geometry_element_1aca72d1711a7f59e1737331521df26032" kind="variable"><name>coordinates</name></member>
     <member refid="class_marmot_geometry_element_1a8665d00fbb7607d30424b52957735ee4" kind="variable"><name>shape</name></member>
@@ -83,6 +85,8 @@
     <member refid="class_marmot_geometry_element_1ae7cd968d0237f07c2e47388492fdf273" kind="function"><name>N</name></member>
     <member refid="class_marmot_geometry_element_1af8a7333ba0d86fc0faf5ea4f751a0cc6" kind="function"><name>dNdXi</name></member>
     <member refid="class_marmot_geometry_element_1ab47875cbdc69b27f87395a0b30e3fe91" kind="function"><name>B</name></member>
+    <member refid="class_marmot_geometry_element_1a1dffcb0f3cb4564651087f7e5f33fd45" kind="function"><name>B_axisymmetric</name></member>
+    <member refid="class_marmot_geometry_element_1acf519341520f6ba08416ea4a17dc93c3" kind="function"><name>B_bar</name></member>
     <member refid="class_marmot_geometry_element_1ac4afff6d9d840bb7a6dddf36acb37364" kind="function"><name>BGreen</name></member>
     <member refid="class_marmot_geometry_element_1a733156edccbe90f67b7b493a8a856831" kind="function"><name>NB</name></member>
     <member refid="class_marmot_geometry_element_1ade2259c2f3736e4624f1f7a0f7551064" kind="function"><name>Jacobian</name></member>
@@ -182,6 +186,10 @@
     <member refid="_marmot_finite_element_8h_1ada0d34515ab4a50ec6110fb2ab92f0e5" kind="function"><name>B</name></member>
     <member refid="_marmot_finite_element_8h_1adf88a1803e973583381698714dc1a4c3" kind="function"><name>BGreen</name></member>
   </compound>
+  <compound refid="namespace_marmot_1_1_finite_element_1_1_spatial2_d_1_1axisymmetric" kind="namespace"><name>Marmot::FiniteElement::Spatial2D::axisymmetric</name>
+    <member refid="_marmot_finite_element_8h_1ab91943148722c884507d40685efbdc1a" kind="variable"><name>voigtSize</name></member>
+    <member refid="_marmot_finite_element_8h_1a596ebcfdd1e278e57eded1aad765fa4d" kind="function"><name>B</name></member>
+  </compound>
   <compound refid="namespace_marmot_1_1_finite_element_1_1_spatial2_d_1_1_quad4" kind="namespace"><name>Marmot::FiniteElement::Spatial2D::Quad4</name>
     <member refid="_marmot_finite_element_8h_1ac9f6c2f8f1fd40577983b02471aff2d0" kind="typedef"><name>CoordinateSized</name></member>
     <member refid="_marmot_finite_element_8h_1ad4d66ef4ee8bfe135b426c83bab0bfce" kind="typedef"><name>NSized</name></member>
@@ -204,6 +212,7 @@
     <member refid="_marmot_finite_element_8h_1a9ac5ef64e27d7a96bb28a4c670713f58" kind="variable"><name>nDim</name></member>
     <member refid="_marmot_finite_element_8h_1a8769feab1f624cdad299fec1ce3ce871" kind="variable"><name>voigtSize</name></member>
     <member refid="_marmot_finite_element_8h_1ae91a2140ff7f2d2a1b64a0265172076b" kind="function"><name>B</name></member>
+    <member refid="_marmot_finite_element_8h_1a9da22bdd93bdcb48ec799ec8811bed1d" kind="function"><name>B_bar</name></member>
     <member refid="_marmot_finite_element_8h_1a25bad83ac39f67fa7614d855c823a4b1" kind="function"><name>BGreen</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_finite_element_1_1_spatial3_d_1_1_hexa20" kind="namespace"><name>Marmot::FiniteElement::Spatial3D::Hexa20</name>

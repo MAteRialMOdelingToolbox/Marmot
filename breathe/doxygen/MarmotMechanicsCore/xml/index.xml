@@ -381,7 +381,9 @@
     <member refid="_marmot_voigt_8h_1a37017d3a6a002dee6ca7127fc7f42736" kind="variable"><name>IDev</name></member>
     <member refid="_marmot_voigt_8h_1a43f9254e1161e4f4209858acbddca1ff" kind="function"><name>voigtSizeFromDimension</name></member>
     <member refid="_marmot_voigt_8h_1ac44e1e21a8541d4bc7a989810c929e30" kind="function"><name>voigtToPlaneVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1aa86b1eb47a5be769028c3286112f8a72" kind="function"><name>voigtToAxisymmetricVoigt</name></member>
     <member refid="_marmot_voigt_8h_1ab3ceb10ac45895af2d82391eae901810" kind="function"><name>planeVoigtToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a12ebb5daa216ecc29c8d7868058e549d" kind="function"><name>axisymmetricVoigtToVoigt</name></member>
     <member refid="_marmot_voigt_8h_1af99f601e98c1a9135caef4de888542c6" kind="function"><name>reduce3DVoigt</name></member>
     <member refid="_marmot_voigt_8h_1a5bb68f6bf21cd36b0d38703692e98a90" kind="function"><name>make3DVoigt</name></member>
     <member refid="_marmot_voigt_8h_1aa1776cbb1ed1825ecdd9a96b4e7ddfa4" kind="function"><name>voigtToStrain</name></member>
@@ -396,6 +398,7 @@
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation_1_1_derivatives" kind="namespace"><name>Marmot::ContinuumMechanics::VoigtNotation::Derivatives</name>
     <member refid="_marmot_voigt_8h_1a41acc2721fe56820734fe87999014552" kind="function"><name>dStressMean_dStress</name></member>
     <member refid="_marmot_voigt_8h_1a50b23becf6b6938f52e1a7728d42afb7" kind="function"><name>dRho_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1a755b102dd8a1533e5a436cd5b28bb626" kind="function"><name>dRhoStrain_dStrain</name></member>
     <member refid="_marmot_voigt_8h_1aa876b96e41a7ef09cef0e4671726be21" kind="function"><name>dTheta_dStress</name></member>
     <member refid="_marmot_voigt_8h_1aaf4858d1cc1fcb49df97ff628bfca2d0" kind="function"><name>dTheta_dJ2</name></member>
     <member refid="_marmot_voigt_8h_1ae3245e5bf0245bc6cec29bd8fd4a41d6" kind="function"><name>dTheta_dJ3</name></member>

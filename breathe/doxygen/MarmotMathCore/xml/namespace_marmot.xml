@@ -140,6 +140,20 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="42" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="42" bodyend="-1"/>
       </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a7c185e7a32dbeb45e9463424a6c3a3dd" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 4, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 4, 1 &gt; Marmot::Vector4d</definition>
+        <argsstring></argsstring>
+        <name>Vector4d</name>
+        <qualifiedname>Marmot::Vector4d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="43" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a9ffd691bb9e3aad9fd71fc16249719e8" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 6, 1 &gt;</type>
         <definition>typedef Eigen::Matrix&lt; double, 6, 1 &gt; Marmot::Vector6d</definition>
@@ -152,7 +166,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="43" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="43" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="44" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a4ce7e7ee86e03692367287b279753666" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 7, 1 &gt;</type>
@@ -166,7 +180,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="44" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="45" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a628000a746eba1efd2097c3ee0f1254c" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 8, 1 &gt;</type>
@@ -180,7 +194,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="45" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="46" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="46" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a5e282d7f6d57c953f0aefc3f93409d7e" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 9, 1 &gt;</type>
@@ -194,7 +208,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="46" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="46" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="47" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a36f845f22e27f753cf817c3fc6d7f355" prot="public" static="no">
         <type>Eigen::Matrix&lt; int, 8, 1 &gt;</type>
@@ -208,7 +222,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="47" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="47" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="48" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a52af17682d28f0637862e50a5c0f8bfc" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 1, 6 &gt;</type>
@@ -222,7 +236,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="48" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="48" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="49" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a4e78d5e4bb006cdfd319f06ae686312f" prot="public" static="no">
         <type>Eigen::Map&lt; Vector6d &gt;</type>
@@ -236,7 +250,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="49" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="49" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="50" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a5e77b34ec4d5628dc4a164a359a4fd22" prot="public" static="no">
         <type>Eigen::Map&lt; Eigen::VectorXd &gt;</type>
@@ -250,7 +264,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="50" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="50" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="51" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="51" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1aab67dc8984f8afd2a802dce3128dd464" prot="public" static="no">
         <type>Eigen::Map&lt; const Marmot::Vector6d &gt;</type>
@@ -264,7 +278,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="51" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="51" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="52" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="52" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a69a44de0a03fcbdf397fa8e951889154" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
@@ -278,7 +292,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="53" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="53" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="54" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1aafff432cf7a4c6a916c625aa3f69a278" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
@@ -292,7 +306,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="54" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="54" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="55" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a397580baed2ffbfc7230416de736742e" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 6, 3 &gt;</type>
@@ -306,7 +320,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="55" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="55" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="56" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="56" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a92e92658ec8f3b5f376dde69375da320" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, 9, 9 &gt;</type>
@@ -320,7 +334,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="56" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="56" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="57" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="57" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a6381919ddfb218b0b24594f833bc97b6" prot="public" static="no">
         <type>std::complex&lt; double &gt;</type>
@@ -334,7 +348,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="59" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="59" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="60" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="60" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1affa6bc20e2333a803af3a115ce67eed5" prot="public" static="no">
         <type>Eigen::Matrix&lt; complexDouble, 6, 1 &gt;</type>
@@ -348,7 +362,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="60" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="60" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="61" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="61" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a76293141af2ab8beafd9aed3ae8b1b1f" prot="public" static="no">
         <templateparamlist>
@@ -367,7 +381,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="64" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="65" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="65" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_typedefs_8h_1a84db4851c64a953358752fe25430f7ee" prot="public" static="no">
         <templateparamlist>
@@ -386,7 +400,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="67" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="67" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="68" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="68" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">

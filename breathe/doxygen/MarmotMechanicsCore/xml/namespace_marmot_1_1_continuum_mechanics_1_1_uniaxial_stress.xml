@@ -17,17 +17,17 @@
 <para>Extracts the uniaxial stress-strain tangent from a 3D stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the tangent <formula id="207">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> in the loading direction (uniaxial) based on the full 3D stiffness matrix <formula id="208">$\mathbb{C}$</formula> provided in Voigt notation.</para>
+<para>Computes the tangent <formula id="209">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> in the loading direction (uniaxial) based on the full 3D stiffness matrix <formula id="210">$\mathbb{C}$</formula> provided in Voigt notation.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix ( <formula id="209">$6\times6$</formula>) in Voigt notation. </para>
+<para>3D stiffness matrix ( <formula id="211">$6\times6$</formula>) in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Uniaxial stress-strain tangent ( <formula id="207">$\frac{\partial\sigma}{\partial\varepsilon}$</formula>). </para>
+<simplesect kind="return"><para>Uniaxial stress-strain tangent ( <formula id="209">$\frac{\partial\sigma}{\partial\varepsilon}$</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>

@@ -537,6 +537,8 @@
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotationE">Marmot::ContinuumMechanics::VoigtNotation (C++ type)</a>
 </li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation24axisymmetricVoigtToVoigtERK8Vector4d">Marmot::ContinuumMechanics::VoigtNotation::axisymmetricVoigtToVoigt (C++ function)</a>
+</li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation11DerivativesE">Marmot::ContinuumMechanics::VoigtNotation::Derivatives (C++ type)</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation11Derivatives12dDeltaEpv_dEERK8Matrix6dRK8Matrix6d">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dDeltaEpv_dE (C++ function)</a>
@@ -554,6 +556,8 @@
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation11Derivatives17dJ3Strain_dStrainERKN6Marmot8Vector6dE">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ3Strain_dStrain (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4I0EN6Marmot18ContinuumMechanics13VoigtNotation11Derivatives12dRho_dStressEN5Eigen6MatrixI1TXL6EEXL1EEEE1TRKN5Eigen6MatrixI1TXL6EEXL1EEEE">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dRho_dStress (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4I0EN6Marmot18ContinuumMechanics13VoigtNotation11Derivatives18dRhoStrain_dStrainEN5Eigen6MatrixI1TXL6EEXL1EEEE1TRKN5Eigen6MatrixI1TXL6EEXL1EEEE">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dRhoStrain_dStrain (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation11Derivatives30dSortedStrainPrincipal_dStrainERKN6Marmot8Vector6dE">Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dSortedStrainPrincipal_dStrain (C++ function)</a>
 </li>
@@ -666,6 +670,8 @@
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation9VoigtSize4TwoDE">Marmot::ContinuumMechanics::VoigtNotation::VoigtSize::TwoD (C++ enumerator)</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation22voigtSizeFromDimensionEi">Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation24voigtToAxisymmetricVoigtERK8Vector6d">Marmot::ContinuumMechanics::VoigtNotation::voigtToAxisymmetricVoigt (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation17voigtToPlaneVoigtERKN6Marmot8Vector6dE">Marmot::ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt (C++ function)</a>
 </li>
@@ -1413,6 +1419,8 @@
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement15BoundaryElement39computeSurfaceNormalVectorialLoadVectorEv">Marmot::FiniteElement::BoundaryElement::computeSurfaceNormalVectorialLoadVector (C++ function)</a>
 </li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement15BoundaryElement62computeSurfaceNormalVectorialLoadVectorForAxisymmetricElementsEv">Marmot::FiniteElement::BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements (C++ function)</a>
+</li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement15BoundaryElement26computeVectorialLoadVectorERKN5Eigen8VectorXdE">Marmot::FiniteElement::BoundaryElement::computeVectorialLoadVector (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement15BoundaryElement30condenseParentToBoundaryScalarERKN5Eigen8VectorXdE">Marmot::FiniteElement::BoundaryElement::condenseParentToBoundaryScalar (C++ function)</a>
@@ -1541,12 +1549,12 @@
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature9Spatial3D19gaussPointList1x1x1E">Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointList1x1x1 (C++ member)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature9Spatial3D19gaussPointList2x2x2E">Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointList2x2x2 (C++ member)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature9Spatial3D19gaussPointList3x3x3E">Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointList3x3x3 (C++ member)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature9Spatial3D21gaussPointListTetra10E">Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointListTetra10 (C++ member)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement10Quadrature9Spatial3D20gaussPointListTetra4E">Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointListTetra4 (C++ member)</a>
@@ -1580,6 +1588,12 @@
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement9Spatial1D4Bar36NSizedE">Marmot::FiniteElement::Spatial1D::Bar3::NSized (C++ type)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement9Spatial2DE">Marmot::FiniteElement::Spatial2D (C++ type)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement9Spatial2D12axisymmetricE">Marmot::FiniteElement::Spatial2D::axisymmetric (C++ type)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4I_iEN6Marmot13FiniteElement9Spatial2D12axisymmetric1BEN5Eigen6MatrixId9voigtSizeXml6nNodes4nDimEEERKN5Eigen6MatrixId4nDim6nNodesEERKN5Eigen6MatrixIdXL1EE6nNodesEERKN5Eigen6MatrixId4nDimXL1EEEE">Marmot::FiniteElement::Spatial2D::axisymmetric::B (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement9Spatial2D12axisymmetric9voigtSizeE">Marmot::FiniteElement::Spatial2D::axisymmetric::voigtSize (C++ member)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4I_iEN6Marmot13FiniteElement9Spatial2D1BEN5Eigen6MatrixId9voigtSizeXml6nNodes4nDimEEERKN5Eigen6MatrixId4nDim6nNodesEE">Marmot::FiniteElement::Spatial2D::B (C++ function)</a>
 </li>
@@ -1624,6 +1638,8 @@
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot13FiniteElement9Spatial3DE">Marmot::FiniteElement::Spatial3D (C++ type)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4I_iEN6Marmot13FiniteElement9Spatial3D1BEN5Eigen6MatrixId9voigtSizeXml6nNodes4nDimEEERKN5Eigen6MatrixId4nDim6nNodesEE">Marmot::FiniteElement::Spatial3D::B (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4I_iEN6Marmot13FiniteElement9Spatial3D5B_barEN5Eigen6MatrixId9voigtSizeXml6nNodes4nDimEEERKN5Eigen6MatrixId4nDim6nNodesEERKN5Eigen6MatrixId4nDim6nNodesEE">Marmot::FiniteElement::Spatial3D::B_bar (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4I_iEN6Marmot13FiniteElement9Spatial3D6BGreenEN5Eigen6MatrixId9voigtSizeXml6nNodes4nDimEEERKN5Eigen6MatrixId4nDim6nNodesEERKN5Eigen8Matrix3dE">Marmot::FiniteElement::Spatial3D::BGreen (C++ function)</a>
 </li>
@@ -2579,6 +2595,8 @@
 </li>
       <li><a href="pages/codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector3dE">Marmot::Vector3d (C++ type)</a>
 </li>
+      <li><a href="pages/codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector4dE">Marmot::Vector4d (C++ type)</a>
+</li>
       <li><a href="pages/codedocumentation/mathcore.html#_CPPv4N6Marmot9Vector6cdE">Marmot::Vector6cd (C++ type)</a>
 </li>
       <li><a href="pages/codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE">Marmot::Vector6d (C++ type)</a>
@@ -2737,9 +2755,15 @@
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4NK21MarmotGeometryElement1BERK10dNdXiSized">MarmotGeometryElement::B (C++ function)</a>
 </li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4NK21MarmotGeometryElement14B_axisymmetricERK10dNdXiSizedRK6NSizedRK7XiSized">MarmotGeometryElement::B_axisymmetric (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4NK21MarmotGeometryElement5B_barERK10dNdXiSizedRK10dNdXiSized">MarmotGeometryElement::B_bar (C++ function)</a>
+</li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4NK21MarmotGeometryElement6BGreenERK10dNdXiSizedRK13JacobianSized">MarmotGeometryElement::BGreen (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N21MarmotGeometryElement6BSizedE">MarmotGeometryElement::BSized (C++ type)</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N21MarmotGeometryElement18BSizedAxisymmetricE">MarmotGeometryElement::BSizedAxisymmetric (C++ type)</a>
 </li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N21MarmotGeometryElement11coordinatesE">MarmotGeometryElement::coordinates (C++ member)</a>
 </li>

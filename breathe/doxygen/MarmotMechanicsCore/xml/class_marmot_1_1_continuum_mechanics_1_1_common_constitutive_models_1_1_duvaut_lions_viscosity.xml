@@ -82,7 +82,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="306">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -109,7 +109,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="306">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -132,7 +132,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="306">$\infty$</formula>, and timestep dt <xrefsect id="todo_1_todo000006"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
+<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="308">$\infty$</formula>, and timestep dt <xrefsect id="todo_1_todo000006"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>

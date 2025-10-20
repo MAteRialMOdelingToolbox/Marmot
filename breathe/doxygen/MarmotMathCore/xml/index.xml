@@ -35,6 +35,7 @@
     <member refid="_marmot_typedefs_8h_1a42cce1f9189e52b4cad0caef7ace17d2" kind="typedef"><name>mMatrix6d</name></member>
     <member refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kind="typedef"><name>Matrix3d</name></member>
     <member refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kind="typedef"><name>Vector3d</name></member>
+    <member refid="_marmot_typedefs_8h_1a7c185e7a32dbeb45e9463424a6c3a3dd" kind="typedef"><name>Vector4d</name></member>
     <member refid="_marmot_typedefs_8h_1a9ffd691bb9e3aad9fd71fc16249719e8" kind="typedef"><name>Vector6d</name></member>
     <member refid="_marmot_typedefs_8h_1a4ce7e7ee86e03692367287b279753666" kind="typedef"><name>Vector7d</name></member>
     <member refid="_marmot_typedefs_8h_1a628000a746eba1efd2097c3ee0f1254c" kind="typedef"><name>Vector8d</name></member>

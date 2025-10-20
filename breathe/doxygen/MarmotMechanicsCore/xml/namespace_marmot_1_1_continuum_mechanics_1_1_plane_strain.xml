@@ -17,17 +17,17 @@
 <para>Extracts the plane strain stiffness matrix from a 3D stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the full 3D stiffness matrix <formula id="208">$\mathbb{C}$</formula> to the plane strain stiffness matrix corresponding to the in-plane components.</para>
+<para>Reduces the full 3D stiffness matrix <formula id="210">$\mathbb{C}$</formula> to the plane strain stiffness matrix corresponding to the in-plane components.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix ( <formula id="209">$6\times6$</formula>) in Voigt notation. </para>
+<para>3D stiffness matrix ( <formula id="211">$6\times6$</formula>) in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Plane strain stiffness matrix ( <formula id="210">$3\times3$</formula>) in Voigt notation. </para>
+<simplesect kind="return"><para>Plane strain stiffness matrix ( <formula id="212">$3\times3$</formula>) in Voigt notation. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -49,17 +49,17 @@
 <para>Extracts the plane strain derivative of the stress with respect to the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the derivative of the 3D stress tensor in Voigt notation with respect to the deformation gradient <formula id="211">$F_{ij}$</formula> to the plane strain setting.</para>
+<para>Reduces the derivative of the 3D stress tensor in Voigt notation with respect to the deformation gradient <formula id="213">$F_{ij}$</formula> to the plane strain setting.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>dStressdDeformationGradient3D</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of 3D stress with respect to the deformation gradient ( <formula id="212">$6\times3\times3$</formula> tensor). </para>
+<para>Derivative of 3D stress with respect to the deformation gradient ( <formula id="214">$6\times3\times3$</formula> tensor). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Reduced derivative of stress with respect to deformation gradient ( <formula id="213">$3\times2\times2$</formula> tensor) in the plane strain setting. </para>
+<simplesect kind="return"><para>Reduced derivative of stress with respect to deformation gradient ( <formula id="215">$3\times2\times2$</formula> tensor) in the plane strain setting. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -77,7 +77,7 @@
 <para>Computes the derivative of the 3D strain tensor with respect to the plane strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>Matrix ( <formula id="214">$6\times3$</formula>) representing  <formula id="215">$\frac{\partial \varepsilon_{3D}}{\partial
+<para><simplesect kind="return"><para>Matrix ( <formula id="216">$6\times3$</formula>) representing  <formula id="217">$\frac{\partial \varepsilon_{3D}}{\partial
 \varepsilon_{plane}}$</formula>. </para>
 </simplesect>
 </para>
