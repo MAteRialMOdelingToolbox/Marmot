@@ -96,7 +96,7 @@ Feature PRs **must** include:
 - **Automated tests** registered with **ctest** that cover the new behavior and edge cases.
 
 ### PR Checklist
-- [ ] My PR title follow Conventional Commits
+- [ ] My PR title follows Conventional Commits
 - [ ] `pre-commit run --all-files` passes locally
 - [ ] The project **builds** with CMake
 - [ ] All **tests pass** locally via `ctest`
