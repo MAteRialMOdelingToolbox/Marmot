@@ -69,7 +69,7 @@ The [EdelweissFE](https://github.com/EdelweissFE/EdelweissFE) finite element cod
 After the installation of `Marmot`, EdelweissFE can be built with `Marmot` support by executing
 
 ```bash
-git clone https:\\github.com/Edelweiss-FE/EdelweissFE.git
+git clone https://github.com/Edelweiss-FE/EdelweissFE.git
 cd EdelweissFE
 conda install --file requirements.txt
 pip install .
