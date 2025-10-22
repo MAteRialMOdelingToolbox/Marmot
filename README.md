@@ -40,7 +40,7 @@ conda activate marmot-env
 
 Fastor needs to be installed manually by executing
 ```bash
-git clone https:\\github.com/romeric/Fastor.git
+git clone https://github.com/romeric/Fastor.git
 cd Fastor
 mkdir build
 cd build
