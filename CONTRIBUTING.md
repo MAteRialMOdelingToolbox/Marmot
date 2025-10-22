@@ -144,7 +144,7 @@ The documentation is built using Doxygen and Sphinx/Breathe following the comman
 
 ### Module Documentation for New Models and Elements
 If you add a **new material model** or **finite element**, you must:
-1. Add a corresponding `module.rst` file under the appropriate Sphinx module directory (`docs/pages/features/`). 
+1. Add a corresponding `module.rst` file under the appropriate Sphinx module directory (`docs/pages/features/`).
 2. Include:
    - Theoretical background
    - Governing equations and assumptions
