@@ -1,8 +1,8 @@
 #include "Marmot/LinearViscoelasticOrthotropicPowerLaw.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotViscoelasticity.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
@@ -32,7 +32,7 @@ namespace Marmot::Materials {
       // viscoelastic parameters
       m                                 ( materialProperties[9] ),
       n                                 ( materialProperties[10] ),
-      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[11] ) ), 
+      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[11] ) ),
       nKelvin                           ( static_cast< size_t > ( materialProperties[12] ) ),
       minTau                            ( materialProperties[13] ),
       spacing                           ( materialProperties[14] ),
