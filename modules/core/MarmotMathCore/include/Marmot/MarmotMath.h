@@ -73,6 +73,14 @@ namespace Marmot {
      * the maximum limit is returned. If \ref x is smaller than the minimum limit, the minimum limit is returned.
      */
     double exp( double x );
+    
+
+    /** 
+     * @brief Runtime factorial
+     * @param n An unsigned integer
+     * @return The factorial of n 
+     */    
+    unsigned long factorial( unsigned int n );
 
     /** @brief Extracts the exponent to the power of ten from a floating point number
      *  @param x Input floating point number
