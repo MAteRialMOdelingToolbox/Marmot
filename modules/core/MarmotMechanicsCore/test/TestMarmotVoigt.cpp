@@ -223,6 +223,30 @@ void test_dRho_dStress()
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+void test_dRhoStrain_dStrain()
+{
+
+  using namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives;
+  const Vector6d strain = { 1, 2, 3, 4, 5, 6 };
+
+  const auto hw = ContinuumMechanics::HaighWestergaard::haighWestergaardFromStrain( strain );
+
+  const auto rho = []( const Vector6d& strain ) {
+    Eigen::MatrixXd rho( 1, 1 );
+    rho << ContinuumMechanics::HaighWestergaard::haighWestergaardFromStrain( strain ).rho;
+    return rho;
+  };
+
+  const auto dRho_dStress_FD = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( rho, strain );
+
+  throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::
+                                           dRhoStrain_dStrain( hw.rho, strain )
+                                             .norm(),
+                                         dRho_dStress_FD.norm(),
+                                         1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
 void test_dTheta_dStress()
 {
 
@@ -371,6 +395,7 @@ int main()
                                                        testJ3Strain,
                                                        test_dStressMean_dStress,
                                                        test_dRho_dStress,
+                                                       test_dRhoStrain_dStrain,
                                                        test_dTheta_dStress,
                                                        test_dJ2_dStress,
                                                        test_dJ3_dStress,
