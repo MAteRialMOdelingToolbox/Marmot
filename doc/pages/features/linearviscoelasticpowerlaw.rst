@@ -1,3 +1,5 @@
+.. _linearviscoelasticpowerlaw:
+
 Linear Viscoelastic Power Law model
 ===================================
 
@@ -46,6 +48,40 @@ in terms of the unit compliance tensor :math:`\DelNu`. The unit compliance tenso
 
 with the Young's modulus :math:`E` and the Poisson's ratio :math:`\nu`.
 
+Here we approximate a target **power-law creep compliance** :math:`J(t)` by a **Kelvin chain** (generalized Kelvin–Voigt / Prony series) so the viscoelastic strain rate becomes a finite sum of exponentials that’s efficient to evaluate. The continuous form
+
+.. math::
+
+   J(t)=J_0+\int_0^\infty L(\tau)\,\bigl(1-e^{-t/\tau}\bigr)\,d\tau,
+
+is replaced by
+
+.. math::
+
+   J_N(t)=J_0+\sum_{i=1}^N J_i\bigl(1-e^{-t/\tau_i}\bigr), \qquad
+   \dot J_N(t)=\sum_{i=1}^N \frac{J_i}{\tau_i}\,e^{-t/\tau_i},
+
+where :math:`J_i` and :math:`\tau_i` are the partial compliances and retardation times. For a specific compliance target  the :math:`\{J_i,\tau_i\}` are chosen so that :math:`J_N(t)` tracks :math:`J(t)` over the time window of interest, while the rate kernel :math:`\dot J_N` approximates
+
+.. math::
+
+   \dot J(t)=\int_0^\infty \frac{L(\tau)}{\tau}\,e^{-t/\tau}\,d\tau.
+
+The **Post–Widder inversion formula** provides a way to recover an approximate retardation spectrum from a known compliance function :math:`J(t)`.
+
+.. math::
+
+   L(\tau) \approx \frac{(-1)^{k}}{(k)!}
+   \left(\frac{k}{\tau}\right)^{k}
+   J^{(k)}\!\left(\frac{\tau}{k+1}\right),
+   \qquad k \to \infty.
+
+The order :math:`k` defines the order of approximation of the actual continous spectrum.
+If it tends to infinity the continous spectrum is recovered.
+The discrete spectrum of the Kelvin chain is here used to calculate the stiffnesses or compliances for
+chosen retardation times by fitting the approximation of the continous spectrum.
+
+A detailed description of the employed approach can be found, e.g., in Bazant & Jirasek (2018) *Creep and Hygrothermal Effects in Concrete Structures*.
 
 
 Implementation
