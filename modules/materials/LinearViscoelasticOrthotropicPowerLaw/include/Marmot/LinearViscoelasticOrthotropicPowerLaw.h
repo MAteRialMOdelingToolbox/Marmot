@@ -36,65 +36,64 @@
 namespace Marmot::Materials {
 
   /**
-   * \brief Implementation of an orthotropic linear viscoelastic material model
+   * @brief Implementation of an orthotropic linear viscoelastic material model
    * following a Power Law compliance function and assuming constant Poisson's ratios
    * generalized for 3D stress states.
-   *
    */
   class LinearViscoelasticOrthotropicPowerLaw : public MarmotMaterialHypoElastic {
 
-    /// \brief Young's modulus in x1 direction
+    /// @brief Young's modulus in x1 direction
     const double& E1;
 
-    /// \brief Young's modulus in x2 direction
+    /// @brief Young's modulus in x2 direction
     const double& E2;
 
-    /// \brief Young's modulus in x3 direction
+    /// @brief Young's modulus in x3 direction
     const double& E3;
 
-    /// \brief Poisson's ratio
+    /// @brief Poisson's ratio
     const double& nu12;
 
-    /// \brief Poisson's ratio
+    /// @brief Poisson's ratio
     const double& nu23;
 
-    /// \brief Poisson's ratio
+    /// @brief Poisson's ratio
     const double& nu13;
 
-    /// \brief Shear modulus in x1-x2 plane
+    /// @brief Shear modulus in x1-x2 plane
     const double& G12;
 
-    /// \brief Shear modulus in x2-x3 plane
+    /// @brief Shear modulus in x2-x3 plane
     const double& G23;
 
-    /// \brief Shear modulus in x1-x3 plane
+    /// @brief Shear modulus in x1-x3 plane
     const double& G13;
 
-    /// \brief power law compliance parameter
+    /// @brief power law compliance parameter
     const double& m;
 
-    /// \brief power law exponent
+    /// @brief power law exponent
     const double& n;
 
-    /// \brief approximation order for the retardation spectrum
+    /// @brief approximation order for the retardation spectrum (must be 2, 3, 4, or 7)
     const int powerLawApproximationOrder;
 
-    /// \brief number of Kelvin units to approximate the viscoelastic compliance
+    /// @brief number of Kelvin units to approximate the viscoelastic compliance
     const size_t nKelvin;
 
-    /// \brief minimal retardation time used in the viscoelastic Kelvin chain
+    /// @brief minimal retardation time used in the viscoelastic Kelvin chain
     const double& minTau;
 
-    /// \brief log spacing between the retardation times of the Kelvin Chain
+    /// @brief log spacing between the retardation times of the Kelvin Chain
     const double& spacing;
 
-    /// \brief ratio of simulation time to days
+    /// @brief ratio of simulation time to days
     const double& timeToDays;
 
-    /// \brief direction x1 w.r.t the global coordinate system
+    /// @brief direction x1 w.r.t the global coordinate system
     const Vector3d direction1;
 
-    /// \brief direction x2 w.r.t the global coordinate system
+    /// @brief direction x2 w.r.t the global coordinate system
     const Vector3d direction2;
 
     class LinearViscoelasticOrthotropicPowerLawStateVarManager : public MarmotStateVarVectorManager {
@@ -134,12 +133,34 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
+    /// @brief Elastic moduli of the Kelvin chain units
     KelvinChain::Properties elasticModuli;
+
+    /// @brief Retardation times of the Kelvin chain units
     KelvinChain::Properties retardationTimes;
-    double                  zerothKelvinChainCompliance;
 
-    Matrix6d CInv, Cel, CelUnit, CelUnitInv, CelUnitGlobal;
+    /// @brief Zeroth Kelvin chain compliance
+    double zerothKelvinChainCompliance;
 
+    /// @brief Inverse of the initial elastic stiffness
+    Matrix6d CInv;
+
+    /// @brief Initial elastic stiffness
+    Matrix6d Cel;
+
+    /**
+     * @brief Normalized initial elastic stiffness
+     * @details It is normalized by the Young's modulus in x1 direction E1
+     */
+    Matrix6d CelUnit;
+
+    /// @brief Inverse of the normalized initial elastic stiffness
+    Matrix6d CelUnitInv;
+
+    /// @brief Initial elastic stiffness in the global coordinate system
+    Matrix6d CelUnitGlobal;
+
+    /// @brief Local coordinate system of the material
     Matrix3d localCoordinateSystem;
   };
 } // namespace Marmot::Materials
