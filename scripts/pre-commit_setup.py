@@ -26,7 +26,6 @@
 # */
 
 import os
-import sys
 
 from projectmanager import walk_modules
 
@@ -39,7 +38,9 @@ if __name__ == "__main__":
     # check if pre-commit is installed already
     try:
         os.system("pre-commit --help >/dev/null 2>&1")
-    except:
+    except Exception as e:
+        print(e)
+        print("pre-commit is not installed. Installing now...")
         os.system("pip install pre-commit")
 
     os.system("pre-commit install")

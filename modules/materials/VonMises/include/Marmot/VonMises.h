@@ -31,6 +31,7 @@
 
 namespace Marmot::Materials {
 
+  /// @brief An implementation of classical J2 plasticity with isotropic hardening.
   class VonMisesModel : public MarmotMaterialHypoElastic {
 
   public:
@@ -44,6 +45,11 @@ namespace Marmot::Materials {
                         const double  dT,
                         double&       pNewDT ) override;
 
+    /**
+     * @brief Get material density.
+     * @return Density value.
+     * @throw std::runtime_error if density is not defined.
+     */
     double getDensity() override;
 
     class VonMisesModelStateVarManager : public MarmotStateVarVectorManager {
@@ -53,6 +59,7 @@ namespace Marmot::Materials {
         { .name = "kappa", .length = 1 },
       } );
 
+      /// @brief Hardening parameter.
       double& kappa;
 
       VonMisesModelStateVarManager( double* theStateVarVector )

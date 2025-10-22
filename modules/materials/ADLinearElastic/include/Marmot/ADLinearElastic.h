@@ -37,7 +37,7 @@ using namespace Marmot;
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a isotropic linear elastic material
+   * @brief Implementation of a isotropic linear elastic material
    * for 3D stress states using automatic differentiation.
    *
    */
@@ -45,7 +45,10 @@ namespace Marmot::Materials {
   public:
     using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
 
+    /// @brief Young's modulus for isotropic materials
     const double& E;
+
+    /// @brief Poisson's ratio for isotropic materials
     const double& nu;
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );

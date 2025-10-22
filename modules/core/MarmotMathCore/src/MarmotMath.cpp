@@ -102,32 +102,17 @@ namespace Marmot {
 
     Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem )
     {
-      // Vector3d unitVectorX1, unitVectorX2;
-      // unitVectorX1 << 1, 0, 0;
-      // unitVectorX2 << 0, 1, 0;
-
-      // Matrix3d globalCoordinateSystem = orthonormalCoordinateSystem( unitVectorX1, unitVectorX2 );
-      // Matrix3d directionCos;
-
-      // for ( int i = 0; i <= 2; i++ )
-      //   for ( int j = 0; j <= 2; j++ )
-      //     directionCos( i, j ) = transformedCoordinateSystem.col( i ).dot( globalCoordinateSystem.col( j ) );
-      //     // directionCos( i, j ) = transformedCoordinateSystem( j, i );
-
-      // return directionCos;
       return transformedCoordinateSystem.transpose();
     }
 
     Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
     {
-      // const Matrix3d N = directionCosines( transformedCoordinateSystem );
       const Matrix3d N = transformedCoordinateSystem;
       return N.transpose() * T * N;
     }
 
     Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
     {
-      // const Matrix3d N = directionCosines( transformedCoordinateSystem );
       const Matrix3d N = transformedCoordinateSystem;
       return N * T * N.transpose();
     }

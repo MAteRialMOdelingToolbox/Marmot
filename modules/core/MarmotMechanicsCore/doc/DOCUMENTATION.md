@@ -21,7 +21,7 @@ Necessary for multisurface plasticity material models.
 
 \page mechanicalmaterials Mechanical Material Models
 
-Abstract base class for mechanical materials with scalar nonlocal interaction. 
+Abstract base class for mechanical materials with scalar nonlocal interaction.
 
 **Implementation:** \ref MarmotMaterialMechanical
 
@@ -29,23 +29,23 @@ Abstract base class for mechanical materials with scalar nonlocal interaction.
 
 **Implementation:** \ref MarmotMaterialHypoElastic
 
-Derived abstract base class for elastic materials expressed purely in rate form. 
+Derived abstract base class for elastic materials expressed purely in rate form.
 
-## Basic Theory 
+## Basic Theory
 
 In general, the nominal stress rate tensor \f$ \sigRate \f$ can be written as a function of the nominal stress tensor \f$ \sig \f$, the stretching rate tensor \f$ \epsRate \f$ and the time \f$ t \f$.
 
 \f[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \f]
 
-In course of numerical time integration, this relation will be formulated incrementally as 
+In course of numerical time integration, this relation will be formulated incrementally as
 
 \f[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \f]
 
-with 
+with
 
 \f[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \f]
 
-and the algorithmic tangent 
+and the algorithmic tangent
 
 \f[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \f]
 
@@ -55,7 +55,7 @@ This formulation is compatible with an Abaqus interface.
 
 \page hyperelastic Hyperelastic Material Models
 
-## Basic Theory 
+## Basic Theory
 
 **Implementation:** \ref MarmotMaterialHyperElastic
 
@@ -69,8 +69,8 @@ with the Green - Lagrange strain tensor \f$ \boldsymbol{E} \f$
   \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
 \f]
 
-as work conjugated measure and the variable \f$ \boldsymbol{F} \f$ denoting the deformation gradient. 
-The algorithmic tangent will be calculated by 
+as work conjugated measure and the variable \f$ \boldsymbol{F} \f$ denoting the deformation gradient.
+The algorithmic tangent will be calculated by
 
 \f[
   \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
@@ -81,13 +81,13 @@ The algorithmic tangent will be calculated by
 
 **Implementation:** \ref MarmotMaterialGradientEnhancedMechanical
 
-Base class for mechanical materials with gradient enhanced regularization to assure mesh indepency in finite element simulations. 
+Base class for mechanical materials with gradient enhanced regularization to assure mesh indepency in finite element simulations.
 
 \page gradhypoelastic Gradient Enhanced Hypoelastic Material Models
 
-## Basic Theory 
+## Basic Theory
 **Implementation:** \ref MarmotMaterialGradientEnhancedHypoElastic
-  
+
 \page substepper Substepping Algorithms
 
 ## Adaptive Substepper
@@ -99,7 +99,7 @@ Base class for mechanical materials with gradient enhanced regularization to ass
 Adaptive Substepper, employing an error estimation and Richardson extrapolation for an implicit return mapping algorithm.
 
 ### Substepper for Semi - Explicit Return Mapping Algorithms
- 
+
 **Implementation:** \ref AdaptiveSubstepperExplicit.h
 
 Adaptive Substepper, employing an error estimation and Richardson extrapolation for an semi - explicit return mapping algorithm.
@@ -144,9 +144,9 @@ For instance, tensor products are written as vector matrix products.
 \f[\displaystyle
     \sig =
     \begin{bmatrix}
-        \sigma_{11} & \sigma_{12} & \sigma_{13}\\ 
-        \sigma_{21} & \sigma_{22} & \sigma_{23}\\ 
-        \sigma_{31} & \sigma_{32} & \sigma_{33} 
+        \sigma_{11} & \sigma_{12} & \sigma_{13}\\
+        \sigma_{21} & \sigma_{22} & \sigma_{23}\\
+        \sigma_{31} & \sigma_{32} & \sigma_{33}
     \end{bmatrix}
     \rightarrow
     \begin{bmatrix}
@@ -164,9 +164,9 @@ For instance, tensor products are written as vector matrix products.
 \f[\displaystyle
     \eps =
     \begin{bmatrix}
-        \varepsilon_{11} & \varepsilon_{12} & \varepsilon_{13}\\ 
-        \varepsilon_{21} & \varepsilon_{22} & \varepsilon_{23}\\ 
-        \varepsilon_{31} & \varepsilon_{32} & \varepsilon_{33} 
+        \varepsilon_{11} & \varepsilon_{12} & \varepsilon_{13}\\
+        \varepsilon_{21} & \varepsilon_{22} & \varepsilon_{23}\\
+        \varepsilon_{31} & \varepsilon_{32} & \varepsilon_{33}
     \end{bmatrix}
     \rightarrow
     \begin{bmatrix}
@@ -183,7 +183,7 @@ For instance, tensor products are written as vector matrix products.
 ### Generalized Hooke's law
 
 \f[
-    \sig = \Cel : \eps = \mathbb{D}^{-1} : \eps \rightarrow  
+    \sig = \Cel : \eps = \mathbb{D}^{-1} : \eps \rightarrow
     \begin{bmatrix}
         \sigma_{11}\\
         \sigma_{22}\\

@@ -35,8 +35,8 @@ void MarmotMaterial::initializeYourself()
 
 double MarmotMaterial::getDensity()
 {
-
-  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+  return 1.0;
+  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implementedXXX" );
 }
 
 MarmotMaterial::~MarmotMaterial() {}

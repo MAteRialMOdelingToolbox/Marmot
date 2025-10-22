@@ -24,7 +24,7 @@ namespace Marmot {
           const auto [dFpT, dFpT_dGp] = TensorUtility::TensorExponential::FirstOrderDerived::
             computeTensorExponential( dGp, 15, 1e-14 );
           // clang-format off
-            return { permute< Index< 1, 0 > >      ( dFpT     ), 
+            return { permute< Index< 1, 0 > >      ( dFpT     ),
                      permute< Index< 1, 0, 2, 3 > >( dFpT_dGp ) };
           // clang-format on
         }

@@ -1,0 +1,4 @@
+*/__pycache__
+*.bak
+build
+doc/doc_out

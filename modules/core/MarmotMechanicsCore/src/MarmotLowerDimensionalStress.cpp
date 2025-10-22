@@ -86,8 +86,8 @@ namespace Marmot::ContinuumMechanics {
                     for ( int n = 0; n < 2; n ++ )
                         for ( int k = 0; k < 2; k ++ )
                             for ( int l = 0; l < 2; l ++ )
-                                dS_dF(              toVoigt<2> (m,n), k, l ) 
-                                    =  -  dS_dF_3D( toVoigt<3> (m,n), 2, 2 ) 
+                                dS_dF(              toVoigt<2> (m,n), k, l )
+                                    =  -  dS_dF_3D( toVoigt<3> (m,n), 2, 2 )
                                     * 1./ dS_dF_3D( toVoigt<3> (2,2), 2, 2 )
                                     *     dS_dF_3D( toVoigt<3> (2,2), k, l );
       // clang-format on

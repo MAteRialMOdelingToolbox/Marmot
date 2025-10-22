@@ -34,6 +34,21 @@ namespace Marmot {
     namespace TensorExponential {
       struct ExponentialMapFailed : std::exception {};
 
+      /**
+       * @brief Computes the exponential of a square second rank tensor
+       *
+       * @details Evaluates exp(@p theTensor) using a series expansion up to
+       * @p maxIterations or until the terms converge below @p tolerance.
+       *
+       * @tparam T Element type of the tensor.
+       * @tparam tensorSize Dimension of the square tensor.
+       * @param theTensor Input tensor.
+       * @param maxIterations Maximum number of series terms to compute.
+       * @param tolerance Convergence threshold for the series terms.
+       * @param alternativeTolerance Secondary threshold to detect failure.
+       * @return Tensor representing the exponential of @p theTensor.
+       * @throws ExponentialMapFailed If convergence is not achieved.
+       */
       template < typename T, size_t tensorSize >
       Fastor::Tensor< T, tensorSize, tensorSize > computeTensorExponential(
         const Fastor::Tensor< T, tensorSize, tensorSize >& theTensor,
@@ -91,6 +106,10 @@ namespace Marmot {
       };
 
       namespace FirstOrderDerived {
+        /** @brief Computes the exponential of a square second rank tensor and its first-order derivative.
+         * @details See the documentation of `computeTensorExponential` without derivative
+         *          for additional details.
+         */
         template < typename T, size_t tensorSize >
         TensorExponentialResult< T, tensorSize > computeTensorExponential(
           const Fastor::Tensor< T, tensorSize, tensorSize >& theTensor,

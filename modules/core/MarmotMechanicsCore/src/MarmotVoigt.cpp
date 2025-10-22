@@ -32,11 +32,11 @@ namespace Marmot {
     {
       Vector6d strain;
       // clang-format off
-            strain << strainTensor( 0, 0 ), 
-                      strainTensor( 1, 1 ), 
-                      strainTensor( 2, 2 ), 
+            strain << strainTensor( 0, 0 ),
+                      strainTensor( 1, 1 ),
+                      strainTensor( 2, 2 ),
                   2 * strainTensor( 0, 1 ),
-                  2 * strainTensor( 0, 2 ), 
+                  2 * strainTensor( 0, 2 ),
                   2 * strainTensor( 1, 2 );
       // clang-format on
       return strain;
@@ -520,7 +520,7 @@ namespace Marmot {
         Matrix6d transformationMatrix;
 
         // clang-format off
-        transformationMatrix << 
+        transformationMatrix <<
                     pow(N(0,0),2), pow(N(0,1),2), pow(N(0,2),2), 2*N(0,0)*N(0,1), 2*N(0,0)*N(0,2), 2*N(0,2)*N(0,1),
                     pow(N(1,0),2), pow(N(1,1),2), pow(N(1,2),2), 2*N(1,0)*N(1,1), 2*N(1,0)*N(1,2), 2*N(1,2)*N(1,1),
                     pow(N(2,0),2), pow(N(2,1),2), pow(N(2,2),2), 2*N(2,0)*N(2,1), 2*N(2,0)*N(2,2), 2*N(2,2)*N(2,1),
@@ -538,8 +538,8 @@ namespace Marmot {
 
         // clang-format off
                 Matrix36d projectMatrix;
-                projectMatrix << n( 0 ),      0,      0, n( 1 ), 0,      n( 2 ), 
-                                      0, n( 1 ),      0, n( 0 ), n( 2 ),      0, 
+                projectMatrix << n( 0 ),      0,      0, n( 1 ), 0,      n( 2 ),
+                                      0, n( 1 ),      0, n( 0 ), n( 2 ),      0,
                                       0,      0, n( 2 ),      0, n( 1 ), n( 0 );
         // clang-format on
         return projectMatrix;

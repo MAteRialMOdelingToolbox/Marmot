@@ -1,0 +1,8 @@
+breathe
+doxygen
+graphviz
+myst-parser
+pydot
+python-graphviz
+sphinx
+sphinx-rtd-theme

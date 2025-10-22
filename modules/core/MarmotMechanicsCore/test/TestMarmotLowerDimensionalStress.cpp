@@ -116,7 +116,7 @@ void test_getPlaneStrainTangent()
   // Expected results
   Matrix3d expectedResult;
   // clang-format off
-  expectedResult << 
+  expectedResult <<
         1200, 400,  0,
         400,  1200, 0,
         0,    0,    400;
@@ -196,8 +196,8 @@ void test_compute_dStress_dDeformationGradient()
     for ( int n = 0; n < 2; n ++ )
       for ( int k = 0; k < 2; k ++ )
         for ( int l = 0; l < 2; l ++ )
-          expectedResult(    toVoigt<2> (m,n), k, l ) 
-          =  -  inputTensor( toVoigt<3> (m,n), 2, 2 ) 
+          expectedResult(    toVoigt<2> (m,n), k, l )
+          =  -  inputTensor( toVoigt<3> (m,n), 2, 2 )
           * 1./ inputTensor( toVoigt<3> (2,2), 2, 2 )
           *     inputTensor( toVoigt<3> (2,2), k, l );
   // clang-format on

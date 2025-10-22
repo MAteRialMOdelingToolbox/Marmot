@@ -1,0 +1,74 @@
+name: Documentation
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          use-mamba: true
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          activate-environment: anaconda-client-env
+
+      - name: Install conda packages
+        shell: bash -l {0}
+        run: |
+          mamba install --file doc/requirements.txt
+
+      - name: Install Eigen
+        shell: bash -l {0}
+        run: |
+          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          cd eigen
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
+          make install
+          cd ../..
+
+      - name: Install Autodiff
+        shell: bash -l {0}
+        run: |
+          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          cd autodiff
+          mkdir build
+          cd build
+          cmake -DAUTODIFF_BUILD_TESTS=OFF \
+            -DAUTODIFF_BUILD_PYTHON=OFF \
+            -DAUTODIFF_BUILD_EXAMPLES=OFF \
+            -DAUTODIFF_BUILD_DOCS=OFF \
+            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+            ..
+          make install
+          cd ../..
+
+      - name: Install Fastor
+        shell: bash -l {0}
+        run: |
+          git clone https://github.com/romeric/Fastor.git
+          cd Fastor
+          cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
+          make install
+          cd ..
+
+      - name: Building Marmot  documentation
+        shell: bash -l {0}
+        run: |
+          python scripts/buildDocumentation.py
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
+          publish_dir: ./doc/doc_out/sphinx
+          publish_branch: gh-pages
+
