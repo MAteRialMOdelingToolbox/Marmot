@@ -444,6 +444,11 @@
     <member refid="_marmot_voigt_8h_1af2463878e51e212c756a4f649679ebdb" kind="function"><name>projectVoigtStressToPlane</name></member>
     <member refid="_marmot_voigt_8h_1ab366f2ee9f7cc0234e023a0c5efdf50c" kind="function"><name>projectVoigtStrainToPlane</name></member>
     <member refid="_marmot_voigt_8h_1a9468627115928bf8eaba7e41396e2110" kind="function"><name>rotateVoigtStress</name></member>
+    <member refid="_marmot_voigt_8h_1aea2d6f9be5fe27ec25285332338af85b" kind="function"><name>transformStressToLocalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1abb6e32db28e6d8369116974dc4f632d3" kind="function"><name>transformStrainToLocalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a0c5a26a04597686ce9a81a60867709c0" kind="function"><name>transformStressToGlobalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a60f5690e0da15c54d37a1ea0785f0745" kind="function"><name>transformStrainToGlobalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1aae47103a4b953afe89ca942a0ff3d49c" kind="function"><name>transformStiffnessToGlobalSystem</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_geostatic_stress" kind="namespace"><name>Marmot::GeostaticStress</name>
     <member refid="_marmot_geostatic_stress_8h_1a30a10dd2f8cea9d588fcf7dc4cefdf7e" kind="function"><name>getGeostaticStressFromLinearDistribution</name></member>

@@ -449,6 +449,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot4Math5isNaNEb1T"><code class="docutils literal notranslate"><span class="pre">isNaN()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math19linearInterpolationEddddd"><code class="docutils literal notranslate"><span class="pre">linearInterpolation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math3expEd"><code class="docutils literal notranslate"><span class="pre">exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math9factorialEj"><code class="docutils literal notranslate"><span class="pre">factorial()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math19getExponentPowerTenEKd"><code class="docutils literal notranslate"><span class="pre">getExponentPowerTen()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math8radToDegEKd"><code class="docutils literal notranslate"><span class="pre">radToDeg()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math8degToRadEKd"><code class="docutils literal notranslate"><span class="pre">degToRad()</span></code></a></li>
@@ -470,6 +471,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math16directionCosinesERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">directionCosines()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math27orthonormalCoordinateSystemER8Vector3d"><code class="docutils literal notranslate"><span class="pre">orthonormalCoordinateSystem()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math27orthonormalCoordinateSystemERK8Vector3dRK8Vector3d"><code class="docutils literal notranslate"><span class="pre">orthonormalCoordinateSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math22transformToLocalSystemERK8Matrix3dRK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformToLocalSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math23transformToGlobalSystemERK8Matrix3dRK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformToGlobalSystem()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot19NumericalAlgorithmsE"><code class="docutils literal notranslate"><span class="pre">Marmot::NumericalAlgorithms</span></code></a></li>
@@ -3598,6 +3601,20 @@ If x is larger than the maximum limit of double precision floating point numbers
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math9factorialEj">
+<span id="_CPPv3N6Marmot4Math9factorialEj"></span><span id="_CPPv2N6Marmot4Math9factorialEj"></span><span id="Marmot::Math::factorial__unsigned-i"></span><span class="target" id="_marmot_math_8h_1aaafa5eacbbe8796046e2c9bf0202f510"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">factorial</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math9factorialEj" title="Link to this definition"></a><br /></dt>
+<dd><p>Runtime factorial. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – An unsigned integer </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The factorial of n </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math19getExponentPowerTenEKd">
 <span id="_CPPv3N6Marmot4Math19getExponentPowerTenEKd"></span><span id="_CPPv2N6Marmot4Math19getExponentPowerTenEKd"></span><span id="Marmot::Math::getExponentPowerTen__doubleC"></span><span class="target" id="_marmot_math_8h_1ae070a2cdcdf4ae5cb71899ba67edc62e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getExponentPowerTen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math19getExponentPowerTenEKd" title="Link to this definition"></a><br /></dt>
 <dd><p>Extracts the exponent to the power of ten from a floating point number. </p>
@@ -4064,6 +4081,44 @@ The orthonormal coordinate system is constructed such that:<ul class="simple">
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Orthonormal coordinate system as a 3x3 matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math22transformToLocalSystemERK8Matrix3dRK8Matrix3d">
+<span id="_CPPv3N6Marmot4Math22transformToLocalSystemERK8Matrix3dRK8Matrix3d"></span><span id="_CPPv2N6Marmot4Math22transformToLocalSystemERK8Matrix3dRK8Matrix3d"></span><span id="Marmot::Math::transformToLocalSystem__Matrix3dCR.Matrix3dCR"></span><span class="target" id="_marmot_math_8h_1a18f8a3d44ea78c43dbcc054549f149de"></span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformToLocalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math22transformToLocalSystemERK8Matrix3dRK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a second-order tensor from the global coordinate system to a local coordinate system. </p>
+<p>
+The transformation is performed as: <span class="math notranslate nohighlight">\( T_{local} = Q^T \, T_{global} \, Q \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The tensor to be transformed, represented as a 3x3 matrix in the global coordinate system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – The 3x3 transformation matrix representing the local coordinate system axes in global coordinates. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensor represented in the local coordinate system as a 3x3 matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math23transformToGlobalSystemERK8Matrix3dRK8Matrix3d">
+<span id="_CPPv3N6Marmot4Math23transformToGlobalSystemERK8Matrix3dRK8Matrix3d"></span><span id="_CPPv2N6Marmot4Math23transformToGlobalSystemERK8Matrix3dRK8Matrix3d"></span><span id="Marmot::Math::transformToGlobalSystem__Matrix3dCR.Matrix3dCR"></span><span class="target" id="_marmot_math_8h_1a55041eeea5a7c3aebca15ebecc5d393e"></span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformToGlobalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">T</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math23transformToGlobalSystemERK8Matrix3dRK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a second-order tensor from a local coordinate system to the global coordinate system. </p>
+<p>
+The transformation is performed as: <span class="math notranslate nohighlight">\( T_{global} = Q \, T_{local} \, Q^T \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The tensor to be transformed, represented as a 3x3 matrix in the local coordinate system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – The 3x3 transformation matrix representing the local coordinate system axes in global coordinates. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The tensor represented in the global coordinate system as a 3x3 matrix.</p>
 </dd>
 </dl>
 </dd></dl>

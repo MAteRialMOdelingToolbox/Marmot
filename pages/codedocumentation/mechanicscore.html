@@ -507,6 +507,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations25projectVoigtStressToPlaneERK8Vector3d"><code class="docutils literal notranslate"><span class="pre">projectVoigtStressToPlane()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations25projectVoigtStrainToPlaneERK8Vector3d"><code class="docutils literal notranslate"><span class="pre">projectVoigtStrainToPlane()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations17rotateVoigtStressERKN5Eigen8Matrix3dERKN6Marmot8Vector6dE"><code class="docutils literal notranslate"><span class="pre">rotateVoigtStress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStressToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformStressToLocalSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStrainToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformStrainToLocalSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStressToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformStressToGlobalSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStrainToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformStrainToGlobalSystem()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations32transformStiffnessToGlobalSystemERKN6Marmot8Matrix6dERK8Matrix3d"><code class="docutils literal notranslate"><span class="pre">transformStiffnessToGlobalSystem()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15GeostaticStressE"><code class="docutils literal notranslate"><span class="pre">Marmot::GeostaticStress</span></code></a><ul>
@@ -4832,6 +4837,106 @@ l_{\text{nonlocal}} \]</div>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The rotated Voigt-notated stress vector <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}^{\prime} \in \mathbb{R}^6 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStressToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d">
+<span id="_CPPv3N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStressToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStressToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToLocalSystem__Marmot::Vector6dCR.Matrix3dCR"></span><span class="target" id="_marmot_voigt_8h_1aea2d6f9be5fe27ec25285332338af85b"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformStressToLocalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStressToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a stress tensor in Voigt notation from the global to a local coordinate system. </p>
+<p>
+The transformation convention used is:  <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}_{\text{local}} = Q^T \,
+\boldsymbol{\sigma}_{\text{global}} \, Q \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – The stress tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the global system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – A <span class="math notranslate nohighlight">\(3 \times 3\)</span> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The stress tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the local system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStrainToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d">
+<span id="_CPPv3N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStrainToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStrainToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToLocalSystem__Marmot::Vector6dCR.Matrix3dCR"></span><span class="target" id="_marmot_voigt_8h_1abb6e32db28e6d8369116974dc4f632d3"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformStrainToLocalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations28transformStrainToLocalSystemERKN6Marmot8Vector6dERK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a strain tensor in Voigt notation from the global to a local coordinate system. </p>
+<p>
+The transformation convention used is:  <span class="math notranslate nohighlight">\( \boldsymbol{\varepsilon}_{\text{local}} = Q^T \,
+\boldsymbol{\varepsilon}_{\text{global}} \, Q \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – The strain tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the global system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – A <span class="math notranslate nohighlight">\(3 \times 3\)</span> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The strain tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the local system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStressToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d">
+<span id="_CPPv3N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStressToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStressToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToGlobalSystem__Marmot::Vector6dCR.Matrix3dCR"></span><span class="target" id="_marmot_voigt_8h_1a0c5a26a04597686ce9a81a60867709c0"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformStressToGlobalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStressToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a stress tensor in Voigt notation from a local to the global coordinate system. </p>
+<p>
+The transformation convention used is:  <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}_{\text{global}} = Q \,
+\boldsymbol{\sigma}_{\text{local}} \, Q^T \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – The stress tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the local system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – A <span class="math notranslate nohighlight">\(3 \times 3\)</span> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The stress tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the global system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStrainToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d">
+<span id="_CPPv3N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStrainToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStrainToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d"></span><span id="Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToGlobalSystem__Marmot::Vector6dCR.Matrix3dCR"></span><span class="target" id="_marmot_voigt_8h_1a60f5690e0da15c54d37a1ea0785f0745"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformStrainToGlobalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations29transformStrainToGlobalSystemERKN6Marmot8Vector6dERK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a strain tensor in Voigt notation from a local to the global coordinate system. </p>
+<p>
+The transformation convention used is:  <span class="math notranslate nohighlight">\( \boldsymbol{\varepsilon}_{\text{global}} = Q \,
+\boldsymbol{\varepsilon}_{\text{local}} \, Q^T \)</span>, where <span class="math notranslate nohighlight">\( Q \)</span> is the transformation matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stress</strong> – The strain tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the local system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – A <span class="math notranslate nohighlight">\(3 \times 3\)</span> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The strain tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^6 \)</span>) in the global system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations32transformStiffnessToGlobalSystemERKN6Marmot8Matrix6dERK8Matrix3d">
+<span id="_CPPv3N6Marmot18ContinuumMechanics13VoigtNotation15Transformations32transformStiffnessToGlobalSystemERKN6Marmot8Matrix6dERK8Matrix3d"></span><span id="_CPPv2N6Marmot18ContinuumMechanics13VoigtNotation15Transformations32transformStiffnessToGlobalSystemERKN6Marmot8Matrix6dERK8Matrix3d"></span><span id="Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStiffnessToGlobalSystem__Marmot::Matrix6dCR.Matrix3dCR"></span><span class="target" id="_marmot_voigt_8h_1aae47103a4b953afe89ca942a0ff3d49c"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transformStiffnessToGlobalSystem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stiffness</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix3dE" title="Marmot::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">transformedCoordinateSystem</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics13VoigtNotation15Transformations32transformStiffnessToGlobalSystemERKN6Marmot8Matrix6dERK8Matrix3d" title="Link to this definition"></a><br /></dt>
+<dd><p>Transforms a stiffness tensor in Voigt notation from a local to the global coordinate system. </p>
+<p>
+The transformation convention used is:  <span class="math notranslate nohighlight">\( \mathbf{C}_{\text{global}} = T \, \mathbf{C}_{\text{local}}
+\, T^T \)</span>, where <span class="math notranslate nohighlight">\( T \)</span> is the transformation matrix derived from <span class="math notranslate nohighlight">\( Q \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stiffness</strong> – The stiffness tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^{6 \times 6} \)</span>) in the local system. </p></li>
+<li><p><strong>transformedCoordinateSystem</strong> – A <span class="math notranslate nohighlight">\(3 \times 3\)</span> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The stiffness tensor in Voigt notation ( <span class="math notranslate nohighlight">\( \mathbb{R}^{6 \times 6} \)</span>) in the global system.</p>
 </dd>
 </dl>
 </dd></dl>

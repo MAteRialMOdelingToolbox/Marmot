@@ -247,14 +247,14 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The relative norm is computed as        <formula id="24">\[\displaystyle
+The relative norm is computed as        <formula id="27">\[\displaystyle
 r_{\rm rel} =
 \begin{cases}
 || \Delta \boldsymbol{X} ||_2 &amp; \text{if } || \Delta \boldsymbol{X} ||_2 &lt; 10^{-14} \\
 0.0 &amp; \text{if } || \boldsymbol{X}_{\rm ref} ||_2 &lt; 10^{-12} \\
 \frac{ || \Delta \boldsymbol{X} ||_2 }{ || \boldsymbol{X}_{\rm ref} ||_2 } &amp; \text{else}
 \end{cases}
-\]</formula> where <formula id="25">$ || \square ||_2 $</formula> denotes the Euclidean norm.</para>
+\]</formula> where <formula id="28">$ || \square ||_2 $</formula> denotes the Euclidean norm.</para>
 <para><simplesect kind="return"><para>The relative norm of the increment. </para>
 </simplesect>
 </para>
@@ -287,8 +287,8 @@ r_{\rm rel} =
 </parameteritem>
 </parameterlist>
 The residual is first scaled by the residualScaleVector before computing the norm.</para>
-<para>This function computes   <formula id="26">\[r = \sqrt{ R^{\rm s}_i R^{\rm s}_i }  = || \boldsymbol{R}^{\rm s} ||_2
-\]</formula> where <formula id="27">$ R^{\rm s}_i = s_i R_i $</formula> (no summation over i) are the scaled residual components and <formula id="28">$ s_i $</formula> are the components of the residualScaleVector.</para>
+<para>This function computes   <formula id="29">\[r = \sqrt{ R^{\rm s}_i R^{\rm s}_i }  = || \boldsymbol{R}^{\rm s} ||_2
+\]</formula> where <formula id="30">$ R^{\rm s}_i = s_i R_i $</formula> (no summation over i) are the scaled residual components and <formula id="31">$ s_i $</formula> are the components of the residualScaleVector.</para>
 <para><simplesect kind="return"><para>The norm of the scaled residual. </para>
 </simplesect>
 </para>

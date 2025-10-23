@@ -385,6 +385,7 @@
     <member refid="_marmot_math_8h_1ad3a65166e9b849eb54ccef942368b6e6" kind="function"><name>isNaN</name></member>
     <member refid="_marmot_math_8h_1aa14a646adfd201e379c86f6bd85d942a" kind="function"><name>linearInterpolation</name></member>
     <member refid="_marmot_math_8h_1a20088570076b71e5f4f0bb08fa7ba44d" kind="function"><name>exp</name></member>
+    <member refid="_marmot_math_8h_1aaafa5eacbbe8796046e2c9bf0202f510" kind="function"><name>factorial</name></member>
     <member refid="_marmot_math_8h_1ae070a2cdcdf4ae5cb71899ba67edc62e" kind="function"><name>getExponentPowerTen</name></member>
     <member refid="_marmot_math_8h_1a5a688bedd924217d02e9c1773907ee82" kind="function"><name>radToDeg</name></member>
     <member refid="_marmot_math_8h_1aabc6dcb6af42136caacd1b79a1750b54" kind="function"><name>degToRad</name></member>
@@ -406,6 +407,8 @@
     <member refid="_marmot_math_8h_1ad3ad1d152a8910ba18d583323a662a9c" kind="function"><name>directionCosines</name></member>
     <member refid="_marmot_math_8h_1af414d1d24c08314c9d16d36bc5a33ed4" kind="function"><name>orthonormalCoordinateSystem</name></member>
     <member refid="_marmot_math_8h_1ac4c04c61c51f99273d455957b84675e3" kind="function"><name>orthonormalCoordinateSystem</name></member>
+    <member refid="_marmot_math_8h_1a18f8a3d44ea78c43dbcc054549f149de" kind="function"><name>transformToLocalSystem</name></member>
+    <member refid="_marmot_math_8h_1a55041eeea5a7c3aebca15ebecc5d393e" kind="function"><name>transformToGlobalSystem</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_numerical_algorithms" kind="namespace"><name>Marmot::NumericalAlgorithms</name>
   </compound>

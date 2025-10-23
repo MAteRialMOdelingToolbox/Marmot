@@ -43,7 +43,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="292">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
+<para>For a given deformation gradient at the old and the current time, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="301">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
 <para><xrefsect id="todo_1_todo000005"><xreftitle>Todo</xreftitle><xrefdescription><para>A default implementation is provided.</para>
 </xrefdescription></xrefsect></para>
 <para><parameterlist kind="param"><parameteritem>
@@ -59,7 +59,7 @@
 <parametername direction="inout">dSdE</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="293">$\boldsymbol{E}$</formula>. </para>
+<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="302">$\boldsymbol{E}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -142,7 +142,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="292">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
+<para>For a given Green-Lagrange strain, compute the 2nd Piola-Kirchhoff stress and the algorithmic tangent <formula id="301">$\frac{\partial\boldsymbol{S}^{(n+1)}}{\partial\boldsymbol{E}^{(n+1)}}$</formula>.</para>
 <para><xrefsect id="todo_1_todo000006"><xreftitle>Todo</xreftitle><xrefdescription><para>Should we use function overloading in this case and simple also use computeStress for the function name?</para>
 </xrefdescription></xrefsect></para>
 <para><parameterlist kind="param"><parameteritem>
@@ -158,7 +158,7 @@
 <parametername direction="inout">dSdE</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="293">$\boldsymbol{E}$</formula>. </para>
+<para>Algorithmic tangent representing the derivative of the 2nd Piola-Kirchhoff stress tensor with respect to the Green-Lagrange strain tensor <formula id="302">$\boldsymbol{E}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -283,12 +283,12 @@
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for <emphasis>simple</emphasis>, purely hyperelastic materials to be used for finite elements based on the total lagrangian kinematic description (TL elements). The second Piola - Kirchhoff stress tensor <formula id="213">$ S $</formula> will be derived by</para>
-<para><formula id="287">\[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \]</formula></para>
-<para>with the Green - Lagrange strain tensor <formula id="288">$ \boldsymbol{E} $</formula></para>
-<para><formula id="289">\[  \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
+<para><formula id="296">\[ \displaystyle S = \frac{\partial f(\boldsymbol{E},t )}{\partial \boldsymbol{E}} \]</formula></para>
+<para>with the Green - Lagrange strain tensor <formula id="297">$ \boldsymbol{E} $</formula></para>
+<para><formula id="298">\[  \displaystyle E  = \frac{1}{2}\,\left(\boldsymbol{F}^T\cdot \boldsymbol{F} - \boldsymbol{I} \right)
 \]</formula></para>
-<para>as work conjugated measure and the variable <formula id="290">$ \boldsymbol{F} $</formula> denoting the deformation gradient. The algorithmic tangent will be calculated by</para>
-<para><formula id="291">\[  \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
+<para>as work conjugated measure and the variable <formula id="299">$ \boldsymbol{F} $</formula> denoting the deformation gradient. The algorithmic tangent will be calculated by</para>
+<para><formula id="300">\[  \displaystyle \frac{d \boldsymbol{S}}{d \boldsymbol{E}}
 \]</formula> </para>
     </detaileddescription>
     <inheritancegraph>

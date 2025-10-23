@@ -182,6 +182,226 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1092" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1092" declcolumn="24"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1aea2d6f9be5fe27ec25285332338af85b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToLocalSystem</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stress, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>transformStressToLocalSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToLocalSystem</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Matrix3d &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+<para>Transforms a stress tensor in Voigt notation from the global to a local coordinate system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stress tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the global system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transformedCoordinateSystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <formula id="284">$3 \times 3$</formula> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The stress tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the local system.</para>
+</simplesect>
+The transformation convention used is:  <formula id="288">$ \boldsymbol{\sigma}_{\text{local}} = Q^T \,
+\boldsymbol{\sigma}_{\text{global}} \, Q $</formula>, where <formula id="289">$ Q $</formula> is the transformation matrix. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1103" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1103" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1abb6e32db28e6d8369116974dc4f632d3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToLocalSystem</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stress, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>transformStrainToLocalSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToLocalSystem</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Matrix3d &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+<para>Transforms a strain tensor in Voigt notation from the global to a local coordinate system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The strain tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the global system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transformedCoordinateSystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <formula id="284">$3 \times 3$</formula> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The strain tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the local system.</para>
+</simplesect>
+The transformation convention used is:  <formula id="290">$ \boldsymbol{\varepsilon}_{\text{local}} = Q^T \,
+\boldsymbol{\varepsilon}_{\text{global}} \, Q $</formula>, where <formula id="289">$ Q $</formula> is the transformation matrix. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1115" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1115" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a0c5a26a04597686ce9a81a60867709c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToGlobalSystem</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stress, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>transformStressToGlobalSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStressToGlobalSystem</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Matrix3d &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+<para>Transforms a stress tensor in Voigt notation from a local to the global coordinate system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stress tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the local system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transformedCoordinateSystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <formula id="284">$3 \times 3$</formula> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The stress tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the global system.</para>
+</simplesect>
+The transformation convention used is:  <formula id="291">$ \boldsymbol{\sigma}_{\text{global}} = Q \,
+\boldsymbol{\sigma}_{\text{local}} \, Q^T $</formula>, where <formula id="289">$ Q $</formula> is the transformation matrix. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1127" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1127" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a60f5690e0da15c54d37a1ea0785f0745" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToGlobalSystem</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stress, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>transformStrainToGlobalSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStrainToGlobalSystem</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Matrix3d &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+<para>Transforms a strain tensor in Voigt notation from a local to the global coordinate system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The strain tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the local system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transformedCoordinateSystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <formula id="284">$3 \times 3$</formula> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The strain tensor in Voigt notation ( <formula id="287">$ \mathbb{R}^6 $</formula>) in the global system.</para>
+</simplesect>
+The transformation convention used is:  <formula id="292">$ \boldsymbol{\varepsilon}_{\text{global}} = Q \,
+\boldsymbol{\varepsilon}_{\text{local}} \, Q^T $</formula>, where <formula id="289">$ Q $</formula> is the transformation matrix. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1139" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1139" declcolumn="24"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1aae47103a4b953afe89ca942a0ff3d49c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Matrix6d</type>
+        <definition>Marmot::Matrix6d Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStiffnessToGlobalSystem</definition>
+        <argsstring>(const Marmot::Matrix6d &amp;stiffness, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+        <name>transformStiffnessToGlobalSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::Transformations::transformStiffnessToGlobalSystem</qualifiedname>
+        <param>
+          <type>const Marmot::Matrix6d &amp;</type>
+          <declname>stiffness</declname>
+        </param>
+        <param>
+          <type>const Matrix3d &amp;</type>
+          <declname>transformedCoordinateSystem</declname>
+        </param>
+        <briefdescription>
+<para>Transforms a stiffness tensor in Voigt notation from a local to the global coordinate system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stiffness</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stiffness tensor in Voigt notation ( <formula id="293">$ \mathbb{R}^{6 \times 6} $</formula>) in the local system. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>transformedCoordinateSystem</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <formula id="284">$3 \times 3$</formula> orthonormal matrix whose columns are the axes of the local coordinate system expressed in the global system. Typically, this is a rotation matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The stiffness tensor in Voigt notation ( <formula id="293">$ \mathbb{R}^{6 \times 6} $</formula>) in the global system.</para>
+</simplesect>
+The transformation convention used is:  <formula id="294">$ \mathbf{C}_{\text{global}} = T \, \mathbf{C}_{\text{local}}
+\, T^T $</formula>, where <formula id="295">$ T $</formula> is the transformation matrix derived from <formula id="289">$ Q $</formula>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="1151" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="1151" declcolumn="24"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>

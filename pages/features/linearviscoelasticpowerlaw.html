@@ -23,7 +23,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Von Mises model" href="vonmises.html" />
+    <link rel="next" title="Linear Viscoelastic Orthotropic Power Law model" href="linearviscoelasticorthotropicpowerlaw.html" />
     <link rel="prev" title="Linear Elastic model (Automatic Differentiation)" href="adlinearelastic.html" /> 
 </head>
 
@@ -62,6 +62,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
 </ul>
@@ -100,7 +101,7 @@
            <div itemprop="articleBody">
              
   <section id="linear-viscoelastic-power-law-model">
-<h1>Linear Viscoelastic Power Law model<a class="headerlink" href="#linear-viscoelastic-power-law-model" title="Link to this heading"></a></h1>
+<span id="linearviscoelasticpowerlaw"></span><h1>Linear Viscoelastic Power Law model<a class="headerlink" href="#linear-viscoelastic-power-law-model" title="Link to this heading"></a></h1>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
 <p>The present model is an implementation of an linear viscoelastic power law based on an approximation using a Kelvin chain.
@@ -130,6 +131,27 @@ The viscoelastic compliance is approximated by a Kelvin Chain.</p>
 <div class="math notranslate nohighlight">
 \[\DelNu = \CelInv(E=1, \nu),\]</div>
 <p>with the Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> and the Poisson’s ratio <span class="math notranslate nohighlight">\(\nu\)</span>.</p>
+<p>Here we approximate a target <strong>power-law creep compliance</strong> <span class="math notranslate nohighlight">\(J(t)\)</span> by a <strong>Kelvin chain</strong> (generalized Kelvin–Voigt / Prony series) so the viscoelastic strain rate becomes a finite sum of exponentials that’s efficient to evaluate. The continuous form</p>
+<div class="math notranslate nohighlight">
+\[J(t)=J_0+\int_0^\infty L(\tau)\,\bigl(1-e^{-t/\tau}\bigr)\,d\tau,\]</div>
+<p>is replaced by</p>
+<div class="math notranslate nohighlight">
+\[J_N(t)=J_0+\sum_{i=1}^N J_i\bigl(1-e^{-t/\tau_i}\bigr), \qquad
+\dot J_N(t)=\sum_{i=1}^N \frac{J_i}{\tau_i}\,e^{-t/\tau_i},\]</div>
+<p>where <span class="math notranslate nohighlight">\(J_i\)</span> and <span class="math notranslate nohighlight">\(\tau_i\)</span> are the partial compliances and retardation times. For a specific compliance target  the <span class="math notranslate nohighlight">\(\{J_i,\tau_i\}\)</span> are chosen so that <span class="math notranslate nohighlight">\(J_N(t)\)</span> tracks <span class="math notranslate nohighlight">\(J(t)\)</span> over the time window of interest, while the rate kernel <span class="math notranslate nohighlight">\(\dot J_N\)</span> approximates</p>
+<div class="math notranslate nohighlight">
+\[\dot J(t)=\int_0^\infty \frac{L(\tau)}{\tau}\,e^{-t/\tau}\,d\tau.\]</div>
+<p>The <strong>Post–Widder inversion formula</strong> provides a way to recover an approximate retardation spectrum from a known compliance function <span class="math notranslate nohighlight">\(J(t)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[L(\tau) \approx \frac{(-1)^{k}}{(k)!}
+\left(\frac{k}{\tau}\right)^{k}
+J^{(k)}\!\left(\frac{\tau}{k+1}\right),
+\qquad k \to \infty.\]</div>
+<p>The order <span class="math notranslate nohighlight">\(k\)</span> defines the order of approximation of the actual continous spectrum.
+If it tends to infinity the continous spectrum is recovered.
+The discrete spectrum of the Kelvin chain is here used to calculate the stiffnesses or compliances for
+chosen retardation times by fitting the approximation of the continous spectrum.</p>
+<p>A detailed description of the employed approach can be found, e.g., in Bazant &amp; Jirasek (2018) <em>Creep and Hygrothermal Effects in Concrete Structures</em>.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -168,7 +190,7 @@ The viscoelastic compliance is approximated by a Kelvin Chain.</p>
 }" class="graphviz" /></div>
 </div>
 </figure>
-<p>Implementation of a linear viscoelastic material generalized for 3D stress states. </p>
+<p>Implementation of an isotropic linear viscoelastic material using a Power Law compliance function and assuming constant Poisson’s ratio generalized for 3D stress states. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -381,7 +403,7 @@ The viscoelastic compliance is approximated by a Kelvin Chain.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="adlinearelastic.html" class="btn btn-neutral float-left" title="Linear Elastic model (Automatic Differentiation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="vonmises.html" class="btn btn-neutral float-right" title="Von Mises model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="linearviscoelasticorthotropicpowerlaw.html" class="btn btn-neutral float-right" title="Linear Viscoelastic Orthotropic Power Law model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

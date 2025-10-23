@@ -1255,7 +1255,7 @@ This function is used to expand a displacement and/or rotation tensor in 2D to a
 </parameterlist>
 <simplesect kind="return"><para>the resulting scalar</para>
 </simplesect>
-This function computes the Einstein summation for two second order tensors A and B: <formula id="68">$ C = A_{ij} B_{ij} $</formula></para>
+This function computes the Einstein summation for two second order tensors A and B: <formula id="71">$ C = A_{ij} B_{ij} $</formula></para>
 <para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is autodiff::dual. </para>
 </simplesect>
 </para>
@@ -1599,7 +1599,7 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterlist>
 <simplesect kind="return"><para>the symmetric part of the tensor</para>
 </simplesect>
-It actually computes <formula id="69">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
+It actually computes <formula id="72">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -1644,7 +1644,7 @@ It actually computes <formula id="69">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji
 </parameterlist>
 <simplesect kind="return"><para>the deviatoric part of the tensor</para>
 </simplesect>
-It actually computes <formula id="70">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
+It actually computes <formula id="73">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
