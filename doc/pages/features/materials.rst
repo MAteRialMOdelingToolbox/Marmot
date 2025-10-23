@@ -12,5 +12,6 @@ This section contains the ready to use available material models.
   linearelastic
   adlinearelastic
   linearviscoelasticpowerlaw
+  linearviscoelasticorthotropicpowerlaw
   vonmises
   advonmises

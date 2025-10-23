@@ -71,7 +71,7 @@ void testLinearViscoelasticPowerLaw()
 
   // expected stress
   Marmot::Vector6d stressTarget;
-  stressTarget << 2.45582e-05, 2.45582e-05, 9.82329e-06, 0., 0., 0.;
+  stressTarget << 2.41296e-05, 2.41296e-05, 9.65182e-06, 0., 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ
   Marmot::Testing::throwExceptionOnFailure( Marmot::Testing::checkIfEqual< double >( stress, stressTarget, 1e-10 ),

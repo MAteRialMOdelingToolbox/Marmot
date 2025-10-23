@@ -74,6 +74,13 @@ namespace Marmot {
      */
     double exp( double x );
 
+    /**
+     * @brief Runtime factorial
+     * @param n An unsigned integer
+     * @return The factorial of n
+     */
+    unsigned long factorial( unsigned int n );
+
     /** @brief Extracts the exponent to the power of ten from a floating point number
      *  @param x Input floating point number
      *  @return Exponent to the power of ten
@@ -466,5 +473,30 @@ namespace Marmot {
      * - The third column is the normalized cross product of the first two columns (\f$x_3\f$-axis).
      */
     Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 );
+
+    /**
+     * @brief Transforms a second-order tensor from the global coordinate system to a local coordinate system.
+     * @param T The tensor to be transformed, represented as a 3x3 matrix in the global coordinate system.
+     * @param transformedCoordinateSystem The 3x3 transformation matrix representing the local coordinate system axes in
+     * global coordinates.
+     * @return The tensor represented in the local coordinate system as a 3x3 matrix.
+     *
+     * The transformation is performed as: \f$ T_{local} = Q^T \, T_{global} \, Q \f$, where \f$ Q \f$ is the
+     * transformation matrix.
+     */
+    Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+
+    /**
+     * @brief Transforms a second-order tensor from a local coordinate system to the global coordinate system.
+     * @param T The tensor to be transformed, represented as a 3x3 matrix in the local coordinate system.
+     * @param transformedCoordinateSystem The 3x3 transformation matrix representing the local coordinate system axes in
+     * global coordinates.
+     * @return The tensor represented in the global coordinate system as a 3x3 matrix.
+     *
+     * The transformation is performed as: \f$ T_{global} = Q \, T_{local} \, Q^T \f$, where \f$ Q \f$ is the
+     * transformation matrix.
+     */
+    Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+
   } // namespace Math
 } // namespace Marmot

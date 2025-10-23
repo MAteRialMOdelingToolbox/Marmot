@@ -20,6 +20,13 @@ namespace Marmot {
       return std::exp( x );
     }
 
+    unsigned long factorial( unsigned int n )
+    {
+      if ( n == 0 || n == 1 )
+        return 1;
+      return n * factorial( n - 1 );
+    }
+
     double makeReal( const complexDouble& value )
     {
       return value.real();
@@ -95,14 +102,20 @@ namespace Marmot {
 
     Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem )
     {
-      Matrix3d globalCoordinateSystem = Matrix3d::Identity();
-      Matrix3d directionCos;
-
-      for ( int i = 0; i <= 2; i++ )
-        for ( int j = 0; j <= 2; j++ )
-          directionCos( i, j ) = transformedCoordinateSystem.col( i ).dot( globalCoordinateSystem.col( j ) );
-
-      return directionCos;
+      return transformedCoordinateSystem.transpose();
     }
+
+    Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
+    {
+      const Matrix3d N = transformedCoordinateSystem;
+      return N.transpose() * T * N;
+    }
+
+    Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
+    {
+      const Matrix3d N = transformedCoordinateSystem;
+      return N * T * N.transpose();
+    }
+
   } // namespace Math
 } // namespace Marmot
