@@ -1091,18 +1091,63 @@ namespace Marmot {
        */
       Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
 
+      /**
+       * @brief Transforms a stress tensor in Voigt notation from the global to a local coordinate system.
+       * @param stress The stress tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the global system.
+       * @param transformedCoordinateSystem A \f$3 \times 3\f$ orthonormal matrix whose columns are the axes of the local coordinate system
+       *        expressed in the global system. Typically, this is a rotation matrix.
+       * @return The stress tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the local system.
+       * @details The transformation convention used is: \f$ \boldsymbol{\sigma}_{\text{local}} = Q^T \, \boldsymbol{\sigma}_{\text{global}} \, Q \f$,
+       *          where \f$ Q \f$ is the transformation matrix.
+       */
       Marmot::Vector6d transformStressToLocalSystem( const Marmot::Vector6d& stress,
                                                      const Matrix3d&         transformedCoordinateSystem );
 
+      /**
+       * @brief Transforms a strain tensor in Voigt notation from the global to a local coordinate system.
+       * @param stress The strain tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the global system.
+       * @param transformedCoordinateSystem A \f$3 \times 3\f$ orthonormal matrix whose columns are the axes of the local coordinate system
+       *        expressed in the global system. Typically, this is a rotation matrix.
+       * @return The strain tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the local system.
+       * @details The transformation convention used is: \f$ \boldsymbol{\varepsilon}_{\text{local}} = Q^T \, \boldsymbol{\varepsilon}_{\text{global}} \, Q \f$,
+       *          where \f$ Q \f$ is the transformation matrix.
+       */
       Marmot::Vector6d transformStrainToLocalSystem( const Marmot::Vector6d& stress,
                                                      const Matrix3d&         transformedCoordinateSystem );
 
+      /**
+       * @brief Transforms a stress tensor in Voigt notation from a local to the global coordinate system.
+       * @param stress The stress tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the local system.
+       * @param transformedCoordinateSystem A \f$3 \times 3\f$ orthonormal matrix whose columns are the axes of the local coordinate system
+       *        expressed in the global system. Typically, this is a rotation matrix.
+       * @return The stress tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the global system.
+       * @details The transformation convention used is: \f$ \boldsymbol{\sigma}_{\text{global}} = Q \, \boldsymbol{\sigma}_{\text{local}} \, Q^T \f$,
+       *          where \f$ Q \f$ is the transformation matrix.
+       */
       Marmot::Vector6d transformStressToGlobalSystem( const Marmot::Vector6d& stress,
                                                       const Matrix3d&         transformedCoordinateSystem );
 
+      /**
+       * @brief Transforms a strain tensor in Voigt notation from a local to the global coordinate system.
+       * @param stress The strain tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the local system.
+       * @param transformedCoordinateSystem A \f$3 \times 3\f$ orthonormal matrix whose columns are the axes of the local coordinate system
+       *        expressed in the global system. Typically, this is a rotation matrix.
+       * @return The strain tensor in Voigt notation (\f$ \mathbb{R}^6 \f$) in the global system.
+       * @details The transformation convention used is: \f$ \boldsymbol{\varepsilon}_{\text{global}} = Q \, \boldsymbol{\varepsilon}_{\text{local}} \, Q^T \f$,
+       *          where \f$ Q \f$ is the transformation matrix.
+       */
       Marmot::Vector6d transformStrainToGlobalSystem( const Marmot::Vector6d& stress,
                                                       const Matrix3d&         transformedCoordinateSystem );
 
+      /**
+       * @brief Transforms a stiffness tensor in Voigt notation from a local to the global coordinate system.
+       * @param stiffness The stiffness tensor in Voigt notation (\f$ \mathbb{R}^{6 \times 6} \f$) in the local system.
+       * @param transformedCoordinateSystem A \f$3 \times 3\f$ orthonormal matrix whose columns are the axes of the local coordinate system
+       *        expressed in the global system. Typically, this is a rotation matrix.
+       * @return The stiffness tensor in Voigt notation (\f$ \mathbb{R}^{6 \times 6} \f$) in the global system.
+       * @details The transformation convention used is: \f$ \mathbf{C}_{\text{global}} = T \, \mathbf{C}_{\text{local}} \, T^T \f$,
+       *          where \f$ T \f$ is the transformation matrix derived from \f$ Q \f$.
+       */
       Marmot::Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
                                                          const Matrix3d&         transformedCoordinateSystem );
 
