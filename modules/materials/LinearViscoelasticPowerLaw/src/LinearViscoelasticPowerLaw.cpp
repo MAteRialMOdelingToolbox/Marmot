@@ -31,6 +31,7 @@ namespace Marmot::Materials {
       timeToDays                        ( materialProperties[6] )
   // clang-format on
   {
+    // assume sqrt( 10 ) spacing between retardation times
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
@@ -41,7 +42,7 @@ namespace Marmot::Materials {
     elasticModuli = KelvinChain::computeElasticModuli< powerLawApproximationOrder >( phi_, retardationTimes );
 
     // for 2nd order approximations
-    zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( 10. ), n );
+    zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( sqrt( 10. ) ), n );
   }
 
   void LinearViscoelasticPowerLaw::computeStress( double*       stress,

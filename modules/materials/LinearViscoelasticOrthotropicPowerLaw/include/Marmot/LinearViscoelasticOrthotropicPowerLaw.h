@@ -36,49 +36,67 @@
 namespace Marmot::Materials {
 
   /**
-   * @brief Implementation of an isotropic linear viscoelastic material
-   * using a Power Law compliance function and assuming constant Poisson's ratio
+   * @brief Implementation of an orthotropic linear viscoelastic material model
+   * following a Power Law compliance function and assuming constant Poisson's ratios
    * generalized for 3D stress states.
-   *
    */
-  class LinearViscoelasticPowerLaw : public MarmotMaterialHypoElastic {
+  class LinearViscoelasticOrthotropicPowerLaw : public MarmotMaterialHypoElastic {
 
-    /// @brief Young's modulus
-    const double& E;
-    /**< #E represents the Young's modulus for isotropic linear elasticity.
-     * It is a reference variable to #materialProperties[0]. */
+    /// @brief Young's modulus in x1 direction
+    const double& E1;
+
+    /// @brief Young's modulus in x2 direction
+    const double& E2;
+
+    /// @brief Young's modulus in x3 direction
+    const double& E3;
 
     /// @brief Poisson's ratio
-    const double& nu;
-    /**< #nu represents Poisson's ratio for isotropic linear elasticity.
-     * It is a reference variable to #materialProperties[1]. */
+    const double& nu12;
+
+    /// @brief Poisson's ratio
+    const double& nu23;
+
+    /// @brief Poisson's ratio
+    const double& nu13;
+
+    /// @brief Shear modulus in x1-x2 plane
+    const double& G12;
+
+    /// @brief Shear modulus in x2-x3 plane
+    const double& G23;
+
+    /// @brief Shear modulus in x1-x3 plane
+    const double& G13;
 
     /// @brief power law compliance parameter
     const double& m;
-    /**< #m represents the power law compliance parameter.
-     * It is a reference variable to #materialProperties[2]. */
 
     /// @brief power law exponent
     const double& n;
-    /**< #n represents the power law exponent.
-     * It is a reference variable to #materialProperties[3]. */
+
+    /// @brief approximation order for the retardation spectrum (must be 2, 3, 4, or 7)
+    const int powerLawApproximationOrder;
 
     /// @brief number of Kelvin units to approximate the viscoelastic compliance
     const size_t nKelvin;
-    /**< #nKelvin represents the number of Kelvin units to approximate the power law function.
-     * It is a reference variable to #materialProperties[4]. */
 
     /// @brief minimal retardation time used in the viscoelastic Kelvin chain
     const double& minTau;
-    /**< #minTau represents the minimal retardation time used in the Kelvin chain.
-     * It is a reference variable to #materialProperties[5]. */
+
+    /// @brief log spacing between the retardation times of the Kelvin Chain
+    const double& spacing;
 
     /// @brief ratio of simulation time to days
     const double& timeToDays;
-    /**< #timeToDays represents the ratio of simulation time to days.
-     * It is a reference variable to #materialProperties[6]. */
 
-    class LinearViscoelasticPowerLawStateVarManager : public MarmotStateVarVectorManager {
+    /// @brief direction x1 w.r.t the global coordinate system
+    const Vector3d direction1;
+
+    /// @brief direction x2 w.r.t the global coordinate system
+    const Vector3d direction2;
+
+    class LinearViscoelasticOrthotropicPowerLawStateVarManager : public MarmotStateVarVectorManager {
 
     public:
       inline const static auto layout = makeLayout( {
@@ -87,16 +105,18 @@ namespace Marmot::Materials {
 
       KelvinChain::mapStateVarMatrix kelvinStateVars;
 
-      LinearViscoelasticPowerLawStateVarManager( double* theStateVarVector, int nKelvinUnits )
+      LinearViscoelasticOrthotropicPowerLawStateVarManager( double* theStateVarVector, int nKelvinUnits )
         : MarmotStateVarVectorManager( theStateVarVector, layout ),
           kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ){};
     };
-    std::unique_ptr< LinearViscoelasticPowerLawStateVarManager > stateVarManager;
+    std::unique_ptr< LinearViscoelasticOrthotropicPowerLawStateVarManager > stateVarManager;
 
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    LinearViscoelasticPowerLaw( const double* materialProperties, int nMaterialProperties, int materialLabel );
+    LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
+                                           int           nMaterialProperties,
+                                           int           materialLabel );
 
     void computeStress( double* stress,
                         double* dStressDDStrain,
@@ -113,13 +133,34 @@ namespace Marmot::Materials {
     StateView getStateView( const std::string& stateName );
 
   private:
-    /// @brief Young's modulus of the #nKelvin Kelvin units
+    /// @brief Elastic moduli of the Kelvin chain units
     KelvinChain::Properties elasticModuli;
-    /// @brief retardation times of the #nKelvin Kelvin units
+
+    /// @brief Retardation times of the Kelvin chain units
     KelvinChain::Properties retardationTimes;
-    /// @brief compliance of the zeroth Kelvin unit
+
+    /// @brief Zeroth Kelvin chain compliance
     double zerothKelvinChainCompliance;
 
-    static constexpr int powerLawApproximationOrder = 2;
+    /// @brief Inverse of the initial elastic stiffness
+    Matrix6d CInv;
+
+    /// @brief Initial elastic stiffness
+    Matrix6d Cel;
+
+    /**
+     * @brief Normalized initial elastic stiffness
+     * @details It is normalized by the Young's modulus in x1 direction E1
+     */
+    Matrix6d CelUnit;
+
+    /// @brief Inverse of the normalized initial elastic stiffness
+    Matrix6d CelUnitInv;
+
+    /// @brief Initial elastic stiffness in the global coordinate system
+    Matrix6d CelUnitGlobal;
+
+    /// @brief Local coordinate system of the material
+    Matrix3d localCoordinateSystem;
   };
 } // namespace Marmot::Materials
