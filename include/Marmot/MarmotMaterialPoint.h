@@ -68,4 +68,6 @@ public:
   virtual double getVolumeUndeformed() const = 0;
 
   virtual double getDensityUndeformed() const = 0;
+
+  virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
 };

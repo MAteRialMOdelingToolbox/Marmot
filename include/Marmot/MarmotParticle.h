@@ -177,6 +177,8 @@ namespace Marmot::Meshfree {
 
     /// Assign the correction terms to the test (shape) functions for all constraints
     virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) = 0;
+
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
   };
 
 } // namespace Marmot::Meshfree
