@@ -54,7 +54,7 @@ public:
     double                   timeEnd       = 1.0;
     double                   dTStart       = 0.1;
     double                   dTMin         = 1e-6;
-    double                   dTmax         = 0.5;
+    double                   dTMax         = 0.5;
     int                      maxIncrements = 100;
 
     /**
@@ -91,10 +91,11 @@ public:
    * @details Each entry contains time, stress, strain, and state variables.
    */
   struct HistoryEntry {
-    double           time;
-    Marmot::Vector6d stress;
-    Marmot::Vector6d strain;
-    Eigen::VectorXd  stateVars;
+    double           time;           ///< Time at the history entry
+    Marmot::Vector6d stress;         ///< Stress at the history entry
+    Marmot::Vector6d strain;         ///< Strain at the history entry
+    Marmot::Matrix6d dStressdStrain; ///< Material tangent at the history entry
+    Eigen::VectorXd  stateVars;      ///< State variables at the history entry
 
     void print() const
     {
@@ -102,6 +103,7 @@ public:
       std::cout << std::scientific << "Time: " << time << std::endl;
       std::cout << "  Stress:     " << stress.transpose() << std::endl;
       std::cout << "  Strain:     " << strain.transpose() << std::endl;
+      std::cout << "  dStress_dStrain:\n" << dStressdStrain.transpose() << std::endl;
       std::cout << "  State Vars: " << stateVars.transpose() << std::endl;
     }
   };
@@ -135,6 +137,24 @@ public:
   void addStep( const Step& step );
 
   /**
+   * @brief Get the list of added loading steps
+   * @return A vector of Step containing the added steps
+   */
+  std::vector< Step > getSteps() const { return steps; }
+
+  /**
+   * @brief Clear all added loading steps
+   */
+  void clearSteps() { steps.clear(); }
+
+  /**
+   * @brief Reset the solver to the initial state
+   * @details This function resets the initial stress
+   * and state variables of the material model.
+   */
+  void resetToInitialState();
+
+  /**
    * @brief Solve the material point problem for all added steps
    */
   void solve();
@@ -144,6 +164,11 @@ public:
    * @return A vector of HistoryEntry containing the recorded history
    */
   std::vector< HistoryEntry > getHistory() const { return history; }
+
+  /**
+   * @brief Clear the recorded history
+   */
+  void clearHistory() { history.clear(); }
 
   /**
    * @brief Print the recorded history to the console
@@ -212,10 +237,13 @@ private:
 
   /// @brief The hypo-elastic material model
   MarmotMaterialHypoElastic* material;
+
   /// @brief Number of state variables in the material model
   int nStateVars;
+
   /// @brief Current state variables
   Eigen::VectorXd stateVars;
+
   /// @brief Temporary state variables for computations
   Eigen::VectorXd stateVarsTemp;
 

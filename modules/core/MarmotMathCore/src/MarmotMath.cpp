@@ -108,13 +108,13 @@ namespace Marmot {
     Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
     {
       const Matrix3d N = transformedCoordinateSystem;
-      return N.transpose() * T * N;
+      return N * T * N.transpose();
     }
 
     Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
     {
       const Matrix3d N = transformedCoordinateSystem;
-      return N * T * N.transpose();
+      return N.transpose() * T * N;
     }
 
   } // namespace Math
