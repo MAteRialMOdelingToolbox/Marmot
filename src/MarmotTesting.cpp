@@ -112,9 +112,6 @@ namespace Marmot::Testing {
     const Vector6d refStress( history.back().stress );
     const Matrix6d refStiffness( history.back().dStressdStrain );
 
-    std::cout << "reference stress:\n" << refStress.transpose() << "\n" << std::endl;
-    std::cout << "reference tangent:\n" << refStiffness.transpose() << "\n" << std::endl;
-
     const int                     N   = 100;
     Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
 

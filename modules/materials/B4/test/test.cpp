@@ -1,13 +1,10 @@
-#include "Marmot/B4.h"
-#include "Marmot/Marmot.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
-void testB4()
+using namespace Marmot::Testing;
+
+Eigen::Vector< double, 22 > getMaterialPropertiesB4()
 {
-  // material properties
-  const int b4Code = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( "B4" );
   // material properties
   Eigen::Vector< double, 22 > materialProperties;
   // elastic parameters
@@ -42,63 +39,100 @@ void testB4()
     autogenousShrinkageHalfTime, alpha, rt, ultimateDryingShrinkageStrain, dryingShrinkageHalfTime, dryingStart, hEnv,
     q5, nKelvinDrying, minTauDrying, castTime, timeToDays;
 
-  // instantiate material
-  auto material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( b4Code,
-                                                          materialProperties.data(),
-                                                          materialProperties.size(),
-                                                          0 ) ) );
-  // number of required state vars
-  int nStateVars = material->getNumberOfRequiredStateVars();
+  return materialProperties;
+}
 
-  // initialize state vars
-  Eigen::VectorXd stateVar( nStateVars );
-  stateVar.setZero();
-  material->assignStateVars( stateVar.data(), nStateVars );
+void testB4()
+{
+  auto        materialProperties = getMaterialPropertiesB4();
+  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName            = "B4";
+  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // declare variables
-  Marmot::Vector6d stress;
-  Marmot::Vector6d dStrain;
-  Marmot::Matrix6d dStressDDStrain;
-  double           pNewDT;
+  // step 1: advance time to 28 days
+  MarmotMaterialPointSolverHypoElastic::Step step1;
 
-  // initialize stress
-  stress << 0., 0., 0., 0., 0., 0.;
+  step1.isStrainComponentControlled = { true, true, true, true, true, true };
+  step1.isStressComponentControlled = { false, false, false, false, false, false };
+  step1.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step1.strainIncrementTarget       = { 0.0, 0., 0., 0., 0.0, 0.0 };
+  step1.timeEnd                     = 28.0;
+  step1.dTStart                     = 28;
 
-  // first increment ( zero strain )
-  Eigen::VectorXd time( 2 );
-  time.setZero();
-  double dT = 28.0;
-  time[1] += dT;
-  dStrain << 0., 0., 0., 0., 0., 0.;
+  solver.addStep( step1 );
 
-  // compute material response
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  // step 1: apply strain
+  MarmotMaterialPointSolverHypoElastic::Step step2;
+  step2.isStrainComponentControlled = { true, true, true, true, true, true };
+  step2.isStressComponentControlled = { false, false, false, false, false, false };
+  step2.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step2.strainIncrementTarget       = { 10e-6, 10e-6, 0., 0., 0., 0. };
+  step2.dTStart                     = 0.01;
+  step2.timeStart                   = 28.0;
+  step2.timeEnd                     = 28.01;
 
-  // second increment ( strain application )
-  dT = 0.01;
-  time[1] += dT;
-  dStrain << 10e-6, 10e-6, 0., 0., 0., 0.;
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  solver.addStep( step2 );
 
-  // third increment ( constant strain, relaxation )
-  dT = 100.;
-  time[1] += dT;
-  dStrain << 0., 0., 0., 0., 0., 0.;
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  // step 2: hold strain constant
+  MarmotMaterialPointSolverHypoElastic::Step step3;
+  step3.isStrainComponentControlled = { true, true, true, true, true, true };
+  step3.isStressComponentControlled = { false, false, false, false, false, false };
+  step3.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step3.strainIncrementTarget       = { 0., 0., 0., 0., 0., 0. };
+  step3.dTStart                     = 100;
+  step3.timeStart                   = 28.01;
+  step3.timeEnd                     = 128.01;
+
+  solver.addStep( step3 );
+
+  solver.solve();
 
   // expected stress
   Marmot::Vector6d stressTarget;
   stressTarget << 0.377092, 0.377092, 0.150837, 0., 0., 0.;
 
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
+
   // Compare the computed stress to the expected stress and throw an exception if they differ
   Marmot::Testing::throwExceptionOnFailure( Marmot::Testing::checkIfEqual< double >( stress, stressTarget, 1e-6 ),
-                                            "Stress computation failed for transverse isotropic material in " +
-                                              std::string( __PRETTY_FUNCTION__ ) );
+                                            "Stress computation for " + std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testB4CoordinateInvariance()
+{
+
+  auto        materialProperties = getMaterialPropertiesB4();
+  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName            = "B4";
+  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
+
+  MarmotMaterialPointSolverHypoElastic::Step step;
+
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.01, 0., 0., 0., 0.03, 0.0 };
+
+  step.dTStart = 1.0;
+
+  solver.addStep( step );
+
+  // check coordinate invariance
+  throwExceptionOnFailure( spinTurbokreisel( solver, 1e-10, 1e-8 ), "Turbokreisel failed!" );
 }
 
 int main()
 {
-  testB4();
+  std::vector< std::function< void() > > tests = { testB4, testB4CoordinateInvariance };
+  executeTestsAndCollectExceptions( tests );
   return 0;
 }

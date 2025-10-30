@@ -127,8 +127,6 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
   double resNorm = 1e12;
   double corNorm = 0.0;
 
-  std::cout << " dStrain initial: " << dStrain.transpose() << std::endl;
-
   // Newton-Raphson iteration
   while ( counter < options.maxIterations ) {
     std::cout << "    Iteration " << counter;
@@ -140,14 +138,10 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     stressTemp = stress;
 
     // set Abaqus style time array TODO: get rid of this
-    double time[2] = { -1, increment.timeOld };
-
-    std::cout << ", stress: " << stressTemp.transpose();
+    double time[2] = { -1, increment.timeOld + increment.dT };
 
     // compute stress and tangent
     material->computeStress( stressTemp.data(), dStressDStrain.data(), dStrain.data(), &time[0], increment.dT, pNewDT );
-
-    std::cout << ", stress: " << stressTemp.transpose();
 
     if ( pNewDT < 1.0 )
       throw std::runtime_error( "Material model requested time step reduction." );

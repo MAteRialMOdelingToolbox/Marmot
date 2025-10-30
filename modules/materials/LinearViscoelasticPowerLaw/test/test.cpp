@@ -1,14 +1,10 @@
-#include "Marmot/LinearViscoelasticPowerLaw.h"
-#include "Marmot/Marmot.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
-void testLinearViscoelasticPowerLaw()
-{
-  // material properties
-  const int LVPLCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( "LINEARVISCOELASTICPOWERLAW" );
+using namespace Marmot::Testing;
 
+Eigen::Vector< double, 7 > getMaterialPropertiesLinearViscoelasticPowerLaw()
+{
   // material properties
   Eigen::Vector< double, 7 > materialProperties;
   // elastic parameters
@@ -22,54 +18,63 @@ void testLinearViscoelasticPowerLaw()
   double timeToDays = 1.;
   materialProperties << E, nu, m, n, nKelvin, minTau, timeToDays;
 
-  // instantiate material
-  auto material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( LVPLCode,
-                                                          materialProperties.data(),
-                                                          materialProperties.size(),
-                                                          0 ) ) );
+  return materialProperties;
+}
 
-  // number of required state vars
-  int nStateVars = material->getNumberOfRequiredStateVars();
+void testLinearViscoelasticPowerLaw()
+{
 
-  // initialize state vars
-  Eigen::VectorXd stateVar( nStateVars );
-  stateVar.setZero();
-  material->assignStateVars( stateVar.data(), nStateVars );
+  auto        materialProperties = getMaterialPropertiesLinearViscoelasticPowerLaw();
+  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName            = "LINEARVISCOELASTICPOWERLAW";
+  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // declare variables
-  Marmot::Vector6d stress;
-  Marmot::Vector6d dStrain;
-  Marmot::Matrix6d dStressDDStrain;
-  double           pNewDT;
+  // step 1: advance time to 28 days
+  MarmotMaterialPointSolverHypoElastic::Step step1;
 
-  // initialize stress
-  stress << 0., 0., 0., 0., 0., 0.;
+  step1.isStrainComponentControlled = { true, true, true, true, true, true };
+  step1.isStressComponentControlled = { false, false, false, false, false, false };
+  step1.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step1.strainIncrementTarget       = { 0.0, 0., 0., 0., 0.0, 0.0 };
+  step1.timeEnd                     = 28.0;
+  step1.dTStart                     = 28;
 
-  // first increment ( load free )
-  Eigen::VectorXd time( 2 );
-  time.setZero();
-  double dT = 28.0;
-  time[1] += dT;
-  dStrain << 0., 0., 0., 0., 0., 0.;
+  solver.addStep( step1 );
 
-  // compute material response
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  // step 1: apply strain
+  MarmotMaterialPointSolverHypoElastic::Step step2;
+  step2.isStrainComponentControlled = { true, true, true, true, true, true };
+  step2.isStressComponentControlled = { false, false, false, false, false, false };
+  step2.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step2.strainIncrementTarget       = { 10e-6, 10e-6, 0., 0., 0., 0. };
+  step2.dTStart                     = 0.01;
+  step2.timeStart                   = 28.0;
+  step2.timeEnd                     = 28.01;
 
-  // second increment ( load application )
-  dT = 1e-2;
-  time[1] += dT;
-  double dEps11 = 10e-6;
-  dStrain << dEps11, dEps11, 0., 0., 0., 0.;
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  solver.addStep( step2 );
 
-  // third increment ( constant strain, relaxation )
-  dT = 100.;
-  time[1] += dT;
-  dStrain << 0., 0., 0., 0., 0., 0.;
-  material->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), time.data(), dT, pNewDT );
+  // step 2: hold strain constant
+  MarmotMaterialPointSolverHypoElastic::Step step3;
+  step3.isStrainComponentControlled = { true, true, true, true, true, true };
+  step3.isStressComponentControlled = { false, false, false, false, false, false };
+  step3.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step3.strainIncrementTarget       = { 0., 0., 0., 0., 0., 0. };
+  step3.dTStart                     = 100;
+  step3.timeStart                   = 28.01;
+  step3.timeEnd                     = 128.01;
 
-  // expected stress
+  solver.addStep( step3 );
+
+  solver.solve();
+
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
+
   Marmot::Vector6d stressTarget;
   stressTarget << 2.41296e-05, 2.41296e-05, 9.65182e-06, 0., 0., 0.;
 
@@ -78,8 +83,38 @@ void testLinearViscoelasticPowerLaw()
                                             "Stress computation failed in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+void testLinearViscoelasticPowerLawCoordinateInvariance()
+{
+
+  auto        materialProperties = getMaterialPropertiesLinearViscoelasticPowerLaw();
+  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName            = "LINEARVISCOELASTICPOWERLAW";
+  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
+
+  MarmotMaterialPointSolverHypoElastic::Step step;
+
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.01, 0., 0., 0., 0.03, 0.0 };
+
+  step.dTStart = 1.0;
+
+  solver.addStep( step );
+
+  // check coordinate invariance
+  throwExceptionOnFailure( spinTurbokreisel( solver, 1e-10, 1e-8 ), "Turbokreisel failed!" );
+}
+
 int main()
 {
-  testLinearViscoelasticPowerLaw();
+  std::vector< std::function< void() > > tests = {
+    testLinearViscoelasticPowerLaw,
+    testLinearViscoelasticPowerLawCoordinateInvariance,
+  };
+  executeTestsAndCollectExceptions( tests );
   return 0;
 }
