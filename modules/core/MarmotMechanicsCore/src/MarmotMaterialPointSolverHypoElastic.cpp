@@ -224,22 +224,30 @@ void MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV( const std::string
   if ( !file.is_open() )
     throw std::runtime_error( "Could not open file for writing: " + filename );
 
-  // write header
-  file << std::scientific << "# Time,";
-  file << "Stress_11,Stress_22,Stress_33,Stress_12,Stress_13,Stress_23,";
-  file << "Strain_11,Strain_22,Strain_33,Strain_12,Strain_13,Strain_23,";
-  for ( int i = 0; i < nStateVars; i++ )
-    file << "StateVar_" << i + 1 << ( i < nStateVars - 1 ? "," : "\n" );
+  // write header with fixed-width formatting
+  const int w = 15;
+  file << std::scientific << "#" << std::setw( w - 1 ) << "Time,";
+  file << std::setw( w ) << "Stress_11," << std::setw( w ) << "Stress_22," << std::setw( w ) << "Stress_33,"
+       << std::setw( w ) << "Stress_12," << std::setw( w ) << "Stress_13," << std::setw( w ) << "Stress_23,"
+       << std::setw( w ) << "Strain_11," << std::setw( w ) << "Strain_22," << std::setw( w ) << "Strain_33,"
+       << std::setw( w ) << "Strain_12," << std::setw( w ) << "Strain_13," << std::setw( w ) << "Strain_23,";
 
-  // write data
+  for ( int i = 0; i < nStateVars; i++ )
+    file << std::setw( w - ( i < nStateVars - 1 ? 1 : 2 ) ) << "StateVar_" << i + 1
+         << ( i < nStateVars - 1 ? "," : "\n" );
+
+  // write data with fixed-width formatting
   for ( const auto& entry : history ) {
-    file << entry.time << ",";
+    file << std::scientific << std::setw( w - 1 ) << entry.time << ",";
+
     for ( int i = 0; i < 6; i++ )
-      file << entry.stress[i] << ( i < 5 ? "," : "," );
+      file << std::setw( w - 1 ) << entry.stress[i] << ( i < 5 ? "," : "," );
+
     for ( int i = 0; i < 6; i++ )
-      file << entry.strain[i] << ( i < 5 ? "," : "," );
+      file << std::setw( w - 1 ) << entry.strain[i] << ( i < 5 ? "," : "," );
+
     for ( int i = 0; i < nStateVars; i++ )
-      file << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
+      file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
   }
 
   file.close();
