@@ -18,8 +18,9 @@ MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std:
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();
   // initialize state variables
-  stateVars     = Eigen::VectorXd::Zero( nStateVars );
-  stateVarsTemp = Eigen::VectorXd::Zero( nStateVars );
+  stateVars         = Eigen::VectorXd::Zero( nStateVars );
+  _initialStateVars = Eigen::VectorXd::Zero( nStateVars );
+  stateVarsTemp     = Eigen::VectorXd::Zero( nStateVars );
 
   material->assignStateVars( stateVarsTemp.data(), nStateVars );
 }
@@ -38,11 +39,20 @@ void MarmotMaterialPointSolverHypoElastic::solve()
   }
 }
 
+void MarmotMaterialPointSolverHypoElastic::setInitialState( const Marmot::Vector6d& initialStress,
+                                                            const Eigen::VectorXd&  initialStateVars )
+{
+  _initialStress    = initialStress;
+  _initialStateVars = initialStateVars;
+  stress            = _initialStress;
+  stateVars         = _initialStateVars;
+}
+
 void MarmotMaterialPointSolverHypoElastic::resetToInitialState()
 {
-  stress.setZero();
+  stress = _initialStress;
   strain.setZero();
-  stateVars.setZero();
+  stateVars = _initialStateVars;
   stateVarsTemp.setZero();
   history.clear();
 }

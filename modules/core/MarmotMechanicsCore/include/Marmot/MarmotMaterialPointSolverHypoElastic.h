@@ -50,12 +50,12 @@ public:
     Marmot::Vector6d         stressIncrementTarget;       ///< Target stress increment for the step
     Eigen::Vector< bool, 6 > isStrainComponentControlled; ///< Flags to indicate which strain components are controlled
     Eigen::Vector< bool, 6 > isStressComponentControlled; ///< Flags to indicate which stress components are controlled
-    double                   timeStart     = 0.0;
-    double                   timeEnd       = 1.0;
-    double                   dTStart       = 0.1;
-    double                   dTMin         = 1e-6;
-    double                   dTMax         = 0.5;
-    int                      maxIncrements = 100;
+    double                   timeStart     = 0.0;         ///< Start time of the step
+    double                   timeEnd       = 1.0;         ///< End time of the step
+    double                   dTStart       = 0.1;         ///< Initial time step size
+    double                   dTMin         = 1e-6;        ///< Minimum time step size
+    double                   dTMax         = 0.5;         ///< Maximum time step size
+    int                      maxIncrements = 100;         ///< Maximum number of increments in the step
 
     /**
      * @brief Check that for each component, either strain or stress is controlled
@@ -64,7 +64,7 @@ public:
     void checkControl() const
     {
       for ( int i = 0; i < 6; i++ ) {
-        if ( !isStrainComponentControlled[i] != isStressComponentControlled[i] ) {
+        if ( isStrainComponentControlled[i] == isStressComponentControlled[i] ) {
           throw std::runtime_error(
             "exactly one of strain or stress component must be controlled for each component." );
         }
@@ -146,6 +146,19 @@ public:
    * @brief Clear all added loading steps
    */
   void clearSteps() { steps.clear(); }
+
+  /**
+   * @brief Set the initial state of the material model
+   * @param initialStress The initial stress in Voigt notation
+   * @param initialStateVars The initial state variables
+   */
+  void setInitialState( const Marmot::Vector6d& initialStress, const Eigen::VectorXd& initialStateVars );
+
+  /**
+   * @brief Get the number of state variables in the material model
+   * @return The number of state variables
+   */
+  int getNumberOfStateVariables( int& nStateVarsOut ) const { return nStateVars; }
 
   /**
    * @brief Reset the solver to the initial state
@@ -244,11 +257,17 @@ private:
   /// @brief Current state variables
   Eigen::VectorXd stateVars;
 
+  /// @brief Initial state variables
+  Eigen::VectorXd _initialStateVars;
+
   /// @brief Temporary state variables for computations
   Eigen::VectorXd stateVarsTemp;
 
   /// @brief The stress in Voigt notation
   Marmot::Vector6d stress = Marmot::Vector6d::Zero();
+
+  /// @brief The initial stress in Voigt notation
+  Marmot::Vector6d _initialStress = Marmot::Vector6d::Zero();
 
   /// @brief The strain in Voigt notation
   Marmot::Vector6d strain = Marmot::Vector6d::Zero();
