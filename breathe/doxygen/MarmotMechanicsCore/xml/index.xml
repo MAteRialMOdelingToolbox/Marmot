@@ -115,6 +115,14 @@
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" kind="variable"><name>rho</name></member>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kind="variable"><name>theta</name></member>
   </compound>
+  <compound refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kind="struct"><name>MarmotMaterialPointSolverHypoElastic::HistoryEntry</name>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a544e93def35d488b82f521060a777696" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a255e26e47d845aaaa1c961edfb86da49" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a63403edecde56ef05a9da62c8419fbba" kind="variable"><name>strain</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a86f2e821f18ff7ab9e300a3eeb89eb06" kind="variable"><name>dStressdStrain</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1ae66b683624ae48ae25cbbd1631efcfc2" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a2f0192d88ebfd31a303c1af1b82f89cb" kind="function"><name>print</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" kind="class"><name>Marmot::NumericalAlgorithms::HughesWinget</name>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" kind="enum"><name>Formulation</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" kind="enumvalue"><name>AbaqusLike</name></member>
@@ -129,6 +137,14 @@
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" kind="function"><name>rotateTensor</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" kind="function"><name>compute_dS_dF</name></member>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" kind="function"><name>compute_dScalar_dF</name></member>
+  </compound>
+  <compound refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kind="struct"><name>MarmotMaterialPointSolverHypoElastic::Increment</name>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1a4fef3ad3e8eef6d40abeb474cffc1bdf" kind="variable"><name>strainIncrement</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1a65fb365f5178dbb0f52d9e144bf39624" kind="variable"><name>stressIncrement</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1a3291250fd34aa311cdfb789458e38356" kind="variable"><name>isStrainComponentControlled</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1ad2db8b182839e41fee14a8aa1f587c05" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1ac0475d135fdb8c8d13099374513863bf" kind="variable"><name>timeOld</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment_1a42f002dffb568f3477a45522387afe5e" kind="variable"><name>dT</name></member>
   </compound>
   <compound refid="class_marmot_material_gradient_enhanced_hypo_elastic" kind="class"><name>MarmotMaterialGradientEnhancedHypoElastic</name>
     <member refid="class_marmot_material_gradient_enhanced_hypo_elastic_1a22b16836b7c8c54ada7757b6edc16171" kind="function"><name>computeStress</name></member>
@@ -165,6 +181,36 @@
     <member refid="class_marmot_material_mechanical_1ad41c3e35947773970340d5a315b3e52a" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_material_mechanical_1adc72d0bff4f72a5eaed2baf11dc02f24" kind="function"><name>computePlaneStress</name></member>
     <member refid="class_marmot_material_mechanical_1a914feb016e64919cee4f1d7ab5029cd8" kind="function"><name>computeUniaxialStress</name></member>
+  </compound>
+  <compound refid="class_marmot_material_point_solver_hypo_elastic" kind="class"><name>MarmotMaterialPointSolverHypoElastic</name>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1affd9a62ad0ce4b4fee4deb1ca3510eba" kind="variable"><name>material</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a78d715f739e358e5a8e456d768af1628" kind="variable"><name>nStateVars</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ab9ed38db017c08eb404cc5cc2bb2264b" kind="variable"><name>stateVars</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a3e9e8994e5c5481583b7ed424b5c49b7" kind="variable"><name>_initialStateVars</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a88943623f663e9bc903c883dbd2994d6" kind="variable"><name>stateVarsTemp</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a52f5e7ff91c8a0a976351782b29bc408" kind="variable"><name>stress</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a27d831f1c28bbefc6bedaca6d84b1710" kind="variable"><name>_initialStress</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ad306ffdf937d730a8c2b257e53a824fc" kind="variable"><name>strain</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ab6ae7c089997d066244e7a712d96b511" kind="variable"><name>dStressDStrain</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1aff3e01a519aca8f9c9709e15a5c06379" kind="variable"><name>steps</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1aa5d55061e044040eaaafcf9c28764740" kind="variable"><name>history</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a0204c768e7c20247eb6ce3bfb9616a7a" kind="variable"><name>options</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a893325d41bd9fd699bd82d6e7909b8e2" kind="function"><name>MarmotMaterialPointSolverHypoElastic</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a7c37111357bf5d2261e3667b5d49197b" kind="function"><name>addStep</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1afbc713e475af7db005363b037c08e729" kind="function"><name>getSteps</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a6dbb1998e9bbc1c64bc5d2439bd63b43" kind="function"><name>clearSteps</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a2e0ee07c1e149a6c5fd069f5793fdb21" kind="function"><name>setInitialState</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ad1e0dddf1d6edea91927a7e73272a963" kind="function"><name>getNumberOfStateVariables</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a4ca6b0f5026e4a6089ef5d640995030b" kind="function"><name>resetToInitialState</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ab5cecd04068de60a2b5567f1718ca59b" kind="function"><name>solve</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1aefe8d599cd231f55dafb55568438ae40" kind="function"><name>getHistory</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a2bd6b40084e54d9573a7ae9df38be847" kind="function"><name>clearHistory</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1af78763c6e0ba52294cfe75facfc7691d" kind="function"><name>printHistory</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ad8f2c40cc9c9f87a6201114194f7d7b1" kind="function"><name>exportHistoryToCSV</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a605b7177b217ba968acc08ccf54f86ee" kind="function"><name>solveStep</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a3b70d9bb37a2193c5234ec20af3dd433" kind="function"><name>solveIncrement</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1ab15625a7fc54b29c89c1bdf1710b9993" kind="function"><name>computeResidual</name></member>
+    <member refid="class_marmot_material_point_solver_hypo_elastic_1a4094ca14a3ce3b18b27ad915867ecc71" kind="function"><name>modifyTangent</name></member>
   </compound>
   <compound refid="class_marmot_state_var_vector_manager" kind="class"><name>MarmotStateVarVectorManager</name>
     <member refid="class_marmot_state_var_vector_manager_1ae1e781d5051d5c858692be57f9a1277e" kind="variable"><name>theStateVars</name></member>
@@ -264,6 +310,11 @@
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b" kind="variable"><name>pronyStiffnesses</name></member>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" kind="variable"><name>pronyRelaxationTimes</name></member>
   </compound>
+  <compound refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options" kind="struct"><name>MarmotMaterialPointSolverHypoElastic::SolverOptions</name>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1a40bcfbdb4b6c6bee8e8e520abfeff2c5" kind="variable"><name>maxIterations</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1ad1b2582a09b1bb5705cc3944114c57d0" kind="variable"><name>residualTolerance</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1a2c4b4a97bd3fea19a641836e1c5eba55" kind="variable"><name>correctionTolerance</name></member>
+  </compound>
   <compound refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition" kind="struct"><name>MarmotStateVarVectorManager::StateVarEntryDefinition</name>
     <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition_1ab078bcd1432d8bce265780b1f30614b2" kind="variable"><name>name</name></member>
     <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition_1a5dc3c2e6ae7017124a26ee5c08d4bb9e" kind="variable"><name>length</name></member>
@@ -275,6 +326,19 @@
   <compound refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout" kind="struct"><name>MarmotStateVarVectorManager::StateVarVectorLayout</name>
     <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1a5af0d626c00ddde9d4c91ab3669a0bc4" kind="variable"><name>entries</name></member>
     <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1aec22f82dd4e3ab562445012e042a2dc9" kind="variable"><name>nRequiredStateVars</name></member>
+  </compound>
+  <compound refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kind="struct"><name>MarmotMaterialPointSolverHypoElastic::Step</name>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1ac3b3d816d2508687756ec454032aa13c" kind="variable"><name>strainIncrementTarget</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a943294e08fb48a47f05544ba8f4a1e8f" kind="variable"><name>stressIncrementTarget</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1af1c8bcc12d63f270c83624db1a238cde" kind="variable"><name>isStrainComponentControlled</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a8def5162fc3b0a22ecf1ed14adec9a07" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1aae83f5bd803649d719a8357e7ec33e78" kind="variable"><name>timeStart</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a4a61ef22e5e7ae893bfddc789f7bd4bf" kind="variable"><name>timeEnd</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a8ac7cb9f5256657a08d43d65691dfb53" kind="variable"><name>dTStart</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1ae8464e66d8c5de1e1fca1721891a883f" kind="variable"><name>dTMin</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a499c9183c2c7a20e7be812039dada22f" kind="variable"><name>dTMax</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1af3cebd62e34b7a4970e7bc8eed727045" kind="variable"><name>maxIncrements</name></member>
+    <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step_1a2817875063db35c6c4e2594566ded426" kind="function"><name>checkControl</name></member>
   </compound>
   <compound refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager" kind="class"><name>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</name>
     <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a44699f1f8fa22f1cf9311acb7c7e5250" kind="typedef"><name>YieldSurfFlagArr</name></member>
@@ -506,6 +570,8 @@
   <compound refid="_marmot_material_hypo_elastic_a_d_8h" kind="file"><name>MarmotMaterialHypoElasticAD.h</name>
   </compound>
   <compound refid="_marmot_material_mechanical_8h" kind="file"><name>MarmotMaterialMechanical.h</name>
+  </compound>
+  <compound refid="_marmot_material_point_solver_hypo_elastic_8h" kind="file"><name>MarmotMaterialPointSolverHypoElastic.h</name>
   </compound>
   <compound refid="_marmot_prony_series_8h" kind="file"><name>MarmotPronySeries.h</name>
   </compound>

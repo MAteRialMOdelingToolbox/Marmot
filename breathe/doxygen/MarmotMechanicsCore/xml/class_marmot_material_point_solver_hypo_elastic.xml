@@ -1,0 +1,691 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_material_point_solver_hypo_elastic" kind="class" language="C++" prot="public">
+    <compoundname>MarmotMaterialPointSolverHypoElastic</compoundname>
+    <includes refid="_marmot_material_point_solver_hypo_elastic_8h" local="no">MarmotMaterialPointSolverHypoElastic.h</includes>
+    <innerclass refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" prot="public">MarmotMaterialPointSolverHypoElastic::HistoryEntry</innerclass>
+    <innerclass refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" prot="public">MarmotMaterialPointSolverHypoElastic::Increment</innerclass>
+    <innerclass refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options" prot="public">MarmotMaterialPointSolverHypoElastic::SolverOptions</innerclass>
+    <innerclass refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" prot="public">MarmotMaterialPointSolverHypoElastic::Step</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1affd9a62ad0ce4b4fee4deb1ca3510eba" prot="private" static="no" mutable="no">
+        <type><ref refid="class_marmot_material_hypo_elastic" kindref="compound">MarmotMaterialHypoElastic</ref> *</type>
+        <definition>MarmotMaterialHypoElastic* MarmotMaterialPointSolverHypoElastic::material</definition>
+        <argsstring></argsstring>
+        <name>material</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::material</qualifiedname>
+        <briefdescription>
+<para>The hypo-elastic material model. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="252" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="252" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a78d715f739e358e5a8e456d768af1628" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int MarmotMaterialPointSolverHypoElastic::nStateVars</definition>
+        <argsstring></argsstring>
+        <name>nStateVars</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::nStateVars</qualifiedname>
+        <briefdescription>
+<para>Number of state variables in the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="255" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1ab9ed38db017c08eb404cc5cc2bb2264b" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd MarmotMaterialPointSolverHypoElastic::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::stateVars</qualifiedname>
+        <briefdescription>
+<para>Current state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="258" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="258" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a3e9e8994e5c5481583b7ed424b5c49b7" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd MarmotMaterialPointSolverHypoElastic::_initialStateVars</definition>
+        <argsstring></argsstring>
+        <name>_initialStateVars</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::_initialStateVars</qualifiedname>
+        <briefdescription>
+<para>Initial state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="261" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="261" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a88943623f663e9bc903c883dbd2994d6" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd MarmotMaterialPointSolverHypoElastic::stateVarsTemp</definition>
+        <argsstring></argsstring>
+        <name>stateVarsTemp</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::stateVarsTemp</qualifiedname>
+        <briefdescription>
+<para>Temporary state variables for computations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="264" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="264" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a52f5e7ff91c8a0a976351782b29bc408" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::stress</qualifiedname>
+        <initializer>= Marmot::Vector6d::Zero()</initializer>
+        <briefdescription>
+<para>The stress in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="267" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="267" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a27d831f1c28bbefc6bedaca6d84b1710" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::_initialStress</definition>
+        <argsstring></argsstring>
+        <name>_initialStress</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::_initialStress</qualifiedname>
+        <initializer>= Marmot::Vector6d::Zero()</initializer>
+        <briefdescription>
+<para>The initial stress in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="270" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="270" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1ad306ffdf937d730a8c2b257e53a824fc" prot="private" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::strain</definition>
+        <argsstring></argsstring>
+        <name>strain</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::strain</qualifiedname>
+        <initializer>= Marmot::Vector6d::Zero()</initializer>
+        <briefdescription>
+<para>The strain in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="273" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="273" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1ab6ae7c089997d066244e7a712d96b511" prot="private" static="no" mutable="no">
+        <type>Marmot::Matrix6d</type>
+        <definition>Marmot::Matrix6d MarmotMaterialPointSolverHypoElastic::dStressDStrain</definition>
+        <argsstring></argsstring>
+        <name>dStressDStrain</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::dStressDStrain</qualifiedname>
+        <initializer>= Marmot::Matrix6d::Zero()</initializer>
+        <briefdescription>
+<para>The material tangent matrix in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="276" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="276" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1aff3e01a519aca8f9c9709e15a5c06379" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> &gt;</type>
+        <definition>std::vector&lt; Step &gt; MarmotMaterialPointSolverHypoElastic::steps</definition>
+        <argsstring></argsstring>
+        <name>steps</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::steps</qualifiedname>
+        <briefdescription>
+<para>List of loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="279" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="279" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1aa5d55061e044040eaaafcf9c28764740" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kindref="compound">HistoryEntry</ref> &gt;</type>
+        <definition>std::vector&lt; HistoryEntry &gt; MarmotMaterialPointSolverHypoElastic::history</definition>
+        <argsstring></argsstring>
+        <name>history</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::history</qualifiedname>
+        <briefdescription>
+<para>History of the simulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="282" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="282" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_point_solver_hypo_elastic_1a0204c768e7c20247eb6ce3bfb9616a7a" prot="private" static="no" mutable="no">
+        <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options" kindref="compound">SolverOptions</ref></type>
+        <definition>const SolverOptions MarmotMaterialPointSolverHypoElastic::options</definition>
+        <argsstring></argsstring>
+        <name>options</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::options</qualifiedname>
+        <briefdescription>
+<para>Solver options. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="285" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="285" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a893325d41bd9fd699bd82d6e7909b8e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic</definition>
+        <argsstring>(std::string &amp;materialName, double *materialProperties, int nMaterialProperties, const SolverOptions &amp;options)</argsstring>
+        <name>MarmotMaterialPointSolverHypoElastic</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic</qualifiedname>
+        <param>
+          <type>std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_solver_options" kindref="compound">SolverOptions</ref> &amp;</type>
+          <declname>options</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for the <ref refid="class_marmot_material_point_solver_hypo_elastic" kindref="compound">MarmotMaterialPointSolverHypoElastic</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the hypo-elastic material model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of material properties </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material properties </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="128" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a7c37111357bf5d2261e3667b5d49197b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::addStep</definition>
+        <argsstring>(const Step &amp;step)</argsstring>
+        <name>addStep</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::addStep</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+<para>Add a loading step to the solver. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> to be added </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="137" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1afbc713e475af7db005363b037c08e729" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> &gt;</type>
+        <definition>std::vector&lt; Step &gt; MarmotMaterialPointSolverHypoElastic::getSteps</definition>
+        <argsstring>() const</argsstring>
+        <name>getSteps</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::getSteps</qualifiedname>
+        <briefdescription>
+<para>Get the list of added loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> containing the added steps </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="143" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="143" bodyend="143"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a6dbb1998e9bbc1c64bc5d2439bd63b43" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::clearSteps</definition>
+        <argsstring>()</argsstring>
+        <name>clearSteps</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::clearSteps</qualifiedname>
+        <briefdescription>
+<para>Clear all added loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="148" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="148" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a2e0ee07c1e149a6c5fd069f5793fdb21" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::setInitialState</definition>
+        <argsstring>(const Marmot::Vector6d &amp;initialStress, const Eigen::VectorXd &amp;initialStateVars)</argsstring>
+        <name>setInitialState</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::setInitialState</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>initialStress</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>initialStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Set the initial state of the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial stress in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>initialStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="155" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1ad1e0dddf1d6edea91927a7e73272a963" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MarmotMaterialPointSolverHypoElastic::getNumberOfStateVariables</definition>
+        <argsstring>(int &amp;nStateVarsOut) const</argsstring>
+        <name>getNumberOfStateVariables</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::getNumberOfStateVariables</qualifiedname>
+        <param>
+          <type>int &amp;</type>
+          <declname>nStateVarsOut</declname>
+        </param>
+        <briefdescription>
+<para>Get the number of state variables in the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The number of state variables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="161" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="161" bodyend="161"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a4ca6b0f5026e4a6089ef5d640995030b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::resetToInitialState</definition>
+        <argsstring>()</argsstring>
+        <name>resetToInitialState</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::resetToInitialState</qualifiedname>
+        <briefdescription>
+<para>Reset the solver to the initial state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function resets the initial stress and state variables of the material model. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="168" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1ab5cecd04068de60a2b5567f1718ca59b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::solve</definition>
+        <argsstring>()</argsstring>
+        <name>solve</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::solve</qualifiedname>
+        <briefdescription>
+<para>Solve the material point problem for all added steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="173" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1aefe8d599cd231f55dafb55568438ae40" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kindref="compound">HistoryEntry</ref> &gt;</type>
+        <definition>std::vector&lt; HistoryEntry &gt; MarmotMaterialPointSolverHypoElastic::getHistory</definition>
+        <argsstring>() const</argsstring>
+        <name>getHistory</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::getHistory</qualifiedname>
+        <briefdescription>
+<para>Get the recorded history of the simulation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kindref="compound">HistoryEntry</ref> containing the recorded history </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="179" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="179" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a2bd6b40084e54d9573a7ae9df38be847" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::clearHistory</definition>
+        <argsstring>()</argsstring>
+        <name>clearHistory</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::clearHistory</qualifiedname>
+        <briefdescription>
+<para>Clear the recorded history. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="184" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="184" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1af78763c6e0ba52294cfe75facfc7691d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::printHistory</definition>
+        <argsstring>()</argsstring>
+        <name>printHistory</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::printHistory</qualifiedname>
+        <briefdescription>
+<para>Print the recorded history to the console. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="189" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1ad8f2c40cc9c9f87a6201114194f7d7b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV</definition>
+        <argsstring>(const std::string &amp;filename)</argsstring>
+        <name>exportHistoryToCSV</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Export the recorded history to a CSV file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the CSV file to export to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="195" column="8"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a605b7177b217ba968acc08ccf54f86ee" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::solveStep</definition>
+        <argsstring>(const Step &amp;step)</argsstring>
+        <name>solveStep</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::solveStep</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+<para>Solve a single loading step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_step" kindref="compound">Step</ref> to be solved</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function iterates over the increments defined in the step, calling solveIncrement for each increment. It manages time stepping and ensures that the entire step is covered. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="207" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a3b70d9bb37a2193c5234ec20af3dd433" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::solveIncrement</definition>
+        <argsstring>(const Increment &amp;increment)</argsstring>
+        <name>solveIncrement</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::solveIncrement</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Solve a single increment within a loading step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> to be solved </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the solver does not converge</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function implements a Newton-Raphson iterative solver to compute the stress and strain state for the given increment. It updates the material state variables and records the history after convergence. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="220" column="8"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1ab15625a7fc54b29c89c1bdf1710b9993" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::computeResidual</definition>
+        <argsstring>(const Marmot::Vector6d &amp;stressIncrement, const Marmot::Vector6d &amp;target, const Increment &amp;increment)</argsstring>
+        <name>computeResidual</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::computeResidual</qualifiedname>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>stressIncrement</declname>
+        </param>
+        <param>
+          <type>const Marmot::Vector6d &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Compute the residual for the current increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stressIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The computed stress increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target (mixed) stress/strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> containing control information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The computed residual vector</para>
+</simplesect>
+This function calculates the residual vector based on the difference between the computed stress increment and the target increment, taking into account which components are controlled by strain or stress. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="234" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_point_solver_hypo_elastic_1a4094ca14a3ce3b18b27ad915867ecc71" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::modifyTangent</definition>
+        <argsstring>(Eigen::Matrix&lt; double, 6, 6 &gt; &amp;tangent, const Increment &amp;increment)</argsstring>
+        <name>modifyTangent</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::modifyTangent</qualifiedname>
+        <param>
+          <type>Eigen::Matrix&lt; double, 6, 6 &gt; &amp;</type>
+          <declname>tangent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Modify the material tangent matrix based on control type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material tangent matrix to be modified </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_material_point_solver_hypo_elastic_1_1_increment" kindref="compound">Increment</ref> containing control information</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function adjusts the tangent matrix to account for the components that are controlled by strain or stress, ensuring that the solver correctly handles mixed control scenarios. This is done by zeroing out rows corresponding to strain-controlled components and setting their diagonal entries to one. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="249" column="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Solver for material point problems with hypo-elastic materials. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class implements a solver for material point problems using hypo-elastic material models. It supports loading steps with controlled strain and stress components, adaptive time stepping, and history recording. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="39" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="39" bodyend="286"/>
+    <listofallmembers>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a3e9e8994e5c5481583b7ed424b5c49b7" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>_initialStateVars</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a27d831f1c28bbefc6bedaca6d84b1710" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>_initialStress</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a7c37111357bf5d2261e3667b5d49197b" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>addStep</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a2bd6b40084e54d9573a7ae9df38be847" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>clearHistory</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a6dbb1998e9bbc1c64bc5d2439bd63b43" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>clearSteps</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ab15625a7fc54b29c89c1bdf1710b9993" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>computeResidual</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ab6ae7c089997d066244e7a712d96b511" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>dStressDStrain</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ad8f2c40cc9c9f87a6201114194f7d7b1" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>exportHistoryToCSV</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1aefe8d599cd231f55dafb55568438ae40" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>getHistory</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ad1e0dddf1d6edea91927a7e73272a963" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>getNumberOfStateVariables</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1afbc713e475af7db005363b037c08e729" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>getSteps</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1aa5d55061e044040eaaafcf9c28764740" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>history</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a893325d41bd9fd699bd82d6e7909b8e2" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>MarmotMaterialPointSolverHypoElastic</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1affd9a62ad0ce4b4fee4deb1ca3510eba" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>material</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a4094ca14a3ce3b18b27ad915867ecc71" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>modifyTangent</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a78d715f739e358e5a8e456d768af1628" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>nStateVars</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a0204c768e7c20247eb6ce3bfb9616a7a" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>options</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1af78763c6e0ba52294cfe75facfc7691d" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>printHistory</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a4ca6b0f5026e4a6089ef5d640995030b" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>resetToInitialState</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a2e0ee07c1e149a6c5fd069f5793fdb21" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>setInitialState</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ab5cecd04068de60a2b5567f1718ca59b" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>solve</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a3b70d9bb37a2193c5234ec20af3dd433" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>solveIncrement</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a605b7177b217ba968acc08ccf54f86ee" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>solveStep</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ab9ed38db017c08eb404cc5cc2bb2264b" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>stateVars</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a88943623f663e9bc903c883dbd2994d6" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>stateVarsTemp</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1aff3e01a519aca8f9c9709e15a5c06379" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>steps</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1ad306ffdf937d730a8c2b257e53a824fc" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>strain</name></member>
+      <member refid="class_marmot_material_point_solver_hypo_elastic_1a52f5e7ff91c8a0a976351782b29bc408" prot="private" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic</scope><name>stress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

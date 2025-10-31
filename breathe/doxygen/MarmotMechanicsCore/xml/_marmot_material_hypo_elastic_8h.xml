@@ -4,6 +4,7 @@
     <compoundname>MarmotMaterialHypoElastic.h</compoundname>
     <includes refid="_marmot_material_mechanical_8h" local="yes">Marmot/MarmotMaterialMechanical.h</includes>
     <includedby refid="_marmot_material_hypo_elastic_a_d_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h</includedby>
+    <includedby refid="_marmot_material_point_solver_hypo_elastic_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h</includedby>
     <incdepgraph>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h</label>
@@ -27,10 +28,16 @@
         <link refid="_marmot_material_hypo_elastic_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
       </node>
       <node id="2">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h</label>
         <link refid="_marmot_material_hypo_elastic_a_d_8h_source"/>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h</label>
+        <link refid="_marmot_material_point_solver_hypo_elastic_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="class_marmot_material_hypo_elastic" prot="public">MarmotMaterialHypoElastic</innerclass>

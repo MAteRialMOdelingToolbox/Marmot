@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialPointSolverHypoElastic::HistoryEntry</compoundname>
+    <includes refid="_marmot_material_point_solver_hypo_elastic_8h" local="no">MarmotMaterialPointSolverHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a544e93def35d488b82f521060a777696" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialPointSolverHypoElastic::HistoryEntry::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::time</qualifiedname>
+        <briefdescription>
+<para>Time at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="94" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a255e26e47d845aaaa1c961edfb86da49" prot="public" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::HistoryEntry::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::stress</qualifiedname>
+        <briefdescription>
+<para>Stress at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="95" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a63403edecde56ef05a9da62c8419fbba" prot="public" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::HistoryEntry::strain</definition>
+        <argsstring></argsstring>
+        <name>strain</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::strain</qualifiedname>
+        <briefdescription>
+<para>Strain at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="96" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a86f2e821f18ff7ab9e300a3eeb89eb06" prot="public" static="no" mutable="no">
+        <type>Marmot::Matrix6d</type>
+        <definition>Marmot::Matrix6d MarmotMaterialPointSolverHypoElastic::HistoryEntry::dStressdStrain</definition>
+        <argsstring></argsstring>
+        <name>dStressdStrain</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::dStressdStrain</qualifiedname>
+        <briefdescription>
+<para>Material tangent at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="97" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="97" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1ae66b683624ae48ae25cbbd1631efcfc2" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd MarmotMaterialPointSolverHypoElastic::HistoryEntry::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::stateVars</qualifiedname>
+        <briefdescription>
+<para>State variables at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="98" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a2f0192d88ebfd31a303c1af1b82f89cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void MarmotMaterialPointSolverHypoElastic::HistoryEntry::print</definition>
+        <argsstring>() const</argsstring>
+        <name>print</name>
+        <qualifiedname>MarmotMaterialPointSolverHypoElastic::HistoryEntry::print</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="100" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="100" bodyend="108"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to record the history of the simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each entry contains time, stress, strain, and state variables. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="93" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="93" bodyend="109"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a86f2e821f18ff7ab9e300a3eeb89eb06" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>dStressdStrain</name></member>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a2f0192d88ebfd31a303c1af1b82f89cb" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>print</name></member>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1ae66b683624ae48ae25cbbd1631efcfc2" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a63403edecde56ef05a9da62c8419fbba" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>strain</name></member>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a255e26e47d845aaaa1c961edfb86da49" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>stress</name></member>
+      <member refid="struct_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a544e93def35d488b82f521060a777696" prot="public" virt="non-virtual"><scope>MarmotMaterialPointSolverHypoElastic::HistoryEntry</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

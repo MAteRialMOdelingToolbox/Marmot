@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material Point Solver for Hypo-Elastic Materials &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Material models" href="materials.html" />
+    <link rel="prev" title="Solvers" href="solvers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="solvers.html">Solvers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Material Point Solver for Hypo-Elastic Materials</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-features">Main Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#solver-structure">Solver Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage-workflow">Usage Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typical-output">Typical Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#guidelines-and-notes">Guidelines and Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#practical-applications">Practical Applications</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="solvers.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Material Point Solver for Hypo-Elastic Materials</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/materialpointsolverhypoelastic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="material-point-solver-for-hypo-elastic-materials">
+<h1>Material Point Solver for Hypo-Elastic Materials<a class="headerlink" href="#material-point-solver-for-hypo-elastic-materials" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <strong>Material Point Solver (Hypo-Elastic)</strong> provides a standalone driver for simulating
+the response of a single material point using <strong>hypo-elastic constitutive models</strong>
+from the <em>MAteRialMOdellingToolbox (Marmot)</em> framework.</p>
+<p>It is designed for:</p>
+<ul class="simple">
+<li><p>Testing and verifying constitutive models,</p></li>
+<li><p>Performing mixed strain/stress-controlled loading paths,</p></li>
+<li><p>Recording full stress–strain histories including tangent matrices and internal variables.</p></li>
+</ul>
+<p>The solver automatically handles time stepping, convergence checks, and output formatting.</p>
+</section>
+<section id="main-features">
+<h2>Main Features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Supports <strong>mixed control</strong> (independent strain or stress control for each Voigt component)</p></li>
+<li><p><strong>Adaptive time stepping</strong> within each load step</p></li>
+<li><p><strong>Newton–Raphson</strong> iteration with configurable convergence tolerances</p></li>
+<li><p><strong>History recording</strong> for post-processing</p></li>
+<li><p><strong>CSV export</strong> for analysis or plotting</p></li>
+</ul>
+</section>
+<section id="solver-structure">
+<h2>Solver Structure<a class="headerlink" href="#solver-structure" title="Link to this heading"></a></h2>
+<p>The solver is organized around a few key data structures:</p>
+<ul class="simple">
+<li><p><strong>SolverOptions</strong> — defines numerical tolerances and iteration limits.</p></li>
+<li><p><strong>Step</strong> — represents a loading phase with target increments, control flags, and time control.</p></li>
+<li><p><strong>Increment</strong> — represents a sub-step automatically generated within each Step.</p></li>
+<li><p><strong>HistoryEntry</strong> — records time, stress, strain, tangent, and state variables at each increment.</p></li>
+</ul>
+</section>
+<section id="usage-workflow">
+<h2>Usage Workflow<a class="headerlink" href="#usage-workflow" title="Link to this heading"></a></h2>
+<p>A typical workflow consists of:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialize</strong> the solver with a material model name and its properties.</p></li>
+<li><p><strong>Set</strong> the initial state (stress and internal variables).</p></li>
+<li><p><strong>Define</strong> one or more loading Steps with control flags and targets.</p></li>
+<li><p><strong>Add</strong> the steps to the solver.</p></li>
+<li><p><strong>Solve</strong> the problem.</p></li>
+<li><p><strong>Inspect or export</strong> the resulting history.</p></li>
+</ol>
+</section>
+<section id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotMaterialPointSolverHypoElastic.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Eigen/Dense&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="n">Vec6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Vector6d</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// 1) Define the material model (must be registered in Marmot)</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">materialName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;LINEARELASTIC&quot;</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">properties</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">210e9</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// Example: Young&#39;s modulus, Poisson&#39;s ratio</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nProps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// 2) Configure solver options</span>
+<span class="w">  </span><span class="n">MarmotMaterialPointSolverHypoElastic</span><span class="o">::</span><span class="n">SolverOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">maxIterations</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">residualTolerance</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">;</span>
+<span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">correctionTolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// 3) Create solver instance</span>
+<span class="w">  </span><span class="n">MarmotMaterialPointSolverHypoElastic</span><span class="w"> </span><span class="n">solver</span><span class="p">(</span><span class="n">materialName</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">nProps</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// 4) Set the initial state</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nSV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">getNumberOfStateVariables</span><span class="p">(</span><span class="n">nSV</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXd</span><span class="w"> </span><span class="n">initialSV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXd</span><span class="o">::</span><span class="n">Zero</span><span class="p">(</span><span class="n">nSV</span><span class="p">);</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">setInitialState</span><span class="p">(</span><span class="n">Vec6</span><span class="o">::</span><span class="n">Zero</span><span class="p">(),</span><span class="w"> </span><span class="n">initialSV</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// 5) Define a loading step (uniaxial strain-controlled on ε_11)</span>
+<span class="w">  </span><span class="n">MarmotMaterialPointSolverHypoElastic</span><span class="o">::</span><span class="n">Step</span><span class="w"> </span><span class="n">step</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">timeStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">timeEnd</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTStart</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTMin</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTMax</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">maxIncrements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">strainIncrementTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Vec6</span><span class="o">::</span><span class="n">Zero</span><span class="p">();</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">stressIncrementTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Vec6</span><span class="o">::</span><span class="n">Zero</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">strainIncrementTarget</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-3</span><span class="p">;</span><span class="w"> </span><span class="c1">// Total applied strain over the step</span>
+
+<span class="w">  </span><span class="c1">// Control flags: exactly one of each must be true</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isStrainComponentControlled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span><span class="mi">6</span><span class="o">&gt;::</span><span class="n">Constant</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isStressComponentControlled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span><span class="mi">6</span><span class="o">&gt;::</span><span class="n">Constant</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isStrainComponentControlled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">  </span><span class="c1">// ε_11 controlled</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="n">step</span><span class="p">.</span><span class="n">isStressComponentControlled</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="c1">// others stress-controlled (zero target)</span>
+
+<span class="w">  </span><span class="c1">// 6) Run the solver</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">addStep</span><span class="p">(</span><span class="n">step</span><span class="p">);</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">solve</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// 7) Output the results</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">printHistory</span><span class="p">();</span>
+<span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">exportHistoryToCSV</span><span class="p">(</span><span class="s">&quot;mp_history.csv&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="typical-output">
+<h2>Typical Output<a class="headerlink" href="#typical-output" title="Link to this heading"></a></h2>
+<p>Running the above example will print information about each load step and increment, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Solving step from 0 to 1
+  Solving increment 1, time: 0 to 0.2, dT: 0.2
+    Iteration 0, ||ddE||: 1.0e+00, ||R||: 2.5e-05
+    Iteration 1, ||ddE||: 3.1e-07, ||R||: 1.2e-10
+  Converged after 2 iterations.
+Material Point History:
+Time: 1.000000e+00
+  Stress: 2.100000e+08  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+  Strain: 1.000000e-03  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+  State Vars: ...
+</pre></div>
+</div>
+<p>The history can be exported as a CSV file (<code class="docutils literal notranslate"><span class="pre">mp_history.csv</span></code>) for visualization or analysis.</p>
+</section>
+<section id="guidelines-and-notes">
+<h2>Guidelines and Notes<a class="headerlink" href="#guidelines-and-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Each of the six Voigt components must be either <strong>strain-controlled</strong> or <strong>stress-controlled</strong>.
+<code class="docutils literal notranslate"><span class="pre">Step::checkControl()</span></code> is used to verify consistency when adding a step.</p></li>
+<li><p>The total target increments are distributed automatically over time according to <code class="docutils literal notranslate"><span class="pre">dT</span></code>.</p></li>
+<li><p>If convergence fails, the solver halves <code class="docutils literal notranslate"><span class="pre">dT</span></code> until reaching <code class="docutils literal notranslate"><span class="pre">dTMin</span></code>.</p></li>
+<li><p>The exported CSV includes:
+<code class="docutils literal notranslate"><span class="pre">time</span></code>, <code class="docutils literal notranslate"><span class="pre">stress[6]</span></code>, <code class="docutils literal notranslate"><span class="pre">strain[6]</span></code>, and all state variables.</p></li>
+</ul>
+</section>
+<section id="practical-applications">
+<h2>Practical Applications<a class="headerlink" href="#practical-applications" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Material verification and constitutive model calibration</p></li>
+<li><p>Generating reference stress–strain curves</p></li>
+<li><p>Investigating convergence and stability of material models</p></li>
+<li><p>Educational demonstrations of hypo-elastic material response</p></li>
+</ul>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv436MarmotMaterialPointSolverHypoElastic">
+<span id="_CPPv336MarmotMaterialPointSolverHypoElastic"></span><span id="_CPPv236MarmotMaterialPointSolverHypoElastic"></span><span id="MarmotMaterialPointSolverHypoElastic"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialPointSolverHypoElastic</span></span></span><br /></dt>
+<dd><p>Collaboration diagram for MarmotMaterialPointSolverHypoElastic:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-8bac106eccbf299b53b230d572f9e5b7f0202275.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;1&quot; [label=&quot;MarmotMaterialPointSolverHypoElastic&quot; tooltip=&quot;MarmotMaterialPointSolverHypoElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;5&quot; [label=&quot;MarmotMaterialPointSolverHypoElastic::SolverOptions&quot; tooltip=&quot;MarmotMaterialPointSolverHypoElastic::SolverOptions&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Solver for material point problems with hypo-elastic materials. </p>
+<p>This class implements a solver for material point problems using hypo-elastic material models. It supports loading steps with controlled strain and stress components, adaptive time stepping, and history recording. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic36MarmotMaterialPointSolverHypoElasticERNSt6stringEPdiRK13SolverOptions">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic36MarmotMaterialPointSolverHypoElasticERNSt6stringEPdiRK13SolverOptions"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic36MarmotMaterialPointSolverHypoElasticERNSt6stringEPdiRK13SolverOptions"></span><span id="MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic__ssR.doubleP.i.SolverOptionsCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a893325d41bd9fd699bd82d6e7909b8e2"></span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialPointSolverHypoElastic</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptionsE" title="MarmotMaterialPointSolverHypoElastic::SolverOptions"><span class="n"><span class="pre">SolverOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Constructor for the <a class="reference internal" href="#classMarmotMaterialPointSolverHypoElastic"><span class="std std-ref">MarmotMaterialPointSolverHypoElastic</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialName</strong> – Name of the hypo-elastic material model </p></li>
+<li><p><strong>materialProperties</strong> – Array of material properties </p></li>
+<li><p><strong>nMaterialProperties</strong> – Number of material properties </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic7addStepERK4Step">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic7addStepERK4Step"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic7addStepERK4Step"></span><span id="MarmotMaterialPointSolverHypoElastic::addStep__StepCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a7c37111357bf5d2261e3667b5d49197b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addStep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic4StepE" title="MarmotMaterialPointSolverHypoElastic::Step"><span class="n"><span class="pre">Step</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">step</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add a loading step to the solver. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step</strong> – The <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Step"><span class="std std-ref">Step</span></a> to be added </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK36MarmotMaterialPointSolverHypoElastic8getStepsEv">
+<span id="_CPPv3NK36MarmotMaterialPointSolverHypoElastic8getStepsEv"></span><span id="_CPPv2NK36MarmotMaterialPointSolverHypoElastic8getStepsEv"></span><span id="MarmotMaterialPointSolverHypoElastic::getStepsC"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1afbc713e475af7db005363b037c08e729"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic4StepE" title="MarmotMaterialPointSolverHypoElastic::Step"><span class="n"><span class="pre">Step</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSteps</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the list of added loading steps. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A vector of <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Step"><span class="std std-ref">Step</span></a> containing the added steps </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic10clearStepsEv">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic10clearStepsEv"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic10clearStepsEv"></span><span id="MarmotMaterialPointSolverHypoElastic::clearSteps"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a6dbb1998e9bbc1c64bc5d2439bd63b43"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clearSteps</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Clear all added loading steps. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic15setInitialStateERKN6Marmot8Vector6dERKN5Eigen8VectorXdE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic15setInitialStateERKN6Marmot8Vector6dERKN5Eigen8VectorXdE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic15setInitialStateERKN6Marmot8Vector6dERKN5Eigen8VectorXdE"></span><span id="MarmotMaterialPointSolverHypoElastic::setInitialState__Marmot::Vector6dCR.Eigen::VectorXdCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a2e0ee07c1e149a6c5fd069f5793fdb21"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialState</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">initialStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">initialStateVars</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Set the initial state of the material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initialStress</strong> – The initial stress in Voigt notation </p></li>
+<li><p><strong>initialStateVars</strong> – The initial state variables </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK36MarmotMaterialPointSolverHypoElastic25getNumberOfStateVariablesERi">
+<span id="_CPPv3NK36MarmotMaterialPointSolverHypoElastic25getNumberOfStateVariablesERi"></span><span id="_CPPv2NK36MarmotMaterialPointSolverHypoElastic25getNumberOfStateVariablesERi"></span><span id="MarmotMaterialPointSolverHypoElastic::getNumberOfStateVariables__iRC"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ad1e0dddf1d6edea91927a7e73272a963"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfStateVariables</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nStateVarsOut</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the number of state variables in the material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of state variables </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic19resetToInitialStateEv">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic19resetToInitialStateEv"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic19resetToInitialStateEv"></span><span id="MarmotMaterialPointSolverHypoElastic::resetToInitialState"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a4ca6b0f5026e4a6089ef5d640995030b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resetToInitialState</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Reset the solver to the initial state. </p>
+<p>This function resets the initial stress and state variables of the material model. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic5solveEv">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic5solveEv"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic5solveEv"></span><span id="MarmotMaterialPointSolverHypoElastic::solve"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ab5cecd04068de60a2b5567f1718ca59b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solve</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve the material point problem for all added steps. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK36MarmotMaterialPointSolverHypoElastic10getHistoryEv">
+<span id="_CPPv3NK36MarmotMaterialPointSolverHypoElastic10getHistoryEv"></span><span id="_CPPv2NK36MarmotMaterialPointSolverHypoElastic10getHistoryEv"></span><span id="MarmotMaterialPointSolverHypoElastic::getHistoryC"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1aefe8d599cd231f55dafb55568438ae40"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntryE" title="MarmotMaterialPointSolverHypoElastic::HistoryEntry"><span class="n"><span class="pre">HistoryEntry</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the recorded history of the simulation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A vector of <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry"><span class="std std-ref">HistoryEntry</span></a> containing the recorded history </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12clearHistoryEv">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12clearHistoryEv"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12clearHistoryEv"></span><span id="MarmotMaterialPointSolverHypoElastic::clearHistory"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a2bd6b40084e54d9573a7ae9df38be847"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clearHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Clear the recorded history. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12printHistoryEv">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12printHistoryEv"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12printHistoryEv"></span><span id="MarmotMaterialPointSolverHypoElastic::printHistory"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1af78763c6e0ba52294cfe75facfc7691d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">printHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Print the recorded history to the console. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic18exportHistoryToCSVERKNSt6stringE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic18exportHistoryToCSVERKNSt6stringE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic18exportHistoryToCSVERKNSt6stringE"></span><span id="MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV__ssCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ad8f2c40cc9c9f87a6201114194f7d7b1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exportHistoryToCSV</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">filename</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Export the recorded history to a CSV file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – The name of the CSV file to export to </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9solveStepERK4Step">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9solveStepERK4Step"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9solveStepERK4Step"></span><span id="MarmotMaterialPointSolverHypoElastic::solveStep__StepCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a605b7177b217ba968acc08ccf54f86ee"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solveStep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic4StepE" title="MarmotMaterialPointSolverHypoElastic::Step"><span class="n"><span class="pre">Step</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">step</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve a single loading step. </p>
+<p>
+This function iterates over the increments defined in the step, calling solveIncrement for each increment. It manages time stepping and ensures that the entire step is covered. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step</strong> – The <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Step"><span class="std std-ref">Step</span></a> to be solved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic14solveIncrementERK9Increment">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic14solveIncrementERK9Increment"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic14solveIncrementERK9Increment"></span><span id="MarmotMaterialPointSolverHypoElastic::solveIncrement__IncrementCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a3b70d9bb37a2193c5234ec20af3dd433"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solveIncrement</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic9IncrementE" title="MarmotMaterialPointSolverHypoElastic::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve a single increment within a loading step. </p>
+<p>
+This function implements a Newton-Raphson iterative solver to compute the stress and strain state for the given increment. It updates the material state variables and records the history after convergence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Increment"><span class="std std-ref">Increment</span></a> to be solved </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the solver does not converge</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic15computeResidualERKN6Marmot8Vector6dERKN6Marmot8Vector6dERK9Increment">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic15computeResidualERKN6Marmot8Vector6dERKN6Marmot8Vector6dERK9Increment"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic15computeResidualERKN6Marmot8Vector6dERKN6Marmot8Vector6dERK9Increment"></span><span id="MarmotMaterialPointSolverHypoElastic::computeResidual__Marmot::Vector6dCR.Marmot::Vector6dCR.IncrementCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ab15625a7fc54b29c89c1bdf1710b9993"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeResidual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stressIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic9IncrementE" title="MarmotMaterialPointSolverHypoElastic::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Compute the residual for the current increment. </p>
+<p>
+This function calculates the residual vector based on the difference between the computed stress increment and the target increment, taking into account which components are controlled by strain or stress. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stressIncrement</strong> – The computed stress increment </p></li>
+<li><p><strong>target</strong> – The target (mixed) stress/strain increment </p></li>
+<li><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Increment"><span class="std std-ref">Increment</span></a> containing control information </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed residual vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13modifyTangentERN5Eigen6MatrixIdXL6EEXL6EEEERK9Increment">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13modifyTangentERN5Eigen6MatrixIdXL6EEXL6EEEERK9Increment"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13modifyTangentERN5Eigen6MatrixIdX6EX6EEERK9Increment"></span><span id="MarmotMaterialPointSolverHypoElastic::modifyTangent__Eigen::Matrix:double.6.6:R.IncrementCR"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a4094ca14a3ce3b18b27ad915867ecc71"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modifyTangent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic9IncrementE" title="MarmotMaterialPointSolverHypoElastic::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Modify the material tangent matrix based on control type. </p>
+<p>
+This function adjusts the tangent matrix to account for the components that are controlled by strain or stress, ensuring that the solver correctly handles mixed control scenarios. This is done by zeroing out rows corresponding to strain-controlled components and setting their diagonal entries to one. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tangent</strong> – The material tangent matrix to be modified </p></li>
+<li><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmotMaterialPointSolverHypoElastic_1_1Increment"><span class="std std-ref">Increment</span></a> containing control information</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic8materialE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic8materialE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic8materialE"></span><span id="MarmotMaterialPointSolverHypoElastic::material__MarmotMaterialHypoElasticP"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1affd9a62ad0ce4b4fee4deb1ca3510eba"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">material</span></span></span><br /></dt>
+<dd><p>The hypo-elastic material model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic10nStateVarsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic10nStateVarsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic10nStateVarsE"></span><span id="MarmotMaterialPointSolverHypoElastic::nStateVars__i"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a78d715f739e358e5a8e456d768af1628"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nStateVars</span></span></span><br /></dt>
+<dd><p>Number of state variables in the material model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9stateVarsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9stateVarsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9stateVarsE"></span><span id="MarmotMaterialPointSolverHypoElastic::stateVars__Eigen::VectorXd"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ab9ed38db017c08eb404cc5cc2bb2264b"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><br /></dt>
+<dd><p>Current state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic17_initialStateVarsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic17_initialStateVarsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic17_initialStateVarsE"></span><span id="MarmotMaterialPointSolverHypoElastic::_initialStateVars__Eigen::VectorXd"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a3e9e8994e5c5481583b7ed424b5c49b7"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_initialStateVars</span></span></span><br /></dt>
+<dd><p>Initial state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13stateVarsTempE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13stateVarsTempE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13stateVarsTempE"></span><span id="MarmotMaterialPointSolverHypoElastic::stateVarsTemp__Eigen::VectorXd"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a88943623f663e9bc903c883dbd2994d6"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVarsTemp</span></span></span><br /></dt>
+<dd><p>Temporary state variables for computations. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic6stressE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic6stressE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic6stressE"></span><span id="MarmotMaterialPointSolverHypoElastic::stress__Marmot::Vector6d"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a52f5e7ff91c8a0a976351782b29bc408"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The stress in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic14_initialStressE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic14_initialStressE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic14_initialStressE"></span><span id="MarmotMaterialPointSolverHypoElastic::_initialStress__Marmot::Vector6d"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a27d831f1c28bbefc6bedaca6d84b1710"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_initialStress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The initial stress in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic6strainE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic6strainE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic6strainE"></span><span id="MarmotMaterialPointSolverHypoElastic::strain__Marmot::Vector6d"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ad306ffdf937d730a8c2b257e53a824fc"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">strain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The strain in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic14dStressDStrainE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic14dStressDStrainE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic14dStressDStrainE"></span><span id="MarmotMaterialPointSolverHypoElastic::dStressDStrain__Marmot::Matrix6d"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1ab6ae7c089997d066244e7a712d96b511"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dStressDStrain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The material tangent matrix in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic5stepsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic5stepsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic5stepsE"></span><span id="MarmotMaterialPointSolverHypoElastic::steps__std::vector:Step:"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1aff3e01a519aca8f9c9709e15a5c06379"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic4StepE" title="MarmotMaterialPointSolverHypoElastic::Step"><span class="n"><span class="pre">Step</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">steps</span></span></span><br /></dt>
+<dd><p>List of loading steps. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic7historyE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic7historyE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic7historyE"></span><span id="MarmotMaterialPointSolverHypoElastic::history__std::vector:HistoryEntry:"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1aa5d55061e044040eaaafcf9c28764740"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntryE" title="MarmotMaterialPointSolverHypoElastic::HistoryEntry"><span class="n"><span class="pre">HistoryEntry</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">history</span></span></span><br /></dt>
+<dd><p>History of the simulation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic7optionsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic7optionsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic7optionsE"></span><span id="MarmotMaterialPointSolverHypoElastic::options__SolverOptionsC"></span><span class="target" id="classMarmotMaterialPointSolverHypoElastic_1a0204c768e7c20247eb6ce3bfb9616a7a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptionsE" title="MarmotMaterialPointSolverHypoElastic::SolverOptions"><span class="n"><span class="pre">SolverOptions</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><br /></dt>
+<dd><p>Solver options. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntryE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntryE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntryE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HistoryEntry</span></span></span><br /></dt>
+<dd><p>Struct to record the history of the simulation. </p>
+<p>Each entry contains time, stress, strain, and state variables. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK36MarmotMaterialPointSolverHypoElastic12HistoryEntry5printEv">
+<span id="_CPPv3NK36MarmotMaterialPointSolverHypoElastic12HistoryEntry5printEv"></span><span id="_CPPv2NK36MarmotMaterialPointSolverHypoElastic12HistoryEntry5printEv"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::printC"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1a2f0192d88ebfd31a303c1af1b82f89cb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">print</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntry4timeE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntry4timeE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntry4timeE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::time__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1a544e93def35d488b82f521060a777696"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><br /></dt>
+<dd><p>Time at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6stressE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6stressE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6stressE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::stress__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1a255e26e47d845aaaa1c961edfb86da49"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><br /></dt>
+<dd><p>Stress at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6strainE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6strainE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntry6strainE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::strain__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1a63403edecde56ef05a9da62c8419fbba"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">strain</span></span></span><br /></dt>
+<dd><p>Strain at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntry14dStressdStrainE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntry14dStressdStrainE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntry14dStressdStrainE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::dStressdStrain__Marmot::Matrix6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1a86f2e821f18ff7ab9e300a3eeb89eb06"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dStressdStrain</span></span></span><br /></dt>
+<dd><p>Material tangent at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic12HistoryEntry9stateVarsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic12HistoryEntry9stateVarsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic12HistoryEntry9stateVarsE"></span><span id="MarmotMaterialPointSolverHypoElastic::HistoryEntry::stateVars__Eigen::VectorXd"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1HistoryEntry_1ae66b683624ae48ae25cbbd1631efcfc2"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><br /></dt>
+<dd><p>State variables at the history entry. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9IncrementE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9IncrementE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9IncrementE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Increment</span></span></span><br /></dt>
+<dd><p>Struct to define a loading increment. </p>
+<p>Each increment contains strain and stress increments, control flags, time information, and iteration limits. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment15strainIncrementE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment15strainIncrementE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment15strainIncrementE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::strainIncrement__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1a4fef3ad3e8eef6d40abeb474cffc1bdf"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">strainIncrement</span></span></span><br /></dt>
+<dd><p>Strain increment for the increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment15stressIncrementE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment15stressIncrementE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment15stressIncrementE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::stressIncrement__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1a65fb365f5178dbb0f52d9e144bf39624"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressIncrement</span></span></span><br /></dt>
+<dd><p>Stress increment for the increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment27isStrainComponentControlledE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment27isStrainComponentControlledE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment27isStrainComponentControlledE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::isStrainComponentControlled__Eigen::Vector:b.6:"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1a3291250fd34aa311cdfb789458e38356"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStrainComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which strain components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment27isStressComponentControlledE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment27isStressComponentControlledE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment27isStressComponentControlledE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::isStressComponentControlled__Eigen::Vector:b.6:"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1ad2db8b182839e41fee14a8aa1f587c05"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStressComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which stress components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment7timeOldE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment7timeOldE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment7timeOldE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::timeOld__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1ac0475d135fdb8c8d13099374513863bf"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeOld</span></span></span><br /></dt>
+<dd><p>Old time at the beginning of the increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic9Increment2dTE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic9Increment2dTE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic9Increment2dTE"></span><span id="MarmotMaterialPointSolverHypoElastic::Increment::dT__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Increment_1a42f002dffb568f3477a45522387afe5e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><br /></dt>
+<dd><p>Time step size for the increment. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptionsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13SolverOptionsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13SolverOptionsE"></span><span id="MarmotMaterialPointSolverHypoElastic::SolverOptions"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1SolverOptions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverOptions</span></span></span><br /></dt>
+<dd><p>Struct to define solver options. </p>
+<p>Contains parameters for controlling the solver’s behavior. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptions13maxIterationsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13SolverOptions13maxIterationsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13SolverOptions13maxIterationsE"></span><span id="MarmotMaterialPointSolverHypoElastic::SolverOptions::maxIterations__i"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1SolverOptions_1a40bcfbdb4b6c6bee8e8e520abfeff2c5"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxIterations</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">25</span></span><br /></dt>
+<dd><p>Maximum number of iterations per increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptions17residualToleranceE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13SolverOptions17residualToleranceE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13SolverOptions17residualToleranceE"></span><span id="MarmotMaterialPointSolverHypoElastic::SolverOptions::residualTolerance__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1SolverOptions_1ad1b2582a09b1bb5705cc3944114c57d0"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">residualTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-10</span></span><br /></dt>
+<dd><p>Convergence tolerance. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic13SolverOptions19correctionToleranceE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic13SolverOptions19correctionToleranceE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic13SolverOptions19correctionToleranceE"></span><span id="MarmotMaterialPointSolverHypoElastic::SolverOptions::correctionTolerance__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1SolverOptions_1a2c4b4a97bd3fea19a641836e1c5eba55"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">correctionTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-10</span></span><br /></dt>
+<dd><p>Correction tolerance. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4StepE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4StepE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4StepE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Step</span></span></span><br /></dt>
+<dd><p>Struct to define a loading step. </p>
+<p>Each step contains target strain and stress states, time information and time step control parameters. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK36MarmotMaterialPointSolverHypoElastic4Step12checkControlEv">
+<span id="_CPPv3NK36MarmotMaterialPointSolverHypoElastic4Step12checkControlEv"></span><span id="_CPPv2NK36MarmotMaterialPointSolverHypoElastic4Step12checkControlEv"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::checkControlC"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a2817875063db35c6c4e2594566ded426"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkControl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Check that for each component, either strain or stress is controlled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the condition is not met </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step21strainIncrementTargetE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step21strainIncrementTargetE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step21strainIncrementTargetE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::strainIncrementTarget__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1ac3b3d816d2508687756ec454032aa13c"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">strainIncrementTarget</span></span></span><br /></dt>
+<dd><p>Target strain increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step21stressIncrementTargetE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step21stressIncrementTargetE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step21stressIncrementTargetE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::stressIncrementTarget__Marmot::Vector6d"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a943294e08fb48a47f05544ba8f4a1e8f"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressIncrementTarget</span></span></span><br /></dt>
+<dd><p>Target stress increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step27isStrainComponentControlledE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step27isStrainComponentControlledE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step27isStrainComponentControlledE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::isStrainComponentControlled__Eigen::Vector:b.6:"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1af1c8bcc12d63f270c83624db1a238cde"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStrainComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which strain components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step27isStressComponentControlledE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step27isStressComponentControlledE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step27isStressComponentControlledE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::isStressComponentControlled__Eigen::Vector:b.6:"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a8def5162fc3b0a22ecf1ed14adec9a07"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStressComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which stress components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step9timeStartE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step9timeStartE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step9timeStartE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::timeStart__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1aae83f5bd803649d719a8357e7ec33e78"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeStart</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p>Start time of the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step7timeEndE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step7timeEndE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step7timeEndE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::timeEnd__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a4a61ef22e5e7ae893bfddc789f7bd4bf"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeEnd</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0</span></span><br /></dt>
+<dd><p>End time of the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step7dTStartE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step7dTStartE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step7dTStartE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::dTStart__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a8ac7cb9f5256657a08d43d65691dfb53"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTStart</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.1</span></span><br /></dt>
+<dd><p>Initial time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step5dTMinE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step5dTMinE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step5dTMinE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::dTMin__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1ae8464e66d8c5de1e1fca1721891a883f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTMin</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><br /></dt>
+<dd><p>Minimum time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step5dTMaxE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step5dTMaxE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step5dTMaxE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::dTMax__double"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1a499c9183c2c7a20e7be812039dada22f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTMax</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.5</span></span><br /></dt>
+<dd><p>Maximum time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N36MarmotMaterialPointSolverHypoElastic4Step13maxIncrementsE">
+<span id="_CPPv3N36MarmotMaterialPointSolverHypoElastic4Step13maxIncrementsE"></span><span id="_CPPv2N36MarmotMaterialPointSolverHypoElastic4Step13maxIncrementsE"></span><span id="MarmotMaterialPointSolverHypoElastic::Step::maxIncrements__i"></span><span class="target" id="structMarmotMaterialPointSolverHypoElastic_1_1Step_1af3cebd62e34b7a4970e7bc8eed727045"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxIncrements</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">100</span></span><br /></dt>
+<dd><p>Maximum number of increments in the step. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solvers.html" class="btn btn-neutral float-left" title="Solvers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="materials.html" class="btn btn-neutral float-right" title="Material models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

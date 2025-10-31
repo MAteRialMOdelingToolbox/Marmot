@@ -26,6 +26,8 @@
         <link refid="_marmot_material_hypo_elastic_8h_source"/>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
       <node id="4">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h</label>
@@ -38,6 +40,10 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h</label>
+        <link refid="_marmot_material_point_solver_hypo_elastic_8h_source"/>
       </node>
     </invincdepgraph>
     <innerclass refid="class_marmot_material_mechanical" prot="public">MarmotMaterialMechanical</innerclass>

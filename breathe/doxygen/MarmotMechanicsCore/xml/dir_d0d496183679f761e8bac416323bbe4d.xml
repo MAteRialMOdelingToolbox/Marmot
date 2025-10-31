@@ -19,6 +19,7 @@
     <innerfile refid="_marmot_material_hypo_elastic_8h">MarmotMaterialHypoElastic.h</innerfile>
     <innerfile refid="_marmot_material_hypo_elastic_a_d_8h">MarmotMaterialHypoElasticAD.h</innerfile>
     <innerfile refid="_marmot_material_mechanical_8h">MarmotMaterialMechanical.h</innerfile>
+    <innerfile refid="_marmot_material_point_solver_hypo_elastic_8h">MarmotMaterialPointSolverHypoElastic.h</innerfile>
     <innerfile refid="_marmot_prony_series_8h">MarmotPronySeries.h</innerfile>
     <innerfile refid="_marmot_state_var_vector_manager_8h">MarmotStateVarVectorManager.h</innerfile>
     <innerfile refid="_marmot_utility_8h">MarmotUtility.h</innerfile>
