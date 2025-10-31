@@ -1,13 +1,10 @@
 #include "Marmot/Marmot.h"
-#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 
 // Function to create a MarmotMaterialHypoElastic object
 // Inputs:
@@ -36,29 +33,30 @@ std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( co
 void testMaterialResponse()
 {
   // Define material parameters (Young's modulus and Poisson's ratio)
-  const double materialProperties[2] = { 20000, 0.25 };
-  const int    nMaterialProperties   = 2;
+  std::vector< double > materialProperties = { 20000, 0.25 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.001, 0., 0., 0., 0.0, 0.0 };
 
-  // Apply a small strain increment
-  dStrain << 1e-3, 0., 0., 0., 0., 0.;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget;
@@ -72,30 +70,32 @@ void testMaterialResponse()
 // Function to test the isotropic material response for a shear strain increment
 void testShearMaterialResponse()
 {
+
   // Define material parameters (Young's modulus and Poisson's ratio)
-  const double materialProperties[2] = { 20000, 0.25 };
-  const int    nMaterialProperties   = 2;
+  std::vector< double > materialProperties = { 20000, 0.25 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.0, 0., 0., 0.001, 0.001, 0.001 };
 
-  // Apply a small strain increment
-  dStrain << 0., 0., 0., 1e-3, 1e-3, 1e-3;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear;
@@ -115,29 +115,30 @@ void testTransverseIsotropicMaterialResponse()
   // - nu12: Poisson's ratio in the 1-2 plane
   // - nu23: Poisson's ratio in the 2-3 plane
   // - G12: Shear modulus in the 1-2 plane
-  const double materialProperties[11] = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
-  const int    nMaterialProperties    = 11;
+  std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.001, 0., 0., 0., 0.0, 0.0 };
 
-  // Apply a small strain increment
-  dStrain << 1e-3, 0., 0., 0., 0., 0.;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_transverseIsotropic;
@@ -158,29 +159,30 @@ void testTransverseIsotropicShearMaterialResponse()
   // - nu12: Poisson's ratio in the 1-2 plane
   // - nu23: Poisson's ratio in the 2-3 plane
   // - G12: Shear modulus in the 1-2 plane
-  const double materialProperties[11] = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 1, 0 };
-  const int    nMaterialProperties    = 11;
+  std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 1, 0 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.0, 0., 0., 0.001, 0.001, 0.001 };
 
-  // Apply small strain increment
-  dStrain << 0., 0., 0., 1e-3, 1e-3, 1e-3;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied shear strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear_transverseIsotropic;
@@ -205,30 +207,31 @@ void testOrthotropicMaterialResponse()
   // - G12: Shear modulus in the 1-2 plane
   // - G23: Shear modulus in the 2-3 plane
   // - G13: Shear modulus in the 1-3 plane
-  const double materialProperties[15] = { 20000, 10000, 15000, 0.25, 0.3, 0.35, 4000, 5000, 6000, 1, 0, 0, 0, 1, 0 };
-  const int    nMaterialProperties    = 15;
+  std::vector< double > materialProperties =
+    { 20000., 10000., 15000., 0.25, 0.3, 0.35, 4000, 5000, 6000, 1, 0, 0, 0, 1, 0 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.001, 0., 0., 0., 0.0, 0.0 };
 
-  // Apply a small strain increment
-  dStrain << 1e-3, 0., 0., 0., 0., 0.;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
-
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;
   stressTarget_orthotropic << 32.32091690544413, 11.002865329512895, 14.613180515759312, 0., 0., 0.;
@@ -252,30 +255,31 @@ void testOrthotropicShearMaterialResponse()
   // - G12: Shear modulus in the 1-2 plane
   // - G23: Shear modulus in the 2-3 plane
   // - G13: Shear modulus in the 1-3 plane
-  const double materialProperties[15] = { 20000, 10000, 15000, 0.25, 0.3, 0.35, 4000, 5000, 6000, 1, 0, 0, 0, 1, 0 };
-  const int    nMaterialProperties    = 15;
+  std::vector< double > materialProperties =
+    { 20000, 10000, 15000, 0.25, 0.3, 0.35, 4000, 5000, 6000, 1, 0, 0, 0, 1, 0 };
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { 0.0, 0., 0., 0.001, 0.001, 0.001 };
 
-  // Apply a small strain increment
-  dStrain << 0., 0., 0., 1e-3, 1e-3, 1e-3;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
-
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear_orthotropic;
   stressTargetShear_orthotropic << 0., 0., 0., 4., 6., 5.;
@@ -299,30 +303,31 @@ void testOrthotropicMaterialResponseRotation()
   // - G12: Shear modulus in the 1-2 plane
   // - G23: Shear modulus in the 2-3 plane
   // - G13: Shear modulus in the 1-3 plane
-  const double materialProperties[15] =
+  std::vector< double > materialProperties =
     { 1000, 30, 30, 0.009, 0, 0, 50, 50, 50, 0.906307787, 0.422618262, 0, -0.422618262, 0.906307787, 0 };
-  const int nMaterialProperties = 15;
 
-  // Create the material object
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
+  auto        solveropts = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName    = "LINEARELASTIC";
+  auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
+                                                      &materialProperties[0],
+                                                      materialProperties.size(),
+                                                      solveropts );
 
-  // Define initial stress state (set to zero) and strain increment
-  Eigen::Matrix< double, 6, 1 > stress = Eigen::Matrix< double, 6, 1 >::Zero();
-  Eigen::Matrix< double, 6, 1 > dStrain;
+  // define step: apply normal strain increment
+  MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+  step.strainIncrementTarget       = { -2.4e-4, -3.9e-4, 0., 1.76e-3, 0., 0. };
 
-  // Apply a small strain increment
-  dStrain << -2.4e-4, -3.9e-4, 0., 1.76e-3, 0., 0.;
-
-  // Define a matrix to store the tangent stiffness (stress-strain relation)
-  Eigen::Matrix< double, 6, 6 > dStressDDStrain;
-
-  // Define time parameters for the material response calculation
-  const double timeOld = 0.0; // Previous time step
-  const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
-
-  // Compute the stress response of the material
-  mat->computeStress( stress.data(), dStressDDStrain.data(), dStrain.data(), &timeOld, dT, pNewDT );
+  // add step to solver
+  solver.addStep( step );
+  // solve
+  solver.solve();
+  // read history
+  auto history = solver.getHistory();
+  // get computed stress
+  Marmot::Vector6d stress = history.back().stress;
 
   // Define the expected st ress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;

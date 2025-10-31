@@ -28,6 +28,7 @@
 
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
@@ -126,14 +127,7 @@ namespace Marmot::Testing {
     return pts;
   };
 
-  bool spinTurbokreisel( const std::unique_ptr< MarmotMaterialHypoElastic >& material,
-                         double*                                             stress,
-                         double*                                             dStress_dStrain,
-                         const double*                                       dStrain,
-                         const double*                                       timeOld,
-                         const double                                        dT,
-                         double&                                             pNewDT,
-                         const double                                        stressTol    = 1e-15,
-                         const double                                        stiffnessTol = 1e-15 );
-
+  bool spinTurbokreisel( MarmotMaterialPointSolverHypoElastic& solver,
+                         double                                stressTol    = 1e-15,
+                         double                                stiffnessTol = 1e-15 );
 } // namespace Marmot::Testing
