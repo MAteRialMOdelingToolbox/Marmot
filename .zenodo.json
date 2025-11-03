@@ -3,10 +3,10 @@
   "description": "`Marmot` (MAteRialMOdellingToolbox) is a C++ library for robust and efficient finite elements and state-of-the-art constitutive models (especially for quasi-brittle materials such as concrete, rock, and soils). It uses modern, object-oriented programming and provides generic interfaces for solvers including Abaqus, Plaxis, MOOSE, OpenSees, and EdelweissFE. Documentation: https://materialmodelingtoolbox.github.io/Marmot/.",
   "upload_type": "software",
   "version": "v25.11",
-  "publication_date": "2025-11-01",
+  "publication_date": "2025-11-02",
   "language": "eng",
   "access_right": "open",
-  "license": "lgpl-2.1",
+  "license": "lgpl-2.1-or-later",
   "keywords": [
     "finite-elements",
     "plasticity",
@@ -19,79 +19,33 @@
     "damage-plasticity"
   ],
   "creators": [
-    {
-      "name": "Neuner, Matthias",
-      "affiliation": "University of Innsbruck; Stanford University; BOKU University",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Dummer, Alexander",
-      "affiliation": "University of Innsbruck; University of Colorado Boulder",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Schreter-Fleischhacker, Magdalena",
-      "affiliation": "University of Innsbruck; Technical University Munich",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Hofer, Paul",
-      "affiliation": "University of Innsbruck",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Alkmim, Nasser",
-      "affiliation": "University of Innsbruck",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Basche, Konstantin",
-      "affiliation": "University of Innsbruck",
-      "type": "ProjectMember"
-    },
-    {
-      "name": "Mader, Thomas",
-      "affiliation": "University of Innsbruck, BOKU University",
-      "type": "ProjectMember"
-    }
+    { "name": "Neuner, Matthias", "affiliation": "University of Innsbruck; Stanford University; BOKU University" },
+    { "name": "Dummer, Alexander", "affiliation": "University of Innsbruck; University of Colorado Boulder" },
+    { "name": "Schreter-Fleischhacker, Magdalena", "affiliation": "University of Innsbruck; Technical University Munich" },
+    { "name": "Hofer, Paul", "affiliation": "University of Innsbruck" },
+    { "name": "Alkmim, Nasser", "affiliation": "University of Innsbruck" },
+    { "name": "Basche, Konstantin", "affiliation": "University of Innsbruck" },
+    { "name": "Mader, Thomas", "affiliation": "University of Innsbruck; BOKU University" }
   ],
   "contributors": [
-    {
-      "name": "Florian Fischer",
-      "affiliation": "University of Innsbruck",
-      "type": "Contributor"
-    },
-    {
-      "name": "Manuel Hradsky",
-      "affiliation": "University of Innsbruck",
-      "type": "Contributor"
-    },
-    {
-      "name": "Luka Mitrovic",
-      "affiliation": "BOKU University",
-      "type": "Contributor"
-    },
-    {
-      "name": "Daniel Reitmair",
-      "affiliation": "University of Innsbruck",
-      "type": "Contributor"
-    },
+    { "name": "Fischer, Florian", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
+    { "name": "Hradsky, Manuel", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
+    { "name": "Mitrovic, Luka", "affiliation": "BOKU University", "type": "ProjectMember" },
+    { "name": "Reitmair, Daniel", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
+    { "name": "Stathas, Alexandros", "affiliation": "BOKU University", "type": "ProjectMember" }
   ],
   "related_identifiers": [
     {
       "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v25.06",
-      "relation": "isSupplementTo",
-      "resource_type": "software"
+      "relation": "isSupplementTo"
     },
     {
       "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot",
-      "relation": "isAlternateIdentifier",
-      "resource_type": "software"
+      "relation": "isAlternateIdentifier"
     },
     {
       "identifier": "https://materialmodelingtoolbox.github.io/Marmot/",
-      "relation": "isDocumentedBy",
-      "resource_type": "publication"
+      "relation": "isDocumentedBy"
     }
   ]
 }
