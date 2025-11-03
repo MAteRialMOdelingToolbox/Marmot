@@ -2,7 +2,7 @@
 ![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg)
 [![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg)](https://materialmodelingtoolbox.github.io/Marmot/)
 [![license](https://img.shields.io/badge/license-LGPLv2-blue.svg)](LICENSE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17509328.svg)](https://doi.org/10.5281/zenodo.17509328)
 
 # Marmot
 
@@ -99,6 +99,23 @@ You can also built the documentation locally using Doxygen and Sphinx/Breathe fo
    conda install --file doc/requirements.txt
    # build the documentation
    python scripts/buildDocumentation.py
+```
+
+## How to cite
+
+If you use Marmot in your research, please cite it as
+
+```bibtex
+@software{neuner_marmot_2025,
+  author       = {Neuner, Matthias and Dummer, Alexander and Schreter-Fleischhacker, Magdalena and Hofer, Paul and Alkmim, Nasser and Basche, Konstantin and Mader, Thomas},
+  title        = {Marmot: MAteRialMOdellingToolbox},
+  version      = {v25.11},
+  month        = nov,
+  year         = 2025,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17509328},
+  url          = {https://doi.org/10.5281/zenodo.17509328}
+}
 ```
 
 ## License
