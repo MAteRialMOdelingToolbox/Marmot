@@ -12,11 +12,6 @@
 using namespace Marmot;
 using namespace Eigen;
 
-static double scaleStiffness( double stiffness, double scaleFactor )
-{
-  return stiffness * scaleFactor;
-}
-
 namespace Marmot::Materials {
 
   LinearViscoelasticOrthotropicPowerLaw::LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
