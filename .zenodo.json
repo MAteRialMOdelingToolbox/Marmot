@@ -19,24 +19,24 @@
     "damage-plasticity"
   ],
   "creators": [
-    { "name": "Neuner, Matthias", "affiliation": "University of Innsbruck; Stanford University; BOKU University" },
-    { "name": "Dummer, Alexander", "affiliation": "University of Innsbruck; University of Colorado Boulder" },
-    { "name": "Schreter-Fleischhacker, Magdalena", "affiliation": "University of Innsbruck; Technical University Munich" },
-    { "name": "Hofer, Paul", "affiliation": "University of Innsbruck" },
+    { "name": "Neuner, Matthias", "affiliation": "University of Innsbruck; Stanford University; BOKU University", "orcid": "0000-0003-2221-8089" },
+    { "name": "Dummer, Alexander", "affiliation": "University of Innsbruck; University of Colorado Boulder", "orcid": "0000-0002-1998-1705" },
+    { "name": "Schreter-Fleischhacker, Magdalena", "affiliation": "University of Innsbruck; Technical University Munich", "orcid": "0000-0003-3888-4086" },
+    { "name": "Hofer, Paul", "affiliation": "University of Innsbruck", "orcid": "0009-0001-6589-7993" },
     { "name": "Alkmim, Nasser", "affiliation": "University of Innsbruck" },
-    { "name": "Basche, Konstantin", "affiliation": "University of Innsbruck" },
-    { "name": "Mader, Thomas", "affiliation": "University of Innsbruck; BOKU University" }
+    { "name": "Basche, Konstantin", "affiliation": "University of Innsbruck", "orcid": "0009-0006-5624-9771" },
+    { "name": "Mader, Thomas", "affiliation": "University of Innsbruck; BOKU University", "orcid": "0000-0003-1780-4227" }
   ],
   "contributors": [
     { "name": "Fischer, Florian", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
     { "name": "Hradsky, Manuel", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
     { "name": "Mitrovic, Luka", "affiliation": "BOKU University", "type": "ProjectMember" },
-    { "name": "Reitmair, Daniel", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
+    { "name": "Reitmair, Daniel", "affiliation": "University of Innsbruck", "type": "ProjectMember", "orcid": "0000-0003-1780-4227" },
     { "name": "Stathas, Alexandros", "affiliation": "BOKU University", "type": "ProjectMember" }
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v25.06",
+      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v25.11",
       "relation": "isSupplementTo"
     },
     {
