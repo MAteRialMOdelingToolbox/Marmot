@@ -105,10 +105,38 @@
 <h1>Linear Viscoelastic Orthotropic Power Law model<a class="headerlink" href="#linear-viscoelastic-orthotropic-power-law-model" title="Link to this heading"></a></h1>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
-<p>This is an orthotropic implementation of the isotropic model described in <a class="reference internal" href="linearviscoelasticpowerlaw.html#linearviscoelasticpowerlaw"><span class="std std-ref">Linear Viscoelastic Power Law model</span></a>.</p>
-<p>Thus, the normalized initial elastic compliance tensor is replaced by an orthotropic one.</p>
+<p>This is an orthotropic implementation of the isotropic model described in <a class="reference internal" href="linearviscoelasticpowerlaw.html#linearviscoelasticpowerlaw"><span class="std std-ref">Linear Viscoelastic Power Law model</span></a>.
+By contrast to the isotropic model, an additional scaling factor is used for scaling the stiffness tensor.
+This is helpful because the experimentally determined Young’s moduli and shear moduli
+are in general not equal to the initial elastic moduli of the viscoelastic model.
+By using this scaling factor, the experimentally determined Young’s moduli and shear moduli
+can be used as input parameters for the viscoelastic model and the initial elastic moduli
+are automatically adjusted.
+In the following, the scaling factor is denoted as <span class="math notranslate nohighlight">\(s\)</span> which is usually larger than one.</p>
+<p>For the formulation of the viscoelastic model in <a class="reference internal" href="linearviscoelasticpowerlaw.html#linearviscoelasticpowerlaw"><span class="std std-ref">Linear Viscoelastic Power Law model</span></a>,
+the initial elastic stiffness tensor <span class="math notranslate nohighlight">\(\Cel\)</span> is replaced by</p>
 <div class="math notranslate nohighlight">
-\[\DelNu = E_1\, \CelInv,\]</div>
+\[\Cel_0 = s\, \Cel( E_1, E_2, E_3, G_{12}, G_{23}, G_{31}, \nu_{12}, \nu_{23}, \nu_{31} ),\]</div>
+<p>where the Young’s moduli <span class="math notranslate nohighlight">\(E_1\)</span>, <span class="math notranslate nohighlight">\(E_2\)</span>, and <span class="math notranslate nohighlight">\(E_3\)</span>
+and the shear moduli <span class="math notranslate nohighlight">\(G_{12}\)</span>, <span class="math notranslate nohighlight">\(G_{23}\)</span>, and <span class="math notranslate nohighlight">\(G_{31}\)</span>
+are given in the material directions <span class="math notranslate nohighlight">\(x_1\)</span>, <span class="math notranslate nohighlight">\(x_2\)</span>, and <span class="math notranslate nohighlight">\(x_3\)</span>.
+Additionally, the Poisson’s ratios <span class="math notranslate nohighlight">\(\nu_{12}\)</span>, <span class="math notranslate nohighlight">\(\nu_{23}\)</span>, and <span class="math notranslate nohighlight">\(\nu_{31}\)</span> are used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The scaling factor <span class="math notranslate nohighlight">\(s\)</span> is applied to all initial elastic moduli.
+This means that the ratios between the Young’s moduli and shear moduli remain unchanged.
+Only the absolute values of the initial elastic moduli are scaled.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The defnition of Poisson’s ratio in Marmot differs from the standard definition.
+In Marmot, Poisson’s ratio <span class="math notranslate nohighlight">\(\nu_{ij}\)</span> is defined as the ratio of the lateral strain in direction <span class="math notranslate nohighlight">\(x_j\)</span>
+to the axial strain in direction <span class="math notranslate nohighlight">\(x_i\)</span> when a uniaxial stress is applied in direction <span class="math notranslate nohighlight">\(x_i\)</span>.
+See namespace <span class="xref std std-ref">Marmot::ContinuumMechanics::Elasticity</span> for more details.</p>
+</div>
+<p>Accordingly, the normalized initial elastic compliance tensor now reads</p>
+<div class="math notranslate nohighlight">
+\[\DelNu = s\, E_1\, \CelInv_0,\]</div>
 <p>with the Young’s modulus <span class="math notranslate nohighlight">\(E_1\)</span> as the
 Young’s modulus in the <span class="math notranslate nohighlight">\(x_1\)</span> material direction.
 Constant Poisson’s ratios are assumed in all material directions.</p>
@@ -217,6 +245,12 @@ Constant Poisson’s ratios are assumed in all material directions.</p>
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw20stiffnessScaleFactorE">
+<span id="_CPPv3N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw20stiffnessScaleFactorE"></span><span id="_CPPv2N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw20stiffnessScaleFactorE"></span><span id="Marmot::Materials::LinearViscoelasticOrthotropicPowerLaw::stiffnessScaleFactor__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticOrthotropicPowerLaw_1a28237cfd61a131c63c77ab0e3f5357ca"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">stiffnessScaleFactor</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw20stiffnessScaleFactorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor to scale elastic stiffness. </p>
+</dd></dl>
+
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw2E1E">
 <span id="_CPPv3N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw2E1E"></span><span id="_CPPv2N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw2E1E"></span><span id="Marmot::Materials::LinearViscoelasticOrthotropicPowerLaw::E1__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoelasticOrthotropicPowerLaw_1a0a8f80bac0d52ce9234fee93da187eca"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E1</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials37LinearViscoelasticOrthotropicPowerLaw2E1E" title="Link to this definition"></a><br /></dt>
