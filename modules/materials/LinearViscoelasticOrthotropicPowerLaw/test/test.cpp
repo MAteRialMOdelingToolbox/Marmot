@@ -3,43 +3,43 @@
 
 using namespace Marmot::Testing;
 
-Eigen::Vector< double, 22 > getMaterialPropertiesIsotropic()
+Eigen::Vector< double, 23 > getMaterialPropertiesIsotropic()
 {
   double E  = 2e5;
   double nu = 0.2;
   double G  = E / ( 2 * ( 1 + nu ) );
   // material properties
-  Eigen::Vector< double, 22 > materialProperties;
+  std::vector< double > materialProperties;
   // Young's moduli
-  materialProperties[0] = E;
-  materialProperties[1] = E;
-  materialProperties[2] = E;
+  materialProperties.push_back( 1.0 );
+  materialProperties.push_back( E );
+  materialProperties.push_back( E );
+  materialProperties.push_back( E );
   // Poisson's ratios
-  materialProperties[3] = nu;
-  materialProperties[4] = nu;
-  materialProperties[5] = nu;
+  materialProperties.push_back( nu );
+  materialProperties.push_back( nu );
+  materialProperties.push_back( nu );
   // shear moduli
-  materialProperties[6] = G;
-  materialProperties[7] = G;
-  materialProperties[8] = G;
-
+  materialProperties.push_back( G );
+  materialProperties.push_back( G );
+  materialProperties.push_back( G );
   // viscoelastic parameters
-  materialProperties[9]  = 0.5;
-  materialProperties[10] = 0.1;
-  materialProperties[11] = 2;
-  materialProperties[12] = 10;
-  materialProperties[13] = 0.0001;
-  materialProperties[14] = 3.1622776601683795;
-  materialProperties[15] = 1.;
+  materialProperties.push_back( 0.5 );
+  materialProperties.push_back( 0.1 );
+  materialProperties.push_back( 2 );
+  materialProperties.push_back( 10 );
+  materialProperties.push_back( 0.0001 );
+  materialProperties.push_back( 3.1622776601683795 );
+  materialProperties.push_back( 1.0 );
   // coordinate system
-  materialProperties[16] = 1.;
-  materialProperties[17] = 0.5;
-  materialProperties[18] = 0.;
-  materialProperties[19] = -0.5;
-  materialProperties[20] = 1;
-  materialProperties[21] = 1;
+  materialProperties.push_back( 1.0 );
+  materialProperties.push_back( 0.5 );
+  materialProperties.push_back( 0.0 );
+  materialProperties.push_back( -0.5 );
+  materialProperties.push_back( 1.0 );
+  materialProperties.push_back( 1.0 );
 
-  return materialProperties;
+  return Eigen::Vector< double, 23 >( &materialProperties[0] );
 }
 
 void testLinearViscoelasticOrthotropicPowerLawIsotropic()
