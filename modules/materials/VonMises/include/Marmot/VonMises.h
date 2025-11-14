@@ -37,13 +37,10 @@ namespace Marmot::Materials {
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    void computeStress( double* stress,
-                        double* dStress_dStrain,
-
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT ) override;
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) override;
 
     /**
      * @brief Get material density.

@@ -47,24 +47,16 @@ namespace Marmot::Materials {
   {
     return managedStateVars->getStateView( stateName );
   }
-  void ADVonMises::computeStressAD( autodiff::dual*       stress,
-                                    const autodiff::dual* dStrain,
-                                    const double*         timeOld,
-                                    const double          dT,
-                                    double&               pNewDT )
+  void ADVonMises::computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo )
   {
-    using Vector6dual       = Eigen::Matrix< dual, 6, 1 >;
-    using mVector6dual      = Eigen::Map< Vector6dual >;
-    using mVector6dualConst = Eigen::Map< const Vector6dual >;
-
-    mVector6dual            S( stress );
+    mVector6dual            S( state.stress );
     const mVector6dualConst dE( dStrain );
 
     // compute elastic stiffness
     const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
     // get current hardening variable
-    double& kappa = managedStateVars->kappa;
+    double& kappa = state.stateVars[0];
 
     // compute elastic predictor
     const Vector6dual trialStress = S + Cel * dE;
@@ -83,8 +75,9 @@ namespace Marmot::Materials {
       while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > ADVonMisesConstants::innerNewtonTol ) {
 
         if ( counter == ADVonMisesConstants::nMaxInnerNewtonCycles ) {
-          pNewDT = 0.25;
-          return;
+          throw std::runtime_error( MakeString()
+                                    << __PRETTY_FUNCTION__
+                                    << ": Return mapping did not converge within maximum number of iterations!" );
         }
 
         // compute derivative of g wrt kappa at constant rhoTrial

@@ -49,6 +49,7 @@ public:
     Fastor::Tensor< double, nDim, nDim > tau;                  ///< Kirchhoff stress
     double                               rho;                  ///< mass density
     double                               elasticEnergyDensity; ///< elastic energy per unit volume
+    double*                              stateVars;            ///< pointer to state variables
   };
 
   /**
@@ -180,5 +181,6 @@ public:
    */
   std::tuple< double, double, double > findEigenDeformationForEigenStress(
     const std::tuple< double, double, double >& initialGuess,
-    const std::tuple< double, double, double >& eigenStress );
+    const std::tuple< double, double, double >& eigenStress,
+    double*                                     stateVars );
 };

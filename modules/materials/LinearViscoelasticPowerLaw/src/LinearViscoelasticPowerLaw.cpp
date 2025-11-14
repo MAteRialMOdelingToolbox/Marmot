@@ -45,17 +45,17 @@ namespace Marmot::Materials {
     zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( sqrt( 10. ) ), n );
   }
 
-  void LinearViscoelasticPowerLaw::computeStress( double*       stress,
-                                                  double*       dStressDDStrain,
-                                                  const double* dStrain,
-                                                  const double* timeOld,
-                                                  const double  dT,
-                                                  double&       pNewDT )
+  void LinearViscoelasticPowerLaw::computeStress( state3D&        state,
+                                                  double*         dStressDDStrain,
+                                                  const double*   dStrain,
+                                                  const timeInfo& timeInfo )
 
   {
-    mVector6d nomStress( stress );
+    mVector6d nomStress( state.stress.data() );
     Vector6d  dE( dStrain );
     mMatrix6d C( dStressDDStrain );
+
+    const double& dT = timeInfo.dT;
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );

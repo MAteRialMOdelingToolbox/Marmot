@@ -101,17 +101,17 @@ namespace Marmot::Materials {
       transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
   }
 
-  void LinearViscoelasticOrthotropicPowerLaw::computeStress( double*       stress,
-                                                             double*       dStressDDStrain,
-                                                             const double* dStrain,
-                                                             const double* timeOld,
-                                                             const double  dT,
-                                                             double&       pNewDT )
+  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
+                                                             double*         dStressDDStrain,
+                                                             const double*   dStrain,
+                                                             const timeInfo& timeInfo )
 
   {
-    mVector6d nomStress( stress );
+    mVector6d nomStress( state.stress.data() );
     Vector6d  dE( dStrain );
     mMatrix6d C( dStressDDStrain );
+
+    const double& dT = timeInfo.dT;
 
     using namespace Marmot::ContinuumMechanics::VoigtNotation;
     Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );

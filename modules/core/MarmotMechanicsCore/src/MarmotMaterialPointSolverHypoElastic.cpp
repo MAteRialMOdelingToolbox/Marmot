@@ -123,7 +123,6 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
   dStressDStrain.setZero();
 
   int    counter = 0;
-  double pNewDT  = 1.0;
   double resNorm = 1e12;
   double corNorm = 0.0;
 
@@ -137,14 +136,21 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     // set stress to previous converged value
     stressTemp = stress;
 
-    // set Abaqus style time array TODO: get rid of this
-    double time[2] = { -1, increment.timeOld + increment.dT };
+    // set up state and time info for material
+    MarmotMaterialHypoElastic::state3D state;
+    state.stress       = stressTemp;
+    state.strainEnergy = 0.0;
+    state.stateVars    = stateVarsTemp.data();
+
+    MarmotMaterialHypoElastic::timeInfo timeInfo;
+    timeInfo.time = increment.timeOld + increment.dT;
+    timeInfo.dT   = increment.dT;
 
     // compute stress and tangent
-    material->computeStress( stressTemp.data(), dStressDStrain.data(), dStrain.data(), &time[0], increment.dT, pNewDT );
+    material->computeStress( state, dStressDStrain.data(), dStrain.data(), timeInfo );
 
-    if ( pNewDT < 1.0 )
-      throw std::runtime_error( "Material model requested time step reduction." );
+    // get updated stress
+    stressTemp = state.stress;
 
     // initialize residual with stress increment
     Marmot::Vector6d residual = computeResidual( stressTemp - stress, target, increment );

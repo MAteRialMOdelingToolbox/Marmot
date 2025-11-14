@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Alexander Dummer alexander.dummer@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -26,7 +27,8 @@
  */
 
 #pragma once
-#include "Marmot/MarmotMaterialMechanical.h"
+#include "Marmot/MarmotMaterial.h"
+#include "Marmot/MarmotTypedefs.h"
 
 /**
  *
@@ -51,10 +53,36 @@
  *
  * This formulation is compatible with an Abaqus interface.
  */
-class MarmotMaterialHypoElastic : public MarmotMaterialMechanical {
+class MarmotMaterialHypoElastic : public MarmotMaterial {
 
 public:
-  using MarmotMaterialMechanical::MarmotMaterialMechanical;
+  using MarmotMaterial::MarmotMaterial;
+
+  /// Structure to hold the material state at a material point in 3D
+  struct state3D {
+    Marmot::Vector6d stress;       ///> Cauchy stress tensor in Voigt notation
+    double           strainEnergy; ///> Strain energy density
+    double*          stateVars;    ///> Pointer to array of state variables
+  };
+
+  // Structure to hold the material state at a material point for 2D plane stress
+  struct state2D {
+    Marmot::Vector3d stress;       ///> 2D Cauchy stress tensor in Voigt notation
+    double           strainEnergy; ///> Strain energy density
+    double*          stateVars;    ///> Pointer to array of state variables
+  };
+
+  // Structure to hold the material state at a material point for 1D uniaxial stress
+  struct state1D {
+    double  stress;       ///> 1D Cauchy stress
+    double  strainEnergy; ///> Strain energy density
+    double* stateVars;    ///> Pointer to array of state variables
+  };
+
+  struct timeInfo {
+    double time; ///> Current (pseudo-)time
+    double dT;   ///> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+  };
 
   /// Characteristic element length
   double characteristicElementLength;
@@ -68,67 +96,35 @@ public:
   void setCharacteristicElementLength( double length );
 
   /**
-   * For a given deformation gradient at the old and the current time, compute the Cauchy stress and the algorithmic
-   * tangent \f$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{F}^{(n+1)}}\f$.
-   *
-   * @todo A default implementation is provided.
-   *
-   * @param[in,out]	stress Cauchy stress
-   * @param[in,out]	dSdE	Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to
-   * the deformation gradient \f$\boldsymbol{F}\f$
-   * @param[in]	FOld	Deformation gradient at the old (pseudo-)time
-   * @param[in]	FNew	Deformation gradient at the current (pseudo-)time
-   * @param[in]	timeOld	Old (pseudo-)time
-   * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
-   * @param[in,out]	pNewDT	Suggestion for a new time increment
-   */
-  virtual void computeStress( double*       stress,
-                              double*       dStressDDStrain,
-                              const double* FOld,
-                              const double* FNew,
-                              const double* timeOld,
-                              const double  dT,
-                              double&       pNewDT ) override;
-
-  /**
    * For a given linearized strain increment \f$\Delta\boldsymbol{\varepsilon}\f$ at the old and the current time,
    * compute the Cauchy stress and the algorithmic tangent
    * \f$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\f$.
    *
-   * @param[in,out]	stress          Cauchy stress
+   * @param[in,out]	state  A state3D instance carrying stress, strain energy, and state variables
    * @param[in,out]	dStressDDstrain	Algorithmic tangent representing the derivative of the Cauchy stress tensor with
    * respect to the linearized strain
    * @param[in]	dStrain linearized strain increment
    * @param[in]	timeOld	Old (pseudo-)time
    * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
-   * @param[in,out]	pNewDT	Suggestion for a new time increment
    */
-  virtual void computeStress( double*       stress,
-                              double*       dStressDDStrain,
-                              const double* dStrain,
-                              const double* timeOld,
-                              const double  dT,
-                              double&       pNewDT ) = 0;
+  virtual void computeStress( state3D&        state,
+                              double*         dStressDDStrain,
+                              const double*   dStrain,
+                              const timeInfo& timeInfo ) = 0;
 
   /**
    * Plane stress implementation of @ref computeStress.
    */
-  using MarmotMaterialMechanical::computePlaneStress;
-  virtual void computePlaneStress( double*       stress2D,
-                                   double*       dStress_dStrain2D,
-                                   const double* dStrain2D,
-                                   const double* timeOld,
-                                   const double  dT,
-                                   double&       pNewDT );
+  virtual void computePlaneStress( state2D&        stress2D,
+                                   double*         dStress_dStrain2D,
+                                   const double*   dStrain2D,
+                                   const timeInfo& timeInfo );
 
   /**
    * Uniaxial stress implementation of @ref computeStress.
    */
-  using MarmotMaterialMechanical::computeUniaxialStress;
-  virtual void computeUniaxialStress( double*       stress1D,
-                                      double*       dStress_dStrain1D,
-                                      const double* dStrain,
-                                      const double* timeOld,
-                                      const double  dT,
-                                      double&       pNewDT );
+  virtual void computeUniaxialStress( state1D&        stress1D,
+                                      double*         dStress_dStrain1D,
+                                      const double*   dStrain,
+                                      const timeInfo& timeInfo );
 };

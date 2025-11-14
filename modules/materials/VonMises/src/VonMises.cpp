@@ -35,12 +35,10 @@ namespace Marmot::Materials {
     return this->materialProperties[6];
   }
 
-  void VonMisesModel::computeStress( double*       stress,
-                                     double*       dStress_dStrain,
-                                     const double* dStrain,
-                                     const double* timeOld,
-                                     const double  dT,
-                                     double&       pNewDT )
+  void VonMisesModel::computeStress( state3D&        state,
+                                     double*         dStress_dStrain,
+                                     const double*   dStrain,
+                                     const timeInfo& timeInfo )
 
   {
     // elasticity parameters
@@ -53,7 +51,7 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    mVector6d  S( stress );
+    mVector6d  S( state.stress.data() );
     mMatrix6d  dS_dE( dStress_dStrain );
     const auto dE = Map< const Vector6d >( dStrain );
 
@@ -106,8 +104,7 @@ namespace Marmot::Materials {
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
-          pNewDT = 0.5;
-          return;
+          throw std::runtime_error( "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
         dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );

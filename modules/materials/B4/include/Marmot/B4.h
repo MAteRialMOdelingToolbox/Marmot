@@ -176,13 +176,7 @@ namespace Marmot::Materials {
 
     B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
-
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
 
     int getNumberOfRequiredStateVars();
 

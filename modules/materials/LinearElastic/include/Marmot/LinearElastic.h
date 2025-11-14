@@ -27,9 +27,7 @@
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <iostream>
 #include <string>
-#include <vector>
 
 namespace Marmot::Materials {
   /**
@@ -153,13 +151,7 @@ namespace Marmot::Materials {
 
     Matrix6d globalStiffnessTensor;
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
-
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
 
     StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
 

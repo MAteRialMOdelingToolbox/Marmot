@@ -65,11 +65,7 @@ namespace Marmot::Materials {
     ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
   protected:
-    void computeStressAD( autodiff::dual*       stress,
-                          const autodiff::dual* dStrain,
-                          const double*         timeOld,
-                          const double          dT,
-                          double&               pNewDT ) override;
+    void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) override;
 
     class ADVonMisesModelStateVarManager : public MarmotStateVarVectorManager {
 

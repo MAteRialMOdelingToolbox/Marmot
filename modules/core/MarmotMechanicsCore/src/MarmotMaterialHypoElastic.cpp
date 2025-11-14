@@ -15,56 +15,18 @@ void MarmotMaterialHypoElastic::setCharacteristicElementLength( double length )
   characteristicElementLength = length;
 }
 
-void MarmotMaterialHypoElastic::computeStress( double*       stress_,
-                                               double*       dStressDDDeformationGradient_,
-                                               const double* FOld_,
-                                               const double* FNew_,
-                                               const double* timeOld,
-                                               const double  dT,
-                                               double&       pNewDT )
-{
-  // Standard implemenation of the Abaqus like Hughes-Winget algorithm
-  // Approximation of the algorithmic tangent in order to
-  // facilitate the dCauchy_dStrain tangent provided by
-  // small strain material models
-
-  using namespace Marmot;
-  using namespace Marmot::ContinuumMechanics::TensorUtility;
-  using namespace ContinuumMechanics::Kinematics::VelocityGradient;
-
-  const Map< const Matrix3d > FOld( FOld_ );
-  const Map< const Matrix3d > FNew( FNew_ );
-  Marmot::mVector6d           stress( stress_ );
-
-  Marmot::NumericalAlgorithms::HughesWinget
-    hughesWingetIntegrator( FOld, FNew, Marmot::NumericalAlgorithms::HughesWinget::Formulation::AbaqusLike );
-
-  auto dEps = hughesWingetIntegrator.getStrainIncrement();
-  stress    = hughesWingetIntegrator.rotateTensor( stress );
-
-  Matrix6d CJaumann;
-
-  computeStress( stress.data(), CJaumann.data(), dEps.data(), timeOld, dT, pNewDT );
-
-  TensorMap< Eigen::Tensor< double, 3 > > dS_dF( dStressDDDeformationGradient_, 6, 3, 3 );
-
-  dS_dF = hughesWingetIntegrator.compute_dS_dF( stress, FNew.inverse(), CJaumann );
-}
-
-void MarmotMaterialHypoElastic::computePlaneStress( double*       stress2D_,
-                                                    double*       dStress_dStrain2D_,
-                                                    const double* dStrain2D_,
-                                                    const double* timeOld,
-                                                    const double  dT,
-                                                    double&       pNewDT )
+void MarmotMaterialHypoElastic::computePlaneStress( state2D&        state2D_,
+                                                    double*         dStress_dStrain2D_,
+                                                    const double*   dStrain2D_,
+                                                    const timeInfo& timeInfo )
 {
   using namespace Marmot;
   using namespace ContinuumMechanics::VoigtNotation;
 
   Map< const Matrix< double, 3, 1 > > dStrain2D( dStrain2D_ );
-  Map< Matrix< double, 3, 1 > >       stress2D( stress2D_ );
+  Map< Matrix< double, 3, 1 > >       stress2D( state2D_.stress.data() );
   Map< Matrix< double, 3, 3 > >       dStress_dStrain2D( dStress_dStrain2D_ );
-  Map< VectorXd >                     stateVars( this->stateVars, this->nStateVars );
+  Map< VectorXd >                     stateVars( state2D_.stateVars, this->nStateVars );
 
   Matrix6d dStress_dStrain3D;
 
@@ -80,11 +42,12 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress2D_,
     stress3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
     stateVars    = stateVarsOld;
 
-    computeStress( stress3DTemp.data(), dStress_dStrain3D.data(), dStrain3DTemp.data(), timeOld, dT, pNewDT );
+    state3D state;
+    state.stress       = stress3DTemp;
+    state.stateVars    = stateVars.data();
+    state.strainEnergy = state2D_.strainEnergy;
 
-    if ( pNewDT < 1.0 ) {
-      return;
-    }
+    computeStress( state, dStress_dStrain3D.data(), dStrain3DTemp.data(), timeInfo );
 
     double residual = stress3DTemp.array().abs()[2];
 
@@ -100,8 +63,8 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress2D_,
 
     planeStressCount += 1;
     if ( planeStressCount > 13 ) {
-      pNewDT = 0.25;
       MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
+      throw std::runtime_error( "Plane stress iteration did not converge" );
       return;
     }
   }
@@ -110,19 +73,17 @@ void MarmotMaterialHypoElastic::computePlaneStress( double*       stress2D_,
   dStress_dStrain2D = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
 }
 
-void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress1D_,
-                                                       double* dStress_dStrain1D_,
+void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
+                                                       double*  dStress_dStrain1D_,
 
-                                                       const double* dStrain1D_,
-                                                       const double* timeOld,
-                                                       const double  dT,
-                                                       double&       pNewDT )
+                                                       const double*   dStrain1D_,
+                                                       const timeInfo& timeInfo )
 {
   using namespace Marmot;
   using namespace ContinuumMechanics::VoigtNotation;
 
   Map< const Matrix< double, 1, 1 > > dStrain1D( dStrain1D_ );
-  Map< Matrix< double, 1, 1 > >       stress1D( stress1D_ );
+  Map< Matrix< double, 1, 1 > >       stress1D( &state1D_.stress );
   Map< VectorXd >                     stateVars( this->stateVars, this->nStateVars );
 
   Matrix6d dStress_dStrain3D;
@@ -136,11 +97,12 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress1D_,
     stress3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
     stateVars    = stateVarsOld;
 
-    computeStress( stress3DTemp.data(), dStress_dStrain3D.data(), dStrain3DTemp.data(), timeOld, dT, pNewDT );
+    state3D state;
+    state.stress       = stress3DTemp;
+    state.stateVars    = stateVars.data();
+    state.strainEnergy = state1D_.strainEnergy;
 
-    if ( pNewDT < 1.0 ) {
-      return;
-    }
+    computeStress( state, dStress_dStrain3D.data(), dStrain3DTemp.data(), timeInfo );
 
     const double residual = stress3DTemp.array().abs().segment( 1, 2 ).sum();
 
@@ -153,8 +115,8 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( double* stress1D_,
 
     count += 1;
     if ( count > 13 ) {
-      pNewDT = 0.25;
       MarmotJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
+      throw std::runtime_error( "uniaxial stress iteration did not converge" );
       return;
     }
   }

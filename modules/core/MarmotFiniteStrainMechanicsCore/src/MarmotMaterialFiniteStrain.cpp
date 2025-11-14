@@ -77,12 +77,13 @@ void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& 
  */
 std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
-  const std::tuple< double, double, double >& eigenStressComponents )
+  const std::tuple< double, double, double >& eigenStressComponents,
+  double*                                     stateVars )
 {
   using namespace Marmot;
 
   Deformation< 3 >          deformation = { 0.0 };
-  ConstitutiveResponse< 3 > response    = { 0.0, 0.0, 0.0 };
+  ConstitutiveResponse< 3 > response = { .tau = 0.0, .rho = 0.0, .elasticEnergyDensity = 0.0, .stateVars = stateVars };
   AlgorithmicModuli< 3 >    tangents;
 
   const double        time[] = { 0.0, 0.0 };
