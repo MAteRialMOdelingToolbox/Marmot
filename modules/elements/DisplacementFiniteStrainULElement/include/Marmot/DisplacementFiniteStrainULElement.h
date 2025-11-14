@@ -191,8 +191,8 @@ namespace Marmot::Elements {
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
-        material->assignStateVars( managedStateVars->materialStateVars.data(),
-                                   managedStateVars->materialStateVars.size() );
+        // material->assignStateVars( managedStateVars->materialStateVars.data(),
+        //                            managedStateVars->materialStateVars.size() );
       }
 
       /** @brief Constructor of the quadrature point
@@ -379,7 +379,7 @@ namespace Marmot::Elements {
       return qp.managedStateVars->getStateView( stateName );
     }
     else {
-      return qp.material->getStateView( stateName );
+      return qp.material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
   }
 
@@ -706,7 +706,8 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_YY = 1.0;
           qp.managedStateVars->F0_ZZ = 1.0;
 
-          qp.material->initializeYourself();
+          qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
+                                           qp.managedStateVars->materialStateVars.size() );
         }
         break;
       }

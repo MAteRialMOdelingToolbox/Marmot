@@ -34,18 +34,15 @@ namespace Marmot::Materials {
     assert( nMaterialProperties == 6 );
   }
 
-  void ADVonMises::assignStateVars( double* stateVars, int nStateVars )
+  StateView ADVonMises::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    managedStateVars = std::make_unique< ADVonMisesModelStateVarManager >( stateVars );
-    return MarmotMaterialHypoElasticAD::assignStateVars( stateVars, nStateVars );
-  }
-
-  StateView ADVonMises::getStateView( const std::string& stateName )
-  {
-    return managedStateVars->getStateView( stateName );
+    if ( stateName == "kappa" ) {
+      return StateView( stateVars, 1 );
+    }
+    else {
+      throw std::invalid_argument( MakeString()
+                                   << __PRETTY_FUNCTION__ << ": Unknown state variable name '" << stateName << "'!" );
+    }
   }
   void ADVonMises::computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo )
   {
@@ -54,6 +51,8 @@ namespace Marmot::Materials {
 
     // compute elastic stiffness
     const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+
+    std::cout << "kappa before: " << std::endl;
 
     // get current hardening variable
     double& kappa = state.stateVars[0];

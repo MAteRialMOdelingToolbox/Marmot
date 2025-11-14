@@ -67,26 +67,9 @@ namespace Marmot::Materials {
   protected:
     void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) override;
 
-    class ADVonMisesModelStateVarManager : public MarmotStateVarVectorManager {
+    int getNumberOfRequiredStateVars() override { return 1; }
 
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-      } );
-
-      /// @brief Hardening variable.
-      double& kappa;
-
-      ADVonMisesModelStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
-    };
-    std::unique_ptr< ADVonMisesModelStateVarManager > managedStateVars;
-
-    int getNumberOfRequiredStateVars() override { return ADVonMisesModelStateVarManager::layout.nRequiredStateVars; }
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& result ) override;
+    StateView getStateView( const std::string& result, double* stateVars ) override;
 
     /**
      * @brief Hardening function.

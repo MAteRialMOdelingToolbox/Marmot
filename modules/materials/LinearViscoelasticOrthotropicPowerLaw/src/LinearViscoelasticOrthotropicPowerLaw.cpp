@@ -121,7 +121,7 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > creepStateVars( stateVarManager->kelvinStateVars );
+    Eigen::Map< Eigen::Matrix< double, 6, -1 > > creepStateVars( state.stateVars, 6, nKelvin );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -161,24 +161,21 @@ namespace Marmot::Materials {
                                        CelUnitInv );
   }
 
-  void LinearViscoelasticOrthotropicPowerLaw::assignStateVars( double* stateVars_, int nStateVars )
+  StateView LinearViscoelasticOrthotropicPowerLaw::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    this->stateVarManager = std::make_unique< LinearViscoelasticOrthotropicPowerLawStateVarManager >( stateVars_,
-                                                                                                      nKelvin );
-
-    MarmotMaterial::assignStateVars( stateVars_, nStateVars );
-  }
-
-  StateView LinearViscoelasticOrthotropicPowerLaw::getStateView( const std::string& stateName )
-  {
-    return stateVarManager->getStateView( stateName );
+    try {
+      auto [offset, size] = stateVarInfo.at( stateName );
+      return StateView( stateVars + offset, size );
+    }
+    catch ( const std::out_of_range& ) {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                << "State variable " + stateName +
+                                                     " does not exist in LinearViscoelasticOrthotropicPowerLaw." );
+    }
   }
 
   int LinearViscoelasticOrthotropicPowerLaw::getNumberOfRequiredStateVars()
   {
-    return LinearViscoelasticOrthotropicPowerLawStateVarManager::layout.nRequiredStateVars + nKelvin * 6;
+    return nKelvin * 6;
   }
 } // namespace Marmot::Materials

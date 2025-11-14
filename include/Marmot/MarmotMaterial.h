@@ -70,31 +70,20 @@ public:
    * @param[in,out] stateVars Pointer to state variable array.
    * @param[in] nStateVars Number of state variables.
    */
-  virtual void assignStateVars( double* stateVars, int nStateVars );
+  // virtual void assignStateVars( double* stateVars, int nStateVars );
 
   /**
    * @brief Access material state variables by name.
    * @param[in] stateName Name of the requested state variable.
+   * @param[in] stateVarsVars Pointer to state variable array.
    * @return A view into the state variable array.
    */
-  virtual StateView getStateView( const std::string& stateName ) = 0;
-
-  /**
-   * @brief Get pointer to currently assigned state variables.
-   * @return Pointer to state variable array.
-   */
-  double* getAssignedStateVars();
-
-  /**
-   * @brief Get number of assigned state variables.
-   * @return Number of assigned state variables.
-   */
-  int getNumberOfAssignedStateVars();
+  virtual StateView getStateView( const std::string& stateName, double* stateVarsVars ) = 0;
 
   /**
    * @brief Initialize material state (default: no action).
    */
-  virtual void initializeYourself();
+  virtual void initializeYourself( double* stateVars, int nStateVars );
 
   /**
    * @brief Get material density.

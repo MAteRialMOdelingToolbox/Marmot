@@ -79,10 +79,13 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > basicCreepStateVars(
-      ( stateVarManager->kelvinStateVars ).leftCols( nKelvinBasic ) );
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > dryingCreepStateVars(
-      ( stateVarManager->kelvinStateVars ).rightCols( nKelvinDrying ) );
+    // map state variables of basic creep Kelvin chain
+    Eigen::Map< Eigen::Matrix< double, 6, -1 > > basicCreepStateVars( state.stateVars, 6, nKelvinBasic );
+
+    // map state variables of drying creep Kelvin chain
+    Eigen::Map< Eigen::Matrix< double, 6, -1 > > dryingCreepStateVars( state.stateVars + 6 * nKelvinBasic,
+                                                                       6,
+                                                                       nKelvinDrying );
 
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( time - dT - castTime ) * timeToDays;
@@ -163,23 +166,29 @@ namespace Marmot::Materials {
     return;
   }
 
-  void B4::assignStateVars( double* stateVars_, int nStateVars )
+  // void B4::assignStateVars( double* stateVars_, int nStateVars )
+  // {
+  //   if ( nStateVars < getNumberOfRequiredStateVars() )
+  //     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
+
+  //   this->stateVarManager = std::make_unique< B4StateVarManager >( stateVars_, nKelvinBasic + nKelvinDrying );
+
+  //   MarmotMaterial::assignStateVars( stateVars_, nStateVars );
+  // }
+
+  StateView B4::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    this->stateVarManager = std::make_unique< B4StateVarManager >( stateVars_, nKelvinBasic + nKelvinDrying );
-
-    MarmotMaterial::assignStateVars( stateVars_, nStateVars );
-  }
-
-  StateView B4::getStateView( const std::string& stateName )
-  {
-    return stateVarManager->getStateView( stateName );
+    if ( stateName == "kelvinStateVars" ) {
+      return StateView( stateVars, ( nKelvinBasic + nKelvinDrying ) * 6 );
+    }
+    else {
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": State variable " << stateName << " not found!" );
+    }
   }
 
   int B4::getNumberOfRequiredStateVars()
   {
-    return B4StateVarManager::layout.nRequiredStateVars + ( nKelvinBasic + nKelvinDrying ) * 6;
+    return ( nKelvinBasic + nKelvinDrying ) * 6;
   }
 } // namespace Marmot::Materials

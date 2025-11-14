@@ -21,8 +21,6 @@ MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std:
   stateVars         = Eigen::VectorXd::Zero( nStateVars );
   _initialStateVars = Eigen::VectorXd::Zero( nStateVars );
   stateVarsTemp     = Eigen::VectorXd::Zero( nStateVars );
-
-  material->assignStateVars( stateVarsTemp.data(), nStateVars );
 }
 
 void MarmotMaterialPointSolverHypoElastic::addStep( const Step& step )

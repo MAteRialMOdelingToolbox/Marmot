@@ -49,26 +49,9 @@ namespace Marmot::Materials {
      */
     double getDensity() override;
 
-    class VonMisesModelStateVarManager : public MarmotStateVarVectorManager {
+    int getNumberOfRequiredStateVars() override { return 1; }
 
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-      } );
-
-      /// @brief Hardening parameter.
-      double& kappa;
-
-      VonMisesModelStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
-    };
-    std::unique_ptr< VonMisesModelStateVarManager > managedStateVars;
-
-    int getNumberOfRequiredStateVars() override { return VonMisesModelStateVarManager::layout.nRequiredStateVars; }
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& result ) override;
+    StateView getStateView( const std::string& result, double* stateVars ) override;
   };
 
 } // namespace Marmot::Materials

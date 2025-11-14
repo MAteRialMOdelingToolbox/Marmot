@@ -29,7 +29,6 @@ void testMarmotLocalization()
     throw std::runtime_error( "Number of required state vars for Mises model changed!" );
   }
   double kappa = 0;
-  material->assignStateVars( &kappa, 1 );
 
   Marmot::Vector6d stress;
   Marmot::Matrix6d dStress_dStrain;

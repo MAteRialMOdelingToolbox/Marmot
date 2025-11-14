@@ -1,31 +1,24 @@
 #include "Marmot/VonMises.h"
-#include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/VonMisesConstants.h"
-#include <iostream>
-#include <map>
 
 namespace Marmot::Materials {
 
   using namespace Eigen;
   using namespace Marmot;
 
-  void VonMisesModel::assignStateVars( double* stateVars, int nStateVars )
+  StateView VonMisesModel::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    managedStateVars = std::make_unique< VonMisesModelStateVarManager >( stateVars );
-    return MarmotMaterialHypoElastic::assignStateVars( stateVars, nStateVars );
-  }
-
-  StateView VonMisesModel::getStateView( const std::string& stateName )
-  {
-    return managedStateVars->getStateView( stateName );
+    if ( stateName == "kappa" ) {
+      return StateView( stateVars, 1 );
+    }
+    else {
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": State variable " << stateName << " not found!" );
+    }
   }
 
   double VonMisesModel::getDensity()
@@ -65,7 +58,7 @@ namespace Marmot::Materials {
     }
 
     // get current hardening variable
-    double& kappa = managedStateVars->kappa;
+    double& kappa = state.stateVars[0];
 
     // isotropic hardening law
     auto fy = [&]( double kappa_ ) {

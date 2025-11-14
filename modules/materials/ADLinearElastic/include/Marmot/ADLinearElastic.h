@@ -25,13 +25,10 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
-#include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/dual.hpp"
 #include <Eigen/src/Core/Map.h>
-#include <iostream>
 #include <string>
-#include <vector>
 
 using namespace Marmot;
 
@@ -56,7 +53,10 @@ namespace Marmot::Materials {
   protected:
     void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo );
 
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
+    StateView getStateView( const std::string& result, double* stateVars )
+    {
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << "No state variables available." );
+    };
 
     int getNumberOfRequiredStateVars() { return 0; }
   };

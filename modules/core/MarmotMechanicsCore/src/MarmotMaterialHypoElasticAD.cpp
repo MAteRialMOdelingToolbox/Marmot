@@ -16,7 +16,7 @@ void MarmotMaterialHypoElasticAD::computeStress( state3D&        state,
   using namespace Marmot;
   mVector6d       S( state.stress.data() );
   const Vector6d  dEps = Map< const Vector6d >( dStrain );
-  Map< VectorXd > stateVars( this->stateVars, this->nStateVars );
+  Map< VectorXd > stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
 
   // remember old state
   const VectorXd stateVarsOld = stateVars;

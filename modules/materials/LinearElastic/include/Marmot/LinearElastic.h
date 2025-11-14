@@ -25,6 +25,7 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <string>
@@ -153,7 +154,10 @@ namespace Marmot::Materials {
 
     void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
 
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
+    StateView getStateView( const std::string& result, double* stateVars )
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": No state variables available." );
+    };
 
     int getNumberOfRequiredStateVars() { return 0; }
 

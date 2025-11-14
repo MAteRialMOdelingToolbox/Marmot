@@ -158,8 +158,8 @@ namespace Marmot::Elements {
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
-        material->assignStateVars( managedStateVars->materialStateVars.data(),
-                                   managedStateVars->materialStateVars.size() );
+        // material->assignStateVars( managedStateVars->materialStateVars.data(),
+        //                            managedStateVars->materialStateVars.size() );
       }
 
       QuadraturePoint( XiSized xi, double weight )
@@ -315,7 +315,7 @@ namespace Marmot::Elements {
       }
 
       else {
-        return qp.material->getStateView( stateName );
+        return qp.material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
       }
     }
 
@@ -595,7 +595,8 @@ namespace Marmot::Elements {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
       for ( QuadraturePoint& qp : qps ) {
-        qp.material->initializeYourself();
+        qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
+                                         qp.managedStateVars->materialStateVars.size() );
       }
       break;
     }

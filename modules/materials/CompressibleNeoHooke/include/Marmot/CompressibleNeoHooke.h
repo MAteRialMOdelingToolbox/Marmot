@@ -26,6 +26,7 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include <string>
 
@@ -82,28 +83,20 @@ namespace Marmot::Materials {
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
                         const TimeIncrement& );
+
     /** @brief Number of required state variables.
      *  @return Always 0 for this model.
      */
     int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
 
-    /** @brief Bind external state storage (unused for this model; required for the interface).
-     *  @param stateVars Pointer to a contiguous array provided by the caller for internal state.
-     *  @param nStateVars Number of entries in that array.
-     */
-    void assignStateVars( double* stateVars, int nStateVars )
-    {
-      this->stateVars  = stateVars;
-      this->nStateVars = nStateVars;
-    };
-
     /**
      * @brief Access a named state quantity (no states here).
-     * @param result Name of the state to view.
-     * @return Always an empty StateView since no states are used.
+     * @throws std::invalid_argument Always, since no states are used.
      */
-
-    StateView getStateView( const std::string& result );
+    StateView getStateView( const std::string& result, double* stateVars )
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": No state variables available!" );
+    };
   };
 
 } // namespace Marmot::Materials
