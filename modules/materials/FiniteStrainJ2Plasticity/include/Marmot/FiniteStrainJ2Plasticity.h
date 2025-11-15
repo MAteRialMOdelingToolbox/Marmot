@@ -32,9 +32,10 @@
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <map>
 #include <string>
+#include <tuple>
 
 namespace Marmot::Materials {
 
@@ -180,51 +181,26 @@ namespace Marmot::Materials {
     /** @brief Get the number of required state variables
      * @return 10 (9 for @c Fp and 1 for @c alphaP).
      */
-
-    int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
+    int getNumberOfRequiredStateVars() { return 10; }
 
     /** @brief Return the material density if provided in material parameters */
 
     double getDensity() { return density; }
 
-    /** @brief State variable manager for @c Fp and @c alphaP; provides named views and layout. */
-    class FiniteStrainJ2PlasticityStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      /** @brief Memory layout of internal variables: 9 for @c Fp and 1 for @c alphaP (total 10). */
-      inline const static auto layout = makeLayout( {
-        { .name = "Fp", .length = 9 },
-        { .name = "alphaP", .length = 1 },
-      } );
-      /** @brief Plastic deformation gradient @f$\boldsymbol F^{\mathrm p}@f$. */
-      Fastor::TensorMap< double, 3, 3 > Fp;
-      /** @brief Strain-like hardening variable @f$\alpha_{\mathrm p}@f$. */
-      double& alphaP;
-
-      /** @brief Bind the manager to an external contiguous buffer holding (@c Fp, @c alphaP). */
-      FiniteStrainJ2PlasticityStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), Fp( &find( "Fp" ) ), alphaP( find( "alphaP" ) ){};
+    const std::map< std::string, std::pair< int, int > > stateVarInfo = {
+      { "Fp", std::make_pair( 0, 9 ) },
+      { "alphaP", std::make_pair( 9, 1 ) },
     };
-    std::unique_ptr< FiniteStrainJ2PlasticityStateVarManager > stateVars;
-
-    /** @brief Bind external storage for internal variables (@c Fp, @c alphaP).
-     *  @param stateVars  Pointer to a contiguous array provided by the caller.
-     *  @param nStateVars Number of entries in that array.
-     *  @throws std::invalid_argument If nStateVars < getNumberOfRequiredStateVars().
-     *
-     *  Creates/updates the internal state manager that maps (@c Fp, @c alphaP) onto this buffer.
-     */
-    void assignStateVars( double* stateVars, int nStateVars );
 
     /** @brief Expose a named view into the state vector.
      *  @param result One of: @c Fp (length 9), @c alphaP (length 1).
      *  @return A StateView object that provides access to the requested state variable; returns an empty view if @p
      * result is unknown.
      * */
-    StateView getStateView( const std::string& result );
+    StateView getStateView( const std::string& result, double* stateVars );
 
     /** @brief Initialize state (sets @f$\boldsymbol F^{\mathrm p} = \boldsymbol I@f$) */
-    void initializeYourself();
+    void initializeYourself( double* stateVars, int nStateVars );
 
     /** @brief Yield function @f$f(\boldsymbol F^{\mathrm e},\beta_{\mathrm p})@f$ and first derivatives.
      *  @param Fe     Elastic deformation gradient \f$\boldsymbol F^{\mathrm e}\f$.

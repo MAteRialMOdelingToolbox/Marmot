@@ -7,6 +7,7 @@
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include <autodiff/forward/dual/dual.hpp>
+#include <map>
 
 namespace Marmot::Materials {
 
@@ -62,9 +63,9 @@ namespace Marmot::Materials {
                                                                      const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -194,9 +195,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -356,9 +357,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -519,9 +520,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -675,23 +676,28 @@ namespace Marmot::Materials {
     }
   }
 
-  StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName )
+  StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName, double* stateVars )
   {
-    return stateVars->getStateView( stateName );
+    try {
+      auto [offset, length] = stateVarInfo.at( stateName );
+      return StateView( stateVars + offset, length );
+    }
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString()
+                                   << __PRETTY_FUNCTION__ << ": state variable " << stateName << " not found!" );
+    }
   }
 
-  void FiniteStrainJ2Plasticity::assignStateVars( double* stateVars_, int nStateVars )
+  void FiniteStrainJ2Plasticity::initializeYourself( double* stateVars, int nStateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
-                                                << ": Not sufficient "
-                                                   "stateVars!" );
+    // set all state variables to zero
+    for ( int i = 0; i < nStateVars; ++i ) {
+      stateVars[i] = 0.0;
+    }
 
-    this->stateVars = std::make_unique< FiniteStrainJ2PlasticityStateVarManager >( stateVars_ );
-  }
+    auto [i, j] = stateVarInfo.at( "Fp" );
 
-  void FiniteStrainJ2Plasticity::initializeYourself()
-  {
-    stateVars->Fp.eye();
+    Tensor33d& Fp = *reinterpret_cast< Tensor33d* >( stateVars + i );
+    Fp.eye();
   }
 } // namespace Marmot::Materials

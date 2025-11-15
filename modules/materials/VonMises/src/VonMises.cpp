@@ -1,31 +1,24 @@
 #include "Marmot/VonMises.h"
-#include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/VonMisesConstants.h"
-#include <iostream>
-#include <map>
 
 namespace Marmot::Materials {
 
   using namespace Eigen;
   using namespace Marmot;
 
-  void VonMisesModel::assignStateVars( double* stateVars, int nStateVars )
+  StateView VonMisesModel::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    managedStateVars = std::make_unique< VonMisesModelStateVarManager >( stateVars );
-    return MarmotMaterialHypoElastic::assignStateVars( stateVars, nStateVars );
-  }
-
-  StateView VonMisesModel::getStateView( const std::string& stateName )
-  {
-    return managedStateVars->getStateView( stateName );
+    if ( stateName == "kappa" ) {
+      return StateView( stateVars, 1 );
+    }
+    else {
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": State variable " << stateName << " not found!" );
+    }
   }
 
   double VonMisesModel::getDensity()
@@ -35,12 +28,10 @@ namespace Marmot::Materials {
     return this->materialProperties[6];
   }
 
-  void VonMisesModel::computeStress( double*       stress,
-                                     double*       dStress_dStrain,
-                                     const double* dStrain,
-                                     const double* timeOld,
-                                     const double  dT,
-                                     double&       pNewDT )
+  void VonMisesModel::computeStress( state3D&        state,
+                                     double*         dStress_dStrain,
+                                     const double*   dStrain,
+                                     const timeInfo& timeInfo )
 
   {
     // elasticity parameters
@@ -53,7 +44,7 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    mVector6d  S( stress );
+    mVector6d  S( state.stress.data() );
     mMatrix6d  dS_dE( dStress_dStrain );
     const auto dE = Map< const Vector6d >( dStrain );
 
@@ -67,7 +58,7 @@ namespace Marmot::Materials {
     }
 
     // get current hardening variable
-    double& kappa = managedStateVars->kappa;
+    double& kappa = state.stateVars[0];
 
     // isotropic hardening law
     auto fy = [&]( double kappa_ ) {
@@ -106,8 +97,7 @@ namespace Marmot::Materials {
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
-          pNewDT = 0.5;
-          return;
+          throw std::runtime_error( "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
         dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );

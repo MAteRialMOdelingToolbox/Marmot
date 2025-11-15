@@ -62,13 +62,13 @@ void testSetup( const std::string& testName,
     // Snapshot initial state for objectivity test
     std::array< double, 10 > stateVarsInitial = stateVars_;
 
-    mat.assignStateVars( stateVars_.data(), 10 );
+    mat.initializeYourself( stateVars_.data(), 10 );
 
     // Create deformation, time increment, response and tangent objects required for stress computation
     FiniteStrainJ2Plasticity::Deformation< 3 > def;
     FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
 
-    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response;
+    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response = { 0.0, 0.0, 0.0, stateVars_.data() };
     FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
 
     // Prescribe a deformation gradient tensor F for the considered load case
@@ -138,7 +138,7 @@ void testSetup( const std::string& testName,
       for ( int phi_deg = 0; phi_deg <= 180; phi_deg += 30 ) {
         // Restore same initial state for each rotation
         stateVars_ = stateVarsInitial;
-        mat.assignStateVars( stateVars_.data(), 10 );
+        mat.initializeYourself( stateVars_.data(), 10 );
 
         double phi = Marmot::Math::degToRad( phi_deg );
 
@@ -192,7 +192,6 @@ void testSetup( const std::string& testName,
         def.F = F_rotated;
         std::memcpy( stateVars_.data(), Fp_rotated.data(), 9 * sizeof( double ) );
         stateVars_[9] = alphaP_unrotated;
-        mat.assignStateVars( stateVars_.data(), 10 );
 
         mat.computeStress( response, tangent, def, timeInc );
 

@@ -25,11 +25,10 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <iostream>
 #include <string>
-#include <vector>
 
 namespace Marmot::Materials {
   /**
@@ -153,15 +152,12 @@ namespace Marmot::Materials {
 
     Matrix6d globalStiffnessTensor;
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
+    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
+    StateView getStateView( const std::string& result, double* stateVars )
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": No state variables available." );
+    };
 
     int getNumberOfRequiredStateVars() { return 0; }
 

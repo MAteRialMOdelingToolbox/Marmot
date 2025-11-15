@@ -11,26 +11,10 @@ MarmotMaterial::MarmotMaterial( const double* materialProperties_, int nMaterial
 {
 }
 
-void MarmotMaterial::assignStateVars( double* stateVars, int nStateVars )
+void MarmotMaterial::initializeYourself( double* stateVars, int nStateVars )
 {
-  this->stateVars  = stateVars;
-  this->nStateVars = nStateVars;
-}
-
-double* MarmotMaterial::getAssignedStateVars()
-{
-  return stateVars;
-}
-
-int MarmotMaterial::getNumberOfAssignedStateVars()
-{
-  return nStateVars;
-}
-
-void MarmotMaterial::initializeYourself()
-{
-  for ( auto i = 0; i < this->getNumberOfAssignedStateVars(); i++ )
-    this->stateVars[i] = 0;
+  for ( auto i = 0; i < nStateVars; i++ )
+    stateVars[i] = 0;
 }
 
 double MarmotMaterial::getDensity()

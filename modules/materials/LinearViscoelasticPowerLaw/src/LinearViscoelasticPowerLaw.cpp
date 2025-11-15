@@ -45,24 +45,24 @@ namespace Marmot::Materials {
     zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( sqrt( 10. ) ), n );
   }
 
-  void LinearViscoelasticPowerLaw::computeStress( double*       stress,
-                                                  double*       dStressDDStrain,
-                                                  const double* dStrain,
-                                                  const double* timeOld,
-                                                  const double  dT,
-                                                  double&       pNewDT )
+  void LinearViscoelasticPowerLaw::computeStress( state3D&        state,
+                                                  double*         dStressDDStrain,
+                                                  const double*   dStrain,
+                                                  const timeInfo& timeInfo )
 
   {
-    mVector6d nomStress( stress );
+    mVector6d nomStress( state.stress.data() );
     Vector6d  dE( dStrain );
     mMatrix6d C( dStressDDStrain );
+
+    const double& dT = timeInfo.dT;
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
       return;
     }
 
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > creepStateVars( stateVarManager->kelvinStateVars );
+    Eigen::Map< KelvinChain::StateVarMatrix > creepStateVars( state.stateVars, 6, nKelvin );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -96,23 +96,19 @@ namespace Marmot::Materials {
     return;
   }
 
-  void LinearViscoelasticPowerLaw::assignStateVars( double* stateVars_, int nStateVars )
+  StateView LinearViscoelasticPowerLaw::getStateView( const std::string& stateName, double* stateVars )
   {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    this->stateVarManager = std::make_unique< LinearViscoelasticPowerLawStateVarManager >( stateVars_, nKelvin );
-
-    MarmotMaterial::assignStateVars( stateVars_, nStateVars );
-  }
-
-  StateView LinearViscoelasticPowerLaw::getStateView( const std::string& stateName )
-  {
-    return stateVarManager->getStateView( stateName );
+    try {
+      return StateView( stateVars + stateVarInfo.at( stateName ).first, stateVarInfo.at( stateName ).second );
+    }
+    catch ( const std::out_of_range& e ) {
+      throw std::invalid_argument( MakeString()
+                                   << __PRETTY_FUNCTION__ << "State variable " + stateName + " not found." );
+    }
   }
 
   int LinearViscoelasticPowerLaw::getNumberOfRequiredStateVars()
   {
-    return LinearViscoelasticPowerLawStateVarManager::layout.nRequiredStateVars + nKelvin * 6;
+    return nKelvin * 6;
   }
 } // namespace Marmot::Materials

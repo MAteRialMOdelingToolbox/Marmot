@@ -37,13 +37,10 @@ namespace Marmot::Materials {
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    void computeStress( double* stress,
-                        double* dStress_dStrain,
-
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT ) override;
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) override;
 
     /**
      * @brief Get material density.
@@ -52,26 +49,9 @@ namespace Marmot::Materials {
      */
     double getDensity() override;
 
-    class VonMisesModelStateVarManager : public MarmotStateVarVectorManager {
+    int getNumberOfRequiredStateVars() override { return 1; }
 
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-      } );
-
-      /// @brief Hardening parameter.
-      double& kappa;
-
-      VonMisesModelStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
-    };
-    std::unique_ptr< VonMisesModelStateVarManager > managedStateVars;
-
-    int getNumberOfRequiredStateVars() override { return VonMisesModelStateVarManager::layout.nRequiredStateVars; }
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& result ) override;
+    StateView getStateView( const std::string& result, double* stateVars ) override;
   };
 
 } // namespace Marmot::Materials
