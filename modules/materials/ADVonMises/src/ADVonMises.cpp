@@ -52,8 +52,6 @@ namespace Marmot::Materials {
     // compute elastic stiffness
     const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-    std::cout << "kappa before: " << std::endl;
-
     // get current hardening variable
     double& kappa = state.stateVars[0];
 

@@ -27,7 +27,6 @@
  */
 
 #pragma once
-#include "Eigen/Core"
 #include "Eigen/Dense"
 #include "autodiff/forward/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"

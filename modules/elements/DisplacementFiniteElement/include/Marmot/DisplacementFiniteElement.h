@@ -524,6 +524,7 @@ namespace Marmot::Elements {
             return;
           }
           qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
+          S                           = state.stress;
         }
 
         else if ( sectionType == SectionType::PlaneStrain ) {
@@ -578,7 +579,8 @@ namespace Marmot::Elements {
             pNewDT = 0.5;
             return;
           }
-          qp.managedStateVars->stress = S;
+          qp.managedStateVars->stress = state.stress;
+          S                           = state.stress;
         }
       }
 

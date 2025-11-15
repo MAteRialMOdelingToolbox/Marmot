@@ -26,30 +26,32 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&        state2D_,
   Map< const Matrix< double, 3, 1 > > dStrain2D( dStrain2D_ );
   Map< Matrix< double, 3, 1 > >       stress2D( state2D_.stress.data() );
   Map< Matrix< double, 3, 3 > >       dStress_dStrain2D( dStress_dStrain2D_ );
-  Map< VectorXd >                     stateVars( state2D_.stateVars, this->nStateVars );
+  Map< VectorXd >                     stateVars( state2D_.stateVars, this->getNumberOfRequiredStateVars() );
 
   Matrix6d dStress_dStrain3D;
 
-  Vector6d stress3DTemp;
   VectorXd stateVarsOld  = stateVars;
   Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( dStrain2D );
 
   // assumption of isochoric deformation for initial guess
   dStrain3DTemp( 2 ) = ( -dStrain2D( 0 ) - dStrain2D( 1 ) );
 
+  state3D state;
+  state.stress       = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
+  state.stateVars    = stateVars.data();
+  state.strainEnergy = state2D_.strainEnergy;
+
   int planeStressCount = 1;
   while ( true ) {
-    stress3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
-    stateVars    = stateVarsOld;
 
-    state3D state;
-    state.stress       = stress3DTemp;
-    state.stateVars    = stateVars.data();
+    stateVars = stateVarsOld;
+
+    state.stress       = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
     state.strainEnergy = state2D_.strainEnergy;
 
     computeStress( state, dStress_dStrain3D.data(), dStrain3DTemp.data(), timeInfo );
 
-    double residual = stress3DTemp.array().abs()[2];
+    double residual = state.stress.array().abs()[2];
 
     if ( residual < 1.e-10 || ( planeStressCount > 7 && residual < 1e-8 ) ) {
       break;
@@ -59,7 +61,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&        state2D_,
     if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
       tangentCompliance = 1e10;
 
-    dStrain3DTemp[2] -= tangentCompliance * stress3DTemp[2];
+    dStrain3DTemp[2] -= tangentCompliance * state.stress[2];
 
     planeStressCount += 1;
     if ( planeStressCount > 13 ) {
@@ -69,8 +71,9 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&        state2D_,
     }
   }
 
-  stress2D          = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( stress3DTemp );
-  dStress_dStrain2D = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
+  stress2D              = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( state.stress );
+  dStress_dStrain2D     = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
+  state2D_.strainEnergy = state.strainEnergy;
 }
 
 void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
@@ -88,30 +91,29 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
 
   Matrix6d dStress_dStrain3D;
 
-  Vector6d stress3DTemp;
   VectorXd stateVarsOld  = stateVars;
   Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( dStrain1D );
 
-  int count = 1;
+  state3D state;
+  state.stress       = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
+  state.stateVars    = stateVars.data();
+  state.strainEnergy = state1D_.strainEnergy;
+  int count          = 1;
   while ( true ) {
-    stress3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
-    stateVars    = stateVarsOld;
-
-    state3D state;
-    state.stress       = stress3DTemp;
-    state.stateVars    = stateVars.data();
+    stateVars          = stateVarsOld;
+    state.stress       = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
     state.strainEnergy = state1D_.strainEnergy;
 
     computeStress( state, dStress_dStrain3D.data(), dStrain3DTemp.data(), timeInfo );
 
-    const double residual = stress3DTemp.array().abs().segment( 1, 2 ).sum();
+    const double residual = state.stress.array().abs().segment( 1, 2 ).sum();
 
     if ( residual < 1.e-13 || ( count > 7 && residual < 1e-10 ) ) {
       break;
     }
 
     dStrain3DTemp.segment< 2 >( 1 ) -= dStress_dStrain3D.block< 2, 2 >( 1, 1 ).colPivHouseholderQr().solve(
-      stress3DTemp.segment< 2 >( 1 ) );
+      state.stress.segment< 2 >( 1 ) );
 
     count += 1;
     if ( count > 13 ) {
@@ -121,6 +123,7 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
     }
   }
 
-  stress1D              = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::OneD >( stress3DTemp );
+  stress1D              = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::OneD >( state.stress );
   dStress_dStrain1D_[0] = ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( dStress_dStrain3D );
+  state1D_.strainEnergy = state.strainEnergy;
 }
