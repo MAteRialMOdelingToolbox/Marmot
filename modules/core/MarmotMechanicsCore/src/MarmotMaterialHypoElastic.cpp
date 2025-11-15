@@ -67,7 +67,6 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&        state2D_,
     if ( planeStressCount > 13 ) {
       MarmotJournal::warningToMSG( "PlaneStressWrapper requires cutback" );
       throw std::runtime_error( "Plane stress iteration did not converge" );
-      return;
     }
   }
 
@@ -119,7 +118,6 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
     if ( count > 13 ) {
       MarmotJournal::warningToMSG( "UniaxialStressWrapper requires cutback" );
       throw std::runtime_error( "uniaxial stress iteration did not converge" );
-      return;
     }
   }
 

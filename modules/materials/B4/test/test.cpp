@@ -99,8 +99,6 @@ void testB4()
   // get computed stress
   Marmot::Vector6d stress = history.back().stress;
 
-  std::cout << "Computed stress: " << stress.transpose() << std::endl;
-
   // Compare the computed stress to the expected stress and throw an exception if they differ
   Marmot::Testing::throwExceptionOnFailure( Marmot::Testing::checkIfEqual< double >( stress, stressTarget, 1e-6 ),
                                             "Stress computation for " + std::string( __PRETTY_FUNCTION__ ) );
@@ -134,10 +132,7 @@ void testB4CoordinateInvariance()
 
 int main()
 {
-  std::vector< std::function< void() > > tests = {
-    testB4,
-    // testB4CoordinateInvariance
-  };
+  std::vector< std::function< void() > > tests = { testB4, testB4CoordinateInvariance };
   executeTestsAndCollectExceptions( tests );
   return 0;
 }
