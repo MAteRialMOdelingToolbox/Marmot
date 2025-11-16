@@ -3,11 +3,6 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotVoigt.h"
-#include "autodiff/forward/real.hpp"
-#include <iostream>
-#include <map>
 #include <string>
 
 using namespace Marmot;
@@ -49,6 +44,7 @@ namespace Marmot::Materials {
       solidificationParameters          ( { q1, q2, q3, q4, n, m } )
   // clang-format on
   {
+    initializeStateLayout();
     solidificationKelvinProperties.retardationTimes = KelvinChain::generateRetardationTimes( nKelvinBasic,
                                                                                              minTauBasic,
                                                                                              10. );
@@ -80,12 +76,16 @@ namespace Marmot::Materials {
     }
 
     // map state variables of basic creep Kelvin chain
-    Eigen::Map< Eigen::Matrix< double, 6, -1 > > basicCreepStateVars( state.stateVars, 6, nKelvinBasic );
+    auto basicCreepStateVars = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
+                                                                                   "basicCreepStateVars",
+                                                                                   6,
+                                                                                   nKelvinBasic );
 
     // map state variables of drying creep Kelvin chain
-    Eigen::Map< Eigen::Matrix< double, 6, -1 > > dryingCreepStateVars( state.stateVars + 6 * nKelvinBasic,
-                                                                       6,
-                                                                       nKelvinDrying );
+    auto dryingCreepStateVars = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
+                                                                                    "dryingCreepStateVars",
+                                                                                    6,
+                                                                                    nKelvinDrying );
 
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( time - dT - castTime ) * timeToDays;
@@ -166,29 +166,4 @@ namespace Marmot::Materials {
     return;
   }
 
-  // void B4::assignStateVars( double* stateVars_, int nStateVars )
-  // {
-  //   if ( nStateVars < getNumberOfRequiredStateVars() )
-  //     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-  //   this->stateVarManager = std::make_unique< B4StateVarManager >( stateVars_, nKelvinBasic + nKelvinDrying );
-
-  //   MarmotMaterial::assignStateVars( stateVars_, nStateVars );
-  // }
-
-  StateView B4::getStateView( const std::string& stateName, double* stateVars )
-  {
-    if ( stateName == "kelvinStateVars" ) {
-      return StateView( stateVars, ( nKelvinBasic + nKelvinDrying ) * 6 );
-    }
-    else {
-      throw std::runtime_error( MakeString()
-                                << __PRETTY_FUNCTION__ << ": State variable " << stateName << " not found!" );
-    }
-  }
-
-  int B4::getNumberOfRequiredStateVars()
-  {
-    return ( nKelvinBasic + nKelvinDrying ) * 6;
-  }
 } // namespace Marmot::Materials

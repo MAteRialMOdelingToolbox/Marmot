@@ -2,13 +2,7 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotViscoelasticity.h"
-#include "Marmot/MarmotVoigt.h"
-#include "autodiff/forward/real.hpp"
-#include <iostream>
-#include <map>
-#include <string>
 
 using namespace Marmot;
 using namespace Eigen;
@@ -31,6 +25,8 @@ namespace Marmot::Materials {
       timeToDays                        ( materialProperties[6] )
   // clang-format on
   {
+    initializeStateLayout();
+
     // assume sqrt( 10 ) spacing between retardation times
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
 
@@ -94,21 +90,5 @@ namespace Marmot::Materials {
                                        CelUnitInv );
 
     return;
-  }
-
-  StateView LinearViscoelasticPowerLaw::getStateView( const std::string& stateName, double* stateVars )
-  {
-    try {
-      return StateView( stateVars + stateVarInfo.at( stateName ).first, stateVarInfo.at( stateName ).second );
-    }
-    catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( MakeString()
-                                   << __PRETTY_FUNCTION__ << "State variable " + stateName + " not found." );
-    }
-  }
-
-  int LinearViscoelasticPowerLaw::getNumberOfRequiredStateVars()
-  {
-    return nKelvin * 6;
   }
 } // namespace Marmot::Materials

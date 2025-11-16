@@ -28,13 +28,7 @@
 #pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/dual.hpp"
 #include <Eigen/src/Core/Map.h>
-#include <iostream>
-#include <string>
-#include <vector>
 
 using namespace Marmot;
 
@@ -64,12 +58,14 @@ namespace Marmot::Materials {
 
     ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kappa", 1 );
+      stateLayout.finalize();
+    }
+
   protected:
     void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) override;
-
-    int getNumberOfRequiredStateVars() override { return 1; }
-
-    StateView getStateView( const std::string& result, double* stateVars ) override;
 
     /**
      * @brief Hardening function.

@@ -1,10 +1,7 @@
 #include "Marmot/MarmotLocalization.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <Marmot/Marmot.h>
-#include <Marmot/MarmotMaterial.h>
-#include <Marmot/VonMises.h>
+#include "Marmot/VonMises.h"
 
 using namespace Marmot::Testing;
 
@@ -13,19 +10,13 @@ void testMarmotLocalization()
   using namespace Marmot::ContinuumMechanics::LocalizationAnalysis;
 
   // material properties
-  const int                  vonMisesCode = 2;
   Eigen::Vector< double, 6 > materialProperties;
   materialProperties << 210000., 0.3, 200., 0., 0., 0.;
 
-  // instantiate material
-  auto material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( vonMisesCode,
-                                                          materialProperties.data(),
-                                                          materialProperties.size(),
-                                                          0 ) ) );
+  auto material = Marmot::Materials::VonMisesModel( materialProperties.data(), materialProperties.size(), 0 );
 
   // set state vars
-  if ( material->getNumberOfRequiredStateVars() > 1 ) {
+  if ( material.getNumberOfRequiredStateVars() > 1 ) {
     throw std::runtime_error( "Number of required state vars for Mises model changed!" );
   }
   double kappa = 0;
@@ -52,7 +43,7 @@ void testMarmotLocalization()
   timeInfo.time = 1.0;
   timeInfo.dT   = dT;
   // evaluate material
-  material->computeStress( state, dStress_dStrain.data(), dStrain.data(), timeInfo );
+  material.computeStress( state, dStress_dStrain.data(), dStrain.data(), timeInfo );
 
   // normal vector
   Marmot::Vector3d n;

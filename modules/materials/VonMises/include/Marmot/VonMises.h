@@ -26,8 +26,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotStateHelpers.h"
 
 namespace Marmot::Materials {
 
@@ -35,7 +34,13 @@ namespace Marmot::Materials {
   class VonMisesModel : public MarmotMaterialHypoElastic {
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    // using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+
+    VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel )
+      : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel )
+    {
+      initializeStateLayout();
+    }
 
     void computeStress( state3D&        state,
                         double*         dStressDDStrain,
@@ -49,9 +54,11 @@ namespace Marmot::Materials {
      */
     double getDensity() override;
 
-    int getNumberOfRequiredStateVars() override { return 1; }
-
-    StateView getStateView( const std::string& result, double* stateVars ) override;
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kappa", 1 );
+      stateLayout.finalize();
+    }
   };
 
 } // namespace Marmot::Materials

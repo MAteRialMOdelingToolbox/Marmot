@@ -28,7 +28,9 @@
 
 #pragma once
 #include "Marmot/MarmotMaterial.h"
+#include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <iostream>
 
 /**
  *
@@ -57,6 +59,9 @@ class MarmotMaterialHypoElastic : public MarmotMaterial {
 
 public:
   using MarmotMaterial::MarmotMaterial;
+
+  /// Layout of the state variables
+  MarmotStateLayoutDynamic stateLayout;
 
   /// Structure to hold the material state at a material point in 3D
   struct state3D {
@@ -127,4 +132,44 @@ public:
                                       double*         dStress_dStrain1D,
                                       const double*   dStrain,
                                       const timeInfo& timeInfo );
+
+  /**
+   * @brief Initialize the layout of the state variables.
+   *
+   * This method has to be implemented in derived classes.
+   * @warning This method has to be called in the constructor of the derived class.
+   */
+  virtual void initializeStateLayout() = 0;
+
+  /**
+   * @brief Get a view to the state variables.
+   * @param stateName Name of the state variable
+   * @param stateVars Pointer to the state variable array
+   * @return StatView to access the state variable
+   */
+  StateView getStateView( const std::string& stateName, double* stateVars )
+  {
+    return stateLayout.getStateView( stateVars, stateName );
+  }
+
+  /**
+   * @brief Get the total number of required state variables.
+   * @return Total number of required state variables
+   */
+  int getNumberOfRequiredStateVars() { return stateLayout.totalSize(); }
+  /**
+   * @brief Initialize the state variables at a material point.
+   * @param stateVars Pointer to the state variable array
+   * @param nStateVars Number of state variables
+   *
+   * @note The default implementation initializes all state variables to zero.
+   */
+  virtual void initializeYourself( double* stateVars, int nStateVars )
+  {
+    for ( int i = 0; i < nStateVars; ++i ) {
+      stateVars[i] = 0.0;
+    }
+  }
+
+  virtual double getDensity() { return 0.; }
 };

@@ -152,15 +152,12 @@ namespace Marmot::Materials {
 
     Matrix6d globalStiffnessTensor;
 
-    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) override;
 
-    StateView getStateView( const std::string& result, double* stateVars )
-    {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": No state variables available." );
-    };
-
-    int getNumberOfRequiredStateVars() { return 0; }
-
-    double getDensity();
+    void   initializeStateLayout() override { stateLayout.finalize(); }
+    double getDensity() override;
   };
 } // namespace Marmot::Materials

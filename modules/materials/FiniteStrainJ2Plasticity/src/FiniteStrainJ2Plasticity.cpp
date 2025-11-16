@@ -7,7 +7,6 @@
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include <autodiff/forward/dual/dual.hpp>
-#include <map>
 
 namespace Marmot::Materials {
 
@@ -29,6 +28,7 @@ namespace Marmot::Materials {
       implementationType( materialProperties[6] ),
       density( nMaterialProperties > 7 ? materialProperties[7] : 0.0 ) // TODO: make mandatory material parameter
   {
+    initializeStateLayout();
   }
 
   void FiniteStrainJ2Plasticity::computeStress( ConstitutiveResponse< 3 >& response,
@@ -63,9 +63,9 @@ namespace Marmot::Materials {
                                                                      const TimeIncrement&       timeIncrement )
   {
 
-    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -195,9 +195,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -357,9 +357,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -520,9 +520,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    Tensor33d&      Fp = *reinterpret_cast< Tensor33d* >( response.stateVars + stateVarInfo.at( "Fp" ).first );
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = *reinterpret_cast< double* >( response.stateVars + stateVarInfo.at( "alphaP" ).first );
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -676,18 +676,6 @@ namespace Marmot::Materials {
     }
   }
 
-  StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName, double* stateVars )
-  {
-    try {
-      auto [offset, length] = stateVarInfo.at( stateName );
-      return StateView( stateVars + offset, length );
-    }
-    catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( MakeString()
-                                   << __PRETTY_FUNCTION__ << ": state variable " << stateName << " not found!" );
-    }
-  }
-
   void FiniteStrainJ2Plasticity::initializeYourself( double* stateVars, int nStateVars )
   {
     // set all state variables to zero
@@ -695,9 +683,7 @@ namespace Marmot::Materials {
       stateVars[i] = 0.0;
     }
 
-    auto [i, j] = stateVarInfo.at( "Fp" );
-
-    Tensor33d& Fp = *reinterpret_cast< Tensor33d* >( stateVars + i );
+    Tensor33d& Fp = stateLayout.getAs< Tensor33d& >( stateVars, "Fp" );
     Fp.eye();
   }
 } // namespace Marmot::Materials

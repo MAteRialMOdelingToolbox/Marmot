@@ -1,16 +1,13 @@
 #include "Marmot/ADVonMises.h"
 #include "Marmot/ADVonMisesConstants.h"
-#include "Marmot/MarmotAutomaticDifferentiation.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
-#include "autodiff/forward/dual.hpp"
-#include "autodiff/forward/dual/eigen.hpp"
-#include <autodiff/forward/dual/dual.hpp>
+#include <autodiff/forward/dual.hpp>
+#include <autodiff/forward/dual/eigen.hpp>
 
 namespace Marmot::Materials {
 
@@ -32,18 +29,9 @@ namespace Marmot::Materials {
       G( E / ( 2. * ( 1. + nu ) ) )
   {
     assert( nMaterialProperties == 6 );
+    initializeStateLayout();
   }
 
-  StateView ADVonMises::getStateView( const std::string& stateName, double* stateVars )
-  {
-    if ( stateName == "kappa" ) {
-      return StateView( stateVars, 1 );
-    }
-    else {
-      throw std::invalid_argument( MakeString()
-                                   << __PRETTY_FUNCTION__ << ": Unknown state variable name '" << stateName << "'!" );
-    }
-  }
   void ADVonMises::computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo )
   {
     mVector6dual            S( state.stress );
@@ -53,7 +41,7 @@ namespace Marmot::Materials {
     const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
     // get current hardening variable
-    double& kappa = state.stateVars[0];
+    double& kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
     // compute elastic predictor
     const Vector6dual trialStress = S + Cel * dE;

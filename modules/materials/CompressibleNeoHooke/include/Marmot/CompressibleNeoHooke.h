@@ -56,10 +56,7 @@ namespace Marmot::Materials {
      * @param nMaterialProperties Length of @c materialProperties.
      * @param materialLabel Material label.
      */
-
     CompressibleNeoHooke( const double* materialProperties, int nMaterialProperties, int materialLabel );
-
-    static constexpr int nStateVarsRequired = 0; /**< Number of required state variables (none here). */
 
     /**
      * @brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
@@ -78,25 +75,15 @@ namespace Marmot::Materials {
      *
      * Template parameter @c <3> indicates 3D.
      */
-
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
-                        const TimeIncrement& );
-
-    /** @brief Number of required state variables.
-     *  @return Always 0 for this model.
-     */
-    int getNumberOfRequiredStateVars() { return this->nStateVarsRequired; }
+                        const TimeIncrement& ) override;
 
     /**
-     * @brief Access a named state quantity (no states here).
-     * @throws std::invalid_argument Always, since no states are used.
+     * @brief Initialize the state layout (no state variables here).
      */
-    StateView getStateView( const std::string& result, double* stateVars )
-    {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": No state variables available!" );
-    };
+    void initializeStateLayout() override { stateLayout.finalize(); }
   };
 
 } // namespace Marmot::Materials

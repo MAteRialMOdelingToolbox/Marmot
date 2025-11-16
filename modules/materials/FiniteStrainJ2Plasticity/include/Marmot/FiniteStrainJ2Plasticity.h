@@ -130,7 +130,7 @@ namespace Marmot::Materials {
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
-                        const TimeIncrement&       timeIncrement );
+                        const TimeIncrement&       timeIncrement ) override;
 
     /**
      * @brief Scalar-return mapping variant; would solve a 1D consistency equation for @f$\Delta\lambda@f$.
@@ -178,29 +178,15 @@ namespace Marmot::Materials {
                             const Deformation< 3 >&    deformation,
                             const TimeIncrement&       timeIncrement );
 
-    /** @brief Get the number of required state variables
-     * @return 10 (9 for @c Fp and 1 for @c alphaP).
-     */
-    int getNumberOfRequiredStateVars() { return 10; }
-
-    /** @brief Return the material density if provided in material parameters */
-
-    double getDensity() { return density; }
-
-    const std::map< std::string, std::pair< int, int > > stateVarInfo = {
-      { "Fp", std::make_pair( 0, 9 ) },
-      { "alphaP", std::make_pair( 9, 1 ) },
-    };
-
-    /** @brief Expose a named view into the state vector.
-     *  @param result One of: @c Fp (length 9), @c alphaP (length 1).
-     *  @return A StateView object that provides access to the requested state variable; returns an empty view if @p
-     * result is unknown.
-     * */
-    StateView getStateView( const std::string& result, double* stateVars );
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "Fp", 9 );     // plastic deformation gradien
+      stateLayout.add( "alphaP", 1 ); // strain-like hardening variable
+      stateLayout.finalize();
+    }
 
     /** @brief Initialize state (sets @f$\boldsymbol F^{\mathrm p} = \boldsymbol I@f$) */
-    void initializeYourself( double* stateVars, int nStateVars );
+    void initializeYourself( double* stateVars, int nStateVars ) override;
 
     /** @brief Yield function @f$f(\boldsymbol F^{\mathrm e},\beta_{\mathrm p})@f$ and first derivatives.
      *  @param Fe     Elastic deformation gradient \f$\boldsymbol F^{\mathrm e}\f$.

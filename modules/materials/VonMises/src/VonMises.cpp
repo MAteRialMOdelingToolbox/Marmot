@@ -10,17 +10,6 @@ namespace Marmot::Materials {
   using namespace Eigen;
   using namespace Marmot;
 
-  StateView VonMisesModel::getStateView( const std::string& stateName, double* stateVars )
-  {
-    if ( stateName == "kappa" ) {
-      return StateView( stateVars, 1 );
-    }
-    else {
-      throw std::runtime_error( MakeString()
-                                << __PRETTY_FUNCTION__ << ": State variable " << stateName << " not found!" );
-    }
-  }
-
   double VonMisesModel::getDensity()
   {
     if ( this->nMaterialProperties < 7 )
@@ -58,7 +47,7 @@ namespace Marmot::Materials {
     }
 
     // get current hardening variable
-    double& kappa = state.stateVars[0];
+    double& kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
     // isotropic hardening law
     auto fy = [&]( double kappa_ ) {

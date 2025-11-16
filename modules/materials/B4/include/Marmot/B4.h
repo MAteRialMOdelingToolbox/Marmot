@@ -29,6 +29,7 @@
 #include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotSolidification.h"
+#include "Marmot/MarmotStateHelpers.h"
 #include <string>
 
 namespace Marmot::Materials {
@@ -158,11 +159,10 @@ namespace Marmot::Materials {
 
     B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
-
-    int getNumberOfRequiredStateVars();
-
-    StateView getStateView( const std::string& stateName, double* stateVars );
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) override;
 
   private:
     /// \brief material parameters for Solidification Theory
@@ -181,6 +181,13 @@ namespace Marmot::Materials {
     static constexpr int dryingCreepComplianceApproximationOrder = 5;
     /// \brief approximation order of the Post-Widder formula for basic creep
     static constexpr int basicCreepComplianceApproximationOrder = 2;
+
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "basicCreepStateVars", nKelvinBasic * 6 );
+      stateLayout.add( "dryingCreepStateVars", nKelvinDrying * 6 );
+      stateLayout.finalize();
+    }
 
     /// \brief drying creep compliance function
     template < typename T_ >

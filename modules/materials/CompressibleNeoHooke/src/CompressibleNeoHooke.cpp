@@ -23,6 +23,7 @@ namespace Marmot::Materials {
                                               int           materialLabel )
     : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel )
   {
+    initializeStateLayout();
   }
 
   void CompressibleNeoHooke::computeStress( ConstitutiveResponse< 3 >& response,

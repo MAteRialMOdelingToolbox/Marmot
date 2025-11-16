@@ -26,8 +26,6 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/MarmotUtils.h"
-#include <string>
 
 /**
  * @class MarmotMaterial
@@ -43,8 +41,8 @@ protected:
   const double* materialProperties;  ///< Pointer to array of material property values.
   const int     nMaterialProperties; ///< Number of material properties.
 
-  double* stateVars;                 ///< Pointer to array of state variables.
-  int     nStateVars;                ///< Number of assigned state variables.
+  double* stateVars  = nullptr;      ///< Pointer to array of state variable values.
+  int     nStateVars = 0;            ///< Number of state variables.
 
 public:
   const int materialNumber; ///< Identifier for material type/implementation.
@@ -55,39 +53,13 @@ public:
    * @param[in] nMaterialProperties Number of material properties.
    * @param[in] materialNumber Unique identifier for the material.
    */
-  MarmotMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber );
+  MarmotMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+    : materialProperties( materialProperties ),
+      nMaterialProperties( nMaterialProperties ),
+      materialNumber( materialNumber )
+  {
+  }
 
   /** @brief Virtual destructor for safe polymorphic cleanup. */
-  virtual ~MarmotMaterial();
-
-  /**
-   * @return Number of state variables required by the material.
-   */
-  virtual int getNumberOfRequiredStateVars() = 0;
-
-  /**
-   * @brief Assign state variable array to material.
-   * @param[in,out] stateVars Pointer to state variable array.
-   * @param[in] nStateVars Number of state variables.
-   */
-  // virtual void assignStateVars( double* stateVars, int nStateVars );
-
-  /**
-   * @brief Access material state variables by name.
-   * @param[in] stateName Name of the requested state variable.
-   * @param[in] stateVarsVars Pointer to state variable array.
-   * @return A view into the state variable array.
-   */
-  virtual StateView getStateView( const std::string& stateName, double* stateVarsVars ) = 0;
-
-  /**
-   * @brief Initialize material state (default: no action).
-   */
-  virtual void initializeYourself( double* stateVars, int nStateVars );
-
-  /**
-   * @brief Get material density.
-   * @return Density value (default: 0 if not overridden).
-   */
-  virtual double getDensity();
+  virtual ~MarmotMaterial() = default;
 };

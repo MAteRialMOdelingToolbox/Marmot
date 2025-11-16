@@ -76,20 +76,21 @@ namespace Marmot::Materials {
     /**< #timeToDays represents the ratio of simulation time to days.
      * It is a reference variable to #materialProperties[6]. */
 
-    const std::map< std::string, std::pair< int, int > > stateVarInfo = {
-      { "kelvinStateVars", std::make_pair( 0, nKelvin * 6 ) },
-    };
-
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
     LinearViscoelasticPowerLaw( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    void computeStress( state3D& state, double* dStressDDStrain, const double* dStrain, const timeInfo& timeInfo );
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) override;
 
-    int getNumberOfRequiredStateVars();
-
-    StateView getStateView( const std::string& stateName, double* stateVars );
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kelvinStateVars", 6 * nKelvin );
+      stateLayout.finalize();
+    }
 
   private:
     /// @brief Young's modulus of the #nKelvin Kelvin units

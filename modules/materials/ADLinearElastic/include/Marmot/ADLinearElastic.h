@@ -53,11 +53,6 @@ namespace Marmot::Materials {
   protected:
     void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo );
 
-    StateView getStateView( const std::string& result, double* stateVars )
-    {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << "No state variables available." );
-    };
-
-    int getNumberOfRequiredStateVars() { return 0; }
+    void initializeStateLayout() { stateLayout.finalize(); }
   };
 } // namespace Marmot::Materials
