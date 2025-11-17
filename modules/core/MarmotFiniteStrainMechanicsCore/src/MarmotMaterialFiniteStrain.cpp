@@ -89,7 +89,7 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
   const double        time[] = { 0.0, 0.0 };
   const TimeIncrement timeIncrement{ time[0], 0.0 };
 
-  Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, nStateVars );
+  Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, stateLayout.totalSize() );
 
   auto evaluateStress = [&]( const Vector3d& F0 ) {
     deformation.F( 0, 0 ) = F0( 0 );

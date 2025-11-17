@@ -27,10 +27,8 @@
  */
 
 #pragma once
-#include "Marmot/MarmotMaterial.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <iostream>
 
 /**
  *
@@ -55,10 +53,23 @@
  *
  * This formulation is compatible with an Abaqus interface.
  */
-class MarmotMaterialHypoElastic : public MarmotMaterial {
+class MarmotMaterialHypoElastic {
+
+protected:
+  const double* materialProperties;
+  const int     nMaterialProperties;
 
 public:
-  using MarmotMaterial::MarmotMaterial;
+  const int materialNumber;
+  MarmotMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+    : materialProperties( matProperties_ ),
+      nMaterialProperties( nMaterialProperties_ ),
+      materialNumber( materialNumber_ )
+  {
+  }
+
+  /// Default destructor
+  virtual ~MarmotMaterialHypoElastic() = default;
 
   /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;

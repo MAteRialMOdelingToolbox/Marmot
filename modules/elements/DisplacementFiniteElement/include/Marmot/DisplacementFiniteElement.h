@@ -400,8 +400,8 @@ namespace Marmot::Elements {
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-        MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
+      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
+        MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialName,
                                                               section.materialProperties,
                                                               section.nMaterialProperties,
                                                               elLabel ) ) );

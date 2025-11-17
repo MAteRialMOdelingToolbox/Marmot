@@ -26,18 +26,32 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterial.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include <Fastor/tensor/Tensor.h>
 
-class MarmotMaterialFiniteStrain : public MarmotMaterial {
+class MarmotMaterialFiniteStrain {
 
   /**
    * @class MarmotMaterialFiniteStrain
    * @brief Abstract basic class for mechanical materials in the finite strain regime
    */
+protected:
+  const double* materialProperties;
+  const int     nMaterialProperties;
+
 public:
+  const int materialNumber;
+  MarmotMaterialFiniteStrain( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+    : materialProperties( matProperties_ ),
+      nMaterialProperties( nMaterialProperties_ ),
+      materialNumber( materialNumber_ )
+  {
+  }
+
+  /// Default destructor
+  virtual ~MarmotMaterialFiniteStrain() = default;
+
+  /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;
 
   /**
@@ -91,8 +105,6 @@ public:
     const double time; ///< time at the beginning of the increment
     const double dT;   ///< size of the time increment
   };
-
-  using MarmotMaterial::MarmotMaterial;
 
   /**
    * @brief Updates the material state.

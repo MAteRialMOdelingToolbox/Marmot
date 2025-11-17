@@ -86,7 +86,7 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
 
   Map< const Matrix< double, 1, 1 > > dStrain1D( dStrain1D_ );
   Map< Matrix< double, 1, 1 > >       stress1D( &state1D_.stress );
-  Map< VectorXd >                     stateVars( this->stateVars, this->nStateVars );
+  Map< VectorXd >                     stateVars( state1D_.stateVars, stateLayout.totalSize() );
 
   Matrix6d dStress_dStrain3D;
 

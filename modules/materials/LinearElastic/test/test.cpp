@@ -19,9 +19,8 @@ std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( co
   const int elLabel = 1;
 
   // Create the material object using Marmot's factory method
-  auto mat = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName(
-                                                            materialName ),
+  auto mat = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
+    MarmotLibrary::MarmotMaterialFactory::createMaterial(materialName ,
                                                           materialProperties,
                                                           nMaterialProperties,
                                                           elLabel ) ) );

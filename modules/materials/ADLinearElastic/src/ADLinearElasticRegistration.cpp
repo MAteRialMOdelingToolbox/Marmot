@@ -1,7 +1,5 @@
+#include "Marmot/Marmot.h"
 #include "Marmot/ADLinearElastic.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
-#include <cstddef>
-#include <string>
 
 namespace Marmot::Materials {
 
@@ -9,14 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    constexpr int base                = 11930000;
-    constexpr int code                = 1;
-    constexpr int ADLinearElasticCode = base + code;
-
     const static bool ADLinearElasticIsRegistered = MarmotMaterialFactory::
-      registerMaterial( ADLinearElasticCode,
-                        "ADLINEARELASTIC",
-                        makeDefaultMarmotMaterialFactoryFunction< class ADLinearElastic >() );
+      registerMaterial<ADLinearElastic>( "ADLINEARELASTIC" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

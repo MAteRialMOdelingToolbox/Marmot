@@ -27,11 +27,10 @@
  */
 #pragma once
 #include "Marmot/MarmotElement.h"
-#include "Marmot/MarmotMaterial.h"
 #include <functional>
-#include <iostream>
 #include <string>
 #include <unordered_map>
+#include <assert.h>
 
 namespace MarmotLibrary {
 
@@ -45,17 +44,13 @@ namespace MarmotLibrary {
    */
   class MarmotMaterialFactory {
   public:
-    using materialFactoryFunction = MarmotMaterial* (*)( const double* materialProperties,
-                                                         int           nMaterialProperties,
-                                                         int           materialNumber );
-    MarmotMaterialFactory()       = delete;
+    using materialFactoryFunction = std::function<
+      void*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
-    /**
-     * @brief Get the unique material code from its name.
-     * @param[in] materialName Name of the material.
-     * @return Unique code associated with the material name, or -1 if not found.
-     */
-    static int getMaterialCodeFromName( const std::string& materialName );
+    // MarmotMaterial* (*)( const double* materialProperties,
+    //                                                  int           nMaterialProperties,
+    //                                                  int           materialNumber );
+    MarmotMaterialFactory() = delete;
 
     /**
      * @brief Create a material instance based on its code and properties.
@@ -65,10 +60,19 @@ namespace MarmotLibrary {
      * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
-    static MarmotMaterial* createMaterial( int           materialCode,
-                                           const double* materialProperties,
-                                           int           nMaterialProperties,
-                                           int           materialNumber );
+    static void* createMaterial( const std::string&   materialName,
+                                 const double* materialProperties,
+                                 int           nMaterialProperties,
+                                 int           materialNumber )
+    {
+      auto& map = materialFactoryFunctionByName();
+      auto  it  = map.find( materialName );
+        if ( it == map.end() ) {
+            throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Material " + materialName + " not registered!" );
+        }
+
+         return it->second( materialProperties, nMaterialProperties, materialNumber );
+    }
 
     /**
      * @brief Register a material with its code and factory function.
@@ -77,13 +81,26 @@ namespace MarmotLibrary {
      * @param[in] factoryFunction Function to create material instances.
      * @return True if registration was successful, false if the code already exists.
      */
-    static bool registerMaterial( int                     materialCode,
-                                  const std::string&      materialName,
-                                  materialFactoryFunction factoryFunction );
+    template < class T >
+    static bool registerMaterial( const std::string& materialName )
+    {
+      auto& map = materialFactoryFunctionByName();
+
+      assert( map.find( materialName ) == map.end() && "Material: " << materialName << " already registered!" );
+
+        map[materialName] =
+          []( const double* materialProperties, int nMaterialProperties, int materialNumber ) -> void* {
+          return new T( materialProperties, nMaterialProperties, materialNumber );
+        };
+        return true;
+    }
 
   private:
-    static std::unordered_map< std::string, int >             materialNameToCodeAssociation;
-    static std::unordered_map< int, materialFactoryFunction > materialFactoryFunctionByCode;
+    static std::unordered_map< std::string, materialFactoryFunction >& materialFactoryFunctionByName()
+    {
+      static std::unordered_map< std::string, materialFactoryFunction > map;
+      return map;
+    }
   };
 
   /**
@@ -99,34 +116,44 @@ namespace MarmotLibrary {
     MarmotElementFactory()       = delete;
 
     /**
-     * @brief Get the unique element code from its name.
-     * @param[in] elementName Name of the element.
-     * @return Unique code associated with the element name, or throws an exception if not found.
-     */
-    static int getElementCodeFromName( const std::string& elementName );
-
-    /**
      * @brief Create an element instance based on its code and number.
      * @param[in] elementCode Unique code for the element.
      * @param[in] elementNumber Unique identifier for the element instance.
      * @return Pointer to the created MarmotElement instance, or nullptr if creation failed.
      */
-    static MarmotElement* createElement( int elementCode, int elementNumber );
+    static MarmotElement* createElement( const std::string& elementName, int elementNumber )
+    {
+      auto& map = elementFactoryFunctionByName();
+      auto  it  = map.find( elementName );
+        if ( it == map.end() ) {
+            throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Element " + elementName + " not registered!" );
+        }
+
+        return it->second( elementNumber );
+    }
 
     /**
-     * @brief Register an element with its code and factory function.
+     * @brief Register an element with its name.
      * @param[in] elementName Name of the element.
-     * @param[in] elementCode Unique code for the element.
-     * @param[in] factoryFunction Function to create element instances.
      * @return True if registration was successful, false if the code already exists.
      */
-    static bool registerElement( const std::string&     elementName,
-                                 int                    elementCode,
-                                 elementFactoryFunction factoryFunction );
+    static bool registerElement( const std::string& elementName, elementFactoryFunction factoryFunction )
+    {
+      auto& map = elementFactoryFunctionByName();
+
+      assert( map.find( elementName ) == map.end() &&
+              "Element" << elementName  << "already registered!" );
+
+        map[elementName] = factoryFunction;
+        return true;
+    }
 
   private:
-    static std::unordered_map< std::string, int >            elementNameToCodeAssociation;
-    static std::unordered_map< int, elementFactoryFunction > elementFactoryFunctionByCode;
+    static std::unordered_map< std::string, elementFactoryFunction >& elementFactoryFunctionByName()
+    {
+      static std::unordered_map< std::string, elementFactoryFunction > map;
+      return map;
+    }
   };
 
 } // namespace MarmotLibrary

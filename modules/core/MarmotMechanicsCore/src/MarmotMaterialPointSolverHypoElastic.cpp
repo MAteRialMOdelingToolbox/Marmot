@@ -9,12 +9,11 @@ MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std:
   : options( options )
 {
   using namespace MarmotLibrary;
-  // get material code from name
-  auto materialCode = MarmotMaterialFactory::getMaterialCodeFromName( materialName );
 
   // create material instance
-  material = dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotMaterialFactory::createMaterial( materialCode, materialProperties, nMaterialProperties, 1 ) );
+  material = static_cast< MarmotMaterialHypoElastic* >(
+      MarmotMaterialFactory::createMaterial( materialName, materialProperties, nMaterialProperties, 1 ) );
+
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();
   // initialize state variables
