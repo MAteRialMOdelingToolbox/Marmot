@@ -7,7 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool FiniteStrainJ2PlasticityRegistered = MarmotMaterialFactory::
-      registerMaterial<FiniteStrainJ2Plasticity >( "FINITESTRAINJ2PLASTICITY");
+    const static bool
+      FiniteStrainJ2PlasticityRegistered = MarmotMaterialFactory::registerMaterial< FiniteStrainJ2Plasticity >(
+        "FINITESTRAINJ2PLASTICITY" );
   } // namespace Registration
 } // namespace Marmot::Materials

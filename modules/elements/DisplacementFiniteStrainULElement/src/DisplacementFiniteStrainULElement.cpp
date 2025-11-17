@@ -4,7 +4,6 @@
 
 namespace Marmot::Elements::Registration {
 
-
   template < class T,
              Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
              typename T::SectionType                             sectionType >
@@ -35,22 +34,21 @@ namespace Marmot::Elements::Registration {
                                           DisplacementFiniteStrainULElement< 2, 8 >::PlaneStrain >() );
 
   const static bool C3D8UL_isRegistered = MarmotLibrary::MarmotElementFactory::
-    registerElement( "C3D8UL", 
-            makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 8 >,
-                                 FullIntegration,
-                                 DisplacementFiniteStrainULElement< 3, 8 >::SectionType::Solid >() );
-
+    registerElement( "C3D8UL",
+                     makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 8 >,
+                                          FullIntegration,
+                                          DisplacementFiniteStrainULElement< 3, 8 >::SectionType::Solid >() );
 
   const static bool C3D20RUL_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D20RUL",
-                        makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 20 >,
-                                            ReducedIntegration,
-                                            DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid >() );
+                     makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 20 >,
+                                          ReducedIntegration,
+                                          DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid >() );
 
   const static bool C3D20UL_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D20UL",
-                        makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 20 >,
-                                            FullIntegration,
-                                            DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid >() );
+                     makeFactoryFunction< DisplacementFiniteStrainULElement< 3, 20 >,
+                                          FullIntegration,
+                                          DisplacementFiniteStrainULElement< 3, 20 >::SectionType::Solid >() );
 
 } // namespace Marmot::Elements::Registration

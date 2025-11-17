@@ -48,22 +48,21 @@ namespace Marmot::Elements::Registration {
 
   const static bool C3D8_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D8",
-      makeFactoryFunction< DisplacementFiniteElement< 3, 8 >,
-            FullIntegration,
-            DisplacementFiniteElement< 3, 8 >::SectionType::Solid >() );
+                     makeFactoryFunction< DisplacementFiniteElement< 3, 8 >,
+                                          FullIntegration,
+                                          DisplacementFiniteElement< 3, 8 >::SectionType::Solid >() );
 
   const static bool C3D20_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D20",
-      makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
-            FullIntegration,
-            DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
-
+                     makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
+                                          FullIntegration,
+                                          DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
 
   const static bool C3D20R_isRegistered = MarmotLibrary::MarmotElementFactory::
     registerElement( "C3D20R",
-        makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
-                ReducedIntegration,
-                DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
+                     makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
+                                          ReducedIntegration,
+                                          DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
 
   MarmotElement* generateT2D2( int elementID )
   {
@@ -75,7 +74,5 @@ namespace Marmot::Elements::Registration {
     constexpr static int nIndicesToBeWrapped  = 2;
     return new MarmotElementSpatialWrapper( 2, 1, 2, 2, indicesToBeWrapped, nIndicesToBeWrapped, std::move( uelT2D2 ) );
   }
-  const static bool
-    T2D2_isRegistered = MarmotLibrary::MarmotElementFactory::registerElement( "T2D2",
-                                                                              generateT2D2 );
+  const static bool T2D2_isRegistered = MarmotLibrary::MarmotElementFactory::registerElement( "T2D2", generateT2D2 );
 } // namespace Marmot::Elements::Registration

@@ -7,8 +7,7 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool VonMisesIsRegistered = MarmotMaterialFactory::
-      registerMaterial<VonMisesModel>(  "VONMISES" );
+    const static bool VonMisesIsRegistered = MarmotMaterialFactory::registerMaterial< VonMisesModel >( "VONMISES" );
 
   } // namespace Registration
 

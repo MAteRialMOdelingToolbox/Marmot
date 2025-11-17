@@ -22,7 +22,7 @@ void testInstantiationAndBasicProperties()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
-  const std::string                          matName  = "LINEARELASTIC"; // Linear Elastic
+  const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
   MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
   const static std::vector< double > elPropsVec = { 0.1 };
   ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
@@ -88,7 +88,7 @@ void testStiffnessMatrixCalculationPlaneStress()
 
   // Material properties: E = 10000, nu = 0.2, density = 1 (density not used in static analysis)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
-  const std::string                          matName  = "LINEARELASTIC"; // Linear Elastic
+  const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
   MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
 
   // Element properties: thickness = 1.0
@@ -163,7 +163,7 @@ void testInitializeYourselfAndShapeFunctions()
 
   // Dummy material properties (not strictly needed for this test but required by assignProperty)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
-  const std::string                          matName  = "LINEARELASTIC"; // Linear Elastic
+  const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
   MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
 
   // Element properties: thickness = 1.0

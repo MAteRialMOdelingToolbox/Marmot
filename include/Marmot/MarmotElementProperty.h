@@ -37,8 +37,8 @@
 class MarmotMaterialSection {
 public:
   const std::string materialName;
-  const double* materialProperties;
-  int           nMaterialProperties;
+  const double*     materialProperties;
+  int               nMaterialProperties;
 
   MarmotMaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
     : materialName( materialName ),

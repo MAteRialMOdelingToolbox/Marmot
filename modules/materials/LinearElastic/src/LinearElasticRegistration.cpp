@@ -7,9 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool LinearElasticIsRegistered = MarmotMaterialFactory::
-      registerMaterial<LinearElastic>( "LINEARELASTIC" );
-
+    const static bool LinearElasticIsRegistered = MarmotMaterialFactory::registerMaterial< LinearElastic >(
+      "LINEARELASTIC" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

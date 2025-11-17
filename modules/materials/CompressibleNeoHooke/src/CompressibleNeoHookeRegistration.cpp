@@ -7,10 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool CompressibleNeoHookeRegistered = MarmotMaterialFactory::
-      registerMaterial<CompressibleNeoHooke>( 
-                        "COMPRESSIBLENEOHOOKE"
-                         );
+    const static bool CompressibleNeoHookeRegistered = MarmotMaterialFactory::registerMaterial< CompressibleNeoHooke >(
+      "COMPRESSIBLENEOHOOKE" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

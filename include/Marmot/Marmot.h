@@ -27,10 +27,10 @@
  */
 #pragma once
 #include "Marmot/MarmotElement.h"
+#include <assert.h>
 #include <functional>
 #include <string>
 #include <unordered_map>
-#include <assert.h>
 
 namespace MarmotLibrary {
 
@@ -60,18 +60,19 @@ namespace MarmotLibrary {
      * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
-    static void* createMaterial( const std::string&   materialName,
-                                 const double* materialProperties,
-                                 int           nMaterialProperties,
-                                 int           materialNumber )
+    static void* createMaterial( const std::string& materialName,
+                                 const double*      materialProperties,
+                                 int                nMaterialProperties,
+                                 int                materialNumber )
     {
       auto& map = materialFactoryFunctionByName();
       auto  it  = map.find( materialName );
-        if ( it == map.end() ) {
-            throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Material " + materialName + " not registered!" );
-        }
+      if ( it == map.end() ) {
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__ << "Material " + materialName + " not registered!" );
+      }
 
-         return it->second( materialProperties, nMaterialProperties, materialNumber );
+      return it->second( materialProperties, nMaterialProperties, materialNumber );
     }
 
     /**
@@ -88,11 +89,10 @@ namespace MarmotLibrary {
 
       assert( map.find( materialName ) == map.end() && "Material: " << materialName << " already registered!" );
 
-        map[materialName] =
-          []( const double* materialProperties, int nMaterialProperties, int materialNumber ) -> void* {
-          return new T( materialProperties, nMaterialProperties, materialNumber );
-        };
-        return true;
+      map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber ) -> void* {
+        return new T( materialProperties, nMaterialProperties, materialNumber );
+      };
+      return true;
     }
 
   private:
@@ -125,11 +125,12 @@ namespace MarmotLibrary {
     {
       auto& map = elementFactoryFunctionByName();
       auto  it  = map.find( elementName );
-        if ( it == map.end() ) {
-            throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Element " + elementName + " not registered!" );
-        }
+      if ( it == map.end() ) {
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__ << "Element " + elementName + " not registered!" );
+      }
 
-        return it->second( elementNumber );
+      return it->second( elementNumber );
     }
 
     /**
@@ -141,11 +142,10 @@ namespace MarmotLibrary {
     {
       auto& map = elementFactoryFunctionByName();
 
-      assert( map.find( elementName ) == map.end() &&
-              "Element" << elementName  << "already registered!" );
+      assert( map.find( elementName ) == map.end() && "Element" << elementName << "already registered!" );
 
-        map[elementName] = factoryFunction;
-        return true;
+      map[elementName] = factoryFunction;
+      return true;
     }
 
   private:
