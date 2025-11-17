@@ -1,5 +1,5 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="Marmot::Materials::B4::B4StateVarManager" alt="" coords="5,5,450,53"/>
 <area shape="rect" id="node2" title="MarmotStateVarVectorManager" alt="" coords="64,101,391,149"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="230,54,230,86,225,86,225,54"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="229,52,230,87,225,85,226,56"/>
 </map>

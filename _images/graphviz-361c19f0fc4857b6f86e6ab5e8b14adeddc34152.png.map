@@ -1,5 +1,5 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="MarmotMaterial" alt="" coords="59,101,238,149"/>
 <area shape="rect" id="node2" title="MarmotMaterialMechanical" alt="" coords="5,5,292,53"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="151,54,151,86,146,86,146,54"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="150,52,151,87,146,85,147,56"/>
 </map>

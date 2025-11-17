@@ -1,7 +1,7 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="Marmot::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager" alt="" coords="5,5,1041,53"/>
 <area shape="rect" id="node2" title="MarmotStateVarVectorManager" alt="" coords="360,101,686,149"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="526,54,526,86,520,86,520,54"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="525,52,525,87,521,84,521,56"/>
 <area shape="rect" id="node3" title="MarmotStateVarVectorManager::StateVarVectorLayout" alt="" coords="249,197,797,245"/>
-<area shape="poly" id="edge2" title="usage" alt="" coords="526,150,526,182,520,182,520,150"/>
+<area shape="poly" id="edge2" title="usage" alt="" coords="525,148,525,184,521,180,521,152"/>
 </map>

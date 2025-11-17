@@ -2,8 +2,8 @@
 <area shape="rect" id="node1" title="MarmotMaterial" alt="" coords="77,293,255,341"/>
 <area shape="rect" id="node2" title="MarmotMaterialHypoElastic" alt="" coords="19,101,313,149"/>
 <area shape="rect" id="node4" title="MarmotMaterialMechanical" alt="" coords="23,197,309,245"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="169,150,169,182,163,182,163,150"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="167,147,169,183,163,181,165,152"/>
 <area shape="rect" id="node3" title="MarmotMaterialHypoElasticAD" alt="" coords="5,5,327,53"/>
-<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="169,54,169,86,163,86,163,54"/>
-<area shape="poly" id="edge3" title="public&#45;inheritance" alt="" coords="169,246,169,278,163,278,163,246"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="167,51,169,87,163,85,165,56"/>
+<area shape="poly" id="edge3" title="public&#45;inheritance" alt="" coords="168,244,168,279,164,277,164,248"/>
 </map>

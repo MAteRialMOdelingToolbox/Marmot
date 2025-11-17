@@ -1,5 +1,5 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" alt="" coords="5,5,1239,53"/>
 <area shape="rect" id="node2" title="Marmot/MarmotTypedefs.h" alt="" coords="480,101,764,149"/>
-<area shape="poly" id="edge1" title="include" alt="" coords="625,54,625,86,619,86,619,54"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="624,52,624,88,620,84,620,56"/>
 </map>

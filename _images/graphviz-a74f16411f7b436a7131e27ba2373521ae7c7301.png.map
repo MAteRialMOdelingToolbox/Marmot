@@ -1,7 +1,7 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="Marmot::Materials::FiniteStrainJ2Plasticity" alt="" coords="5,5,441,53"/>
 <area shape="rect" id="node3" title="MarmotMaterialFiniteStrain" alt="" coords="76,101,370,149"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="226,54,226,86,220,86,220,54"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="224,51,225,87,221,85,222,56"/>
 <area shape="rect" id="node2" title="MarmotMaterial" alt="" coords="134,197,312,245"/>
-<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="226,150,226,182,220,182,220,150"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="225,148,225,183,221,181,221,152"/>
 </map>

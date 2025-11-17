@@ -1,7 +1,7 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager" alt="" coords="5,5,698,53"/>
 <area shape="rect" id="node2" title="MarmotStateVarVectorManager" alt="" coords="188,101,515,149"/>
-<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="354,54,354,86,349,86,349,54"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="353,52,354,87,349,85,350,56"/>
 <area shape="rect" id="node3" title="MarmotStateVarVectorManager::StateVarVectorLayout" alt="" coords="78,197,625,245"/>
-<area shape="poly" id="edge2" title="usage" alt="" coords="354,150,354,182,349,182,349,150"/>
+<area shape="poly" id="edge2" title="usage" alt="" coords="353,148,354,183,349,180,350,152"/>
 </map>

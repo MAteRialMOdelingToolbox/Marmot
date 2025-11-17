@@ -1,9 +1,9 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" alt="" coords="5,5,1040,53"/>
 <area shape="rect" id="node2" title="Marmot/MarmotJournal.h" alt="" coords="110,101,375,149"/>
-<area shape="poly" id="edge1" title="include" alt="" coords="453,57,327,99,326,93,452,51"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="455,53,327,99,326,93,450,54"/>
 <area shape="rect" id="node3" title="Marmot/MarmotMath.h" alt="" coords="399,101,646,149"/>
-<area shape="poly" id="edge2" title="include" alt="" coords="525,54,525,86,520,86,520,54"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="524,52,525,88,520,84,521,56"/>
 <area shape="rect" id="node4" title="Marmot/MarmotTypedefs.h" alt="" coords="670,101,954,149"/>
-<area shape="poly" id="edge3" title="include" alt="" coords="596,51,726,94,725,99,594,57"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="595,51,728,96,723,96,594,57"/>
 </map>

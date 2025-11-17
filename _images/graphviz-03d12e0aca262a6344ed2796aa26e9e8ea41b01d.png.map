@@ -1,5 +1,5 @@
 <map id="%1" name="%1">
 <area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h" alt="" coords="5,5,1146,53"/>
 <area shape="rect" id="node2" title="functional" alt="" coords="517,101,634,149"/>
-<area shape="poly" id="edge1" title="include" alt="" coords="578,54,578,86,573,86,573,54"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="577,52,578,88,573,84,574,56"/>
 </map>
