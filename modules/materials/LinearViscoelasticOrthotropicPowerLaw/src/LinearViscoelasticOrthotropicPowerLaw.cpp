@@ -20,26 +20,27 @@ namespace Marmot::Materials {
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
-      E1                                ( materialProperties[0] ),
-      E2                                ( materialProperties[1] ),
-      E3                                ( materialProperties[2] ),
-      nu12                              ( materialProperties[3] ),
-      nu23                              ( materialProperties[4] ),
-      nu13                              ( materialProperties[5] ),
-      G12                               ( materialProperties[6] ),
-      G23                               ( materialProperties[7] ),
-      G13                               ( materialProperties[8] ),
+      stiffnessScaleFactor              ( materialProperties[0] ),
+      E1                                ( materialProperties[1] ),
+      E2                                ( materialProperties[2] ),
+      E3                                ( materialProperties[3] ),
+      nu12                              ( materialProperties[4] ),
+      nu23                              ( materialProperties[5] ),
+      nu13                              ( materialProperties[6] ),
+      G12                               ( materialProperties[7] ),
+      G23                               ( materialProperties[8] ),
+      G13                               ( materialProperties[9] ),
       // viscoelastic parameters
-      m                                 ( materialProperties[9] ),
-      n                                 ( materialProperties[10] ),
-      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[11] ) ),
-      nKelvin                           ( static_cast< size_t > ( materialProperties[12] ) ),
-      minTau                            ( materialProperties[13] ),
-      spacing                           ( materialProperties[14] ),
-      timeToDays                        ( materialProperties[15] ),
+      m                                 ( materialProperties[10] ),
+      n                                 ( materialProperties[11] ),
+      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[12] ) ),
+      nKelvin                           ( static_cast< size_t > ( materialProperties[13] ) ),
+      minTau                            ( materialProperties[14] ),
+      spacing                           ( materialProperties[15] ),
+      timeToDays                        ( materialProperties[16] ),
       // material coordinate system
-      direction1                        ( { materialProperties[16], materialProperties[17], materialProperties[18] } ),
-      direction2                        ( { materialProperties[19], materialProperties[20], materialProperties[21] } )
+      direction1                        ( { materialProperties[17], materialProperties[18], materialProperties[19] } ),
+      direction2                        ( { materialProperties[20], materialProperties[21], materialProperties[22] } )
   // clang-format on
   {
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
@@ -87,11 +88,13 @@ namespace Marmot::Materials {
     }
 
     // local normalized stiffness and compliance tensors
-    CInv = ContinuumMechanics::Elasticity::Orthotropic::complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
-    Cel  = ContinuumMechanics::Elasticity::Orthotropic::stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
+    CInv = 1. / stiffnessScaleFactor *
+           ContinuumMechanics::Elasticity::Orthotropic::complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
+    Cel = stiffnessScaleFactor *
+          ContinuumMechanics::Elasticity::Orthotropic::stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 );
 
-    CelUnitInv = E1 * CInv;
-    CelUnit    = 1. / E1 * Cel;
+    CelUnitInv = E1 * stiffnessScaleFactor * CInv;
+    CelUnit    = 1. / E1 / stiffnessScaleFactor * Cel;
 
     // material coordinate system
     localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
@@ -138,7 +141,7 @@ namespace Marmot::Materials {
                                       1.0 );
 
     // compute total 1D effective compliance
-    const double effectiveCompliance = 1. / E1 + zerothKelvinChainCompliance + creepCompliance;
+    const double effectiveCompliance = 1. / E1 / stiffnessScaleFactor + zerothKelvinChainCompliance + creepCompliance;
 
     // compute local effective stiffness tensor
     Matrix6d localEffectiveStiffness = 1. / effectiveCompliance * CelUnit;

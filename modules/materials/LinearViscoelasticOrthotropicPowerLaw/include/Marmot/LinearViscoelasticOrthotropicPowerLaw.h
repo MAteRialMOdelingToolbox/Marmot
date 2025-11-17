@@ -42,6 +42,9 @@ namespace Marmot::Materials {
    */
   class LinearViscoelasticOrthotropicPowerLaw : public MarmotMaterialHypoElastic {
 
+    /// @brief Factor to scale elastic stiffness
+    const double& stiffnessScaleFactor;
+
     /// @brief Young's modulus in x1 direction
     const double& E1;
 
