@@ -1,5 +1,5 @@
 #include "Marmot/CompressibleNeoHooke.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 
 namespace Marmot::Materials {
 
@@ -7,8 +7,9 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool CompressibleNeoHookeRegistered = MarmotMaterialFactory::registerMaterial< CompressibleNeoHooke >(
-      "COMPRESSIBLENEOHOOKE" );
+    const static bool
+      CompressibleNeoHookeRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial< CompressibleNeoHooke >(
+        "COMPRESSIBLENEOHOOKE" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

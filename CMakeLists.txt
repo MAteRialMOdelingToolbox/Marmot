@@ -118,8 +118,8 @@ set(SHARED_LIBRARIES "")
 #
 # Add sources
 #
-file(GLOB sources "src/*.cpp")
-file(GLOB publicheaders "include/Marmot/*.h")
+file(GLOB sources "")
+file(GLOB publicheaders "")
 
 
 

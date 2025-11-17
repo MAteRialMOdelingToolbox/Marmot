@@ -182,5 +182,5 @@ public:
     }
   }
 
-  virtual double getDensity() { return 0.; }
+  virtual double getDensity() { return -1; }
 };

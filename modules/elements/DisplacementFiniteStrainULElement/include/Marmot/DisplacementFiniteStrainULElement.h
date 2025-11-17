@@ -27,7 +27,6 @@
  */
 #pragma once
 
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -37,6 +36,7 @@
 #include "Marmot/MarmotGeostaticStress.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
@@ -460,10 +460,10 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
-        static_cast< Material* >( MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialName,
-                                                                                        section.materialProperties,
-                                                                                        section.nMaterialProperties,
-                                                                                        elLabel ) ) );
+        MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
+                                                                          section.materialProperties,
+                                                                          section.nMaterialProperties,
+                                                                          elLabel ) );
     }
   }
 

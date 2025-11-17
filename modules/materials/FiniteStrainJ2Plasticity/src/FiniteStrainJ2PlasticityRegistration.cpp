@@ -1,5 +1,5 @@
 #include "Marmot/FiniteStrainJ2Plasticity.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 
 namespace Marmot::Materials {
 
@@ -7,8 +7,7 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool
-      FiniteStrainJ2PlasticityRegistered = MarmotMaterialFactory::registerMaterial< FiniteStrainJ2Plasticity >(
-        "FINITESTRAINJ2PLASTICITY" );
+    const static bool FiniteStrainJ2PlasticityRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial<
+      FiniteStrainJ2Plasticity >( "FINITESTRAINJ2PLASTICITY" );
   } // namespace Registration
 } // namespace Marmot::Materials

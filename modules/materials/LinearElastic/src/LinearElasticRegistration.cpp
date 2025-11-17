@@ -1,5 +1,5 @@
 #include "Marmot/LinearElastic.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
 namespace Marmot::Materials {
 
@@ -7,7 +7,7 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool LinearElasticIsRegistered = MarmotMaterialFactory::registerMaterial< LinearElastic >(
+    const static bool LinearElasticIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< LinearElastic >(
       "LINEARELASTIC" );
 
   } // namespace Registration

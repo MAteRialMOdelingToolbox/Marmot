@@ -26,7 +26,6 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -35,6 +34,7 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -400,11 +400,11 @@ namespace Marmot::Elements {
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
-        MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialName,
-                                                              section.materialProperties,
-                                                              section.nMaterialProperties,
-                                                              elLabel ) ) );
+      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >(
+        MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( section.materialName,
+                                                                         section.materialProperties,
+                                                                         section.nMaterialProperties,
+                                                                         elLabel ) );
 
       if ( !qp.material )
         throw std::invalid_argument( MakeString()

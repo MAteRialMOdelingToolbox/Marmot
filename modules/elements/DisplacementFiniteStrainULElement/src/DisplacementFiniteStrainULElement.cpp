@@ -1,5 +1,5 @@
 #include "Marmot/DisplacementFiniteStrainULElement.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotFiniteElement.h"
 
 namespace Marmot::Elements::Registration {

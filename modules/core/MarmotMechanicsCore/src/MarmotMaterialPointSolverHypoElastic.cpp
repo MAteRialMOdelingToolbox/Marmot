@@ -1,5 +1,5 @@
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
-#include "Marmot/Marmot.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include <fstream>
 
 MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
@@ -11,8 +11,10 @@ MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std:
   using namespace MarmotLibrary;
 
   // create material instance
-  material = static_cast< MarmotMaterialHypoElastic* >(
-    MarmotMaterialFactory::createMaterial( materialName, materialProperties, nMaterialProperties, 1 ) );
+  material = MarmotMaterialHypoElasticFactory::createMaterial( materialName,
+                                                               materialProperties,
+                                                               nMaterialProperties,
+                                                               1 );
 
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();

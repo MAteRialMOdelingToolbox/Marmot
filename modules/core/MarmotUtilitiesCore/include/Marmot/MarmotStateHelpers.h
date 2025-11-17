@@ -61,26 +61,6 @@ struct StateMapper< double& > {
 };
 
 /**
- * @struct StateMapper<std::span<double>>
- * @brief Specialization of StateMapper for std::span<double>.
- * This allows mapping a raw double pointer and size to a mutable span.
- */
-template <>
-struct StateMapper< std::span< double > > {
-  static std::span< double > map( double* ptr, std::size_t n ) { return { ptr, n }; }
-};
-
-/**
- * @struct StateMapper<std::span<const double>>
- * @brief Specialization of StateMapper for std::span<const double>.
- * This allows mapping a raw double pointer and size to a read-only span.
- */
-template <>
-struct StateMapper< std::span< const double > > {
-  static std::span< const double > map( double* ptr, std::size_t n ) { return { ptr, n }; }
-};
-
-/**
  * @struct StateMapper<Fastor::Tensor<double,3,3>>
  * @brief Specialization of StateMapper for Fastor::Tensor<double,3,3>.
  * This allows mapping a raw double pointer and size to a Fastor 3x3 tensor.

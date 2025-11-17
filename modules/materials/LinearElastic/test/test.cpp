@@ -1,32 +1,9 @@
-#include "Marmot/Marmot.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/LinearElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
-
-// Function to create a MarmotMaterialHypoElastic object
-// Inputs:
-// - materialName: The name of the material (e.g., "LINEARELASTIC")
-// - materialProperties: Array of material parameters (e.g., Young's modulus, Poisson's ratio)
-// - nMaterialProperties: Number of parameters in the materialProperties array
-std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( const std::string& materialName,
-                                                                              const double*      materialProperties,
-                                                                              int                nMaterialProperties )
-{
-  // Element label (arbitrary value)
-  const int elLabel = 1;
-
-  // Create the material object using Marmot's factory method
-  auto mat = std::unique_ptr< MarmotMaterialHypoElastic >( static_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( materialName,
-                                                          materialProperties,
-                                                          nMaterialProperties,
-                                                          elLabel ) ) );
-
-  return mat; // Return the created material object
-}
 
 // Function to test the isotropic material response for a normal strain increment
 void testMaterialResponse()
@@ -345,16 +322,13 @@ void testGetDensityIsotropic()
   const double materialProperties[3] = { 20000, 0.25, 10 };
   const int    nMaterialProperties   = 3;
 
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
-
-  // Get the density
-  mat->getDensity();
+  auto mat = Marmot::Materials::LinearElastic( materialProperties, nMaterialProperties, 1 );
 
   // Defined density at start (materialProperties[3])
   double expectedDensityI = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat->getDensity(), expectedDensityI, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityI, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -370,16 +344,13 @@ void testGetDensityTransverselyIsotropic()
   const double materialProperties[12] = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1, 10 };
   const int    nMaterialProperties    = 12;
 
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
-
-  // Get the density
-  mat->getDensity();
+  auto mat = Marmot::Materials::LinearElastic( materialProperties, nMaterialProperties, 1 );
 
   // Defined density at start (materialProperties[3])
   double expectedDensityTI = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat->getDensity(), expectedDensityTI, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityTI, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -400,16 +371,13 @@ void testGetDensityOrthotropic()
     { 1000, 30, 30, 0.009, 0, 0, 50, 0, 0, 0.906307787, 0.422618262, 0, -0.422618262, 0.906307787, 0, 10 };
   const int nMaterialProperties = 16;
 
-  auto mat = createMarmotMaterialHypoElastic( "LINEARELASTIC", materialProperties, nMaterialProperties );
-
-  // Get the density
-  mat->getDensity();
+  auto mat = Marmot::Materials::LinearElastic( materialProperties, nMaterialProperties, 1 );
 
   // Defined density at start (materialProperties[3])
   double expectedDensityO = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat->getDensity(), expectedDensityO, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityO, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
