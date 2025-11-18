@@ -76,28 +76,28 @@ public:
 
   /// Structure to hold the material state at a material point in 3D
   struct state3D {
-    Marmot::Vector6d stress;       ///> Cauchy stress tensor in Voigt notation
-    double           strainEnergy; ///> Strain energy density
-    double*          stateVars;    ///> Pointer to array of state variables
+    Marmot::Vector6d stress;       ///< Cauchy stress tensor in Voigt notation
+    double           strainEnergy; ///< Strain energy density
+    double*          stateVars;    ///< Pointer to array of state variables
   };
 
   // Structure to hold the material state at a material point for 2D plane stress
   struct state2D {
-    Marmot::Vector3d stress;       ///> 2D Cauchy stress tensor in Voigt notation
-    double           strainEnergy; ///> Strain energy density
-    double*          stateVars;    ///> Pointer to array of state variables
+    Marmot::Vector3d stress;       ///< 2D Cauchy stress tensor in Voigt notation
+    double           strainEnergy; ///< Strain energy density
+    double*          stateVars;    ///< Pointer to array of state variables
   };
 
   // Structure to hold the material state at a material point for 1D uniaxial stress
   struct state1D {
-    double  stress;       ///> 1D Cauchy stress
-    double  strainEnergy; ///> Strain energy density
-    double* stateVars;    ///> Pointer to array of state variables
+    double  stress;       ///< 1D Cauchy stress
+    double  strainEnergy; ///< Strain energy density
+    double* stateVars;    ///< Pointer to array of state variables
   };
 
   struct timeInfo {
-    double time; ///> Current (pseudo-)time
-    double dT;   ///> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
+    double time; ///< Current (pseudo-)time
+    double dT;   ///< (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
   };
 
   /// Characteristic element length
