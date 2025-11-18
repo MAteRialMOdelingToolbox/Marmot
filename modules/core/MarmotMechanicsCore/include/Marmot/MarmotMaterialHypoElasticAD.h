@@ -35,9 +35,9 @@ public:
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
   struct state3DAD {
-    autodiff::dual* stress;       ///> Cauchy stress tensor in Voigt notation
-    double          strainEnergy; ///> Strain energy density
-    double*         stateVars;    ///> Pointer to array of state variables
+    autodiff::dual* stress;       ///< Cauchy stress tensor in Voigt notation
+    double          strainEnergy; ///< Strain energy density
+    double*         stateVars;    ///< Pointer to array of state variables
   };
   /**
    * @brief Compute the Cauchy stress tensor \f$\boldsymbol{\sigma}\f$ given an increment of the linearized strain
