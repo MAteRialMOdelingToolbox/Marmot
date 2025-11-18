@@ -28,13 +28,7 @@
 #pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/dual.hpp"
 #include <Eigen/src/Core/Map.h>
-#include <iostream>
-#include <string>
-#include <vector>
 
 using namespace Marmot;
 
@@ -64,33 +58,14 @@ namespace Marmot::Materials {
 
     ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kappa", 1 );
+      stateLayout.finalize();
+    }
+
   protected:
-    void computeStressAD( autodiff::dual*       stress,
-                          const autodiff::dual* dStrain,
-                          const double*         timeOld,
-                          const double          dT,
-                          double&               pNewDT ) override;
-
-    class ADVonMisesModelStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-      } );
-
-      /// @brief Hardening variable.
-      double& kappa;
-
-      ADVonMisesModelStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
-    };
-    std::unique_ptr< ADVonMisesModelStateVarManager > managedStateVars;
-
-    int getNumberOfRequiredStateVars() override { return ADVonMisesModelStateVarManager::layout.nRequiredStateVars; }
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& result ) override;
+    void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) override;
 
     /**
      * @brief Hardening function.

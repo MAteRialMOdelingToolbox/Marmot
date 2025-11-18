@@ -1,17 +1,13 @@
 #include "Marmot/FiniteStrainJ2Plasticity.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 
 namespace Marmot::Materials {
 
   namespace Registration {
 
-    constexpr int FiniteStrainJ2PlasticityCode = 11930000 + 16;
-
     using namespace MarmotLibrary;
 
-    const static bool FiniteStrainJ2PlasticityRegistered = MarmotMaterialFactory::
-      registerMaterial( FiniteStrainJ2PlasticityCode,
-                        "FINITESTRAINJ2PLASTICITY",
-                        makeDefaultMarmotMaterialFactoryFunction< class FiniteStrainJ2Plasticity >() );
+    const static bool FiniteStrainJ2PlasticityRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial<
+      FiniteStrainJ2Plasticity >( "FINITESTRAINJ2PLASTICITY" );
   } // namespace Registration
 } // namespace Marmot::Materials

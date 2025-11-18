@@ -28,6 +28,7 @@ namespace Marmot::Materials {
       implementationType( materialProperties[6] ),
       density( nMaterialProperties > 7 ? materialProperties[7] : 0.0 ) // TODO: make mandatory material parameter
   {
+    initializeStateLayout();
   }
 
   void FiniteStrainJ2Plasticity::computeStress( ConstitutiveResponse< 3 >& response,
@@ -62,9 +63,9 @@ namespace Marmot::Materials {
                                                                      const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -194,9 +195,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -356,9 +357,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -519,9 +520,9 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement )
   {
 
-    auto&           Fp = stateVars->Fp;
+    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
-    double&         alphaP    = stateVars->alphaP;
+    double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
 
     using namespace Marmot;
@@ -675,23 +676,14 @@ namespace Marmot::Materials {
     }
   }
 
-  StateView FiniteStrainJ2Plasticity::getStateView( const std::string& stateName )
+  void FiniteStrainJ2Plasticity::initializeYourself( double* stateVars, int nStateVars )
   {
-    return stateVars->getStateView( stateName );
-  }
+    // set all state variables to zero
+    for ( int i = 0; i < nStateVars; ++i ) {
+      stateVars[i] = 0.0;
+    }
 
-  void FiniteStrainJ2Plasticity::assignStateVars( double* stateVars_, int nStateVars )
-  {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
-                                                << ": Not sufficient "
-                                                   "stateVars!" );
-
-    this->stateVars = std::make_unique< FiniteStrainJ2PlasticityStateVarManager >( stateVars_ );
-  }
-
-  void FiniteStrainJ2Plasticity::initializeYourself()
-  {
-    stateVars->Fp.eye();
+    Tensor33d& Fp = stateLayout.getAs< Tensor33d& >( stateVars, "Fp" );
+    Fp.eye();
   }
 } // namespace Marmot::Materials
