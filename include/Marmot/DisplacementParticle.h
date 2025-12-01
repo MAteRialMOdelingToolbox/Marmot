@@ -35,6 +35,8 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
 
+#include "Marmot/MarmotMeshfreeQuadHexCell.h"
+
 namespace Marmot::Meshfree {
 
   template < int nDim >
@@ -333,6 +335,16 @@ namespace Marmot::Meshfree {
     virtual int getNumberOfEvaluationPoints() const
     {
       return 1; // only one evaluation point at the center of the particle
+    };
+
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    {
+      if ( conditionName == "geostaticstress" ) {
+        _mp.setInitialCondition( conditionName, value );
+      }
+      else {
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      }
     };
 
   private:

@@ -500,6 +500,11 @@ namespace Marmot::Meshfree {
       return nVertices * 2; // 2 evaluation points per segment
     };
 
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+    };
+
   private:
     /// \brief Update the vertex displacements from the material point deformation
     /// \details This function updates the vertex displacements of the particle

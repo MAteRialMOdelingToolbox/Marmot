@@ -27,8 +27,8 @@
 #pragma once
 
 #include "Marmot/DisplacementParticle.h"
-#include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
+#include "Marmot/MarmotMeshfreeQuadHexCell.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Fastor/Fastor.h>
@@ -45,14 +45,14 @@ namespace Marmot::Meshfree {
     enum SmoothingDomainUpdateType { None, DeformationGradient, RotationOnly, RotationAndPrincipalStretch };
 
   protected:
-    MarmotGeometryElement< nDim, nVertices > _geometryElementForSmoothing;
+    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryUndeformed;
+    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryIntermediate;
+    MarmotLagrangeCell< nDim, nVertices > _cellForSmoothing;
 
     const SmoothingDomainUpdateType _smoothingVolumeUpdateType;
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed;
-
-    // MarmotGeometryElement< nDim, nVertices > _geoElementUndeformed;
-    double* _vertexDisplacements_SmoothingDomain;
+    Eigen::Matrix< double, nDim, nVertices >       _vertex_displacements_smoothingDomain;
 
     using ParentPointParticle = DisplacementParticle< nDim >;
 
@@ -66,7 +66,7 @@ namespace Marmot::Meshfree {
 
     virtual int getNumberOfVertices() const override { return nVertices; };
 
-    virtual std::string getParticleShape() const override { return _geometryElementForSmoothing.getElementShape(); }
+    virtual std::string getParticleShape() const override { return _cellForGeometryUndeformed.getCellShape(); }
 
     DisplacementParticleSQCNI( int                                elementID,
                                const double*                      nodeCoordinates,
@@ -89,19 +89,8 @@ namespace Marmot::Meshfree {
     ///
     virtual double getSmoothingVolume() const
     {
-
-      Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Intermediate;
-      MarmotGeometryElement< nDim, nVertices > _geometryElementForSmoothing;
-
-      getVertexCoordinates( _vertexCoordinates_Intermediate.data() );
-
-      _geometryElementForSmoothing.assignNodeCoordinates( _vertexCoordinates_Intermediate.data() );
-
-      const auto   dNd_dXi_center  = _geometryElementForSmoothing.dNdXi( Eigen::Matrix< double, nDim, 1 >::Zero() );
-      const double smoothingVolume = _geometryElementForSmoothing.Jacobian( dNd_dXi_center ).determinant() *
-                                     std::pow( 2, nDim );
-
-      return smoothingVolume;
+      const auto _smoothingVolume = _cellForSmoothing.volume();
+      return _smoothingVolume;
     }
 
     virtual void getCenterCoordinates( double* coordinates ) const override
@@ -112,21 +101,14 @@ namespace Marmot::Meshfree {
     virtual CoordinatesSized getCenterFromVertices(
       const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
-      MarmotGeometryElement< nDim, nVertices > _geometryElement;
-      _geometryElement.assignNodeCoordinates( vertexCoordinates.data() );
-
-      return _geometryElement.N( { 0, 0 } ) * vertexCoordinates.transpose();
+      MarmotLagrangeCell< nDim, nVertices > _lagrangeCell( vertexCoordinates );
+      return _lagrangeCell.centroid();
     }
 
     virtual double getVolumeFromVertices( const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
-      MarmotGeometryElement< nDim, nVertices > _geometryElement;
-      _geometryElement.assignNodeCoordinates( vertexCoordinates.data() );
-
-      const auto   dNd_dXi_center = _geometryElement.dNdXi( Eigen::Matrix< double, nDim, 1 >::Zero() );
-      const double volume         = _geometryElement.Jacobian( dNd_dXi_center ).determinant() * std::pow( 2, nDim );
-
-      return volume;
+      MarmotLagrangeCell< nDim, nVertices > _lagrangeCell( vertexCoordinates );
+      return _lagrangeCell.volume();
     }
 
     virtual double getVolumeDeformed() const
@@ -136,19 +118,18 @@ namespace Marmot::Meshfree {
 
     virtual int getNumberOfRequiredStateVars() const override
     {
-      return DisplacementParticle< nDim >::getNumberOfRequiredStateVars() + 8;
+      return DisplacementParticle< nDim >::getNumberOfRequiredStateVars();
     };
 
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
-      DisplacementParticle< nDim >::assignStateVars( stateVars, nStateVars - 8 );
-      _vertexDisplacements_SmoothingDomain = stateVars + nStateVars - 8;
+      DisplacementParticle< nDim >::assignStateVars( stateVars, nStateVars );
     }
 
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
-        return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
+        return StateView( const_cast< double* >( _vertex_displacements_smoothingDomain.data() ), nDim * nVertices );
       }
       return DisplacementParticle< nDim >::getStateView( stateName, qp );
     }
@@ -161,7 +142,7 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const override;
 
-    std::tuple< TensorD, TensorD > getIntermediateConfBoundaryVector( int boundaryFaceID ) const;
+    std::tuple< TensorD, TensorD > getBoundaryVectorIntermediate( int boundaryFaceID ) const;
 
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
@@ -169,7 +150,7 @@ namespace Marmot::Meshfree {
     {
       using namespace Fastor;
 
-      const auto [N_dAY, Y_N]   = getIntermediateConfBoundaryVector( boundaryFaceID );
+      const auto [N_dAY, Y_N]   = getBoundaryVectorIntermediate( boundaryFaceID );
       Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
@@ -202,24 +183,31 @@ namespace Marmot::Meshfree {
 
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const
     {
-
-      Eigen::Map< Eigen::Matrix< double, nDim, 1 > > segmentCenter( coordinates );
-
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
-
-      segmentCenter = 0.5 * ( vertexCoordinates.col( faceID % nVertices ) +
-                              vertexCoordinates.col( ( faceID - 1 ) % nVertices ) );
+      const auto faceCenterCoords = _cellForGeometryUndeformed.getFaceCenterCoordinates( faceID );
+      for ( int i = 0; i < nDim; i++ ) {
+        coordinates[i] = faceCenterCoords( i );
+      }
     }
 
     virtual int getNumberOfEvaluationPoints() const { return nVertices; };
 
   private:
-    void _updateVertexDisplacementsFromMaterialPointDeformation();
+    void _updateSmoothingVertexDisplacementsFromMaterialPointDeformation();
 
     virtual void updateParticlePositionToReferenceIntermediate() override
     {
-      _updateVertexDisplacementsFromMaterialPointDeformation();
+
+      Eigen::Matrix< double, nDim, 1 > _mp_displacement;
+      DisplacementParticle< nDim >::_mp.getCenterDisplacement( _mp_displacement.data() );
+
+      _cellForGeometryIntermediate.updateVertexCoordinates( _vertexCoordinates_Undeformed );
+      _cellForGeometryIntermediate.applyDeformationGradient(
+        Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( this->_mp.dY_dX().data() ) );
+      _cellForGeometryIntermediate.applyUniformDisplacement( _mp_displacement );
+
+      _updateSmoothingVertexDisplacementsFromMaterialPointDeformation();
+
+      _vertex_displacements_smoothingDomain = _cellForSmoothing.nodes() - _vertexCoordinates_Undeformed;
 
       getCenterCoordinates( ParentPointParticle::_centerReferenceIntermediate.data() );
     };
@@ -248,8 +236,10 @@ namespace Marmot::Meshfree {
                                     sizeMaterialProperties,
                                     approximation ),
       _smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
-      _vertexCoordinates_Undeformed( vertexCoordinates )
-
+      _vertexCoordinates_Undeformed( vertexCoordinates ),
+      _cellForGeometryUndeformed( vertexCoordinates, nVertexCoordinates ),
+      _cellForGeometryIntermediate( vertexCoordinates, nVertexCoordinates ),
+      _cellForSmoothing( vertexCoordinates, nVertexCoordinates )
   {
   }
 
@@ -271,7 +261,7 @@ namespace Marmot::Meshfree {
       const auto&   _nNodes       = DisplacementParticle< nDim >::_nNodes;
       constexpr int nodeBlockSize = nDim;
 
-      const auto [N_dAY, Y_N] = getIntermediateConfBoundaryVector( boundaryFaceID );
+      const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
 
       TensorD fY = N_dAY * load_[0];
 
@@ -341,56 +331,18 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   std::tuple< typename DisplacementParticleSQCNI< nDim, nVertices >::TensorD,
               typename DisplacementParticleSQCNI< nDim, nVertices >::TensorD >
-  DisplacementParticleSQCNI< nDim, nVertices >::getIntermediateConfBoundaryVector( int boundaryFaceID ) const
+  DisplacementParticleSQCNI< nDim, nVertices >::getBoundaryVectorIntermediate( int boundaryFaceID ) const
   {
 
     TensorD N_dAY;
     TensorD Y;
 
-    if ( _smoothingVolumeUpdateType == DeformationGradient ) {
-      // For the full SQCNI case, we actually operate on the deformed element.
-      // This means, that the deformed smoothing domain is consistent with the physical domain of the particle.
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
+    auto _Y     = _cellForGeometryIntermediate.getFaceCenterCoordinates( boundaryFaceID );
+    auto _N_dAY = _cellForGeometryIntermediate.boundarySurfaceVector( boundaryFaceID );
 
-      Eigen::Vector2d t; // tangent vector
-      Eigen::Vector2d y; // origin of the boundary segment
-                         //
-      t = ( vertexCoordinates.col( boundaryFaceID % nVertices ) -
-            vertexCoordinates.col( ( boundaryFaceID - 1 ) % nVertices ) );
-      y = 0.5 * ( vertexCoordinates.col( boundaryFaceID % nVertices ) +
-                  vertexCoordinates.col( ( boundaryFaceID - 1 ) % nVertices ) );
-
-      N_dAY = { t( 1 ), -t( 0 ) };
-      Y     = { y( 0 ), y( 1 ) };
-    }
-    else {
-      // In all other cases, the deformed smoothing domain is not consistent with the physical domain of the particle.
-      // Accordingly, it is not reasonable to let the boundary vector be acting on the deformed smoothing domain.
-      // Instead, we compute the boundary vector in the undeformed configuration and apply the deformation gradient
-      // using Nanson's formula. Also, the let the origin of the boundary segment be the center of the particle in the
-      // deformed configuration.
-
-      const auto&     vertexCoordinatesUndeformed = this->_vertexCoordinates_Undeformed;
-      Eigen::Vector2d T0;
-      Eigen::Vector2d N_dA0;
-      Eigen::Vector2d Y0;
-
-      T0 = vertexCoordinatesUndeformed.col( boundaryFaceID % nVertices ) -
-           vertexCoordinatesUndeformed.col( ( boundaryFaceID - 1 ) % nVertices );
-      Y0 = 0.5 * ( vertexCoordinatesUndeformed.col( boundaryFaceID % nVertices ) +
-                   vertexCoordinatesUndeformed.col( ( boundaryFaceID - 1 ) % nVertices ) );
-      N_dA0 << T0( 1 ), -T0( 0 );
-
-      const auto FY = this->_mp.dY_dX();
-
-      // apply Nanson's formula to shift to Y configuration:
-      using namespace Fastor;
-      N_dAY = determinant( FY ) * transpose( inverse( FY ) ) % TensorD( N_dA0.data() );
-
-      // and the center of the boundary segment in the deformed configuration
-      this->_mp.getCenterDisplacement( Y.data() );
-      Y += TensorD( Y0.data() );
+    for ( int i = 0; i < nDim; i++ ) {
+      N_dAY[i] = _N_dAY[i];
+      Y[i]     = _Y[i];
     }
 
     return { N_dAY, Y };
@@ -401,14 +353,12 @@ namespace Marmot::Meshfree {
   {
 
     Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesDeformed( coordinates );
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacementsSmoothingDomain(
-      _vertexDisplacements_SmoothingDomain );
 
-    coordinatesDeformed = _vertexCoordinates_Undeformed + vertexDisplacementsSmoothingDomain;
+    coordinatesDeformed = _cellForGeometryIntermediate.nodes();
   }
 
   template < int nDim, int nVertices >
-  void DisplacementParticleSQCNI< nDim, nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
+  void DisplacementParticleSQCNI< nDim, nVertices >::_updateSmoothingVertexDisplacementsFromMaterialPointDeformation()
   {
 
     Eigen::Matrix< double, nDim, nDim > F;
@@ -470,8 +420,13 @@ namespace Marmot::Meshfree {
       vertexCoordinatesDeformed.row( i ).array() += this->_centerCoordinatesUndeformed( i ) + _mp_displacement( i );
     }
 
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_SmoothingDomain );
-    vertexDisplacements = vertexCoordinatesDeformed - _vertexCoordinates_Undeformed;
+    // Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacementsSmoothingDomain(
+    //   _vertexDisplacements_SmoothingDomain );
+    // vertexDisplacementsSmoothingDomain = vertexCoordinatesDeformed - _vertexCoordinates_Undeformed;
+
+    _cellForSmoothing.updateVertexCoordinates( _vertexCoordinates_Undeformed );
+    _cellForSmoothing.applyUniformDisplacement( _mp_displacement );
+    _cellForSmoothing.applyDeformationGradient( F );
   }
 
   template < int nDim, int nVertices >
@@ -486,9 +441,6 @@ namespace Marmot::Meshfree {
     Eigen::Matrix< double, nDim, 1 > coords;
     ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
-    Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-    getVertexCoordinates( vertexCoordinates.data() );
-
     ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
     ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
 
@@ -497,20 +449,15 @@ namespace Marmot::Meshfree {
                                                                        ParentPointParticle::_N.data() );
 
     Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
+    //
+    for ( int i = 0; i < _cellForGeometryIntermediate.getNumberOfFaces(); i++ ) {
 
-    for ( int i = 0; i < nVertices; i++ ) {
+      auto faceCenterCoords = _cellForGeometryIntermediate.getFaceCenterCoordinates( i + 1 );
+      auto n                = _cellForGeometryIntermediate.boundarySurfaceVector( i + 1 );
 
-      Eigen::Vector2d t;
-      Eigen::Vector2d n;
-      Eigen::Vector2d segmentCenter;
-      t             = ( vertexCoordinates.col( ( i + 1 ) % nVertices ) - vertexCoordinates.col( i ) );
-      segmentCenter = ( vertexCoordinates.col( ( i + 1 ) % nVertices ) + vertexCoordinates.col( i ) ) / 2;
-      n << t( 1 ), -t( 0 );
-
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( segmentCenter.data(),
+      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( faceCenterCoords.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          NBoundary.data() );
-
       ParentPointParticle::_dN_dY += n * NBoundary;
     }
 

@@ -36,7 +36,6 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   class DisplacementParticleSQCNIxNSNI : public DisplacementParticleSQCNI< nDim, nVertices > {
 
-    MarmotGeometryElement< nDim, nVertices > _geometryElementForSmoothing;
     using ParentPointParticle = DisplacementParticle< nDim >;
     using ParentSQCNIParticle = DisplacementParticleSQCNI< nDim, nVertices >;
 
@@ -45,15 +44,12 @@ namespace Marmot::Meshfree {
     using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;
     using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >;
 
-    TensorDD                            _momentsOfInertia_Undeformed;
     TensorDD                            _momentsOfInertia_IntermediateReference;
     std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;
     bool                                _stabilizeAngularMomentum;
 
     /// static vector of valid properties
-    inline static const std::vector< std::string > _validProperties = {
-      // "stabilize angular momentum",
-    };
+    inline static const std::vector< std::string > _validProperties = {};
 
   public:
     DisplacementParticleSQCNIxNSNI( int                                            elementID,
@@ -91,20 +87,10 @@ namespace Marmot::Meshfree {
       Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
       Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
 
-      for ( int i = 0; i < 4; i++ ) {
+      for ( int i = 0; i < this->_cellForGeometryIntermediate.getNumberOfFaces(); i++ ) {
 
-        Eigen::Vector2d t;
-        Eigen::Vector2d n;
-        Eigen::Vector2d segmentCenter;
-        if ( i < 3 ) {
-          t             = ( vertexCoordinates.col( i + 1 ) - vertexCoordinates.col( i ) );
-          segmentCenter = ( vertexCoordinates.col( i + 1 ) + vertexCoordinates.col( i ) ) / 2;
-        }
-        else {
-          t             = ( vertexCoordinates.col( 0 ) - vertexCoordinates.col( 3 ) );
-          segmentCenter = ( vertexCoordinates.col( 0 ) + vertexCoordinates.col( 3 ) ) / 2;
-        }
-        n << t( 1 ), -t( 0 );
+        auto segmentCenter = this->_cellForGeometryIntermediate.getFaceCenterCoordinates( i + 1 );
+        auto n             = this->_cellForGeometryIntermediate.boundarySurfaceVector( i + 1 );
 
         ParentPointParticle::_meshfreeApproximation
           .computeShapeFunctionsAndGradients( segmentCenter.data(),
@@ -170,12 +156,7 @@ namespace Marmot::Meshfree {
     virtual void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
-
-      const auto   F    = this->_mp.dY_dX();
-      const double detJ = det( F );
-
-      // I2_ij = FiI * I2_IJ * F_jJ^T * detJ
-      _momentsOfInertia_IntermediateReference = F % _momentsOfInertia_Undeformed % transpose( F ) * detJ;
+      _momentsOfInertia_IntermediateReference = TensorDD( this->_cellForSmoothing.secondMoments().data() );
     };
   };
 
@@ -201,21 +182,6 @@ namespace Marmot::Meshfree {
                                                     smoothingVolumeUpdateType ),
       _stabilizeAngularMomentum( false )
   {
-
-    MarmotGeometryElement< nDim, nVertices > _geometryElementForSmoothingUndeformed;
-
-    _geometryElementForSmoothingUndeformed.assignNodeCoordinates( this->_vertexCoordinates_Undeformed.data() );
-
-    const auto dNd_dXi_center = _geometryElementForSmoothingUndeformed.dNdXi(
-      Eigen::Matrix< double, nDim, 1 >::Zero() );
-
-    const auto   J                            = _geometryElementForSmoothingUndeformed.Jacobian( dNd_dXi_center );
-    const double detJ                         = J.determinant();
-    const double momentOfInertiaReferenceQuad = 16. / 12.;
-
-    for ( int i = 0; i < nDim; i++ )
-      for ( int j = 0; j < nDim; j++ )
-        _momentsOfInertia_Undeformed( i, j ) = detJ * momentOfInertiaReferenceQuad * J.row( i ).dot( J.row( j ) );
   }
 
   template < int nDim, int nVertices >
