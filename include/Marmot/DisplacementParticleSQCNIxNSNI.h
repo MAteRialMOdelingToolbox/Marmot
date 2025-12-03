@@ -69,8 +69,8 @@ namespace Marmot::Meshfree {
 
       ParentPointParticle::_nNodes = DisplacementParticle< nDim >::_assignedKernelFunctions.size();
 
-      Eigen::Matrix< double, nDim, 1 > coords;
-      ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
+      Eigen::Matrix< double, nDim, 1 > centerCoordinates;
+      this->getCenterCoordinates( centerCoordinates.data() );
 
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
       this->getVertexCoordinates( vertexCoordinates.data() );
@@ -80,7 +80,7 @@ namespace Marmot::Meshfree {
       for ( int i = 0; i < nDim; i++ )
         _d2N_dYdY[i] = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
 
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( coords.data(),
+      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( centerCoordinates.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          ParentPointParticle::_N.data() );
 
@@ -235,14 +235,14 @@ namespace Marmot::Meshfree {
       d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY );
     }
 
-    _mp.prepareYourself( timeNew, dT );
-    _mp.incrementDeformation( du, du_dY );
-    _mp.computeYourself( timeNew, dT );
+    _mp->prepareYourself( timeNew, dT );
+    _mp->incrementDeformation( du, du_dY );
+    _mp->computeYourself( timeNew, dT );
 
-    const double density0 = _mp.getDensityUndeformed();
+    const double density0 = _mp->getDensityUndeformed();
 
-    auto v = _mp.getVelocity();
-    auto a = _mp.getAcceleration();
+    auto v = _mp->getVelocity();
+    auto a = _mp->getAcceleration();
 
     Tensor< double, nDim, nDim > da_ddu( 0.0 );
     Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
@@ -252,24 +252,24 @@ namespace Marmot::Meshfree {
                                                              this->_newmark_beta,
                                                              this->_newmark_gamma,
                                                              da_ddu.data() );
-    _mp.setVelocity( v );
-    _mp.setAcceleration( a );
+    _mp->setVelocity( v );
+    _mp->setAcceleration( a );
 
     TensorD r_U( 0.0 );
 
     TensorDD k_UU( 0.0 );
 
-    const auto& S = _mp.response.S;
+    const auto& S = _mp->response.S;
 
     const double V0 = this->getVolumeUndeformed();
 
-    const auto& t = _mp.tangents;
+    const auto& t = _mp->tangents;
 
     Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
-    const auto   dY_dx            = evaluate( inv( _mp.dx_dY() ) );
-    const double detJIntermediate = determinant( _mp.dY_dX() );
+    const auto   dY_dx            = evaluate( inv( _mp->dx_dY() ) );
+    const double detJIntermediate = determinant( _mp->dY_dX() );
 
     const auto dS_dY = evaluate( einsum< ijmM, mMK >( t.dS_dDeltaF, d2x_dYdY ) );
 
@@ -292,7 +292,6 @@ namespace Marmot::Meshfree {
 
       const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
       const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
-      const TensorD dTA_dY_x_MOIScaled = einsum< j, jk >( dT_A_dY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 
