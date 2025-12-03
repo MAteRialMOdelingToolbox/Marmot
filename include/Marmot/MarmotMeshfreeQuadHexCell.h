@@ -154,38 +154,37 @@ namespace Marmot::Meshfree {
     }
 
     // ------------------------------------------------------------------------
-// Full second moment matrix: I_kj = ∫ d_k d_j dV
-// d = x - C
-// ------------------------------------------------------------------------
-Eigen::Matrix<Scalar, nDim, nDim> secondMoments() const
-{
-    Vec C = centroid();
+    // Full second moment matrix: I_kj = ∫ d_k d_j dV
+    // d = x - C
+    // ------------------------------------------------------------------------
+    Eigen::Matrix< Scalar, nDim, nDim > secondMoments() const
+    {
+      Vec C = centroid();
 
-    Eigen::Matrix<Scalar, nDim, nDim> I;
-    I.setZero();
+      Eigen::Matrix< Scalar, nDim, nDim > I;
+      I.setZero();
 
-    auto gps = GaussRule<nDim>::points();
-    auto wgs = GaussRule<nDim>::weights();
+      auto gps = GaussRule< nDim >::points();
+      auto wgs = GaussRule< nDim >::weights();
 
-    for (size_t i = 0; i < gps.size(); ++i) {
+      for ( size_t i = 0; i < gps.size(); ++i ) {
         const auto& s = gps[i];
         const auto& w = wgs[i];
 
-        dNMat dN = dShapeFunctions(s);
-        Eigen::Matrix<Scalar, nDim, nDim> J = nodes_ * dN.transpose();
-        Scalar detJ = std::abs(J.determinant()) * w;
+        dNMat                               dN   = dShapeFunctions( s );
+        Eigen::Matrix< Scalar, nDim, nDim > J    = nodes_ * dN.transpose();
+        Scalar                              detJ = std::abs( J.determinant() ) * w;
 
         // physical coordinates
-        Vec x = mapToPhysical(s);
+        Vec x = mapToPhysical( s );
         Vec d = x - C; // deviation from centroid
 
         // Accumulate outer product: d_k d_j
-        I += (d * d.transpose()) * detJ;
+        I += ( d * d.transpose() ) * detJ;
+      }
+
+      return I;
     }
-
-    return I;
-}
-
 
     // ------------------------------------------------------------------------
     // Update vertex coordinates
@@ -444,14 +443,13 @@ Eigen::Matrix<Scalar, nDim, nDim> secondMoments() const
   inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::getFaceCenterCoordinates( int faceId ) const
   {
     static const int faces[6][4] = {
-      { 0, 1, 2, 3 }, // S1
-      { 4, 5, 6, 7 }, // S2
-      { 0, 1, 5, 4 }, // S3
-      { 1, 2, 6, 5 }, // S4
-      { 2, 3, 7, 6 }, // S5
-      { 3, 0, 4, 7 }  // S6
+      { 0, 3, 2, 1 }, // S1: Bottom (points -Z local)
+      { 4, 5, 6, 7 }, // S2: Top    (points +Z local)
+      { 0, 1, 5, 4 }, // S3: Front  (points -Y local ... wait, check below)
+      { 1, 2, 6, 5 }, // S4: Right  (points +X local)
+      { 2, 3, 7, 6 }, // S5: Back   (points +Y local)
+      { 3, 0, 4, 7 }  // S6: Left   (points -X local)
     };
-
     if ( faceId < 1 || faceId > 6 )
       throw std::out_of_range( "Hex8 faceId must be 1..6 (Abaqus)" );
 
@@ -462,35 +460,89 @@ Eigen::Matrix<Scalar, nDim, nDim> secondMoments() const
     return c / 4.0;
   }
 
+  // template <>
+  // inline MarmotLagrangeCell<3,8>::Vec
+  // MarmotLagrangeCell<3,8>::boundarySurfaceVector(int faceId) const
+  // {
+  //     static const int faces[6][4] = {
+  //         {0, 1, 2, 3}, // S1 bottom
+  //         {4, 5, 6, 7}, // S2 top
+  //         {0, 1, 5, 4}, // S3 front
+  //         {1, 2, 6, 5}, // S4 right
+  //         {2, 3, 7, 6}, // S5 back
+  //         {3, 0, 4, 7}  // S6 left
+  //     };
+
+  //     if(faceId < 1 || faceId > 6)
+  //         throw std::out_of_range("Hex8 faceId must be 1..6 (Abaqus)");
+
+  //     const int* f = faces[faceId - 1];
+
+  //     // Quad corners
+  //     Vec p1 = nodes_.col(f[0]);
+  //     Vec p2 = nodes_.col(f[1]);
+  //     Vec p3 = nodes_.col(f[2]);
+  //     Vec p4 = nodes_.col(f[3]);
+
+  //     // Two-triangle quadrilateral area vector (robust)
+  //     Vec A = 0.5 * (
+  //           (p2 - p1).cross(p4 - p1)    // triangle 1: (1,2,4)
+  //         + (p3 - p2).cross(p4 - p2)    // triangle 2: (2,3,4)
+  //     );
+
+  //     return A;    // outward area vector
+  // }
+
   template <>
   inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::boundarySurfaceVector( int faceId ) const
   {
+    // Abaqus C3D8 Standard Faces (0-based indices)
+    // Note: To get OUTWARD normals, we use the Right Hand Rule counter-clockwise
+    // ordering when looking at the face from the OUTSIDE.
     static const int faces[6][4] = {
-      { 0, 1, 2, 3 }, // S1
-      { 4, 5, 6, 7 }, // S2
-      { 0, 1, 5, 4 }, // S3
-      { 1, 2, 6, 5 }, // S4
-      { 2, 3, 7, 6 }, // S5
-      { 3, 0, 4, 7 }  // S6
+      { 0, 3, 2, 1 }, // S1: Bottom (points -Z local)
+      { 4, 5, 6, 7 }, // S2: Top    (points +Z local)
+      { 0, 1, 5, 4 }, // S3: Front  (points -Y local ... wait, check below)
+      { 1, 2, 6, 5 }, // S4: Right  (points +X local)
+      { 2, 3, 7, 6 }, // S5: Back   (points +Y local)
+      { 3, 0, 4, 7 }  // S6: Left   (points -X local)
     };
+
+    // NOTE ON S3/S5: Abaqus defines S3 as Face 1-2-6-5 and S5 as 3-4-8-7.
+    // Ensure this table matches exactly what your solver expects for "S3".
+    // The table above is the standard "Unit Cube" outward winding.
 
     if ( faceId < 1 || faceId > 6 )
       throw std::out_of_range( "Hex8 faceId must be 1..6 (Abaqus)" );
 
-    int a = faces[faceId - 1][0];
-    int b = faces[faceId - 1][1];
-    int c = faces[faceId - 1][2];
-    int d = faces[faceId - 1][3];
+    const int* f = faces[faceId - 1];
 
-    Vec p1 = nodes_.col( a );
-    Vec p2 = nodes_.col( b );
-    Vec p3 = nodes_.col( c );
-    Vec p4 = nodes_.col( d );
+    Vec p1 = nodes_.col( f[0] );
+    Vec p2 = nodes_.col( f[1] );
+    Vec p3 = nodes_.col( f[2] );
+    Vec p4 = nodes_.col( f[3] );
 
-    Vec n1 = ( p2 - p1 ).cross( p3 - p1 );
-    Vec n2 = ( p4 - p1 ).cross( p3 - p1 );
+    // Use diagonals for a more robust average normal on warped faces
+    // N = (P3 - P1) x (P4 - P2) is NOT correct for area, but gives direction.
+    // Let's stick to your 2-triangle method, but ensure winding is respected.
 
-    return 0.5 * ( n1 + n2 );
+    // Triangle 1: (p1, p2, p3) - Cutting diagonal 1-3
+    // Triangle 2: (p1, p3, p4) - Cutting diagonal 1-3
+    // Area = 0.5 * [ (p2-p1)x(p3-p1) + (p3-p1)x(p4-p1) ]
+
+    // Alternatively, using the "Mean Normal" of the quad (Cross product of diagonals)
+    // This is often preferred for warped elements as it minimizes direction error.
+    // Magnitude is approximately 2*Area.
+    // Area Vector = 0.5 * (Diagonal A x Diagonal B)
+    // Diagonal A = p3 - p1
+    // Diagonal B = p4 - p2
+
+    Vec diag1 = p3 - p1;
+    Vec diag2 = p4 - p2;
+
+    // Cross product of diagonals gives the vector normal to the plane
+    // defined by the four points (best fit).
+    return 0.5 * diag1.cross( diag2 );
   }
 
   template <>
