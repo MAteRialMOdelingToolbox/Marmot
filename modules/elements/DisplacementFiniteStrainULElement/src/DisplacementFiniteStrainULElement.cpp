@@ -27,10 +27,16 @@ namespace Marmot::Elements::Registration {
                                           FullIntegration,
                                           AxiSymmetricDisplacementFiniteStrainULElement< 8 >::PlaneStrain >() );
 
-  const static bool CPE8RGradientEnhancedMicropolar_isRegistered = MarmotElementFactory::
+  const static bool CPE8RUL_isRegistered = MarmotElementFactory::
     registerElement( "CPE8RUL",
                      makeFactoryFunction< DisplacementFiniteStrainULElement< 2, 8 >,
                                           ReducedIntegration,
+                                          DisplacementFiniteStrainULElement< 2, 8 >::PlaneStrain >() );
+
+  const static bool CPE8UL_isRegistered = MarmotElementFactory::
+    registerElement( "CPE8UL",
+                     makeFactoryFunction< DisplacementFiniteStrainULElement< 2, 8 >,
+                                          FullIntegration,
                                           DisplacementFiniteStrainULElement< 2, 8 >::PlaneStrain >() );
 
   const static bool C3D8UL_isRegistered = MarmotLibrary::MarmotElementFactory::
