@@ -191,8 +191,6 @@ namespace Marmot::Elements {
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
-        // material->assignStateVars( managedStateVars->materialStateVars.data(),
-        //                            managedStateVars->materialStateVars.size() );
       }
 
       /** @brief Constructor of the quadrature point
