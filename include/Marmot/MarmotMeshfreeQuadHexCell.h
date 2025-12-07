@@ -70,16 +70,16 @@ namespace Marmot::Meshfree {
     using Self = MarmotLagrangeCell< nDim, nNodes >;
 
     MarmotLagrangeCell() = default;
-    explicit MarmotLagrangeCell( const Mat& nodes ) : nodes_( nodes ) {}
+    explicit MarmotLagrangeCell( const Mat& nodes ) : _nodes( nodes ) {}
     explicit MarmotLagrangeCell( const Scalar* nodesData, int nNodesData )
     {
       if ( nNodesData != nDim * nNodes )
         throw std::invalid_argument( "MarmotLagrangeCell: invalid nodes data size" );
-      nodes_ = Eigen::Map< const Mat >( nodesData );
+      _nodes = Eigen::Map< const Mat >( nodesData );
     }
 
-    const Mat& nodes() const { return nodes_; }
-    Mat&       nodes() { return nodes_; }
+    const Mat& nodes() const { return _nodes; }
+    Mat&       nodes() { return _nodes; }
 
     // ------------------------------------------------------------------------
     // Element-specific: shape functions and derivatives (must be specialized)
@@ -92,12 +92,12 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Mapping and Jacobian
     // ------------------------------------------------------------------------
-    Vec mapToPhysical( const Vec& s ) const { return nodes_ * shapeFunctions( s ).transpose(); }
+    Vec mapToPhysical( const Vec& s ) const { return _nodes * shapeFunctions( s ).transpose(); }
 
     Eigen::Matrix< Scalar, nDim, nDim > jacobian( const Vec& s ) const
     {
       dNMat dN = dShapeFunctions( s );
-      return nodes_ * dN.transpose();
+      return _nodes * dN.transpose();
     }
 
     // ------------------------------------------------------------------------
@@ -114,7 +114,7 @@ namespace Marmot::Meshfree {
         const auto&                         s    = gps[i];
         const auto&                         w    = wgs[i];
         dNMat                               dN   = dShapeFunctions( s );
-        Eigen::Matrix< Scalar, nDim, nDim > J    = nodes_ * dN.transpose();
+        Eigen::Matrix< Scalar, nDim, nDim > J    = _nodes * dN.transpose();
         const Scalar                        detJ = std::abs( J.determinant() ) * w;
 
         Vec x = mapToPhysical( s );
@@ -140,7 +140,7 @@ namespace Marmot::Meshfree {
         const auto& w = wgs[i];
 
         dNMat                               dN   = dShapeFunctions( s );
-        Eigen::Matrix< Scalar, nDim, nDim > J    = nodes_ * dN.transpose();
+        Eigen::Matrix< Scalar, nDim, nDim > J    = _nodes * dN.transpose();
         const Scalar                        detJ = std::abs( J.determinant() ) * w;
         V += detJ;
       }
@@ -172,7 +172,7 @@ namespace Marmot::Meshfree {
         const auto& w = wgs[i];
 
         dNMat                               dN   = dShapeFunctions( s );
-        Eigen::Matrix< Scalar, nDim, nDim > J    = nodes_ * dN.transpose();
+        Eigen::Matrix< Scalar, nDim, nDim > J    = _nodes * dN.transpose();
         Scalar                              detJ = std::abs( J.determinant() ) * w;
 
         // physical coordinates
@@ -189,7 +189,7 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Update vertex coordinates
     // ------------------------------------------------------------------------
-    void updateVertexCoordinates( const Mat& newNodes ) { nodes_ = newNodes; }
+    void updateVertexCoordinates( const Mat& newNodes ) { _nodes = newNodes; }
 
     // ------------------------------------------------------------------------
     // Apply deformation gradient relative to centroid:
@@ -199,15 +199,15 @@ namespace Marmot::Meshfree {
     {
       Vec C = centroid();
       for ( int i = 0; i < nNodes; ++i ) {
-        Vec Xrel        = nodes_.col( i ) - C;
-        nodes_.col( i ) = C + F * Xrel;
+        Vec Xrel        = _nodes.col( i ) - C;
+        _nodes.col( i ) = C + F * Xrel;
       }
     }
 
     void applyUniformDisplacement( const Vec& dX )
     {
       for ( int i = 0; i < nNodes; ++i ) {
-        nodes_.col( i ) += dX;
+        _nodes.col( i ) += dX;
       }
     }
 
@@ -251,7 +251,7 @@ namespace Marmot::Meshfree {
     }
 
   private:
-    Mat nodes_;
+    Mat _nodes;
   };
 
   // ============================================================================
@@ -307,7 +307,7 @@ namespace Marmot::Meshfree {
 
     int i0 = edges[faceId - 1][0];
     int i1 = edges[faceId - 1][1];
-    return 0.5 * ( nodes_.col( i0 ) + nodes_.col( i1 ) );
+    return 0.5 * ( _nodes.col( i0 ) + _nodes.col( i1 ) );
   }
 
   template <>
@@ -326,7 +326,7 @@ namespace Marmot::Meshfree {
     int i0 = edges[faceId - 1][0];
     int i1 = edges[faceId - 1][1];
 
-    Vec e = nodes_.col( i1 ) - nodes_.col( i0 );
+    Vec e = _nodes.col( i1 ) - _nodes.col( i0 );
     return Vec( e[1], -e[0] ); // outward normal * edge length (for CCW nodes)
   }
 
@@ -455,43 +455,11 @@ namespace Marmot::Meshfree {
 
     Vec c = Vec::Zero();
     for ( int i = 0; i < 4; ++i )
-      c += nodes_.col( faces[faceId - 1][i] );
+      c += _nodes.col( faces[faceId - 1][i] );
 
     return c / 4.0;
   }
 
-  // template <>
-  // inline MarmotLagrangeCell<3,8>::Vec
-  // MarmotLagrangeCell<3,8>::boundarySurfaceVector(int faceId) const
-  // {
-  //     static const int faces[6][4] = {
-  //         {0, 1, 2, 3}, // S1 bottom
-  //         {4, 5, 6, 7}, // S2 top
-  //         {0, 1, 5, 4}, // S3 front
-  //         {1, 2, 6, 5}, // S4 right
-  //         {2, 3, 7, 6}, // S5 back
-  //         {3, 0, 4, 7}  // S6 left
-  //     };
-
-  //     if(faceId < 1 || faceId > 6)
-  //         throw std::out_of_range("Hex8 faceId must be 1..6 (Abaqus)");
-
-  //     const int* f = faces[faceId - 1];
-
-  //     // Quad corners
-  //     Vec p1 = nodes_.col(f[0]);
-  //     Vec p2 = nodes_.col(f[1]);
-  //     Vec p3 = nodes_.col(f[2]);
-  //     Vec p4 = nodes_.col(f[3]);
-
-  //     // Two-triangle quadrilateral area vector (robust)
-  //     Vec A = 0.5 * (
-  //           (p2 - p1).cross(p4 - p1)    // triangle 1: (1,2,4)
-  //         + (p3 - p2).cross(p4 - p2)    // triangle 2: (2,3,4)
-  //     );
-
-  //     return A;    // outward area vector
-  // }
 
   template <>
   inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::boundarySurfaceVector( int faceId ) const
@@ -517,10 +485,10 @@ namespace Marmot::Meshfree {
 
     const int* f = faces[faceId - 1];
 
-    Vec p1 = nodes_.col( f[0] );
-    Vec p2 = nodes_.col( f[1] );
-    Vec p3 = nodes_.col( f[2] );
-    Vec p4 = nodes_.col( f[3] );
+    Vec p1 = _nodes.col( f[0] );
+    Vec p2 = _nodes.col( f[1] );
+    Vec p3 = _nodes.col( f[2] );
+    Vec p4 = _nodes.col( f[3] );
 
     // Use diagonals for a more robust average normal on warped faces
     // N = (P3 - P1) x (P4 - P2) is NOT correct for area, but gives direction.
