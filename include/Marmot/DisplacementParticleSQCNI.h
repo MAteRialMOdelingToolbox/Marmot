@@ -31,6 +31,7 @@
 #include "Marmot/MarmotMeshfreeQuadHexCell.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <Eigen/src/Core/util/Constants.h>
 #include <Fastor/Fastor.h>
 
 namespace Marmot::Meshfree {
@@ -135,6 +136,11 @@ namespace Marmot::Meshfree {
       return DisplacementParticle< nDim >::getStateView( stateName, qp );
     }
 
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    {
+      ParentPointParticle::setInitialCondition( conditionName, value );
+    };
+
     virtual void computeDistributedLoad( int           type,
                                          int           surfaceID,
                                          const double* load,
@@ -171,42 +177,47 @@ namespace Marmot::Meshfree {
 
     virtual void getEvaluationCoordinates( double* coordinates ) const
     {
+      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > faceCenters( coordinates,
+                                                                               nDim,
+                                                                               getNumberOfEvaluationPoints() );
 
-      Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > segmentCenters( coordinates );
-
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
-
-      for ( int i = 0; i < nVertices; i++ ) {
-        segmentCenters.col( i ) = 0.5 * ( vertexCoordinates.col( ( i + 1 ) % nVertices ) + vertexCoordinates.col( i ) );
+      for ( int i = 0; i < getNumberOfEvaluationPoints(); i++ ) {
+        const auto faceCenterCoords = _cellForSmoothing.getFaceCenterCoordinates( i + 1 );
+        faceCenters.col( i )        = faceCenterCoords;
       }
     }
 
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const
     {
-      const auto faceCenterCoords = _cellForGeometryUndeformed.getFaceCenterCoordinates( faceID );
+      const auto faceCenterCoords = _cellForGeometryIntermediate.getFaceCenterCoordinates( faceID );
       for ( int i = 0; i < nDim; i++ ) {
         coordinates[i] = faceCenterCoords( i );
       }
     }
 
-    virtual int getNumberOfEvaluationPoints() const { return nVertices; };
+    virtual int getNumberOfEvaluationPoints() const
+    {
+      // Technically, we also evaluate at the center for integratio, but
+      // we assume that the center is captured also if at least one face is evaluated.
+      return _cellForSmoothing.getNumberOfFaces();
+    };
 
   private:
-    void _updateSmoothingVertexDisplacementsFromMaterialPointDeformation();
+    Eigen::Matrix< double, nDim, nDim > _computeSmoothingDomainDeformationTensorTotal();
 
     virtual void updateParticlePositionToReferenceIntermediate() override
     {
+      const auto _centerDisplacement = Eigen::Matrix< double, nDim, 1 >( this->getDisplacementAtCenter().data() );
 
-      const auto _centerDisplacement = this->getDisplacementAtCenter();
-
+      const auto FIntermediate = Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor >( this->dY_dX().data() );
       _cellForGeometryIntermediate.updateVertexCoordinates( _vertexCoordinates_Undeformed );
-      _cellForGeometryIntermediate.applyDeformationGradient(
-        Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( this->dY_dX().data() ) );
-      _cellForGeometryIntermediate.applyUniformDisplacement(
-        Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( _centerDisplacement.data() ) );
+      _cellForGeometryIntermediate.applyDeformationGradient( FIntermediate );
+      _cellForGeometryIntermediate.applyUniformDisplacement( _centerDisplacement );
 
-      _updateSmoothingVertexDisplacementsFromMaterialPointDeformation();
+      const auto FSmoothing = _computeSmoothingDomainDeformationTensorTotal();
+      _cellForSmoothing.updateVertexCoordinates( _vertexCoordinates_Undeformed );
+      _cellForSmoothing.applyUniformDisplacement( _centerDisplacement );
+      _cellForSmoothing.applyDeformationGradient( FSmoothing );
 
       _vertex_displacements_smoothingDomain = _cellForSmoothing.nodes() - _vertexCoordinates_Undeformed;
 
@@ -242,6 +253,12 @@ namespace Marmot::Meshfree {
       _cellForGeometryIntermediate( vertexCoordinates, nVertexCoordinates ),
       _cellForSmoothing( vertexCoordinates, nVertexCoordinates )
   {
+    if ( volume != 0 ) {
+      throw std::invalid_argument(
+        MakeString() << __PRETTY_FUNCTION__
+                     << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
+                        "vertex coordinates." );
+    }
   }
 
   template < int nDim, int nVertices >
@@ -298,7 +315,6 @@ namespace Marmot::Meshfree {
       for ( int A = 0; A < _nNodes; A++ ) {
         const int idxA_u = nodeBlockSize * A;
 
-        /* const double T_A = DisplacementParticle< nDim >::_T( A ); */
         r_U = testBoundary( A ) * f;
 
         {
@@ -358,7 +374,8 @@ namespace Marmot::Meshfree {
   }
 
   template < int nDim, int nVertices >
-  void DisplacementParticleSQCNI< nDim, nVertices >::_updateSmoothingVertexDisplacementsFromMaterialPointDeformation()
+  Eigen::Matrix< double, nDim, nDim > DisplacementParticleSQCNI< nDim, nVertices >::
+    _computeSmoothingDomainDeformationTensorTotal()
   {
 
     Eigen::Matrix< double, nDim, nDim > F;
@@ -406,22 +423,7 @@ namespace Marmot::Meshfree {
     }
     }
 
-    Eigen::Matrix< double, nDim, nVertices > coordinatesRelToCenter0 = _vertexCoordinates_Undeformed;
-    for ( int i = 0; i < nDim; i++ ) {
-      coordinatesRelToCenter0.row( i ).array() -= this->_centerCoordinatesUndeformed( i );
-    }
-
-    Eigen::Matrix< double, nDim, nVertices > vertexCoordinatesDeformed = F * coordinatesRelToCenter0;
-
-    Eigen::Matrix< double, nDim, 1 > _centerDisplacement( this->getDisplacementAtCenter().data() );
-
-    for ( int i = 0; i < nDim; i++ ) {
-      vertexCoordinatesDeformed.row( i ).array() += this->_centerCoordinatesUndeformed( i ) + _centerDisplacement( i );
-    }
-
-    _cellForSmoothing.updateVertexCoordinates( _vertexCoordinates_Undeformed );
-    _cellForSmoothing.applyUniformDisplacement( _centerDisplacement );
-    _cellForSmoothing.applyDeformationGradient( F );
+    return F;
   }
 
   template < int nDim, int nVertices >
@@ -453,33 +455,10 @@ namespace Marmot::Meshfree {
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( faceCenterCoords.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          NBoundary.data() );
-
-      // std::cout << "Face " << i + 1 << " normal vector: " << n.transpose() << std::endl;
-      // std::cout << "NBoundary: " << NBoundary << std::endl;
-      // std::cout << "Contribution to dN_dY: " << n * NBoundary << std::endl;
-      // std::cout << "------------------------" << std::endl;
-
       ParentPointParticle::_dN_dY += n * NBoundary;
     }
 
     ParentPointParticle::_dN_dY /= getSmoothingVolume();
-
-    // std::cout << "Smoothing volume: " << getSmoothingVolume() << std::endl;
-    // std::cout << "dN_dY: " << std::endl << ParentPointParticle::_dN_dY << std::endl;
-    // std::cout << "N: " << std::endl << ParentPointParticle::_N << std::endl;
-    // std::cout << _cellForGeometryIntermediate.getNumberOfFaces() << " faces." << std::endl;
-    // double sumN  = 0.0;
-    // Eigen::VectorXd sumdN_dY = Eigen::VectorXd::Zero( nDim );
-    // for ( int a = 0; a < ParentPointParticle::_nNodes; a++ ) {
-    //   sumN += ParentPointParticle::_N( a );
-    //     for ( int i = 0; i < nDim; i++ ) {
-    //         sumdN_dY( i ) += ParentPointParticle::_dN_dY( i, a );
-    //     }
-    // }
-
-    // std::cout << "sumN = " << sumN << std::endl;
-    // std::cout << "sumdN_dY = " << sumdN_dY << std::endl;
-    // exit(0);
 
     ParentPointParticle::_T     = ParentPointParticle::_N;
     ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;

@@ -495,10 +495,6 @@ namespace Marmot::Meshfree {
 
     const auto& t = _mp->tangents;
 
-    // std::cout << _dN_dY << std::endl;
-    // std::cout << _dT_dY << std::endl;
-    // validatae sum of N = 1 and sum of dN_dY = 0
-
     Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
@@ -545,9 +541,6 @@ namespace Marmot::Meshfree {
           }
       }
     }
-
-    // std::cout << K << std::endl;
-    // exit(0);
     // clang-format on
   }
 
