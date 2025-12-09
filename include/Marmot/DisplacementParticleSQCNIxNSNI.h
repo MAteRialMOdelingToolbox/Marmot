@@ -124,10 +124,10 @@ namespace Marmot::Meshfree {
       Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
       Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
 
-      for ( int i = 0; i < this->_cellForSmoothing.getNumberOfFaces(); i++ ) {
+      for ( int i = 0; i < this->_particleDomain.getNumberOfFaces(); i++ ) {
 
-        auto faceCenter = this->_cellForSmoothing.getFaceCenterCoordinates( i + 1 );
-        auto n_x_dAt    = this->_cellForSmoothing.boundarySurfaceVector( i + 1 );
+        auto faceCenter = this->_particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
+        auto n_x_dAt    = this->_particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
 
         ParentPointParticle::_meshfreeApproximation
           .computeShapeFunctionsAndGradients( faceCenter.data(),
@@ -141,7 +141,7 @@ namespace Marmot::Meshfree {
           _d2N_dYdY[j] += n_x_dAt( j ) * dN_dY_Boundary;
       }
 
-      const double VSmoothing = this->getSmoothingVolume();
+      const double VSmoothing = this->_particleDomain.getSmoothingVolume();
       ParentPointParticle::_dN_dY /= VSmoothing;
       for ( int i = 0; i < nDim; i++ ) {
         _d2N_dYdY[i] /= VSmoothing;
@@ -192,7 +192,7 @@ namespace Marmot::Meshfree {
     virtual void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
-      _momentsOfInertia_IntermediateReference = TensorDD( this->_cellForGeometryIntermediate.secondMoments().data() );
+      _momentsOfInertia_IntermediateReference = TensorDD( this->_particleDomain.getGeometrySecondMoments().data() );
     };
   };
 
@@ -345,9 +345,9 @@ namespace Marmot::Meshfree {
         const auto d2NB_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
 
         // aux stiffness tensors
-        const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY )                                            );
+        const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY ) );
 
-        k_UU  = ( + einsum< i, ijk        > ( dT_A_dx, dS_dqU_B )                                                       ) * V0;
+        k_UU  = ( + einsum< i, ijk        > ( dT_A_dx, dS_dqU_B )    ) * V0;
         k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
 
         k_UU += density0 * da_ddu * T_A * N_B * V0;
