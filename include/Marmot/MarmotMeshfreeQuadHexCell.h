@@ -3,38 +3,70 @@
 #include <Eigen/Dense>
 #include <array>
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 #include <vector>
 
+/**
+ * @file MarmotMeshfreeQuadHexCell.h
+ * @brief Defines generic cells (Quad4, Hex8) for meshfree methods.
+ *
+ * This file provides template classes for 2D quadrilateral (Quad4) and 3D hexahedral (Hex8)
+ * isoparametric cells. It includes functionality for shape functions, Jacobian computation,
+ * centroid, volume/area, second moments, and uniform subdivision.
+ *
+ * The elements use Abaqus node and face numbering conventions where applicable.
+ */
+
 namespace Marmot::Meshfree {
 
-  // ============================================================================
-  //   Gauss rules (generic by dimension, specialized for 2D / 3D)
-  //   - 2D: 2x2 Gauss
-  //   - 3D: 2x2x2 Gauss
-  // ============================================================================
-
+  /**
+   * @brief Generic Gauss rule definition.
+   * @tparam nDim The dimension of the space (e.g., 2 for 2D, 3 for 3D).
+   *
+   * This template struct provides static methods to retrieve Gauss points and weights
+   * for numerical integration. Specializations are provided for 2D and 3D.
+   */
   template < int nDim >
   struct GaussRule;
 
+  /**
+   * @brief Specialization of GaussRule for 2D (2x2 Gauss points).
+   */
   template <>
   struct GaussRule< 2 > {
-    using Scalar = double;
-    using Vec    = Eigen::Matrix< Scalar, 2, 1 >;
+    using Scalar = double; ///< Type for scalar values.
+    using Vec    = Eigen::Matrix< Scalar, 2, 1 >; ///< Type for 2D vectors.
 
+    /**
+     * @brief Returns the 2x2 Gauss points for a 2D element.
+     * @return An array of 4 Eigen::Vector2d representing the Gauss points.
+     */
     static std::array< Vec, 4 > points()
     {
       const Scalar a = 1.0 / std::sqrt( 3.0 );
       return { Vec( -a, -a ), Vec( +a, -a ), Vec( +a, +a ), Vec( -a, +a ) };
     }
+
+    /**
+     * @brief Returns the weights for the 2x2 Gauss points in 2D.
+     * @return An array of 4 doubles, all 1.0 for a 2x2 rule.
+     */
     static std::array< Scalar, 4 > weights() { return { 1.0, 1.0, 1.0, 1.0 }; }
   };
 
+  /**
+   * @brief Specialization of GaussRule for 3D (2x2x2 Gauss points).
+   */
   template <>
   struct GaussRule< 3 > {
-    using Scalar = double;
-    using Vec    = Eigen::Matrix< Scalar, 3, 1 >;
+    using Scalar = double; ///< Type for scalar values.
+    using Vec    = Eigen::Matrix< Scalar, 3, 1 >; ///< Type for 3D vectors.
 
+    /**
+     * @brief Returns the 2x2x2 Gauss points for a 3D element.
+     * @return An array of 8 Eigen::Vector3d representing the Gauss points.
+     */
     static std::array< Vec, 8 > points()
     {
       const Scalar         a = 1.0 / std::sqrt( 3.0 );
@@ -50,50 +82,116 @@ namespace Marmot::Meshfree {
       return gps;
     }
 
+    /**
+     * @brief Returns the weights for the 2x2x2 Gauss points in 3D.
+     * @return An array of 8 doubles, all 1.0 for a 2x2x2 rule.
+     */
     static std::array< Scalar, 8 > weights() { return { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }; }
   };
 
-  // ============================================================================
-  //   Generic isoparametric element: nDim = 2 or 3, nNodes = 4 or 8 here
-  //   Specialized for Quad4 (2,4) and Hex8 (3,8)
-  // ============================================================================
-
+  /**
+   * @brief Generic isoparametric Lagrange element.
+   * @tparam nDim The dimension of the element (e.g., 2 for Quad4, 3 for Hex8).
+   * @tparam nNodes The number of nodes in the element (e.g., 4 for Quad4, 8 for Hex8).
+   *
+   * This class provides common functionality for isoparametric elements, including
+   * mapping from natural to physical coordinates, Jacobian computation, and
+   * integration-based properties like centroid and volume.
+   *
+   * Specific shape functions and derivatives must be specialized for concrete topologies.
+   */
   template < int nDim, int nNodes >
   class MarmotLagrangeCell {
   public:
-    using Scalar = double;
-    using Vec    = Eigen::Matrix< Scalar, nDim, 1 >;
-    using Mat    = Eigen::Matrix< Scalar, nDim, nNodes >;
-    using RowN   = Eigen::Matrix< Scalar, 1, nNodes >;
-    using dNMat  = Eigen::Matrix< Scalar, nDim, nNodes >;
+    using Scalar = double; ///< Type for scalar values.
+    using Vec    = Eigen::Matrix< Scalar, nDim, 1 >; ///< Type for vectors in nDim.
+    using Mat    = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for node coordinate matrix.
+    using RowN   = Eigen::Matrix< Scalar, 1, nNodes >; ///< Type for shape function vector.
+    using dNMat  = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for shape function derivative matrix.
 
-    using Self = MarmotLagrangeCell< nDim, nNodes >;
+    using Self = MarmotLagrangeCell< nDim, nNodes >; ///< Alias for the current class type.
 
+    /**
+     * @brief Default constructor.
+     */
     MarmotLagrangeCell() = default;
+
+    /**
+     * @brief Constructor that initializes the element with node coordinates.
+     * @param nodes An Eigen matrix where each column represents a node's coordinates.
+     */
     explicit MarmotLagrangeCell( const Mat& nodes ) : _nodes( nodes ) {}
+
+    /**
+     * @brief Constructor that initializes the element with raw node data.
+     * @param nodesData A pointer to a flat array of node coordinates (e.g., [x1,y1,z1, x2,y2,z2, ...]).
+     * @param nNodesData The total number of scalar values in nodesData (nDim * nNodes).
+     * @throws std::invalid_argument if nNodesData does not match nDim * nNodes.
+     */
     explicit MarmotLagrangeCell( const Scalar* nodesData, int nNodesData )
     {
       if ( nNodesData != nDim * nNodes )
         throw std::invalid_argument( "MarmotLagrangeCell: invalid nodes data size" );
-      _nodes = Eigen::Map< const Mat >( nodesData );
+      _nodes = Eigen::Map< const Mat >( nodesData, nDim, nNodes );
+
+      // std::cout << _nodes << std::endl;
+      // std::cout << "MarmotLagrangeCell created with " << nNodes << " nodes in " << nDim
+      //           << "D." << std::endl;
     }
 
+    /**
+     * @brief Returns a const reference to the node coordinate matrix.
+     * @return A const Eigen matrix of node coordinates.
+     */
     const Mat& nodes() const { return _nodes; }
-    Mat&       nodes() { return _nodes; }
+
+    /**
+     * @brief Returns a mutable reference to the node coordinate matrix.
+     * @return A mutable Eigen matrix of node coordinates.
+     */
+    Mat& nodes() { return _nodes; }
 
     // ------------------------------------------------------------------------
     // Element-specific: shape functions and derivatives (must be specialized)
     // ------------------------------------------------------------------------
-    static RowN  shapeFunctions( const Vec& s );
+    /**
+     * @brief Computes the shape functions at a given natural coordinate.
+     * @param s The natural coordinate vector (xi, eta, zeta).
+     * @return A row vector of shape function values.
+     * @note This method must be specialized for each concrete element type.
+     */
+    static RowN shapeFunctions( const Vec& s );
+
+    /**
+     * @brief Computes the derivatives of the shape functions with respect to natural coordinates.
+     * @param s The natural coordinate vector (xi, eta, zeta).
+     * @return A matrix where rows are derivatives w.r.t. natural coordinates and columns are nodes.
+     * @note This method must be specialized for each concrete element type.
+     */
     static dNMat dShapeFunctions( const Vec& s );
 
+    /**
+     * @brief Returns the interpolation operator (same as shape functions for Lagrange elements).
+     * @param s The natural coordinate vector.
+     * @return A row vector of shape function values.
+     */
     static RowN interpolationOperator( const Vec& s ) { return shapeFunctions( s ); }
 
     // ------------------------------------------------------------------------
     // Mapping and Jacobian
     // ------------------------------------------------------------------------
+    /**
+     * @brief Maps a natural coordinate to a physical coordinate.
+     * @param s The natural coordinate vector.
+     * @return The physical coordinate vector.
+     */
     Vec mapToPhysical( const Vec& s ) const { return _nodes * shapeFunctions( s ).transpose(); }
 
+    /**
+     * @brief Computes the Jacobian matrix of the mapping from natural to physical coordinates.
+     * @param s The natural coordinate vector.
+     * @return The Jacobian matrix (nDim x nDim).
+     */
     Eigen::Matrix< Scalar, nDim, nDim > jacobian( const Vec& s ) const
     {
       dNMat dN = dShapeFunctions( s );
@@ -103,6 +201,10 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Generic exact centroid via Gauss integration
     // ------------------------------------------------------------------------
+    /**
+     * @brief Computes the centroid of the element using Gauss integration.
+     * @return The physical coordinate vector of the centroid.
+     */
     Vec centroid() const
     {
       Vec    c   = Vec::Zero();
@@ -129,6 +231,10 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Generic exact volume/area via Gauss integration
     // ------------------------------------------------------------------------
+    /**
+     * @brief Computes the volume (or area in 2D) of the element using Gauss integration.
+     * @return The scalar volume/area.
+     */
     Scalar volume() const
     {
       Scalar V   = 0.0;
@@ -147,6 +253,11 @@ namespace Marmot::Meshfree {
       return V;
     }
 
+    /**
+     * @brief Computes the area of the element (only valid for 2D elements).
+     * @return The scalar area.
+     * @note This method asserts that nDim is 2.
+     */
     Scalar area() const
     {
       static_assert( nDim == 2, "area() only makes sense in 2D." );
@@ -157,6 +268,14 @@ namespace Marmot::Meshfree {
     // Full second moment matrix: I_kj = ∫ d_k d_j dV
     // d = x - C
     // ------------------------------------------------------------------------
+    /**
+     * @brief Computes the second moment matrix of the element about its centroid.
+     *
+     * The second moment matrix I_kj is defined as ∫ (x_k - C_k)(x_j - C_j) dV,
+     * where C is the centroid and dV is the differential volume.
+     *
+     * @return An Eigen matrix representing the second moment matrix.
+     */
     Eigen::Matrix< Scalar, nDim, nDim > secondMoments() const
     {
       Vec C = centroid();
@@ -189,12 +308,24 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Update vertex coordinates
     // ------------------------------------------------------------------------
+    /**
+     * @brief Updates the coordinates of the element's nodes.
+     * @param newNodes The new Eigen matrix of node coordinates.
+     */
     void updateVertexCoordinates( const Mat& newNodes ) { _nodes = newNodes; }
 
     // ------------------------------------------------------------------------
     // Apply deformation gradient relative to centroid:
     // x_new = C + F * (x_old - C)
     // ------------------------------------------------------------------------
+    /**
+     * @brief Applies a deformation gradient relative to the element's centroid.
+     *
+     * Each node's new position is calculated as: x_new = C + F * (x_old - C),
+     * where C is the current centroid and F is the deformation gradient.
+     *
+     * @param F The deformation gradient matrix.
+     */
     void applyDeformationGradient( const Eigen::Matrix< Scalar, nDim, nDim >& F )
     {
       Vec C = centroid();
@@ -204,6 +335,10 @@ namespace Marmot::Meshfree {
       }
     }
 
+    /**
+     * @brief Applies a uniform displacement to all nodes of the element.
+     * @param dX The displacement vector.
+     */
     void applyUniformDisplacement( const Vec& dX )
     {
       for ( int i = 0; i < nNodes; ++i ) {
@@ -215,11 +350,25 @@ namespace Marmot::Meshfree {
     // Faces: center coords and boundary surface vectors
     //   - must be specialized for concrete topologies
     // ------------------------------------------------------------------------
+    /**
+     * @brief Computes the center coordinates of a specified face.
+     * @param faceId The ID of the face (1-based, typically Abaqus convention).
+     * @return The physical coordinate vector of the face center.
+     * @throws std::logic_error if not implemented for the specific element type.
+     * @note This method must be specialized for each concrete element type.
+     */
     Vec getFaceCenterCoordinates( int faceId ) const
     {
       throw std::logic_error( "getFaceCenterCoordinates not implemented for this (nDim,nNodes)" );
     }
 
+    /**
+     * @brief Computes the boundary surface vector (normal scaled by area/length) for a face.
+     * @param faceId The ID of the face (1-based, typically Abaqus convention).
+     * @return The boundary surface vector.
+     * @throws std::logic_error if not implemented for the specific element type.
+     * @note This method must be specialized for each concrete element type.
+     */
     Vec boundarySurfaceVector( int faceId ) const
     {
       throw std::logic_error( "boundarySurfaceVector not implemented for this (nDim,nNodes)" );
@@ -228,6 +377,13 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Uniform subdivision: must be specialized per topology
     // ------------------------------------------------------------------------
+    /**
+     * @brief Subdivides the element uniformly into smaller elements.
+     * @param levels The number of subdivision levels.
+     * @return A vector of new MarmotLagrangeCell instances representing the subdivided elements.
+     * @throws std::logic_error if not implemented for the specific element type.
+     * @note This method must be specialized for each concrete element type.
+     */
     std::vector< Self > uniformSubdivided( int levels ) const
     {
       throw std::logic_error( "uniformSubdivided not implemented for this (nDim,nNodes)" );
@@ -236,28 +392,53 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     // Ensight Gold cell shape name (specialized for supported element types)
     // ------------------------------------------------------------------------
+    /**
+     * @brief Returns the Ensight Gold cell shape name for the element.
+     * @return A string representing the Ensight Gold cell shape (e.g., "quad4", "hexa8").
+     * @throws std::logic_error if not implemented for the specific element type.
+     * @note This method must be specialized for each concrete element type.
+     */
     std::string getCellShape() const
     {
       throw std::logic_error( "getCellShape() not implemented for this (nDim,nNodes)" );
     }
 
+    /**
+     * @brief Returns the number of nodes in the element.
+     * @return The integer number of nodes.
+     */
     int getNumberOfNodes() const { return nNodes; }
 
+    /**
+     * @brief Returns the number of dimensions of the element.
+     * @return The integer number of dimensions.
+     */
     int getNumberOfDimensions() const { return nDim; }
 
+    /**
+     * @brief Returns the number of faces of the element.
+     * @return The integer number of faces.
+     * @throws std::logic_error if not implemented for the specific element type.
+     * @note This method must be specialized for each concrete element type.
+     */
     int getNumberOfFaces() const
     {
       throw std::logic_error( "getNumberOfFaces() not implemented for this (nDim,nNodes)" );
     }
 
   private:
-    Mat _nodes;
+    Mat _nodes; ///< Matrix storing the physical coordinates of the element's nodes.
   };
 
   // ============================================================================
   //   Specialization: Quad4  (nDim=2, nNodes=4) – Abaqus node numbering
   // ============================================================================
 
+  /**
+   * @brief Specialization of shapeFunctions for a 2D, 4-node quadrilateral (Quad4).
+   * @param s The natural coordinate vector (xi, eta).
+   * @return A row vector of shape function values for Quad4.
+   */
   template <>
   inline MarmotLagrangeCell< 2, 4 >::RowN MarmotLagrangeCell< 2, 4 >::shapeFunctions( const Vec& s )
   {
@@ -270,6 +451,11 @@ namespace Marmot::Meshfree {
     return N;
   }
 
+  /**
+   * @brief Specialization of dShapeFunctions for a 2D, 4-node quadrilateral (Quad4).
+   * @param s The natural coordinate vector (xi, eta).
+   * @return A matrix of shape function derivatives for Quad4.
+   */
   template <>
   inline MarmotLagrangeCell< 2, 4 >::dNMat MarmotLagrangeCell< 2, 4 >::dShapeFunctions( const Vec& s )
   {
@@ -291,15 +477,20 @@ namespace Marmot::Meshfree {
     return dN;
   }
 
-  // Faces S1..S4 in Abaqus: S1 bottom(1-2), S2 right(2-3), S3 top(3-4), S4 left(4-1)
+  /**
+   * @brief Specialization of getFaceCenterCoordinates for Quad4.
+   * @param faceId The ID of the face (1-4, Abaqus convention).
+   * @return The physical coordinate vector of the face center.
+   * @throws std::out_of_range if faceId is not between 1 and 4.
+   */
   template <>
   inline MarmotLagrangeCell< 2, 4 >::Vec MarmotLagrangeCell< 2, 4 >::getFaceCenterCoordinates( int faceId ) const
   {
     static const int edges[4][2] = {
-      { 0, 1 }, // S1
-      { 1, 2 }, // S2
-      { 2, 3 }, // S3
-      { 3, 0 }  // S4
+      { 0, 1 }, // S1 (Abaqus)
+      { 1, 2 }, // S2 (Abaqus)
+      { 2, 3 }, // S3 (Abaqus)
+      { 3, 0 }  // S4 (Abaqus)
     };
 
     if ( faceId < 1 || faceId > 4 )
@@ -310,14 +501,24 @@ namespace Marmot::Meshfree {
     return 0.5 * ( _nodes.col( i0 ) + _nodes.col( i1 ) );
   }
 
+  /**
+   * @brief Specialization of boundarySurfaceVector for Quad4.
+   *
+   * Computes the outward normal vector scaled by the edge length for a given face.
+   * Assumes counter-clockwise node ordering for outward normal.
+   *
+   * @param faceId The ID of the face (1-4, Abaqus convention).
+   * @return The boundary surface vector.
+   * @throws std::out_of_range if faceId is not between 1 and 4.
+   */
   template <>
   inline MarmotLagrangeCell< 2, 4 >::Vec MarmotLagrangeCell< 2, 4 >::boundarySurfaceVector( int faceId ) const
   {
     static const int edges[4][2] = {
-      { 0, 1 }, // S1
-      { 1, 2 }, // S2
-      { 2, 3 }, // S3
-      { 3, 0 }  // S4
+      { 0, 1 }, // S1 (Abaqus)
+      { 1, 2 }, // S2 (Abaqus)
+      { 2, 3 }, // S3 (Abaqus)
+      { 3, 0 }  // S4 (Abaqus)
     };
 
     if ( faceId < 1 || faceId > 4 )
@@ -330,6 +531,11 @@ namespace Marmot::Meshfree {
     return Vec( e[1], -e[0] ); // outward normal * edge length (for CCW nodes)
   }
 
+  /**
+   * @brief Specialization of uniformSubdivided for Quad4.
+   * @param levels The number of subdivision levels. Each level quadruples the number of elements.
+   * @return A vector of new Quad4 elements.
+   */
   template <>
   inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided( int levels ) const
   {
@@ -341,11 +547,11 @@ namespace Marmot::Meshfree {
 
       for ( const auto& e : elems ) {
         Vec s;
-        Vec grid[3][3];
+        Vec grid[3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
 
         for ( int j = 0; j < 3; ++j )
           for ( int i = 0; i < 3; ++i ) {
-            s << -1.0 + i, -1.0 + j;
+            s << -1.0 + i, -1.0 + j; // Natural coordinates (-1,-1), (0,-1), (1,-1), etc.
             grid[i][j] = e.mapToPhysical( s );
           }
 
@@ -370,10 +576,35 @@ namespace Marmot::Meshfree {
     return elems;
   }
 
+  /**
+   * @brief Specialization of getCellShape for Quad4.
+   * @return The string "quad4" (Ensight Gold notation).
+   */
+  template <>
+  inline std::string MarmotLagrangeCell< 2, 4 >::getCellShape() const
+  {
+    return "quad4"; // Ensight Gold notation
+  }
+
+  /**
+   * @brief Specialization of getNumberOfFaces for Quad4.
+   * @return The integer 4.
+   */
+  template <>
+  inline int MarmotLagrangeCell< 2, 4 >::getNumberOfFaces() const
+  {
+    return 4;
+  }
+
   // ============================================================================
   //   Specialization: Hex8  (nDim=3, nNodes=8) – Abaqus node & face numbering
   // ============================================================================
 
+  /**
+   * @brief Specialization of shapeFunctions for a 3D, 8-node hexahedron (Hex8).
+   * @param s The natural coordinate vector (xi, eta, zeta).
+   * @return A row vector of shape function values for Hex8.
+   */
   template <>
   inline MarmotLagrangeCell< 3, 8 >::RowN MarmotLagrangeCell< 3, 8 >::shapeFunctions( const Vec& s )
   {
@@ -392,6 +623,11 @@ namespace Marmot::Meshfree {
     return N;
   }
 
+  /**
+   * @brief Specialization of dShapeFunctions for a 3D, 8-node hexahedron (Hex8).
+   * @param s The natural coordinate vector (xi, eta, zeta).
+   * @return A matrix of shape function derivatives for Hex8.
+   */
   template <>
   inline MarmotLagrangeCell< 3, 8 >::dNMat MarmotLagrangeCell< 3, 8 >::dShapeFunctions( const Vec& s )
   {
@@ -432,20 +668,20 @@ namespace Marmot::Meshfree {
     return dN;
   }
 
-  // Abaqus face numbering:
-  // S1: 1,2,3,4  bottom
-  // S2: 5,6,7,8  top
-  // S3: 1,2,6,5  front
-  // S4: 2,3,7,6  right
-  // S5: 3,4,8,7  back
-  // S6: 4,1,5,8  left
+  /**
+   * @brief Specialization of getFaceCenterCoordinates for Hex8.
+   * @param faceId The ID of the face (1-6, Abaqus convention).
+   * @return The physical coordinate vector of the face center.
+   * @throws std::out_of_range if faceId is not between 1 and 6.
+   */
   template <>
   inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::getFaceCenterCoordinates( int faceId ) const
   {
+    // Abaqus C3D8 Standard Faces (0-based indices)
     static const int faces[6][4] = {
       { 0, 3, 2, 1 }, // S1: Bottom (points -Z local)
       { 4, 5, 6, 7 }, // S2: Top    (points +Z local)
-      { 0, 1, 5, 4 }, // S3: Front  (points -Y local ... wait, check below)
+      { 0, 1, 5, 4 }, // S3: Front  (points -Y local)
       { 1, 2, 6, 5 }, // S4: Right  (points +X local)
       { 2, 3, 7, 6 }, // S5: Back   (points +Y local)
       { 3, 0, 4, 7 }  // S6: Left   (points -X local)
@@ -460,7 +696,17 @@ namespace Marmot::Meshfree {
     return c / 4.0;
   }
 
-
+  /**
+   * @brief Specialization of boundarySurfaceVector for Hex8.
+   *
+   * Computes the outward normal vector scaled by the face area for a given face.
+   * Uses the cross product of the face diagonals for a robust normal estimation
+   * on potentially warped hexahedral faces.
+   *
+   * @param faceId The ID of the face (1-6, Abaqus convention).
+   * @return The boundary surface vector.
+   * @throws std::out_of_range if faceId is not between 1 and 6.
+   */
   template <>
   inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::boundarySurfaceVector( int faceId ) const
   {
@@ -470,15 +716,11 @@ namespace Marmot::Meshfree {
     static const int faces[6][4] = {
       { 0, 3, 2, 1 }, // S1: Bottom (points -Z local)
       { 4, 5, 6, 7 }, // S2: Top    (points +Z local)
-      { 0, 1, 5, 4 }, // S3: Front  (points -Y local ... wait, check below)
+      { 0, 1, 5, 4 }, // S3: Front  (points -Y local)
       { 1, 2, 6, 5 }, // S4: Right  (points +X local)
       { 2, 3, 7, 6 }, // S5: Back   (points +Y local)
       { 3, 0, 4, 7 }  // S6: Left   (points -X local)
     };
-
-    // NOTE ON S3/S5: Abaqus defines S3 as Face 1-2-6-5 and S5 as 3-4-8-7.
-    // Ensure this table matches exactly what your solver expects for "S3".
-    // The table above is the standard "Unit Cube" outward winding.
 
     if ( faceId < 1 || faceId > 6 )
       throw std::out_of_range( "Hex8 faceId must be 1..6 (Abaqus)" );
@@ -490,29 +732,20 @@ namespace Marmot::Meshfree {
     Vec p3 = _nodes.col( f[2] );
     Vec p4 = _nodes.col( f[3] );
 
-    // Use diagonals for a more robust average normal on warped faces
-    // N = (P3 - P1) x (P4 - P2) is NOT correct for area, but gives direction.
-    // Let's stick to your 2-triangle method, but ensure winding is respected.
-
-    // Triangle 1: (p1, p2, p3) - Cutting diagonal 1-3
-    // Triangle 2: (p1, p3, p4) - Cutting diagonal 1-3
-    // Area = 0.5 * [ (p2-p1)x(p3-p1) + (p3-p1)x(p4-p1) ]
-
-    // Alternatively, using the "Mean Normal" of the quad (Cross product of diagonals)
-    // This is often preferred for warped elements as it minimizes direction error.
-    // Magnitude is approximately 2*Area.
     // Area Vector = 0.5 * (Diagonal A x Diagonal B)
     // Diagonal A = p3 - p1
     // Diagonal B = p4 - p2
-
     Vec diag1 = p3 - p1;
     Vec diag2 = p4 - p2;
 
-    // Cross product of diagonals gives the vector normal to the plane
-    // defined by the four points (best fit).
     return 0.5 * diag1.cross( diag2 );
   }
 
+  /**
+   * @brief Specialization of uniformSubdivided for Hex8.
+   * @param levels The number of subdivision levels. Each level octuples the number of elements.
+   * @return A vector of new Hex8 elements.
+   */
   template <>
   inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided( int levels ) const
   {
@@ -524,12 +757,12 @@ namespace Marmot::Meshfree {
 
       for ( const auto& e : elems ) {
         Vec s;
-        Vec grid[3][3][3];
+        Vec grid[3][3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
 
         for ( int k = 0; k < 3; ++k )
           for ( int j = 0; j < 3; ++j )
             for ( int i = 0; i < 3; ++i ) {
-              s << -1.0 + i, -1.0 + j, -1.0 + k;
+              s << -1.0 + i, -1.0 + j, -1.0 + k; // Natural coordinates (-1,-1,-1), (0,-1,-1), etc.
               grid[i][j][k] = e.mapToPhysical( s );
             }
 
@@ -562,31 +795,20 @@ namespace Marmot::Meshfree {
     return elems;
   }
 
-  // ============================================================================
-  // Ensight Gold cell shape specialization: Quad4
-  // ============================================================================
-  template <>
-  inline std::string MarmotLagrangeCell< 2, 4 >::getCellShape() const
-  {
-    return "quad4"; // Ensight Gold notation
-  }
-
-  // ============================================================================
-  // Ensight Gold cell shape specialization: Hex8
-  // ============================================================================
+  /**
+   * @brief Specialization of getCellShape for Hex8.
+   * @return The string "hexa8" (Ensight Gold notation).
+   */
   template <>
   inline std::string MarmotLagrangeCell< 3, 8 >::getCellShape() const
   {
     return "hexa8"; // Ensight Gold notation
   }
 
-  // number of faces:
-  template <>
-  inline int MarmotLagrangeCell< 2, 4 >::getNumberOfFaces() const
-  {
-    return 4;
-  }
-
+  /**
+   * @brief Specialization of getNumberOfFaces for Hex8.
+   * @return The integer 6.
+   */
   template <>
   inline int MarmotLagrangeCell< 3, 8 >::getNumberOfFaces() const
   {
@@ -594,10 +816,17 @@ namespace Marmot::Meshfree {
   }
 
   // ============================================================================
-  // Convenient aliases if you still want Quad4 / Hex8 names
+  // Convenient aliases
   // ============================================================================
 
+  /**
+   * @brief Alias for a 2D, 4-node quadrilateral element.
+   */
   using Quad4 = MarmotLagrangeCell< 2, 4 >;
+
+  /**
+   * @brief Alias for a 3D, 8-node hexahedral element.
+   */
   using Hex8  = MarmotLagrangeCell< 3, 8 >;
 
 } // namespace Marmot::Meshfree
