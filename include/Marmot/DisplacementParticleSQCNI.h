@@ -36,6 +36,16 @@
 
 namespace Marmot::Meshfree {
 
+  /**
+   * @brief A displacement particle implementing the Stabilized Quasi-Conforming Nodal Integration (SQCNI) method.
+   *
+   * This class extends the basic DisplacementParticle to incorporate the SQCNI formulation,
+   * which involves smoothing domains for integration and specific handling of deformation.
+   * It supports different strategies for updating the smoothing domain's volume.
+   *
+   * @tparam nDim The number of dimensions (e.g., 2 for 2D, 3 for 3D).
+   * @tparam nVertices The number of vertices defining the particle's geometry.
+   */
   template < int nDim, int nVertices >
   class DisplacementParticleSQCNI : public DisplacementParticle< nDim > {
 
@@ -44,32 +54,73 @@ namespace Marmot::Meshfree {
     using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >;
 
   public:
-    enum SmoothingDomainUpdateType { None, DeformationGradient, RotationOnly, RotationAndPrincipalStretch };
+    /**
+     * @brief Defines how the smoothing domain's volume is updated.
+     */
+    enum SmoothingDomainUpdateType {
+      None,                       ///< No update to the smoothing domain's deformation tensor (identity).
+      DeformationGradient,        ///< Update using the total deformation gradient F.
+      RotationOnly,               ///< Update using only the rotation part R from F = RU.
+      RotationAndPrincipalStretch ///< Update using the rotation R and principal stretches from U.
+    };
 
   protected:
-    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryUndeformed;
-    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryIntermediate;
-    MarmotLagrangeCell< nDim, nVertices > _cellForSmoothing;
+    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryUndeformed; ///< Cell representing the undeformed geometry.
+    MarmotLagrangeCell< nDim, nVertices >
+      _cellForGeometryIntermediate;                                   ///< Cell representing the intermediate geometry.
+    MarmotLagrangeCell< nDim, nVertices > _cellForSmoothing;          ///< Cell representing the smoothing domain.
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;       ///< Type of update for the smoothing volume.
 
-    const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed;
-    Eigen::Matrix< double, nDim, nVertices >       _vertex_displacements_smoothingDomain;
+    const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< Undeformed vertex coordinates.
+    Eigen::Matrix< double, nDim, nVertices >
+      _vertex_displacements_smoothingDomain; ///< Displacements of vertices in the smoothing domain.
 
     using ParentPointParticle = DisplacementParticle< nDim >;
 
   public:
+    /**
+     * @brief Retrieves the current coordinates of the particle's vertices in the intermediate configuration.
+     * @param coordinates Pointer to a double array where the vertex coordinates will be stored.
+     */
     virtual void getVertexCoordinates( double* coordinates ) const override;
 
+    /**
+     * @brief Retrieves the current coordinates of the particle's vertices for visualization purposes.
+     *        Currently, this is the same as getVertexCoordinates.
+     * @param coordinates Pointer to a double array where the vertex coordinates will be stored.
+     */
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       getVertexCoordinates( coordinates );
     };
 
+    /**
+     * @brief Returns the number of vertices defining the particle.
+     * @return The number of vertices.
+     */
     virtual int getNumberOfVertices() const override { return nVertices; };
 
+    /**
+     * @brief Returns a string describing the shape of the particle's underlying cell.
+     * @return A string representing the cell shape (e.g., "quad", "hex").
+     */
     virtual std::string getParticleShape() const override { return _cellForGeometryUndeformed.getCellShape(); }
 
+    /**
+     * @brief Constructs a new DisplacementParticleSQCNI object.
+     *
+     * @param elementID The unique identifier for the element.
+     * @param nodeCoordinates Pointer to an array of node coordinates (nDim * nVertices).
+     * @param nNodeCoordiantes The total number of coordinate values (nDim * nVertices).
+     * @param volume The volume of the particle. Must be 0, as the volume is computed from vertex coordinates.
+     * @param materialName The name of the material assigned to the particle.
+     * @param materialProperties Pointer to an array of material properties.
+     * @param sizeMaterialProperties The size of the material properties array.
+     * @param approximation The meshfree approximation object used for shape functions.
+     * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
+     * @throws std::invalid_argument if the provided volume is not zero.
+     */
     DisplacementParticleSQCNI( int                                elementID,
                                const double*                      nodeCoordinates,
                                int                                nNodeCoordiantes,
@@ -80,26 +131,45 @@ namespace Marmot::Meshfree {
                                const MarmotMeshfreeApproximation& approximation,
                                const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
+    /**
+     * @brief Assigns the meshfree kernel functions to the particle.
+     *
+     * This method also computes and updates the shape functions (N, dN_dY) and
+     * their derivatives (T, dT_dY) based on the assigned kernel functions and
+     * the current smoothing volume.
+     *
+     * @param kernelFunctions A vector of pointers to the meshfree kernel functions.
+     */
     virtual void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
 
-    /// \brief Get the smoothing volume of the particle
-    /// \return The smoothing volume of the particle
-    /// \details The smoothing volume is computed as the volume of the element in an updated configuration
-    ///         that is obtained by applying (parts of) the deformation gradient to the element in the undeformed
-    ///         configuration. In general, this is not consistent with the actual deformation of the particle.
-    ///
+    /**
+     * @brief Get the smoothing volume of the particle.
+     * @return The smoothing volume of the particle.
+     * @details The smoothing volume is computed as the volume of the element in an updated configuration
+     *          that is obtained by applying (parts of) the deformation gradient to the element in the undeformed
+     *          configuration. In general, this is not consistent with the actual deformation of the particle.
+     */
     virtual double getSmoothingVolume() const
     {
       const auto _smoothingVolume = _cellForSmoothing.volume();
       return _smoothingVolume;
     }
 
+    /**
+     * @brief Retrieves the coordinates of the particle's center in the current configuration.
+     * @param coordinates Pointer to a double array where the center coordinates will be stored.
+     */
     virtual void getCenterCoordinates( double* coordinates ) const override
     {
       this->_mp->getCoordinatesAtCenter( coordinates );
     }
 
+    /**
+     * @brief Computes the centroid coordinates from a given set of vertex coordinates.
+     * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
+     * @return An Eigen vector representing the centroid coordinates.
+     */
     virtual CoordinatesSized getCenterFromVertices(
       const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
@@ -107,27 +177,52 @@ namespace Marmot::Meshfree {
       return _lagrangeCell.centroid();
     }
 
+    /**
+     * @brief Computes the volume of a cell defined by a given set of vertex coordinates.
+     * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
+     * @return The computed volume.
+     */
     virtual double getVolumeFromVertices( const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
       MarmotLagrangeCell< nDim, nVertices > _lagrangeCell( vertexCoordinates );
       return _lagrangeCell.volume();
     }
 
+    /**
+     * @brief Computes the deformed volume of the particle.
+     * @return The deformed volume, calculated as undeformed volume multiplied by the determinant of the deformation
+     * gradient.
+     */
     virtual double getVolumeDeformed() const
     {
       return this->getVolumeUndeformed() * Fastor::determinant( this->dY_dX() );
     }
 
+    /**
+     * @brief Returns the number of required state variables for the particle.
+     * @return The number of required state variables.
+     */
     virtual int getNumberOfRequiredStateVars() const override
     {
       return DisplacementParticle< nDim >::getNumberOfRequiredStateVars();
     };
 
+    /**
+     * @brief Assigns state variables to the particle.
+     * @param stateVars Pointer to an array of state variables.
+     * @param nStateVars The number of state variables.
+     */
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
       DisplacementParticle< nDim >::assignStateVars( stateVars, nStateVars );
     }
 
+    /**
+     * @brief Provides a view into a specific state variable.
+     * @param stateName The name of the state variable (e.g., "vertex displacements").
+     * @param qp The quadrature point index (not used for "vertex displacements").
+     * @return A StateView object providing access to the state variable data.
+     */
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
@@ -136,11 +231,32 @@ namespace Marmot::Meshfree {
       return DisplacementParticle< nDim >::getStateView( stateName, qp );
     }
 
+    /**
+     * @brief Sets an initial condition for the particle.
+     * @param conditionName The name of the initial condition.
+     * @param value Pointer to the value(s) for the initial condition.
+     */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
       ParentPointParticle::setInitialCondition( conditionName, value );
     };
 
+    /**
+     * @brief Computes the distributed load and its derivative with respect to nodal displacements.
+     *
+     * This method handles different types of distributed loads, such as pressure,
+     * and calculates the external force vector and its tangent matrix.
+     *
+     * @param type The type of distributed load (e.g., DisplacementParticle::Pressure).
+     * @param surfaceID The ID of the boundary face where the load is applied.
+     * @param load Pointer to the load value(s).
+     * @param fExt Pointer to the array where the external force vector will be accumulated.
+     * @param dExt_dQ Pointer to the array where the derivative of the external force with respect to nodal
+     * displacements will be accumulated.
+     * @param timeNew The current time.
+     * @param dT The time increment.
+     * @throws std::invalid_argument if an invalid DistributedLoad type is specified.
+     */
     virtual void computeDistributedLoad( int           type,
                                          int           surfaceID,
                                          const double* load,
@@ -149,8 +265,23 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const override;
 
+    /**
+     * @brief Retrieves the boundary surface vector and the face center coordinates in the intermediate configuration.
+     * @param boundaryFaceID The ID of the boundary face.
+     * @return A tuple containing the boundary surface vector (N_dAY) and the face center coordinates (Y_N).
+     */
     std::tuple< TensorD, TensorD > getBoundaryVectorIntermediate( int boundaryFaceID ) const;
 
+    /**
+     * @brief Computes the boundary integral part for the VCI (Variational Consistent Integration) test function.
+     *
+     * This method contributes to the R_AiC_RowMajor matrix, which is part of the VCI formulation.
+     * It involves shape functions, monomial basis, and boundary surface vectors.
+     *
+     * @param R_AiC_RowMajor Pointer to the row-major matrix for VCI constraints.
+     * @param boundarySurfaceVector Pointer to the boundary surface vector.
+     * @param boundaryFaceID The ID of the boundary face.
+     */
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
                                                       int           boundaryFaceID )
@@ -175,6 +306,10 @@ namespace Marmot::Meshfree {
                            i * ParentPointParticle::_nVCIConstraints + C] += TBoundary( A ) * PBoundary( C ) * N_dAY[i];
     };
 
+    /**
+     * @brief Retrieves the coordinates of the evaluation points (e.g., face centers) for the particle.
+     * @param coordinates Pointer to a double array where the evaluation coordinates will be stored.
+     */
     virtual void getEvaluationCoordinates( double* coordinates ) const
     {
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > faceCenters( coordinates,
@@ -187,6 +322,11 @@ namespace Marmot::Meshfree {
       }
     }
 
+    /**
+     * @brief Retrieves the coordinates of the center of a specific face in the intermediate configuration.
+     * @param faceID The ID of the face.
+     * @param coordinates Pointer to a double array where the face center coordinates will be stored.
+     */
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const
     {
       const auto faceCenterCoords = _cellForGeometryIntermediate.getFaceCenterCoordinates( faceID );
@@ -195,6 +335,11 @@ namespace Marmot::Meshfree {
       }
     }
 
+    /**
+     * @brief Returns the number of evaluation points for the particle.
+     *        These are typically the face centers of the smoothing cell.
+     * @return The number of evaluation points.
+     */
     virtual int getNumberOfEvaluationPoints() const
     {
       // Technically, we also evaluate at the center for integratio, but
@@ -203,8 +348,19 @@ namespace Marmot::Meshfree {
     };
 
   private:
+    /**
+     * @brief Computes the total deformation tensor for the smoothing domain based on the configured update type.
+     * @return An Eigen matrix representing the deformation tensor for the smoothing domain.
+     */
     Eigen::Matrix< double, nDim, nDim > _computeSmoothingDomainDeformationTensorTotal();
 
+    /**
+     * @brief Updates the particle's position to the reference intermediate configuration.
+     *
+     * This method updates the vertex coordinates of the geometry and smoothing cells
+     * based on the center displacement and the deformation gradient (or parts of it,
+     * depending on the smoothing domain update type).
+     */
     virtual void updateParticlePositionToReferenceIntermediate() override
     {
       const auto _centerDisplacement = Eigen::Matrix< double, nDim, 1 >( this->getDisplacementAtCenter().data() );
@@ -247,11 +403,11 @@ namespace Marmot::Meshfree {
                                     materialProperties,
                                     sizeMaterialProperties,
                                     approximation ),
-      _smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
-      _vertexCoordinates_Undeformed( vertexCoordinates ),
       _cellForGeometryUndeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForGeometryIntermediate( vertexCoordinates, nVertexCoordinates ),
-      _cellForSmoothing( vertexCoordinates, nVertexCoordinates )
+      _cellForSmoothing( vertexCoordinates, nVertexCoordinates ),
+      _smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
+      _vertexCoordinates_Undeformed( vertexCoordinates )
   {
     if ( volume != 0 ) {
       throw std::invalid_argument(
@@ -446,11 +602,10 @@ namespace Marmot::Meshfree {
                                                                        ParentPointParticle::_N.data() );
 
     Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-    //
-    for ( int i = 0; i < _cellForGeometryIntermediate.getNumberOfFaces(); i++ ) {
+    for ( int i = 0; i < _cellForSmoothing.getNumberOfFaces(); i++ ) {
 
-      auto faceCenterCoords = _cellForGeometryIntermediate.getFaceCenterCoordinates( i + 1 );
-      auto n                = _cellForGeometryIntermediate.boundarySurfaceVector( i + 1 );
+      auto faceCenterCoords = _cellForSmoothing.getFaceCenterCoordinates( i + 1 );
+      auto n                = _cellForSmoothing.boundarySurfaceVector( i + 1 );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( faceCenterCoords.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,

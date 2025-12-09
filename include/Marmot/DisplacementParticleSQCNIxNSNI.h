@@ -33,6 +33,13 @@
 
 namespace Marmot::Meshfree {
 
+  /**
+   * @brief Implements a Displacement Particle with Stabilized Quasi-Conforming Nodal Integration (SQCNI)
+   *        and Naturally Stabilized Nodal Integration (NSNI) for enhanced stability and accuracy.
+   *
+   * @tparam nDim The number of spatial dimensions (e.g., 2 for 2D, 3 for 3D).
+   * @tparam nVertices The number of vertices defining the particle's geometry.
+   */
   template < int nDim, int nVertices >
   class DisplacementParticleSQCNIxNSNI : public DisplacementParticleSQCNI< nDim, nVertices > {
 
@@ -44,14 +51,36 @@ namespace Marmot::Meshfree {
     using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;
     using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >;
 
-    TensorDD                            _momentsOfInertia_IntermediateReference;
+    /**
+     * @brief Moments of inertia of the particle in the intermediate reference configuration.
+     *
+     * This tensor stores the second moments of area/volume of the deformed particle domain
+     * which are crucial for the stabilization terms in the NSNI formulation.
+     */
+    TensorDD _momentsOfInertia_IntermediateReference;
+    /**
+     * @brief Second derivatives of the shape functions with respect to the intermediate coordinates.
+     *
+     * This array stores the second derivatives of the shape functions, `d^2N / dY_i dY_j`,
+     * where `Y` refers to the intermediate coordinates. Each element `_d2N_dYdY[i]`
+     * represents `d^2N / dY_i dY`, which is a matrix of size `nDim x nNodes`.
+     */
     std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;
-    bool                                _stabilizeAngularMomentum;
-
-    /// static vector of valid properties
-    inline static const std::vector< std::string > _validProperties = {};
 
   public:
+    /**
+     * @brief Constructor for DisplacementParticleSQCNIxNSNI.
+     *
+     * @param elementID Unique identifier for the particle.
+     * @param nodeCoordinates Pointer to an array of node coordinates defining the particle's initial geometry.
+     * @param nNodeCoordiantes Number of node coordinates.
+     * @param volume Initial volume of the particle.
+     * @param materialName Name of the material assigned to the particle.
+     * @param materialProperties Pointer to an array of material properties.
+     * @param sizeMaterialProperties Size of the material properties array.
+     * @param approximation Reference to the meshfree approximation object.
+     * @param smoothingVolumeUpdateType Type of update strategy for the smoothing domain volume.
+     */
     DisplacementParticleSQCNIxNSNI( int                                            elementID,
                                     const double*                                  nodeCoordinates,
                                     int                                            nNodeCoordiantes,
@@ -62,6 +91,17 @@ namespace Marmot::Meshfree {
                                     const MarmotMeshfreeApproximation&             approximation,
                                     ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
+    /**
+     * @brief Assigns and computes meshfree kernel functions and their derivatives.
+     *
+     * This method overrides the base class implementation to compute not only the
+     * shape functions and their first derivatives but also the second derivatives
+     * (`_d2N_dYdY`) required for the NSNI formulation. It uses a boundary integral
+     * approach to compute the derivatives.
+     *
+     * @param kernelFunctions A vector of pointers to the meshfree kernel functions
+     *                        associated with the surrounding nodes.
+     */
     void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
     {
@@ -71,9 +111,6 @@ namespace Marmot::Meshfree {
 
       Eigen::Matrix< double, nDim, 1 > centerCoordinates;
       this->getCenterCoordinates( centerCoordinates.data() );
-
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      this->getVertexCoordinates( vertexCoordinates.data() );
 
       ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
       ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
@@ -87,21 +124,21 @@ namespace Marmot::Meshfree {
       Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
       Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
 
-      for ( int i = 0; i < this->_cellForGeometryIntermediate.getNumberOfFaces(); i++ ) {
+      for ( int i = 0; i < this->_cellForSmoothing.getNumberOfFaces(); i++ ) {
 
-        auto segmentCenter = this->_cellForGeometryIntermediate.getFaceCenterCoordinates( i + 1 );
-        auto n             = this->_cellForGeometryIntermediate.boundarySurfaceVector( i + 1 );
+        auto faceCenter = this->_cellForSmoothing.getFaceCenterCoordinates( i + 1 );
+        auto n_x_dAt    = this->_cellForSmoothing.boundarySurfaceVector( i + 1 );
 
         ParentPointParticle::_meshfreeApproximation
-          .computeShapeFunctionsAndGradients( segmentCenter.data(),
+          .computeShapeFunctionsAndGradients( faceCenter.data(),
                                               ParentPointParticle::_assignedKernelFunctions,
                                               NBoundary.data(),
                                               dN_dY_Boundary.data() );
 
-        ParentPointParticle::_dN_dY += n * NBoundary;
+        ParentPointParticle::_dN_dY += n_x_dAt * NBoundary;
 
         for ( int j = 0; j < nDim; j++ )
-          _d2N_dYdY[j] += n( j ) * dN_dY_Boundary;
+          _d2N_dYdY[j] += n_x_dAt( j ) * dN_dY_Boundary;
       }
 
       const double VSmoothing = this->getSmoothingVolume();
@@ -114,6 +151,19 @@ namespace Marmot::Meshfree {
       ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
     }
 
+    /**
+     * @brief Computes the internal force vector and tangent stiffness matrix for the particle.
+     *
+     * This method implements the core physics computations for the NSNI particle.
+     * It calculates the internal forces (`fInt`) and the tangent stiffness matrix (`dFInt_ddQ`)
+     * based on the current deformation, material response, and the NSNI stabilization terms.
+     *
+     * @param dQ Pointer to the incremental nodal displacement vector.
+     * @param fInt Pointer to the output internal force vector.
+     * @param dFInt_ddQ Pointer to the output tangent stiffness matrix.
+     * @param timeNew Current simulation time.
+     * @param dT Time step size.
+     */
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
 
     /// \brief Extract the second derivative of the shape function for a given node
@@ -132,31 +182,17 @@ namespace Marmot::Meshfree {
       return d2Nnode_dYdY;
     }
 
-    virtual void setProperties( const double* properties, int nProperties )
-    {
-      throw std::runtime_error( "Pleas set properties one by one" );
-    };
-
-    virtual void setProperty( const std::string& propertyName, const double* property )
-    {
-      if ( propertyName == "stabilize angular momentum" ) {
-        _stabilizeAngularMomentum = static_cast< bool >( *property );
-      }
-      else
-        return ParentSQCNIParticle::setProperty( propertyName, property );
-    };
-
-    virtual std::vector< std::string > getPropertyNames() const
-    {
-      std::vector< std::string > properties = ParentSQCNIParticle::getPropertyNames();
-      properties.insert( properties.end(), _validProperties.begin(), _validProperties.end() );
-      return properties;
-    };
-
+    /**
+     * @brief Accepts the current state and position, updating internal variables.
+     *
+     * This method is called to finalize the state after a successful time step.
+     * It updates the base class state and also computes the moments of inertia
+     * for the intermediate reference configuration, which are used in the NSNI stabilization.
+     */
     virtual void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
-      _momentsOfInertia_IntermediateReference = TensorDD( this->_cellForSmoothing.secondMoments().data() );
+      _momentsOfInertia_IntermediateReference = TensorDD( this->_cellForGeometryIntermediate.secondMoments().data() );
     };
   };
 
@@ -179,8 +215,7 @@ namespace Marmot::Meshfree {
                                                     materialProperties,
                                                     sizeMaterialProperties,
                                                     approximation,
-                                                    smoothingVolumeUpdateType ),
-      _stabilizeAngularMomentum( false )
+                                                    smoothingVolumeUpdateType )
   {
   }
 
@@ -212,10 +247,8 @@ namespace Marmot::Meshfree {
 
     constexpr int nodeBlockSize = nDim;
 
-    TensorD du( 0.0 );
-
-    TensorDD du_dY( 0.0 );
-
+    TensorD   du( 0.0 );
+    TensorDD  du_dY( 0.0 );
     TensorDDD d2x_dYdY( 0.0 );
 
     for ( int B = 0; B < _nNodes; B++ ) {
