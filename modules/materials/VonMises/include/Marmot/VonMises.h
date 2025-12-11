@@ -26,8 +26,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotStateHelpers.h"
 
 namespace Marmot::Materials {
 
@@ -35,15 +34,18 @@ namespace Marmot::Materials {
   class VonMisesModel : public MarmotMaterialHypoElastic {
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    // using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    void computeStress( double* stress,
-                        double* dStress_dStrain,
+    VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel )
+      : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel )
+    {
+      initializeStateLayout();
+    }
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT ) override;
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) const override;
 
     /**
      * @brief Get material density.
@@ -52,26 +54,11 @@ namespace Marmot::Materials {
      */
     double getDensity() override;
 
-    class VonMisesModelStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-      } );
-
-      /// @brief Hardening parameter.
-      double& kappa;
-
-      VonMisesModelStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), kappa( find( "kappa" ) ){};
-    };
-    std::unique_ptr< VonMisesModelStateVarManager > managedStateVars;
-
-    int getNumberOfRequiredStateVars() override { return VonMisesModelStateVarManager::layout.nRequiredStateVars; }
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& result ) override;
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kappa", 1 );
+      stateLayout.finalize();
+    }
   };
 
 } // namespace Marmot::Materials

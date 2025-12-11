@@ -1,18 +1,15 @@
 #include "Marmot/CompressibleNeoHooke.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 
 namespace Marmot::Materials {
 
   namespace Registration {
 
-    constexpr int CompressibleNeoHookeCode = 11930000 + 12;
-
     using namespace MarmotLibrary;
 
-    const static bool CompressibleNeoHookeRegistered = MarmotMaterialFactory::
-      registerMaterial( CompressibleNeoHookeCode,
-                        "COMPRESSIBLENEOHOOKE",
-                        makeDefaultMarmotMaterialFactoryFunction< class CompressibleNeoHooke >() );
+    const static bool
+      CompressibleNeoHookeRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial< CompressibleNeoHooke >(
+        "COMPRESSIBLENEOHOOKE" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

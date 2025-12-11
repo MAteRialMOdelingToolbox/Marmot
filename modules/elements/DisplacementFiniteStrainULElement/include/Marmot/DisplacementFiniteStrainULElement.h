@@ -27,7 +27,6 @@
  */
 #pragma once
 
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -37,6 +36,7 @@
 #include "Marmot/MarmotGeostaticStress.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
@@ -191,8 +191,6 @@ namespace Marmot::Elements {
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
-        material->assignStateVars( managedStateVars->materialStateVars.data(),
-                                   managedStateVars->materialStateVars.size() );
       }
 
       /** @brief Constructor of the quadrature point
@@ -379,7 +377,7 @@ namespace Marmot::Elements {
       return qp.managedStateVars->getStateView( stateName );
     }
     else {
-      return qp.material->getStateView( stateName );
+      return qp.material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
   }
 
@@ -460,10 +458,10 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
-        dynamic_cast< Material* >( MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
-                                                                                         section.materialProperties,
-                                                                                         section.nMaterialProperties,
-                                                                                         elLabel ) ) );
+        MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
+                                                                          section.materialProperties,
+                                                                          section.nMaterialProperties,
+                                                                          elLabel ) );
     }
   }
 
@@ -537,10 +535,10 @@ namespace Marmot::Elements {
 
       const Material::Deformation< nDim > deformation = { F_np };
 
-      const Material::TimeIncrement timeIncrement{ time[0], dT };
+      const Material::TimeIncrement timeIncrement{ time[1], dT };
 
-      Material::ConstitutiveResponse< nDim > response;
-      Material::AlgorithmicModuli< nDim >    tangents;
+      Material::ConstitutiveResponse< nDim > response = { 0, 0, 0, nullptr };
+      Material::AlgorithmicModuli< nDim >    tangents = { 0 };
       try {
         if constexpr ( nDim == 2 ) {
 
@@ -551,7 +549,8 @@ namespace Marmot::Elements {
             Material::ConstitutiveResponse< 3 >
               response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                           -1.0,
-                          -1.0 };
+                          -1.0,
+                          qp.managedStateVars->materialStateVars.data() };
 
             Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
@@ -572,7 +571,10 @@ namespace Marmot::Elements {
             else
               qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-            response = { reduceTo2D< U, U >( response3D.tau ), response3D.rho, response3D.elasticEnergyDensity };
+            response = { reduceTo2D< U, U >( response3D.tau ),
+                         response3D.rho,
+                         response3D.elasticEnergyDensity,
+                         qp.managedStateVars->materialStateVars.data() };
 
             tangents = {
               reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
@@ -584,7 +586,8 @@ namespace Marmot::Elements {
         else {
           response = { Marmot::FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
                        -1.0,
-                       -1.0 };
+                       -1.0,
+                       qp.managedStateVars->materialStateVars.data() };
 
           qp.material->computeStress( response, tangents, deformation, timeIncrement );
 
@@ -701,7 +704,8 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_YY = 1.0;
           qp.managedStateVars->F0_ZZ = 1.0;
 
-          qp.material->initializeYourself();
+          qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
+                                           qp.managedStateVars->materialStateVars.size() );
         }
         break;
       }
@@ -717,10 +721,12 @@ namespace Marmot::Elements {
 
           const auto [F0_XX,
                       F0_YY,
-                      F0_ZZ] = qp.material->findEigenDeformationForEigenStress( { qp.managedStateVars->F0_XX,
-                                                                                  qp.managedStateVars->F0_YY,
-                                                                                  qp.managedStateVars->F0_ZZ },
-                                                                                geostaticNormalStressComponents );
+                      F0_ZZ] = qp.material
+                                 ->findEigenDeformationForEigenStress( { qp.managedStateVars->F0_XX,
+                                                                         qp.managedStateVars->F0_YY,
+                                                                         qp.managedStateVars->F0_ZZ },
+                                                                       geostaticNormalStressComponents,
+                                                                       qp.managedStateVars->materialStateVars.data() );
 
           qp.managedStateVars->F0_XX = F0_XX;
           qp.managedStateVars->F0_YY = F0_YY;
@@ -862,7 +868,8 @@ namespace Marmot::Elements {
       Material::ConstitutiveResponse< 3 >
         response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                     -1.0,
-                    -1.0 };
+                    -1.0,
+                    qp.managedStateVars->materialStateVars.data() };
 
       Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
@@ -877,7 +884,10 @@ namespace Marmot::Elements {
         pNewDT = 0.25;
         return;
       }
-      response = { reduceTo2D< U, U >( response3D.tau ), response3D.rho, response3D.elasticEnergyDensity };
+      response = { reduceTo2D< U, U >( response3D.tau ),
+                   response3D.rho,
+                   response3D.elasticEnergyDensity,
+                   qp.managedStateVars->materialStateVars.data() };
 
       tangents = {
         reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),

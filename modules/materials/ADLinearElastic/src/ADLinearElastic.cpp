@@ -1,11 +1,6 @@
 #include "Marmot/ADLinearElastic.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotVoigt.h"
-#include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/dual/eigen.hpp"
 
 namespace Marmot::Materials {
@@ -24,17 +19,11 @@ namespace Marmot::Materials {
   {
     assert( nMaterialProperties == 2 );
   }
-  void ADLinearElastic::computeStressAD( autodiff::dual*       stress,
+  void ADLinearElastic::computeStressAD( state3DAD&            state,
                                          const autodiff::dual* dStrain,
-                                         const double*         timeOld,
-                                         const double          dT,
-                                         double&               pNewDT )
+                                         const timeInfo&       timeInfo ) const
   {
-    using Vector6dual       = Eigen::Matrix< dual, 6, 1 >;
-    using mVector6dual      = Eigen::Map< Vector6dual >;
-    using mVector6dualConst = Eigen::Map< const Vector6dual >;
-
-    mVector6dual            s( stress );
+    mVector6dual            s( state.stress );
     const mVector6dualConst dE( dStrain );
 
     const MatrixXdual C( ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu ) );

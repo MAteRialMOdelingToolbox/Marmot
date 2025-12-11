@@ -1,15 +1,11 @@
 #include "Marmot/LinearViscoelasticOrthotropicPowerLaw.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
 namespace Marmot::Materials::Registration {
 
-  constexpr int LinearViscoelasticOrthotropicPowerLawCode = 1193000 + 21;
-
   using namespace MarmotLibrary;
 
-  const static bool LinearViscoelasticOrthotropicPowerLawisRegistered = MarmotMaterialFactory::
-    registerMaterial( LinearViscoelasticOrthotropicPowerLawCode,
-                      "LINEARVISCOELASTICORTHOTROPICPOWERLAW",
-                      makeDefaultMarmotMaterialFactoryFunction< class LinearViscoelasticOrthotropicPowerLaw >() );
+  const static bool LinearViscoelasticOrthotropicPowerLawisRegistered = MarmotMaterialHypoElasticFactory::
+    registerMaterial< LinearViscoelasticOrthotropicPowerLaw >( "LINEARVISCOELASTICORTHOTROPICPOWERLAW" );
 
 } // namespace Marmot::Materials::Registration

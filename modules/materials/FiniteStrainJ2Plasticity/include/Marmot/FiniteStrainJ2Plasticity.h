@@ -32,9 +32,10 @@
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <map>
 #include <string>
+#include <tuple>
 
 namespace Marmot::Materials {
 
@@ -129,7 +130,7 @@ namespace Marmot::Materials {
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
-                        const TimeIncrement&       timeIncrement );
+                        const TimeIncrement&       timeIncrement ) const override;
 
     /**
      * @brief Scalar-return mapping variant; would solve a 1D consistency equation for @f$\Delta\lambda@f$.
@@ -139,14 +140,14 @@ namespace Marmot::Materials {
     void computeStressWithScalarReturnMapping( ConstitutiveResponse< 3 >& response,
                                                AlgorithmicModuli< 3 >&    tangents,
                                                const Deformation< 3 >&    deformation,
-                                               const TimeIncrement&       timeIncrement );
+                                               const TimeIncrement&       timeIncrement ) const;
 
     /** @brief Full return mapping; all derivatives computed analytically.  */
 
     void computeStressWithFullReturnMapping( ConstitutiveResponse< 3 >& response,
                                              AlgorithmicModuli< 3 >&    tangents,
                                              const Deformation< 3 >&    deformation,
-                                             const TimeIncrement&       timeIncrement );
+                                             const TimeIncrement&       timeIncrement ) const;
 
     /** @brief Full return mapping; derivatives via forward finite differences (FDAF).
      *  Approximates @f$\partial \boldsymbol{R}/\partial \boldsymbol{X}@f$ and @f$\partial^{2}\Psi/\partial
@@ -155,7 +156,7 @@ namespace Marmot::Materials {
     void computeStressFDAF( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
-                            const TimeIncrement&       timeIncrement );
+                            const TimeIncrement&       timeIncrement ) const;
 
     /** @brief Full return mapping; derivatives via central finite differences (FDAC).
      *  Approximates @f$\partial \boldsymbol{R}/\partial \boldsymbol{X}@f$ and @f$\partial^{2}\Psi/\partial
@@ -165,7 +166,7 @@ namespace Marmot::Materials {
     void computeStressFDAC( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
-                            const TimeIncrement&       timeIncrement );
+                            const TimeIncrement&       timeIncrement ) const;
 
     /** @brief Full return mapping; derivatives via complex-step differentiation approximation (CSDA).
      *  Evaluates @f$\partial \boldsymbol{R}/\partial \boldsymbol{X}@f$ and @f$\partial^{2}\Psi/\partial
@@ -175,56 +176,17 @@ namespace Marmot::Materials {
     void computeStressCSDA( ConstitutiveResponse< 3 >& response,
                             AlgorithmicModuli< 3 >&    tangents,
                             const Deformation< 3 >&    deformation,
-                            const TimeIncrement&       timeIncrement );
+                            const TimeIncrement&       timeIncrement ) const;
 
-    /** @brief Get the number of required state variables
-     * @return 10 (9 for @c Fp and 1 for @c alphaP).
-     */
-
-    int getNumberOfRequiredStateVars() { return FiniteStrainJ2PlasticityStateVarManager::layout.nRequiredStateVars; }
-
-    /** @brief Return the material density if provided in material parameters */
-
-    double getDensity() { return density; }
-
-    /** @brief State variable manager for @c Fp and @c alphaP; provides named views and layout. */
-    class FiniteStrainJ2PlasticityStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      /** @brief Memory layout of internal variables: 9 for @c Fp and 1 for @c alphaP (total 10). */
-      inline const static auto layout = makeLayout( {
-        { .name = "Fp", .length = 9 },
-        { .name = "alphaP", .length = 1 },
-      } );
-      /** @brief Plastic deformation gradient @f$\boldsymbol F^{\mathrm p}@f$. */
-      Fastor::TensorMap< double, 3, 3 > Fp;
-      /** @brief Strain-like hardening variable @f$\alpha_{\mathrm p}@f$. */
-      double& alphaP;
-
-      /** @brief Bind the manager to an external contiguous buffer holding (@c Fp, @c alphaP). */
-      FiniteStrainJ2PlasticityStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ), Fp( &find( "Fp" ) ), alphaP( find( "alphaP" ) ){};
-    };
-    std::unique_ptr< FiniteStrainJ2PlasticityStateVarManager > stateVars;
-
-    /** @brief Bind external storage for internal variables (@c Fp, @c alphaP).
-     *  @param stateVars  Pointer to a contiguous array provided by the caller.
-     *  @param nStateVars Number of entries in that array.
-     *  @throws std::invalid_argument If nStateVars < getNumberOfRequiredStateVars().
-     *
-     *  Creates/updates the internal state manager that maps (@c Fp, @c alphaP) onto this buffer.
-     */
-    void assignStateVars( double* stateVars, int nStateVars );
-
-    /** @brief Expose a named view into the state vector.
-     *  @param result One of: @c Fp (length 9), @c alphaP (length 1).
-     *  @return A StateView object that provides access to the requested state variable; returns an empty view if @p
-     * result is unknown.
-     * */
-    StateView getStateView( const std::string& result );
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "Fp", 9 );     // plastic deformation gradient
+      stateLayout.add( "alphaP", 1 ); // strain-like hardening variable
+      stateLayout.finalize();
+    }
 
     /** @brief Initialize state (sets @f$\boldsymbol F^{\mathrm p} = \boldsymbol I@f$) */
-    void initializeYourself();
+    void initializeYourself( double* stateVars, int nStateVars ) override;
 
     /** @brief Yield function @f$f(\boldsymbol F^{\mathrm e},\beta_{\mathrm p})@f$ and first derivatives.
      *  @param Fe     Elastic deformation gradient \f$\boldsymbol F^{\mathrm e}\f$.
@@ -232,7 +194,7 @@ namespace Marmot::Materials {
      *  @return \f$\{\,f,\;\partial f/\partial \boldsymbol F^{\mathrm e},\;\partial f/\partial \beta_{\mathrm p}\,\}\f$.
      */
 
-    std::tuple< double, Tensor33d, double > yieldFunction( const Tensor33d& Fe, const double betaP )
+    std::tuple< double, Tensor33d, double > yieldFunction( const Tensor33d& Fe, const double betaP ) const
     {
 
       Tensor33d   mandelStress;
@@ -260,7 +222,7 @@ namespace Marmot::Materials {
      */
 
     template < typename T >
-    T yieldFunctionFromStress( const Tensor33t< T >& mandelStress, const T betaP )
+    T yieldFunctionFromStress( const Tensor33t< T >& mandelStress, const T betaP ) const
     {
       const Tensor33t< T > dev = deviatoric( mandelStress );
       T                    rho = sqrt( Fastor::inner( dev, dev ) );
@@ -277,7 +239,7 @@ namespace Marmot::Materials {
      * M,\;\partial f/\partial \beta_{\mathrm p}\,\}\f$.
      */
     std::tuple< double, Tensor33d, Tensor3333d, double > yieldFunctionFromStress( const Tensor33d& mandelStress,
-                                                                                  const double     betaP )
+                                                                                  const double     betaP ) const
     {
       Tensor33d    dev = deviatoric( mandelStress );
       const double rho = std::max( sqrt( Fastor::inner( dev, dev ) ), 1e-15 );
@@ -308,7 +270,7 @@ namespace Marmot::Materials {
 
     template < typename T >
     std::tuple< T, Tensor33t< T >, T > yieldFunctionFromStressFirstOrderDerived( const Tensor33t< T >& mandelStress,
-                                                                                 const T               betaP )
+                                                                                 const T               betaP ) const
     {
       Tensor33t< T > dev = deviatoric( mandelStress );
       T              rho = sqrt( Fastor::inner( dev, dev ) );
@@ -329,7 +291,7 @@ namespace Marmot::Materials {
      *  @return True if yielding occurs, i.e. \f$f>0\f$.
      */
 
-    bool isYielding( const Tensor33d& Fe, const double betaP )
+    bool isYielding( const Tensor33d& Fe, const double betaP ) const
     {
       double    f, df_dBetaP;
       Tensor33d df_dFe;
@@ -345,7 +307,7 @@ namespace Marmot::Materials {
      *  @return \f$\{\,\boldsymbol M,\;\partial \boldsymbol M/\partial \boldsymbol F^{\mathrm e}\,\}\f$.
      */
 
-    std::tuple< Tensor33d, Tensor3333d > computeMandelStress( const Tensor33d& Fe )
+    std::tuple< Tensor33d, Tensor3333d > computeMandelStress( const Tensor33d& Fe ) const
     {
       using namespace Marmot::ContinuumMechanics;
       Tensor33d   Ce;
@@ -375,7 +337,7 @@ namespace Marmot::Materials {
      * */
 
     template < typename T >
-    Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe )
+    Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe ) const
     {
       using namespace Marmot::ContinuumMechanics;
       Tensor33t< T > Ce = DeformationMeasures::rightCauchyGreen( Fe );
@@ -395,7 +357,7 @@ namespace Marmot::Materials {
      * */
 
     template < typename T >
-    T computeBetaPOnly( const T alphaP )
+    T computeBetaPOnly( const T alphaP ) const
     {
       const T beta = fyInf + ( fy - fyInf ) * exp( -alphaP * eta ) + alphaP * H;
       return beta;
@@ -406,7 +368,7 @@ namespace Marmot::Materials {
      * @return \f$\{\,\beta_{\mathrm p},\;\partial\beta_{\mathrm p}/\partial\alpha_{\mathrm p}\,\}\f$
      */
 
-    std::tuple< double, double > computeBetaP( const double alphaP )
+    std::tuple< double, double > computeBetaP( const double alphaP ) const
     {
       const double beta           = fyInf + ( fy - fyInf ) * exp( -alphaP * eta ) + alphaP * H;
       const double dBetaP_dAlphaP = -eta * ( fy - fyInf ) * exp( -alphaP * eta ) + H;
@@ -415,7 +377,10 @@ namespace Marmot::Materials {
 
     /** @brief Scalar consistency function \f$g(\Delta\lambda)\f$ and its derivative for the scalar-return mapping. */
 
-    std::tuple< double, double > g( const Tensor33d& Fe_trial, const Tensor33d& df_dS, double dLambda, double betaP )
+    std::tuple< double, double > g( const Tensor33d& Fe_trial,
+                                    const Tensor33d& df_dS,
+                                    double           dLambda,
+                                    double           betaP ) const
     {
       Tensor33d dFp, ddFp_ddLambda;
       std::tie( dFp, ddFp_ddLambda ) = computePlasticIncrement( df_dS, dLambda );
@@ -440,7 +405,7 @@ namespace Marmot::Materials {
      *  @return \f$\partial f/\partial \boldsymbol S\f$.
      */
     template < typename T >
-    Tensor33t< T > computeReturnMappingDirection( Tensor33t< T > Fe, T betaP )
+    Tensor33t< T > computeReturnMappingDirection( Tensor33t< T > Fe, T betaP ) const
     {
 
       Tensor33d   mandelStressTrial;
@@ -461,7 +426,7 @@ namespace Marmot::Materials {
      * S:\partial f/\partial\boldsymbol S\,\}\f$.
      */
     template < typename T >
-    std::tuple< Tensor33d, Tensor33d > computePlasticIncrement( Tensor33t< T > df_dS, T dLambda )
+    std::tuple< Tensor33d, Tensor33d > computePlasticIncrement( Tensor33t< T > df_dS, T dLambda ) const
     {
 
       Tensor33d   dGp = multiplyFastorTensorWithScalar( df_dS, dLambda );
@@ -488,7 +453,9 @@ namespace Marmot::Materials {
      */
 
     template < typename T >
-    VectorXt< T > computeResidualVector( const VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPTrial )
+    VectorXt< T > computeResidualVector( const VectorXt< T >& X,
+                                         const Tensor33d&     FeTrial,
+                                         const double         alphaPTrial ) const
     {
 
       const int idxA = 9;
@@ -546,7 +513,7 @@ namespace Marmot::Materials {
 
     std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVectorAndTangent( const Eigen::VectorXd& X,
                                                                                     const Tensor33d&       FeTrial,
-                                                                                    const double           alphaPTrial )
+                                                                                    const double alphaPTrial ) const
     {
 
       const int idxA = 9;

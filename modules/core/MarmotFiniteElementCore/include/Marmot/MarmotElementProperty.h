@@ -26,6 +26,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include <string>
 
 /** @struct MarmotMaterialSection
  * @brief Structure to hold material section properties.
@@ -35,12 +36,12 @@
  */
 class MarmotMaterialSection {
 public:
-  int           materialCode;
-  const double* materialProperties;
-  int           nMaterialProperties;
+  const std::string materialName;
+  const double*     materialProperties;
+  int               nMaterialProperties;
 
-  MarmotMaterialSection( int materialCode, const double* materialProperties, int nMaterialProperties )
-    : materialCode( materialCode ),
+  MarmotMaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
+    : materialName( materialName ),
       materialProperties( materialProperties ),
       nMaterialProperties( nMaterialProperties ){};
 };

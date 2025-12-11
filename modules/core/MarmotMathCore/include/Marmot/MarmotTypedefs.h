@@ -27,8 +27,8 @@
  */
 
 #pragma once
-#include "Eigen/Core"
 #include "Eigen/Dense"
+#include "autodiff/forward/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 
 namespace Marmot {
@@ -59,6 +59,11 @@ namespace Marmot {
   // complex matrix definitions
   typedef std::complex< double >               complexDouble;
   typedef Eigen::Matrix< complexDouble, 6, 1 > Vector6cd;
+
+  // autodiff dual matrix definitions
+  typedef Eigen::Matrix< autodiff::dual, 6, 1 > Vector6dual;
+  typedef Eigen::Map< Vector6dual >             mVector6dual;
+  typedef Eigen::Map< const Vector6dual >       mVector6dualConst;
 
   // definitions for templated scalar type
   template < typename T >

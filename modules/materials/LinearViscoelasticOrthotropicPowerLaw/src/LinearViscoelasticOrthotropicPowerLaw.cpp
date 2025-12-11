@@ -43,6 +43,8 @@ namespace Marmot::Materials {
       direction2                        ( { materialProperties[20], materialProperties[21], materialProperties[22] } )
   // clang-format on
   {
+    initializeStateLayout();
+
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
 
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
@@ -104,17 +106,17 @@ namespace Marmot::Materials {
       transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
   }
 
-  void LinearViscoelasticOrthotropicPowerLaw::computeStress( double*       stress,
-                                                             double*       dStressDDStrain,
-                                                             const double* dStrain,
-                                                             const double* timeOld,
-                                                             const double  dT,
-                                                             double&       pNewDT )
+  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
+                                                             double*         dStressDDStrain,
+                                                             const double*   dStrain,
+                                                             const timeInfo& timeInfo ) const
 
   {
-    mVector6d nomStress( stress );
+    mVector6d nomStress( state.stress.data() );
     Vector6d  dE( dStrain );
     mMatrix6d C( dStressDDStrain );
+
+    const double& dT = timeInfo.dT;
 
     using namespace Marmot::ContinuumMechanics::VoigtNotation;
     Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
@@ -124,7 +126,10 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Ref< KelvinChain::mapStateVarMatrix > creepStateVars( stateVarManager->kelvinStateVars );
+    auto creepStateVars = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
+                                                                              "kelvinStateVars",
+                                                                              6,
+                                                                              nKelvin );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -162,26 +167,5 @@ namespace Marmot::Materials {
                                        creepStateVars,
                                        deltaStressLocal,
                                        CelUnitInv );
-  }
-
-  void LinearViscoelasticOrthotropicPowerLaw::assignStateVars( double* stateVars_, int nStateVars )
-  {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    this->stateVarManager = std::make_unique< LinearViscoelasticOrthotropicPowerLawStateVarManager >( stateVars_,
-                                                                                                      nKelvin );
-
-    MarmotMaterial::assignStateVars( stateVars_, nStateVars );
-  }
-
-  StateView LinearViscoelasticOrthotropicPowerLaw::getStateView( const std::string& stateName )
-  {
-    return stateVarManager->getStateView( stateName );
-  }
-
-  int LinearViscoelasticOrthotropicPowerLaw::getNumberOfRequiredStateVars()
-  {
-    return LinearViscoelasticOrthotropicPowerLawStateVarManager::layout.nRequiredStateVars + nKelvin * 6;
   }
 } // namespace Marmot::Materials

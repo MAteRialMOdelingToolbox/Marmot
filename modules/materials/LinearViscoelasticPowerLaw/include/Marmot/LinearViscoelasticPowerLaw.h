@@ -28,10 +28,8 @@
 #pragma once
 #include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include <iostream>
+#include <map>
 #include <string>
-#include <vector>
 
 namespace Marmot::Materials {
 
@@ -78,39 +76,21 @@ namespace Marmot::Materials {
     /**< #timeToDays represents the ratio of simulation time to days.
      * It is a reference variable to #materialProperties[6]. */
 
-    class LinearViscoelasticPowerLawStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kelvinStateVars", .length = 0 },
-      } );
-
-      KelvinChain::mapStateVarMatrix kelvinStateVars;
-
-      LinearViscoelasticPowerLawStateVarManager( double* theStateVarVector, int nKelvinUnits )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ){};
-    };
-    std::unique_ptr< LinearViscoelasticPowerLawStateVarManager > stateVarManager;
-
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
     LinearViscoelasticPowerLaw( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) const override;
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-
-    int getNumberOfRequiredStateVars();
-
-    void assignStateVars( double* stateVars_, int nStateVars );
-
-    StateView getStateView( const std::string& stateName );
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kelvinStateVars", 6 * nKelvin );
+      stateLayout.finalize();
+    }
 
   private:
     /// @brief Young's modulus of the #nKelvin Kelvin units

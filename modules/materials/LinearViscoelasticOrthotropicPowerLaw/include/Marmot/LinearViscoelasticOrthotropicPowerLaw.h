@@ -28,10 +28,8 @@
 #pragma once
 #include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
-#include <iostream>
+#include <map>
 #include <string>
-#include <vector>
 
 namespace Marmot::Materials {
 
@@ -99,20 +97,9 @@ namespace Marmot::Materials {
     /// @brief direction x2 w.r.t the global coordinate system
     const Vector3d direction2;
 
-    class LinearViscoelasticOrthotropicPowerLawStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kelvinStateVars", .length = 0 },
-      } );
-
-      KelvinChain::mapStateVarMatrix kelvinStateVars;
-
-      LinearViscoelasticOrthotropicPowerLawStateVarManager( double* theStateVarVector, int nKelvinUnits )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          kelvinStateVars( &find( "kelvinStateVars" ), 6, nKelvinUnits ){};
+    const std::map< std::string, std::pair< int, int > > stateVarInfo = {
+      { "kelvinStateVars", std::make_pair( 0, 6 * nKelvin ) },
     };
-    std::unique_ptr< LinearViscoelasticOrthotropicPowerLawStateVarManager > stateVarManager;
 
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
@@ -121,19 +108,17 @@ namespace Marmot::Materials {
                                            int           nMaterialProperties,
                                            int           materialLabel );
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
+    void computeStress( state3D& state,
+                        double*  dStressDDStrain,
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) const override;
 
-    int getNumberOfRequiredStateVars();
-
-    void assignStateVars( double* stateVars_, int nStateVars );
-
-    StateView getStateView( const std::string& stateName );
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kelvinStateVars", 6 * nKelvin );
+      stateLayout.finalize();
+    }
 
   private:
     /// @brief Elastic moduli of the Kelvin chain units

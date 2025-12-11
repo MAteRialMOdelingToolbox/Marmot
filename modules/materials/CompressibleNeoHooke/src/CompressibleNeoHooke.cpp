@@ -23,12 +23,13 @@ namespace Marmot::Materials {
                                               int           materialLabel )
     : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel )
   {
+    initializeStateLayout();
   }
 
   void CompressibleNeoHooke::computeStress( ConstitutiveResponse< 3 >& response,
                                             AlgorithmicModuli< 3 >&    tangents,
                                             const Deformation< 3 >&    deformation,
-                                            const TimeIncrement&       timeIncrement )
+                                            const TimeIncrement&       timeIncrement ) const
   {
     const double& K = materialProperties[0];
     const double& G = materialProperties[1];
@@ -52,14 +53,5 @@ namespace Marmot::Materials {
 
     // compute tangent operator
     tangents.dTau_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) + dTau_dF;
-  }
-
-  StateView CompressibleNeoHooke::getStateView( const std::string& stateName )
-  {
-    static std::map< std::string, std::tuple< int, int > > stateMapping = {};
-
-    const auto result = stateMapping.at( stateName );
-
-    return { &this->stateVars[std::get< 0 >( result )], std::get< 1 >( result ) };
   }
 } // namespace Marmot::Materials

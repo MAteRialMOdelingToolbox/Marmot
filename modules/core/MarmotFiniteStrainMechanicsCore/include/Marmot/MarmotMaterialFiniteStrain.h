@@ -26,17 +26,34 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterial.h"
+#include "Marmot/MarmotStateHelpers.h"
 #include <Fastor/tensor/Tensor.h>
 
-class MarmotMaterialFiniteStrain : public MarmotMaterial {
+class MarmotMaterialFiniteStrain {
 
   /**
    * @class MarmotMaterialFiniteStrain
    * @brief Abstract basic class for mechanical materials in the finite strain regime
    */
+protected:
+  const double* materialProperties;
+  const int     nMaterialProperties;
+
 public:
+  const int materialNumber;
+  MarmotMaterialFiniteStrain( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+    : materialProperties( matProperties_ ),
+      nMaterialProperties( nMaterialProperties_ ),
+      materialNumber( materialNumber_ )
+  {
+  }
+
+  /// Default destructor
+  virtual ~MarmotMaterialFiniteStrain() = default;
+
+  /// Layout of the state variables
+  MarmotStateLayoutDynamic stateLayout;
+
   /**
    * @struct ConstitutiveResponse
    * @brief Constitutive response of a material at given state.
@@ -49,6 +66,7 @@ public:
     Fastor::Tensor< double, nDim, nDim > tau;                  ///< Kirchhoff stress
     double                               rho;                  ///< mass density
     double                               elasticEnergyDensity; ///< elastic energy per unit volume
+    double*                              stateVars;            ///< pointer to state variables
   };
 
   /**
@@ -88,8 +106,6 @@ public:
     const double dT;   ///< size of the time increment
   };
 
-  using MarmotMaterial::MarmotMaterial;
-
   /**
    * @brief Updates the material state.
    * @param[inout] response ConstitutiveResponse instance
@@ -108,7 +124,7 @@ public:
   virtual void computeStress( ConstitutiveResponse< 3 >& response,
                               AlgorithmicModuli< 3 >&    tangents,
                               const Deformation< 3 >&,
-                              const TimeIncrement& ) = 0;
+                              const TimeIncrement& ) const = 0;
   /**
    * @brief Computes the Kirchhoff stress given the deformation, time increment, and eigen deformation.
    * @param[inout] response ConstitutiveResponse instance
@@ -122,7 +138,7 @@ public:
                               AlgorithmicModuli< 3 >&                     tangents,
                               const Deformation< 3 >&                     deformation,
                               const TimeIncrement&                        timeIncrement,
-                              const std::tuple< double, double, double >& eigenDeformation );
+                              const std::tuple< double, double, double >& eigenDeformation ) const;
 
   /**
    * @brief Compute stress under plane strain conditions.
@@ -137,7 +153,7 @@ public:
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                    AlgorithmicModuli< 3 >&    algorithmicModuli,
                                    const Deformation< 3 >&    deformation,
-                                   const TimeIncrement&       timeIncrement );
+                                   const TimeIncrement&       timeIncrement ) const;
   /**
    * @brief Compute stress under plane strain conditions with eigen deformation.
    * @param[inout] response ConstitutiveResponse instance
@@ -153,7 +169,7 @@ public:
                                    AlgorithmicModuli< 3 >&                     algorithmicModuli,
                                    const Deformation< 3 >&                     deformation,
                                    const TimeIncrement&                        timeIncrement,
-                                   const std::tuple< double, double, double >& eigenDeformation );
+                                   const std::tuple< double, double, double >& eigenDeformation ) const;
   /**
    * @brief Compute stress under plane stress conditions.
    * @param[inout] response ConstitutiveResponse instance
@@ -167,7 +183,7 @@ public:
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,
                                    AlgorithmicModuli< 2 >&    algorithmicModuli,
                                    const Deformation< 2 >&    deformation,
-                                   const TimeIncrement&       timeIncrement );
+                                   const TimeIncrement&       timeIncrement ) const;
 
   /**
    * @brief Find the eigen deformation that corresponds to a given eigen stress.
@@ -180,5 +196,44 @@ public:
    */
   std::tuple< double, double, double > findEigenDeformationForEigenStress(
     const std::tuple< double, double, double >& initialGuess,
-    const std::tuple< double, double, double >& eigenStress );
+    const std::tuple< double, double, double >& eigenStress,
+    double*                                     stateVars ) const;
+
+  /**
+   * @brief Initialize the layout of the state variables.
+   *
+   * This method has to be implemented in derived classes.
+   * @warning This method has to be called in the constructor of the derived class.
+   */
+  virtual void initializeStateLayout() = 0;
+
+  /**
+   * @brief Get a view to the state variables.
+   * @param stateName Name of the state variable
+   * @param stateVars Pointer to the state variable array
+   * @return StatView to access the state variable
+   */
+  StateView getStateView( const std::string& stateName, double* stateVars ) const
+  {
+    return stateLayout.getStateView( stateVars, stateName );
+  }
+
+  /**
+   * @brief Get the total number of required state variables.
+   * @return Total number of required state variables
+   */
+  int getNumberOfRequiredStateVars() const { return stateLayout.totalSize(); }
+  /**
+   * @brief Initialize the state variables at a material point.
+   * @param stateVars Pointer to the state variable array
+   * @param nStateVars Number of state variables
+   *
+   * @note The default implementation initializes all state variables to zero.
+   */
+  virtual void initializeYourself( double* stateVars, int nStateVars )
+  {
+    for ( int i = 0; i < nStateVars; ++i ) {
+      stateVars[i] = 0.0;
+    }
+  }
 };

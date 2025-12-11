@@ -25,11 +25,10 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <iostream>
 #include <string>
-#include <vector>
 
 namespace Marmot::Materials {
   /**
@@ -43,6 +42,8 @@ namespace Marmot::Materials {
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
     LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
+
+    double getDensity() override;
 
   protected:
     /// @brief Type of isotropic and anisotropic behavior.
@@ -153,18 +154,11 @@ namespace Marmot::Materials {
 
     Matrix6d globalStiffnessTensor;
 
-    void computeStress( double* stress,
-                        double* dStressDDStrain,
+    void computeStress( state3D&        state,
+                        double*         dStressDDStrain,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) const override;
 
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
-
-    int getNumberOfRequiredStateVars() { return 0; }
-
-    double getDensity();
+    void initializeStateLayout() override { stateLayout.finalize(); }
   };
 } // namespace Marmot::Materials
