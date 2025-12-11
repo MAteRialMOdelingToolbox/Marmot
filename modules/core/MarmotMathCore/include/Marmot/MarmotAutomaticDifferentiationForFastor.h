@@ -277,6 +277,77 @@ namespace Marmot {
         return d2F_dTdScalar;
       }
     } // namespace SecondOrder
+      //
+    namespace ThirdOrder {
+
+      /** @typedef tensor_to_scalar_function_type
+       *  @brief Alias for a function mapping a tensor to a scalar with second order dual numbers
+       *  @tparam dim dimension of the input tensor (dim x dim)
+       *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
+       */
+      template < size_t dim >
+      using tensor_to_scalar_function_type = std::function< dual3rd( const Fastor::Tensor< dual3rd, dim, dim >& T ) >;
+
+      /** @brief Computes the third derivative of a function that maps a tensor to a scalar
+       *  @tparam dim dimension of the input tensor (dim x dim)
+       *  @param F function mapping a (dim x dim) tensor to a scalar
+       *  @param T input tensor at which the derivative is evaluated
+       *  @return tuple of function value, first derivative, second derivative and third derivative of F with respect to
+       * T first derivative has shape (dim, dim) second derivative has shape (dim, dim, dim, dim) third derivative has
+       * shape (dim, dim, dim, dim, dim, dim)
+       *
+       *  @note The implementation is currently limited to second rank (dim x dim) tensors
+       */
+      template < size_t dim >
+      std::tuple< double,
+                  Fastor::Tensor< double, dim, dim >,
+                  Fastor::Tensor< double, dim, dim, dim, dim >,
+                  Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > >
+      d3f_dT3( const tensor_to_scalar_function_type< dim >& F, const Fastor::Tensor< double, dim, dim >& T )
+      {
+        double                                                 F_;
+        dual3rd                                                F_right;
+        Fastor::Tensor< double, dim, dim >                     dF_dT_;
+        Fastor::Tensor< double, dim, dim, dim, dim >           d2F_dT2;
+        Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > d3F_dT3;
+        Fastor::Tensor< dual3rd, dim, dim >                    T_right = makeHigherOrderDual< 3 >( T );
+
+        for ( size_t i = 0; i < dim; i++ ) {
+          for ( size_t j = 0; j < dim; j++ ) {
+            seed< 1 >( T_right( i, j ), 1.0 );
+
+            for ( size_t k = 0; k < dim; k++ ) {
+              for ( size_t l = 0; l < dim; l++ ) {
+
+                seed< 2 >( T_right( k, l ), 1.0 );
+
+                for ( size_t m = 0; m < dim; m++ ) {
+                  for ( size_t n = 0; n < dim; n++ ) {
+
+                    seed< 3 >( T_right( m, n ), 1.0 );
+                    F_right                     = F( T_right );
+                    d3F_dT3( i, j, k, l, m, n ) = derivative< 3 >( F_right );
+
+                    seed< 3 >( T_right( m, n ), 0.0 );
+                  }
+                }
+
+                d2F_dT2( i, j, k, l ) = derivative< 2 >( F_right );
+
+                seed< 2 >( T_right( k, l ), 0.0 );
+              }
+            }
+            dF_dT_( i, j ) = derivative< 1 >( F_right );
+            F_             = double( F_right );
+            seed< 1 >( T_right( i, j ), 0.0 );
+          }
+        }
+
+        return { F_, dF_dT_, d2F_dT2, d3F_dT3 };
+      }
+
+    } // namespace ThirdOrder
 
   }   // namespace AutomaticDifferentiation
 
