@@ -180,7 +180,7 @@ namespace Marmot::Materials {
 
     void initializeStateLayout() override
     {
-      stateLayout.add( "Fp", 9 );     // plastic deformation gradien
+      stateLayout.add( "Fp", 9 );     // plastic deformation gradient
       stateLayout.add( "alphaP", 1 ); // strain-like hardening variable
       stateLayout.finalize();
     }
