@@ -34,9 +34,9 @@ void testMarmotLocalization()
 
   // set material state
   MarmotMaterialHypoElastic::state3D state;
-  state.stress       = stress;
-  state.strainEnergy = 0.;
-  state.stateVars    = &kappa;
+  state.stress              = stress;
+  state.strainEnergyDensity = 0.;
+  state.stateVars           = &kappa;
 
   // set time info
   MarmotMaterialHypoElastic::timeInfo timeInfo;

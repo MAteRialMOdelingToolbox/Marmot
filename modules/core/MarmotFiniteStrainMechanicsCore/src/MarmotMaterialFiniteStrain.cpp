@@ -33,7 +33,7 @@ void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&      
                                                 AlgorithmicModuli< 3 >&                     tangents,
                                                 const Deformation< 3 >&                     deformation,
                                                 const TimeIncrement&                        timeIncrement,
-                                                const std::tuple< double, double, double >& eigenDeformation )
+                                                const std::tuple< double, double, double >& eigenDeformation ) const
 {
   // TODO: Think about if we simply modify the input increment.
 
@@ -51,16 +51,17 @@ void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&      
 void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                                      AlgorithmicModuli< 3 >&    algorithmicModuli,
                                                      const Deformation< 3 >&    deformation,
-                                                     const TimeIncrement&       timeIncrement )
+                                                     const TimeIncrement&       timeIncrement ) const
 {
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >&                  response,
-                                                     AlgorithmicModuli< 3 >&                     algorithmicModuli,
-                                                     const Deformation< 3 >&                     deformation,
-                                                     const TimeIncrement&                        timeIncrement,
-                                                     const std::tuple< double, double, double >& eigenDeformation )
+void MarmotMaterialFiniteStrain::computePlaneStrain(
+  ConstitutiveResponse< 3 >&                  response,
+  AlgorithmicModuli< 3 >&                     algorithmicModuli,
+  const Deformation< 3 >&                     deformation,
+  const TimeIncrement&                        timeIncrement,
+  const std::tuple< double, double, double >& eigenDeformation ) const
 {
   return computeStress( response, algorithmicModuli, deformation, timeIncrement, eigenDeformation );
 }
@@ -68,7 +69,7 @@ void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& 
 void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& response,
                                                      AlgorithmicModuli< 2 >&    algorithmicModuli,
                                                      const Deformation< 2 >&    deformation,
-                                                     const TimeIncrement&       timeIncrement )
+                                                     const TimeIncrement&       timeIncrement ) const
 {
   throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
 }
@@ -78,7 +79,7 @@ void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& 
 std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
   const std::tuple< double, double, double >& eigenStressComponents,
-  double*                                     stateVars )
+  double*                                     stateVars ) const
 {
   using namespace Marmot;
 

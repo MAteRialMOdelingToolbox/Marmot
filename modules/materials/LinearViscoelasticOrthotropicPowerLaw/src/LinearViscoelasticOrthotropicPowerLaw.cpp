@@ -106,7 +106,7 @@ namespace Marmot::Materials {
   void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
                                                              double*         dStressDDStrain,
                                                              const double*   dStrain,
-                                                             const timeInfo& timeInfo )
+                                                             const timeInfo& timeInfo ) const
 
   {
     mVector6d nomStress( state.stress.data() );

@@ -29,7 +29,7 @@ namespace Marmot::Materials {
   void CompressibleNeoHooke::computeStress( ConstitutiveResponse< 3 >& response,
                                             AlgorithmicModuli< 3 >&    tangents,
                                             const Deformation< 3 >&    deformation,
-                                            const TimeIncrement&       timeIncrement )
+                                            const TimeIncrement&       timeIncrement ) const
   {
     const double& K = materialProperties[0];
     const double& G = materialProperties[1];

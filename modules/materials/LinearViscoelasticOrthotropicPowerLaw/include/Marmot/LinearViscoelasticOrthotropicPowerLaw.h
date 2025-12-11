@@ -109,7 +109,7 @@ namespace Marmot::Materials {
                         double*  dStressDDStrain,
 
                         const double*   dStrain,
-                        const timeInfo& timeInfo ) override;
+                        const timeInfo& timeInfo ) const override;
 
     void initializeStateLayout() override
     {

@@ -65,7 +65,7 @@ namespace Marmot::Materials {
     }
 
   protected:
-    void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) override;
+    void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) const override;
 
     /**
      * @brief Hardening function.
@@ -73,7 +73,7 @@ namespace Marmot::Materials {
      * @returns Current yield stress.
      */
     template < typename T >
-    T fy( T kappa_ )
+    T fy( T kappa_ ) const
     {
       const T res = yieldStress + HLin * kappa_ + deltaYieldStress * ( 1. - exp( -delta * kappa_ ) );
       return res;
@@ -86,7 +86,7 @@ namespace Marmot::Materials {
      * @returns Value of the yield function.
      */
     template < typename T >
-    T f( const T rho_, const double kappa_ )
+    T f( const T rho_, const double kappa_ ) const
     {
       return rho_ - Constants::sqrt2_3 * fy( kappa_ );
     }
@@ -99,7 +99,7 @@ namespace Marmot::Materials {
      * @returns Value of the yield function.
      */
     template < typename T >
-    T g( const T rhoTrial, const double kappa, const T deltaKappa )
+    T g( const T rhoTrial, const double kappa, const T deltaKappa ) const
     {
       const T kappa_ = kappa + deltaKappa;
       return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa_ );

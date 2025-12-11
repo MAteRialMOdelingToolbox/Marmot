@@ -480,9 +480,9 @@ namespace Marmot::Elements {
         MarmotMaterialHypoElastic::timeInfo timeInfo;
 
         // set state info
-        state.stress       = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress )( 0 );
-        state.strainEnergy = 0.0;
-        state.stateVars    = qp.managedStateVars->materialStateVars.data();
+        state.stress = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress )( 0 );
+        state.strainEnergyDensity = 0.0;
+        state.stateVars           = qp.managedStateVars->materialStateVars.data();
 
         // set time info
         timeInfo.time = time[1];
@@ -507,9 +507,9 @@ namespace Marmot::Elements {
           MarmotMaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
-          state.stress       = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
-          state.strainEnergy = 0.0;
-          state.stateVars    = qp.managedStateVars->materialStateVars.data();
+          state.stress              = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
+          state.strainEnergyDensity = 0.0;
+          state.stateVars           = qp.managedStateVars->materialStateVars.data();
 
           // set time info
           timeInfo.time = time[1];
@@ -535,9 +535,9 @@ namespace Marmot::Elements {
           MarmotMaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
-          state.stress       = qp.managedStateVars->stress;
-          state.strainEnergy = 0.0;
-          state.stateVars    = qp.managedStateVars->materialStateVars.data();
+          state.stress              = qp.managedStateVars->stress;
+          state.strainEnergyDensity = 0.0;
+          state.stateVars           = qp.managedStateVars->materialStateVars.data();
 
           // set time info
           timeInfo.time = time[1];
@@ -563,9 +563,9 @@ namespace Marmot::Elements {
           MarmotMaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
-          state.stress       = qp.managedStateVars->stress;
-          state.strainEnergy = 0.0;
-          state.stateVars    = qp.managedStateVars->materialStateVars.data();
+          state.stress              = qp.managedStateVars->stress;
+          state.strainEnergyDensity = 0.0;
+          state.stateVars           = qp.managedStateVars->materialStateVars.data();
 
           // set time info
           timeInfo.time = time[1];

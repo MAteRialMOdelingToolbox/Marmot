@@ -162,7 +162,7 @@ namespace Marmot::Materials {
     void computeStress( state3D&        state,
                         double*         dStressDDStrain,
                         const double*   dStrain,
-                        const timeInfo& timeInfo ) override;
+                        const timeInfo& timeInfo ) const override;
 
   private:
     /// \brief material parameters for Solidification Theory
@@ -191,7 +191,7 @@ namespace Marmot::Materials {
 
     /// \brief drying creep compliance function
     template < typename T_ >
-    T_ phi( T_ xi, double b, double xiZero )
+    T_ phi( T_ xi, double b, double xiZero ) const
     {
       T_ val = sqrt( exp( tanh( sqrt( xi - xiZero ) ) * b ) - exp( tanh( sqrt( -xiZero ) ) * b ) );
       return val;

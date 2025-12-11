@@ -45,7 +45,7 @@ namespace Marmot::Materials {
     void computeStress( state3D&        state,
                         double*         dStressDDStrain,
                         const double*   dStrain,
-                        const timeInfo& timeInfo ) override;
+                        const timeInfo& timeInfo ) const override;
 
     /**
      * @brief Get material density.

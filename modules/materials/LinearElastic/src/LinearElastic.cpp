@@ -35,13 +35,6 @@ namespace Marmot::Materials {
           G13(  anisotropicType == Type::Orthotropic ? materialProperties[8] : G12 )
   // clang-format on
   {
-  }
-
-  void LinearElastic::computeStress( state3D&        state,
-                                     double*         dStressDDStrain,
-                                     const double*   dStrain,
-                                     const timeInfo& timeInfo )
-  {
     // set global stiffness tensor
     if ( anisotropicType == Type::Isotropic ) {
       globalStiffnessTensor = Isotropic::stiffnessTensor( E1, nu12 );
@@ -73,6 +66,13 @@ namespace Marmot::Materials {
         break;
       };
     }
+  }
+
+  void LinearElastic::computeStress( state3D&        state,
+                                     double*         dStressDDStrain,
+                                     const double*   dStrain,
+                                     const timeInfo& timeInfo ) const
+  {
 
     // map stress, strain increment and stiffness tensor
     mVector6d             S( state.stress.data() );

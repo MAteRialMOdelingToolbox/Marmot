@@ -76,23 +76,23 @@ public:
 
   /// Structure to hold the material state at a material point in 3D
   struct state3D {
-    Marmot::Vector6d stress;       ///< Cauchy stress tensor in Voigt notation
-    double           strainEnergy; ///< Strain energy density
-    double*          stateVars;    ///< Pointer to array of state variables
+    Marmot::Vector6d stress;              ///< Cauchy stress tensor in Voigt notation
+    double           strainEnergyDensity; ///< Strain energy density
+    double*          stateVars;           ///< Pointer to array of state variables
   };
 
   // Structure to hold the material state at a material point for 2D plane stress
   struct state2D {
-    Marmot::Vector3d stress;       ///< 2D Cauchy stress tensor in Voigt notation
-    double           strainEnergy; ///< Strain energy density
-    double*          stateVars;    ///< Pointer to array of state variables
+    Marmot::Vector3d stress;              ///< 2D Cauchy stress tensor in Voigt notation
+    double           strainEnergyDensity; ///< Strain energy density
+    double*          stateVars;           ///< Pointer to array of state variables
   };
 
   // Structure to hold the material state at a material point for 1D uniaxial stress
   struct state1D {
-    double  stress;       ///< 1D Cauchy stress
-    double  strainEnergy; ///< Strain energy density
-    double* stateVars;    ///< Pointer to array of state variables
+    double  stress;              ///< 1D Cauchy stress
+    double  strainEnergyDensity; ///< Strain energy density
+    double* stateVars;           ///< Pointer to array of state variables
   };
 
   struct timeInfo {
@@ -124,9 +124,9 @@ public:
    * @param[in]	dt	(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
    */
   virtual void computeStress( state3D&        state,
-                              double*         dStressDDStrain,
+                              double*         dStress_dStrain,
                               const double*   dStrain,
-                              const timeInfo& timeInfo ) = 0;
+                              const timeInfo& timeInfo ) const = 0;
 
   /**
    * Plane stress implementation of @ref computeStress.
@@ -134,7 +134,7 @@ public:
   virtual void computePlaneStress( state2D&        stress2D,
                                    double*         dStress_dStrain2D,
                                    const double*   dStrain2D,
-                                   const timeInfo& timeInfo );
+                                   const timeInfo& timeInfo ) const;
 
   /**
    * Uniaxial stress implementation of @ref computeStress.
@@ -142,7 +142,7 @@ public:
   virtual void computeUniaxialStress( state1D&        stress1D,
                                       double*         dStress_dStrain1D,
                                       const double*   dStrain,
-                                      const timeInfo& timeInfo );
+                                      const timeInfo& timeInfo ) const;
 
   /**
    * @brief Initialize the layout of the state variables.
@@ -158,7 +158,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  StateView getStateView( const std::string& stateName, double* stateVars )
+  StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }
@@ -167,7 +167,7 @@ public:
    * @brief Get the total number of required state variables.
    * @return Total number of required state variables
    */
-  int getNumberOfRequiredStateVars() { return stateLayout.totalSize(); }
+  int getNumberOfRequiredStateVars() const { return stateLayout.totalSize(); }
   /**
    * @brief Initialize the state variables at a material point.
    * @param stateVars Pointer to the state variable array

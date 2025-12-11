@@ -78,7 +78,7 @@ namespace Marmot::Materials {
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
                         const Deformation< 3 >&,
-                        const TimeIncrement& ) override;
+                        const TimeIncrement& ) const override;
 
     /**
      * @brief Initialize the state layout (no state variables here).

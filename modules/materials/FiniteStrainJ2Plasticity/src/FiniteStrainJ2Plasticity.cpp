@@ -34,7 +34,7 @@ namespace Marmot::Materials {
   void FiniteStrainJ2Plasticity::computeStress( ConstitutiveResponse< 3 >& response,
                                                 AlgorithmicModuli< 3 >&    tangents,
                                                 const Deformation< 3 >&    deformation,
-                                                const TimeIncrement&       timeIncrement )
+                                                const TimeIncrement&       timeIncrement ) const
   {
     switch ( implementationType ) {
 
@@ -53,14 +53,14 @@ namespace Marmot::Materials {
   void FiniteStrainJ2Plasticity::computeStressWithScalarReturnMapping( ConstitutiveResponse< 3 >& response,
                                                                        AlgorithmicModuli< 3 >&    tangents,
                                                                        const Deformation< 3 >&    deformation,
-                                                                       const TimeIncrement&       timeIncrement )
+                                                                       const TimeIncrement&       timeIncrement ) const
   {
     throw std::invalid_argument( "not implemented yet" );
   }
   void FiniteStrainJ2Plasticity::computeStressWithFullReturnMapping( ConstitutiveResponse< 3 >& response,
                                                                      AlgorithmicModuli< 3 >&    tangents,
                                                                      const Deformation< 3 >&    deformation,
-                                                                     const TimeIncrement&       timeIncrement )
+                                                                     const TimeIncrement&       timeIncrement ) const
   {
 
     Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
@@ -192,7 +192,7 @@ namespace Marmot::Materials {
   void FiniteStrainJ2Plasticity::computeStressFDAF( ConstitutiveResponse< 3 >& response,
                                                     AlgorithmicModuli< 3 >&    tangents,
                                                     const Deformation< 3 >&    deformation,
-                                                    const TimeIncrement&       timeIncrement )
+                                                    const TimeIncrement&       timeIncrement ) const
   {
 
     Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
@@ -354,7 +354,7 @@ namespace Marmot::Materials {
   void FiniteStrainJ2Plasticity::computeStressFDAC( ConstitutiveResponse< 3 >& response,
                                                     AlgorithmicModuli< 3 >&    tangents,
                                                     const Deformation< 3 >&    deformation,
-                                                    const TimeIncrement&       timeIncrement )
+                                                    const TimeIncrement&       timeIncrement ) const
   {
 
     Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
@@ -517,7 +517,7 @@ namespace Marmot::Materials {
   void FiniteStrainJ2Plasticity::computeStressCSDA( ConstitutiveResponse< 3 >& response,
                                                     AlgorithmicModuli< 3 >&    tangents,
                                                     const Deformation< 3 >&    deformation,
-                                                    const TimeIncrement&       timeIncrement )
+                                                    const TimeIncrement&       timeIncrement ) const
   {
 
     Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );

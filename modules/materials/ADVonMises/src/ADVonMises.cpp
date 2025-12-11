@@ -32,7 +32,7 @@ namespace Marmot::Materials {
     initializeStateLayout();
   }
 
-  void ADVonMises::computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo )
+  void ADVonMises::computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) const
   {
     mVector6dual            S( state.stress );
     const mVector6dualConst dE( dStrain );

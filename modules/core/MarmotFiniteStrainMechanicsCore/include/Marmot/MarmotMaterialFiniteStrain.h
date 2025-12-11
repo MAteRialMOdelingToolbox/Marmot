@@ -124,7 +124,7 @@ public:
   virtual void computeStress( ConstitutiveResponse< 3 >& response,
                               AlgorithmicModuli< 3 >&    tangents,
                               const Deformation< 3 >&,
-                              const TimeIncrement& ) = 0;
+                              const TimeIncrement& ) const = 0;
   /**
    * @brief Computes the Kirchhoff stress given the deformation, time increment, and eigen deformation.
    * @param[inout] response ConstitutiveResponse instance
@@ -138,7 +138,7 @@ public:
                               AlgorithmicModuli< 3 >&                     tangents,
                               const Deformation< 3 >&                     deformation,
                               const TimeIncrement&                        timeIncrement,
-                              const std::tuple< double, double, double >& eigenDeformation );
+                              const std::tuple< double, double, double >& eigenDeformation ) const;
 
   /**
    * @brief Compute stress under plane strain conditions.
@@ -153,7 +153,7 @@ public:
   virtual void computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                    AlgorithmicModuli< 3 >&    algorithmicModuli,
                                    const Deformation< 3 >&    deformation,
-                                   const TimeIncrement&       timeIncrement );
+                                   const TimeIncrement&       timeIncrement ) const;
   /**
    * @brief Compute stress under plane strain conditions with eigen deformation.
    * @param[inout] response ConstitutiveResponse instance
@@ -169,7 +169,7 @@ public:
                                    AlgorithmicModuli< 3 >&                     algorithmicModuli,
                                    const Deformation< 3 >&                     deformation,
                                    const TimeIncrement&                        timeIncrement,
-                                   const std::tuple< double, double, double >& eigenDeformation );
+                                   const std::tuple< double, double, double >& eigenDeformation ) const;
   /**
    * @brief Compute stress under plane stress conditions.
    * @param[inout] response ConstitutiveResponse instance
@@ -183,7 +183,7 @@ public:
   virtual void computePlaneStress( ConstitutiveResponse< 2 >& response,
                                    AlgorithmicModuli< 2 >&    algorithmicModuli,
                                    const Deformation< 2 >&    deformation,
-                                   const TimeIncrement&       timeIncrement );
+                                   const TimeIncrement&       timeIncrement ) const;
 
   /**
    * @brief Find the eigen deformation that corresponds to a given eigen stress.
@@ -197,7 +197,7 @@ public:
   std::tuple< double, double, double > findEigenDeformationForEigenStress(
     const std::tuple< double, double, double >& initialGuess,
     const std::tuple< double, double, double >& eigenStress,
-    double*                                     stateVars );
+    double*                                     stateVars ) const;
 
   /**
    * @brief Initialize the layout of the state variables.
@@ -213,7 +213,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  StateView getStateView( const std::string& stateName, double* stateVars )
+  StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }
@@ -222,7 +222,7 @@ public:
    * @brief Get the total number of required state variables.
    * @return Total number of required state variables
    */
-  int getNumberOfRequiredStateVars() { return stateLayout.totalSize(); }
+  int getNumberOfRequiredStateVars() const { return stateLayout.totalSize(); }
   /**
    * @brief Initialize the state variables at a material point.
    * @param stateVars Pointer to the state variable array

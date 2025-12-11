@@ -24,7 +24,7 @@ void testSetup( const std::string& testName,
   const int               elLabel             = 1;
 
   // Create material instance
-  CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
+  const CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
 
   // Create deformation, time increment, response and tangent objects required for stress computation
   CompressibleNeoHooke::Deformation< 3 > def;

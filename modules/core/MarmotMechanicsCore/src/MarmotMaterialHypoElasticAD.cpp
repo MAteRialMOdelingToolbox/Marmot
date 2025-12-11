@@ -10,7 +10,7 @@ void MarmotMaterialHypoElasticAD::computeStress( state3D&        state,
                                                  const double*   dStrain,
                                                  const timeInfo& timeInfo
 
-)
+) const
 {
 
   using namespace Marmot;
@@ -36,9 +36,9 @@ void MarmotMaterialHypoElasticAD::computeStress( state3D&        state,
 
       // construct AD state
       state3DAD stateAD;
-      stateAD.stress       = s.data();
-      stateAD.strainEnergy = state.strainEnergy;
-      stateAD.stateVars    = stateVars.data();
+      stateAD.stress              = s.data();
+      stateAD.strainEnergyDensity = state.strainEnergyDensity;
+      stateAD.stateVars           = stateVars.data();
 
       // compute stress
       computeStressAD( stateAD, dE_.data(), timeInfo );

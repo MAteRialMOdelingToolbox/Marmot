@@ -35,9 +35,9 @@ public:
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
   struct state3DAD {
-    autodiff::dual* stress;       ///< Cauchy stress tensor in Voigt notation
-    double          strainEnergy; ///< Strain energy density
-    double*         stateVars;    ///< Pointer to array of state variables
+    autodiff::dual* stress;              ///< Cauchy stress tensor in Voigt notation
+    double          strainEnergyDensity; ///< Strain energy density
+    double*         stateVars;           ///< Pointer to array of state variables
   };
   /**
    * @brief Compute the Cauchy stress tensor \f$\boldsymbol{\sigma}\f$ given an increment of the linearized strain
@@ -54,10 +54,10 @@ public:
    * @param[in]             dT (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
    * @param[in,out]         pNewDT Suggestion for a new time increment
    */
-  virtual void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) = 0;
+  virtual void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) const = 0;
 
   virtual void computeStress( state3D&        state,
                               double*         dStressDDStrain,
                               const double*   dStrain,
-                              const timeInfo& timeInfo ) override;
+                              const timeInfo& timeInfo ) const override;
 };

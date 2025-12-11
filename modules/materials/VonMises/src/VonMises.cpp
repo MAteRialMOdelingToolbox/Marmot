@@ -20,7 +20,7 @@ namespace Marmot::Materials {
   void VonMisesModel::computeStress( state3D&        state,
                                      double*         dStress_dStrain,
                                      const double*   dStrain,
-                                     const timeInfo& timeInfo )
+                                     const timeInfo& timeInfo ) const
 
   {
     // elasticity parameters
