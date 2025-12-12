@@ -158,14 +158,8 @@ namespace Marmot::Meshfree {
 
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const
     {
-
-      Eigen::Map< Eigen::Matrix< double, nDim, 1 > > segmentCenter( coordinates );
-
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
-
-      segmentCenter = 0.5 * ( vertexCoordinates.col( faceID % nVertices ) +
-                              vertexCoordinates.col( ( faceID - 1 ) % nVertices ) );
+      Eigen::Map< Eigen::Matrix< double, nDim, 1 > > coordinatesMap( coordinates );
+      coordinatesMap = _particleDomainMain.getFaceCenterCoordinates( faceID );
     }
 
     virtual void getCenterCoordinates( double* coordinates ) const override
@@ -425,12 +419,6 @@ namespace Marmot::Meshfree {
     };
 
   private:
-    /// \brief Update the vertex displacements from the material point deformation
-    /// \details This function updates the vertex displacements of the particle
-    ///         by applying the deformation gradient of the material points
-    ///         to the vertex coordinates in the undeformed configuration.
-    void _updateVertexDisplacementsFromMaterialPointDeformation();
-
     /// \brief Evaluate the shape functions for a vertex-shaped domain
     /// \details This function evaluates the shape functions for a vertex-shaped
     ///         domain using the vertex coordinates of the particle.
@@ -438,23 +426,6 @@ namespace Marmot::Meshfree {
     ///         \return The shape functions (at center) and their gradients computed from smoothing around the domain.
     std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsForParticleDomain(
       const ParticleDomain< nDim, nVertices >& particleDomain ) const;
-
-    /// \brief Compute the 3x3 coordinates from the 2x2 coordinates
-    /// \details This function computes the 3x3 coordinates from the 2x2 coordinates
-    ///        using the geometry element. The 3x3 coordinates are used to compute the
-    ///        shape functions and their gradients.
-    Eigen::Matrix< double, nDim, 9 > _compute3x3From2x2(
-      const Eigen::Matrix< double, nDim, nVertices >& coordinates2x2 ) const;
-
-    /// \brief Split the 3x3 coordinates into sub-particles
-    /// \details This function splits the 3x3 coordinates into sub-particles
-    ///         \param coordinates3x3 The 3x3 coordinates of the particle
-    ///         \return The sub-particles
-    ///         \details This function splits the 3x3 coordinates into sub-particles
-    ///         using the geometry element. The sub-particles are used to compute
-    ///         the shape functions and their gradients.
-    std::vector< Eigen::Matrix< double, nDim, nVertices > > _split3x3ToSubParticles(
-      const Eigen::Matrix< double, nDim, 9 >& coordinates3x3 ) const;
 
     void setVCIOrder( int order )
     {
@@ -627,36 +598,6 @@ namespace Marmot::Meshfree {
     Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
     coordinatesMap = _particleDomainMain.getGeometryDeformedVertexCoordinates();
   }
-
-  /// \brief Update the vertex displacements from the central deformation gradient and the applied displacement
-  /// \details This function updates the vertex displacements of the particle
-  // template < int nDim, int nVertices >
-  // void DisplacementParticleSQCNIxSDI< nDim, nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
-  // {
-
-  //   // CoordinatesSized centerCoordinates_Undeformed = _geoElement.N( { 0, 0 } ) *
-  //   //                                                 _vertexCoordinates_Undeformed.transpose();
-
-  //   const auto       dx_dY = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( _dx_dY_center.data()
-  //   ); CoordinatesSized centerCoordinates_Intermediate; getCenterCoordinates( centerCoordinates_Intermediate.data()
-  //   );
-
-  //   VertexCoordinatesSized relative_VertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
-  //                                                                    _vertexDisplacements_Intermediate;
-  //   for ( int i = 0; i < nDim; i++ ) {
-  //     relative_VertexCoordinates_Intermediate.row( i ).array() -= centerCoordinates_Intermediate( i );
-  //   }
-
-  //   VertexCoordinatesSized relative_vertexCoordinates_Deformed = dx_dY * relative_VertexCoordinates_Intermediate;
-
-  //   VertexCoordinatesSized vertexCoordinates_Deformed;
-  //   for ( int i = 0; i < nDim; i++ ) {
-  //     vertexCoordinates_Deformed.row( i ).array() = relative_vertexCoordinates_Deformed.row( i ).array() +
-  //                                                   _centerCoordinates_Undeformed( i ) + _centerDisplacement( i );
-  //   }
-
-  //   _vertexDisplacements_Intermediate = vertexCoordinates_Deformed - _vertexCoordinates_Undeformed;
-  // }
 
   /// That will later go to general subdomain particle.
   template < int nDim, int nVertices >
