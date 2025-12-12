@@ -26,16 +26,14 @@
  */
 #pragma once
 
-#include "Marmot/DisplacementMaterialPoint.h"
 #include "Marmot/DisplacementParticle.h"
-#include "Marmot/MarmotGeometryElement.h"
-#include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotParticle.h"
+#include "Marmot/MarmotParticleDomain.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/src/Core/Matrix.h>
 #include <Fastor/Fastor.h>
+#include <stdexcept>
 
 namespace Marmot::Meshfree {
 
@@ -47,9 +45,11 @@ namespace Marmot::Meshfree {
     using VertexCoordinatesSized = Eigen::Matrix< double, nDim, nVertices >;
     using CoordinatesSized       = Eigen::Matrix< double, nDim, 1 >;
 
-    std::vector< std::unique_ptr< MaterialPoints::DisplacementMaterialPoint< nDim > > > _mps;
+    struct SubDomain {
 
-    struct SubIntegrationDomain {
+      ParticleDomain< nDim, nVertices > particleDomain;
+
+      std::unique_ptr< MaterialPointType< nDim > > materialPoint;
 
       Eigen::MatrixXd N;
       Eigen::MatrixXd dN_dY;
@@ -57,17 +57,16 @@ namespace Marmot::Meshfree {
       Eigen::MatrixXd T;
       Eigen::MatrixXd dT_dY;
 
-      double           V_IntermediateReference;
-      CoordinatesSized center_IntermediateReference;
-
       Eigen::VectorXd P;
       Eigen::MatrixXd P_Gradient;
     };
 
-    std::vector< SubIntegrationDomain > _subIntegrationDomains;
+    ParticleDomain< nDim, nVertices > _particleDomainMain;
+    std::vector< SubDomain >          _subDomains;
 
   public:
-    enum SmoothingVolumeUpdateType { None, DeformationGradient, RotationOnly, RotationAndPrincipalStretch };
+    using SmoothingDomainUpdateType = ParticleDomain< nDim, nVertices >::SmoothingDomainUpdateType;
+    // enum SmoothingVolumeUpdateType { None, DeformationGradient, RotationOnly, RotationAndPrincipalStretch };
 
   private:
     constexpr int static nStateVarsParticle = nDim * nVertices + nDim; // vertex displacements + center displacement
@@ -79,17 +78,15 @@ namespace Marmot::Meshfree {
     int    _vciOrder;
     int    _nVCIConstraints;
 
-    // const SmoothingVolumeUpdateType                _smoothingVolumeUpdateType;
-    const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed;
-    CoordinatesSized                               _centerCoordinates_Undeformed;
+    const MarmotMeshfreeApproximation& _meshfreeApproximation;
+    //
+    using JacobianSized = Eigen::Matrix< double, nDim, nDim >;
 
-    const MarmotMeshfreeApproximation&   _meshfreeApproximation;
-    Eigen::Map< VertexCoordinatesSized > _vertexDisplacements_Intermediate;
-    Eigen::Map< CoordinatesSized >       _centerDisplacement;
+    CoordinatesSized _centerDisplacement;
+    JacobianSized    _centralDeformationGradient;
 
-    MarmotGeometryElement< nDim, nVertices > _geoElement;
-    double                                   _V0_from_geoElement;
-    TensorDD                                 _dx_dY_center;
+    TensorDD _dx_dY_center;
+    TensorD  _du_center;
 
     std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions;
 
@@ -173,43 +170,27 @@ namespace Marmot::Meshfree {
 
     virtual void getCenterCoordinates( double* coordinates ) const override
     {
-      const VertexCoordinatesSized vertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
-                                                                    _vertexDisplacements_Intermediate;
-      const CoordinatesSized centerCoordinates_Intermediate = _geoElement.N( { 0, 0 } ) *
-                                                              vertexCoordinates_Intermediate.transpose();
-
-      for ( int i = 0; i < nDim; i++ ) {
-        coordinates[i] = centerCoordinates_Intermediate[i];
-      }
+      Eigen::Map< Eigen::Matrix< double, nDim, 1 > > centerCoordinatesMap( coordinates );
+      centerCoordinatesMap = _particleDomainMain.getCenterCoordinates();
     }
 
-    /// \brief Get the visualization vertex coordinates
-    /// \param coordinates The coordinates of the vertices
-    /// \details This function is used for visualization purposes. It returns the coordinates of the vertices in the
-    /// deformed configuration.
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       getVertexCoordinates( coordinates );
     };
 
-    /// \brief Get the number of vertices
-    /// \return The number of vertices
-    /// \details This function returns the number of vertices of the particle.
     virtual int getNumberOfVertices() const override { return nVertices; };
 
-    /// \brief Get the number of base degrees of freedom per attached node (meshfree kernel function)
-    /// \return The number of base degrees of freedom
-    /// \details This function returns the number of base degrees of freedom per attached node (meshfree kernel
-    /// function).
     virtual int getNBaseDof() const override { return nDofPerNodeU; }
 
     void initializeYourself() override
     {
-      for ( auto& mp : _mps ) {
-        mp->initializeYourself();
+      for ( auto& sd : _subDomains ) {
+        sd.materialPoint->initializeYourself();
       }
 
       _dx_dY_center.eye();
+      _du_center.zeros();
     };
 
     virtual void computeBodyLoad( int           type,
@@ -222,20 +203,12 @@ namespace Marmot::Meshfree {
       throw std::runtime_error( "Not implemented yet!" );
     }
 
-    /// \brief Get the names of the fields
-    /// \return The names of the fields
-    /// \details This function returns the names of the fields of the particle. The fields are:
-    /// - "displacement"
     virtual const std::vector< std::string >& getFields() const override
     {
       static const std::vector< std::string > nodeFields = { "displacement" };
       return nodeFields;
     };
-
-    /// \brief Get the shape of the particle
-    /// \return The shape of the particle
-    /// \details This function returns the shape of the particle. The shape is defined by the geometry element.
-    virtual std::string getParticleShape() const override { return _geoElement.getElementShape(); }
+    virtual std::string getParticleShape() const override { return _particleDomainMain.getParticleShape(); };
 
     DisplacementParticleSQCNIxSDI( int                                elementID,
                                    const double*                      nodeCoordinates,
@@ -245,105 +218,74 @@ namespace Marmot::Meshfree {
                                    const double*                      materialProperties,
                                    int                                sizeMaterialProperties,
                                    const MarmotMeshfreeApproximation& approximation,
-                                   const SmoothingVolumeUpdateType    smoothingVolumeUpdateType );
+                                   const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
-    /// \brief Assign the meshfree kernel functions
-    /// \param kernelFunctions The meshfree kernel functions
-    /// \details This function assigns the meshfree kernel functions to the particle. The kernel functions are used to
-    /// compute the shape functions and their gradients.
     virtual void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
 
-    /// \brief Get the smoothing volume of the particle
-    /// \return The smoothing volume of the particle
-    /// \details The smoothing volume is computed as the volume of the element in an updated configuration
-    ///         that is obtained by applying (parts of) the deformation gradient to the element in the undeformed
-    ///         configuration. In general, this is not consistent with the actual deformation of the particle.
-    ///
-    virtual double getSmoothingVolume( const VertexCoordinatesSized& vertices ) const
+    virtual double getVolumeUndeformed() const
     {
 
-      MarmotGeometryElement< nDim, nVertices > _geometryElementForSmoothing;
-
-      _geometryElementForSmoothing.assignNodeCoordinates( vertices.data() );
-
-      const auto   dNd_dXi_center  = _geometryElementForSmoothing.dNdXi( Eigen::Matrix< double, nDim, 1 >::Zero() );
-      const double smoothingVolume = _geometryElementForSmoothing.Jacobian( dNd_dXi_center ).determinant() *
-                                     std::pow( 2, nDim );
-
-      return smoothingVolume;
+      double V0 = 0.0;
+      for ( const auto& sd : _subDomains ) {
+        V0 += sd.materialPoint->getVolumeUndeformed();
+      }
+      return V0;
     }
 
-    CoordinatesSized getCenterFromVertices( const VertexCoordinatesSized& vertices ) const
-    {
-      const CoordinatesSized centerValues = _geoElement.N( { 0, 0 } ) * vertices.transpose();
-      return centerValues;
-    }
-
-    /// \brief Get the volume of the particle in the undeformed configuration
-    /// \return The volume of the particle in the undeformed configuration
-    /// \details This function returns the volume of the particle in the undeformed configuration. The volume is
-    /// computed using the geometry element. The volume is computed as the determinant of the Jacobian of the geometry
-    /// element.
-    virtual double getVolumeUndeformed() const { return this->_V0_from_geoElement; };
-
-    /// \brief Get the volume of the particle in the deformed configuration
-    /// \return The volume of the particle in the deformed configuration
-    /// \details This function returns the volume of the particle in the deformed configuration. The volume is
-    /// computed using the geometry element. The volume is
-    /// computed as the determinant of the Jacobian of the geometry
-    /// element.
     virtual double getVolumeDeformed() const
     {
       double volDeformed = 0.0;
-      for ( const auto& subDomain : _subIntegrationDomains ) {
-        // Compute the volume of the subdomain in the deformed configuration
-        volDeformed += subDomain.V_IntermediateReference;
+      for ( const auto& sd : _subDomains ) {
+        volDeformed += sd.materialPoint->getVolumeUndeformed() * determinant( sd.materialPoint->dY_dX() );
       }
       return volDeformed;
     }
 
-    ///
+    // That goes to the generic sdi particle
     virtual void acceptStateAndPosition() override
     {
+      // std::cout << "Accepting state and position for DisplacementParticleSQCNIxSDI" << std::endl;
 
-      for ( auto& mp : _mps ) {
-        mp->acceptStateAndPosition();
+      _centerDisplacement += Eigen::Matrix< double, nDim, 1 >( _du_center.data() );
+      _du_center.zeros();
+
+      Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > > dx_dY_map( _dx_dY_center.data() );
+      _centralDeformationGradient = dx_dY_map * _centralDeformationGradient;
+      _dx_dY_center.eye();
+
+      _particleDomainMain.acceptStateAndPosition( _centralDeformationGradient, _centerDisplacement );
+
+      // make that cleaner
+      const auto newParticleDomains = _particleDomainMain.uniformSubdivided( 1 );
+      for ( size_t i = 0; i < _subDomains.size(); i++ ) {
+        _subDomains[i].particleDomain = newParticleDomains[i];
       }
 
-      _updateVertexDisplacementsFromMaterialPointDeformation();
-      _dx_dY_center.eye();
+      for ( auto& sd : _subDomains ) {
+        sd.materialPoint->acceptStateAndPosition();
+      }
     };
 
     virtual int getNumberOfRequiredStateVars() const override
     {
-      // return DisplacementParticle< nDim >::getNumberOfRequiredStateVars() + 8;
       int nStateVars = 0;
-      nStateVars += nStateVarsParticle;
 
-      for ( const auto& mp : _mps ) {
-        nStateVars += mp->getNumberOfRequiredStateVars();
+      for ( const auto& sd : _subDomains ) {
+        nStateVars += sd.materialPoint->getNumberOfRequiredStateVars();
       }
 
       return nStateVars;
     };
 
-    /// \brief Assign the state variables
-    /// \param stateVars The state variables
-    /// \param nStateVars The number of state variables
-    /// \details This function assigns the state variables to the particle.
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
 
       int offset = 0;
-      new ( &_vertexDisplacements_Intermediate ) Eigen::Map< VertexCoordinatesSized >( stateVars + offset );
-      offset += nDim * nVertices;
-      new ( &_centerDisplacement ) Eigen::Map< CoordinatesSized >( stateVars + offset );
-      offset += nDim;
 
-      for ( auto& mp : _mps ) {
-        int nStateVarsSubParticle = mp->getNumberOfRequiredStateVars();
-        mp->assignStateVars( stateVars + offset, nStateVarsSubParticle );
+      for ( auto& sd : _subDomains ) {
+        int nStateVarsSubParticle = sd.materialPoint->getNumberOfRequiredStateVars();
+        sd.materialPoint->assignStateVars( stateVars + offset, nStateVarsSubParticle );
         offset += nStateVarsSubParticle;
       }
 
@@ -352,27 +294,15 @@ namespace Marmot::Meshfree {
       }
     }
 
-    /// \brief Get the state view of the particle
-    /// \param stateName The name of the state variable
-    /// \param qp The quadrature point
-    /// \return The state view of the particle
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      if ( stateName == "vertex displacements" ) {
-        return StateView( (double*)_vertexDisplacements_Intermediate.data(), nDim * nVertices );
-      }
-      return _mps[qp]->getStateView( stateName );
+      if ( stateName == "vertex displacements" )
+        return StateView( const_cast< double* >( _particleDomainMain.getSmoothingDomainVertexDisplacements().data() ),
+                          nDim * nVertices );
+
+      return _subDomains[qp].materialPoint->getStateView( stateName );
     }
 
-    /// \brief Compute the physics kernels
-    /// \param dQ The field variable increments
-    /// \param fInt The internal forces
-    /// \param dFInt_ddQ The internal force gradients wrt. to the field variables
-    /// \param timeNew The new time
-    /// \param dT The time increment
-    /// \details This function computes the physics kernels for the particle. The physics kernels are used to compute
-    /// the internal forces and their gradients. The physics kernels are computed using the meshfree approximation.
-    /// The physics kernels are computed for each material point in the particle.
     virtual void computePhysicsKernels( const double* dQ,
                                         double*       fInt,
                                         double*       dFInt_ddQ,
@@ -400,105 +330,94 @@ namespace Marmot::Meshfree {
 
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
-                                                      int           boundaryFaceID )
-    {
+                                                      int           boundaryFaceID ){
 
-      using namespace Fastor;
+      // using namespace Fastor;
 
-      const auto [N_dAY, Y_N]   = getIntermediateConfBoundaryVector( boundaryFaceID );
-      Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, _nNodes );
+      // const auto [N_dAY, Y_N]   = getIntermediateConfBoundaryVector( boundaryFaceID );
+      // Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, _nNodes );
 
-      _meshfreeApproximation.computeShapeFunctions( Y_N.data(), _assignedKernelFunctions, TBoundary.data() );
+      // _meshfreeApproximation.computeShapeFunctions( Y_N.data(), _assignedKernelFunctions, TBoundary.data() );
 
-      // get P for the exact integration location at the boundary
-      auto PBoundary = Eigen::VectorXd( _nVCIConstraints );
-      Math::computeMonomialBasis( _vciOrder, CoordinatesSized( Y_N.data() ), PBoundary );
+      // // get P for the exact integration location at the boundary
+      // auto PBoundary = Eigen::VectorXd( _nVCIConstraints );
+      // Math::computeMonomialBasis( _vciOrder, CoordinatesSized( Y_N.data() ), PBoundary );
 
-      for ( int A = 0; A < _nNodes; A++ )
-        for ( int i = 0; i < nDim; i++ )
-          for ( int C = 0; C < _nVCIConstraints; C++ )
-            R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += TBoundary( A ) *
-                                                                                          PBoundary( C ) * N_dAY[i];
+      // for ( int A = 0; A < _nNodes; A++ )
+      //   for ( int i = 0; i < nDim; i++ )
+      //     for ( int C = 0; C < _nVCIConstraints; C++ )
+      //       R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += TBoundary( A ) *
+      //                                                                                     PBoundary( C ) * N_dAY[i];
     };
 
-    virtual void vci_compute_TestGradient_P_Integral( double* R_AiC_RowMajor ) override
-    {
+    virtual void vci_compute_TestGradient_P_Integral( double* R_AiC_RowMajor ) override{
       // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      for ( const auto& sd : _subIntegrationDomains )
-        for ( int A = 0; A < _nNodes; A++ )
-          for ( int i = 0; i < nDim; i++ )
-            for ( int C = 0; C < _nVCIConstraints; C++ )
-              R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.dT_dY( i, A ) *
-                                                                                            sd.P( C ) *
-                                                                                            sd.V_IntermediateReference;
+      // for ( const auto& sd : _subDomains)
+      //   for ( int A = 0; A < _nNodes; A++ )
+      //     for ( int i = 0; i < nDim; i++ )
+      //       for ( int C = 0; C < _nVCIConstraints; C++ )
+      //         R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.dT_dY( i, A ) *
+      //                                                                                       sd.P( C ) *
+      //                                                                                       sd.V_IntermediateReference;
     };
 
-    virtual void vci_compute_Test_PGradient_Integral( double* R_AiC_RowMajor ) override
-    {
+    virtual void vci_compute_Test_PGradient_Integral( double* R_AiC_RowMajor ) override{
       // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      for ( const auto& sd : _subIntegrationDomains )
-        for ( int A = 0; A < _nNodes; A++ )
-          for ( int i = 0; i < nDim; i++ )
-            for ( int C = 0; C < _nVCIConstraints; C++ )
-              R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.T( A ) *
-                                                                                            sd.P_Gradient( C, i ) *
-                                                                                            sd.V_IntermediateReference;
+      // for ( const auto& sd : _subDomains)
+      //   for ( int A = 0; A < _nNodes; A++ )
+      //     for ( int i = 0; i < nDim; i++ )
+      //       for ( int C = 0; C < _nVCIConstraints; C++ )
+      //         R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.T( A ) *
+      //                                                                                       sd.P_Gradient( C, i ) *
+      //                                                                                       sd.V_IntermediateReference;
     };
 
-    virtual void vci_compute_MMatrix( double* mMatrix_ACD_RowMajor ) override
-    {
+    virtual void vci_compute_MMatrix( double* mMatrix_ACD_RowMajor ) override{
       // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
 
-      for ( const auto& sd : _subIntegrationDomains )
-        for ( int A = 0; A < _nNodes; A++ ) {
-          const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
-                                                                                                                : 0.0;
-          // const double R_A = 1.0;
+      // for ( const auto& sd : _subDomains)
+      //   for ( int A = 0; A < _nNodes; A++ ) {
+      //     const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
+      //                                                                                                           :
+      //                                                                                                           0.0;
+      //     // const double R_A = 1.0;
 
-          for ( int C = 0; C < _nVCIConstraints; C++ )
-            for ( int D = 0; D < _nVCIConstraints; D++ )
-              mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints +
-                                   D] += R_A * sd.P( C ) * sd.P( D ) * sd.V_IntermediateReference;
-        }
+      //     for ( int C = 0; C < _nVCIConstraints; C++ )
+      //       for ( int D = 0; D < _nVCIConstraints; D++ )
+      //         mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints +
+      //                              D] += R_A * sd.P( C ) * sd.P( D ) * sd.V_IntermediateReference;
+      //   }
     };
 
-    virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) override
-    {
+    virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) override{
 
-      for ( auto& sd : _subIntegrationDomains )
-        for ( int A = 0; A < _nNodes; A++ ) {
-          const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
-                                                                                                                : 0.0;
-          // const double R_A = 1.0;
-          for ( int i = 0; i < nDim; i++ ) {
-            for ( int C = 0; C < _nVCIConstraints; C++ ) {
-              sd.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A *
-                                  sd.P( C );
-            }
-          }
-        }
+      // for ( auto& sd : _subDomains)
+      //   for ( int A = 0; A < _nNodes; A++ ) {
+      //     const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
+      //                                                                                                           :
+      //                                                                                                           0.0;
+      //     // const double R_A = 1.0;
+      //     for ( int i = 0; i < nDim; i++ ) {
+      //       for ( int C = 0; C < _nVCIConstraints; C++ ) {
+      //         sd.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A
+      //         *
+      //                             sd.P( C );
+      //       }
+      //     }
+      //   }
     };
 
-    virtual void getEvaluationCoordinates( double* coordinates ) const
+    virtual void getEvaluationCoordinates( double* coordinates ) const override
     {
+      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > >
+        coordinatesMap( coordinates, nDim, _particleDomainMain.getNumberOfFaces() );
 
-      Eigen::Map< Eigen::Matrix< double, nDim, 8 > > segmentCenters( coordinates );
-
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
-
-      for ( int i = 0; i < nVertices; i++ ) {
-        segmentCenters.col( i * 2 )     = ( 0.25 * vertexCoordinates.col( ( i + 1 ) % nVertices ) +
-                                        0.75 * vertexCoordinates.col( i ) );
-        segmentCenters.col( i * 2 + 1 ) = ( 0.75 * vertexCoordinates.col( ( i + 1 ) % nVertices ) +
-                                            0.25 * vertexCoordinates.col( i ) );
+      for ( int i = 0; i < _particleDomainMain.getNumberOfFaces(); i++ ) {
+        coordinatesMap.col( i ) = _particleDomainMain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
       }
     }
 
-    virtual int getNumberOfEvaluationPoints() const
-    {
-      return nVertices * 2; // 2 evaluation points per segment
-    };
+    virtual int getNumberOfEvaluationPoints() const { return _particleDomainMain.getNumberOfFaces(); };
 
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
@@ -515,10 +434,10 @@ namespace Marmot::Meshfree {
     /// \brief Evaluate the shape functions for a vertex-shaped domain
     /// \details This function evaluates the shape functions for a vertex-shaped
     ///         domain using the vertex coordinates of the particle.
-    ///         \param vertexCoordinates The vertex coordinates of the particle
+    ///         \param particleDomain The particle domain for which to evaluate shape functions.
     ///         \return The shape functions (at center) and their gradients computed from smoothing around the domain.
-    std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsForVertexShapedDomain(
-      const VertexCoordinatesSized& vertexCoordinates ) const;
+    std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsForParticleDomain(
+      const ParticleDomain< nDim, nVertices >& particleDomain ) const;
 
     /// \brief Compute the 3x3 coordinates from the 2x2 coordinates
     /// \details This function computes the 3x3 coordinates from the 2x2 coordinates
@@ -554,42 +473,38 @@ namespace Marmot::Meshfree {
     const double*                                        materialProperties,
     int                                                  sizeMaterialProperties,
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
-    const SmoothingVolumeUpdateType                      smoothingVolumeUpdateType )
+    const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
     : _elementID( elementID ),
       _newmark_beta( 0. ),
       _newmark_gamma( 0. ),
-      _vertexCoordinates_Undeformed( vertexCoordinates ),
-      _centerCoordinates_Undeformed( getCenterFromVertices( _vertexCoordinates_Undeformed ) ),
       _meshfreeApproximation( approximation ),
-      _vertexDisplacements_Intermediate( nullptr ),
-      _centerDisplacement( nullptr ),
-      _vciOrder( 0 )
+      _vciOrder( 0 ),
+      _particleDomainMain( vertexCoordinates, nVertexCoordinates, smoothingVolumeUpdateType ),
+      _centerDisplacement( CoordinatesSized::Zero() ),
+      _centralDeformationGradient( JacobianSized::Identity() )
+  // _dx_dY_center( TensorDD::eye() ),
+  // _du_center( TensorD::zero() )
   {
+    _dx_dY_center.eye();
+    _du_center.zeros();
 
-    _geoElement.assignNodeCoordinates( _vertexCoordinates_Undeformed.data() );
-    const auto dNd_dXi_center = _geoElement.dNdXi( Eigen::Matrix< double, nDim, 1 >::Zero() );
-    _V0_from_geoElement       = _geoElement.Jacobian( dNd_dXi_center ).determinant() * std::pow( 2, nDim );
+    const auto initialParticleDomains = _particleDomainMain.uniformSubdivided( 1 );
+    for ( size_t i = 0; i < initialParticleDomains.size(); i++ ) {
 
-    const auto subvertices       = _compute3x3From2x2( _vertexCoordinates_Undeformed );
-    const auto subDomainVertices = _split3x3ToSubParticles( subvertices );
+      const auto& initialParticleDomain = initialParticleDomains[i];
 
-    for ( const auto& subDomainVertices : subDomainVertices ) {
+      const double subV0 = initialParticleDomain.getVolumeUndeformed();
+      const auto   X0    = initialParticleDomain.getCenterCoordinates();
 
-      const auto   mpCenter = getCenterFromVertices( subDomainVertices );
-      const double mpVolume = getSmoothingVolume( subDomainVertices );
-
-      auto theprt = std::make_unique< MaterialPoints::DisplacementMaterialPoint2D >( elementID,
-                                                                                     mpCenter.data(),
-                                                                                     1,
-                                                                                     mpVolume );
-      _mps.push_back( std::move( theprt ) );
+      _subDomains.push_back(
+        SubDomain{ .particleDomain = initialParticleDomain,
+                   .materialPoint = std::make_unique< MaterialPointType< nDim > >( elementID, X0.data(), 1, subV0 ) } );
     }
 
     int                   materialCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( materialName );
     MarmotMaterialSection section( materialCode, materialProperties, sizeMaterialProperties );
-
-    for ( auto& mp : _mps ) {
-      mp->assignMaterial( section );
+    for ( auto& sd : _subDomains ) {
+      sd.materialPoint->assignMaterial( section );
     }
 
     this->setVCIOrder( _vciOrder );
@@ -611,12 +526,8 @@ namespace Marmot::Meshfree {
 
       constexpr int nodeBlockSize = nDim;
 
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
-
-      const auto [testBoundary, dN_dY] = evaluateShapeFunctionsForVertexShapedDomain( vertexCoordinates );
-      // const auto dT_dY                 = _applyVCICorrectionTermsToShapeFunctionGradients( dN_dY );
-      const auto dT_dY = dN_dY;
+      const auto [testBoundary, dN_dY] = evaluateShapeFunctionsForParticleDomain( _particleDomainMain );
+      const auto dT_dY                 = dN_dY;
 
       const auto [N_dAY, Y_N] = getIntermediateConfBoundaryVector( boundaryFaceID );
 
@@ -678,6 +589,7 @@ namespace Marmot::Meshfree {
     }
   }
 
+  // that will go to the generic sdi particle
   template < int nDim, int nVertices >
   std::tuple< typename DisplacementParticleSQCNIxSDI< nDim, nVertices >::TensorD,
               typename DisplacementParticleSQCNIxSDI< nDim, nVertices >::TensorD >
@@ -687,71 +599,67 @@ namespace Marmot::Meshfree {
     TensorD N_dAY;
     TensorD Y;
 
-    // if ( _smoothingVolumeUpdateType == DeformationGradient ) {
-    // For the full SQCNI case, we actually operate on the deformed element.
-    // This means, that the deformed smoothing domain is consistent with the physical domain of the particle.
-    Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-    getVertexCoordinates( vertexCoordinates.data() );
+    Eigen::Matrix< double, nDim, 1 > _Y_eigen;
 
-    Eigen::Vector2d t; // tangent vector
-    Eigen::Vector2d y; // origin of the boundary segment
+    // the evaluation point depends: For real SQCNI, we do it on the smoothing domain boundary, for all others we do in
+    // in the center of the deformed geometry
 
-    if ( boundaryFaceID > nVertices || boundaryFaceID < 1 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid boundaryFaceID specified" );
+    if ( _particleDomainMain.smoothingVolumeUpdateType == SmoothingDomainUpdateType::DeformationGradient )
+      _Y_eigen = _particleDomainMain.getSmoothingDomainFaceCenterCoordinates( boundaryFaceID );
+    else
+      throw std::invalid_argument( "not implemented" );
 
-    t = ( vertexCoordinates.col( boundaryFaceID % nVertices ) -
-          vertexCoordinates.col( ( boundaryFaceID - 1 ) % nVertices ) );
-    y = 0.5 * ( vertexCoordinates.col( boundaryFaceID % nVertices ) +
-                vertexCoordinates.col( ( boundaryFaceID - 1 ) % nVertices ) );
+    // N_dAY (boundary surface vector for distributed load) comes from the deformed geometry
+    auto _N_dAY_eigen = _particleDomainMain.getFaceBoundaryVector( boundaryFaceID );
 
-    N_dAY = { t( 1 ), -t( 0 ) };
-    Y     = { y( 0 ), y( 1 ) };
+    for ( int i = 0; i < nDim; i++ ) {
+      N_dAY[i] = _N_dAY_eigen[i];
+      Y[i]     = _Y_eigen[i];
+    }
 
-    return { N_dAY, TensorD( Y.data() ) };
+    return { N_dAY, Y };
   }
 
+  // that will later go to general sdi particle
   template < int nDim, int nVertices >
   void DisplacementParticleSQCNIxSDI< nDim, nVertices >::getVertexCoordinates( double* coordinates ) const
   {
-
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesDeformed( coordinates );
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_Intermediate );
-
-    coordinatesDeformed = _vertexCoordinates_Undeformed + vertexDisplacements;
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
+    coordinatesMap = _particleDomainMain.getGeometryDeformedVertexCoordinates();
   }
 
   /// \brief Update the vertex displacements from the central deformation gradient and the applied displacement
   /// \details This function updates the vertex displacements of the particle
+  // template < int nDim, int nVertices >
+  // void DisplacementParticleSQCNIxSDI< nDim, nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
+  // {
+
+  //   // CoordinatesSized centerCoordinates_Undeformed = _geoElement.N( { 0, 0 } ) *
+  //   //                                                 _vertexCoordinates_Undeformed.transpose();
+
+  //   const auto       dx_dY = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( _dx_dY_center.data()
+  //   ); CoordinatesSized centerCoordinates_Intermediate; getCenterCoordinates( centerCoordinates_Intermediate.data()
+  //   );
+
+  //   VertexCoordinatesSized relative_VertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
+  //                                                                    _vertexDisplacements_Intermediate;
+  //   for ( int i = 0; i < nDim; i++ ) {
+  //     relative_VertexCoordinates_Intermediate.row( i ).array() -= centerCoordinates_Intermediate( i );
+  //   }
+
+  //   VertexCoordinatesSized relative_vertexCoordinates_Deformed = dx_dY * relative_VertexCoordinates_Intermediate;
+
+  //   VertexCoordinatesSized vertexCoordinates_Deformed;
+  //   for ( int i = 0; i < nDim; i++ ) {
+  //     vertexCoordinates_Deformed.row( i ).array() = relative_vertexCoordinates_Deformed.row( i ).array() +
+  //                                                   _centerCoordinates_Undeformed( i ) + _centerDisplacement( i );
+  //   }
+
+  //   _vertexDisplacements_Intermediate = vertexCoordinates_Deformed - _vertexCoordinates_Undeformed;
+  // }
+
+  /// That will later go to general subdomain particle.
   template < int nDim, int nVertices >
-  void DisplacementParticleSQCNIxSDI< nDim, nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
-  {
-
-    // CoordinatesSized centerCoordinates_Undeformed = _geoElement.N( { 0, 0 } ) *
-    //                                                 _vertexCoordinates_Undeformed.transpose();
-
-    const auto       dx_dY = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( _dx_dY_center.data() );
-    CoordinatesSized centerCoordinates_Intermediate;
-    getCenterCoordinates( centerCoordinates_Intermediate.data() );
-
-    VertexCoordinatesSized relative_VertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
-                                                                     _vertexDisplacements_Intermediate;
-    for ( int i = 0; i < nDim; i++ ) {
-      relative_VertexCoordinates_Intermediate.row( i ).array() -= centerCoordinates_Intermediate( i );
-    }
-
-    VertexCoordinatesSized relative_vertexCoordinates_Deformed = dx_dY * relative_VertexCoordinates_Intermediate;
-
-    VertexCoordinatesSized vertexCoordinates_Deformed;
-    for ( int i = 0; i < nDim; i++ ) {
-      vertexCoordinates_Deformed.row( i ).array() = relative_vertexCoordinates_Deformed.row( i ).array() +
-                                                    _centerCoordinates_Undeformed( i ) + _centerDisplacement( i );
-    }
-
-    _vertexDisplacements_Intermediate = vertexCoordinates_Deformed - _vertexCoordinates_Undeformed;
-  }
-
-  template < int nDim, int nVertices >
-
   void DisplacementParticleSQCNIxSDI< nDim, nVertices >::assignMeshfreeKernelFunctions(
     const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions )
   {
@@ -759,147 +667,60 @@ namespace Marmot::Meshfree {
     _assignedKernelFunctions = kernelFunctions;
     _nNodes                  = kernelFunctions.size();
 
-    // This should go to prepare yourself!
-    const VertexCoordinatesSized vertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
-                                                                  _vertexDisplacements_Intermediate;
+    for ( size_t mpNumber = 0; mpNumber < _subDomains.size(); mpNumber++ ) {
 
-    const auto vertexCoordinatesDeformed3x3 = _compute3x3From2x2( vertexCoordinates_Intermediate );
-    const auto subSmoothingDomains          = _split3x3ToSubParticles( vertexCoordinatesDeformed3x3 );
+      auto& sd = _subDomains[mpNumber];
 
-    _subIntegrationDomains.clear();
+      const auto [N, dN_dY] = evaluateShapeFunctionsForParticleDomain( sd.particleDomain );
 
-    for ( size_t mpNumber = 0; mpNumber < _mps.size(); mpNumber++ ) {
+      CoordinatesSized mpCenter;
+      sd.materialPoint->getCoordinatesAtCenter( mpCenter.data() );
 
-      auto& mp = _mps[mpNumber];
+      sd.N     = N;
+      sd.dN_dY = dN_dY;
 
-      const auto& smoothingDomain = subSmoothingDomains[mpNumber];
+      sd.T     = N;
+      sd.dT_dY = dN_dY;
 
-      const auto [N, dN_dY] = evaluateShapeFunctionsForVertexShapedDomain( smoothingDomain );
-
-      CoordinatesSized center;
-      mp->getCoordinatesAtCenter( center.data() );
-
-      auto sd = SubIntegrationDomain{ .N                       = N,
-                                      .dN_dY                   = dN_dY,
-                                      .T                       = N,
-                                      .dT_dY                   = dN_dY,
-                                      .V_IntermediateReference = mp->getVolumeUndeformed() *
-                                                                 Fastor::determinant( mp->dY_dX() ),
-                                      .center_IntermediateReference = center };
-
-      //
       sd.P.resize( _nVCIConstraints );
       sd.P_Gradient.resize( _nVCIConstraints, nDim );
 
-      Math::computeMonomialBasis( _vciOrder, sd.center_IntermediateReference, sd.P );
-      Math::computeMonomialBasisGradient( _vciOrder, sd.center_IntermediateReference, sd.P_Gradient );
-
-      _subIntegrationDomains.push_back( sd );
+      Math::computeMonomialBasis( _vciOrder, mpCenter, sd.P );
+      Math::computeMonomialBasisGradient( _vciOrder, mpCenter, sd.P_Gradient );
     }
   }
 
   template < int nDim, int nVertices >
-
   std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > DisplacementParticleSQCNIxSDI< nDim, nVertices >::
-    evaluateShapeFunctionsForVertexShapedDomain( const VertexCoordinatesSized& vertexCoordinates ) const
+    evaluateShapeFunctionsForParticleDomain( const ParticleDomain< nDim, nVertices >& particleDomain ) const
 
   {
 
-    int nNodes = _assignedKernelFunctions.size();
+    Eigen::Matrix< double, nDim, 1 > coords;
+    // Use the center of the provided particleDomain
+    coords = particleDomain.getCenterCoordinates();
 
-    const auto center = getCenterFromVertices( vertexCoordinates );
+    Eigen::MatrixXd N     = Eigen::MatrixXd::Zero( 1, this->_nNodes );
+    Eigen::MatrixXd dN_dY = Eigen::MatrixXd::Zero( nDim, this->_nNodes );
 
-    Eigen::MatrixXd N( 1, nNodes );
-    N.setZero();
-    Eigen::MatrixXd dN_dY( nDim, nNodes );
-    dN_dY.setZero();
+    // Compute N at the particle center (from GenericParticle)
+    this->_meshfreeApproximation.computeShapeFunctions( coords.data(), this->_assignedKernelFunctions, N.data() );
 
-    _meshfreeApproximation.computeShapeFunctions( center.data(), _assignedKernelFunctions, N.data() );
+    // Compute dN_dY using the SQCNI approach (boundary integral over smoothing domain)
+    Eigen::MatrixXd smooth_NBoundary( 1, this->_nNodes );
+    for ( int i = 0; i < particleDomain.getNumberOfFaces(); i++ ) {
 
-    Eigen::MatrixXd NBoundary( 1, nNodes );
+      auto smoothing_evaluation_point = particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
+      auto smoothing_n_dA             = particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
 
-    for ( int i = 0; i < nVertices; i++ ) {
-
-      Eigen::Vector2d t;
-      Eigen::Vector2d n;
-      Eigen::Vector2d segmentCenter;
-      t             = ( vertexCoordinates.col( ( i + 1 ) % nVertices ) - vertexCoordinates.col( i ) );
-      segmentCenter = ( vertexCoordinates.col( ( i + 1 ) % nVertices ) + vertexCoordinates.col( i ) ) / 2;
-      n << t( 1 ), -t( 0 );
-
-      _meshfreeApproximation.computeShapeFunctions( segmentCenter.data(), _assignedKernelFunctions, NBoundary.data() );
-
-      dN_dY += n * NBoundary;
+      this->_meshfreeApproximation.computeShapeFunctions( smoothing_evaluation_point.data(),
+                                                          this->_assignedKernelFunctions,
+                                                          smooth_NBoundary.data() );
+      dN_dY += smoothing_n_dA * smooth_NBoundary;
     }
-
-    dN_dY /= getSmoothingVolume( vertexCoordinates );
+    dN_dY /= particleDomain.getSmoothingVolume();
 
     return std::make_tuple( N, dN_dY );
-  }
-
-  template < int nDim, int nVertices >
-  Eigen::Matrix< double, nDim, 9 > DisplacementParticleSQCNIxSDI< nDim, nVertices >::_compute3x3From2x2(
-    const Eigen::Matrix< double, nDim, nVertices >& coordinates2x2 ) const
-  {
-
-    MarmotGeometryElement< nDim, 4 > _geometryElementForInterpolating;
-
-    Eigen::Matrix< double, nDim, 9 > coordinates3x3;
-    coordinates3x3.setZero();
-
-    for ( int i = 0; i < 4; i++ ) {
-      coordinates3x3.col( i ) = coordinates2x2.col( i );
-    }
-
-    coordinates3x3.col( 4 ) = _geometryElementForInterpolating.N( { 0, -1 } ) * coordinates2x2.transpose();
-    coordinates3x3.col( 5 ) = _geometryElementForInterpolating.N( { 1, 0 } ) * coordinates2x2.transpose();
-    coordinates3x3.col( 6 ) = _geometryElementForInterpolating.N( { 0, 1 } ) * coordinates2x2.transpose();
-    coordinates3x3.col( 7 ) = _geometryElementForInterpolating.N( { -1, 0 } ) * coordinates2x2.transpose();
-    coordinates3x3.col( 8 ) = _geometryElementForInterpolating.N( { 0, 0 } ) * coordinates2x2.transpose();
-
-    return coordinates3x3;
-  }
-
-  template < int nDim, int nVertices >
-  std::vector< Eigen::Matrix< double, nDim, nVertices > >
-
-  DisplacementParticleSQCNIxSDI< nDim, nVertices >::_split3x3ToSubParticles(
-    const Eigen::Matrix< double, nDim, 9 >& coordinates3x3 ) const
-  {
-
-    // (3)--(6)--(2)
-    //  | 4  | 3  |
-    // (7)--(8)--(5)
-    //  | 1  | 2  |
-    // (0)--(4)--(1)
-
-    Eigen::Matrix< double, nDim, nVertices > resParticle1;
-    Eigen::Matrix< double, nDim, nVertices > resParticle2;
-    Eigen::Matrix< double, nDim, nVertices > resParticle3;
-    Eigen::Matrix< double, nDim, nVertices > resParticle4;
-
-    resParticle1.col( 0 ) = coordinates3x3.col( 0 );
-    resParticle1.col( 1 ) = coordinates3x3.col( 4 );
-    resParticle1.col( 2 ) = coordinates3x3.col( 8 );
-    resParticle1.col( 3 ) = coordinates3x3.col( 7 );
-
-    resParticle2.col( 0 ) = coordinates3x3.col( 4 );
-    resParticle2.col( 1 ) = coordinates3x3.col( 1 );
-    resParticle2.col( 2 ) = coordinates3x3.col( 5 );
-    resParticle2.col( 3 ) = coordinates3x3.col( 8 );
-
-    resParticle3.col( 0 ) = coordinates3x3.col( 8 );
-    resParticle3.col( 1 ) = coordinates3x3.col( 5 );
-    resParticle3.col( 2 ) = coordinates3x3.col( 2 );
-
-    resParticle3.col( 3 ) = coordinates3x3.col( 6 );
-
-    resParticle4.col( 0 ) = coordinates3x3.col( 7 );
-    resParticle4.col( 1 ) = coordinates3x3.col( 8 );
-    resParticle4.col( 2 ) = coordinates3x3.col( 6 );
-    resParticle4.col( 3 ) = coordinates3x3.col( 3 );
-
-    return { resParticle1, resParticle2, resParticle3, resParticle4 };
   }
 
   template < int nDim, int nVertices >
@@ -918,12 +739,11 @@ namespace Marmot::Meshfree {
 
     constexpr int nodeBlockSize = nDim;
 
-    const VertexCoordinatesSized vertexCoordinates_Intermediate = _vertexCoordinates_Undeformed +
-                                                                  _vertexDisplacements_Intermediate;
-
+    // update central deformation and displacement.
     _dx_dY_center.eye();
+    _du_center.zeros();
     {
-      const auto [N, dN_dY] = evaluateShapeFunctionsForVertexShapedDomain( vertexCoordinates_Intermediate );
+      const auto [N, dN_dY] = evaluateShapeFunctionsForParticleDomain( _particleDomainMain );
 
       Tensor< double, nDim, nDim > du_dY( 0.0 );
       Tensor< double, nDim >       du( 0.0 );
@@ -940,14 +760,15 @@ namespace Marmot::Meshfree {
         du += N( B ) * dQU;
       }
       _dx_dY_center += du_dY;
-      _centerDisplacement += Eigen::Map< CoordinatesSized >( du.data() );
+      _du_center += du;
     }
 
-    for ( size_t mpNumber = 0; mpNumber < _mps.size(); mpNumber++ ) {
+    // for ( size_t mpNumber = 0; mpNumber < _mps.size(); mpNumber++ ) {
+    for ( auto& sd : _subDomains ) {
 
-      auto& mp = _mps[mpNumber];
+      // auto& mp = _mps[mpNumber];
 
-      const auto& subDomain = _subIntegrationDomains[mpNumber];
+      // const auto& subDomain = _subIntegrationDomains[mpNumber];
 
       Tensor< double, nDim > du( 0.0 );
 
@@ -957,9 +778,8 @@ namespace Marmot::Meshfree {
 
         const int idxB_u = nodeBlockSize * B;
 
-        const double N_B     = subDomain.N( B );
-        const auto   dN_B_dY = Tensor< double, nDim >(
-          subDomain.dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
+        const double N_B     = sd.N( B );
+        const auto   dN_B_dY = Tensor< double, nDim >( sd.dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
 
         const auto dQU = Tensor< double, nDim >( dQ + idxB_u );
 
@@ -968,14 +788,14 @@ namespace Marmot::Meshfree {
         du_dY += einsum< i, j >( dQU, dN_B_dY );
       }
 
-      mp->prepareYourself( timeNew, dT );
-      mp->incrementDeformation( du, du_dY );
-      mp->computeYourself( timeNew, dT );
+      sd.materialPoint->prepareYourself( timeNew, dT );
+      sd.materialPoint->incrementDeformation( du, du_dY );
+      sd.materialPoint->computeYourself( timeNew, dT );
 
-      const double density0 = mp->getDensityUndeformed();
+      const double density0 = sd.materialPoint->getDensityUndeformed();
 
-      auto v = mp->getVelocity();
-      auto a = mp->getAcceleration();
+      auto v = sd.materialPoint->getVelocity();
+      auto a = sd.materialPoint->getAcceleration();
 
       Tensor< double, nDim, nDim > da_ddu( 0.0 );
       Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
@@ -985,18 +805,18 @@ namespace Marmot::Meshfree {
                                                                this->_newmark_beta,
                                                                this->_newmark_gamma,
                                                                da_ddu.data() );
-      mp->setVelocity( v );
-      mp->setAcceleration( a );
+      sd.materialPoint->setVelocity( v );
+      sd.materialPoint->setAcceleration( a );
 
       Tensor< double, nDim > r_U( 0.0 );
 
       Tensor< double, nDim, nDim > k_UU( 0.0 );
 
-      const auto& S = mp->response.S;
+      const auto& S = sd.materialPoint->response.S;
 
-      const double V0 = mp->getVolumeUndeformed();
+      const double V0 = sd.materialPoint->getVolumeUndeformed();
 
-      const auto& t = mp->tangents;
+      const auto& t = sd.materialPoint->tangents;
 
       Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
       Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
@@ -1004,9 +824,9 @@ namespace Marmot::Meshfree {
       // clang-format off
       for ( int A = 0; A < _nNodes; A++ ) {
 
-        const double T_A = subDomain.T( A );
-        const auto                   dT_A_dY = TensorMap< const double, nDim >( subDomain.dT_dY.col( A ).data() );
-        const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( mp->dx_dY() ), dT_A_dY );
+        const double T_A = sd.T( A );
+        const auto                   dT_A_dY = TensorMap< const double, nDim >( sd.dT_dY.col( A ).data() );
+        const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( sd.materialPoint->dx_dY() ), dT_A_dY );
 
         const int idxA_u = nodeBlockSize * A;
         r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
@@ -1023,9 +843,9 @@ namespace Marmot::Meshfree {
 
           const int idxB_u = nodeBlockSize * B;
 
-          const double                 N_B     = subDomain.N( B );
-          const auto dN_B_dY = TensorMap< const double, nDim >( subDomain.dN_dY.col(B).data() );
-          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( mp->dx_dY() ), dN_B_dY ) );
+          const double                 N_B     = sd.N( B );
+          const auto dN_B_dY = TensorMap< const double, nDim >( sd.dN_dY.col(B).data() );
+          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( sd.materialPoint->dx_dY() ), dN_B_dY ) );
 
           // aux stiffness tensors
           const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY ) );
