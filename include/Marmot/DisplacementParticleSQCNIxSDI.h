@@ -79,11 +79,10 @@ namespace Marmot::Meshfree {
     int    _nVCIConstraints;
 
     const MarmotMeshfreeApproximation& _meshfreeApproximation;
-    //
     using JacobianSized = Eigen::Matrix< double, nDim, nDim >;
 
-    CoordinatesSized _centerDisplacement;
-    JacobianSized    _centralDeformationGradient;
+    Eigen::Map< CoordinatesSized > _centerDisplacement;
+    Eigen::Map< JacobianSized >    _centralDeformationGradient;
 
     TensorDD _dx_dY_center;
     TensorD  _du_center;
@@ -183,6 +182,9 @@ namespace Marmot::Meshfree {
         sd.materialPoint->initializeYourself();
       }
 
+      _centerDisplacement.setZero();
+      _centralDeformationGradient.setIdentity();
+
       _dx_dY_center.eye();
       _du_center.zeros();
     };
@@ -239,8 +241,6 @@ namespace Marmot::Meshfree {
     // That goes to the generic sdi particle
     virtual void acceptStateAndPosition() override
     {
-      // std::cout << "Accepting state and position for DisplacementParticleSQCNIxSDI" << std::endl;
-
       _centerDisplacement += Eigen::Matrix< double, nDim, 1 >( _du_center.data() );
       _du_center.zeros();
 
@@ -265,6 +265,9 @@ namespace Marmot::Meshfree {
     {
       int nStateVars = 0;
 
+      nStateVars += nDim;        // center displacement
+      nStateVars += nDim * nDim; // central deformation gradient
+
       for ( const auto& sd : _subDomains ) {
         nStateVars += sd.materialPoint->getNumberOfRequiredStateVars();
       }
@@ -276,6 +279,12 @@ namespace Marmot::Meshfree {
     {
 
       int offset = 0;
+
+      new ( &_centerDisplacement ) Eigen::Map< CoordinatesSized >( stateVars + offset );
+      offset += nDim;
+
+      new ( &_centralDeformationGradient ) Eigen::Map< JacobianSized >( stateVars + offset );
+      offset += nDim * nDim;
 
       for ( auto& sd : _subDomains ) {
         int nStateVarsSubParticle = sd.materialPoint->getNumberOfRequiredStateVars();
@@ -451,10 +460,8 @@ namespace Marmot::Meshfree {
       _meshfreeApproximation( approximation ),
       _vciOrder( 0 ),
       _particleDomainMain( vertexCoordinates, nVertexCoordinates, smoothingVolumeUpdateType ),
-      _centerDisplacement( CoordinatesSized::Zero() ),
-      _centralDeformationGradient( JacobianSized::Identity() )
-  // _dx_dY_center( TensorDD::eye() ),
-  // _du_center( TensorD::zero() )
+      _centerDisplacement( nullptr ),
+      _centralDeformationGradient( nullptr )
   {
     _dx_dY_center.eye();
     _du_center.zeros();
@@ -704,12 +711,7 @@ namespace Marmot::Meshfree {
       _du_center += du;
     }
 
-    // for ( size_t mpNumber = 0; mpNumber < _mps.size(); mpNumber++ ) {
     for ( auto& sd : _subDomains ) {
-
-      // auto& mp = _mps[mpNumber];
-
-      // const auto& subDomain = _subIntegrationDomains[mpNumber];
 
       Tensor< double, nDim > du( 0.0 );
 
