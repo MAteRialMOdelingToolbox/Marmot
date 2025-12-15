@@ -29,15 +29,16 @@
 #include "Marmot/MarmotMeshfreeQuadHexCell.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <vector> // Explicitly include vector for clarity
 
 namespace Marmot::Meshfree {
 
   /**
    * @brief A generic class for cell-based particle geometry, independent of physics or meshfree approximation.
-   *
-   * This class provides the geometric representation and operations for particles
-   * defined by a cell (e.g., quadrilateral, hexahedral). It manages undeformed,
-   * intermediate, and smoothing domain geometries.
+   * @details This class provides the geometric representation and operations for particles
+   *          defined by a cell (e.g., quadrilateral, hexahedral). It manages undeformed,
+   *          intermediate, and smoothing domain geometries. It also defines how the
+   *          smoothing domain's deformation is updated based on different strategies.
    *
    * @tparam nDim The number of dimensions (e.g., 2 for 2D, 3 for 3D).
    * @tparam nVertices The number of vertices defining the particle's geometry.
@@ -46,8 +47,13 @@ namespace Marmot::Meshfree {
   class ParticleDomain {
 
   public:
-    // Enums and Typedefs
-    using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >;
+    // Type aliases for improved readability
+    using CoordinatesSized       = Eigen::Matrix< double, nDim, 1 >; ///< Alias for an Eigen vector storing coordinates.
+    using VertexCoordinatesSized = Eigen::Matrix< double, nDim, nVertices >; ///< Alias for Eigen matrix storing vertex
+                                                                             ///< coordinates.
+    using DeformationGradientSized = Eigen::Matrix< double, nDim, nDim >;    ///< Alias for Eigen matrix storing
+                                                                             ///< deformation gradient.
+    using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< Alias for the underlying Lagrange cell type.
 
     /**
      * @brief Defines how the smoothing domain's volume is updated.
@@ -59,27 +65,24 @@ namespace Marmot::Meshfree {
       RotationAndPrincipalStretch ///< Update using the rotation R and principal stretches from U.
     };
 
-    // Constructor
     /**
      * @brief Constructs a new ParticleDomain object.
-     *
-     * @param vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices).
+     * @param vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
+     * configuration.
      * @param nVertexCoordinates The total number of coordinate values (nDim * nVertices).
      * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
      */
-    ParticleDomain( const double*                      vertexCoordinates,
-                    int                                nVertexCoordinates,
-                    const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
+    ParticleDomain( const double*                   vertexCoordinates,
+                    int                             nVertexCoordinates,
+                    const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
-    // Public Member Variables
-    SmoothingDomainUpdateType smoothingVolumeUpdateType; ///< Type of update for the smoothing volume.
+    const SmoothingDomainUpdateType smoothingVolumeUpdateType; ///< Type of update for the smoothing volume.
 
-    // Public Methods (Getters)
     /**
-     * @brief Gets the coordinates of the particle's vertices in the intermediate configuration.
+     * @brief Gets the coordinates of the particle's vertices in the intermediate (deformed) configuration.
      * @return A const reference to an Eigen matrix containing the vertex coordinates.
      */
-    const Eigen::Matrix<double, nDim, nVertices>& getGeometryDeformedVertexCoordinates() const
+    const VertexCoordinatesSized& getGeometryDeformedVertexCoordinates() const
     {
       return _cellForGeometryDeformed.nodes();
     }
@@ -88,10 +91,7 @@ namespace Marmot::Meshfree {
      * @brief Gets the coordinates of the particle's smoothing domain vertices.
      * @return A const reference to an Eigen matrix containing the vertex coordinates.
      */
-    const Eigen::Matrix<double, nDim, nVertices>& getSmoothingVertexCoordinates() const
-    {
-      return _cellForSmoothing.nodes();
-    }
+    const VertexCoordinatesSized& getSmoothingVertexCoordinates() const { return _cellForSmoothing.nodes(); }
 
     /**
      * @brief Gets the number of vertices defining the particle.
@@ -106,24 +106,24 @@ namespace Marmot::Meshfree {
     std::string getParticleShape() const { return _cellForGeometryUndeformed.getCellShape(); }
 
     /**
-     * @brief Gets the coordinates of a specific face's center in the intermediate configuration.
+     * @brief Gets the coordinates of a specific face's center in the intermediate (deformed) configuration.
      *        This refers to the faces of the *deformed geometry*.
-     * @param faceID The ID of the face.
+     * @param faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the face center coordinates.
      */
-    Eigen::Matrix<double, nDim, 1> getFaceCenterCoordinates( int faceID ) const
+    CoordinatesSized getFaceCenterCoordinates( int faceID ) const
     {
       return _cellForGeometryDeformed.getFaceCenterCoordinates( faceID );
     }
 
     /**
      * @brief Gets the coordinates of a specific evaluation point (face center of the smoothing domain).
-     * @param faceID The ID of the face (1-based).
+     * @param faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the evaluation point coordinate.
      */
-    Eigen::Matrix<double, nDim, 1> getSmoothingDomainFaceCenterCoordinates(int faceID) const
+    CoordinatesSized getSmoothingDomainFaceCenterCoordinates( int faceID ) const
     {
-        return _cellForSmoothing.getFaceCenterCoordinates(faceID);
+      return _cellForSmoothing.getFaceCenterCoordinates( faceID );
     }
 
     /**
@@ -139,13 +139,10 @@ namespace Marmot::Meshfree {
     double getSmoothingVolume() const { return _cellForSmoothing.volume(); }
 
     /**
-     * @brief Gets the center coordinates of the particle in the intermediate configuration.
+     * @brief Gets the center coordinates of the particle in the intermediate (deformed) configuration.
      * @return An Eigen vector representing the center coordinates.
      */
-    Eigen::Matrix<double, nDim, 1> getCenterCoordinates() const
-    {
-      return _cellForGeometryDeformed.centroid();
-    }
+    CoordinatesSized getCenterCoordinates() const { return _cellForGeometryDeformed.centroid(); }
 
     /**
      * @brief Gets the undeformed volume of the particle.
@@ -157,7 +154,7 @@ namespace Marmot::Meshfree {
      * @brief Provides a const reference to the vertex displacements of the smoothing domain.
      * @return A const reference to an Eigen matrix containing the vertex displacements.
      */
-    const Eigen::Matrix<double, nDim, nVertices>& getSmoothingDomainVertexDisplacements() const
+    const VertexCoordinatesSized& getSmoothingDomainVertexDisplacements() const
     {
       return _vertex_displacements_smoothingDomain;
     }
@@ -165,50 +162,49 @@ namespace Marmot::Meshfree {
     /**
      * @brief Returns the boundary surface vector for a given face ID, from the *deformed geometry*.
      *        This is typically used for distributed loads.
-     * @param faceID The ID of the face.
+     * @param faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the boundary surface vector.
      */
-    Eigen::Matrix<double, nDim, 1> getFaceBoundaryVector(int faceID) const
+    CoordinatesSized getFaceBoundaryVector( int faceID ) const
     {
-        return _cellForGeometryDeformed.boundarySurfaceVector(faceID);
+      return _cellForGeometryDeformed.boundarySurfaceVector( faceID );
     }
 
-  
-  inline std::vector<int> getSubCellIndicesOnParentFace( int parentFaceId ) const
-  {
-        return _cellForGeometryUndeformed.getSubCellIndicesOnParentFace( parentFaceId );
-  }
+    /**
+     * @brief Returns the indices of sub-cells that lie on a given parent face.
+     * @param parentFaceId The ID of the parent face.
+     * @return A vector of integers representing the sub-cell indices.
+     */
+    inline std::vector< int > getSubCellIndicesOnParentFace( int parentFaceId ) const
+    {
+      return _cellForGeometryUndeformed.getSubCellIndicesOnParentFace( parentFaceId );
+    }
 
     /**
      * @brief Returns the boundary surface vector for a given face ID, from the *smoothing domain*.
      *        This is typically used for computing smoothed shape function gradients.
-     * @param faceID The ID of the face.
+     * @param faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the boundary surface vector.
      */
-    Eigen::Matrix<double, nDim, 1> getSmoothingBoundarySurfaceVector(int faceID) const
+    CoordinatesSized getSmoothingBoundarySurfaceVector( int faceID ) const
     {
-        return _cellForSmoothing.boundarySurfaceVector(faceID);
+      return _cellForSmoothing.boundarySurfaceVector( faceID );
     }
 
     /**
      * @brief Returns the second moments of area/volume for the deformed geometry.
      * @return An Eigen matrix representing the second moments.
      */
-    Eigen::Matrix<double, nDim, nDim> getGeometrySecondMoments() const
-    {
-        return _cellForGeometryDeformed.secondMoments();
-    }
+    DeformationGradientSized getGeometrySecondMoments() const { return _cellForGeometryDeformed.secondMoments(); }
 
-    // Public Methods (Setters/Updaters)
     /**
      * @brief Updates the particle's position and volume to the reference intermediate configuration.
-     * @param F_physics The physics-specific deformation gradient.
+     * @param F_physics The physics-specific deformation gradient (total deformation gradient).
      * @param centerDisplacement The uniform displacement of the particle's center.
      */
-    void acceptStateAndPosition( const Eigen::Matrix< double, nDim, nDim >& F_physics,
-                                 const Eigen::Matrix< double, nDim, 1 >&    centerDisplacement)
+    void acceptStateAndPosition( const DeformationGradientSized& F_physics, const CoordinatesSized& centerDisplacement )
     {
-      _cellForGeometryDeformed.updateVertexCoordinates( _cellForGeometryUndeformed.nodes());
+      _cellForGeometryDeformed.updateVertexCoordinates( _cellForGeometryUndeformed.nodes() );
       _cellForGeometryDeformed.applyDeformationGradient( F_physics );
       _cellForGeometryDeformed.applyUniformDisplacement( centerDisplacement );
 
@@ -223,38 +219,32 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Uniformly subdivides the particle domain into smaller domains.
-     * @param levels The number of subdivision levels.
-     * @return A vector of ParticleDomain instances representing the subdivided particles.
+     * @details This method creates a vector of new `ParticleDomain` instances, each representing
+     *          a uniformly subdivided portion of the original undeformed particle domain.
+     * @return A vector of `ParticleDomain` instances representing the subdivided particles.
      */
-    std::vector< ParticleDomain<nDim, nVertices> > uniformSubdivided() const
+    std::vector< ParticleDomain > uniformSubdivided() const
     {
-        std::vector< ParticleDomain<nDim, nVertices> > subdividedDomains;
+      std::vector< ParticleDomain > subdividedDomains;
 
-        auto subdividedCells = _cellForGeometryUndeformed.uniformSubdivided();
+      auto subdividedCells = _cellForGeometryUndeformed.uniformSubdivided();
 
-        for (const auto& cell : subdividedCells)
-        {
-            ParticleDomain<nDim, nVertices> newDomain(
-                cell.nodes().data(),
-                nDim * nVertices,
-                smoothingVolumeUpdateType
-            );
-            subdividedDomains.push_back(newDomain);
-        }
+      for ( const auto& cell : subdividedCells ) {
+        ParticleDomain newDomain( cell.nodes().data(), nDim * nVertices, smoothingVolumeUpdateType );
+        subdividedDomains.push_back( newDomain );
+      }
 
-        return subdividedDomains;
+      return subdividedDomains;
     }
 
-    // Public Static Methods
     /**
      * @brief Computes the centroid coordinates from a given set of vertex coordinates.
      * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
      * @return An Eigen vector representing the centroid coordinates.
      */
-    static CoordinatesSized getCenterFromVertices(
-      const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates )
+    static CoordinatesSized getCenterFromVertices( const VertexCoordinatesSized& vertexCoordinates )
     {
-      MarmotLagrangeCell< nDim, nVertices > _lagrangeCell( vertexCoordinates );
+      LagrangeCellType _lagrangeCell( vertexCoordinates );
       return _lagrangeCell.centroid();
     }
 
@@ -263,38 +253,33 @@ namespace Marmot::Meshfree {
      * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
      * @return The computed volume.
      */
-    static double getVolumeFromVertices( const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates )
+    static double getVolumeFromVertices( const VertexCoordinatesSized& vertexCoordinates )
     {
-      MarmotLagrangeCell< nDim, nVertices > _lagrangeCell( vertexCoordinates );
+      LagrangeCellType _lagrangeCell( vertexCoordinates );
       return _lagrangeCell.volume();
     }
 
   protected:
-    // Protected Member Variables
-    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryUndeformed; ///< Cell representing the undeformed geometry.
-    MarmotLagrangeCell< nDim, nVertices > _cellForGeometryDeformed;   ///< Cell representing the intermediate geometry.
-    MarmotLagrangeCell< nDim, nVertices > _cellForSmoothing;          ///< Cell representing the smoothing domain.
+    LagrangeCellType _cellForGeometryUndeformed; ///< Cell representing the undeformed geometry.
+    LagrangeCellType _cellForGeometryDeformed;   ///< Cell representing the intermediate (deformed) geometry.
+    LagrangeCellType _cellForSmoothing;          ///< Cell representing the smoothing domain.
 
-    Eigen::Matrix< double, nDim, nVertices > _vertex_displacements_smoothingDomain; ///< Displacements of vertices in the smoothing domain.
+    VertexCoordinatesSized
+      _vertex_displacements_smoothingDomain; ///< Displacements of vertices in the smoothing domain.
 
-    // Protected Methods
     /**
      * @brief Computes the total deformation tensor for the smoothing domain based on the configured update type.
      * @param F_physics The physics-specific deformation gradient.
      * @return An Eigen matrix representing the deformation tensor for the smoothing domain.
      */
-    Eigen::Matrix< double, nDim, nDim > _computeSmoothingDomainDeformationTensorTotal(
-      const Eigen::Matrix< double, nDim, nDim >& F_physics ) const
+    DeformationGradientSized _computeSmoothingDomainDeformationTensorTotal(
+      const DeformationGradientSized& F_physics ) const
     {
-      Eigen::Matrix< double, nDim, nDim > F_smoothing;
+      DeformationGradientSized F_smoothing;
 
       switch ( smoothingVolumeUpdateType ) {
-      case SmoothingDomainUpdateType::None:
-        F_smoothing.setIdentity();
-        break;
-      case SmoothingDomainUpdateType::DeformationGradient:
-        F_smoothing = F_physics;
-        break;
+      case SmoothingDomainUpdateType::None: F_smoothing.setIdentity(); break;
+      case SmoothingDomainUpdateType::DeformationGradient: F_smoothing = F_physics; break;
       case SmoothingDomainUpdateType::RotationOnly: {
         Eigen::JacobiSVD< Eigen::MatrixXd > svd;
         svd.compute( F_physics, Eigen::ComputeFullU | Eigen::ComputeFullV );
@@ -304,10 +289,10 @@ namespace Marmot::Meshfree {
       case SmoothingDomainUpdateType::RotationAndPrincipalStretch: {
         Eigen::JacobiSVD< Eigen::MatrixXd > svd;
         svd.compute( F_physics, Eigen::ComputeFullU | Eigen::ComputeFullV );
-        Eigen::Matrix< double, nDim, nDim > R = svd.matrixU() * svd.matrixV().transpose();
-        Eigen::Matrix< double, nDim, nDim > U_ = Eigen::Matrix< double, nDim, nDim >::Identity();
-        U_.diagonal()                          = ( R.transpose() * F_physics ).diagonal();
-        F_smoothing = R * U_;
+        DeformationGradientSized R  = svd.matrixU() * svd.matrixV().transpose();
+        DeformationGradientSized U_ = DeformationGradientSized::Identity();
+        U_.diagonal()               = ( R.transpose() * F_physics ).diagonal();
+        F_smoothing                 = R * U_;
         break;
       }
       }
@@ -315,16 +300,25 @@ namespace Marmot::Meshfree {
     }
   };
 
+  /**
+   * @brief Constructor for ParticleDomain.
+   * @tparam nDim The number of dimensions.
+   * @tparam nVertices The number of vertices.
+   * @param vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
+   * configuration.
+   * @param nVertexCoordinates The total number of coordinate values (nDim * nVertices).
+   * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
+   */
   template < int nDim, int nVertices >
-  ParticleDomain< nDim, nVertices >::ParticleDomain(
-    const double*                      vertexCoordinates,
-    int                                nVertexCoordinates,
-    const SmoothingDomainUpdateType    smoothingVolumeUpdateType )
-    : _cellForGeometryUndeformed( vertexCoordinates, nVertexCoordinates ),
+  ParticleDomain< nDim, nVertices >::ParticleDomain( const double*                   vertexCoordinates,
+                                                     int                             nVertexCoordinates,
+                                                     const SmoothingDomainUpdateType smoothingVolumeUpdateType )
+
+    : smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
+      _cellForGeometryUndeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForGeometryDeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForSmoothing( vertexCoordinates, nVertexCoordinates ),
-      smoothingVolumeUpdateType( smoothingVolumeUpdateType )
-      // _vertexCoordinates_Undeformed( Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >( vertexCoordinates ) )
+      _vertex_displacements_smoothingDomain( VertexCoordinatesSized::Zero() )
   {
   }
 
