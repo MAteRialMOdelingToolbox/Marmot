@@ -379,15 +379,25 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     /**
      * @brief Subdivides the element uniformly into smaller elements.
-     * @param levels The number of subdivision levels.
      * @return A vector of new MarmotLagrangeCell instances representing the subdivided elements.
      * @throws std::logic_error if not implemented for the specific element type.
      * @note This method must be specialized for each concrete element type.
      */
-    std::vector< Self > uniformSubdivided( int levels ) const
+    std::vector< Self > uniformSubdivided( ) const
     {
+      // The actual subdivision logic is handled by the specialized versions below.
       throw std::logic_error( "uniformSubdivided not implemented for this (nDim,nNodes)" );
     }
+
+    /**
+     * @brief Retrieves the indices of sub-cells that lie on a specified face of the parent cell
+     *        after uniform subdivision.
+     * @param parentFaceId The ID of the parent cell's face (1-based, Abaqus convention).
+     * @return A vector of indices of the sub-cells in the flat list returned by `uniformSubdivided`.
+     * @throws std::out_of_range if parentFaceId is invalid.
+     * @throws std::logic_error if not implemented for the specific element type.
+     */
+    std::vector<int> getSubCellIndicesOnParentFace( int parentFaceId) const;
 
     // ------------------------------------------------------------------------
     // Ensight Gold cell shape name (specialized for supported element types)
@@ -428,6 +438,76 @@ namespace Marmot::Meshfree {
 
   private:
     Mat _nodes; ///< Matrix storing the physical coordinates of the element's nodes.
+
+    // Helper to get global grid coordinates for a sub-cell
+    // This function determines the (i,j) or (i,j,k) grid position
+    // of a sub-cell given its flat index in the `uniformSubdivided` vector
+    // The coordinates are 0-indexed, from 0 to (2^levels - 1) along each dimension.
+    // NOTE: This helper is now only relevant for levels=1, simplifying its usage.
+    std::array<int, nDim> getGlobalGridCoords(int cell_idx ) const
+    {
+
+      std::array<int, nDim> coords;
+      coords.fill( 0 );
+
+      // The cell_idx directly maps to the local (i,j) or (i,j,k) index.
+      int local_child_idx         = cell_idx; // For levels=1, cell_idx is the direct index
+
+      if ( nDim == 2 ) {
+        // Quad4 specific local mapping: (0,0), (1,0), (1,1), (0,1)
+        int local_i, local_j;
+        if ( local_child_idx == 0 ) { // Bottom-left
+          local_i = 0;
+          local_j = 0;
+        }
+        else if ( local_child_idx == 1 ) { // Bottom-right
+          local_i = 1;
+          local_j = 0;
+        }
+        else if ( local_child_idx == 2 ) { // Top-right
+          local_i = 1;
+          local_j = 1;
+        }
+        else { // local_child_idx == 3 (Top-left)
+          local_i = 0;
+          local_j = 1;
+        }
+        coords[0] = local_i;
+        coords[1] = local_j;
+      }
+      else { // nDim == 3
+        // Hex8 specific local mapping: (0,0,0), (1,0,0), (1,1,0), (0,1,0), (0,0,1), (1,0,1), (1,1,1), (0,1,1)
+        int local_i, local_j, local_k;
+        if ( local_child_idx == 0 ) { // bottom-front-left
+          local_i = 0; local_j = 0; local_k = 0;
+        }
+        else if ( local_child_idx == 1 ) { // bottom-front-right
+          local_i = 1; local_j = 0; local_k = 0;
+        }
+        else if ( local_child_idx == 2 ) { // bottom-back-right
+          local_i = 1; local_j = 1; local_k = 0;
+        }
+        else if ( local_child_idx == 3 ) { // bottom-back-left
+          local_i = 0; local_j = 1; local_k = 0;
+        }
+        else if ( local_child_idx == 4 ) { // top-front-left
+          local_i = 0; local_j = 0; local_k = 1;
+        }
+        else if ( local_child_idx == 5 ) { // top-front-right
+          local_i = 1; local_j = 0; local_k = 1;
+        }
+        else if ( local_child_idx == 6 ) { // top-back-right
+          local_i = 1; local_j = 1; local_k = 1;
+        }
+        else { // local_child_idx == 7 (top-back-left)
+          local_i = 0; local_j = 1; local_k = 1;
+        }
+        coords[0] = local_i;
+        coords[1] = local_j;
+        coords[2] = local_k;
+      }
+      return coords;
+    }
   };
 
   // ============================================================================
@@ -533,47 +613,74 @@ namespace Marmot::Meshfree {
 
   /**
    * @brief Specialization of uniformSubdivided for Quad4.
-   * @param levels The number of subdivision levels. Each level quadruples the number of elements.
    * @return A vector of new Quad4 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided( int levels ) const
+  inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided( ) const
   {
-    std::vector< Self > elems = { *this };
 
-    for ( int l = 0; l < levels; ++l ) {
-      std::vector< Self > next;
-      next.reserve( elems.size() * 4 );
+    std::vector< Self > next;
+    next.reserve( 4 );
 
-      for ( const auto& e : elems ) {
-        Vec s;
-        Vec grid[3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
+    Vec s;
+    Vec grid[3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
 
-        for ( int j = 0; j < 3; ++j )
-          for ( int i = 0; i < 3; ++i ) {
-            s << -1.0 + i, -1.0 + j; // Natural coordinates (-1,-1), (0,-1), (1,-1), etc.
-            grid[i][j] = e.mapToPhysical( s );
-          }
-
-        auto makeChild = [&]( int i0, int j0 ) {
-          Mat m;
-          m.col( 0 ) = grid[i0][j0];
-          m.col( 1 ) = grid[i0 + 1][j0];
-          m.col( 2 ) = grid[i0 + 1][j0 + 1];
-          m.col( 3 ) = grid[i0][j0 + 1];
-          return Self( m );
-        };
-
-        next.push_back( makeChild( 0, 0 ) ); // bottom-left
-        next.push_back( makeChild( 1, 0 ) ); // bottom-right
-        next.push_back( makeChild( 1, 1 ) ); // top-right
-        next.push_back( makeChild( 0, 1 ) ); // top-left
+    for ( int j = 0; j < 3; ++j)
+      for ( int i = 0; i < 3; ++i ) {
+        s << -1.0 + i, -1.0 + j; // Natural coordinates (-1,-1), (0,-1), (1,-1), etc.
+        grid[i][j] = mapToPhysical( s );
       }
 
-      elems.swap( next );
-    }
+    auto makeChild = [&]( int i0, int j0 ) {
+      Mat m;
+      m.col( 0 ) = grid[i0][j0];
+      m.col( 1 ) = grid[i0 + 1][j0];
+      m.col( 2 ) = grid[i0 + 1][j0 + 1];
+      m.col( 3 ) = grid[i0][j0 + 1];
+      return Self( m );
+    };
 
-    return elems;
+    next.push_back( makeChild( 0, 0 ) ); // bottom-left
+    next.push_back( makeChild( 1, 0 ) ); // bottom-right
+    next.push_back( makeChild( 1, 1 ) ); // top-right
+    next.push_back( makeChild( 0, 1 ) ); // top-left
+
+    return next;
+  }
+
+  /**
+   * @brief Specialization of getSubCellIndicesOnParentFace for Quad4.
+   * @param parentFaceId The ID of the parent cell's face (1-4, Abaqus convention).
+   * @return A vector of indices of the sub-cells in the flat list returned by `uniformSubdivided`.
+   * @throws std::out_of_range if parentFaceId is not between 1 and 4.
+   */
+  template <>
+  inline std::vector<int> MarmotLagrangeCell< 2, 4 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  {
+
+    std::vector<int> indices;
+
+    switch ( parentFaceId ) {
+        case 1: // S1: Bottom (eta=-1) -> sub-cells 0 and 1 are on this face
+            indices.push_back(0);
+            indices.push_back(1);
+            break;
+        case 2: // S2: Right (xi=+1) -> sub-cells 1 and 2 are on this face
+            indices.push_back(1);
+            indices.push_back(2);
+            break;
+        case 3: // S3: Top (eta=+1) -> sub-cells 2 and 3 are on this face
+            indices.push_back(2);
+            indices.push_back(3);
+            break;
+        case 4: // S4: Left (xi=-1) -> sub-cells 0 and 3 are on this face
+            indices.push_back(0);
+            indices.push_back(3);
+            break;
+        default:
+            throw std::out_of_range( "Quad4 parentFaceId must be 1..4 (Abaqus)" );
+    }
+    return indices;
   }
 
   /**
@@ -743,56 +850,103 @@ namespace Marmot::Meshfree {
 
   /**
    * @brief Specialization of uniformSubdivided for Hex8.
-   * @param levels The number of subdivision levels. Each level octuples the number of elements.
    * @return A vector of new Hex8 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided( int levels ) const
+  inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided( ) const
   {
-    std::vector< Self > elems = { *this };
 
-    for ( int l = 0; l < levels; ++l ) {
-      std::vector< Self > next;
-      next.reserve( elems.size() * 8 );
+    std::vector< Self > next;
+    next.reserve( 8 );
 
-      for ( const auto& e : elems ) {
-        Vec s;
-        Vec grid[3][3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
+    Vec s;
+    Vec grid[3][3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
 
-        for ( int k = 0; k < 3; ++k )
-          for ( int j = 0; j < 3; ++j )
-            for ( int i = 0; i < 3; ++i ) {
-              s << -1.0 + i, -1.0 + j, -1.0 + k; // Natural coordinates (-1,-1,-1), (0,-1,-1), etc.
-              grid[i][j][k] = e.mapToPhysical( s );
-            }
+    for ( int k = 0; k < 3; ++k )
+      for ( int j = 0; j < 3; ++j )
+        for ( int i = 0; i < 3; ++i ) {
+          s << -1.0 + i, -1.0 + j, -1.0 + k; // Natural coordinates (-1,-1,-1), (0,-1,-1), etc.
+          grid[i][j][k] = mapToPhysical( s );
+        }
 
-        auto makeChild = [&]( int i0, int j0, int k0 ) {
-          Mat m;
-          m.col( 0 ) = grid[i0][j0][k0];
-          m.col( 1 ) = grid[i0 + 1][j0][k0];
-          m.col( 2 ) = grid[i0 + 1][j0 + 1][k0];
-          m.col( 3 ) = grid[i0][j0 + 1][k0];
-          m.col( 4 ) = grid[i0][j0][k0 + 1];
-          m.col( 5 ) = grid[i0 + 1][j0][k0 + 1];
-          m.col( 6 ) = grid[i0 + 1][j0 + 1][k0 + 1];
-          m.col( 7 ) = grid[i0][j0 + 1][k0 + 1];
-          return Self( m );
-        };
+    auto makeChild = [&]( int i0, int j0, int k0 ) {
+      Mat m;
+      m.col( 0 ) = grid[i0][j0][k0];
+      m.col( 1 ) = grid[i0 + 1][j0][k0];
+      m.col( 2 ) = grid[i0 + 1][j0 + 1][k0];
+      m.col( 3 ) = grid[i0][j0 + 1][k0];
+      m.col( 4 ) = grid[i0][j0][k0 + 1];
+      m.col( 5 ) = grid[i0 + 1][j0][k0 + 1];
+      m.col( 6 ) = grid[i0 + 1][j0 + 1][k0 + 1];
+      m.col( 7 ) = grid[i0][j0 + 1][k0 + 1];
+      return Self( m );
+    };
 
-        next.push_back( makeChild( 0, 0, 0 ) ); // bottom-front-left
-        next.push_back( makeChild( 1, 0, 0 ) ); // bottom-front-right
-        next.push_back( makeChild( 1, 1, 0 ) ); // bottom-back-right
-        next.push_back( makeChild( 0, 1, 0 ) ); // bottom-back-left
-        next.push_back( makeChild( 0, 0, 1 ) ); // top-front-left
-        next.push_back( makeChild( 1, 0, 1 ) ); // top-front-right
-        next.push_back( makeChild( 1, 1, 1 ) ); // top-back-right
-        next.push_back( makeChild( 0, 1, 1 ) ); // top-back-left
-      }
+    next.push_back( makeChild( 0, 0, 0 ) ); // bottom-front-left
+    next.push_back( makeChild( 1, 0, 0 ) ); // bottom-front-right
+    next.push_back( makeChild( 1, 1, 0 ) ); // bottom-back-right
+    next.push_back( makeChild( 0, 1, 0 ) ); // bottom-back-left
+    next.push_back( makeChild( 0, 0, 1 ) ); // top-front-left
+    next.push_back( makeChild( 1, 0, 1 ) ); // top-front-right
+    next.push_back( makeChild( 1, 1, 1 ) ); // top-back-right
+    next.push_back( makeChild( 0, 1, 1 ) ); // top-back-left
 
-      elems.swap( next );
+    return next;
+  }
+
+  /**
+   * @brief Specialization of getSubCellIndicesOnParentFace for Hex8.
+   * @param parentFaceId The ID of the parent cell's face (1-6, Abaqus convention).
+   * @return A vector of indices of the sub-cells in the flat list returned by `uniformSubdivided`.
+   * @throws std::out_of_range if parentFaceId is not between 1 and 6.
+   */
+  template <>
+  inline std::vector<int> MarmotLagrangeCell< 3, 8 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  {
+
+    std::vector<int> indices;
+
+    switch ( parentFaceId ) {
+        case 1: // S1: Bottom (z=-1) -> sub-cells 0, 1, 2, 3 are on this face
+            indices.push_back(0);
+            indices.push_back(1);
+            indices.push_back(2);
+            indices.push_back(3);
+            break;
+        case 2: // S2: Top (z=+1) -> sub-cells 4, 5, 6, 7 are on this face
+            indices.push_back(4);
+            indices.push_back(5);
+            indices.push_back(6);
+            indices.push_back(7);
+            break;
+        case 3: // S3: Front (eta=-1) -> sub-cells 0, 1, 4, 5 are on this face
+            indices.push_back(0);
+            indices.push_back(1);
+            indices.push_back(4);
+            indices.push_back(5);
+            break;
+        case 4: // S4: Right (xi=+1) -> sub-cells 1, 2, 5, 6 are on this face
+            indices.push_back(1);
+            indices.push_back(2);
+            indices.push_back(5);
+            indices.push_back(6);
+            break;
+        case 5: // S5: Back (eta=+1) -> sub-cells 2, 3, 6, 7 are on this face
+            indices.push_back(2);
+            indices.push_back(3);
+            indices.push_back(6);
+            indices.push_back(7);
+            break;
+        case 6: // S6: Left (xi=-1) -> sub-cells 0, 3, 4, 7 are on this face
+            indices.push_back(0);
+            indices.push_back(3);
+            indices.push_back(4);
+            indices.push_back(7);
+            break;
+        default:
+            throw std::out_of_range( "Hex8 parentFaceId must be 1..6 (Abaqus)" );
     }
-
-    return elems;
+    return indices;
   }
 
   /**
