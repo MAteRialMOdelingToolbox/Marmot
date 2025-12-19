@@ -98,9 +98,7 @@ namespace Marmot::Meshfree {
 
     Eigen::Map< CoordinatesSized > _centerDisplacement;              ///< Mapped central displacement vector.
     Eigen::Map< JacobianSized >    _centralDeformationGradient;      ///< Mapped central deformation gradient tensor.
-
-    TensorDD _dx_dY_center;                        ///< Incremental deformation gradient at the center.
-    TensorD  _du_center;                           ///< Incremental displacement at the center.
+    Eigen::Map< JacobianSized >    _centralDeformationGradientDelta;      ///< Mapped central deformation gradient tensor.
 
     KernelFunctionVector _assignedKernelFunctions; ///< Pointers to the kernel functions assigned to this particle.
 
@@ -219,9 +217,7 @@ namespace Marmot::Meshfree {
     {
       _centerDisplacement.setZero();
       _centralDeformationGradient.setIdentity();
-
-      _dx_dY_center.eye();
-      _du_center.zeros();
+      _centralDeformationGradientDelta.setIdentity();
 
       initializeYourselfOnSubdomains();
     };
@@ -265,17 +261,12 @@ namespace Marmot::Meshfree {
      */
     virtual void acceptStateAndPosition() override
     {
-      _centerDisplacement += CoordinatesSized( _du_center.data() );
-      _du_center.zeros();
-
-      Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > > dx_dY_map(
-        _dx_dY_center.data() ); // Use RowMajor for Fastor compatibility
-      _centralDeformationGradient = dx_dY_map * _centralDeformationGradient;
-      _dx_dY_center.eye();
+      _centralDeformationGradient = _centralDeformationGradientDelta * _centralDeformationGradient;
+      _centralDeformationGradientDelta.setIdentity();
 
       _particleDomainMain.acceptStateAndPosition( _centralDeformationGradient, _centerDisplacement );
-
-      _subDomains = _particleDomainMain.uniformSubdivided();
+      for ( auto& sd : _subDomains )
+        sd.acceptStateAndPosition( _centralDeformationGradient, _centerDisplacement );
 
       acceptStateAndPositionOnSubdomains();
     };
@@ -295,6 +286,7 @@ namespace Marmot::Meshfree {
 
       nStateVars += nDim;        // center displacement
       nStateVars += nDim * nDim; // central deformation gradient
+      nStateVars += nDim * nDim; // central deformation gradient delta
 
       nStateVars += getNumberOfRequiredStateVarsOnSubdomains();
 
@@ -321,6 +313,9 @@ namespace Marmot::Meshfree {
       offset += nDim;
 
       new ( &_centralDeformationGradient ) Eigen::Map< JacobianSized >( stateVars + offset );
+      offset += nDim * nDim;
+
+      new ( &_centralDeformationGradientDelta ) Eigen::Map< JacobianSized >( stateVars + offset );
       offset += nDim * nDim;
 
       if ( offset > nStateVars ) {
@@ -594,11 +589,9 @@ namespace Marmot::Meshfree {
       _meshfreeApproximation( approximation ),
       _particleDomainMain( vertexCoordinates, nVertexCoordinates, smoothingVolumeUpdateType ),
       _centerDisplacement( nullptr ),        // Initialized to nullptr, will be re-mapped
-      _centralDeformationGradient( nullptr ) // Initialized to nullptr, will be re-mapped
+      _centralDeformationGradient( nullptr ), // Initialized to nullptr, will be re-mapped
+      _centralDeformationGradientDelta( nullptr ) // Initialized to nullptr, will be re-mapped
   {
-    _dx_dY_center.eye();
-    _du_center.zeros();
-
     _subDomains = _particleDomainMain.uniformSubdivided();
     _subDomainShapeFunctions.reserve( _subDomains.size() ); // Pre-allocate memory
     for ( size_t i = 0; i < _subDomains.size(); i++ ) {
@@ -811,8 +804,9 @@ namespace Marmot::Meshfree {
     using namespace Marmot::FastorIndices;
     constexpr int nodeBlockSize = nDim;
     // update central deformation and displacement.
+    TensorD _du_center( 0.0 );
+    TensorDD _dx_dY_center;
     _dx_dY_center.eye();
-    _du_center.zeros();
     {
       const auto [N, dN_dY] = evaluateShapeFunctionsAndDerivativesForParticleDomain( _particleDomainMain );
 
@@ -835,6 +829,13 @@ namespace Marmot::Meshfree {
       _dx_dY_center += du_dY;
       _du_center += du;
     }
+
+      _centerDisplacement += CoordinatesSized( _du_center.data() );
+
+      Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > > dx_dY_map(
+        _dx_dY_center.data() ); // Use RowMajor for Fastor compatibility
+
+    _centralDeformationGradientDelta = dx_dY_map;
 
     computePhysicsKernelsOnSubdomains( dQ, fInt, dFInt_ddQ, timeNew, dT );
   }
