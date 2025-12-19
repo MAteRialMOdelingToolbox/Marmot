@@ -325,8 +325,10 @@ namespace Marmot::Meshfree {
 
       // apply Nanson's formula
 
-      const Tensor< double, nDim, nDim > deltaFInv = inverse( this->_dx_dY_center );
-      const double                       deltaJ    = determinant( this->_dx_dY_center );
+      const Tensor< double, nDim, nDim > deltaF( this->_centralDeformationGradientDelta.data(), Fastor::RowMajor );
+
+      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
+      const double                       deltaJ    = determinant( deltaF );
 
       const TensorD f = deltaJ * transpose( deltaFInv ) % fY;
 
