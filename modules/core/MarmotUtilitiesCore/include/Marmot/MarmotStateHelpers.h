@@ -92,6 +92,24 @@ struct StateMapper< Eigen::Map< Eigen::MatrixXd > > {
   }
 };
 
+/**
+ * @struct StateMapper<Eigen::Map<Eigen::Matrix<Scalar, Rows, Cols>>>
+ * @brief Specialization of StateMapper for fixed-size Eigen::Map types.
+ */
+template < typename Scalar, int Rows, int Cols >
+struct StateMapper< Eigen::Map< Eigen::Matrix< Scalar, Rows, Cols > > > {
+  template < class... Args >
+  static Eigen::Map< Eigen::Matrix< Scalar, Rows, Cols > > map( double* ptr, std::size_t n, Args&&... )
+  {
+    // Check if the expected total size matches the provided size 'n'
+    if ( int( n ) != Rows * Cols )
+      throw std::runtime_error( "Size mismatch for fixed-size Eigen::Map." );
+
+    // Map the raw pointer to the Eigen fixed-size matrix map
+    return Eigen::Map< Eigen::Matrix< Scalar, Rows, Cols > >( ptr, Rows, Cols );
+  }
+};
+
 class MarmotStateLayoutDynamic {
 public:
   struct VarInfo {
