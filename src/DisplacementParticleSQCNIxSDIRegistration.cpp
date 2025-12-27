@@ -54,6 +54,53 @@ namespace Marmot::Meshfree {
                                DisplacementParticleSQCNIxSDI< 3, 8 >::SmoothingDomainUpdateType::DeformationGradient );
                       } );
 
+  const static bool DisplacementParticleRS_SNNIxSDI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
+    registerParticle( "DisplacementRS-SNNIxSDI/3D/Hexa",
+                      []( int                                                  cellID,
+                          const double*                                        nodeCoordinates,
+                          int                                                  sizeNodeCoordinates,
+                          double                                               volume,
+                          const std::string&                                   materialName,
+                          const double*                                        materialProperties,
+                          int                                                  sizeMaterialProperties,
+                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+                        -> Marmot::Meshfree::MarmotParticle* {
+                        return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,
+                                                                          nodeCoordinates,
+                                                                          sizeNodeCoordinates,
+                                                                          volume,
+                                                                          materialName,
+                                                                          materialProperties,
+                                                                          sizeMaterialProperties,
+                                                                          approximation,
+                                                                          DisplacementParticleSQCNIxSDI< 3, 8 >::
+                                                                            SmoothingDomainUpdateType::
+                                                                              RotationAndPrincipalStretch );
+                      } );
+
+  const static bool DisplacementParticleR_SNNIxSDI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
+    registerParticle( "DisplacementR-SNNIxSDI/3D/Hexa",
+                      []( int                                                  cellID,
+                          const double*                                        nodeCoordinates,
+                          int                                                  sizeNodeCoordinates,
+                          double                                               volume,
+                          const std::string&                                   materialName,
+                          const double*                                        materialProperties,
+                          int                                                  sizeMaterialProperties,
+                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+                        -> Marmot::Meshfree::MarmotParticle* {
+                        return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,
+                                                                          nodeCoordinates,
+                                                                          sizeNodeCoordinates,
+                                                                          volume,
+                                                                          materialName,
+                                                                          materialProperties,
+                                                                          sizeMaterialProperties,
+                                                                          approximation,
+                                                                          DisplacementParticleSQCNIxSDI< 3, 8 >::
+                                                                            SmoothingDomainUpdateType::RotationOnly );
+                      } );
+
   const static bool DisplacementParticleSNNIxSDI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
     registerParticle( "DisplacementSNNIxSDI/3D/Hexa",
                       []( int                                                  cellID,
@@ -65,17 +112,16 @@ namespace Marmot::Meshfree {
                           int                                                  sizeMaterialProperties,
                           const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
                         -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxSDI<
-                          3,
-                          8 >( cellID,
-                               nodeCoordinates,
-                               sizeNodeCoordinates,
-                               volume,
-                               materialName,
-                               materialProperties,
-                               sizeMaterialProperties,
-                               approximation,
-                               DisplacementParticleSQCNIxSDI< 3, 8 >::SmoothingDomainUpdateType::None);
+                        return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,
+                                                                          nodeCoordinates,
+                                                                          sizeNodeCoordinates,
+                                                                          volume,
+                                                                          materialName,
+                                                                          materialProperties,
+                                                                          sizeMaterialProperties,
+                                                                          approximation,
+                                                                          DisplacementParticleSQCNIxSDI< 3, 8 >::
+                                                                            SmoothingDomainUpdateType::None );
                       } );
 
 } // namespace Marmot::Meshfree
