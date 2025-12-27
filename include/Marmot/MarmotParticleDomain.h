@@ -160,6 +160,15 @@ namespace Marmot::Meshfree {
     }
 
     /**
+     * @brief Provides a const reference to the vertex displacements of the geometry.
+     * @return A const reference to an Eigen matrix containing the vertex displacements.
+     */
+    const VertexCoordinatesSized& getGeometryDeformedVertexDisplacements() const
+    {
+      return _vertex_displacements_geometry;
+    }
+
+    /**
      * @brief Returns the boundary surface vector for a given face ID, from the *deformed geometry*.
      *        This is typically used for distributed loads.
      * @param faceID The ID of the face (1-based index).
@@ -209,6 +218,8 @@ namespace Marmot::Meshfree {
       _cellForGeometryDeformed.applyUniformDisplacement( centerDisplacement );
 
       const auto FSmoothing = _computeSmoothingDomainDeformationTensorTotal( F_physics );
+
+      _vertex_displacements_geometry = _cellForGeometryDeformed.nodes() - _cellForGeometryUndeformed.nodes();
 
       _cellForSmoothing.updateVertexCoordinates( _cellForGeometryUndeformed.nodes() );
       _cellForSmoothing.applyDeformationGradient( FSmoothing );
@@ -265,7 +276,8 @@ namespace Marmot::Meshfree {
     LagrangeCellType _cellForSmoothing;          ///< Cell representing the smoothing domain.
 
     VertexCoordinatesSized
-      _vertex_displacements_smoothingDomain; ///< Displacements of vertices in the smoothing domain.
+      _vertex_displacements_smoothingDomain;               ///< Displacements of vertices in the smoothing domain.
+    VertexCoordinatesSized _vertex_displacements_geometry; ///< Displacements of vertices of the geometry.
 
     /**
      * @brief Computes the total deformation tensor for the smoothing domain based on the configured update type.
@@ -318,7 +330,8 @@ namespace Marmot::Meshfree {
       _cellForGeometryUndeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForGeometryDeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForSmoothing( vertexCoordinates, nVertexCoordinates ),
-      _vertex_displacements_smoothingDomain( VertexCoordinatesSized::Zero() )
+      _vertex_displacements_smoothingDomain( VertexCoordinatesSized::Zero() ),
+      _vertex_displacements_geometry( VertexCoordinatesSized::Zero() )
   {
   }
 
