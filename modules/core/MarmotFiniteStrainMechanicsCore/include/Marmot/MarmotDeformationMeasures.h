@@ -195,7 +195,7 @@ namespace Marmot::ContinuumMechanics {
       /** @brief Computes the deformed normal projection tensor and its derivative with respect to the inverse
        * deformation gradient.
        * @param FInv Inverse of the deformation gradient tensor
-       * @param N_dA0 Undeformed normal vector scaled by undeformed area
+       * @param N_x_dA0 Undeformed normal vector scaled by undeformed area
        * @return A pair containing the deformed normal projection tensor and its derivative with respect to FInv
        *
        * The deformed normal projection tensor is defined as:
@@ -207,7 +207,7 @@ namespace Marmot::ContinuumMechanics {
       template < int nDim >
       inline std::pair< Fastor::Tensor< double, nDim, nDim >, Fastor::Tensor< double, nDim, nDim, nDim, nDim > > deformedNormalProjectionTensor(
         const Fastor::Tensor< double, nDim, nDim >& FInv,
-        const Fastor::Tensor< double, nDim >&       N_dA0 )
+        const Fastor::Tensor< double, nDim >&       N_x_dA0 )
       {
 
         using namespace Fastor;
@@ -215,7 +215,7 @@ namespace Marmot::ContinuumMechanics {
         using TensorDDd   = Tensor< double, nDim, nDim >;
         using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
 
-        const auto [n, dn_dFInv] = deformedNormalVectorFromUndeformedSurfaceVector< nDim >( FInv, N_dA0 );
+        const auto [n, dn_dFInv] = deformedNormalVectorFromUndeformedSurfaceVector< nDim >( FInv, N_x_dA0 );
         const TensorDDd n_ij     = outer( n, n );
 
         const TensorDDDDd aux         = outer( n, dn_dFInv );
