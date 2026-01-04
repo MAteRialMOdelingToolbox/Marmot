@@ -625,17 +625,7 @@ namespace Marmot::Meshfree {
 
     CoordinatesSized _Y_eigen; // Use alias
 
-    // The evaluation point depends: For real SQCNI, we do it on the smoothing domain boundary, for all others we do in
-    // in the center of the deformed geometry
-
-    if ( particleDomain.smoothingVolumeUpdateType == SmoothingDomainUpdateType::DeformationGradient )
-      _Y_eigen = particleDomain.getSmoothingDomainFaceCenterCoordinates( boundaryFaceID );
-    else
-      throw std::invalid_argument(
-        "not implemented: getIntermediateConfigurationBoundaryVector for this SmoothingDomainUpdateType" ); // More
-                                                                                                            // specific
-                                                                                                            // error
-                                                                                                            // message
+    _Y_eigen = particleDomain.getFaceCenterCoordinates( boundaryFaceID );
 
     // N_dAY (boundary surface vector for distributed load) comes from the deformed geometry
     auto _N_dAY_eigen = particleDomain.getFaceBoundaryVector( boundaryFaceID );
