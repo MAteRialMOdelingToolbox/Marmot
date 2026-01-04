@@ -257,5 +257,5 @@ namespace Marmot::ContinuumMechanics {
 
     } // namespace FirstOrderDerived
 
-  } // namespace DeformationMeasures
+  }   // namespace DeformationMeasures
 } // namespace Marmot::ContinuumMechanics
