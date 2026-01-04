@@ -155,16 +155,15 @@ namespace Marmot::ContinuumMechanics {
       template < int nDim >
       std::pair< Fastor::Tensor< double, nDim >, Fastor::Tensor< double, nDim, nDim, nDim > > deformedNormalVectorFromUndeformedSurfaceVector(
         const Fastor::Tensor< double, nDim, nDim >& FInv,
-        const Fastor::Tensor< double, nDim >&       N_x_dA0
-        )
+        const Fastor::Tensor< double, nDim >&       N_x_dA0 )
       {
 
         using namespace Fastor;
         using namespace FastorIndices;
 
-        using TensorDd    = Tensor< double, nDim >;
-        using TensorDDd   = Tensor< double, nDim, nDim >;
-        using TensorDDDd  = Tensor< double, nDim, nDim, nDim >;
+        using TensorDd   = Tensor< double, nDim >;
+        using TensorDDd  = Tensor< double, nDim, nDim >;
+        using TensorDDDd = Tensor< double, nDim, nDim, nDim >;
 
         const static TensorDDd Eye = []() {
           TensorDDd I;
@@ -173,21 +172,22 @@ namespace Marmot::ContinuumMechanics {
         }();
 
         const double    detJ        = 1. / determinant( FInv );
-        const TensorDDd dDetJ_dFInv = -1 * std::pow( detJ, 2 ) * transpose ( inverse ( ( FInv ) ) ); // derivative of detJ w.r.t. FInv
+        const TensorDDd dDetJ_dFInv = -1 * std::pow( detJ, 2 ) *
+                                      transpose( inverse( ( FInv ) ) ); // derivative of detJ w.r.t. FInv
 
         const TensorDd
-                        NTilde        = einsum< Index< 0 >, Index< 0, 1 > >( N_x_dA0,
+                         NTilde        = einsum< Index< 0 >, Index< 0, 1 > >( N_x_dA0,
                                                         FInv ); // deformed normal vector scaled by deformed area
         const TensorDDDd dNTilde_dFInv = einsum< Index< 0 >, Index< 1, 2 >, OIndex< 1, 0, 2 > >( N_x_dA0, Eye );
 
-        const TensorDd   n_x_dA        = detJ * NTilde;
+        const TensorDd   n_x_dA               = detJ * NTilde;
         const TensorDDDd NTilde_x_dDetJ_dFInv = outer( NTilde, dDetJ_dFInv );
-        const TensorDDDd dn_x_dA_dFInv = NTilde_x_dDetJ_dFInv + detJ * dNTilde_dFInv;
+        const TensorDDDd dn_x_dA_dFInv        = NTilde_x_dDetJ_dFInv + detJ * dNTilde_dFInv;
 
         const TensorDd  n          = n_x_dA / norm( n_x_dA ); // deformed normal vector
         const TensorDDd dn_dn_x_dA = ( Eye - outer( n, n ) ) * ( 1. / norm( n_x_dA ) );
 
-        const TensorDDDd dn_dFInv = einsum< ij, jkl> ( dn_dn_x_dA, dn_x_dA_dFInv );
+        const TensorDDDd dn_dFInv = einsum< ij, jkl >( dn_dn_x_dA, dn_x_dA_dFInv );
 
         return { n, dn_dFInv };
       }
@@ -215,7 +215,7 @@ namespace Marmot::ContinuumMechanics {
         using TensorDDd   = Tensor< double, nDim, nDim >;
         using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
 
-        const auto [n, dn_dFInv] = deformedNormalVectorFromUndeformedSurfaceVector<nDim>( FInv, N_dA0 );
+        const auto [n, dn_dFInv] = deformedNormalVectorFromUndeformedSurfaceVector< nDim >( FInv, N_dA0 );
         const TensorDDd n_ij     = outer( n, n );
 
         const TensorDDDDd aux         = outer( n, dn_dFInv );
@@ -250,12 +250,12 @@ namespace Marmot::ContinuumMechanics {
         using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
 
         const TensorDDd   FInv     = inverse( F );
-        const TensorDDDDd  dFInv_dF = -einsum< Ik, Ki, to_IikK >( FInv, FInv);
+        const TensorDDDDd dFInv_dF = -einsum< Ik, Ki, to_IikK >( FInv, FInv );
 
         return { FInv, dFInv_dF };
       }
 
     } // namespace FirstOrderDerived
 
-  } // namespace DeformationMeasures
+  }   // namespace DeformationMeasures
 } // namespace Marmot::ContinuumMechanics
