@@ -305,12 +305,13 @@ namespace Marmot::Meshfree {
 
       constexpr int nodeBlockSize = nDim;
 
-      const auto [N_dAY, Y_N]        = this->getIntermediateConfigurationBoundaryVector( boundaryFaceID,
+      const auto [N_dAY, Y_N] = this->getIntermediateConfigurationBoundaryVector( boundaryFaceID,
                                                                                   this->_particleDomainMain );
-      const auto [T_Boundary, dN_dY] = this->evaluateShapeFunctionsAndDerivativesOnFace( this->_particleDomainMain,
-                                                                                         boundaryFaceID );
 
-      const auto dT_dY = dN_dY;
+      const auto T_Boundary = this->evaluateShapeFunctionsOnFace( this->_particleDomainMain, boundaryFaceID );
+
+      // const auto dT_dY = dN_dY;
+      const auto [_, dN_dY] = this->evaluateShapeFunctionsAndDerivativesForParticleDomain( this->_particleDomainMain );
 
       TensorD fY = N_dAY * load_[0];
 
@@ -324,11 +325,9 @@ namespace Marmot::Meshfree {
       Eye.eye();
 
       // apply Nanson's formula
-
-      const Tensor< double, nDim, nDim > deltaF( this->_centralDeformationGradientDelta.data(), Fastor::RowMajor );
-
-      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-      const double                       deltaJ    = determinant( deltaF );
+      const TensorDD deltaF    = transpose( TensorDD( this->_centralDeformationGradientDelta.data() ) );
+      const TensorDD deltaFInv = inverse( deltaF );
+      const double   deltaJ    = determinant( deltaF );
 
       const TensorD f = deltaJ * transpose( deltaFInv ) % fY;
 
@@ -351,7 +350,7 @@ namespace Marmot::Meshfree {
 
         for ( int B = 0; B < this->_nNodes; B++ ) {
           const int  idxB_u  = nodeBlockSize * B;
-          const auto dN_B_dY = TensorMap< const double, nDim >( dN_dY.col( B ).data() );
+          const auto dN_B_dY = Tensor< double, nDim >( dN_dY.col( B ).data() );
 
           const Tensor< double, nDim, nDim > df_ddQU_B = T_Boundary( A ) * einsum< ijk, k >( df_dDeltaF, dN_B_dY );
 
