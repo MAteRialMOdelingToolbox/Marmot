@@ -23,8 +23,8 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map.</para>
-<para>The exponential map is given by   <formula id="16">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
-\]</formula> where <formula id="17">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para>The exponential map is given by   <formula id="21">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+\]</formula> where <formula id="22">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>

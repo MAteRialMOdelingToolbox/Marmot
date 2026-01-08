@@ -49,7 +49,7 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="1">\[  \
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="53" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="53" bodyend="57"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="54" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="54" bodyend="58"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_deformation_measures_8h_1a4d845ae8668dfc80fdb1bca26aa360f4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -96,13 +96,13 @@ The left Cauchy-Green deformation tensor is defined as:   <formula id="4">\[  \b
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="74" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="74" bodyend="78"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="75" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="75" bodyend="79"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="33" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="34" column="3"/>
   </compounddef>
 </doxygen>
