@@ -53,6 +53,17 @@ namespace Marmot {
     using TensorMap333d  = Fastor::TensorMap< double, 3, 3, 3 >;
     using TensorMap3333d = Fastor::TensorMap< double, 3, 3, 3, 3 >;
 
+    using Tensor9d  = Fastor::Tensor< double, 9 >;
+    using Tensor99d = Fastor::Tensor< double, 9, 9 >;
+
+    template < typename T >
+    using Tensor9t = Fastor::Tensor< T, 9 >;
+    template < typename T >
+    using Tensor99t = Fastor::Tensor< T, 9, 9 >;
+
+    using TensorMap9d  = Fastor::TensorMap< double, 9 >;
+    using TensorMap99d = Fastor::TensorMap< double, 9, 9 >;
+
     namespace Spatial3D {
       inline const Tensor33d I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                             Fastor::ColumnMajor );
