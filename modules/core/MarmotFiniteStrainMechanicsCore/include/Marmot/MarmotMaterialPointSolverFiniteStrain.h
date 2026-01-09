@@ -126,9 +126,9 @@ public:
             std::cout << "," << std::endl << "    ";
           else if ( i != stateVars.size() - 1 )
             std::cout << ", ";
-    }
+        }
         std::cout << "]" << std::endl;
-    }
+      }
     }
   };
 

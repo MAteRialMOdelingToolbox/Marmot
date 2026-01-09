@@ -19,9 +19,9 @@ MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain( st
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();
   // initialize state variables
-  stateVars         = Eigen::VectorXd::Zero( nStateVars );
+  stateVars = Eigen::VectorXd::Zero( nStateVars );
   // initialize material
-  material->initializeYourself(stateVars.data(), nStateVars);
+  material->initializeYourself( stateVars.data(), nStateVars );
   // store initial state
   _initialStateVars = stateVars;
   stateVarsTemp     = stateVars;

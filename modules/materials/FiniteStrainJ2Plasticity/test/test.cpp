@@ -536,7 +536,8 @@ void testWithMPSolver()
   stressTarget( 1, 0 ) = 1.57863970e2;
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-8 ),
-                           "I-5: Material Point Solver simple shear test failed for FiniteStrainJ2Plasticity material in " +
+                           "I-5: Material Point Solver simple shear test failed for FiniteStrainJ2Plasticity material "
+                           "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -546,7 +547,7 @@ int main()
                                                        testDeformationResponse,
                                                        testAlgorithmicTangent,
                                                        testRotation,
-                                                        testWithMPSolver };
+                                                       testWithMPSolver };
 
   executeTestsAndCollectExceptions( tests );
 
