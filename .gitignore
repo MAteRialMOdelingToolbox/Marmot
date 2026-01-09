@@ -2,3 +2,5 @@
 *.bak
 build
 doc/doc_out
+*.o
+*.csv
