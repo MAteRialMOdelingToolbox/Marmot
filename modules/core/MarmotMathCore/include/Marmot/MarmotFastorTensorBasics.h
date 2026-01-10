@@ -34,10 +34,11 @@ namespace Marmot {
 
   namespace FastorStandardTensors {
 
-    using Tensor3d    = Fastor::Tensor< double, 3 >;
-    using Tensor33d   = Fastor::Tensor< double, 3, 3 >;
-    using Tensor333d  = Fastor::Tensor< double, 3, 3, 3 >;
-    using Tensor3333d = Fastor::Tensor< double, 3, 3, 3, 3 >;
+    using Tensor3d      = Fastor::Tensor< double, 3 >;
+    using Tensor33d     = Fastor::Tensor< double, 3, 3 >;
+    using Tensor333d    = Fastor::Tensor< double, 3, 3, 3 >;
+    using Tensor3333d   = Fastor::Tensor< double, 3, 3, 3, 3 >;
+    using Tensor333333d = Fastor::Tensor< double, 3, 3, 3, 3, 3, 3 >;
 
     template < typename T >
     using Tensor3t = Fastor::Tensor< T, 3 >;
@@ -218,6 +219,8 @@ namespace Marmot {
     using mnkB = Fastor::Index< m_, n_, k_, B_ >;
     using mnkL = Fastor::Index< m_, n_, k_, L_ >;
     using nB   = Fastor::Index< n_, B_ >;
+
+    using ijklmn = Fastor::Index< i_, j_, k_, l_, m_, n_ >;
 
     using to_IJKL = Fastor::OIndex< I_, J_, K_, L_ >;
     using to_IJkK = Fastor::OIndex< I_, J_, k_, K_ >;
