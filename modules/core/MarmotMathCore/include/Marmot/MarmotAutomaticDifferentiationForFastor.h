@@ -277,7 +277,6 @@ namespace Marmot {
         return d2F_dTdScalar;
       }
     } // namespace SecondOrder
-      //
     namespace ThirdOrder {
 
       /** @typedef tensor_to_scalar_function_type
