@@ -25,53 +25,57 @@
  * ---------------------------------------------------------------------
  */
 
-#include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotTypedefs.h"
+#pragma once
+#include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMaterialFiniteStrain.h"
 #include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 #pragma once
 
 namespace Marmot {
   namespace Solvers {
     /**
-     * @brief Solver for material point problems with hypo-elastic materials
+     * @brief Solver for material point problems with finite strain materials
      * @details This class implements a solver for material point problems
-     * using hypo-elastic material models. It supports loading steps with
-     * controlled strain and stress components, adaptive time stepping,
+     * using finite strain material models. It supports loading steps with
+     * controlled displacement gradient and stress components, adaptive time stepping,
      * and history recording.
      */
-    class MarmotMaterialPointSolverHypoElastic {
+    class MarmotMaterialPointSolverFiniteStrain {
 
     public:
       /**
        * @struct Step
        * @brief Struct to define a loading step
-       * @details Each step contains target strain and stress states,
+       * @details Each step contains targets for displacement gradient and stress states,
        * time information and time step control parameters.
        */
       struct Step {
-        Marmot::Vector6d strainIncrementTarget; ///< Target strain increment for the step
-        Marmot::Vector6d stressIncrementTarget; ///< Target stress increment for the step
-        Eigen::Vector< bool, 6 >
-          isStrainComponentControlled;          ///< Flags to indicate which strain components are controlled
-        Eigen::Vector< bool, 6 >
-               isStressComponentControlled;     ///< Flags to indicate which stress components are controlled
-        double timeStart     = 0.0;             ///< Start time of the step
-        double timeEnd       = 1.0;             ///< End time of the step
-        double dTStart       = 0.1;             ///< Initial time step size
-        double dTMin         = 1e-6;            ///< Minimum time step size
-        double dTMax         = 0.5;             ///< Maximum time step size
-        int    maxIncrements = 100;             ///< Maximum number of increments in the step
+        FastorStandardTensors::Tensor33d gradUIncrementTarget;  ///< Target displacement gradient increment for the step
+        FastorStandardTensors::Tensor33d stressIncrementTarget; ///< Target Kirchhoff stress increment for the step
+        FastorStandardTensors::Tensor33t< bool > isGradUComponentControlled; ///< Flags to indicate which displacement
+                                                                             ///< gradient components are controlled
+        FastorStandardTensors::Tensor33t< bool >
+               isStressComponentControlled; ///< Flags to indicate which stress components are controlled
+        double timeStart     = 0.0;         ///< Start time of the step
+        double timeEnd       = 1.0;         ///< End time of the step
+        double dTStart       = 0.1;         ///< Initial time step size
+        double dTMin         = 1e-6;        ///< Minimum time step size
+        double dTMax         = 0.5;         ///< Maximum time step size
+        int    maxIncrements = 100;         ///< Maximum number of increments in the step
 
         /**
-         * @brief Check that for each component, either strain or stress is controlled
+         * @brief Check that for each component, either deformation or stress is controlled
          * @throws std::runtime_error if the condition is not met
          */
         void checkControl() const
         {
-          for ( int i = 0; i < 6; i++ ) {
-            if ( isStrainComponentControlled[i] == isStressComponentControlled[i] ) {
+          for ( int i = 0; i < 9; i++ ) {
+            if ( reshape< 9 >( isGradUComponentControlled )[i] == reshape< 9 >( isStressComponentControlled )[i] ) {
               throw std::runtime_error(
-                "exactly one of strain or stress component must be controlled for each component." );
+                "exactly one of displacement gradient or stress component must be controlled for each component." );
             }
           }
         }
@@ -79,15 +83,15 @@ namespace Marmot {
       /**
        * @struct Increment
        * @brief Struct to define a loading increment
-       * @details Each increment contains strain and stress increments,
+       * @details Each increment contains displacement gradient and stress increments,
        * control flags, time information, and iteration limits.
        */
       struct Increment {
-        Marmot::Vector6d strainIncrement;   ///< Strain increment for the increment
-        Marmot::Vector6d stressIncrement;   ///< Stress increment for the increment
-        Eigen::Vector< bool, 6 >
-          isStrainComponentControlled;      ///< Flags to indicate which strain components are controlled
-        Eigen::Vector< bool, 6 >
+        FastorStandardTensors::Tensor9d         gradUIncrement; ///< Target displacement gradient increment for the step
+        FastorStandardTensors::Tensor9d         stressIncrement; ///< Target Kirchhoff stress increment for the step
+        FastorStandardTensors::Tensor9t< bool > isGradUComponentControlled; ///< Flags to indicate which displecement
+                                                                            ///< gradient components are controlled
+        FastorStandardTensors::Tensor9t< bool >
                isStressComponentControlled; ///< Flags to indicate which stress components are controlled
         double timeOld;                     ///< Old time at the beginning of the increment
         double dT;                          ///< Time step size for the increment
@@ -95,23 +99,41 @@ namespace Marmot {
       /**
        * @struct HistoryEntry
        * @brief Struct to record the history of the simulation
-       * @details Each entry contains time, stress, strain, and state variables.
+       * @details Each entry contains time, stress, deformation, and state variables.
        */
       struct HistoryEntry {
-        double           time;           ///< Time at the history entry
-        Marmot::Vector6d stress;         ///< Stress at the history entry
-        Marmot::Vector6d strain;         ///< Strain at the history entry
-        Marmot::Matrix6d dStressdStrain; ///< Material tangent at the history entry
-        Eigen::VectorXd  stateVars;      ///< State variables at the history entry
+        double                             time;      ///< Time at the history entry
+        FastorStandardTensors::Tensor33d   stress;    ///< Stress at the history entry
+        FastorStandardTensors::Tensor33d   F;         ///< deformation gradient at the history entry
+        FastorStandardTensors::Tensor3333d dTau_dF;   ///< Material tangent at the history entry
+        Eigen::VectorXd                    stateVars; ///< State variables at the history entry
 
         void print() const
         {
           std::cout.precision( 6 );
-          std::cout << std::scientific << "Time: " << time << std::endl;
-          std::cout << "  Stress:     " << stress.transpose() << std::endl;
-          std::cout << "  Strain:     " << strain.transpose() << std::endl;
-          std::cout << "  dStress_dStrain:\n" << dStressdStrain.transpose() << std::endl;
-          std::cout << "  State Vars: " << stateVars.transpose() << std::endl;
+          std::cout << std::scientific << "  Material state for time: " << time << std::endl;
+          std::cout << "  tau:" << std::endl;
+          std::cout << "   [" << stress( 0, 0 ) << ", " << stress( 0, 1 ) << ", " << stress( 0, 2 ) << std::endl;
+          std::cout << "    " << stress( 1, 0 ) << ", " << stress( 1, 1 ) << ", " << stress( 1, 2 ) << std::endl;
+          std::cout << "    " << stress( 2, 0 ) << ", " << stress( 2, 1 ) << ", " << stress( 2, 2 ) << "]" << std::endl;
+
+          std::cout << "\n  F:" << std::endl;
+          std::cout << "   [" << F( 0, 0 ) << ", " << F( 0, 1 ) << ", " << F( 0, 2 ) << std::endl;
+          std::cout << "    " << F( 1, 0 ) << ", " << F( 1, 1 ) << ", " << F( 1, 2 ) << std::endl;
+          std::cout << "    " << F( 2, 0 ) << ", " << F( 2, 1 ) << ", " << F( 2, 2 ) << "]" << std::endl;
+          if ( stateVars.size() > 0 ) {
+            std::cout << "\n  state variables: " << std::endl;
+            // print 3 per line
+            std::cout << "   [";
+            for ( int i = 0; i < stateVars.size(); i++ ) {
+              std::cout << stateVars[i];
+              if ( ( i + 1 ) % 3 == 0 )
+                std::cout << "," << std::endl << "    ";
+              else if ( i != stateVars.size() - 1 )
+                std::cout << ", ";
+            }
+            std::cout << "]" << std::endl;
+          }
         }
       };
 
@@ -121,21 +143,21 @@ namespace Marmot {
        * @details Contains parameters for controlling the solver's behavior.
        */
       struct SolverOptions {
-        int    maxIterations       = 25;    ///< Maximum number of iterations per increment
-        double residualTolerance   = 1e-10; ///< Convergence tolerance
-        double correctionTolerance = 1e-10; ///< Correction tolerance
+        int    maxIterations       = 25;    ///< Maximum number of iterations per increment (default: 25)
+        double residualTolerance   = 1e-10; ///< Convergence tolerance (default: 1e-10)
+        double correctionTolerance = 1e-10; ///< Correction tolerance (default: 1e-10)
       };
 
       /**
-       * @brief Constructor for the MarmotMaterialPointSolverHypoElastic class
-       * @param materialName Name of the hypo-elastic material model
+       * @brief Constructor for the MarmotMaterialPointSolverFiniteStrain class
+       * @param materialName Name of the finite strain material model
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
        */
-      MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
-                                            double*              materialProperties,
-                                            int                  nMaterialProperties,
-                                            const SolverOptions& options );
+      MarmotMaterialPointSolverFiniteStrain( std::string&         materialName,
+                                             double*              materialProperties,
+                                             int                  nMaterialProperties,
+                                             const SolverOptions& options );
 
       /**
        * @brief Add a loading step to the solver
@@ -159,7 +181,8 @@ namespace Marmot {
        * @param initialStress The initial stress in Voigt notation
        * @param initialStateVars The initial state variables
        */
-      void setInitialState( const Marmot::Vector6d& initialStress, const Eigen::VectorXd& initialStateVars );
+      void setInitialState( const FastorStandardTensors::Tensor33d& initialStress,
+                            const Eigen::VectorXd&                  initialStateVars );
 
       /**
        * @brief Get the number of state variables in the material model
@@ -219,10 +242,9 @@ namespace Marmot {
        * @throws std::runtime_error if the solver does not converge
        *
        * @details This function implements a Newton-Raphson iterative
-       * solver to compute the stress and strain state for the given increment.
+       * solver to compute the stress and deformation state for the given increment.
        * It updates the material state variables and records the history
        * after convergence.
-       *
        */
       void solveIncrement( const Increment& increment );
 
@@ -238,9 +260,9 @@ namespace Marmot {
        * and the target increment, taking into account which components
        * are controlled by strain or stress.
        */
-      Marmot::Vector6d computeResidual( const Marmot::Vector6d& stressIncrement,
-                                        const Marmot::Vector6d& target,
-                                        const Increment&        increment );
+      FastorStandardTensors::Tensor9d computeResidual( const FastorStandardTensors::Tensor9d& stressIncrement,
+                                                       const FastorStandardTensors::Tensor9d& target,
+                                                       const Increment&                       increment );
 
       /**
        * @brief Modify the material tangent matrix based on control type
@@ -248,15 +270,15 @@ namespace Marmot {
        * @param increment The Increment containing control information
        *
        * @details This function adjusts the tangent matrix to account for
-       * the components that are controlled by strain or stress, ensuring
+       * the components that are controlled by displacement gradient  or stress, ensuring
        * that the solver correctly handles mixed control scenarios.
-       * This is done by zeroing out rows corresponding to strain-controlled
+       * This is done by zeroing out rows corresponding to displacement gradient controlled
        * components and setting their diagonal entries to one.
        */
-      void modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent, const Increment& increment );
+      void modifyTangent( FastorStandardTensors::Tensor99d& tangent, const Increment& increment );
 
-      /// @brief The hypo-elastic material model
-      MarmotMaterialHypoElastic* material;
+      /// @brief The finite strain material model
+      MarmotMaterialFiniteStrain* material;
 
       /// @brief Number of state variables in the material model
       int nStateVars;
@@ -270,17 +292,17 @@ namespace Marmot {
       /// @brief Temporary state variables for computations
       Eigen::VectorXd stateVarsTemp;
 
-      /// @brief The stress in Voigt notation
-      Marmot::Vector6d stress = Marmot::Vector6d::Zero();
+      /// @brief The Kirchhoff stress
+      FastorStandardTensors::Tensor33d stress = FastorStandardTensors::Tensor33d( 0.0 );
 
-      /// @brief The initial stress in Voigt notation
-      Marmot::Vector6d _initialStress = Marmot::Vector6d::Zero();
+      /// @brief The initial Kirchhoff stress
+      FastorStandardTensors::Tensor33d _initialStress = FastorStandardTensors::Tensor33d( 0.0 );
 
-      /// @brief The strain in Voigt notation
-      Marmot::Vector6d strain = Marmot::Vector6d::Zero();
+      /// @brief The displacement gradient
+      FastorStandardTensors::Tensor33d gradU = FastorStandardTensors::Tensor33d( 0.0 );
 
-      /// @brief The material tangent matrix in Voigt notation
-      Marmot::Matrix6d dStressDStrain = Marmot::Matrix6d::Zero();
+      /// @brief The material tangent dTau/dF
+      FastorStandardTensors::Tensor3333d dTau_dF = FastorStandardTensors::Tensor3333d( 0.0 );
 
       /// @brief List of loading steps
       std::vector< Step > steps;
@@ -291,5 +313,6 @@ namespace Marmot {
       /// @brief Solver options
       const SolverOptions options;
     };
+
   } // namespace Solvers
 } // namespace Marmot

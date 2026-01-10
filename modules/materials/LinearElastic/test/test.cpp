@@ -1,9 +1,11 @@
 #include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
+using namespace Marmot::Solvers;
 
 // Function to test the isotropic material response for a normal strain increment
 void testMaterialResponse()

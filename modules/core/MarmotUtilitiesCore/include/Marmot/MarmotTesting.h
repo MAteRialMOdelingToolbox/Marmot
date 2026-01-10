@@ -127,7 +127,7 @@ namespace Marmot::Testing {
     return pts;
   };
 
-  bool spinTurbokreisel( MarmotMaterialPointSolverHypoElastic& solver,
-                         double                                stressTol    = 1e-15,
-                         double                                stiffnessTol = 1e-15 );
+  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
+                         double                                                 stressTol    = 1e-15,
+                         double                                                 stiffnessTol = 1e-15 );
 } // namespace Marmot::Testing
