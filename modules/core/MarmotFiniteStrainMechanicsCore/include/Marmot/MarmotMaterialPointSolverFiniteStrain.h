@@ -85,7 +85,7 @@ public:
   struct Increment {
     Tensor9d         gradUIncrement;              ///< Target displacement gradient increment for the step
     Tensor9d         stressIncrement;             ///< Target Kirchhoff stress increment for the step
-    Tensor9t< bool > isGradUComponentControlled;  ///< Flags to indicate which displecement gradient
+    Tensor9t< bool > isGradUComponentControlled;  ///< Flags to indicate which displacement gradient
                                                   ///< components are controlled
     Tensor9t< bool > isStressComponentControlled; ///< Flags to indicate which stress components are controlled
     double           timeOld;                     ///< Old time at the beginning of the increment
