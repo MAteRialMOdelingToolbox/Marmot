@@ -273,7 +273,7 @@ void MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::strin
   const int ordering[9] = { 11, 12, 13, 21, 22, 23, 31, 32, 33 };
   file << std::scientific << "#" << std::setw( w - 1 ) << "Time,";
 
-  // get ordering from  array and write stress and strain components
+  // get ordering from array and write stress and strain components
   for ( int i = 0; i < 9; i++ )
     file << std::setw( w ) << "tau" + std::to_string( ordering[i] ) + ",";
 
