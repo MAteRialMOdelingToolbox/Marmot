@@ -215,6 +215,45 @@ void testTensorToScalarSecondOrderMixed()
                            MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
 }
 
+void testTensorToScalarThirdOrder()
+{
+
+  Tensor33d F;
+  F.eye();
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  // Use a simpler test function: f(C) = sum(C^2)
+  std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
+    [&]( const Fastor::Tensor< autodiff::dual3rd, 3, 3 >& C_ ) {
+      autodiff::dual3rd result = 0.0;
+      for ( size_t i = 0; i < 3; i++ ) {
+        for ( size_t j = 0; j < 3; j++ ) {
+          result += C_( i, j ) * C_( i, j );
+        }
+      }
+      return result;
+    };
+
+  auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = ThirdOrder::d3f_dT3( f, C );
+
+  double expected_psi = 3.0;
+
+  throwExceptionOnFailure( std::isfinite( psi ),
+                           MakeString() << __PRETTY_FUNCTION__ << "psi is not finite (NaN or Inf)" );
+
+  throwExceptionOnFailure( checkIfEqual( psi, expected_psi, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
+
+  // check that the third derivative tensor has the correct shape (3x3x3x3x3x3)
+  throwExceptionOnFailure( d3Psi_dC3.dimension( 0 ) == 3 && d3Psi_dC3.dimension( 1 ) == 3 &&
+                             d3Psi_dC3.dimension( 2 ) == 3 && d3Psi_dC3.dimension( 3 ) == 3 &&
+                             d3Psi_dC3.dimension( 4 ) == 3 && d3Psi_dC3.dimension( 5 ) == 3,
+                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
+
+  throwExceptionOnFailure( checkIfEqual( d3Psi_dC3, Tensor333333d( 0.0 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 contains non-finite values (NaN or Inf)" );
+}
+
 int main()
 {
 
@@ -222,7 +261,8 @@ int main()
                                                        testTensorToScalarWith2ndOrderDuals,
                                                        testTensorToTensor,
                                                        testTensorToScalarSecondOrder,
-                                                       testTensorToScalarSecondOrderMixed };
+                                                       testTensorToScalarSecondOrderMixed,
+                                                       testTensorToScalarThirdOrder };
 
   executeTestsAndCollectExceptions( tests );
 }
