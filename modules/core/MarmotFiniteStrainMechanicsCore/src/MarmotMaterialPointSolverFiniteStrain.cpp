@@ -1,6 +1,10 @@
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+#include <cmath>
 
 using namespace Marmot;
 using namespace Marmot::Solvers;
