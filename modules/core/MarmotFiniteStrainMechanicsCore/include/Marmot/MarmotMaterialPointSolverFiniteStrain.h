@@ -29,6 +29,9 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 #pragma once
 
 namespace Marmot {
