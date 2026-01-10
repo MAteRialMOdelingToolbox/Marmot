@@ -97,9 +97,9 @@ Guidelines and Notes
 --------------------
 
 - **Tensors**: The solver uses the **Fastor** library. Inputs usually expect ``Tensor33d`` (3x3 double) or ``Tensor9d`` (flattened 9x1 double).
-- **Control Flags**: For every component $(i,j)$ of the $3\times3$ tensor, exactly **one** of ``isGradUComponentControlled(i,j)`` or ``isStressComponentControlled(i,j)`` must be set to true. The ``Step::checkControl()`` method enforces this.
+- **Control Flags**: For every component :math:`(i,j)` of the :math:`3\times3` tensor, exactly **one** of ``isGradUComponentControlled(i,j)`` or ``isStressComponentControlled(i,j)`` must be set to true. The ``Step::checkControl()`` method enforces this.
 - **Singularity Handling**: When using mixed control, the tangent matrix is modified to ensure invertibility. Rows corresponding to displacement-controlled components are zeroed and the diagonal set to 1.
-- **Stress Measure**: The solver works with **Kirchhoff stress** ($\boldsymbol{\tau}$). If the material model computes Cauchy stress, it must be converted internally or by the model.
+- **Stress Measure**: The solver works with **Kirchhoff stress** (:math:`\boldsymbol{\tau}`). If the material model computes Cauchy stress, it must be converted internally or by the model.
 
 CSV Export
 ----------
