@@ -292,10 +292,9 @@ namespace Marmot {
        *  @tparam dim dimension of the input tensor (dim x dim)
        *  @param F function mapping a (dim x dim) tensor to a scalar
        *  @param T input tensor at which the derivative is evaluated
-       *  @return tuple of function value, first derivative, second derivative and third derivative of F with respect to T
-       *          first derivative has shape (dim, dim)
-       *          second derivative has shape (dim, dim, dim, dim)
-       *          third derivative has shape (dim, dim, dim, dim, dim, dim)
+       *  @return tuple of function value, first derivative, second derivative and third derivative of F with respect to
+       * T first derivative has shape (dim, dim) second derivative has shape (dim, dim, dim, dim) third derivative has
+       * shape (dim, dim, dim, dim, dim, dim)
        *
        *  @note The implementation is currently limited to second rank (dim x dim) tensors
        */
