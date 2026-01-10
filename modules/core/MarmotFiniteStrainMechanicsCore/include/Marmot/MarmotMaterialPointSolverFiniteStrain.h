@@ -25,6 +25,7 @@
  * ---------------------------------------------------------------------
  */
 
+#pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include <iostream>
