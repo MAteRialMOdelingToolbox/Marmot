@@ -92,6 +92,7 @@ void MarmotMaterialPointSolverHypoElastic::solveStep( const Step& step )
     }
     catch ( std::runtime_error& e ) {
       // if failed, reduce time step and retry
+      std::cout << "    Increment failed: " << e.what() << ", reducing time step to " << dT / 2.0 << std::endl;
       if ( dT <= step.dTMin )
         throw std::runtime_error( "Minimum time step reached, cannot proceed." );
       dT = std::max( dT / 2.0, step.dTMin );
@@ -179,6 +180,8 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     dStrain -= correction;
     counter++;
   }
+  if ( counter >= options.maxIterations )
+    throw std::runtime_error( "Maximum number of iterations reached, no convergence." );
 
   std::cout << "    Converged after " << counter << " iterations." << std::endl;
 
