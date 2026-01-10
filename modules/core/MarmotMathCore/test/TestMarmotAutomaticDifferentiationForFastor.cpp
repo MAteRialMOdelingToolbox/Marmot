@@ -251,7 +251,7 @@ void testTensorToScalarThirdOrder()
                            MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
 
   throwExceptionOnFailure( checkIfEqual( d3Psi_dC3, Tensor333333d( 0.0 ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 contains non-finite values (NaN or Inf)" );
+                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
 }
 
 int main()
