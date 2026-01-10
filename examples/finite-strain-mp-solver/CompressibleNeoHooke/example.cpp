@@ -3,8 +3,8 @@
 
 int main()
 {
-  using namespace Marmot;
-  using namespace Fastor;
+  using namespace Marmot::Solvers;
+  using namespace Marmot::FastorStandardTensors;
 
   // 1) Define the material model
   std::string materialName = "COMPRESSIBLENEOHOOKE";
@@ -21,8 +21,7 @@ int main()
   MarmotMaterialPointSolverFiniteStrain solver( materialName, properties, nProps, options );
 
   // 4) Set the initial state
-  int nSV = 0;
-  solver.getNumberOfStateVariables( nSV );
+  int             nSV       = solver.getNumberOfStateVariables();
   Eigen::VectorXd initialSV = Eigen::VectorXd::Zero( nSV );
 
   // Initial stress is zero

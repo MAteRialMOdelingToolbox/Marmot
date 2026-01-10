@@ -490,6 +490,7 @@ void testRotation()
 
 void testWithMPSolver()
 {
+  using namespace Marmot::Solvers;
   auto        materialProperties = std::vector< double >{ 175000, 80800, 260, 580, 9, 70, 3 };
   auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "FINITESTRAINJ2PLASTICITY";

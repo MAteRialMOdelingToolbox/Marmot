@@ -100,9 +100,9 @@ namespace Marmot::Testing {
     }
   }
 
-  bool spinTurbokreisel( MarmotMaterialPointSolverHypoElastic& solver,
-                         const double                          stressTol,
-                         const double                          stiffnessTol )
+  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
+                         const double                                           stressTol,
+                         const double                                           stiffnessTol )
   {
     using namespace Eigen;
     using namespace ContinuumMechanics::VoigtNotation;

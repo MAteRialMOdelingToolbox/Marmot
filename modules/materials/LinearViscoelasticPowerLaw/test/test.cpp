@@ -1,7 +1,9 @@
+#include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
 using namespace Marmot::Testing;
+using namespace Marmot::Solvers;
 
 Eigen::Vector< double, 7 > getMaterialPropertiesLinearViscoelasticPowerLaw()
 {

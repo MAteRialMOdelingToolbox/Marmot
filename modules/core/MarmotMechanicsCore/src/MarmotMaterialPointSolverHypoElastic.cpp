@@ -2,6 +2,8 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include <fstream>
 
+using namespace Marmot::Solvers;
+
 MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
                                                                             double*              materialProperties,
                                                                             int                  nMaterialProperties,

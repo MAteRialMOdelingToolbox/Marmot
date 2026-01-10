@@ -290,6 +290,7 @@ void testRotation()
 
 void testWithMPSolver()
 {
+  using namespace Marmot::Solvers;
   auto        materialProperties = std::vector< double >{ 3500, 1500 };
   auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "COMPRESSIBLENEOHOOKE";

@@ -1,8 +1,10 @@
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 
 using namespace Marmot::Testing;
+using namespace Marmot::Solvers;
 
 auto initializeSolverADLinearElastic()
 {

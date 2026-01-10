@@ -2,6 +2,11 @@
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include <fstream>
 
+using namespace Marmot;
+using namespace Marmot::Solvers;
+using namespace Fastor;
+using namespace FastorStandardTensors;
+
 MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain( std::string&         materialName,
                                                                               double*              materialProperties,
                                                                               int                  nMaterialProperties,
