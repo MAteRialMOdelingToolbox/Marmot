@@ -4,3 +4,4 @@ build
 doc/doc_out
 *.o
 *.csv
+_codeql_detected_source_root
