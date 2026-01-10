@@ -281,7 +281,7 @@ namespace Marmot {
     namespace ThirdOrder {
 
       /** @typedef tensor_to_scalar_function_type
-       *  @brief Alias for a function mapping a tensor to a scalar with second order dual numbers
+       *  @brief Alias for a function mapping a tensor to a scalar with third order dual numbers
        *  @tparam dim dimension of the input tensor (dim x dim)
        *
        *  @note The implementation is currently limited to second rank (dim x dim) tensors
