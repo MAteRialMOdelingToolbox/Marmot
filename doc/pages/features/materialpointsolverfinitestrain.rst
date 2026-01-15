@@ -37,7 +37,7 @@ Solver Structure
 The solver is organized around a few key data structures:
 
 - **SolverOptions** — Defines numerical tolerances (residual/correction) and iteration limits.
-- **Step** — Represents a loading phase. It defines target increments for :math:`\nabla \mathbf{u}` and ::math:`\boldsymbol{\tau}`, along with boolean flags determining which variable controls which tensor component.
+- **Step** — Represents a loading phase. It defines target increments for :math:`\nabla \mathbf{u}` and :math:`\boldsymbol{\tau}`, along with boolean flags determining which variable controls which tensor component.
 - **Increment** — A sub-step automatically generated within each Step based on time discretization.
 - **HistoryEntry** — Records the converged state (Time, :math:`\boldsymbol{\tau}`, :math:`\mathbf{F}`, :math:`\mathbb{C}`, state variables) at specific points.
 
