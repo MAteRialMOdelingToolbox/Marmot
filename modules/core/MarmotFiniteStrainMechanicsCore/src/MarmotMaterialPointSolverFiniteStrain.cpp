@@ -302,8 +302,7 @@ void MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::strin
       file << std::setw( w - 1 ) << flatten( entry.stress )[i] << ( i < 8 ? "," : "," );
 
     for ( int i = 0; i < 9; i++ )
-      file << std::setw( w - 1 ) << flatten( entry.F )[i]
-           << ( i < 8 ? "," : ( nStateVars > 0 ? "," : "\n" ) );
+      file << std::setw( w - 1 ) << flatten( entry.F )[i] << ( i < 8 ? "," : ( nStateVars > 0 ? "," : "\n" ) );
 
     for ( int i = 0; i < nStateVars; i++ )
       file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
