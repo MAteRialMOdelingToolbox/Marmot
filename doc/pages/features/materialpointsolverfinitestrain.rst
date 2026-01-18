@@ -57,19 +57,19 @@ Example Usage
 -------------
 
 Here is a simple example demonstrating how to set up and run the finite strain material point solver using a compressible Neo-Hookean material model.
-It can be found in the `examples/finite-strain-mp-solver/CompressibleNeoHooke` directory of the Marmot repository together with the appropriate ``Makefile``.
+It can be found in the `examples/finite-strain-mp-solver/CompressibleNeoHooke` directory of the Marmot repository together with the appropriate ``CMakeLists.txt``.
 
 .. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleNeoHooke/example.cpp
    :language: c++
    :linenos:
    :caption: Finite Strain Solver Example
 
-To compile and run the example, you can use the following ``Makefile``. Ensure that the paths to Marmot, Eigen, and Fastor match your system configuration.
+To compile and run the example, you can use ``cmake`` with the configuration ``CMakeLists.txt``. Ensure that the paths to Marmot, Eigen, and Fastor match your system configuration.
 
-.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleNeoHooke/Makefile
-   :language: make
+.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleNeoHooke/CMakeLists.txt
+   :language: cmake
    :linenos:
-   :caption: Makefile for Finite Strain Material Point Solver Example
+   :caption: cmake configuration for Finite Strain Material Point Solver Example
 
 
 Typical Output
