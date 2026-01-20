@@ -532,6 +532,15 @@ namespace Marmot::Meshfree {
       const ParticleDomainType& particleDomain ) const;
 
     /**
+     * @brief Evaluates the shape functions on a specific face of a particle domain.
+     * @param particleDomain The particle domain.
+     * @param faceID The ID of the face.
+     * @return An Eigen::MatrixXd containing the shape functions (N) on the specified
+     * face.
+     */
+    Eigen::MatrixXd evaluateShapeFunctionsOnFace( const ParticleDomainType& particleDomain, int faceID ) const;
+
+    /**
      * @brief Evaluates the shape functions and their derivatives on a specific face of a particle domain.
      * @param particleDomain The particle domain.
      * @param faceID The ID of the face.
@@ -713,6 +722,33 @@ namespace Marmot::Meshfree {
     Eigen::MatrixXd dN_dY = _smoothDerivativeShapeFunctionsForParticleDomain( particleDomain );
 
     return std::make_tuple( N, dN_dY );
+  }
+
+  /**
+   * @brief Evaluates the shape functions on a specific face of a particle domain.
+   * @tparam nDim The number of dimensions.
+   * @tparam nVertices The number of vertices.
+   * @param particleDomain The particle domain.
+   * @param faceID The ID of the face.
+   * @return The shape functions (N)  as Eigen matrices.
+   */
+  template < int nDim, int nVertices >
+  Eigen::MatrixXd GenericSDIParticle< nDim, nVertices >::evaluateShapeFunctionsOnFace(
+    const ParticleDomainType& particleDomain, // Use alias
+    int                       faceID ) const
+  {
+
+    CoordinatesSized coordsFaceCenter; // Use alias
+    // Use the center of the provided particleDomain
+    coordsFaceCenter = particleDomain.getSmoothingDomainFaceCenterCoordinates( faceID );
+
+    Eigen::MatrixXd N = Eigen::MatrixXd::Zero( 1, this->_nNodes );
+
+    // Compute N at the particle center (from GenericParticle)
+    this->_meshfreeApproximation.computeShapeFunctions( coordsFaceCenter.data(),
+                                                        this->_assignedKernelFunctions,
+                                                        N.data() );
+    return N;
   }
 
   /**
