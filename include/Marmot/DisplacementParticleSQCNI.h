@@ -131,10 +131,14 @@ namespace Marmot::Meshfree {
 
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      if ( stateName == "vertex displacements" ) {
+      if ( stateName == "vertex displacements" )
+        return StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
+                          nDim * nVertices );
+
+      if ( stateName == "smoothing vertex displacements" )
         return StateView( const_cast< double* >( _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
                           nDim * nVertices );
-      }
+
       return ParentPointParticle::getStateView( stateName, qp );
     }
 
