@@ -58,6 +58,12 @@ namespace Marmot::Meshfree {
      * which are crucial for the stabilization terms in the NSNI formulation.
      */
     TensorDD _momentsOfInertia_IntermediateReference;
+
+    TensorDDD _d2x_dYdY;
+
+    TensorDD _dv_dY = TensorDD( 0.0 );
+
+    double dT = 0.0;
     /**
      * @brief Second derivatives of the shape functions with respect to the intermediate coordinates.
      *
@@ -165,6 +171,12 @@ namespace Marmot::Meshfree {
      * @param dT Time step size.
      */
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
+
+    void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ) override;
+
+    void computePhysicsKernelsExplicit( double* fInt ) override;
+
+    virtual void computeLumpedMomentum( double* mLumped ) const override;
 
     /// \brief Extract the second derivative of the shape function for a given node
     /// \param d2N_dYdY The second derivative of the shape function
@@ -371,6 +383,153 @@ namespace Marmot::Meshfree {
       }
     }
     // clang-format on
+  }
+
+  template < int nDim, int nVertices >
+  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernelsExplicit( double* fInt )
+  {
+    using namespace Marmot::FastorIndices;
+    using namespace Fastor;
+    using ijmM = Index< i_, j_, m_, M_ >;
+    using mMK  = Index< m_, M_, K_ >;
+    using ijK  = Fastor::Index< i_, j_, K_ >;
+
+    const auto& _nNodes = this->_nNodes;
+    const auto& _N      = this->_N;
+    const auto& _dN_dY  = this->_dN_dY;
+    const auto& _T      = this->_T;
+    const auto& _dT_dY  = this->_dT_dY;
+    auto&       _mp     = this->_mp;
+
+    const static TensorDD I(
+      ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
+
+    constexpr int nodeBlockSize = nDim;
+
+    TensorD r_U( 0.0 );
+
+    const auto& S = _mp->response.S;
+
+    const double V0 = this->getVolumeUndeformed();
+
+    const auto& t = _mp->tangents;
+
+    Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
+
+    const auto   dY_dx            = evaluate( inv( _mp->dx_dY() ) );
+    const double detJIntermediate = determinant( _mp->dY_dX() );
+
+    const auto dS_dY = evaluate( einsum< ijmM, mMK >( t.dS_dDeltaF, _d2x_dYdY ) );
+
+    // clang-format off
+    for ( int A = 0; A < _nNodes; A++ ) {
+
+      const auto  dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
+      const TensorD dT_A_dx = einsum< ji, j >( dY_dx , dT_A_dY );
+
+
+      const int idxA_u = nodeBlockSize * A;
+
+      r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
+
+      const auto d2NA_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, A );
+
+      const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
+      const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
+
+      TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
+
+      r_U += rU_Stab;
+
+      {
+        using namespace Eigen;
+        P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
+      }
+    }
+    // clang-format on
+  }
+
+  template < int nDim, int nVertices >
+  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::updatePhysicsExplicit( const double* dQ,
+                                                                                 double        timeNew,
+                                                                                 double        dT )
+  {
+    using namespace Marmot::FastorIndices;
+    using namespace Fastor;
+
+    const auto& _nNodes = this->_nNodes;
+    const auto& _N      = this->_N;
+    const auto& _dN_dY  = this->_dN_dY;
+    const auto& _T      = this->_T;
+    const auto& _dT_dY  = this->_dT_dY;
+    auto&       _mp     = this->_mp;
+
+    const static TensorDD I(
+      ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
+
+    constexpr int nodeBlockSize = nDim;
+
+    TensorD  du( 0.0 );
+    TensorDD du_dY( 0.0 );
+
+    _d2x_dYdY.zeros();
+    for ( int B = 0; B < _nNodes; B++ ) {
+
+      const int idxB_u = nodeBlockSize * B;
+
+      const double N_B        = _N( B );
+      const auto   dN_B_dY    = TensorD( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
+      const auto   d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
+
+      const auto dQU_B = TensorD( dQ + idxB_u );
+
+      du += N_B * dQU_B;
+
+      du_dY += einsum< i, j >( dQU_B, dN_B_dY );
+
+      _d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY ); // TODO!!!
+    }
+
+    _mp->prepareYourself( timeNew, dT );
+    _mp->incrementDeformation( du, du_dY );
+    _mp->computeYourself( timeNew, dT );
+    if ( dT <= 1e-16 )
+      return;
+    const auto    v_n  = _mp->getVelocity();
+    const TensorD v_np = du / dT;
+    _mp->setVelocity( v_np );
+    _mp->setAcceleration( evaluate( v_np - v_n ) / dT );
+
+    _dv_dY = du_dY / dT;
+  }
+
+  template < int nDim, int nVertices >
+  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* mLumped ) const
+  {
+    using namespace FastorIndices;
+    using namespace Fastor;
+
+    const double density0 = this->_mp->getDensityUndeformed();
+    const double V0       = this->getVolumeUndeformed();
+    const auto   v        = this->_mp->getVelocity();
+    const auto&  _dT_dY   = this->_dT_dY;
+
+    const TensorDD _dv_dY_x_Y2 = einsum< ij, jk >( _dv_dY, _momentsOfInertia_IntermediateReference );
+
+    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
+
+      const double T_A     = this->_T( A );     // Use base class _T
+      const auto   dT_A_dY = Tensor< double, nDim >( _dT_dY.col( A ).data() );
+
+      const int idxA_u = this->nDofPerNodeU * A;
+
+      const TensorD aux = einsum< ij, j >( _dv_dY_x_Y2, dT_A_dY );
+
+      for ( int i = 0; i < this->nDofPerNodeU; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        mLumped[idxA_u + i] += density0 * aux[i];
+      }
+    }
   }
 
 } // namespace Marmot::Meshfree
