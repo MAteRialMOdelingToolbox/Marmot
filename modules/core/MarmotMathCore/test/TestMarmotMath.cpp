@@ -1,6 +1,6 @@
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTesting.h"
-#include "Marmot/MarmotJournal.h"
 
 using namespace Marmot::Math;
 using namespace Marmot::Testing;

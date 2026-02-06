@@ -57,8 +57,8 @@ void testPronySeriesWithOneMaxwellElement()
   const auto C0 = Elasticity::Isotropic::stiffnessTensor( 100, 0.0 ); // zero Poisson's ratio for simplicity
 
   using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
-  Properties        props        = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
-  StateVarMatrix    stateVars    = Marmot::Matrix6d::Zero();
+  Properties     props     = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
+  StateVarMatrix stateVars = Marmot::Matrix6d::Zero();
 
   // define the strain increment, stress, and stiffness
   Marmot::Vector6d dStrain   = Vector6d::Zero();
