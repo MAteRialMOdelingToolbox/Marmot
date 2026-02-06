@@ -217,8 +217,6 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
 {
   using namespace Fastor;
 
-  double eps = 1e-8; // finite difference step
-
   // Define symmetric PK2 tensor
   Tensor33d PK2( 0.0 );
   PK2( 0, 0 ) = 2.0;

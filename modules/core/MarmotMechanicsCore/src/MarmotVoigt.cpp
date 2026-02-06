@@ -42,7 +42,7 @@ namespace Marmot {
       return strain;
     }
 
-    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Eigen::Tensor< double, 4 >& C )
+    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const EigenTensors::Tensor3333d& C )
     {
       // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->yz, 5->xz)
       std::array< std::pair< int, int >, 6 > ordering = {
@@ -70,7 +70,7 @@ namespace Marmot {
       return voigtStiffness;
     }
 
-    Eigen::Tensor< double, 4 > voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness )
+    EigenTensors::Tensor3333d voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness )
     {
       using namespace TensorUtility::IndexNotation;
 

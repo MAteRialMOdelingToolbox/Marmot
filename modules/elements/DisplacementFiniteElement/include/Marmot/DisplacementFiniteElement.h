@@ -466,8 +466,9 @@ namespace Marmot::Elements {
     Map< KeSizedMatrix >  Ke( Ke_ );
     Map< RhsSized >       Pe( Pe_ );
 
-    Voigt  S, dE;
-    CSized C;
+    Voigt  S = Voigt::Zero();
+    Voigt dE = Voigt::Zero();
+    CSized C   = CSized::Zero();
 
     for ( QuadraturePoint& qp : qps ) {
 

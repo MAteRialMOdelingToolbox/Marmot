@@ -59,7 +59,6 @@ void testPronySeriesWithOneMaxwellElement()
   using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
   Properties        props        = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
   StateVarMatrix    stateVars    = Marmot::Matrix6d::Zero();
-  mapStateVarMatrix mapStateVars = Eigen::Map< StateVarMatrix >( stateVars.data(), stateVars.rows(), stateVars.cols() );
 
   // define the strain increment, stress, and stiffness
   Marmot::Vector6d dStrain   = Vector6d::Zero();

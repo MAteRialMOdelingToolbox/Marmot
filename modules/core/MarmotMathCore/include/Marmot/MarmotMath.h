@@ -30,10 +30,9 @@
 #pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/dual.hpp"
-#include "autodiff/forward/real.hpp"
 #include <algorithm>
 #include <autodiff/forward/dual/dual.hpp>
+#include <autodiff/forward/real/real.hpp>
 #include <complex>
 
 namespace Marmot {
