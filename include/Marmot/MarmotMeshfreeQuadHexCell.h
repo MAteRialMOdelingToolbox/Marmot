@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 /**
@@ -397,7 +398,11 @@ namespace Marmot::Meshfree {
      * @throws std::out_of_range if parentFaceId is invalid.
      * @throws std::logic_error if not implemented for the specific element type.
      */
-    std::vector<int> getSubCellIndicesOnParentFace( int parentFaceId) const;
+    std::vector<int> getSubCellIndicesOnParentFace( int parentFaceId ) const
+    {
+      throw std::logic_error(
+        "getSubCellIndicesOnParentFace not implemented for this (nDim,nNodes)" );
+    }
 
     // ------------------------------------------------------------------------
     // Ensight Gold cell shape name (specialized for supported element types)

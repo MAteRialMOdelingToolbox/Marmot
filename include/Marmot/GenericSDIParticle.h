@@ -36,6 +36,7 @@
 #include <Fastor/Fastor.h>
 #include <stdexcept>
 #include <vector> // Explicitly include vector for clarity
+#include <tuple>  // Explicitly include tuple for std::tuple usage
 
 namespace Marmot::Meshfree {
 
@@ -116,9 +117,19 @@ namespace Marmot::Meshfree {
      * @param properties Pointer to an array of property values.
      * @param nProperties The number of properties in the array.
      */
-    virtual void setProperties( [[maybe_unused]] const double* properties,
-                                [[maybe_unused]] int           nProperties ) override{};
+    virtual void setProperties( const double* properties, int nProperties ) override
+    {
+      const std::vector< std::string > propertyNames = getPropertyNames();
 
+      if ( nProperties != static_cast< int >( propertyNames.size() ) )
+        throw std::invalid_argument( "GenericSDIParticle::setProperties: number of properties (" +
+                                     std::to_string( nProperties ) +
+                                     ") does not match number of supported properties (" +
+                                     std::to_string( propertyNames.size() ) + ")." );
+
+      for ( int i = 0; i < nProperties; ++i )
+        setProperty( propertyNames[i], &properties[i] );
+    };
     /**
      * @brief Sets a single property of the particle by name.
      * @param propertyName The name of the property to set.

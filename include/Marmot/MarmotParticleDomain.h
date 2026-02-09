@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMeshfreeQuadHexCell.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <string>
 #include <vector> // Explicitly include vector for clarity
 
 namespace Marmot::Meshfree {
