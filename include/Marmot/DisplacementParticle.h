@@ -27,6 +27,7 @@
 #pragma once
 
 #include "Marmot/DisplacementMaterialPoint.h"
+#include "Marmot/GenericParticle.h" // New base class
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
@@ -35,48 +36,41 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
 
+template < int nDim >
+using MaterialPointType = std::conditional_t< nDim == 2,
+                                              Marmot::MaterialPoints::DisplacementMaterialPoint2D,
+                                              Marmot::MaterialPoints::DisplacementMaterialPoint3D >;
+
 namespace Marmot::Meshfree {
 
   template < int nDim >
-  class DisplacementParticle : public Marmot::Meshfree::MarmotParticle {
+  class DisplacementParticle : public Marmot::Meshfree::GenericParticle< nDim > {
+
+    using TensorD  = Fastor::Tensor< double, nDim >;
+    using TensorDD = Fastor::Tensor< double, nDim, nDim >;
 
   protected:
-    Eigen::Matrix< double, nDim, 1 > _centerCoordinatesUndeformed;
-    Eigen::Matrix< double, nDim, 1 > _centerReferenceIntermediate;
-    double                           _volReferenceIntermediate;
-
-    MaterialPoints::DisplacementMaterialPoint< nDim >* __mp;
-    MaterialPoints::DisplacementMaterialPoint< nDim >& _mp;
-    const MarmotMeshfreeApproximation&                 _meshfreeApproximation;
-    std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions;
+    std::unique_ptr< MaterialPointType< nDim > > _mp;
 
     double _newmark_beta;
     double _newmark_gamma;
-
-    /// The number of currently assigned nodes (=meshfree kernel functions}
-    int _nNodes;
-
-    int             _vciOrder; // order of the VCI polynomial basis
-    int             _nVCIConstraints;
-    Eigen::VectorXd _P;
-    Eigen::MatrixXd _P_Gradient;
-
-    /// The vector of trial shape functions
-    Eigen::MatrixXd _N;
-    /// The matrix of trial shape functions gradients
-    Eigen::MatrixXd _dN_dY;
-
-    /// The vector of test shape functions
-    Eigen::MatrixXd _T;
-    /// The matrix of test shape functions gradients
-    Eigen::MatrixXd _dT_dY;
 
     /// static vector of valid properties
     inline static const std::vector< std::string > _validProperties = {
       "newmark-beta beta",
       "newmark-beta gamma",
-      "VCI order",
     };
+
+    virtual TensorDD dY_dX() const { return ( this->_mp->dY_dX() ); }
+
+    virtual TensorDD dx_dY() const { return ( this->_mp->dx_dY() ); }
+
+    virtual TensorD getDisplacementAtCenter() const
+    {
+      TensorD u( 0.0 );
+      this->_mp->getCenterDisplacement( u.data() );
+      return u;
+    }
 
   public:
     enum BodyLoadTypes {
@@ -105,23 +99,27 @@ namespace Marmot::Meshfree {
 
     virtual void setProperties( const double* properties, int nProperties ) override
     {
-      if ( nProperties != static_cast< int >( _validProperties.size() ) ) {
+      // Combine property names from base and derived
+      std::vector< std::string > allPropertyNames = Marmot::Meshfree::GenericParticle< nDim >::getPropertyNames();
+      allPropertyNames.insert( allPropertyNames.end(), _validProperties.begin(), _validProperties.end() );
+
+      if ( nProperties != static_cast< int >( allPropertyNames.size() ) ) {
         std::ostringstream oss;
         oss << "Error in " << __PRETTY_FUNCTION__ << ": ";
-        oss << "Expected " << _validProperties.size() << " properties, but got " << nProperties << ". ";
+        oss << "Expected " << allPropertyNames.size() << " properties, but got " << nProperties << ". ";
         oss << "Valid properties are: ";
-        for ( const auto& prop : _validProperties ) {
+        for ( const auto& prop : allPropertyNames ) {
           oss << prop << ", ";
         }
         throw std::runtime_error( oss.str() );
       }
 
       for ( int i = 0; i < nProperties; i++ ) {
-        setProperty( _validProperties[i], &properties[i] );
+        setProperty( allPropertyNames[i], &properties[i] );
       }
     };
 
-    virtual void setProperty( const std::string& propertyName, const double* property )
+    virtual void setProperty( const std::string& propertyName, const double* property ) override
     {
       if ( propertyName == "newmark-beta beta" ) {
         _newmark_beta = property[0];
@@ -129,46 +127,24 @@ namespace Marmot::Meshfree {
       else if ( propertyName == "newmark-beta gamma" ) {
         _newmark_gamma = property[0];
       }
-      else if ( propertyName == "VCI order" ) {
-        _vciOrder = static_cast< int >( property[0] );
-        this->setVCIOrder( _vciOrder );
-      }
       else {
-        std::ostringstream oss;
-        oss << "Property " << propertyName << " not supported! Valid properties are: ";
-        for ( const auto& prop : _validProperties ) {
-          oss << prop << ", ";
-        }
-        throw std::runtime_error( oss.str() );
+        // If not a DisplacementParticle specific property, try the base class
+        Marmot::Meshfree::GenericParticle< nDim >::setProperty( propertyName, property );
       }
     };
 
-    virtual std::vector< std::string > getPropertyNames() const { return _validProperties; };
-
-    virtual int getNumberOfRequiredStateVars() const override { return _mp.getNumberOfRequiredStateVars(); };
-
-    void assignStateVars( double* stateVars, int nStateVars ) override { _mp.assignStateVars( stateVars, nStateVars ); }
-
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+    virtual std::vector< std::string > getPropertyNames() const override
     {
-      _assignedKernelFunctions = kernelFunctions;
+      std::vector< std::string > names = Marmot::Meshfree::GenericParticle< nDim >::getPropertyNames();
+      names.insert( names.end(), _validProperties.begin(), _validProperties.end() );
+      return names;
+    };
 
-      _nNodes = _assignedKernelFunctions.size();
+    virtual int getNumberOfRequiredStateVars() const override { return _mp->getNumberOfRequiredStateVars(); };
 
-      Eigen::Matrix< double, nDim, 1 > coords;
-      _mp.getCoordinatesAtCenter( coords.data() );
-
-      _N     = Eigen::MatrixXd::Zero( 1, _nNodes );
-      _dN_dY = Eigen::MatrixXd::Zero( nDim, _nNodes );
-
-      _meshfreeApproximation.computeShapeFunctionsAndGradients( coords.data(),
-                                                                _assignedKernelFunctions,
-                                                                _N.data(),
-                                                                _dN_dY.data() );
-
-      _T     = _N;
-      _dT_dY = _dN_dY;
+    void assignStateVars( double* stateVars, int nStateVars ) override
+    {
+      _mp->assignStateVars( stateVars, nStateVars );
     }
 
     virtual int getNBaseDof() const { return nDofPerNodeU; }
@@ -179,26 +155,6 @@ namespace Marmot::Meshfree {
       return nodeFields;
     };
 
-    virtual void getVertexCoordinates( double* coordinates ) const override { _mp.getVertexCoordinates( coordinates ); }
-
-    virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
-    {
-      throw std::runtime_error( "Error: DisplacementParticle::getFaceCoordinates not implemented." );
-    }
-
-    virtual void getCenterCoordinates( double* coordinates ) const override { getVertexCoordinates( coordinates ); }
-
-    virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
-    {
-      getVertexCoordinates( coordinates );
-    };
-
-    virtual int getNumberOfVertices() const override { return 1; };
-
-    virtual std::string getParticleShape() const override { return "point"; }
-
-    virtual int getDimension() const override { return nDim; };
-
     DisplacementParticle( int                                elementID,
                           const double*                      nodeCoordinates,
                           int                                nNodeCoordiantes,
@@ -208,19 +164,19 @@ namespace Marmot::Meshfree {
                           int                                nMaterialProperties,
                           const MarmotMeshfreeApproximation& approximation );
 
-    void initializeYourself() override { _mp.initializeYourself(); };
+    void initializeYourself() override { _mp->initializeYourself(); };
 
     virtual void acceptStateAndPosition() override
     {
+      _mp->acceptStateAndPosition();
+      _mp->prepareYourself( 0, 0 );
 
-      _mp.acceptStateAndPosition();
-      _mp.prepareYourself( 0, 0 );
+      this->updateVolumeToReferenceIntermediate();
+      this->updateParticlePositionToReferenceIntermediate();
 
-      updateVolumeToReferenceIntermediate();
-      updateParticlePositionToReferenceIntermediate();
-
-      Math::computeMonomialBasis( _vciOrder, _centerReferenceIntermediate, _P );
-      Math::computeMonomialBasisGradient( _vciOrder, _centerReferenceIntermediate, _P_Gradient );
+      // Use base class members for VCI
+      Math::computeMonomialBasis( this->_vciOrder, this->_centerReferenceIntermediate, this->_P );
+      Math::computeMonomialBasisGradient( this->_vciOrder, this->_centerReferenceIntermediate, this->_P_Gradient );
     };
 
     virtual void computePhysicsKernels( const double* dQ,
@@ -246,119 +202,59 @@ namespace Marmot::Meshfree {
 
     virtual StateView getStateView( const std::string& stateName, int qp ) const override;
 
-    virtual void getInterpolationVector( double* vec, const double* coordinates ) const override
-    {
-      _meshfreeApproximation.computeShapeFunctions( coordinates, _assignedKernelFunctions, vec );
-    };
-
-    // VCI:
-
-    virtual int vci_getNumberOfConstraints() override { return _nVCIConstraints; }
-
+    // VCI methods are now in GenericParticle, but vci_compute_Test_P_BoundaryIntegral needs override
+    // because it depends on dY_dX() which is physics-specific.
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
                                                       int           boundaryFaceID ) override
     {
-
       using namespace Fastor;
 
       Tensor< double, nDim > n_dA0( boundarySurfaceVector ); // undeformed load vector p * N_I * dA_0
 
       // apply Nanson's formula
-      const Tensor< double, nDim, nDim > FInv = inverse( _mp.dY_dX() );
-      const double                       J    = determinant( _mp.dY_dX() );
+      const Tensor< double, nDim, nDim > FInv = inverse( dY_dX() );
+      const double                       J    = determinant( dY_dX() );
 
       const Tensor< double, nDim > n_dAY = J * transpose( FInv ) % n_dA0;
 
-      for ( int A = 0; A < _nNodes; A++ )
+      for ( int A = 0; A < this->_nNodes; A++ )                            // Use base class _nNodes
         for ( int i = 0; i < nDim; i++ )
-          for ( int C = 0; C < _nVCIConstraints; C++ )
-            R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += _T( A ) * _P( C ) * n_dAY[i];
+          for ( int C = 0; C < this->_nVCIConstraints; C++ )               // Use base class _nVCIConstraints
+            R_AiC_RowMajor[A * ( nDim * this->_nVCIConstraints ) + i * this->_nVCIConstraints +
+                           C] += this->_T( A ) * this->_P( C ) * n_dAY[i]; // Use base class _T, _P
     };
 
-    virtual void vci_compute_TestGradient_P_Integral( double* R_AiC_RowMajor ) override
+    virtual double getVolumeUndeformed() const { return _mp->getVolumeUndeformed(); };
+
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      //
-      for ( int A = 0; A < _nNodes; A++ )
-        for ( int i = 0; i < nDim; i++ )
-          for ( int C = 0; C < _nVCIConstraints; C++ )
-            R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += _dT_dY( i, A ) * _P( C ) *
-                                                                                          _volReferenceIntermediate;
-    };
-
-    virtual void vci_compute_Test_PGradient_Integral( double* R_AiC_RowMajor ) override
-    {
-      // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      for ( int A = 0; A < _nNodes; A++ )
-        for ( int i = 0; i < nDim; i++ )
-          for ( int C = 0; C < _nVCIConstraints; C++ )
-            R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += _T( A ) *
-                                                                                          _P_Gradient( C, i ) *
-                                                                                          _volReferenceIntermediate;
-    };
-
-    virtual void vci_compute_MMatrix( double* mMatrix_ACD_RowMajor ) override
-    {
-      // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-
-      for ( int A = 0; A < _nNodes; A++ ) {
-        const double R_A = _assignedKernelFunctions[A]->isInSupport( _centerReferenceIntermediate.data() ) ? 1.0 : 0.0;
-
-        for ( int C = 0; C < _nVCIConstraints; C++ )
-          for ( int D = 0; D < _nVCIConstraints; D++ )
-            mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints +
-                                 D] += R_A * _P( C ) * _P( D ) * _volReferenceIntermediate;
+      if ( conditionName == "geostaticstress" ) {
+        _mp->setInitialCondition( conditionName, value );
       }
-    };
-
-    virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) override
-    {
-
-      for ( int A = 0; A < _nNodes; A++ ) {
-        const double R_A = _assignedKernelFunctions[A]->isInSupport( _centerReferenceIntermediate.data() ) ? 1.0 : 0.0;
-        for ( int i = 0; i < nDim; i++ ) {
-          for ( int C = 0; C < _nVCIConstraints; C++ ) {
-            _dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A *
-                              _P( C );
-          }
-        }
+      else {
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
-    };
-
-    virtual double getVolumeUndeformed() const { return _mp.getVolumeUndeformed(); };
-
-    virtual void getEvaluationCoordinates( double* coordinates ) const { getVertexCoordinates( coordinates ); }
-
-    virtual int getNumberOfEvaluationPoints() const
-    {
-      return 1; // only one evaluation point at the center of the particle
     };
 
   private:
     virtual void updateParticlePositionToReferenceIntermediate()
     {
-      _mp.getVertexCoordinates( _centerReferenceIntermediate.data() );
+      _mp->getVertexCoordinates(
+        this->_centerReferenceIntermediate.data() ); // Use base class _centerReferenceIntermediate
     };
 
     virtual void updateVolumeToReferenceIntermediate()
     {
-      _volReferenceIntermediate = _mp.getVolumeUndeformed() * determinant( _mp.dY_dX() );
-    };
-
-    void setVCIOrder( int order )
-    {
-      _vciOrder        = order;
-      _nVCIConstraints = ( order + 1 ) * ( order + 2 ) / 2; // number of VCI constraints for polynomial basis of order
-      _P.resize( _nVCIConstraints );
-      _P_Gradient.resize( _nVCIConstraints, nDim );
+      this->_volReferenceIntermediate = getVolumeUndeformed() *
+                                        determinant( dY_dX() ); // Use base class _volReferenceIntermediate
     };
   };
 
   template < int nDim >
   StateView DisplacementParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
   {
-    return _mp.getStateView( stateName );
+    return _mp->getStateView( stateName );
   }
 
   template < int nDim >
@@ -371,29 +267,24 @@ namespace Marmot::Meshfree {
     const double*                                        materialProperties,
     int                                                  nMaterialProperties,
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-    : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
-      _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
-      __mp( new MaterialPoints::DisplacementMaterialPoint2D( elementID,
-                                                             _centerCoordinatesUndeformed.data(),
-                                                             _centerCoordinatesUndeformed.size(),
-                                                             volume ) ),
-      _mp( *__mp ),
-      _meshfreeApproximation( approximation ),
+    : Marmot::Meshfree::GenericParticle< nDim >( elementID,
+                                                 centerCoordinates0,
+                                                 sizeCenterCoordinates0,
+                                                 volume,
+                                                 approximation ), // Call virtual base constructor
+      _mp( std::make_unique< MaterialPointType< nDim > >( elementID,
+                                                          Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >(
+                                                            centerCoordinates0 )
+                                                            .data(),
+                                                          sizeCenterCoordinates0,
+                                                          volume ) ),
       _newmark_beta( 0. ),
-      _newmark_gamma( 0. ),
-      _vciOrder( 0 )
+      _newmark_gamma( 0. )
   {
-    if ( sizeCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
-                                                << nDim << ", but got " << sizeCenterCoordinates0 );
-    }
-
     int                   materialCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( materialName );
     MarmotMaterialSection section( materialCode, materialProperties, nMaterialProperties );
 
-    _mp.assignMaterial( section );
-
-    this->setVCIOrder( _vciOrder );
+    _mp->assignMaterial( section );
   }
 
   template < int nDim >
@@ -417,12 +308,12 @@ namespace Marmot::Meshfree {
 
     Tensor< double, nDim, nDim > du_dY( 0.0 );
 
-    for ( int B = 0; B < _nNodes; B++ ) {
+    for ( int B = 0; B < this->_nNodes; B++ ) { // Use base class _nNodes
 
       const int idxB_u = nodeBlockSize * B;
 
-      const double N_B     = _N( B );
-      const auto   dN_B_dY = Tensor< double, nDim >( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
+      const double N_B     = this->_N( B );                                          // Use base class _N
+      const auto   dN_B_dY = Tensor< double, nDim >( this->_dN_dY.col( B ).data() ); // Use base class _dN_dY
 
       const auto dQU = Tensor< double, nDim >( dQ + idxB_u );
 
@@ -431,14 +322,14 @@ namespace Marmot::Meshfree {
       du_dY += einsum< i, j >( dQU, dN_B_dY );
     }
 
-    _mp.prepareYourself( timeNew, dT );
-    _mp.incrementDeformation( du, du_dY );
-    _mp.computeYourself( timeNew, dT );
+    _mp->prepareYourself( timeNew, dT );
+    _mp->incrementDeformation( du, du_dY );
+    _mp->computeYourself( timeNew, dT );
 
-    const double density0 = _mp.getDensityUndeformed();
+    const double density0 = _mp->getDensityUndeformed();
 
-    auto v = _mp.getVelocity();
-    auto a = _mp.getAcceleration();
+    auto v = _mp->getVelocity();
+    auto a = _mp->getAcceleration();
 
     Tensor< double, nDim, nDim > da_ddu( 0.0 );
     Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
@@ -448,30 +339,30 @@ namespace Marmot::Meshfree {
                                                              this->_newmark_beta,
                                                              this->_newmark_gamma,
                                                              da_ddu.data() );
-    _mp.setVelocity( v );
-    _mp.setAcceleration( a );
+    _mp->setVelocity( v );
+    _mp->setAcceleration( a );
 
     Tensor< double, nDim > r_U( 0.0 );
 
     Tensor< double, nDim, nDim > k_UU( 0.0 );
 
-    const auto& S = _mp.response.S;
+    const auto& S = _mp->response.S;
 
     const double V0 = getVolumeUndeformed();
 
-    const auto& t = _mp.tangents;
+    const auto& t = _mp->tangents;
 
-    Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
-    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
+    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize ); // Use base class _nNodes
+    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ,
+                                     this->_nNodes * nodeBlockSize,
+                                     this->_nNodes * nodeBlockSize ); // Use base class _nNodes
 
     // clang-format off
-    for ( int A = 0; A < _nNodes; A++ ) {
+    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
 
-      const double T_A = _T( A );
-      const auto                   dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
-      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp.dx_dY() ), dT_A_dY );
-      const Tensor< double, nDim > dT_A_dX = einsum< ji, j >( _mp.dY_dX(), dT_A_dY );
-
+      const double T_A = this->_T( A ); // Use base class _T
+      const auto                   dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() ); // Use base class _dT_dY
+      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp->dx_dY() ), dT_A_dY );
 
         const int idxA_u = nodeBlockSize * A;
 
@@ -485,22 +376,19 @@ namespace Marmot::Meshfree {
           P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
         }
 
-        for ( int B = 0; B < _nNodes; B++ ) {
+        for ( int B = 0; B < this->_nNodes; B++ ) { // Use base class _nNodes
 
           const int idxB_u = nodeBlockSize * B;
 
-          const double                 N_B     = _N( B );
-          const auto dN_B_dY = TensorMap< const double, nDim >( _dN_dY.col(B).data() );
-          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp.dx_dY() ), dN_B_dY ) );
-          const auto dN_B_dX = evaluate( einsum< ji, j >( _mp.dY_dX(), dN_B_dY ) ); // no dependence on current deformations!
+          const double                 N_B     = this->_N( B ); // Use base class _N
+          const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col(B).data() ); // Use base class _dN_dY
+          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp->dx_dY() ), dN_B_dY ) );
 
           // aux stiffness tensors
           const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY )                                            );
 
-          k_UU  = ( + einsum< i, ijk        > ( dT_A_dx, dS_dqU_B )                                                       ) * V0;
-
+          k_UU  = ( + einsum< i, ijk        >  ( dT_A_dx, dS_dqU_B )   ) * V0;
           k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
-
           k_UU += density0 * da_ddu * T_A * N_B * V0;
 
           {
