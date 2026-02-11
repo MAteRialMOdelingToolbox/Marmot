@@ -871,7 +871,8 @@ namespace Marmot::Meshfree {
       _du_center += du;
     }
 
-    _centerDisplacement += CoordinatesSized( _du_center.data() );
+    Eigen::Map< CoordinatesSized > du_center_eigen( _du_center.data() ); // Use alias
+    _centerDisplacement += du_center_eigen;
 
     Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > > dx_dY_map(
       _dx_dY_center.data() ); // Use RowMajor for Fastor compatibility
