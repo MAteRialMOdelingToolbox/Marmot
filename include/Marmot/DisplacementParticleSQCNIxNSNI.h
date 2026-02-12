@@ -395,9 +395,6 @@ namespace Marmot::Meshfree {
     using ijK  = Fastor::Index< i_, j_, K_ >;
 
     const auto& _nNodes = this->_nNodes;
-    const auto& _N      = this->_N;
-    const auto& _dN_dY  = this->_dN_dY;
-    const auto& _T      = this->_T;
     const auto& _dT_dY  = this->_dT_dY;
     auto&       _mp     = this->_mp;
 
@@ -460,8 +457,6 @@ namespace Marmot::Meshfree {
     const auto& _nNodes = this->_nNodes;
     const auto& _N      = this->_N;
     const auto& _dN_dY  = this->_dN_dY;
-    const auto& _T      = this->_T;
-    const auto& _dT_dY  = this->_dT_dY;
     auto&       _mp     = this->_mp;
 
     const static TensorDD I(
@@ -521,24 +516,18 @@ namespace Marmot::Meshfree {
 
     for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
 
-      const TensorD x_A( this->_assignedKernelFunctions[A]->getCenterCoordinates() );
-
-      const TensorD r_A = x_A - x_p;
-
-      // std::cout << "r_A: " << r_A << std::endl;
-
-      const double T_A     = this->_T( A ); // Use base class _T
+      const double T_A     = this->_T( A );     // Use base class _T
       const auto   dT_A_dY = Tensor< double, nDim >( _dT_dY.col( A ).data() );
 
       const int idxA_u = this->nDofPerNodeU * A;
 
       const TensorD aux = einsum< ij, j >( _dv_dY_x_Y2, dT_A_dY );
 
-      const TensorD aux1 = ( _dv_dY % r_A );
+      const double detJIntermediate = determinant( this->_mp->dY_dX() );
+
       for ( int i = 0; i < this->nDofPerNodeU; i++ ) {
         mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
-        mLumped[idxA_u + i] += density0 * aux[i] / determinant( this->_mp->dY_dX() );
-        // mLumped[idxA_u + i] += density0 * T_A  *aux1[i] * V0;
+        mLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
       }
     }
   }
