@@ -515,19 +515,30 @@ namespace Marmot::Meshfree {
     const auto&  _dT_dY   = this->_dT_dY;
 
     const TensorDD _dv_dY_x_Y2 = einsum< ij, jk >( _dv_dY, _momentsOfInertia_IntermediateReference );
+    //
+    TensorD x_p;
+    this->getCenterCoordinates( x_p.data() );
 
     for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
 
-      const double T_A     = this->_T( A );     // Use base class _T
+      const TensorD x_A( this->_assignedKernelFunctions[A]->getCenterCoordinates() );
+
+      const TensorD r_A = x_A - x_p;
+
+      // std::cout << "r_A: " << r_A << std::endl;
+
+      const double T_A     = this->_T( A ); // Use base class _T
       const auto   dT_A_dY = Tensor< double, nDim >( _dT_dY.col( A ).data() );
 
       const int idxA_u = this->nDofPerNodeU * A;
 
       const TensorD aux = einsum< ij, j >( _dv_dY_x_Y2, dT_A_dY );
 
+      const TensorD aux1 = ( _dv_dY % r_A );
       for ( int i = 0; i < this->nDofPerNodeU; i++ ) {
         mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
-        mLumped[idxA_u + i] += density0 * aux[i];
+        mLumped[idxA_u + i] += density0 * aux[i] / determinant( this->_mp->dY_dX() );
+        // mLumped[idxA_u + i] += density0 * T_A  *aux1[i] * V0;
       }
     }
   }

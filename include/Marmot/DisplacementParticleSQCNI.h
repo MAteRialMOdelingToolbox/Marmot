@@ -274,6 +274,13 @@ namespace Marmot::Meshfree {
                                          double*       dExt_dQ,
                                          double        timeNew,
                                          double        dT ) const override;
+
+    virtual void computeDistributedLoadExplicit( int           type,
+                                                 int           boundaryFaceID,
+                                                 const double* load,
+                                                 double*       fExt,
+                                                 double        timeNew,
+                                                 double        dT ) const override;
   };
 
   template < int nDim, int nVertices >
@@ -382,6 +389,68 @@ namespace Marmot::Meshfree {
             K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
               torowmajor( df_ddQU_B ).data() );
           }
+        }
+      }
+
+      break;
+    }
+    default: {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+    }
+    }
+  }
+
+  template < int nDim, int nVertices >
+  void DisplacementParticleSQCNI< nDim, nVertices >::computeDistributedLoadExplicit( int           type,
+                                                                                     int           boundaryFaceID,
+                                                                                     const double* load,
+                                                                                     double*       fExt,
+                                                                                     double        timeNew,
+                                                                                     double        dT ) const
+  {
+    switch ( type ) {
+
+    case DisplacementParticle< nDim >::Pressure: {
+
+      const auto&   _nNodes       = this->_nNodes; // From GenericParticle
+      constexpr int nodeBlockSize = nDim;
+
+      const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
+
+      TensorD fY = N_dAY * load[0];
+
+      Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
+
+      using namespace Fastor;
+      using namespace FastorIndices;
+
+      Tensor< double, nDim, nDim > Eye;
+      Eye.eye();
+
+      // apply Nanson's formula
+      const auto deltaF = this->dx_dY(); // From DisplacementParticle
+
+      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
+      const double                       deltaJ    = determinant( deltaF );
+
+      const TensorD f = deltaJ * transpose( deltaFInv ) % fY;
+
+      TensorD r_U( 0.0 );
+
+      Eigen::MatrixXd testBoundary = Eigen::MatrixXd::Zero( 1, this->_nNodes ); // From GenericParticle
+
+      this->_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
+                                                          this->_assignedKernelFunctions,
+                                                          testBoundary.data() );
+
+      for ( int A = 0; A < _nNodes; A++ ) {
+        const int idxA_u = nodeBlockSize * A;
+
+        r_U = testBoundary( A ) * f;
+
+        {
+          using namespace Eigen;
+          P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
         }
       }
 
