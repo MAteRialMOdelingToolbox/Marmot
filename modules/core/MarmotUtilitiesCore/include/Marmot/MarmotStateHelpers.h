@@ -178,6 +178,9 @@ public:
   template < class View, class... Args >
   View getAs( double* base, const std::string& name, Args&&... args ) const
   {
+    if ( !finalized )
+      throw std::runtime_error( "State layout not finalized." );
+
     const auto& v = getInfo( name );
     return StateMapper< View >::map( base + v.offset, v.size, std::forward< Args >( args )... );
   }
