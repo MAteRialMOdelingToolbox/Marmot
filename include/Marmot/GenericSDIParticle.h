@@ -140,6 +140,7 @@ namespace Marmot::Meshfree {
       if ( propertyName == "VCI order" ) {
         _vciOrder = static_cast< int >( property[0] );
         this->setVCIOrder( _vciOrder );
+        return;
       }
 
       setPropertyOnSubdomains( propertyName, property );
@@ -440,23 +441,10 @@ namespace Marmot::Meshfree {
                                                       [[maybe_unused]] const double* boundarySurfaceVector,
                                                       [[maybe_unused]] int           boundaryFaceID ) override{
 
-      // using namespace Fastor;
-
-      // const auto [N_dAY, Y_N]   = getIntermediateConfigurationBoundaryVector( boundaryFaceID );
-      // Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, _nNodes );
-
-      // _meshfreeApproximation.computeShapeFunctions( Y_N.data(), _assignedKernelFunctions, TBoundary.data() );
-
-      // // get P for the exact integration location at the boundary
-      // auto PBoundary = Eigen::VectorXd( _nVCIConstraints );
-      // Math::computeMonomialBasis( _vciOrder, CoordinatesSized( Y_N.data() ), PBoundary );
-
-      // for ( int A = 0; A < _nNodes; A++ )
-      //   for ( int i = 0; i < nDim; i++ )
-      //     for ( int C = 0; C < _nVCIConstraints; C++ )
-      //       R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += TBoundary( A ) * PBoundary(
-      //       C ) * N_dAY[i];
-
+      // This method depends on dY_dX, which is physics-specific.
+      // It must be implemented in derived classes.
+      throw std::runtime_error( "Error: GenericSDIParticle::vci_compute_Test_P_BoundaryIntegral not implemented. "
+                                "Must be implemented in a physics-specific derived class." );
     };
 
     /**
@@ -465,13 +453,19 @@ namespace Marmot::Meshfree {
      */
     virtual void vci_compute_TestGradient_P_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override{
       // // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      // for ( const auto& sd : _subDomains)
-      //   for ( int A = 0; A < _nNodes; A++ )
-      //     for ( int i = 0; i < nDim; i++ )
-      //       for ( int C = 0; C < _nVCIConstraints; C++ )
-      //         R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.dT_dY( i, A ) *
-      //                                                                                       sd.P( C ) *
-      //                                                                                       getSubdomainVolume( sd );
+       for (size_t s = 0; s < _subDomains.size(); ++s){//( const auto& sd : _subDomains)
+         const auto& sd = _subDomains[s];
+         const auto& sdf = _subDomainShapeFunctions[s];
+         const double vol = getSubdomainVolume( sd );
+
+         for ( int A = 0; A < _nNodes; A++ )
+           for ( int i = 0; i < nDim; i++ )
+             for ( int C = 0; C < _nVCIConstraints; C++ )
+               R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.dT_dY( i, A ) *
+                                                                                             sdf.P( C ) *
+                                                                                             vol;
+                                                                                             //getSubdomainVolume( sd );
+       }
     };
 
     /**
@@ -480,13 +474,20 @@ namespace Marmot::Meshfree {
      */
     virtual void vci_compute_Test_PGradient_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override{
       // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-      // for ( const auto& sd : _subDomains)
-      //   for ( int A = 0; A < _nNodes; A++ )
-      //     for ( int i = 0; i < nDim; i++ )
-      //       for ( int C = 0; C < _nVCIConstraints; C++ )
-      //         R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sd.T( A ) *
-      //                                                                                       sd.P_Gradient( C, i ) *
-      //                                                                                       getSubdomainVolume( sd );
+       for ( size_t s = 0; s < _subDomains.size(); ++s){// ( const auto& sd : _subDomains)
+
+         const auto& sd = _subDomains[s];
+         const auto& sdf = _subDomainShapeFunctions[s];
+         const double vol = getSubdomainVolume( sd );
+
+         for ( int A = 0; A < _nNodes; A++ )
+           for ( int i = 0; i < nDim; i++ )
+             for ( int C = 0; C < _nVCIConstraints; C++ )
+               R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.T( A ) *
+                                                                                             sdf.P_Gradient( C, i ) *
+                                                                                             vol;
+                                                                                             //getSubdomainVolume( sd );
+      }
     };
 
     /**
@@ -495,19 +496,25 @@ namespace Marmot::Meshfree {
      */
     virtual void vci_compute_MMatrix( [[maybe_unused]] double* mMatrix_ACD_RowMajor ) override{
       // // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
+       auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
-      // for ( const auto& sd : _subDomains)
-      //   for ( int A = 0; A < _nNodes; A++ ) {
-      //     const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
-      //                                                                                                           :
-      //                                                                                                           0.0;
-      //     // const double R_A = 1.0;
+       for (size_t s = 0; s < _subDomains.size(); ++s){// ( const auto& sd : _subDomains)
+         const auto& sd = _subDomains[s];
+         const auto& sdf = _subDomainShapeFunctions[s];
+         const double vol = getSubdomainVolume( sd );
+         auto center = sd.getCenterCoordinates();
 
-      //     for ( int C = 0; C < _nVCIConstraints; C++ )
-      //       for ( int D = 0; D < _nVCIConstraints; D++ )
-      //         mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints +
-      //                              D] += R_A * sd.P( C ) * sd.P( D ) * getSubdomainVolume( sd );
-      //   }
+         for ( int A = 0; A < _nNodes; A++ ) {
+           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
+           //const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
+           // const double R_A = 1.0;
+
+           for ( int C = 0; C < _nVCIConstraints; C++ )
+             for ( int D = 0; D < _nVCIConstraints; D++ )
+               mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints + D] +=
+                                    R_A * sdf.P( C ) * sdf.P( D ) * vol;// getSubdomainVolume( sd );
+         }
+       }
     };
 
     /**
@@ -515,20 +522,29 @@ namespace Marmot::Meshfree {
      * @param eta_AiC_RowMajor Pointer to the correction terms matrix (row-major).
      */
     virtual void vci_assignTestFunctionCorrectionTerms( [[maybe_unused]] const double* eta_AiC_RowMajor ) override{
+       auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
-      // for ( auto& sd : _subDomains)
-      //   for ( int A = 0; A < _nNodes; A++ ) {
-      //     const double R_A = _assignedKernelFunctions[A]->isInSupport( sd.center_IntermediateReference.data() ) ? 1.0
-      //                                                                                                           :
-      //                                                                                                           0.0;
-      //     // const double R_A = 1.0;
-      //     for ( int i = 0; i < nDim; i++ ) {
-      //       for ( int C = 0; C < _nVCIConstraints; C++ ) {
-      //         sd.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A
-      //         * sd.P( C );
-      //       }
-      //     }
-      //   }
+       for (size_t s = 0; s < _subDomains.size(); ++s){// ( auto& sd : _subDomains)
+         const auto& sd = _subDomains[s];
+         auto& sdf = _subDomainShapeFunctions[s];
+         auto center = sd.getCenterCoordinates();
+
+         for ( int A = 0; A < _nNodes; A++ ) {
+           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
+           //const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
+           // const double R_A = 1.0;
+           for ( int i = 0; i < nDim; i++ ) {
+             double correction = 0.0;
+
+             for ( int C = 0; C < _nVCIConstraints; C++ ) {
+               correction += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A * sdf.P( C );
+               //sdf.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A * sdf.P( C );
+             }
+             //sdf.dT_dY(i, A ) += correction;
+             sdf.dT_dY(i, A ) = sdf.dN_dY( i, A ) + correction;
+           }
+         }
+       }
     };
 
   protected:
