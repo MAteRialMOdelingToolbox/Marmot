@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Thomas Mader thomas.mader@boku.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -215,6 +216,31 @@ namespace Marmot::Meshfree {
                                          double*       dExt_dQ,
                                          double        timeNew,
                                          double        dT ) const override;
+    virtual void vci_compute_Test_P_BoundaryIntegral( double* R_AiC_RowMajor,
+                                                      const double* boundarySurfaceVector,
+                                                      int           boundaryFaceID ) override
+    {
+      const auto [N_dAY, Y_N] = this->getIntermediateConfigurationBoundaryVector( boundaryFaceID, this->_particleDomainMain );
+      Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, this->_nNodes );
+
+      this->_meshfreeApproximation.computeShapeFunctions( Y_N.data(), this->_assignedKernelFunctions, TBoundary.data() );
+
+      Eigen::VectorXd PBoundary( this->_nVCIConstraints );
+      Eigen::Matrix< double, nDim, 1 > Y_N_coords( Y_N.data() );
+      Math::computeMonomialBasis( this->_vciOrder, Y_N_coords, PBoundary );
+
+      for ( int A = 0; A < this->_nNodes; A++ ) {
+        for ( int i = 0; i < nDim; i++ ) {
+          for ( int C = 0; C < this->_nVCIConstraints; C++ ) {
+
+            R_AiC_RowMajor[A * ( nDim * this->_nVCIConstraints ) + i * this->_nVCIConstraints + C] += 
+                TBoundary( 0, A ) * PBoundary( C ) * N_dAY[i];
+                //TBoundary( 0, A ) * PBoundary( C ) * boundarySurfaceVector[i];// N_dAY[i];
+          }
+        }
+      }
+    };
+
 
     virtual void getEvaluationCoordinates( double* coordinates ) const override
     {
@@ -250,6 +276,7 @@ namespace Marmot::Meshfree {
     };
   };
 
+  
   template < int nDim, int nVertices >
   DisplacementParticleSQCNIxSDI< nDim, nVertices >::DisplacementParticleSQCNIxSDI(
     int                                                                    elementID,

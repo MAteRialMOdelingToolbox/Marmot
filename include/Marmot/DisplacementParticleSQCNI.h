@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Thomas Mader thomas.mader@boku.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -381,9 +382,99 @@ namespace Marmot::Meshfree {
         }
       }
 
+
       break;
     }
-    default: {
+case DisplacementParticle< nDim >::CWFCorrection: {
+      const auto&   _mp           = this->_mp; 
+      const auto&   _nNodes       = this->_nNodes; 
+      constexpr int nodeBlockSize = nDim;
+
+      const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
+
+      Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
+      Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
+
+      using namespace Fastor;
+
+      const auto& S = _mp->response.S;
+      const auto& t = _mp->tangents; 
+
+      const auto deltaF = this->dx_dY(); 
+      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
+      const double                       deltaJ    = determinant( deltaF );
+
+      const TensorD v = transpose( deltaFInv ) % N_dAY; // F^-T * N * dA
+      const TensorD traction = S % v;                   // tau * v
+
+      Tensor< double, nDim, nDim, nDim > df_dDeltaF;
+      df_dDeltaF.zeros();
+
+      for ( int i = 0; i < nDim; ++i ) {
+        for ( int m = 0; m < nDim; ++m ) {
+          for ( int M = 0; M < nDim; ++M ) {
+            
+            double geo = 0.0;
+            double mat = 0.0;
+
+            for ( int j = 0; j < nDim; ++j ) {
+              // Geometric stiffness part: derived from delta(F^-T)
+              geo -= S( i, j ) * v( m ) * deltaFInv( M, j );
+              
+              // Material stiffness part: derived from delta(tau)
+              mat += t.dS_dDeltaF( i, j, m, M ) * v( j ); 
+            }
+            
+            df_dDeltaF( i, m, M ) = geo + mat;
+          }
+        }
+      }
+
+      Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( this->_nNodes );
+
+      this->_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
+                                                          this->_assignedKernelFunctions,
+                                                          testBoundary.data() );
+
+      for ( int A = 0; A < _nNodes; A++ ) {
+        const int idxA_u = nodeBlockSize * A;
+
+        TensorD r_U = testBoundary( A ) * traction;
+
+        {
+          using namespace Eigen;
+          P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
+        }
+
+        for ( int B = 0; B < _nNodes; B++ ) {
+          const int  idxB_u  = nodeBlockSize * B;
+          const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col( B ).data() );
+
+          Tensor< double, nDim, nDim > df_ddQU_B;
+          df_ddQU_B.zeros();
+
+          // Contract df_dF with the reference shape function gradient
+          for ( int i = 0; i < nDim; ++i ) {
+            for ( int m = 0; m < nDim; ++m ) {
+              for ( int M = 0; M < nDim; ++M ) {
+                df_ddQU_B( i, m ) += df_dDeltaF( i, m, M ) * dN_B_dY( M );
+              }
+            }
+          }
+
+          df_ddQU_B *= testBoundary( A );
+
+          {
+            using namespace Eigen;
+            K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
+                torowmajor( df_ddQU_B ).data() );
+          }
+        }
+      }
+
+      break;
+  }
+        default: {
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
@@ -409,7 +500,6 @@ namespace Marmot::Meshfree {
     else
       _Y_eigen = _particleDomain.getFaceCenterCoordinates( boundaryFaceID );
 
-    // N_dAY (boundary surface vector for distributed load) comes from the deformed geometry
     auto _N_dAY_eigen = _particleDomain.getFaceBoundaryVector( boundaryFaceID );
 
     for ( int i = 0; i < nDim; i++ ) {
