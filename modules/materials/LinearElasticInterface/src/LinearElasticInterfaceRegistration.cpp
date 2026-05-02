@@ -1,6 +1,5 @@
 #include "Marmot/LinearElasticInterface.h"
 #include "Marmot/MarmotMaterialHypoElasticInterface.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
 
 namespace Marmot::Materials {
 
@@ -8,10 +7,9 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool LinearElasticIsRegistered = MarmotMaterialHypoElasticInterfaceFactory::
-      registerMaterial( "LINEARELASTICINTERFACE",
-                        makeDefaultMarmotMaterialHypoElasticInterfaceFactoryFunction<
-                          class LinearElasticInterface >() );
+    const static bool LinearElasticInterfaceIsRegistered =
+      MarmotMaterialHypoElasticInterfaceFactory::registerMaterial< LinearElasticInterface >( "LINEARELASTICINTERFACE" );
 
   } // namespace Registration
+
 } // namespace Marmot::Materials

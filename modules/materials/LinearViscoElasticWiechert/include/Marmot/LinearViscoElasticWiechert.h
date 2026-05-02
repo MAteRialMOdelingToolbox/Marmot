@@ -95,16 +95,15 @@ namespace Marmot::Materials {
 
     LinearViscoElasticWiechert( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-    void computeStress( double*       Stress,
-                        double*       D_inv_ijkl,
-                        const double* dStrain,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+    
 
-    int getNumberOfRequiredStateVars();
+    void initializeStateLayout() override;
 
-    void assignStateVars( double* stateVars_, int nStateVars );
+    void computeStress( state3D&        state,
+                        double*         C,
+                        const double*   dStrain,
+                        const timeInfo& timeInfo ) const override;
+
 
     StateView getStateView( const ::std::string& stateName );
 
@@ -114,5 +113,8 @@ namespace Marmot::Materials {
     double               zerothWiechertStiffness;
 
     static constexpr int powerLawApproximationOrder = 1;
+  private:
+
   };
+
 } // namespace Marmot::Materials

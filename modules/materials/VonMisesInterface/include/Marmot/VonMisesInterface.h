@@ -98,11 +98,13 @@ namespace Marmot::Materials {
                         const double  dT,
                         double&       pNewDT ) override;
 
-    int getNumberOfRequiredStateVars() override { return VonMisesInterfaceStateVarManager::layout.nRequiredStateVars; }
+    int getNumberOfRequiredStateVars() const override { return VonMisesInterfaceStateVarManager::layout.nRequiredStateVars; }
+
+    void initializeStateLayout() override;
 
     void assignStateVars( double* stateVars, int nStateVars ) override;
 
-    StateView getStateView( const std::string& stateName ) override;
+    StateView getStateView( const std::string& stateName );
 
     double getDensity() override;
   };

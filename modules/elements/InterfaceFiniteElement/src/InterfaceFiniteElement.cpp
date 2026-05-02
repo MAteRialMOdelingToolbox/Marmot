@@ -83,8 +83,7 @@ namespace Marmot::Elements {
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >( dynamic_cast< Material* >(
-        MarmotLibrary::MarmotMaterialHypoElasticInterfaceFactory::createMaterial( std::to_string(
-                                                                                    section.materialCode ),
+        MarmotLibrary::MarmotMaterialHypoElasticInterfaceFactory::createMaterial( section.materialName,
                                                                                   section.materialProperties,
                                                                                   section.nMaterialProperties,
                                                                                   elLabel ) ) );
@@ -247,7 +246,7 @@ namespace Marmot::Elements {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
       for ( QuadraturePoint& qp : qps ) {
-        qp.material->initializeYourself();
+        /* Interface material state is managed through qp.managedStateVars in v26.05 style. */
       }
       break;
     }

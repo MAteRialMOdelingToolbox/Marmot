@@ -123,7 +123,9 @@ namespace Marmot::Materials {
                         const double  dT,
                         double&       pNewDT );
 
-    int getNumberOfRequiredStateVars();
+    int getNumberOfRequiredStateVars() const override;
+
+    void initializeStateLayout() override;
 
     void assignStateVars( double* stateVars_, int nStateVars );
 

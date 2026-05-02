@@ -31,6 +31,13 @@ using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
 
 namespace Marmot::Materials {
 
+  void VonMisesInterface::initializeStateLayout()
+  {
+    // State variables are managed manually by VonMisesInterfaceStateVarManager.
+  }
+
+
+
   VonMisesInterface::VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : MarmotMaterialHypoElasticInterface( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
@@ -129,7 +136,11 @@ namespace Marmot::Materials {
     // By preserving C_ep_saved we can restore the plastic tangent after an elastic substep.
     // const Eigen::Matrix< double, 6, 6, Eigen::RowMajor > C_ep_saved = C_ep;
     const double kappa_old = managedStateVars->kappa;
-    vonMisesModel.computeStress( averageStressVoigt.data(), C_ep.data(), dStrainAvgVoigt.data(), timeOld, dT, pNewDT );
+    MarmotMaterialHypoElastic::state3D vonMisesState{ averageStressVoigt, 0.0, &managedStateVars->kappa };
+    MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
+
+    vonMisesModel.computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
+    averageStressVoigt = vonMisesState.stress;
 
     // If no plastic flow occurred in this substep (kappa unchanged), restore the previously
     // computed C_ep so that the consistent tangent K reflects the active plastic state.
@@ -150,16 +161,16 @@ namespace Marmot::Materials {
     // voigtToStress returns column-major Eigen matrix; convert to row-major before copying
     // so that Fastor (row-major) reads the layout correctly
     const Eigen::Matrix< double, 3, 3, Eigen::RowMajor >
-      scaled_averageStressFull = h * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
+      scaled_averageStressFull = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
 
     std::copy( scaled_averageStressFull.data(), scaled_averageStressFull.data() + 9, scaled_averageStress );
     // Reload Fastor tensor from the updated 3x3 buffer
     scaled_averageStressFtensor = Fastor::Tensor< double, 3, 3 >( scaled_averageStress );
 
-    scaled_forceFtensor = 1. / h *
-                          Fastor::einsum< Fastor::Index< i, j >,
-                                          Fastor::Index< j >,
-                                          Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
+    scaled_forceFtensor =
+      Fastor::einsum< Fastor::Index< i, j >,
+                      Fastor::Index< j >,
+                      Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
 
     std::copy( scaled_forceFtensor.data(), scaled_forceFtensor.data() + 3, scaled_force );
     std::copy( Q_ij_Ftensor_scaled.data(), Q_ij_Ftensor_scaled.data() + 9, Q_ij );
@@ -177,9 +188,7 @@ namespace Marmot::Materials {
     managedStateVars = std::make_unique< VonMisesInterfaceStateVarManager >( stateVars );
 
     // Also assign the kappa state var pointer to vonMisesModel so it shares the same memory
-    vonMisesModel.assignStateVars( &managedStateVars->kappa, 1 );
-
-    // If C_ep_voigt state var is still zero (first ever assignment), initialize it to elastic stiffness
+// If C_ep_voigt state var is still zero (first ever assignment), initialize it to elastic stiffness
     if ( managedStateVars->C_ep_voigt.isZero() )
       managedStateVars->C_ep_voigt = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
 

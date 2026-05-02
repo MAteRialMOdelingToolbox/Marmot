@@ -1,5 +1,4 @@
 #include "Marmot/MarmotMaterialHypoElasticInterface.h"
-#include "Marmot/MarmotMaterialRegistrationHelper.h"
 #include "Marmot/VonMisesInterface.h"
 
 namespace Marmot::Materials {
@@ -8,9 +7,9 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool VonMisesIsRegistered = MarmotMaterialHypoElasticInterfaceFactory::
-      registerMaterial( "VONMISESINTERFACE",
-                        makeDefaultMarmotMaterialHypoElasticInterfaceFactoryFunction< class VonMisesInterface >() );
+    const static bool VonMisesInterfaceIsRegistered =
+      MarmotMaterialHypoElasticInterfaceFactory::registerMaterial< VonMisesInterface >( "VONMISESINTERFACE" );
 
   } // namespace Registration
+
 } // namespace Marmot::Materials

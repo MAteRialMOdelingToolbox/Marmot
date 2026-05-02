@@ -1,13 +1,8 @@
 #include "Marmot/InterfaceFiniteElement.h"
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotElementFactory.h"
 
 namespace Marmot::Elements::Registration {
-
-  enum InterfaceElementCode {
-    ILINE2 = 504,
-    IQUAD4 = 508,
-  };
 
   template < class T,
              Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
@@ -21,16 +16,12 @@ namespace Marmot::Elements::Registration {
   using namespace Marmot::FiniteElement::Quadrature;
 
   const static bool ILINE2_isRegistered = MarmotElementFactory::
-    registerElement( "ILINE2",
-                     InterfaceElementCode::ILINE2,
-                     makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
+    registerElement( "ILINE2", makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
                                           FullIntegration,
                                           InterfaceFiniteElement< 2, 4 >::SectionType::Interface >() );
 
   const static bool IQUAD4_isRegistered = MarmotElementFactory::
-    registerElement( "IQUAD4",
-                     InterfaceElementCode::IQUAD4,
-                     makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
+    registerElement( "IQUAD4", makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
                                           FullIntegration,
                                           InterfaceFiniteElement< 3, 8 >::SectionType::Interface >() );
 

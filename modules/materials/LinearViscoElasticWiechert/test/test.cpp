@@ -1,5 +1,5 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
-#include "Marmot/Marmot.h"
+#include <memory>
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
@@ -21,22 +21,13 @@ using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 // - materialProperties: Array of material parameters (e.g., Young's modulus, Poisson's ratio)
 // - nMaterialProperties: Number of parameters in the materialProperties array
 std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( const std::string& materialName,
-                                                                              const double*      materialProperties,
-                                                                              int                nMaterialProperties )
+                                                                                  const double*      materialProperties,
+                                                                                  int                nMaterialProperties )
 {
-  // Element label (arbitrary value)
-  const int elLabel = 1;
-
-  // Get the material code from the name
-  int materialCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( materialName );
-  // Create the material object using Marmot's factory method
-  auto mat = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotLibrary::MarmotMaterialFactory::createMaterial( materialCode,
-                                                          materialProperties,
-                                                          nMaterialProperties,
-                                                          elLabel ) ) );
-
-  return mat; // Return the created material object
+  (void) materialName;
+  return std::make_unique< Marmot::Materials::LinearViscoElasticWiechert >( materialProperties,
+                                                                           nMaterialProperties,
+                                                                           1 );
 }
 
 // Function to test the viscoelastic interface material response for given surface strain
@@ -58,11 +49,16 @@ void testStressMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  MarmotMaterialHypoElastic::state3D state{
+    Marmot::Vector6d::Zero(),
+    0.0,
+    stateVar.data()
+  };
+
+  MarmotMaterialHypoElastic::timeInfo timeInfo;
 
   // first increment ( load free )
   const double    timeOld = 0.0; // Previous time step
-  double          pNewDT;        // Placeholder for the new time increment
   Eigen::VectorXd time( 2 );
   time.setZero();
   double dT = 28.0; // time increment
@@ -76,7 +72,11 @@ void testStressMaterialResponse()
   const double dstrain1[6] = { 0 };
 
   // compute material response
-  mat->computeStress( stress, D_ijkl, dstrain1, &timeOld, dT, pNewDT );
+  timeInfo.time = timeOld;
+  timeInfo.dT   = dT;
+  mat->computeStress( state, D_ijkl, dstrain1, timeInfo );
+  for ( int i = 0; i < 6; ++i )
+    stress[i] = state.stress[i];
 
   // second increment ( load application )
   dT = 1e-6;
@@ -84,7 +84,11 @@ void testStressMaterialResponse()
   const double dstrain2[6] = { 0, 0, 0, 0, 0, 1e-1 };
 
   // compute material response
-  mat->computeStress( stress, D_ijkl, dstrain2, &timeOld, dT, pNewDT );
+  timeInfo.time = timeOld;
+  timeInfo.dT   = dT;
+  mat->computeStress( state, D_ijkl, dstrain2, timeInfo );
+  for ( int i = 0; i < 6; ++i )
+    stress[i] = state.stress[i];
 
   // third increment ( constant strain, relaxation )
   dT = 100.;
@@ -92,7 +96,11 @@ void testStressMaterialResponse()
   const double dstrain3[6] = { 0 };
 
   // compute material response
-  mat->computeStress( stress, D_ijkl, dstrain3, &timeOld, dT, pNewDT );
+  timeInfo.time = timeOld;
+  timeInfo.dT   = dT;
+  mat->computeStress( state, D_ijkl, dstrain3, timeInfo );
+  for ( int i = 0; i < 6; ++i )
+    stress[i] = state.stress[i];
   // Set the expected force and surface stress explicitly
   // Use the actual value previously printed by the test
   double stressTarget[6] = { 0., 0., 0., 0., 0., 3846153.831362 };

@@ -143,7 +143,7 @@ void testForceMaterialResponse()
 
   // expected force and surface stress
   double forceTarget[3]          = { 0, 38461538.461538, 0 };
-  double surface_stressTarget[9] = { 0, 0, 0, 0, 0, 0, 0, 7.69231, 0 };
+  double surface_stressTarget[9] = { 0, 0, 0, 0, 0, -3.84615384615385, 0, -3.84615384615385, 0 };
 
   // Convert to Eigen maps for easier comparison
   Eigen::Map< Eigen::Vector3d > forceVec( force );

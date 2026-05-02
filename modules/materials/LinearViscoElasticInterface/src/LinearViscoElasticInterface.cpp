@@ -31,6 +31,13 @@ using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
 
 namespace Marmot::Materials {
 
+  void LinearViscoElasticInterface::initializeStateLayout()
+  {
+    // State variables are managed manually by LinearViscoElasticInterfaceStateVarManager.
+  }
+
+
+
   LinearViscoElasticInterface::LinearViscoElasticInterface( const double* materialProperties,
                                                             int           nMaterialProperties,
                                                             int           materialNumber )
@@ -313,7 +320,7 @@ namespace Marmot::Materials {
 
     this->stateVarManager = std::make_unique< LinearViscoElasticInterfaceStateVarManager >( stateVars_, nMaxwell );
 
-    MarmotMaterial::assignStateVars( stateVars_, nStateVars );
+    MarmotMaterialHypoElasticInterface::assignStateVars( stateVars_, nStateVars );
   }
 
   StateView LinearViscoElasticInterface::getStateView( const std::string& stateName )
@@ -321,7 +328,7 @@ namespace Marmot::Materials {
     return stateVarManager->getStateView( stateName );
   }
 
-  int LinearViscoElasticInterface::getNumberOfRequiredStateVars()
+  int LinearViscoElasticInterface::getNumberOfRequiredStateVars() const
   {
     return LinearViscoElasticInterfaceStateVarManager::layout.nRequiredStateVars + 2 * 3 * nMaxwell + 3 * 9 * nMaxwell;
   }

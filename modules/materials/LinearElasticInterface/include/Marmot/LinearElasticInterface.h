@@ -49,6 +49,8 @@ namespace Marmot::Materials {
 
     LinearElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    void initializeStateLayout() override;
+
     // void computeStress( Tensor1D&  force,
     //                     Tensor2D&  surface_stress,
     //                     Fastor::Tensor<double, 21,21>& dStress_dStrain,
@@ -74,6 +76,6 @@ namespace Marmot::Materials {
 
     StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
 
-    int getNumberOfRequiredStateVars() { return 0; }
+    int getNumberOfRequiredStateVars() const override { return 0; }
   };
 } // namespace Marmot::Materials

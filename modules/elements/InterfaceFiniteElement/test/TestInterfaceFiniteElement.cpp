@@ -414,6 +414,25 @@ void TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual()
   const double relErr =
     err / std::max( 1.0, fdNorm );
 
+  Eigen::Index maxRow = 0;
+  Eigen::Index maxCol = 0;
+  const double maxAbsMismatch =
+    ( KeActual + KeFiniteDifference ).cwiseAbs().maxCoeff( &maxRow, &maxCol );
+
+  std::cout << "max |Ke + KeFD| = " << maxAbsMismatch
+            << " at (" << maxRow << ", " << maxCol << ")\n";
+  std::cout << "KeActual(" << maxRow << "," << maxCol << ") = "
+            << KeActual( maxRow, maxCol ) << "\n";
+  std::cout << "KeFiniteDifference(" << maxRow << "," << maxCol << ") = "
+            << KeFiniteDifference( maxRow, maxCol ) << "\n";
+
+  std::cout << "KeActual row " << maxRow << ": "
+            << KeActual.row( maxRow ) << "\n";
+  std::cout << "KeFD row " << maxRow << ": "
+            << KeFiniteDifference.row( maxRow ) << "\n";
+  std::cout << "KeActual + KeFD row " << maxRow << ": "
+            << ( KeActual + KeFiniteDifference ).row( maxRow ) << "\n";
+
   std::cout << "stiffness finite-difference check: "
             << "relative error for Ke = -dPe/ddU is " << relErr << "\n";
 

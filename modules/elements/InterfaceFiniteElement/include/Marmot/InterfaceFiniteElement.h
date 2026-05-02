@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -288,7 +287,7 @@ namespace Marmot::Elements {
 
     void assignMaterial( const std::string& materialName,
                          const double*      materialProperties,
-                         int                nMaterialProperties ) override;
+                         int                nMaterialProperties );
 
     void assignNodeCoordinates( const double* coordinates );
 
@@ -339,7 +338,7 @@ namespace Marmot::Elements {
                  static_cast< int >( qp.managedStateVars->materialStateVars.size() ) };
       }
 
-      return qp.material->getStateView( stateName );
+      throw std::runtime_error( "InterfaceFiniteElement: unknown state variable '" + stateName + "'" );
     }
 
     std::vector< double > getCoordinatesAtCenter();

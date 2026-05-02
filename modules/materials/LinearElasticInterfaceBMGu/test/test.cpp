@@ -47,8 +47,8 @@ void testForceMaterialResponse()
   // h : thickness of the interphase
   // dummy : placeholder for 8th parameter
   //                                     E_0, nu_0,     h, dummy
-  const double materialProperties[4] = { 1e4, 0.3, 1e-7, 0.0 };
-  const int    nMaterialProperties   = 4;
+  const double materialProperties[8] = { 2e4, 0.3, 2e4, 0.3, 1e4, 0.3, 1e-7, 0.0 };
+  const int    nMaterialProperties   = 8;
 
   // Create the material object
   auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACEBMGU",
@@ -99,8 +99,8 @@ void testForceMaterialResponse()
                       pNewDT );
 
   // Define the expected stress values for the applied strain increment
-  double forceTarget[3]          = { 0, 38461538.4615385, 0 };
-  double surface_stressTarget[9] = { 0., 0., 0., 0., 0., 0., 0., 3.84615384615385, 0. };
+  double forceTarget[3]          = { 0, 76923076.9230769, 0 };
+  double surface_stressTarget[9] = { 0., 0., 0., 0., 0., 0., 0., 0., 0. };
   // Convert to Eigen maps for easier comparison
   Eigen::Map< Eigen::Vector3d > forceVec( force );
   Eigen::Map< Eigen::Vector3d > forceTargetVec( forceTarget );
@@ -135,8 +135,8 @@ void testSurfaceStressMaterialResponse()
   // h : thickness of the interphase
   // dummy : placeholder for 8th parameter
   //                                     E_0, nu_0,     h, dummy
-  const double materialProperties[4] = { 1e4, 0.3, 1e-7, 0.0 };
-  const int    nMaterialProperties   = 4;
+  const double materialProperties[8] = { 2e4, 0.3, 2e4, 0.3, 1e4, 0.3, 1e-7, 0.0 };
+  const int    nMaterialProperties   = 8;
 
   // Create the material object
   auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACEBMGU",
