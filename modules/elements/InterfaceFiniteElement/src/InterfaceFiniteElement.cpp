@@ -245,9 +245,7 @@ namespace Marmot::Elements {
   {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
-      for ( QuadraturePoint& qp : qps ) {
-        /* Interface material state is managed through qp.managedStateVars in v26.05 style. */
-      }
+      /* Interface material state is managed through qp.managedStateVars in v26.05 style. */
       break;
     }
 

@@ -198,10 +198,6 @@ namespace Marmot::Materials {
     elasticModuli   = Marmot::Materials::Wiechert::initializeElasticModuli( nMaxwell, n );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {
-      return ComplianceFunctions::powerLaw( tau, m, n );
-    };
-
     // elasticModuli =
     // Marmot::Materials::Wiechert::computeElasticModuli<powerLawApproximationOrder>(phi,
     // relaxationTimes);

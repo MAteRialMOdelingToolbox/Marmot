@@ -135,7 +135,6 @@ namespace Marmot::Materials {
     // losing the plastic tangent that should be used for the consistent tangent K.
     // By preserving C_ep_saved we can restore the plastic tangent after an elastic substep.
     // const Eigen::Matrix< double, 6, 6, Eigen::RowMajor > C_ep_saved = C_ep;
-    const double kappa_old = managedStateVars->kappa;
     MarmotMaterialHypoElastic::state3D vonMisesState{ averageStressVoigt, 0.0, &managedStateVars->kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
 

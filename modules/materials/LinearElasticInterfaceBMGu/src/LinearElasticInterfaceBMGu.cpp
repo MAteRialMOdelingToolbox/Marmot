@@ -54,9 +54,7 @@ namespace Marmot::Materials {
 
     // elasticity parameters
     const double& E_M  = this->materialProperties[0];
-    const double& nu_M = this->materialProperties[1];
     const double& E_I  = this->materialProperties[2];
-    const double& nu_I = this->materialProperties[3];
     const double& E_0  = this->materialProperties[4];
     const double& nu_0 = this->materialProperties[5];
     const double& h    = this->materialProperties[6];

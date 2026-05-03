@@ -58,10 +58,6 @@ namespace Marmot::Materials {
     elasticModuli   = Marmot::Materials::WiechertInterface::initializeElasticModuli( nMaxwell, n );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {
-      return ComplianceFunctions::powerLaw( tau, m, n );
-    };
-
     // elasticModuli_Ru =
     // Marmot::Materials::WiechertInterface::computeElasticModuli_Ru<powerLawApproximationOrder>(phiRu_,
     // retardationTimes_Ru); elasticModuli_Rs =
@@ -113,11 +109,7 @@ namespace Marmot::Materials {
     Eigen::Matrix< double, 9, 9 > unitZ_voigt_full          = convert4thOrderTensorToMatrix_9x9( unitZ_ijkl );
     Eigen::Matrix< double, 9, 9 > unitYn_H_inv_Fn_ijkl_full = convert4thOrderTensorToMatrix_9x9( unitYn_H_inv_Fn_ijkl );
     Eigen::Matrix< double, 3, 9 > unitH_inv_nF_ijk_full_3_9 = convert3rdOrderTensorToMatrix_3x9( unitH_inv_nF_ijk );
-    Eigen::Matrix< double, 9, 3 > unitH_inv_nF_ijk_full_9_3 = convert3rdOrderTensorToMatrix_9x3( unitH_inv_nF_ijk );
-
     // Assign the material matrices to a larger structure. (Not necessary ...)
-    Eigen::Matrix< double, 21, 21 > Cel = Eigen::Matrix< double, 21, 21 >::Zero();
-
     // handle zero strain increment
     if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld == 0 ) {
       std::cout << "Zero strain increment in LinearViscoElasticInterface material.\n";

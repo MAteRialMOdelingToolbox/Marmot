@@ -67,7 +67,6 @@ void testForceMaterialResponse()
   double force[3]          = { 0, 0, 0 };
   double surface_stress[9] = { 0 };
   // Define a matrix to store the tangent stiffness (stress-strain relation)
-  double dStress_dStrain[21 * 21]        = { { 0 } };
   double H_inv_ij[3 * 3]                 = { { 0 } };
   double Z_ijkl[3 * 3 * 3 * 3]           = { { 0 } };
   double H_inv_nF_ijk[3 * 3 * 3]         = { { 0 } };
