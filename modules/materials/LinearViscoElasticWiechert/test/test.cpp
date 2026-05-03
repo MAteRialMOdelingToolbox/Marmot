@@ -1,5 +1,4 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
-#include <memory>
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
@@ -9,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <memory>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
@@ -21,13 +21,13 @@ using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 // - materialProperties: Array of material parameters (e.g., Young's modulus, Poisson's ratio)
 // - nMaterialProperties: Number of parameters in the materialProperties array
 std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( const std::string& materialName,
-                                                                                  const double*      materialProperties,
-                                                                                  int                nMaterialProperties )
+                                                                              const double*      materialProperties,
+                                                                              int                nMaterialProperties )
 {
-  (void) materialName;
+  (void)materialName;
   return std::make_unique< Marmot::Materials::LinearViscoElasticWiechert >( materialProperties,
-                                                                           nMaterialProperties,
-                                                                           1 );
+                                                                            nMaterialProperties,
+                                                                            1 );
 }
 
 // Function to test the viscoelastic interface material response for given surface strain
@@ -49,11 +49,7 @@ void testStressMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  MarmotMaterialHypoElastic::state3D state{
-    Marmot::Vector6d::Zero(),
-    0.0,
-    stateVar.data()
-  };
+  MarmotMaterialHypoElastic::state3D state{ Marmot::Vector6d::Zero(), 0.0, stateVar.data() };
 
   MarmotMaterialHypoElastic::timeInfo timeInfo;
 

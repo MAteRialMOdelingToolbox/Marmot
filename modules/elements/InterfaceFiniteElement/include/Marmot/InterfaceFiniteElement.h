@@ -24,9 +24,7 @@ using namespace Eigen;
 namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
-  class InterfaceFiniteElement
-    : public MarmotElement,
-      public MarmotGeometryInterfaceElement< nDim, nNodes > {
+  class InterfaceFiniteElement : public MarmotElement, public MarmotGeometryInterfaceElement< nDim, nNodes > {
 
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -171,10 +169,7 @@ namespace Marmot::Elements {
 
         Eigen::Map< Eigen::VectorXd > materialStateVars;
 
-        static int getNumberOfRequiredStateVarsQuadraturePointOnly()
-        {
-          return layout.nRequiredStateVars;
-        }
+        static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; }
 
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
@@ -198,8 +193,7 @@ namespace Marmot::Elements {
 
       int getNumberOfRequiredStateVars()
       {
-        return getNumberOfRequiredStateVarsQuadraturePointOnly()
-             + material->getNumberOfRequiredStateVars();
+        return getNumberOfRequiredStateVarsQuadraturePointOnly() + material->getNumberOfRequiredStateVars();
       }
 
       void assignStateVars( double* stateVars, int nStateVars )
@@ -285,9 +279,7 @@ namespace Marmot::Elements {
 
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
 
-    void assignMaterial( const std::string& materialName,
-                         const double*      materialProperties,
-                         int                nMaterialProperties );
+    void assignMaterial( const std::string& materialName, const double* materialProperties, int nMaterialProperties );
 
     void assignNodeCoordinates( const double* coordinates );
 
@@ -332,8 +324,7 @@ namespace Marmot::Elements {
       }
 
       if ( stateName == "sdv" ) {
-        std::cout << __PRETTY_FUNCTION__
-                  << " on 'sdv' is discouraged and deprecated, please use precise state name";
+        std::cout << __PRETTY_FUNCTION__ << " on 'sdv' is discouraged and deprecated, please use precise state name";
         return { qp.managedStateVars->materialStateVars.data(),
                  static_cast< int >( qp.managedStateVars->materialStateVars.size() ) };
       }

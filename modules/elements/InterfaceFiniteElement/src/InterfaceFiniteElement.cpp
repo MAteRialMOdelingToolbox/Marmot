@@ -169,7 +169,7 @@ namespace Marmot::Elements {
                                                                 double        dT,
                                                                 double&       pNewDT )
   {
-    (void) QTotal_;
+    (void)QTotal_;
 
     Eigen::Map< const RhsSized > dQ( dQ_ );
     Eigen::Map< KeSizedMatrix >  Ke( Ke_ );
@@ -231,12 +231,9 @@ namespace Marmot::Elements {
       Pe -= Njump.transpose() * force * qp.J0xW;
       Pe -= Bavg.transpose() * surface_stress * qp.J0xW;
 
-      Ke += ( Njump.transpose() * Q_ij * Njump
-              + Bavg.transpose() * Z_ijkl * Bavg
-              + Bavg.transpose() * Y_ijkl * Bavg
-              + Njump.transpose() * H_ijk * Bavg
-              + Bavg.transpose() * H_ijk.transpose() * Njump )
-            * qp.J0xW;
+      Ke += ( Njump.transpose() * Q_ij * Njump + Bavg.transpose() * Z_ijkl * Bavg + Bavg.transpose() * Y_ijkl * Bavg +
+              Njump.transpose() * H_ijk * Bavg + Bavg.transpose() * H_ijk.transpose() * Njump ) *
+            qp.J0xW;
     }
   }
 

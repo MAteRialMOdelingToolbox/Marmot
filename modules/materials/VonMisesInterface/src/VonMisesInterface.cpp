@@ -36,8 +36,6 @@ namespace Marmot::Materials {
     // State variables are managed manually by VonMisesInterfaceStateVarManager.
   }
 
-
-
   VonMisesInterface::VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : MarmotMaterialHypoElasticInterface( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
@@ -135,7 +133,7 @@ namespace Marmot::Materials {
     // losing the plastic tangent that should be used for the consistent tangent K.
     // By preserving C_ep_saved we can restore the plastic tangent after an elastic substep.
     // const Eigen::Matrix< double, 6, 6, Eigen::RowMajor > C_ep_saved = C_ep;
-    MarmotMaterialHypoElastic::state3D vonMisesState{ averageStressVoigt, 0.0, &managedStateVars->kappa };
+    MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &managedStateVars->kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
 
     vonMisesModel.computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
@@ -166,10 +164,9 @@ namespace Marmot::Materials {
     // Reload Fastor tensor from the updated 3x3 buffer
     scaled_averageStressFtensor = Fastor::Tensor< double, 3, 3 >( scaled_averageStress );
 
-    scaled_forceFtensor =
-      Fastor::einsum< Fastor::Index< i, j >,
-                      Fastor::Index< j >,
-                      Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
+    scaled_forceFtensor = Fastor::einsum< Fastor::Index< i, j >,
+                                          Fastor::Index< j >,
+                                          Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
 
     std::copy( scaled_forceFtensor.data(), scaled_forceFtensor.data() + 3, scaled_force );
     std::copy( Q_ij_Ftensor_scaled.data(), Q_ij_Ftensor_scaled.data() + 9, Q_ij );
@@ -187,7 +184,7 @@ namespace Marmot::Materials {
     managedStateVars = std::make_unique< VonMisesInterfaceStateVarManager >( stateVars );
 
     // Also assign the kappa state var pointer to vonMisesModel so it shares the same memory
-// If C_ep_voigt state var is still zero (first ever assignment), initialize it to elastic stiffness
+    // If C_ep_voigt state var is still zero (first ever assignment), initialize it to elastic stiffness
     if ( managedStateVars->C_ep_voigt.isZero() )
       managedStateVars->C_ep_voigt = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
 

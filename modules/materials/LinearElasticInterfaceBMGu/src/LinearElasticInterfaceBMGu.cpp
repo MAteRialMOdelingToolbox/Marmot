@@ -12,11 +12,7 @@
 
 namespace Marmot::Materials {
 
-  void LinearElasticInterfaceBMGu::initializeStateLayout()
-  {
-  }
-
-
+  void LinearElasticInterfaceBMGu::initializeStateLayout() {}
 
   using namespace Marmot;
   using namespace Eigen;

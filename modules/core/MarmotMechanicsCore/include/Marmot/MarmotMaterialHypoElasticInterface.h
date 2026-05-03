@@ -161,10 +161,7 @@ public:
    * initializeYourself/stateLayout. Keeping this wrapper allows the old
    * interface-material implementations to be ported incrementally.
    */
-  virtual void assignStateVars( double* stateVars, int nStateVars )
-  {
-    initializeYourself( stateVars, nStateVars );
-  }
+  virtual void assignStateVars( double* stateVars, int nStateVars ) { initializeYourself( stateVars, nStateVars ); }
 
   virtual double getDensity() { return -1; }
 };
@@ -181,7 +178,9 @@ namespace MarmotLibrary {
   class MarmotMaterialHypoElasticInterfaceFactory {
   public:
     using materialFactoryFunction = std::function<
-      MarmotMaterialHypoElasticInterface*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
+      MarmotMaterialHypoElasticInterface*( const double* materialProperties,
+                                           int           nMaterialProperties,
+                                           int           materialNumber ) >;
 
     MarmotMaterialHypoElasticInterfaceFactory() = delete;
 
@@ -207,8 +206,9 @@ namespace MarmotLibrary {
 
       assert( map.find( materialName ) == map.end() && "Interface material already registered!" );
 
-      map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> MarmotMaterialHypoElasticInterface* {
+      map[materialName] = []( const double* materialProperties,
+                              int           nMaterialProperties,
+                              int           materialNumber ) -> MarmotMaterialHypoElasticInterface* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
 

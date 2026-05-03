@@ -1,7 +1,3 @@
-#include <stdexcept>
-#include <algorithm>
-#include <cmath>
-#include <vector>
 #include "Marmot/LinearViscoElasticWiechert.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotJournal.h"
@@ -12,6 +8,10 @@
 #include "Marmot/MarmotViscoelasticity.h"
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/MarmotWiechert.h"
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+#include <vector>
 
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
@@ -48,7 +48,7 @@ namespace Marmot::Materials {
                                                   const double*   dStrain,
                                                   const timeInfo& timeInfo ) const
   {
-    Eigen::Map< const Eigen::Matrix< double, 6, 1 > > dE( dStrain );
+    Eigen::Map< const Eigen::Matrix< double, 6, 1 > >            dE( dStrain );
     Eigen::Map< Eigen::Matrix< double, 6, 6, Eigen::RowMajor > > Cep( C );
 
     Cep.setZero();
@@ -81,11 +81,11 @@ namespace Marmot::Materials {
      * no old six-argument material API.
      */
 
-    const int nStateVars = getNumberOfRequiredStateVars();
+    const int nStateVars         = getNumberOfRequiredStateVars();
     const int nBranchesFromState = nStateVars / 6;
 
     const int nBranchesFromInput = static_cast< int >( std::round( nMaxwell ) );
-    const int nBranches = std::max( 0, std::min( nBranchesFromState, nBranchesFromInput ) );
+    const int nBranches          = std::max( 0, std::min( nBranchesFromState, nBranchesFromInput ) );
 
     const double lambda = E * nu / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
     const double mu     = E / ( 2.0 * ( 1.0 + nu ) );
@@ -128,7 +128,7 @@ namespace Marmot::Materials {
       tau[i] = minTau * std::pow( 10.0, static_cast< double >( i ) );
 
       const double tauDays = std::max( tau[i] * timeToDays, 1e-30 );
-      weight[i] = std::max( 0.0, m * std::pow( tauDays, -n ) );
+      weight[i]            = std::max( 0.0, m * std::pow( tauDays, -n ) );
 
       weightSum += weight[i];
     }
@@ -152,10 +152,10 @@ namespace Marmot::Materials {
       double* qRaw = state.stateVars + 6 * branch;
 
       Eigen::Map< Eigen::Matrix< double, 6, 1 > > qOld( qRaw );
-      Eigen::Matrix< double, 6, 1 > qPrevious = qOld;
+      Eigen::Matrix< double, 6, 1 >               qPrevious = qOld;
 
       const double relaxationTime = std::max( tau[branch] * timeToDays, 1e-30 );
-      const double x = dt / relaxationTime;
+      const double x              = dt / relaxationTime;
 
       const double a = std::exp( -x );
 
@@ -176,8 +176,6 @@ namespace Marmot::Materials {
     state.stress += dSigma;
     state.strainEnergyDensity += 0.5 * dE.dot( state.stress );
   }
-
-
 
   LinearViscoElasticWiechert::LinearViscoElasticWiechert( const double* materialProperties,
                                                           int           nMaterialProperties,
@@ -204,13 +202,5 @@ namespace Marmot::Materials {
 
     zerothWiechertStiffness = 0.0; // m_Ru*(1. - n_Ru )*pow( 2., n_Ru )*pow(minTau_Ru/sqrt(10.), n_Ru);
   }
-
-  
-
-
-  
-
-
-  
 
 } // namespace Marmot::Materials

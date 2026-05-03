@@ -36,8 +36,6 @@ namespace Marmot::Materials {
     // State variables are managed manually by LinearViscoElasticInterfaceStateVarManager.
   }
 
-
-
   LinearViscoElasticInterface::LinearViscoElasticInterface( const double* materialProperties,
                                                             int           nMaterialProperties,
                                                             int           materialNumber )

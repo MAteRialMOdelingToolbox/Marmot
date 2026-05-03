@@ -290,7 +290,6 @@ namespace Marmot::Materials {
 
       Tensor2D N = Fastor::einsum< Fastor::Index< i >, Fastor::Index< j >, Fastor::OIndex< i, j > >( normal, normal );
 
-
       Tensor4D C_ep_aibj = voigtToStiffness( C_ep_voigt );
 
       Tensor2D

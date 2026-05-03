@@ -7,9 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool LinearViscoElasticWiechertIsRegistered =
-      MarmotMaterialHypoElasticFactory::registerMaterial< LinearViscoElasticWiechert >(
-        "LINEARVISCOELASTICWIECHERT" );
+    const static bool LinearViscoElasticWiechertIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial<
+      LinearViscoElasticWiechert >( "LINEARVISCOELASTICWIECHERT" );
 
   } // namespace Registration
 

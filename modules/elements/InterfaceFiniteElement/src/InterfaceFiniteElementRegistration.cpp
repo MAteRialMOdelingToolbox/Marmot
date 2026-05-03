@@ -1,6 +1,6 @@
 #include "Marmot/InterfaceFiniteElement.h"
-#include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotElementFactory.h"
+#include "Marmot/MarmotFiniteElement.h"
 
 namespace Marmot::Elements::Registration {
 
@@ -16,12 +16,14 @@ namespace Marmot::Elements::Registration {
   using namespace Marmot::FiniteElement::Quadrature;
 
   const static bool ILINE2_isRegistered = MarmotElementFactory::
-    registerElement( "ILINE2", makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
+    registerElement( "ILINE2",
+                     makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
                                           FullIntegration,
                                           InterfaceFiniteElement< 2, 4 >::SectionType::Interface >() );
 
   const static bool IQUAD4_isRegistered = MarmotElementFactory::
-    registerElement( "IQUAD4", makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
+    registerElement( "IQUAD4",
+                     makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
                                           FullIntegration,
                                           InterfaceFiniteElement< 3, 8 >::SectionType::Interface >() );
 
