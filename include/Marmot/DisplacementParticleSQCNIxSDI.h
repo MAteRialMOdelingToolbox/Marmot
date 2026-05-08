@@ -270,8 +270,7 @@ namespace Marmot::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    int                   materialCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( materialName );
-    MarmotMaterialSection section( materialCode, materialProperties, sizeMaterialProperties );
+    MarmotMaterialSection section( materialName, materialProperties, sizeMaterialProperties );
 
     for ( size_t i = 0; i < this->_subDomains.size(); i++ ) {
 

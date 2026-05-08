@@ -285,8 +285,7 @@ namespace Marmot::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    int                   materialCode = MarmotLibrary::MarmotMaterialFactory::getMaterialCodeFromName( materialName );
-    MarmotMaterialSection section( materialCode, materialProperties, nMaterialProperties );
+    MarmotMaterialSection section( materialName, materialProperties, nMaterialProperties );
 
     _mp->assignMaterial( section );
   }
