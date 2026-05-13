@@ -1,7 +1,7 @@
 #include "Marmot/LinearElasticInterface.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -20,7 +20,7 @@ using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 // - materialName: The name of the material (e.g., "LINEARELASTIC")
 // - materialProperties: Array of material parameters (e.g., Young's modulus, Poisson's ratio)
 // - nMaterialProperties: Number of parameters in the materialProperties array
-std::unique_ptr< MarmotMaterialHypoElasticInterface > createMarmotMaterialHypoElasticInterface(
+std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMarmotInterfaceMaterialHypoElastic(
   const std::string& materialName,
   const double*      materialProperties,
   int                nMaterialProperties )
@@ -29,8 +29,8 @@ std::unique_ptr< MarmotMaterialHypoElasticInterface > createMarmotMaterialHypoEl
   const int elLabel = 1;
 
   // Create the material object using Marmot's factory method
-  auto mat = std::unique_ptr< MarmotMaterialHypoElasticInterface >( dynamic_cast< MarmotMaterialHypoElasticInterface* >(
-    MarmotLibrary::MarmotMaterialHypoElasticInterfaceFactory::createMaterial( materialName,
+  auto mat = std::unique_ptr< MarmotInterfaceMaterialHypoElastic >( dynamic_cast< MarmotInterfaceMaterialHypoElastic* >(
+    MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( materialName,
                                                                               materialProperties,
                                                                               nMaterialProperties,
                                                                               elLabel ) ) );
@@ -51,7 +51,7 @@ void testForceMaterialResponse()
   const int    nMaterialProperties   = 4;
 
   // Create the material object
-  auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACE",
+  auto mat = createMarmotInterfaceMaterialHypoElastic( "LINEARELASTICINTERFACE",
                                                        materialProperties,
                                                        nMaterialProperties );
   // Assign state variables
@@ -125,20 +125,19 @@ void testForceMaterialResponse()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
-// Function to test the viscoelastic interface material response for given surface strain
+// Function to test the elastic interface material response for given surface strain
 void testSurfaceStressMaterialResponse()
 {
   // Define material parameters (Young's modulus and Poisson's ratio)
   // E_0: Youngs modulus of interphase
   // nu_0: Poisson's ratio of interphase
   // h : thickness of the interphase
-  // dummy : placeholder for 8th parameter
-  //                                     E_0, nu_0,     h, dummy
-  const double materialProperties[4] = { 1e4, 0.3, 1e-7, 0.0 };
-  const int    nMaterialProperties   = 4;
+  //                                     E_0, nu_0,     h
+  const double materialProperties[3] = { 1e4, 0.3, 1e-7 };
+  const int    nMaterialProperties   = 3;
 
   // Create the material object
-  auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACE",
+  auto mat = createMarmotInterfaceMaterialHypoElastic( "LINEARELASTICINTERFACE",
                                                        materialProperties,
                                                        nMaterialProperties );
   // Assign state variables

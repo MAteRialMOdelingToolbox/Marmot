@@ -26,11 +26,11 @@ namespace Marmot::Materials {
   LinearElasticInterface::LinearElasticInterface( const double* materialProperties,
                                                   int           nMaterialProperties,
                                                   int           materialNumber )
-    : MarmotMaterialHypoElasticInterface::MarmotMaterialHypoElasticInterface( materialProperties,
+    : MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( materialProperties,
                                                                               nMaterialProperties,
                                                                               materialNumber )
   {
-    assert( nMaterialProperties == 4 || nMaterialProperties == 6 || nMaterialProperties == 10 );
+    assert( nMaterialProperties == 3 || nMaterialProperties == 5 || nMaterialProperties == 9 );
   }
 
   void LinearElasticInterface::computeStress( double*       force,
@@ -53,14 +53,14 @@ namespace Marmot::Materials {
     const double& nu_0 = this->materialProperties[1];
     const double& h    = this->materialProperties[2];
 
-    // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
+    // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
-    Fastor::Tensor< double, 3 >          force_ftensor( force );
-    Fastor::Tensor< double, 3, 3 >       surface_stress_ftensor( surface_stress );
-    Fastor::Tensor< double, 3, 3 >       H_inv_ij_ftensor( H_inv_ij );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Z_ijkl_ftensor( Z_ijkl );
-    Fastor::Tensor< double, 3, 3, 3 >    H_inv_nF_ijk_ftensor( H_inv_nF_ijk );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Yn_H_inv_Fn_ijkl_ftensor( Yn_H_inv_Fn_ijkl );
+    auto force_ftensor            = Fastor::TensorMap< double, 3 >( force );
+    auto surface_stress_ftensor   = Fastor::TensorMap< double, 3, 3 >( surface_stress );
+    auto H_inv_ij_ftensor         = Fastor::TensorMap< double, 3, 3 >( H_inv_ij );
+    auto Z_ijkl_ftensor           = Fastor::TensorMap< double, 3, 3, 3, 3 >( Z_ijkl );
+    auto H_inv_nF_ijk_ftensor     = Fastor::TensorMap< double, 3, 3, 3 >( H_inv_nF_ijk );
+    auto Yn_H_inv_Fn_ijkl_ftensor = Fastor::TensorMap< double, 3, 3, 3, 3 >( Yn_H_inv_Fn_ijkl );
 
     auto dU_ftensor_const              = Fastor::TensorMap< const double, 6, 1 >( dU );
     auto dSurface_strain_ftensor_const = Fastor::TensorMap< const double, 18, 1 >( dSurface_strain );
@@ -75,7 +75,6 @@ namespace Marmot::Materials {
           unitH_inv_Fn_ijk,
           unitYn_H_inv_Fn_ijkl] = calculateInterfaceMaterialParameters( normal_ftensor, nu_0 );
 
-    // Assign the material matrices to a larger structure. (Not necessary ...)
     Z_ijkl_ftensor           = h * E_0 * unitZ_ijkl;
     Yn_H_inv_Fn_ijkl_ftensor = h * E_0 * unitYn_H_inv_Fn_ijkl;
     H_inv_ij_ftensor         = 1. / h * E_0 * unitH_inv_ij;
@@ -83,10 +82,6 @@ namespace Marmot::Materials {
 
     // handle zero strain increment
     if ( Fastor::norm( dU_ftensor ) < 1e-14 && Fastor::norm( dSurface_strain_ftensor ) < 1e-14 ) {
-      std::copy( H_inv_ij_ftensor.data(), H_inv_ij_ftensor.data() + 9, H_inv_ij );
-      std::copy( Z_ijkl_ftensor.data(), Z_ijkl_ftensor.data() + 81, Z_ijkl );
-      std::copy( H_inv_nF_ijk_ftensor.data(), H_inv_nF_ijk_ftensor.data() + 27, H_inv_nF_ijk );
-      std::copy( Yn_H_inv_Fn_ijkl_ftensor.data(), Yn_H_inv_Fn_ijkl_ftensor.data() + 81, Yn_H_inv_Fn_ijkl );
       return;
     }
     // elastic step
@@ -116,13 +111,6 @@ namespace Marmot::Materials {
     surface_stress_ftensor += Fastor::einsum< Fastor::Index< i >,
                                               Fastor::Index< i, j, k >,
                                               Fastor::OIndex< j, k > >( jumpU_ftensor, H_inv_nF_ijk_ftensor );
-
-    std::copy( force_ftensor.data(), force_ftensor.data() + 3, force );
-    std::copy( surface_stress_ftensor.data(), surface_stress_ftensor.data() + 3 * 3, surface_stress );
-    std::copy( H_inv_ij_ftensor.data(), H_inv_ij_ftensor.data() + 9, H_inv_ij );
-    std::copy( Z_ijkl_ftensor.data(), Z_ijkl_ftensor.data() + 81, Z_ijkl );
-    std::copy( H_inv_nF_ijk_ftensor.data(), H_inv_nF_ijk_ftensor.data() + 27, H_inv_nF_ijk );
-    std::copy( Yn_H_inv_Fn_ijkl_ftensor.data(), Yn_H_inv_Fn_ijkl_ftensor.data() + 81, Yn_H_inv_Fn_ijkl );
   };
 
 } // namespace Marmot::Materials

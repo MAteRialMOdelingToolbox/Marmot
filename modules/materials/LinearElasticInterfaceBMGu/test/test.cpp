@@ -1,7 +1,6 @@
-#include "Marmot/LinearElasticInterfaceBMGu.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -15,12 +14,13 @@ using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-// Function to create a MarmotMaterialHypoElastic object
+// Function to create a MarmotInterfaceMaterialHypoElastic object via the
+// interface-material factory.
 // Inputs:
-// - materialName: The name of the material (e.g., "LINEARELASTIC")
-// - materialProperties: Array of material parameters (e.g., Young's modulus, Poisson's ratio)
-// - nMaterialProperties: Number of parameters in the materialProperties array
-std::unique_ptr< MarmotMaterialHypoElasticInterface > createMarmotMaterialHypoElasticInterface(
+// - materialName: Registered interface material name (e.g. "LINEARELASTICINTERFACEBMGU")
+// - materialProperties: Array of interface material parameters
+// - nMaterialProperties: Number of entries in materialProperties
+std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMarmotInterfaceMaterialHypoElastic(
   const std::string& materialName,
   const double*      materialProperties,
   int                nMaterialProperties )
@@ -29,8 +29,8 @@ std::unique_ptr< MarmotMaterialHypoElasticInterface > createMarmotMaterialHypoEl
   const int elLabel = 1;
 
   // Create the material object using Marmot's factory method
-  auto mat = std::unique_ptr< MarmotMaterialHypoElasticInterface >( dynamic_cast< MarmotMaterialHypoElasticInterface* >(
-    MarmotLibrary::MarmotMaterialHypoElasticInterfaceFactory::createMaterial( materialName,
+  auto mat = std::unique_ptr< MarmotInterfaceMaterialHypoElastic >( dynamic_cast< MarmotInterfaceMaterialHypoElastic* >(
+    MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( materialName,
                                                                               materialProperties,
                                                                               nMaterialProperties,
                                                                               elLabel ) ) );
@@ -51,7 +51,7 @@ void testForceMaterialResponse()
   const int    nMaterialProperties   = 8;
 
   // Create the material object
-  auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACEBMGU",
+  auto mat = createMarmotInterfaceMaterialHypoElastic( "LINEARELASTICINTERFACEBMGU",
                                                        materialProperties,
                                                        nMaterialProperties );
   // Assign state variables
@@ -138,7 +138,7 @@ void testSurfaceStressMaterialResponse()
   const int    nMaterialProperties   = 8;
 
   // Create the material object
-  auto mat = createMarmotMaterialHypoElasticInterface( "LINEARELASTICINTERFACEBMGU",
+  auto mat = createMarmotInterfaceMaterialHypoElastic( "LINEARELASTICINTERFACEBMGU",
                                                        materialProperties,
                                                        nMaterialProperties );
   // Assign state variables

@@ -25,6 +25,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/src/Core/Matrix.h>
@@ -37,45 +38,44 @@
 using namespace Eigen;
 using namespace Fastor;
 
-using Tensor1D = Fastor::Tensor< double, 3 >;
-using Tensor2D = Fastor::Tensor< double, 3, 3 >;
-using Tensor3D = Fastor::Tensor< double, 3, 3, 3 >;
-using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
+using Marmot::FastorStandardTensors::Tensor3333d;
+using Marmot::FastorStandardTensors::Tensor333d;
+using Marmot::FastorStandardTensors::Tensor33d;
+using Marmot::FastorStandardTensors::Tensor3d;
 
 namespace Marmot::Materials {
 
   namespace InterfaceMaterialHelperFunctions {
 
-    Tensor2D compute_inv( const Tensor2D& I, Tensor2D& Q );
+    Tensor33d compute_inv( const Tensor33d& Q );
 
-    std::tuple< Tensor4D, const Tensor4D, Tensor4D, Tensor2D > interfaceGeometrySystemCouplings( const Tensor2D& I,
-                                                                                                 const Tensor2D& N,
-                                                                                                 const Tensor2D& T,
-                                                                                                 const Tensor4D& L );
+    std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(
+      const Tensor33d&   N,
+      const Tensor33d&   T,
+      const Tensor3333d& L );
 
-    std::tuple< Tensor4D, Tensor2D, Tensor3D, Tensor4D > calculateMaterialMatrices( const Tensor1D& normal,
-                                                                                    const Tensor2D& I,
-                                                                                    const Tensor2D& N,
-                                                                                    const Tensor2D& T,
-                                                                                    const Tensor4D& C_nu_aibj );
+    std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateMaterialMatrices(
+      const Tensor3d&    normal,
+      const Tensor33d&   N,
+      const Tensor33d&   T,
+      const Tensor3333d& C_nu_aibj );
 
-    Tensor4D voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness );
+    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9( const Tensor3333d& tensor );
+    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Tensor333d& tensor );
+    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Tensor333d& tensor );
+    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Tensor33d& tensor );
 
-    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9( const Tensor4D& tensor );
-    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Tensor3D& tensor );
-    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Tensor3D& tensor );
-    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Tensor2D& tensor );
+    std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
+      const Tensor33d&   N,
+      const Tensor33d&   T,
+      const Tensor3333d& C_nu_aibj );
 
-    std::tuple< Tensor4D, Tensor4D, Tensor4D, Tensor4D, Tensor2D, Tensor4D > calculateFY( const Tensor2D& I,
-                                                                                          const Tensor2D& N,
-                                                                                          const Tensor2D& T,
-                                                                                          const Tensor4D& C_nu_aibj );
+    std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
+      const Tensor3d& normal,
+      const double&   nu_0 );
 
-    std::tuple< Tensor4D, Tensor2D, Tensor3D, Tensor4D > calculateInterfaceMaterialParameters( const Tensor1D& normal,
-                                                                                               const double&   nu_0 );
-
-    std::tuple< Tensor4D, Tensor2D, Tensor3D, Tensor4D > calculateInterfaceMaterialParameters(
-      const Tensor1D&                      normal,
+    std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
+      const Tensor3d&                      normal,
       const Eigen::Matrix< double, 6, 6 >& C_ep_voigt );
   } // namespace InterfaceMaterialHelperFunctions
 } // namespace Marmot::Materials

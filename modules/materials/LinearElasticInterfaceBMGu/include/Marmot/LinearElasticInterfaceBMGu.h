@@ -28,7 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <iostream>
 #include <string>
@@ -36,30 +36,50 @@
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a linear elastic interface material
-   * for 3D stress states.
+   * \brief BMGu variant of the linear elastic interface material for 3D stress states.
+   *
+   * This model is intentionally different from \c LINEARELASTICINTERFACE. It requires the material of the outer blocks
+   * toparticipate in the mechanical behavior of the interface. Both models use the same kinematic helper tensors (see
+   * \ref linearelasticinterface), but they differ in parameterization and in the
+   * constitutive coefficients assigned to the interface operators.
+   *
+   * Differences to \c LINEARELASTICINTERFACE:
+   * - \b Parameterization:
+   *   - \c LINEARELASTICINTERFACE uses 3 parameters: $E_0, \nu_0, h$.
+   *   - \c LINEARELASTICINTERFACEBMGU uses 7 parameters with the following layout:
+   *     - \c materialProperties[0] = $E_M$
+   *     - \c materialProperties[1] = $\nu_M$
+   *     - \c materialProperties[2] = $E_I$
+   *     - \c materialProperties[3] = $\nu_I$
+   *     - \c materialProperties[4] = $E_0$
+   *     - \c materialProperties[5] = $\nu_0$
+   *     - \c materialProperties[6] = $h$
+   *     - \c materialProperties[1] and \c materialProperties[3] are currently unused. We assume the materials have the
+   * same Poisson's ratio, this simplifies the material description for the sake of the argument, but we keep these
+   * parameters for potential future use.
+   * - \b Constitutive scaling:
+   *   - Define
+   *     $H_{\mathrm{bar}} = \frac{2}{E_0} - \frac{1}{E_M} - \frac{1}{E_I}$ and
+   *     $Z_{\mathrm{bar}} = E_M + E_I - 2 E_0$.
+   *   - \c LINEARELASTICINTERFACEBMGU sets
+   *     $Z_{ijkl} = -\frac{h}{2} Z_{\mathrm{bar}}\, \hat{Z}_{ijkl}$,
+   *     Due to the Poisson ration being the same between the three materials the following simplifications apply to the
+   * other two operators: $Y_{n}H^{-1}F_{n} = 0$, $H^{-1}_{ij} = \frac{2}{h\,H_{\mathrm{bar}}}\,\hat{H}^{-1}_{ij}$, and
+   * $H^{-1}nF = 0$.
+   *   - \c LINEARELASTICINTERFACE instead uses the direct $E_0$-scaled terms for
+   *     all four operators, and these operators do not vanish anymore.
    *
    * For further information see \ref linearelasticinterface.
    */
-  class LinearElasticInterfaceBMGu : public MarmotMaterialHypoElasticInterface {
+  class LinearElasticInterfaceBMGu : public MarmotInterfaceMaterialHypoElastic {
   public:
-    using MarmotMaterialHypoElasticInterface::MarmotMaterialHypoElasticInterface;
+    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
     using Tensor1D = Fastor::Tensor< double, 3 >;
     using Tensor2D = Fastor::Tensor< double, 3, 3 >;
 
     LinearElasticInterfaceBMGu( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void initializeStateLayout() override;
-
-    // void computeStress( Tensor1D&  force,
-    //                     Tensor2D&  surface_stress,
-    //                     Fastor::Tensor<double, 21,21>& dStress_dStrain,
-    //                     const Fastor::Tensor<double, 6,1>& dU,
-    //                     const Fastor::Tensor<double, 18,1>& dSurface_strain,
-    //                     const Tensor1D& normal,
-    //                     const double* timeOld,
-    //                     const double  dT,
-    //                     double&       pNewDT ) ;
 
     void computeStress( double*       force,
                         double*       surface_stress,

@@ -28,8 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotWiechertInterface.h"
 #include <iostream>
 #include <string>
@@ -37,10 +36,10 @@
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a linear elastic interface material
+   * \brief Implementation of a linear visco elastic interface material
    * for 3D stress states.
    *
-   * For further information see \ref linearelasticinterface.
+   * For further information see \ref linearviscoelasticinterface.
    * according to the LinearViscoelasticPowerLaw model by Bazant et al. (2015)
 
    * generalized for 3D stress states.
@@ -50,7 +49,7 @@ namespace Marmot::Materials {
    * For further information see \ref b4.
 
    */
-  class LinearViscoElasticInterface : public MarmotMaterialHypoElasticInterface {
+  class LinearViscoElasticInterface : public MarmotInterfaceMaterialHypoElastic {
 
     /// \brief Young's modulus
     const double& E_0;
@@ -76,35 +75,10 @@ namespace Marmot::Materials {
     /// \brief ratio of simulation time to days
     const double& timeToDays;
 
-    class LinearViscoElasticInterfaceStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "MaxwellStateVars_force_uu", .length = 3 * 1 },
-        { .name = "MaxwellStateVars_force_us", .length = 3 * 1 },
-        { .name = "MaxwellStateVars_surface_stress_Z", .length = 9 * 1 },
-        { .name = "MaxwellStateVars_surface_stress_Y", .length = 9 * 1 },
-        { .name = "MaxwellStateVars_surface_stress_us", .length = 9 * 1 },
-      } );
-
-      WiechertInterface::mapStateVarMatrix_force_uu          MaxwellStateVars_force_uu;
-      WiechertInterface::mapStateVarMatrix_force_us          MaxwellStateVars_force_us;
-      WiechertInterface::mapStateVarMatrix_surface_stress_Z  MaxwellStateVars_surface_stress_Z;
-      WiechertInterface::mapStateVarMatrix_surface_stress_Y  MaxwellStateVars_surface_stress_Y;
-      WiechertInterface::mapStateVarMatrix_surface_stress_us MaxwellStateVars_surface_stress_us;
-      LinearViscoElasticInterfaceStateVarManager( double* theStateVarVector, int nMaxwellUnits )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          MaxwellStateVars_force_uu( &find( "MaxwellStateVars_force_uu" ), 3, nMaxwellUnits ),
-          MaxwellStateVars_force_us( &find( "MaxwellStateVars_force_us" ), 3, nMaxwellUnits ),
-          MaxwellStateVars_surface_stress_Z( &find( "MaxwellStateVars_surface_stress_Z" ), 9, nMaxwellUnits ),
-          MaxwellStateVars_surface_stress_Y( &find( "MaxwellStateVars_surface_stress_Y" ), 9, nMaxwellUnits ),
-          MaxwellStateVars_surface_stress_us( &find( "MaxwellStateVars_surface_stress_us" ), 9, nMaxwellUnits ){};
-    };
-
-    ::std::unique_ptr< LinearViscoElasticInterfaceStateVarManager > stateVarManager;
+    double* stateVars = nullptr;
 
   public:
-    using MarmotMaterialHypoElasticInterface::MarmotMaterialHypoElasticInterface;
+    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
     using Tensor1D = Fastor::Tensor< double, 3 >;
     using Tensor2D = Fastor::Tensor< double, 3, 3 >;
 

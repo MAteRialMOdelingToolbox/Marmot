@@ -1,7 +1,7 @@
 #include "Marmot/LinearViscoElasticInterface.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
@@ -33,13 +33,18 @@ namespace Marmot::Materials {
 
   void LinearViscoElasticInterface::initializeStateLayout()
   {
-    // State variables are managed manually by LinearViscoElasticInterfaceStateVarManager.
+    stateLayout.add( "MaxwellStateVars_force_uu", 3 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_force_us", 3 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_Z", 9 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_Y", 9 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_us", 9 * nMaxwell );
+    stateLayout.finalize();
   }
 
   LinearViscoElasticInterface::LinearViscoElasticInterface( const double* materialProperties,
                                                             int           nMaterialProperties,
                                                             int           materialNumber )
-    : MarmotMaterialHypoElasticInterface( materialProperties, nMaterialProperties, materialNumber ),
+    : MarmotInterfaceMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
       // elasticity parameters
       E_0( materialProperties[0] ),
@@ -52,6 +57,8 @@ namespace Marmot::Materials {
       timeToDays( materialProperties[7] )
   // clang-format on
   {
+    initializeStateLayout();
+
     relaxationTimes = Marmot::Materials::WiechertInterface::initializeRelaxationTimes( nMaxwell, m );
     elasticModuli   = Marmot::Materials::WiechertInterface::initializeElasticModuli( nMaxwell, n );
 
@@ -79,6 +86,10 @@ namespace Marmot::Materials {
                                                    double&       pNewDT )
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
+
+    if ( stateVars == nullptr ) {
+      throw std::runtime_error( "LinearViscoElasticInterface: state variables not assigned." );
+    }
 
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
@@ -109,7 +120,8 @@ namespace Marmot::Materials {
     Eigen::Matrix< double, 3, 9 > unitH_inv_nF_ijk_full_3_9 = convert3rdOrderTensorToMatrix_3x9( unitH_inv_nF_ijk );
     // Assign the material matrices to a larger structure. (Not necessary ...)
     // handle zero strain increment
-    if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld == 0 ) {
+    if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld != nullptr &&
+         timeOld[0] == 0.0 ) {
       std::cout << "Zero strain increment in LinearViscoElasticInterface material.\n";
       Z_ijkl_Ftensor           = -h * E_0 * unitZ_ijkl;
       Yn_H_inv_Fn_ijkl_Ftensor = h * E_0 * unitYn_H_inv_Fn_ijkl;
@@ -124,16 +136,29 @@ namespace Marmot::Materials {
     }
 
     // visco elastic step
-    Eigen::Ref< WiechertInterface::mapStateVarMatrix_force_uu > creepStateVars_force_uu(
-      stateVarManager->MaxwellStateVars_force_uu );
-    Eigen::Ref< WiechertInterface::mapStateVarMatrix_force_us > creepStateVars_force_us(
-      stateVarManager->MaxwellStateVars_force_us );
-    Eigen::Ref< WiechertInterface::mapStateVarMatrix_surface_stress_Z > creepStateVars_surface_stress_Z(
-      stateVarManager->MaxwellStateVars_surface_stress_Z );
-    Eigen::Ref< WiechertInterface::mapStateVarMatrix_surface_stress_Y > creepStateVars_surface_stress_Y(
-      stateVarManager->MaxwellStateVars_surface_stress_Y );
-    Eigen::Ref< WiechertInterface::mapStateVarMatrix_surface_stress_us > creepStateVars_surface_stress_us(
-      stateVarManager->MaxwellStateVars_surface_stress_us );
+    auto creepStateVars_force_uu_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( stateVars,
+                                                                                           "MaxwellStateVars_force_uu",
+                                                                                           3,
+                                                                                           nMaxwell );
+    auto creepStateVars_force_us_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( stateVars,
+                                                                                           "MaxwellStateVars_force_us",
+                                                                                           3,
+                                                                                           nMaxwell );
+    auto creepStateVars_surface_stress_Z_map = stateLayout.getAs<
+      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_Z", 9, nMaxwell );
+    auto creepStateVars_surface_stress_Y_map = stateLayout.getAs<
+      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_Y", 9, nMaxwell );
+    auto creepStateVars_surface_stress_us_map = stateLayout.getAs<
+      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_us", 9, nMaxwell );
+
+    Eigen::Ref< WiechertInterface::StateVarMatrix_force_uu > creepStateVars_force_uu( creepStateVars_force_uu_map );
+    Eigen::Ref< WiechertInterface::StateVarMatrix_force_us > creepStateVars_force_us( creepStateVars_force_us_map );
+    Eigen::Ref< WiechertInterface::StateVarMatrix_surface_stress_Z > creepStateVars_surface_stress_Z(
+      creepStateVars_surface_stress_Z_map );
+    Eigen::Ref< WiechertInterface::StateVarMatrix_surface_stress_Y > creepStateVars_surface_stress_Y(
+      creepStateVars_surface_stress_Y_map );
+    Eigen::Ref< WiechertInterface::StateVarMatrix_surface_stress_us > creepStateVars_surface_stress_us(
+      creepStateVars_surface_stress_us_map );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -308,18 +333,21 @@ namespace Marmot::Materials {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    this->stateVarManager = std::make_unique< LinearViscoElasticInterfaceStateVarManager >( stateVars_, nMaxwell );
+    this->stateVars = stateVars_;
 
-    MarmotMaterialHypoElasticInterface::assignStateVars( stateVars_, nStateVars );
+    MarmotInterfaceMaterialHypoElastic::assignStateVars( stateVars_, nStateVars );
   }
 
   StateView LinearViscoElasticInterface::getStateView( const std::string& stateName )
   {
-    return stateVarManager->getStateView( stateName );
+    if ( stateVars == nullptr )
+      throw std::runtime_error( "LinearViscoElasticInterface: state variables not assigned." );
+
+    return MarmotInterfaceMaterialHypoElastic::getStateView( stateName, stateVars );
   }
 
   int LinearViscoElasticInterface::getNumberOfRequiredStateVars() const
   {
-    return LinearViscoElasticInterfaceStateVarManager::layout.nRequiredStateVars + 2 * 3 * nMaxwell + 3 * 9 * nMaxwell;
+    return stateLayout.totalSize();
   }
 } // namespace Marmot::Materials

@@ -1,15 +1,10 @@
 #include "Marmot/LinearElasticInterface.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 
-namespace Marmot::Materials {
+extern "C" __attribute__( ( constructor, used, visibility( "default" ) ) ) void MarmotRegisterLinearElasticInterface()
+{
+  static bool registered = MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::registerMaterial<
+    Marmot::Materials::LinearElasticInterface >( "LINEARELASTICINTERFACE" );
 
-  namespace Registration {
-
-    using namespace MarmotLibrary;
-
-    const static bool LinearElasticInterfaceIsRegistered = MarmotMaterialHypoElasticInterfaceFactory::registerMaterial<
-      LinearElasticInterface >( "LINEARELASTICINTERFACE" );
-
-  } // namespace Registration
-
-} // namespace Marmot::Materials
+  (void)registered;
+}

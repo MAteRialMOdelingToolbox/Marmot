@@ -1,39 +1,24 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotViscoelasticity.h"
-#include "Marmot/MarmotVoigt.h"
 #include "Marmot/MarmotWiechert.h"
+
+#include <Eigen/Core>
+
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
-#include <vector>
-
-#include "Fastor/Fastor.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include <Eigen/src/Core/Matrix.h>
-#include <Eigen/src/Core/util/Constants.h>
-#include <Fastor/expressions/linalg_ops/unary_norm_op.h>
-#include <Fastor/tensor/TensorMap.h>
-
-#include "autodiff/forward/real.hpp"
-#include <iostream>
-#include <map>
-#include <string>
 
 using namespace Marmot;
-using namespace Eigen;
-
-using Tensor1D = Fastor::Tensor< double, 3 >;
-using Tensor2D = Fastor::Tensor< double, 3, 3 >;
-using Tensor3D = Fastor::Tensor< double, 3, 3, 3 >;
-using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
 
 namespace Marmot::Materials {
+
+  namespace {
+    using VoigtVector6d       = Marmot::Vector6d;
+    using VoigtMatrix6d       = Marmot::Matrix6d;
+    using ConstVoigtVectorMap = Eigen::Map< const VoigtVector6d >;
+    using TangentMatrixMap    = Eigen::Map< Eigen::Matrix< double, 6, 6, Eigen::RowMajor > >;
+  } // namespace
 
   void LinearViscoElasticWiechert::initializeStateLayout()
   {
@@ -48,8 +33,9 @@ namespace Marmot::Materials {
                                                   const double*   dStrain,
                                                   const timeInfo& timeInfo ) const
   {
-    Eigen::Map< const Eigen::Matrix< double, 6, 1 > >            dE( dStrain );
-    Eigen::Map< Eigen::Matrix< double, 6, 6, Eigen::RowMajor > > Cep( C );
+    ConstVoigtVectorMap dE( dStrain );
+    TangentMatrixMap    Cep( C );
+    const VoigtVector6d dEVec = dE;
 
     Cep.setZero();
 
@@ -59,118 +45,52 @@ namespace Marmot::Materials {
 
     const double dt = std::max( timeInfo.dT, 0.0 );
 
-    /*
-     * v26.05-native Wiechert update.
-     *
-     * State convention:
-     *   state.stress     = total Cauchy stress at n
-     *   state.stateVars  = stress-like Maxwell branch history variables q_i
-     *
-     * Each Maxwell branch stores six Voigt components:
-     *   q_i = state.stateVars[6*i : 6*i+6]
-     *
-     * Incremental update:
-     *   q_i^{n+1} = a_i q_i^n + g_i b_i C_el Δε
-     *   σ^{n+1}   = σ^n + C_inf Δε + Σ_i (q_i^{n+1} - q_i^n)
-     *
-     * where
-     *   a_i = exp(-Δt / τ_i)
-     *   b_i = (1 - a_i) / (Δt / τ_i)
-     *
-     * This is native Marmot v26.05 style: no old factory, no old state assignment,
-     * no old six-argument material API.
-     */
+    auto maxwellStressStateVars = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
+                                                                                      "MaxwellStress",
+                                                                                      6,
+                                                                                      static_cast< int >( nMaxwell ) );
 
-    const int nStateVars         = getNumberOfRequiredStateVars();
-    const int nBranchesFromState = nStateVars / 6;
-
-    const int nBranchesFromInput = static_cast< int >( std::round( nMaxwell ) );
+    const int nBranchesFromState = static_cast< int >( maxwellStressStateVars.cols() );
+    const int nBranchesFromInput = static_cast< int >( nMaxwell );
     const int nBranches          = std::max( 0, std::min( nBranchesFromState, nBranchesFromInput ) );
 
-    const double lambda = E * nu / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
-    const double mu     = E / ( 2.0 * ( 1.0 + nu ) );
+    const VoigtMatrix6d Cel = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-    Eigen::Matrix< double, 6, 6, Eigen::RowMajor > Cel;
-    Cel.setZero();
+    const double equilibriumWeight = std::max( 0.0, 1.0 - branchElasticModuli.head( nBranches ).sum() );
 
-    Cel( 0, 0 ) = lambda + 2.0 * mu;
-    Cel( 1, 1 ) = lambda + 2.0 * mu;
-    Cel( 2, 2 ) = lambda + 2.0 * mu;
-
-    Cel( 0, 1 ) = lambda;
-    Cel( 0, 2 ) = lambda;
-    Cel( 1, 0 ) = lambda;
-    Cel( 1, 2 ) = lambda;
-    Cel( 2, 0 ) = lambda;
-    Cel( 2, 1 ) = lambda;
-
-    Cel( 3, 3 ) = mu;
-    Cel( 4, 4 ) = mu;
-    Cel( 5, 5 ) = mu;
-
-    /*
-     * Power-law inspired branch placement.
-     *
-     * minTau and timeToDays are kept from the old material parameter list.
-     * The branch relaxation times are logarithmically spaced:
-     *   τ_i = minTau * 10^i
-     *
-     * The branch weights follow the old power-law parameters m and n in a
-     * normalized positive distribution. The equilibrium fraction is whatever
-     * remains after all branch weights are assigned.
-     */
-    std::vector< double > tau( nBranches, 0.0 );
-    std::vector< double > weight( nBranches, 0.0 );
-
-    double weightSum = 0.0;
-
-    for ( int i = 0; i < nBranches; ++i ) {
-      tau[i] = minTau * std::pow( 10.0, static_cast< double >( i ) );
-
-      const double tauDays = std::max( tau[i] * timeToDays, 1e-30 );
-      weight[i]            = std::max( 0.0, m * std::pow( tauDays, -n ) );
-
-      weightSum += weight[i];
-    }
-
-    const double maxBranchFraction = 0.95;
-
-    if ( weightSum > maxBranchFraction && weightSum > 0.0 ) {
-      for ( double& w : weight ) {
-        w *= maxBranchFraction / weightSum;
-      }
-      weightSum = maxBranchFraction;
-    }
-
-    const double equilibriumWeight = std::max( 0.0, 1.0 - weightSum );
-
-    Eigen::Matrix< double, 6, 1 > dSigma = equilibriumWeight * Cel * dE;
+    VoigtVector6d dSigma = equilibriumWeight * Cel * dEVec;
 
     Cep += equilibriumWeight * Cel;
 
-    for ( int branch = 0; branch < nBranches; ++branch ) {
-      double* qRaw = state.stateVars + 6 * branch;
+    if ( nBranches > 0 ) {
+      Eigen::Map< Wiechert::StateVarMatrix > activeMaxwellState( maxwellStressStateVars.data(), 6, nBranches );
 
-      Eigen::Map< Eigen::Matrix< double, 6, 1 > > qOld( qRaw );
-      Eigen::Matrix< double, 6, 1 >               qPrevious = qOld;
+      const Wiechert::StateVarMatrix qOld = activeMaxwellState;
 
-      const double relaxationTime = std::max( tau[branch] * timeToDays, 1e-30 );
-      const double x              = dt / relaxationTime;
+      const Wiechert::Properties activeBranchElasticModuli   = branchElasticModuli.head( nBranches );
+      const Wiechert::Properties activeBranchRelaxationTimes = branchRelaxationTimes.head( nBranches );
 
-      const double a = std::exp( -x );
+      Wiechert::updateStateVarMatrix( dt,
+                                      activeBranchElasticModuli,
+                                      activeBranchRelaxationTimes,
+                                      activeMaxwellState,
+                                      dEVec,
+                                      Cel );
 
-      double b = 1.0;
-      if ( x > 1e-14 ) {
-        b = ( 1.0 - a ) / x;
-      }
+      dSigma += ( activeMaxwellState - qOld ).rowwise().sum();
 
-      const Eigen::Matrix< double, 6, 1 > dqElastic = weight[branch] * b * Cel * dE;
+      double        creepStiffness = 0.0;
+      VoigtVector6d dStressDummy   = VoigtVector6d::Zero();
 
-      qOld = a * qOld + dqElastic;
+      Wiechert::evaluateWiechert( dt,
+                                  activeBranchElasticModuli,
+                                  activeBranchRelaxationTimes,
+                                  Wiechert::StateVarMatrix::Zero( 6, nBranches ),
+                                  creepStiffness,
+                                  dStressDummy,
+                                  1.0 );
 
-      dSigma += qOld - qPrevious;
-
-      Cep += weight[branch] * b * Cel;
+      Cep += creepStiffness * Cel;
     }
 
     state.stress += dSigma;
@@ -189,18 +109,28 @@ namespace Marmot::Materials {
       n( materialProperties[3] ),
       nMaxwell( static_cast< size_t >( materialProperties[4] ) ),
       minTau( materialProperties[5] ),
-      timeToDays( materialProperties[6] )
+      timeToDays( materialProperties[6] ),
+      branchRelaxationTimes( static_cast< int >( nMaxwell ) ),
+      branchElasticModuli( static_cast< int >( nMaxwell ) )
   // clang-format on
   {
-    relaxationTimes = Marmot::Materials::Wiechert::initializeRelaxationTimes( nMaxwell, m );
-    elasticModuli   = Marmot::Materials::Wiechert::initializeElasticModuli( nMaxwell, n );
+    initializeStateLayout();
 
-    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    // elasticModuli =
-    // Marmot::Materials::Wiechert::computeElasticModuli<powerLawApproximationOrder>(phi,
-    // relaxationTimes);
+    constexpr double maxBranchFraction = 0.95;
 
-    zerothWiechertStiffness = 0.0; // m_Ru*(1. - n_Ru )*pow( 2., n_Ru )*pow(minTau_Ru/sqrt(10.), n_Ru);
+    for ( int i = 0; i < static_cast< int >( nMaxwell ); ++i ) {
+      const double tau     = minTau * std::pow( 10.0, static_cast< double >( i ) );
+      const double tauDays = std::max( tau * timeToDays, 1e-30 );
+
+      branchRelaxationTimes[i] = tauDays;
+      branchElasticModuli[i]   = std::max( 0.0, m * std::pow( tauDays, -n ) );
+    }
+
+    const double weightSum = branchElasticModuli.sum();
+
+    if ( weightSum > maxBranchFraction && weightSum > 0.0 ) {
+      branchElasticModuli *= maxBranchFraction / weightSum;
+    }
   }
 
 } // namespace Marmot::Materials

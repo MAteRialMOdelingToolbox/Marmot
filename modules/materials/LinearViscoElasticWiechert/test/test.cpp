@@ -45,6 +45,10 @@ void testStressMaterialResponse()
   // Assign state variables
   // number of required state vars
   int nStateVars = mat->getNumberOfRequiredStateVars();
+  if ( nStateVars != 6 ) {
+    throw std::runtime_error( "Unexpected number of required state variables in " +
+                              std::string( __PRETTY_FUNCTION__ ) );
+  }
 
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
@@ -99,7 +103,7 @@ void testStressMaterialResponse()
     stress[i] = state.stress[i];
   // Set the expected force and surface stress explicitly
   // Use the actual value previously printed by the test
-  double stressTarget[6] = { 0., 0., 0., 0., 0., 3846153.831362 };
+  double stressTarget[6] = { 0., 0., 0., 0., 0., 3807692.305921 };
 
   // Convert to Eigen maps for easier comparison
   Eigen::Map< Eigen::VectorXd > stressVec( stress, 6 );

@@ -43,7 +43,7 @@
 
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotWiechertInterface.h"
 #include "Marmot/VonMisesInterface.h"
@@ -61,11 +61,11 @@ using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 // ---------------------------------------------------------------------------
 // Helper: create a VonMisesInterface material object
 // ---------------------------------------------------------------------------
-std::unique_ptr< MarmotMaterialHypoElasticInterface > createMaterial( const double* props, int nProps )
+std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMaterial( const double* props, int nProps )
 {
   const int elLabel = 1;
-  auto mat = std::unique_ptr< MarmotMaterialHypoElasticInterface >( dynamic_cast< MarmotMaterialHypoElasticInterface* >(
-    MarmotLibrary::MarmotMaterialHypoElasticInterfaceFactory::createMaterial( "VONMISESINTERFACE",
+  auto mat = std::unique_ptr< MarmotInterfaceMaterialHypoElastic >( dynamic_cast< MarmotInterfaceMaterialHypoElastic* >(
+    MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( "VONMISESINTERFACE",
                                                                               props,
                                                                               nProps,
                                                                               elLabel ) ) );

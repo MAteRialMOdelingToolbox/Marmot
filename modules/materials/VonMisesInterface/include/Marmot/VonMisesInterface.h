@@ -28,8 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/VonMises.h"
 #include "Marmot/VonMisesConstants.h"
 #include <Eigen/Core>
@@ -40,7 +39,7 @@
 
 namespace Marmot::Materials {
 
-  class VonMisesInterface : public MarmotMaterialHypoElasticInterface {
+  class VonMisesInterface : public MarmotInterfaceMaterialHypoElastic {
 
     /// \brief Young's modulus
     const double& E_0;
@@ -57,23 +56,7 @@ namespace Marmot::Materials {
     const double& deltaYieldStress;
     const double& delta;
 
-    class VonMisesInterfaceStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "kappa", .length = 1 },
-        { .name = "C_ep_voigt", .length = 36 },
-      } );
-
-      double&                                                      kappa;
-      Eigen::Map< Eigen::Matrix< double, 6, 6, Eigen::RowMajor > > C_ep_voigt;
-
-      VonMisesInterfaceStateVarManager( double* theStateVarVector )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          kappa( find( "kappa" ) ),
-          C_ep_voigt( &find( "C_ep_voigt" ) ){};
-    };
-    std::unique_ptr< VonMisesInterfaceStateVarManager > managedStateVars;
+    double* stateVars = nullptr;
 
     // Re-mapped properties for VonMisesModel: [E, nu, yieldStress, HLin, deltaYieldStress, delta]
     // Stored as a member so that VonMisesModel can hold a pointer to them for its lifetime
@@ -97,11 +80,6 @@ namespace Marmot::Materials {
                         const double* timeOld,
                         const double  dT,
                         double&       pNewDT ) override;
-
-    int getNumberOfRequiredStateVars() const override
-    {
-      return VonMisesInterfaceStateVarManager::layout.nRequiredStateVars;
-    }
 
     void initializeStateLayout() override;
 

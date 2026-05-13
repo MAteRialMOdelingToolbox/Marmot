@@ -1,7 +1,7 @@
 #include "Marmot/VonMisesInterface.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
@@ -15,6 +15,7 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Constants.h>
 #include <Fastor/expressions/linalg_ops/unary_norm_op.h>
+#include <Fastor/tensor/TensorMap.h>
 
 #include "autodiff/forward/real.hpp"
 #include <iostream>
@@ -33,11 +34,12 @@ namespace Marmot::Materials {
 
   void VonMisesInterface::initializeStateLayout()
   {
-    // State variables are managed manually by VonMisesInterfaceStateVarManager.
+    stateLayout.add( "kappa", 1 );
+    stateLayout.finalize();
   }
 
   VonMisesInterface::VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElasticInterface( materialProperties, nMaterialProperties, materialNumber ),
+    : MarmotInterfaceMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
       // elasticity parameters
       E_0( materialProperties[0] ),
@@ -57,6 +59,7 @@ namespace Marmot::Materials {
       vonMisesModel( vonMisesProps.data(), 6, materialNumber )
   // clang-format on
   {
+    initializeStateLayout();
   }
   void VonMisesInterface::computeStress( double*       scaled_force,
                                          double*       scaled_averageStress,
@@ -77,15 +80,9 @@ namespace Marmot::Materials {
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    Fastor::Tensor< double, 3 >          scaled_forceFtensor( scaled_force );
-    Fastor::Tensor< double, 3, 3 >       scaled_averageStressFtensor( scaled_averageStress );
-    Fastor::Tensor< double, 3, 3 >       Q_ij_Ftensor( Q_ij );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Z_ijkl_Ftensor( Z_ijkl );
-    Fastor::Tensor< double, 3, 3, 3 >    H_ijk_Ftensor( H_ijk );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Y_ijkl_Ftensor( Y_ijkl );
-    Fastor::Tensor< double, 6, 1 >       dUFtensor( dU );
-    Fastor::Tensor< double, 18, 1 >      dSurfaceDispGradientFtensor( dSurfaceDispGradient );
-    Fastor::Tensor< double, 3 >          normalFtensor( normal );
+    Fastor::Tensor< double, 6, 1 >  dUFtensor( dU );
+    Fastor::Tensor< double, 18, 1 > dSurfaceDispGradientFtensor( dSurfaceDispGradient );
+    Fastor::Tensor< double, 3 >     normalFtensor( normal );
 
     // Evaluate average stress on the layer using Von Mises yield criterion.
     // vonMisesModel.computeStress updates averageStress and writes the new
@@ -126,26 +123,19 @@ namespace Marmot::Materials {
                                           Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt(
                                             scaled_averageStressSym );
 
-    auto& C_ep = managedStateVars->C_ep_voigt;
+    if ( stateVars == nullptr ) {
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not assigned." );
+    }
 
-    // Save the current (potentially plastic) C_ep before calling vonMisesModel.
-    // If vonMisesModel performs an elastic step it will overwrite C_ep with Cel,
-    // losing the plastic tangent that should be used for the consistent tangent K.
-    // By preserving C_ep_saved we can restore the plastic tangent after an elastic substep.
-    // const Eigen::Matrix< double, 6, 6, Eigen::RowMajor > C_ep_saved = C_ep;
-    MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &managedStateVars->kappa };
+    Eigen::Matrix< double, 6, 6, Eigen::RowMajor >
+            C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
+    double& kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
+
+    MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
 
     vonMisesModel.computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
     averageStressVoigt = vonMisesState.stress;
-
-    // If no plastic flow occurred in this substep (kappa unchanged), restore the previously
-    // computed C_ep so that the consistent tangent K reflects the active plastic state.
-    // This is essential for Newton iterations with tiny dU corrections that stay below yield
-    // but where the material is already on the yield surface from a prior load step.
-    // if ( managedStateVars->kappa == kappa_old ) {
-    //  C_ep = C_ep_saved;
-    //}
 
     auto [Z_ijkl_ep, Q_ij_ep, H_ijk_ep, Y_ijkl_ep] = calculateInterfaceMaterialParameters( normalFtensor, C_ep );
 
@@ -161,14 +151,13 @@ namespace Marmot::Materials {
       scaled_averageStressFull = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
 
     std::copy( scaled_averageStressFull.data(), scaled_averageStressFull.data() + 9, scaled_averageStress );
-    // Reload Fastor tensor from the updated 3x3 buffer
-    scaled_averageStressFtensor = Fastor::Tensor< double, 3, 3 >( scaled_averageStress );
+    Fastor::TensorMap< const double, 3, 3 > scaled_averageStressFtensor( scaled_averageStress );
+    Fastor::TensorMap< double, 3 >          scaled_forceFtensor( scaled_force );
 
     scaled_forceFtensor = Fastor::einsum< Fastor::Index< i, j >,
                                           Fastor::Index< j >,
                                           Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
 
-    std::copy( scaled_forceFtensor.data(), scaled_forceFtensor.data() + 3, scaled_force );
     std::copy( Q_ij_Ftensor_scaled.data(), Q_ij_Ftensor_scaled.data() + 9, Q_ij );
     std::copy( Z_ijkl_Ftensor_scaled.data(), Z_ijkl_Ftensor_scaled.data() + 81, Z_ijkl );
     std::copy( H_ijk_Ftensor_scaled.data(), H_ijk_Ftensor_scaled.data() + 27, H_ijk );
@@ -181,26 +170,23 @@ namespace Marmot::Materials {
     if ( nStateVars < getNumberOfRequiredStateVars() )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
 
-    managedStateVars = std::make_unique< VonMisesInterfaceStateVarManager >( stateVars );
-
-    // Also assign the kappa state var pointer to vonMisesModel so it shares the same memory
-    // If C_ep_voigt state var is still zero (first ever assignment), initialize it to elastic stiffness
-    if ( managedStateVars->C_ep_voigt.isZero() )
-      managedStateVars->C_ep_voigt = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
-
-    return MarmotMaterialHypoElasticInterface::assignStateVars( stateVars, nStateVars );
+    MarmotInterfaceMaterialHypoElastic::assignStateVars( stateVars, nStateVars );
+    this->stateVars = stateVars;
   }
 
   StateView VonMisesInterface::getStateView( const std::string& stateName )
   {
-    return managedStateVars->getStateView( stateName );
+    if ( stateVars == nullptr ) {
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not assigned." );
+    }
+    return MarmotInterfaceMaterialHypoElastic::getStateView( stateName, stateVars );
   }
 
   double VonMisesInterface::getDensity()
   {
-    if ( this->nMaterialProperties < 7 )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7" );
-    return this->materialProperties[6];
+    if ( this->nMaterialProperties < 8 )
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8" );
+    return this->materialProperties[7];
   }
 
 } // namespace Marmot::Materials

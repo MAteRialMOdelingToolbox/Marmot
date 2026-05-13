@@ -134,5 +134,71 @@ namespace Marmot {
 
       return dyade;
     }
+
+    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9(
+      const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor )
+    {
+      Eigen::Matrix< double, 9, 9 > matrix( 9, 9 );
+
+      for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+          for ( int k = 0; k < 3; ++k ) {
+            for ( int l = 0; l < 3; ++l ) {
+              int row            = 3 * i + j;
+              int col            = 3 * k + l;
+              matrix( row, col ) = tensor( i, j, k, l );
+            }
+          }
+        }
+      }
+
+      return matrix;
+    }
+
+    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
+    {
+      Eigen::Matrix< double, 9, 3 > matrix( 9, 3 );
+
+      for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+          for ( int k = 0; k < 3; ++k ) {
+            int row          = 3 * i + j;
+            matrix( row, k ) = tensor( i, j, k );
+          }
+        }
+      }
+
+      return matrix;
+    }
+
+    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
+    {
+      Eigen::Matrix< double, 3, 9 > matrix( 3, 9 );
+
+      for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+          for ( int k = 0; k < 3; ++k ) {
+            int col          = 3 * j + k;
+            matrix( i, col ) = tensor( i, j, k );
+          }
+        }
+      }
+
+      return matrix;
+    }
+
+    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor )
+    {
+      Eigen::Matrix< double, 3, 3 > matrix( 3, 3 );
+
+      for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+          matrix( i, j ) = tensor( i, j );
+        }
+      }
+
+      return matrix;
+    }
+
   } // namespace ContinuumMechanics::TensorUtility
 } // namespace Marmot

@@ -27,13 +27,9 @@
  */
 
 #pragma once
-#include "Fastor/Fastor.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotWiechert.h"
-#include <iostream>
-#include <string>
-#include <vector>
+#include <cstddef>
 
 namespace Marmot::Materials {
   /**
@@ -64,34 +60,17 @@ namespace Marmot::Materials {
     /// \brief power law exponent for interphase layer
     const double& n;
 
-    /// \brief number of Kelvin units to approximate the viscoelastic compliance for interphase layer
+    /// \brief number of Maxwell units to approximate the viscoelastic compliance for interphase layer
     const size_t nMaxwell;
 
-    /// \brief minimal retardation time used in the viscoelastic Kelvin chain for interphase layer
+    /// \brief minimal relaxation time used in the viscoelastic Maxwell chain for interphase layer
     const double& minTau;
 
     /// \brief ratio of simulation time to days
     const double& timeToDays;
 
-    class LinearViscoElasticWiechertStateVarManager : public MarmotStateVarVectorManager {
-
-    public:
-      inline const static auto layout = makeLayout( {
-        { .name = "MaxwellStateVars", .length = 6 * 1 },
-      } );
-
-      Wiechert::mapStateVarMatrix MaxwellStateVars;
-      LinearViscoElasticWiechertStateVarManager( double* theStateVarVector, int nMaxwellUnits )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
-          MaxwellStateVars( &find( "MaxwellStateVars" ), 6, nMaxwellUnits ){};
-    };
-
-    ::std::unique_ptr< LinearViscoElasticWiechertStateVarManager > stateVarManager;
-
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
-    using Tensor1D = Fastor::Tensor< double, 3 >;
-    using Tensor2D = Fastor::Tensor< double, 3, 3 >;
 
     LinearViscoElasticWiechert( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -99,16 +78,9 @@ namespace Marmot::Materials {
 
     void computeStress( state3D& state, double* C, const double* dStrain, const timeInfo& timeInfo ) const override;
 
-    StateView getStateView( const ::std::string& stateName );
-
   private:
-    Wiechert::Properties elasticModuli;
-    Wiechert::Properties relaxationTimes;
-    double               zerothWiechertStiffness;
-
-    static constexpr int powerLawApproximationOrder = 1;
-
-  private:
+    Wiechert::Properties branchRelaxationTimes;
+    Wiechert::Properties branchElasticModuli;
   };
 
 } // namespace Marmot::Materials

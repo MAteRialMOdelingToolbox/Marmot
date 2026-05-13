@@ -36,91 +36,85 @@
 //
 namespace Marmot::Materials {
 
+  /**
+   * @namespace Wiechert
+   * @brief Utilities for branch-wise Wiechert/Kelvin-chain viscoelastic updates in 3D Voigt notation.
+   *
+   * @details
+   * This namespace provides helper functions to initialize Maxwell branch properties,
+   * update branch state variables, evaluate incremental viscoelastic response contributions,
+   * and compute robust integration factors \f$\lambda\f$ and \f$\beta\f$.
+   */
   namespace Wiechert {
 
-    typedef Eigen::VectorXd          Properties;
+    /// @brief Dynamic vector of branch-wise material properties (e.g. moduli or relaxation times).
+    typedef Eigen::VectorXd Properties;
+
+    /// @brief Non-owning Eigen map view onto a `Properties` buffer.
     typedef Eigen::Map< Properties > mapProperties;
 
+    /// @brief Branch state variable matrix (6 x nMaxwell) storing Voigt stress-like internal variables.
     typedef Eigen::Matrix< double, 6, Eigen::Dynamic > StateVarMatrix;
 
+    /// @brief Non-owning Eigen map view of `StateVarMatrix`.
     typedef Eigen::Map< StateVarMatrix > mapStateVarMatrix;
 
-    // template < int k >
-    // Properties computeElasticModuli_Ru( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) >
-    // phi,
-    //                                  Properties relaxationTimes_Ru,
-    //                                  bool       gaussQuadrature = false )
-    //{
-    //   Properties elasticModuli_Ru( relaxationTimes_Ru.size() );
-    //   double     spacing = relaxationTimes_Ru( 1 ) / relaxationTimes_Ru( 0 );
-    //   for ( int i = 0; i < relaxationTimes_Ru.size(); i++ ) {
-    //     double tau = relaxationTimes_Ru( i );
-    //     if ( !gaussQuadrature ) {
-    //
-    //       elasticModuli_Ru( i ) = 1. / ( log( spacing ) * KelvinChain::evaluatePostWidderFormula< k >( phi, tau ) );
-    //
-    //    else {
-    //      elasticModuli_Ru( i ) = 1. /
-    //                           ( log( spacing ) / 2. *
-    //                             ( KelvinChain::evaluatePostWidderFormula< k >( phi, tau * pow( spacing, -sqrt( 3. )
-    //                             / 6. ) ) +
-    //                               KelvinChain::evaluatePostWidderFormula< k >( phi, tau * pow( spacing, sqrt( 3. )
-    //                               / 6. ) ) ) );
-    //    }
-    //
-    //      return elasticModuli_Ru;
-    //    }
+    // TODO(v26.05): implement optional Post-Widder-based branch modulus generation helpers
+    // (e.g. computeElasticModuli_* / generateRelaxationTimes) when calibration workflow needs them.
 
-    // template < int k >
-    // Properties computeElasticModuli_Rs( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) >
-    // phi,
-    //                                  Properties relaxationTimes_Rs,
-    //                                  bool       gaussQuadrature = false )
-    //{
-    //   Properties elasticModuli_Rs( relaxationTimes_Rs.size() );
-    //   double     spacing = relaxationTimes_Rs( 1 ) / relaxationTimes_Rs( 0 );
-    //
-    //      for ( int i = 0; i < relaxationTimes_Rs.size(); i++ ) {
-    //        double tau = relaxationTimes_Rs( i );
-    //        if ( !gaussQuadrature ) {
-    //          elasticModuli_Rs( i ) = 1. / ( log( spacing ) * KelvinChain::evaluatePostWidderFormula< k >( phi, tau )
-    //          );
-    //       }
-    //       else {
-    //         elasticModuli_Rs( i ) = 1. /
-    //                              ( log( spacing ) / 2. *
-    //                               ( KelvinChain::evaluatePostWidderFormula< k >( phi, tau * pow( spacing, -sqrt( 3. )
-    //                               / 6. ) ) +
-    //                                 KelvinChain::evaluatePostWidderFormula< k >( phi, tau * pow( spacing, sqrt( 3. )
-    //                                 / 6. ) ) ) );
-    //       }
-    //     }
-    //
-    //     return elasticModuli_Rs;
-    //  }
-
-    // Properties generateRelaxationTimes( int n, double min, double spacing );
-
+    /**
+     * @brief Initialize branch-wise elastic moduli with a constant value.
+     * @param nMaxwell Number of Maxwell branches.
+     * @param n Elastic modulus assigned to every branch.
+     * @return Vector of size `nMaxwell` with all entries equal to `n`.
+     */
     Properties initializeElasticModuli( int nMaxwell, double n );
 
+    /**
+     * @brief Initialize branch-wise relaxation times with a constant value.
+     * @param nMaxwell Number of Maxwell branches.
+     * @param m Relaxation time assigned to every branch.
+     * @return Vector of size `nMaxwell` with all entries equal to `m`.
+     */
     Properties initializeRelaxationTimes( int nMaxwell, double m );
 
+    /**
+     * @brief Update branch state variables for one incremental strain step.
+     * @param dT Time increment.
+     * @param elasticModuli Branch-wise elastic moduli, passed by const reference.
+     * @param relaxationTimes Branch-wise relaxation times, passed by const reference.
+     * @param stateVars In/out branch state matrix (6 x nMaxwell).
+     * @param dStress Incremental driving quantity in Voigt notation.
+     * @param unitD_ijkl Elastic stiffness matrix used to map increment to stress-like branch updates.
+     */
     void updateStateVarMatrix( const double                 dT,
-                               Properties                   elasticModuli,
-                               Properties                   relaxationTimes,
+                               const Properties&            elasticModuli,
+                               const Properties&            relaxationTimes,
                                Eigen::Ref< StateVarMatrix > stateVars,
                                const Marmot::Vector6d&      dStress,
                                const Marmot::Matrix6d&      unitD_ijkl );
 
+    /**
+     * @brief Evaluate accumulated incremental Wiechert response from branch state variables.
+     *
+     * @details
+     * Adds branch contributions to `uniaxialStiffness` and `dStress` (outputs are incremented, not reset).
+     *
+     * @param dT Time increment.
+     * @param elasticModuli Branch-wise elastic moduli, passed by const reference.
+     * @param relaxationTimes Branch-wise relaxation times, passed by const reference.
+     * @param stateVars Branch state matrix (6 x nMaxwell).
+     * @param uniaxialStiffness In/out accumulated scalar stiffness contribution.
+     * @param dStress In/out accumulated stress increment in Voigt notation.
+     * @param factor Optional scaling factor for all branch contributions.
+     */
     void evaluateWiechert( const double      dT,
-                           Properties        elasticModuli,
-                           Properties        relaxationTimes,
+                           const Properties& elasticModuli,
+                           const Properties& relaxationTimes,
                            StateVarMatrix    stateVars,
                            double&           uniaxialStiffness,
                            Marmot::Vector6d& dStress,
                            const double      factor );
-
-    void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta );
 
   } // namespace Wiechert
 } // namespace Marmot::Materials

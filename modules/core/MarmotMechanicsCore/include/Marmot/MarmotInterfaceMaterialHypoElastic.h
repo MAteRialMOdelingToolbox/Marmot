@@ -29,6 +29,7 @@
 #pragma once
 
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 
@@ -45,7 +46,7 @@
  * Marmot v26.05, but remains an independent interface-material base class
  * because interface materials have their own stress-update signature.
  */
-class MarmotMaterialHypoElasticInterface {
+class MarmotInterfaceMaterialHypoElastic {
 
 protected:
   const double* materialProperties;
@@ -54,7 +55,7 @@ protected:
 public:
   const int materialNumber;
 
-  MarmotMaterialHypoElasticInterface( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+  MarmotInterfaceMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
     : materialProperties( matProperties_ ),
       nMaterialProperties( nMaterialProperties_ ),
       materialNumber( materialNumber_ )
@@ -62,13 +63,13 @@ public:
   }
 
   /// Default destructor
-  virtual ~MarmotMaterialHypoElasticInterface() = default;
+  virtual ~MarmotInterfaceMaterialHypoElastic() = default;
 
   /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;
 
-  using Tensor1D = Fastor::Tensor< double, 3 >;
-  using Tensor2D = Fastor::Tensor< double, 3, 3 >;
+  using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
+  using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
 
   /// Characteristic element length
   double characteristicElementLength;
@@ -169,22 +170,18 @@ public:
 namespace MarmotLibrary {
 
   /**
-   * @class MarmotMaterialHypoElasticInterfaceFactory
+   * @class MarmotInterfaceMaterialHypoElasticFactory
    * @brief Factory class for creating hypoelastic interface-material instances by name.
-   *
-   * This follows the v26.05 name-based registration style. It does not use
-   * material registration numbers.
    */
-  class MarmotMaterialHypoElasticInterfaceFactory {
+  class MarmotInterfaceMaterialHypoElasticFactory {
   public:
     using materialFactoryFunction = std::function<
-      MarmotMaterialHypoElasticInterface*( const double* materialProperties,
+      MarmotInterfaceMaterialHypoElastic*( const double* materialProperties,
                                            int           nMaterialProperties,
                                            int           materialNumber ) >;
 
-    MarmotMaterialHypoElasticInterfaceFactory() = delete;
-
-    static MarmotMaterialHypoElasticInterface* createMaterial( const std::string& materialName,
+    MarmotInterfaceMaterialHypoElasticFactory() = delete;
+    static MarmotInterfaceMaterialHypoElastic* createMaterial( const std::string& materialName,
                                                                const double*      materialProperties,
                                                                int                nMaterialProperties,
                                                                int                materialNumber )
@@ -208,7 +205,7 @@ namespace MarmotLibrary {
 
       map[materialName] = []( const double* materialProperties,
                               int           nMaterialProperties,
-                              int           materialNumber ) -> MarmotMaterialHypoElasticInterface* {
+                              int           materialNumber ) -> MarmotInterfaceMaterialHypoElastic* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
 

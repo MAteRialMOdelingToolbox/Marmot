@@ -28,7 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotMaterialHypoElasticInterface.h"
+#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <iostream>
 #include <string>
@@ -41,25 +41,15 @@ namespace Marmot::Materials {
    *
    * For further information see \ref linearelasticinterface.
    */
-  class LinearElasticInterface : public MarmotMaterialHypoElasticInterface {
+  class LinearElasticInterface : public MarmotInterfaceMaterialHypoElastic {
   public:
-    using MarmotMaterialHypoElasticInterface::MarmotMaterialHypoElasticInterface;
+    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
     using Tensor1D = Fastor::Tensor< double, 3 >;
     using Tensor2D = Fastor::Tensor< double, 3, 3 >;
 
     LinearElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void initializeStateLayout() override;
-
-    // void computeStress( Tensor1D&  force,
-    //                     Tensor2D&  surface_stress,
-    //                     Fastor::Tensor<double, 21,21>& dStress_dStrain,
-    //                     const Fastor::Tensor<double, 6,1>& dU,
-    //                     const Fastor::Tensor<double, 18,1>& dSurface_strain,
-    //                     const Tensor1D& normal,
-    //                     const double* timeOld,
-    //                     const double  dT,
-    //                     double&       pNewDT ) ;
 
     void computeStress( double*       force,
                         double*       surface_stress,
