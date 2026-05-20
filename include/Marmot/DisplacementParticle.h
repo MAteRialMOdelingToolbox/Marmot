@@ -202,6 +202,10 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const override;
 
+    virtual void computeLumpedInertia( double* mLumped ) const override;
+
+    virtual void computeLumpedMomentum( double* mLumped ) const override;
+
     virtual StateView getStateView( const std::string& stateName, int qp ) const override;
 
     // VCI methods are now in GenericParticle, but vci_compute_Test_P_BoundaryIntegral needs override
@@ -422,6 +426,39 @@ namespace Marmot::Meshfree {
                                                       double        timeNew,
                                                       double        dT ) const
   {
+  }
+
+  template < int nDim >
+  void DisplacementParticle< nDim >::computeLumpedInertia( double* mLumped ) const
+  {
+    const double density0 = _mp->getDensityUndeformed();
+    const double V0       = getVolumeUndeformed();
+
+    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
+      const double T_A    = this->_T( A );      // Use base class _T
+      const int    idxA_u = nDofPerNodeU * A;
+
+      for ( int i = 0; i < nDofPerNodeU; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0;
+      }
+    }
+  }
+
+  template < int nDim >
+  void DisplacementParticle< nDim >::computeLumpedMomentum( double* mLumped ) const
+  {
+    const double density0 = _mp->getDensityUndeformed();
+    const double V0       = getVolumeUndeformed();
+    const auto   v        = _mp->getVelocity();
+
+    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
+      const double T_A    = this->_T( A );      // Use base class _T
+      const int    idxA_u = nDofPerNodeU * A;
+
+      for ( int i = 0; i < nDofPerNodeU; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+      }
+    }
   }
 
 } // namespace Marmot::Meshfree
