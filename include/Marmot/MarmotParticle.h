@@ -143,6 +143,27 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const = 0;
 
+    virtual void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ){};
+
+    virtual void computePhysicsKernelsExplicit( double* fInt ){};
+
+    virtual void computeBodyLoadExplicit( int           type,
+                                          const double* load,
+                                          double*       fExt,
+                                          double        timeNew,
+                                          double        dT ) const {};
+
+    virtual void computeDistributedExplicit( int           type,
+                                             int           boundaryFaceID,
+                                             const double* load,
+                                             double*       fExt,
+                                             double        timeNew,
+                                             double        dT ) const {};
+
+    virtual void computeLumpedInertia( double* mLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
+
+    virtual void computeLumpedMomentum( double* mLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
+
     virtual void getInterpolationVector( double* vec, const double* coordinates ) const = 0;
 
     virtual const std::unordered_map< std::string, int >& getSupportedBodyLoadTypes() const = 0;
