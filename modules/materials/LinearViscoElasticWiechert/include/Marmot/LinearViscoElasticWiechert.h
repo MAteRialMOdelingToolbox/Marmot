@@ -33,18 +33,9 @@
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a linear visco elastic material
+   * \brief Implementation of a linear visco elastic material coming from
+   * the Wiecher model of parallel viscoelastic elements
    * for 3D stress states.
-   *
-   * For further information see \ref linearviscoelasticwiechert.
-   * according to the LinearViscoelasticPowerLaw model by Bazant et al. (2015)
-
-   * generalized for 3D stress states.
-
-   *
-
-   * For further information see \ref b4.
-
    */
   class LinearViscoElasticWiechert : public MarmotMaterialHypoElastic {
 
@@ -74,13 +65,23 @@ namespace Marmot::Materials {
 
     LinearViscoElasticWiechert( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-    void initializeStateLayout() override;
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "maxwellStateVars", 6 * nMaxwell );
+      stateLayout.finalize();
+    }
 
     void computeStress( state3D& state, double* C, const double* dStrain, const timeInfo& timeInfo ) const override;
 
   private:
-    Wiechert::Properties branchRelaxationTimes;
-    Wiechert::Properties branchElasticModuli;
+    /// @brief relaxation times of the #nMaxwell Maxwell units
+    Wiechert::Properties relaxationTimes;
+    /// @brief Young's modulus of the #nMaxwell Maxwell units
+    Wiechert::Properties elasticModuli;
+    /// @brief stiffness of the zeroth Wiechert unit
+    double zerothWiechertStiffness;
+
+    static constexpr int powerLawApproximationOrder = 1;
   };
 
 } // namespace Marmot::Materials

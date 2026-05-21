@@ -103,8 +103,7 @@ void testStressMaterialResponse()
     stress[i] = state.stress[i];
   // Set the expected force and surface stress explicitly
   // Use the actual value previously printed by the test
-  double stressTarget[6] = { 0., 0., 0., 0., 0., 3807692.305921 };
-
+  double stressTarget[6] = { 0., 0., 0., 0., 0., 3846153.831362 };
   // Convert to Eigen maps for easier comparison
   Eigen::Map< Eigen::VectorXd > stressVec( stress, 6 );
   Eigen::Map< Eigen::VectorXd > stressTargetVec( stressTarget, 6 );
