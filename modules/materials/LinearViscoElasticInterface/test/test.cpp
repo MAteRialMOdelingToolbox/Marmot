@@ -39,6 +39,28 @@ std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMarmotInterfaceMater
   return mat; // Return the created material object
 }
 
+void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
+                    double*                             stateVars,
+                    double*                             force,
+                    double*                             surfaceStress,
+                    double*                             Q_ij,
+                    double*                             Z_ijkl,
+                    double*                             H_ijk,
+                    double*                             Y_ijkl,
+                    const double*                       dU,
+                    const double*                       dSurfaceStrain,
+                    const double*                       normal,
+                    const double*                       timeOld,
+                    const double                        dT,
+                    double&                             pNewDT )
+{
+  MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
+  MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
+  MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  mat.computeStress( state, tangents, deformation, timeIncrement );
+}
+
 // Function to test the viscoelastic interface material response for a displacement jump
 void testForceMaterialResponse()
 {
@@ -64,7 +86,7 @@ void testForceMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  mat->initializeYourself( stateVar.data(), nStateVars );
 
   // first increment ( load free )
   const double    timeOld = 0.0; // Previous time step
@@ -89,18 +111,20 @@ void testForceMaterialResponse()
   const double normal[3] = { 0, 0, 1 };
 
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU1,
-                      dSurface_strain1,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU1,
+                 dSurface_strain1,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // second increment ( load application )
   dT = 1e-6;
@@ -109,18 +133,20 @@ void testForceMaterialResponse()
   const double dSurface_strain2[18] = { 0 };
 
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU2,
-                      dSurface_strain2,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU2,
+                 dSurface_strain2,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // third increment ( constant strain, relaxation )
   dT = 100.;
@@ -128,18 +154,20 @@ void testForceMaterialResponse()
   const double dU3[6]               = { 0, 0, 0, 0, 0, 0 };
   const double dSurface_strain3[18] = { 0 };
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU3,
-                      dSurface_strain3,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU3,
+                 dSurface_strain3,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // expected force and surface stress
   double forceTarget[3]          = { 0, 38461538.461538, 0 };
@@ -180,7 +208,7 @@ void testSurfaceStressMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  mat->initializeYourself( stateVar.data(), nStateVars );
 
   // first increment ( load free )
   const double    timeOld = 0.0; // Previous time step
@@ -205,18 +233,20 @@ void testSurfaceStressMaterialResponse()
   const double normal[3] = { 0, 0, 1 };
 
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU1,
-                      dSurface_strain1,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU1,
+                 dSurface_strain1,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // second increment ( load application )
   dT = 1e-6;
@@ -225,18 +255,20 @@ void testSurfaceStressMaterialResponse()
   const double dSurface_strain2[18] = { 0, 1e-1, 0, 1e-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU2,
-                      dSurface_strain2,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU2,
+                 dSurface_strain2,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // third increment ( constant strain, relaxation )
   dT = 100.;
@@ -244,18 +276,20 @@ void testSurfaceStressMaterialResponse()
   const double dU3[6]               = { 0 };
   const double dSurface_strain3[18] = { 0 };
   // compute material response
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU3,
-                      dSurface_strain3,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU3,
+                 dSurface_strain3,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // expected force and surface stress
   double forceTarget[3]          = { 0 };

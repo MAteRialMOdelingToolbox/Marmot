@@ -54,7 +54,7 @@ namespace {
     ElementProperties              elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
 
-    static std::array< double, 4 > materialProperties = { 4e5, 0.3, 0.01, 0.0 };
+    static std::array< double, 3 > materialProperties = { 4e5, 0.3, 0.01 };
     element->assignMaterial( "LINEARELASTICINTERFACE",
                              materialProperties.data(),
                              static_cast< int >( materialProperties.size() ) );
@@ -122,18 +122,15 @@ namespace {
       Eigen::MatrixXd H   = Eigen::MatrixXd::Zero( nDim, nTensor );
       Eigen::MatrixXd Y   = Eigen::MatrixXd::Zero( nTensor, nTensor );
 
-      qp.material->computeStress( force.data(),
-                                  surfaceStress.data(),
-                                  Qij.data(),
-                                  Z.data(),
-                                  H.data(),
-                                  Y.data(),
-                                  dUGp.data(),
-                                  dSurfaceStrainGp.data(),
-                                  qp.normal.data(),
-                                  time,
-                                  dT,
-                                  pNewDT );
+      MarmotInterfaceMaterialHypoElastic::State         state{ force.data(),
+                                                       surfaceStress.data(),
+                                                       qp.managedStateVars->materialStateVars.data() };
+      MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Qij.data(), Z.data(), H.data(), Y.data() };
+      MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dUGp.data(),
+                                                                   dSurfaceStrainGp.data(),
+                                                                   qp.normal.data() };
+      MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time, dT, pNewDT };
+      qp.material->computeStress( state, tangents, deformation, timeIncrement );
 
       const double J0xW = integrationWeight( qp );
 

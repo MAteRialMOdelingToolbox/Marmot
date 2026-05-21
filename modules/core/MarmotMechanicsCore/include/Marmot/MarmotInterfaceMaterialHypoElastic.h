@@ -84,36 +84,40 @@ public:
    */
   void setCharacteristicElementLength( double length );
 
+  struct State {
+    double* force;
+    double* surfaceStress;
+    double* stateVars;
+  };
+
+  struct Tangents {
+    double* Q_ij;
+    double* Z_ijkl;
+    double* H_ijk;
+    double* Y_ijkl;
+  };
+
+  struct Deformation {
+    const double* dU;
+    const double* dSurfaceStrain;
+    const double* normal;
+  };
+
+  struct TimeIncrement {
+    const double* timeOld;
+    double        dT;
+    double&       pNewDT;
+  };
+
   /**
    * For a given interface displacement jump increment and surface strain
    * increment, compute the conjugate interface quantities and algorithmic
    * tangent terms.
-   *
-   * @param[in,out] force              conjugate force due to displacement jump
-   * @param[in,out] surface_stress     conjugate surface stress due to average surface strain
-   * @param[in,out] H_inv_ij           tangent related to the linearized displacement jump
-   * @param[in,out] Z_ijkl             tangent related to the linearized average surface strain
-   * @param[in,out] H_inv_nF_ijk       tangent of the consistency terms
-   * @param[in,out] Yn_H_inv_Fn_ijkl   tangent contribution for average surface strain
-   * @param[in]     dU                 linearized displacement increment on top/bottom interface sides
-   * @param[in]     dSurface_strain    linearized surface strain increment
-   * @param[in]     normal             interface normal, positive toward the top side
-   * @param[in]     timeOld            old pseudo-time
-   * @param[in]     dT                 pseudo-time increment
-   * @param[in,out] pNewDT             suggested new time increment
    */
-  virtual void computeStress( double*       force,
-                              double*       surface_stress,
-                              double*       H_inv_ij,
-                              double*       Z_ijkl,
-                              double*       H_inv_nF_ijk,
-                              double*       Yn_H_inv_Fn_ijkl,
-                              const double* dU,
-                              const double* dSurface_strain,
-                              const double* normal,
-                              const double* timeOld,
-                              const double  dT,
-                              double&       pNewDT ) = 0;
+  virtual void computeStress( State&               state,
+                              Tangents&            tangents,
+                              const Deformation&   deformation,
+                              const TimeIncrement& timeIncrement ) = 0;
 
   /**
    * @brief Initialize the layout of the state variables.
@@ -154,15 +158,6 @@ public:
       stateVars[i] = 0.0;
     }
   }
-
-  /**
-   * @brief Compatibility wrapper for interface materials ported from the old API.
-   *
-   * The old Marmot API used assignStateVars. Marmot v26.05 uses
-   * initializeYourself/stateLayout. Keeping this wrapper allows the old
-   * interface-material implementations to be ported incrementally.
-   */
-  virtual void assignStateVars( double* stateVars, int nStateVars ) { initializeYourself( stateVars, nStateVars ); }
 
   virtual double getDensity() { return -1; }
 };

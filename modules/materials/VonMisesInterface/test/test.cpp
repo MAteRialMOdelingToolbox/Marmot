@@ -74,6 +74,28 @@ std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMaterial( const doub
   return mat;
 }
 
+void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
+                    double*                             stateVars,
+                    double*                             force,
+                    double*                             surfaceStress,
+                    double*                             Q_ij,
+                    double*                             Z_ijkl,
+                    double*                             H_ijk,
+                    double*                             Y_ijkl,
+                    const double*                       dU,
+                    const double*                       dSurfaceStrain,
+                    const double*                       normal,
+                    const double*                       timeOld,
+                    const double                        dT,
+                    double&                             pNewDT )
+{
+  MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
+  MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
+  MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  mat.computeStress( state, tangents, deformation, timeIncrement );
+}
+
 // ---------------------------------------------------------------------------
 // Helper: initialise a fresh material and apply a single loading increment.
 //   props[7]           = { E, nu, h, yieldStress, HLin, deltaYieldStress, delta }
@@ -95,7 +117,7 @@ void runSingleIncrement( const double* props,
   const int       nStateVars = mat->getNumberOfRequiredStateVars();
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  mat->initializeYourself( stateVar.data(), nStateVars );
 
   double H_inv_ij[9]          = { 0 };
   double Z_ijkl[81]           = { 0 };
@@ -105,18 +127,20 @@ void runSingleIncrement( const double* props,
   const double timeOld = 0.0;
   const double dT      = 1.0;
 
-  mat->computeStress( force,
-                      averageStress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU,
-                      dSurfaceStrain,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 averageStress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU,
+                 dSurfaceStrain,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 }
 
 // ===========================================================================

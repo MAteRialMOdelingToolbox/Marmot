@@ -38,6 +38,28 @@ std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createMarmotInterfaceMater
   return mat; // Return the created material object
 }
 
+void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
+                    double*                             stateVars,
+                    double*                             force,
+                    double*                             surfaceStress,
+                    double*                             Q_ij,
+                    double*                             Z_ijkl,
+                    double*                             H_ijk,
+                    double*                             Y_ijkl,
+                    const double*                       dU,
+                    const double*                       dSurfaceStrain,
+                    const double*                       normal,
+                    const double*                       timeOld,
+                    const double                        dT,
+                    double&                             pNewDT )
+{
+  MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
+  MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
+  MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  mat.computeStress( state, tangents, deformation, timeIncrement );
+}
+
 // Function to test the viscoelastic interface material response for a displacement jump
 void testForceMaterialResponse()
 {
@@ -46,9 +68,9 @@ void testForceMaterialResponse()
   // nu_0: Poisson's ratio of interphase
   // h : thickness of the interphase
   // dummy : placeholder for 8th parameter
-  //                                     E_0, nu_0,     h, dummy
-  const double materialProperties[4] = { 1e4, 0.3, 1e-7, 0.0 };
-  const int    nMaterialProperties   = 4;
+  //                                     E_0, nu_0,  h
+  const double materialProperties[3] = { 1e4, 0.3, 1e-7 };
+  const int    nMaterialProperties   = 3;
 
   // Create the material object
   auto mat = createMarmotInterfaceMaterialHypoElastic( "LINEARELASTICINTERFACE",
@@ -61,7 +83,7 @@ void testForceMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  mat->initializeYourself( stateVar.data(), nStateVars );
 
   // Define initial force/stress state (set to zero) and strain increment
   double force[3]          = { 0, 0, 0 };
@@ -84,18 +106,20 @@ void testForceMaterialResponse()
   double       pNewDT;        // Placeholder for the new time increment
 
   // Compute the stress response of the material
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU,
-                      dSurface_strain,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU,
+                 dSurface_strain,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   // Define the expected stress values for the applied strain increment
   double forceTarget[3]          = { 0, 38461538.4615385, 0 };
@@ -147,7 +171,7 @@ void testSurfaceStressMaterialResponse()
   // initialize state vars
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
-  mat->assignStateVars( stateVar.data(), nStateVars );
+  mat->initializeYourself( stateVar.data(), nStateVars );
   // Define initial force/stress state (set to zero) and strain increment
   double force[3]          = { 0, 0, 0 };
   double surface_stress[9] = { 0 };
@@ -169,18 +193,20 @@ void testSurfaceStressMaterialResponse()
   double       pNewDT;        // Placeholder for the new time increment
 
   // Compute the stress response of the material
-  mat->computeStress( force,
-                      surface_stress,
-                      H_inv_ij,
-                      Z_ijkl,
-                      H_inv_nF_ijk,
-                      Yn_H_inv_Fn_ijkl,
-                      dU,
-                      dSurface_strain,
-                      normal,
-                      &timeOld,
-                      dT,
-                      pNewDT );
+  computeStress( *mat,
+                 stateVar.data(),
+                 force,
+                 surface_stress,
+                 H_inv_ij,
+                 Z_ijkl,
+                 H_inv_nF_ijk,
+                 Yn_H_inv_Fn_ijkl,
+                 dU,
+                 dSurface_strain,
+                 normal,
+                 &timeOld,
+                 dT,
+                 pNewDT );
 
   double forceTarget[3]          = { 0, 0, 0 };
   double surface_stressTarget[9] = { 0, 7.69230769230769e-07, 0, 7.69230769230769e-07, 0, 0, 0, 0, 0 };

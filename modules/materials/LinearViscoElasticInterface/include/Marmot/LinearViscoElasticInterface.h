@@ -28,6 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotWiechertInterface.h"
 #include <iostream>
@@ -40,7 +41,7 @@ namespace Marmot::Materials {
    * for 3D stress states.
    *
    * For further information see \ref linearviscoelasticinterface.
-   * according to the LinearViscoelasticPowerLaw model by Bazant et al. (2015)
+   * according to the Wiechert model
 
    * generalized for 3D stress states.
 
@@ -75,40 +76,29 @@ namespace Marmot::Materials {
     /// \brief ratio of simulation time to days
     const double& timeToDays;
 
-    double* stateVars = nullptr;
-
   public:
     using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-    using Tensor1D = Fastor::Tensor< double, 3 >;
-    using Tensor2D = Fastor::Tensor< double, 3, 3 >;
+    using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
+    using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
 
     LinearViscoElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-    void computeStress( double*       force,
-                        double*       surfaceStress,
-                        double*       H_inv_ij,
-                        double*       Z_ijkl,
-                        double*       H_inv_nF_ijk,
-                        double*       Yn_H_inv_Fn_ijkl,
-                        const double* dU,
-                        const double* dSurfaceStrain,
-                        const double* normal,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
+    void computeStress( State&               state,
+                        Tangents&            tangents,
+                        const Deformation&   deformation,
+                        const TimeIncrement& timeIncrement ) override;
 
     int getNumberOfRequiredStateVars() const override;
 
     void initializeStateLayout() override;
 
-    void assignStateVars( double* stateVars_, int nStateVars );
-
-    StateView getStateView( const ::std::string& stateName );
-
   private:
+    /// @brief Young's modulus of the #nKelvin Kelvin units
     WiechertInterface::Properties elasticModuli;
+    /// @brief relaxation times of the #nKelvin Kelvin units
     WiechertInterface::Properties relaxationTimes;
-    double                        zerothWiechertStiffness;
+    /// @brief stiffness of the zeroth Kelvin unit (the elastic response)
+    double zerothWiechertStiffness;
 
     static constexpr int powerLawApproximationOrder = 1;
   };

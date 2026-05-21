@@ -29,15 +29,16 @@
 #pragma once
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
-#include "Marmot/VonMises.h"
-#include "Marmot/VonMisesConstants.h"
 #include <Eigen/Core>
 #include <array>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace Marmot::Materials {
+
+  class VonMisesModel;
 
   class VonMisesInterface : public MarmotInterfaceMaterialHypoElastic {
 
@@ -56,36 +57,23 @@ namespace Marmot::Materials {
     const double& deltaYieldStress;
     const double& delta;
 
-    double* stateVars = nullptr;
-
     // Re-mapped properties for VonMisesModel: [E, nu, yieldStress, HLin, deltaYieldStress, delta]
     // Stored as a member so that VonMisesModel can hold a pointer to them for its lifetime
     std::array< double, 6 > vonMisesProps;
 
-    // VonMisesModel instance — instantiated once in the constructor and reused every increment
-    VonMisesModel vonMisesModel;
+    // VonMisesModel is an implementation detail; keep it out of this public header.
+    std::unique_ptr< VonMisesModel > vonMisesModel;
 
   public:
     VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
+    ~VonMisesInterface() override;
 
-    void computeStress( double*       force,
-                        double*       surfaceStress,
-                        double*       Q_ij,
-                        double*       Z_ijkl,
-                        double*       H_ijk,
-                        double*       Y_ijkl,
-                        const double* dU,
-                        const double* dSurfaceStrain,
-                        const double* normal,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT ) override;
+    void computeStress( State&               state,
+                        Tangents&            tangents,
+                        const Deformation&   deformation,
+                        const TimeIncrement& timeIncrement ) override;
 
     void initializeStateLayout() override;
-
-    void assignStateVars( double* stateVars, int nStateVars ) override;
-
-    StateView getStateView( const std::string& stateName );
 
     double getDensity() override;
   };

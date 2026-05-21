@@ -251,8 +251,8 @@ namespace Marmot::Elements {
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
 
-        material->assignStateVars( managedStateVars->materialStateVars.data(),
-                                   managedStateVars->materialStateVars.size() );
+        material->initializeYourself( managedStateVars->materialStateVars.data(),
+                                      managedStateVars->materialStateVars.size() );
       }
 
       /**
@@ -433,7 +433,7 @@ namespace Marmot::Elements {
                  static_cast< int >( qp.managedStateVars->materialStateVars.size() ) };
       }
 
-      throw std::runtime_error( "InterfaceFiniteElement: unknown state variable '" + stateName + "'" );
+      return qp.material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
 
     /**
@@ -660,18 +660,14 @@ namespace Marmot::Elements {
       H_ijk.setZero();
       Y_ijkl.setZero();
 
-      qp.material->computeStress( force.data(),
-                                  surface_stress.data(),
-                                  Q_ij.data(),
-                                  Z_ijkl.data(),
-                                  H_ijk.data(),
-                                  Y_ijkl.data(),
-                                  dU_GPs.data(),
-                                  dSurface_strain_GPs.data(),
-                                  qp.normal.data(),
-                                  time,
-                                  dT,
-                                  pNewDT );
+      Material::State         materialState{ force.data(),
+                                     surface_stress.data(),
+                                     qp.managedStateVars->materialStateVars.data() };
+      Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
+      Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
+      Material::TimeIncrement materialTimeIncrement{ time, dT, pNewDT };
+
+      qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
       if ( pNewDT < 1.0 )
         return;

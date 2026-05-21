@@ -1,5 +1,6 @@
 #include "Marmot/LinearElasticInterface.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -18,53 +19,50 @@ namespace Marmot::Materials {
   using namespace Eigen;
   using namespace Fastor;
 
-  using Tensor1D = Fastor::Tensor< double, 3 >;
-  using Tensor2D = Fastor::Tensor< double, 3, 3 >;
-  using Tensor3D = Fastor::Tensor< double, 3, 3, 3 >;
-  using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
+  using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
+  using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
+  using Tensor3D = Marmot::FastorStandardTensors::Tensor333d;
+  using Tensor4D = Marmot::FastorStandardTensors::Tensor3333d;
 
   LinearElasticInterface::LinearElasticInterface( const double* materialProperties,
                                                   int           nMaterialProperties,
                                                   int           materialNumber )
     : MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( materialProperties,
                                                                               nMaterialProperties,
-                                                                              materialNumber )
+                                                                              materialNumber ),
+      E_0( materialProperties[0] ),
+      nu_0( materialProperties[1] ),
+      h( materialProperties[2] )
   {
-    assert( nMaterialProperties == 3 || nMaterialProperties == 5 || nMaterialProperties == 9 );
+    assert( nMaterialProperties == 3 );
   }
 
-  void LinearElasticInterface::computeStress( double*       force,
-                                              double*       surface_stress,
-                                              double*       H_inv_ij,
-                                              double*       Z_ijkl,
-                                              double*       H_inv_nF_ijk,
-                                              double*       Yn_H_inv_Fn_ijkl,
-                                              const double* dU,
-                                              const double* dSurface_strain,
-                                              const double* normal,
-                                              const double* timeOld,
-                                              const double  dT,
-                                              double&       pNewDT )
+  void LinearElasticInterface::computeStress( State&               state,
+                                              Tangents&            tangents,
+                                              const Deformation&   deformation,
+                                              const TimeIncrement& timeIncrement )
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    // elasticity parameters
-    const double& E_0  = this->materialProperties[0];
-    const double& nu_0 = this->materialProperties[1];
-    const double& h    = this->materialProperties[2];
+    const double* timeOld = timeIncrement.timeOld;
+    const double  dT      = timeIncrement.dT;
+    double&       pNewDT  = timeIncrement.pNewDT;
+
+    (void)timeOld;
+    (void)dT;
+    (void)pNewDT;
 
     // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
-    auto force_ftensor            = Fastor::TensorMap< double, 3 >( force );
-    auto surface_stress_ftensor   = Fastor::TensorMap< double, 3, 3 >( surface_stress );
-    auto H_inv_ij_ftensor         = Fastor::TensorMap< double, 3, 3 >( H_inv_ij );
-    auto Z_ijkl_ftensor           = Fastor::TensorMap< double, 3, 3, 3, 3 >( Z_ijkl );
-    auto H_inv_nF_ijk_ftensor     = Fastor::TensorMap< double, 3, 3, 3 >( H_inv_nF_ijk );
-    auto Yn_H_inv_Fn_ijkl_ftensor = Fastor::TensorMap< double, 3, 3, 3, 3 >( Yn_H_inv_Fn_ijkl );
-
-    auto dU_ftensor_const              = Fastor::TensorMap< const double, 6, 1 >( dU );
-    auto dSurface_strain_ftensor_const = Fastor::TensorMap< const double, 18, 1 >( dSurface_strain );
-    auto normal_ftensor_const          = Fastor::TensorMap< const double, 3 >( normal );
+    auto force_ftensor                 = Fastor::TensorMap< double, 3 >( state.force );
+    auto surface_stress_ftensor        = Fastor::TensorMap< double, 3, 3 >( state.surfaceStress );
+    auto H_inv_ij_ftensor              = Fastor::TensorMap< double, 3, 3 >( tangents.Q_ij );
+    auto Z_ijkl_ftensor                = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Z_ijkl );
+    auto H_inv_nF_ijk_ftensor          = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
+    auto Yn_H_inv_Fn_ijkl_ftensor      = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
+    auto dU_ftensor_const              = Fastor::TensorMap< const double, 6, 1 >( deformation.dU );
+    auto dSurface_strain_ftensor_const = Fastor::TensorMap< const double, 18, 1 >( deformation.dSurfaceStrain );
+    auto normal_ftensor_const          = Fastor::TensorMap< const double, 3 >( deformation.normal );
 
     Fastor::Tensor< double, 6, 1 >  dU_ftensor( dU_ftensor_const.data() );
     Fastor::Tensor< double, 18, 1 > dSurface_strain_ftensor( dSurface_strain_ftensor_const.data() );

@@ -28,6 +28,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <iostream>
@@ -39,33 +40,32 @@ namespace Marmot::Materials {
    * \brief Implementation of a linear elastic interface material
    * for 3D stress states.
    *
-   * For further information see \ref linearelasticinterface.
    */
   class LinearElasticInterface : public MarmotInterfaceMaterialHypoElastic {
   public:
     using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-    using Tensor1D = Fastor::Tensor< double, 3 >;
-    using Tensor2D = Fastor::Tensor< double, 3, 3 >;
+    using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
+    using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
 
     LinearElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void initializeStateLayout() override;
 
-    void computeStress( double*       force,
-                        double*       surface_stress,
-                        double*       H_inv_ij,
-                        double*       Z_ijkl,
-                        double*       H_inv_nF_ijk,
-                        double*       Yn_H_inv_Fn_ijkl,
-                        const double* dU,
-                        const double* dSurface_strain,
-                        const double* normal,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
+    void computeStress( State&               state,
+                        Tangents&            tangents,
+                        const Deformation&   deformation,
+                        const TimeIncrement& timeIncrement ) override;
 
     int getNumberOfRequiredStateVars() const override { return 0; }
+
+  private:
+    /// \brief Young's modulus
+    const double& E_0;
+
+    /// \brief Poisson's ratio
+    const double& nu_0;
+
+    /// \brief height of the middle layer
+    const double& h;
   };
 } // namespace Marmot::Materials

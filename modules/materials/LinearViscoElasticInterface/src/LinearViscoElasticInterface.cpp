@@ -10,6 +10,7 @@
 #include "Marmot/MarmotWiechertInterface.h"
 
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Constants.h>
@@ -24,10 +25,10 @@
 using namespace Marmot;
 using namespace Eigen;
 
-using Tensor1D = Fastor::Tensor< double, 3 >;
-using Tensor2D = Fastor::Tensor< double, 3, 3 >;
-using Tensor3D = Fastor::Tensor< double, 3, 3, 3 >;
-using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
+using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
+using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
+using Tensor3D = Marmot::FastorStandardTensors::Tensor333d;
+using Tensor4D = Marmot::FastorStandardTensors::Tensor3333d;
 
 namespace Marmot::Materials {
 
@@ -72,37 +73,39 @@ namespace Marmot::Materials {
     zerothWiechertStiffness = 0.0; // m_Ru*(1. - n_Ru )*pow( 2., n_Ru )*pow(minTau_Ru/sqrt(10.), n_Ru);
   }
 
-  void LinearViscoElasticInterface::computeStress( double*       force,
-                                                   double*       surfaceStress,
-                                                   double*       H_inv_ij,
-                                                   double*       Z_ijkl,
-                                                   double*       H_inv_nF_ijk,
-                                                   double*       Yn_H_inv_Fn_ijkl,
-                                                   const double* dU,
-                                                   const double* dSurfaceStrain,
-                                                   const double* normal,
-                                                   const double* timeOld,
-                                                   const double  dT,
-                                                   double&       pNewDT )
+  void LinearViscoElasticInterface::computeStress( State&               state,
+                                                   Tangents&            tangents,
+                                                   const Deformation&   deformation,
+                                                   const TimeIncrement& timeIncrement )
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    if ( stateVars == nullptr ) {
-      throw std::runtime_error( "LinearViscoElasticInterface: state variables not assigned." );
+    double*       stateVars      = state.stateVars;
+    const double* dU             = deformation.dU;
+    const double* dSurfaceStrain = deformation.dSurfaceStrain;
+    const double* normal         = deformation.normal;
+    const double* timeOld        = timeIncrement.timeOld;
+    const double  dT             = timeIncrement.dT;
+    double&       pNewDT         = timeIncrement.pNewDT;
+
+    (void)pNewDT;
+
+    if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
+      throw std::runtime_error( "LinearViscoElasticInterface: state variables not provided." );
     }
 
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    Fastor::Tensor< double, 3 >          forceFtensor( force );
-    Fastor::Tensor< double, 3, 3 >       surfaceStressFtensor( surfaceStress );
-    Fastor::Tensor< double, 3, 3 >       H_inv_ij_Ftensor( H_inv_ij );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Z_ijkl_Ftensor( Z_ijkl );
-    Fastor::Tensor< double, 3, 3, 3 >    H_inv_nF_ijk_Ftensor( H_inv_nF_ijk );
-    Fastor::Tensor< double, 3, 3, 3, 3 > Yn_H_inv_Fn_ijkl_Ftensor( Yn_H_inv_Fn_ijkl );
-    auto                                 dUFtensorConst = Fastor::TensorMap< const double, 6, 1 >( dU );
-    auto dSurfaceStrainFtensorConst                     = Fastor::TensorMap< const double, 18, 1 >( dSurfaceStrain );
-    auto normalFtensorConst                             = Fastor::TensorMap< const double, 3 >( normal );
+    auto forceFtensor               = Fastor::TensorMap< double, 3 >( state.force );
+    auto surfaceStressFtensor       = Fastor::TensorMap< double, 3, 3 >( state.surfaceStress );
+    auto H_inv_ij_Ftensor           = Fastor::TensorMap< double, 3, 3 >( tangents.Q_ij );
+    auto Z_ijkl_Ftensor             = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Z_ijkl );
+    auto H_inv_nF_ijk_Ftensor       = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
+    auto Yn_H_inv_Fn_ijkl_Ftensor   = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
+    auto dUFtensorConst             = Fastor::TensorMap< const double, 6, 1 >( deformation.dU );
+    auto dSurfaceStrainFtensorConst = Fastor::TensorMap< const double, 18, 1 >( deformation.dSurfaceStrain );
+    auto normalFtensorConst         = Fastor::TensorMap< const double, 3 >( deformation.normal );
 
     Fastor::Tensor< double, 6, 1 >  dUFtensor( dUFtensorConst.data() );
     Fastor::Tensor< double, 18, 1 > dSurfaceStrainFtensor( dSurfaceStrainFtensorConst.data() );
@@ -128,10 +131,6 @@ namespace Marmot::Materials {
       H_inv_ij_Ftensor         = 1. / h * E_0 * unitH_inv_ij;
       H_inv_nF_ijk_Ftensor     = E_0 * unitH_inv_nF_ijk;
 
-      std::copy( H_inv_ij_Ftensor.data(), H_inv_ij_Ftensor.data() + 9, H_inv_ij );
-      std::copy( Z_ijkl_Ftensor.data(), Z_ijkl_Ftensor.data() + 81, Z_ijkl );
-      std::copy( H_inv_nF_ijk_Ftensor.data(), H_inv_nF_ijk_Ftensor.data() + 27, H_inv_nF_ijk );
-      std::copy( Yn_H_inv_Fn_ijkl_Ftensor.data(), Yn_H_inv_Fn_ijkl_Ftensor.data() + 81, Yn_H_inv_Fn_ijkl );
       return;
     }
 
@@ -227,13 +226,6 @@ namespace Marmot::Materials {
     auto creep_surface_stress_Y_IncrementFastor  = Fastor::reshape< 3, 3 >( creep_surface_stress_Y_Increment_tensor );
     auto creep_surface_stress_us_IncrementFastor = Fastor::reshape< 3, 3 >( creep_surface_stress_us_Increment_tensor );
 
-    // std::cout<<"creep_force_uu_IncrementFastor:\n"<<creep_force_uu_IncrementFastor<<'\n';
-    // std::cout<<"creep_force_us_IncrementFastor:\n"<<creep_force_us_IncrementFastor<<'\n';
-    // std::cout<<"creep_surface_stress_Z_IncrementFastor:\n"<<creep_surface_stress_Z_IncrementFastor<<'\n';
-    // std::cout<<"creep_surface_stress_Y_IncrementFastor:\n"<<creep_surface_stress_Y_IncrementFastor<<'\n';
-    // std::cout<<"creep_surface_stress_us_IncrementFastor:\n"<<creep_surface_stress_us_IncrementFastor<<'\n';
-
-    // std::cout<<"creep_Ru_increment_fastor:\n"<<creep_Ru_increment_fastor<<'\n';
     Tensor1D
       dForce_uu = Fastor::einsum< Fastor::Index< i, j >, Fastor::Index< j >, Fastor::OIndex< i > >( H_inv_ij_Ftensor,
                                                                                                     jumpUFtensor ) -
@@ -269,14 +261,6 @@ namespace Marmot::Materials {
     surfaceStressFtensor -= dSurfaceStress_Z_ij;
     surfaceStressFtensor += dSurfaceStress_Y_ij;
     surfaceStressFtensor -= dSurfaceStress_us_ij;
-
-    std::copy( forceFtensor.data(), forceFtensor.data() + 3, force );
-    std::copy( surfaceStressFtensor.data(), surfaceStressFtensor.data() + 3 * 3, surfaceStress );
-
-    std::copy( H_inv_ij_Ftensor.data(), H_inv_ij_Ftensor.data() + 9, H_inv_ij );
-    std::copy( Z_ijkl_Ftensor.data(), Z_ijkl_Ftensor.data() + 81, Z_ijkl );
-    std::copy( H_inv_nF_ijk_Ftensor.data(), H_inv_nF_ijk_Ftensor.data() + 27, H_inv_nF_ijk );
-    std::copy( Yn_H_inv_Fn_ijkl_Ftensor.data(), Yn_H_inv_Fn_ijkl_Ftensor.data() + 81, Yn_H_inv_Fn_ijkl );
 
     // Use already available functionality convert Fastor tensors to Eigen matricfes/vectors
     // Tranform to Eigen matrices to work with the internal machinery of KelvinChainInterface ...
@@ -319,32 +303,8 @@ namespace Marmot::Materials {
                                                                jumpUVoigtFull,
                                                                unitH_inv_nF_ijk_full_3_9 );
 
-    // std::cout<<"Updated state variables successfully.\n";
-    // std::cout<<"creepStateVars_force_uu:\n"<<creepStateVars_force_uu<<'\n';
-    // std::cout<<"creepStateVars_force_us:\n"<<creepStateVars_force_us<<'\n';
-    // std::cout<<"creepStateVars_surface_stress_Z:\n"<<creepStateVars_surface_stress_Z<<'\n';
-    // std::cout<<"creepStateVars_surface_stress_Y:\n"<<creepStateVars_surface_stress_Y<<'\n';
-    // std::cout<<"creepStateVars_surface_stress_us:\n"<<creepStateVars_surface_stress_us<<'\n';
     return;
   };
-
-  void LinearViscoElasticInterface::assignStateVars( double* stateVars_, int nStateVars )
-  {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    this->stateVars = stateVars_;
-
-    MarmotInterfaceMaterialHypoElastic::assignStateVars( stateVars_, nStateVars );
-  }
-
-  StateView LinearViscoElasticInterface::getStateView( const std::string& stateName )
-  {
-    if ( stateVars == nullptr )
-      throw std::runtime_error( "LinearViscoElasticInterface: state variables not assigned." );
-
-    return MarmotInterfaceMaterialHypoElastic::getStateView( stateName, stateVars );
-  }
 
   int LinearViscoElasticInterface::getNumberOfRequiredStateVars() const
   {

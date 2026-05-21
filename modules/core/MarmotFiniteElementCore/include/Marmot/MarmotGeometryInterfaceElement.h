@@ -11,6 +11,8 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
+ * Alexandros Stathas alexandros.stathas@boku.ac.at
+ *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or

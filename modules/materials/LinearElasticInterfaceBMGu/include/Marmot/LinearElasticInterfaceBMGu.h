@@ -81,21 +81,22 @@ namespace Marmot::Materials {
 
     void initializeStateLayout() override;
 
-    void computeStress( double*       force,
-                        double*       surface_stress,
-                        double*       H_inv_ij,
-                        double*       Z_ijkl,
-                        double*       H_inv_nF_ijk,
-                        double*       Yn_H_inv_Fn_ijkl,
-                        const double* dU,
-                        const double* dSurface_strain,
-                        const double* normal,
-                        const double* timeOld,
-                        const double  dT,
-                        double&       pNewDT );
-
-    StateView getStateView( const std::string& result ) { return { nullptr, 0 }; };
+    void computeStress( State&               state,
+                        Tangents&            tangents,
+                        const Deformation&   deformation,
+                        const TimeIncrement& timeIncrement ) override;
 
     int getNumberOfRequiredStateVars() const override { return 0; }
+
+  private:
+    const double& E_M;
+    const double& nu_M;
+    const double& E_I;
+    const double& nu_I;
+    const double& E_0;
+    const double& nu_0;
+    const double& h;
+    const double  Hbar = ( 2. / E_0 ) - ( 1. / E_M ) - ( 1. / E_I );
+    const double  Zbar = ( E_M ) + ( E_I ) - ( 2. * E_0 );
   };
 } // namespace Marmot::Materials

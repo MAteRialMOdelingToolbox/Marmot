@@ -54,28 +54,38 @@ namespace Marmot::Materials {
       // (skip h at index 2)
       vonMisesProps{ materialProperties[0], materialProperties[1],
                      materialProperties[3], materialProperties[4],
-                     materialProperties[5], materialProperties[6] },
-      // Instantiate VonMisesModel once using the re-mapped properties stored in vonMisesProps
-      vonMisesModel( vonMisesProps.data(), 6, materialNumber )
+                     materialProperties[5], materialProperties[6] }
   // clang-format on
   {
+    vonMisesModel = std::make_unique< VonMisesModel >( vonMisesProps.data(), 6, materialNumber );
     initializeStateLayout();
   }
-  void VonMisesInterface::computeStress( double*       scaled_force,
-                                         double*       scaled_averageStress,
-                                         double*       Q_ij,
-                                         double*       Z_ijkl,
-                                         double*       H_ijk,
-                                         double*       Y_ijkl,
-                                         const double* dU,
-                                         const double* dSurfaceDispGradient,
-                                         const double* normal,
-                                         const double* timeOld,
-                                         const double  dT,
-                                         double&       pNewDT )
+
+  VonMisesInterface::~VonMisesInterface() = default;
+
+  void VonMisesInterface::computeStress( State&               state,
+                                         Tangents&            tangents,
+                                         const Deformation&   deformation,
+                                         const TimeIncrement& timeIncrement )
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
     enum { i, j, k, l };
+
+    double*       scaled_force         = state.force;
+    double*       scaled_averageStress = state.surfaceStress;
+    double*       Q_ij                 = tangents.Q_ij;
+    double*       Z_ijkl               = tangents.Z_ijkl;
+    double*       H_ijk                = tangents.H_ijk;
+    double*       Y_ijkl               = tangents.Y_ijkl;
+    double*       stateVars            = state.stateVars;
+    const double* dU                   = deformation.dU;
+    const double* dSurfaceDispGradient = deformation.dSurfaceStrain;
+    const double* normal               = deformation.normal;
+    const double* timeOld              = timeIncrement.timeOld;
+    const double  dT                   = timeIncrement.dT;
+    double&       pNewDT               = timeIncrement.pNewDT;
+
+    (void)pNewDT;
 
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
@@ -123,8 +133,8 @@ namespace Marmot::Materials {
                                           Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt(
                                             scaled_averageStressSym );
 
-    if ( stateVars == nullptr ) {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not assigned." );
+    if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not provided." );
     }
 
     Eigen::Matrix< double, 6, 6, Eigen::RowMajor >
@@ -134,7 +144,7 @@ namespace Marmot::Materials {
     MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
 
-    vonMisesModel.computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
+    vonMisesModel->computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
     averageStressVoigt = vonMisesState.stress;
 
     auto [Z_ijkl_ep, Q_ij_ep, H_ijk_ep, Y_ijkl_ep] = calculateInterfaceMaterialParameters( normalFtensor, C_ep );
@@ -165,23 +175,6 @@ namespace Marmot::Materials {
 
     return;
   };
-  void VonMisesInterface::assignStateVars( double* stateVars, int nStateVars )
-  {
-    if ( nStateVars < getNumberOfRequiredStateVars() )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": Not sufficient stateVars!" );
-
-    MarmotInterfaceMaterialHypoElastic::assignStateVars( stateVars, nStateVars );
-    this->stateVars = stateVars;
-  }
-
-  StateView VonMisesInterface::getStateView( const std::string& stateName )
-  {
-    if ( stateVars == nullptr ) {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not assigned." );
-    }
-    return MarmotInterfaceMaterialHypoElastic::getStateView( stateName, stateVars );
-  }
-
   double VonMisesInterface::getDensity()
   {
     if ( this->nMaterialProperties < 8 )
