@@ -12,6 +12,7 @@
  * festigkeitslehre@uibk.ac.at
  *
  * Matthias Neuner matthias.neuner@uibk.ac.at
+ * Thomas Mader thomas.mader@boku.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -77,7 +78,7 @@ namespace Marmot::Meshfree {
       BodyForce,
     };
 
-    enum DistributedLoadTypes { Pressure };
+    enum DistributedLoadTypes { Pressure, CWFCorrection };
 
     const std::unordered_map< std::string, int >& getSupportedBodyLoadTypes() const override
     {
@@ -87,7 +88,8 @@ namespace Marmot::Meshfree {
 
     const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
     {
-      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = { { "PRESSURE", Pressure } };
+      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = { { "PRESSURE", Pressure },
+                                                                                             { "CWFCORRECTION", CWFCorrection }};
       return _supportedDistributedLoadTypes;
     };
 
