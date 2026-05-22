@@ -42,28 +42,6 @@ namespace Marmot::Materials {
 
   class VonMisesInterface : public MarmotInterfaceMaterialHypoElastic {
 
-    /// \brief Young's modulus
-    const double& E_0;
-
-    /// \brief Poisson's ratio
-    const double& nu_0;
-
-    /// \brief height of the middle layer
-    const double& h;
-
-    // plasticity parameters
-    const double& yieldStress;
-    const double& HLin;
-    const double& deltaYieldStress;
-    const double& delta;
-
-    // Re-mapped properties for VonMisesModel: [E, nu, yieldStress, HLin, deltaYieldStress, delta]
-    // Stored as a member so that VonMisesModel can hold a pointer to them for its lifetime
-    std::array< double, 6 > vonMisesProps;
-
-    // VonMisesModel is an implementation detail; keep it out of this public header.
-    std::unique_ptr< VonMisesModel > vonMisesModel;
-
   public:
     VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
     ~VonMisesInterface() override;
@@ -73,9 +51,28 @@ namespace Marmot::Materials {
                         const Deformation&   deformation,
                         const TimeIncrement& timeIncrement ) override;
 
-    void initializeStateLayout() override;
-
+    void initializeStateLayout() override
+    {
+      stateLayout.add( "kappa", 1 );
+      stateLayout.finalize();
+    }
     double getDensity() override;
-  };
 
+  private:
+    // elasticity parameters
+    const double& E_0;
+    const double& nu_0;
+    const double& h;
+    // plasticity parameters
+    const double& yieldStress;
+    const double& HLin;
+    const double& deltaYieldStress;
+    const double& delta;
+    // Re-mapped properties for VonMisesModel: [E, nu, yieldStress, HLin, deltaYieldStress, delta]
+    // Stored as a member so that VonMisesModel can hold a pointer to them for its lifetime
+    std::array< double, 6 > vonMisesProps;
+
+    // VonMisesModel is an implementation detail; keep it out of this public header.
+    std::unique_ptr< VonMisesModel > vonMisesModel;
+  };
 } // namespace Marmot::Materials
