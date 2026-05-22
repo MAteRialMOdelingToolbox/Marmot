@@ -25,11 +25,6 @@
 using namespace Marmot;
 using namespace Eigen;
 
-using Tensor1D = Fastor::Tensor< double, 3 >;
-using Tensor2D = Fastor::Tensor< double, 3, 3 >;
-using Tensor3D = Fastor::Tensor< double, 3, 3, 3 >;
-using Tensor4D = Fastor::Tensor< double, 3, 3, 3, 3 >;
-
 namespace Marmot::Materials {
 
   VonMisesInterface::VonMisesInterface( const double* materialProperties, int nMaterialProperties, int materialNumber )

@@ -61,6 +61,7 @@ namespace Marmot::Materials {
 
     // TODO(v26.05): implement optional Post-Widder-based branch modulus generation helpers
     // (e.g. computeElasticModuli_* / generateRelaxationTimes) when calibration workflow needs them.
+    // Right now only a Maxwell Element is implemented.
 
     /**
      * @brief Initialize branch-wise elastic moduli with a constant value.
