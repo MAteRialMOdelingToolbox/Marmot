@@ -144,13 +144,14 @@ namespace Marmot::Materials {
     // Write updated Voigt stress directly into state.surfaceStress.
     // Use RowMajor because Fastor::TensorMap reads the same memory layout.
     const Eigen::Matrix< double, 3, 3, Eigen::RowMajor >
-      scaled_averageStressFull = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
+      scaled_averageStressFull = h * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
 
     auto scaled_averageStressFullFtensor = Fastor::TensorMap< const double, 3, 3 >( scaled_averageStressFull.data() );
 
     scaled_averageStressFtensor = scaled_averageStressFullFtensor;
 
-    scaled_forceFtensor = Fastor::einsum< Fastor::Index< i, j >,
+    scaled_forceFtensor = ( 1.0 / h ) *
+                          Fastor::einsum< Fastor::Index< i, j >,
                                           Fastor::Index< j >,
                                           Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
 
