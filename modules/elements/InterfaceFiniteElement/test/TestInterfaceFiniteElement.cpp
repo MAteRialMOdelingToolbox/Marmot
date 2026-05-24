@@ -473,16 +473,41 @@ void TestAngledInterfaceKinematics()
   }
 }
 
+// int main()
+//{
+//   auto tests = std::vector<
+//     std::function< void() > >{ TestSingleInputFileElementGeometryMatrices,
+//                                TestSingleInputFileElementMaterialResponseIsFinite,
+//                                TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
+//                                TestSingleInputFileElementRigidTranslationGivesZeroResidual,
+//                                TestAngledInterfaceKinematics };
+//
+//   executeTestsAndCollectExceptions( tests );
+//
+//   return 0;
+// }
+
 int main()
 {
-  auto tests = std::vector<
-    std::function< void() > >{ TestSingleInputFileElementGeometryMatrices,
-                               TestSingleInputFileElementMaterialResponseIsFinite,
-                               TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
-                               TestSingleInputFileElementRigidTranslationGivesZeroResidual,
-                               TestAngledInterfaceKinematics };
+  auto run = []( const std::string& name, const std::function< void() >& test ) {
+    std::cerr << "\n[START] " << name << std::endl;
+    test();
+    std::cerr << "[PASS]  " << name << std::endl;
+  };
 
-  executeTestsAndCollectExceptions( tests );
+  auto tests = std::vector< std::pair< std::string, std::function< void() > > >{
+    { "TestSingleInputFileElementGeometryMatrices", TestSingleInputFileElementGeometryMatrices },
+    { "TestSingleInputFileElementMaterialResponseIsFinite", TestSingleInputFileElementMaterialResponseIsFinite },
+    { "TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual",
+      TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual },
+    { "TestSingleInputFileElementRigidTranslationGivesZeroResidual",
+      TestSingleInputFileElementRigidTranslationGivesZeroResidual },
+    { "TestAngledInterfaceKinematics", TestAngledInterfaceKinematics },
+  };
+
+  for ( const auto& [name, test] : tests ) {
+    run( name, test );
+  }
 
   return 0;
 }

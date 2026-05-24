@@ -80,13 +80,10 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    double*       stateVars      = state.stateVars;
-    const double* dU             = deformation.dU;
-    const double* dSurfaceStrain = deformation.dSurfaceStrain;
-    const double* normal         = deformation.normal;
-    const double* timeOld        = timeIncrement.timeOld;
-    const double  dT             = timeIncrement.dT;
-    double&       pNewDT         = timeIncrement.pNewDT;
+    double*       stateVars = state.stateVars;
+    const double* timeOld   = timeIncrement.timeOld;
+    const double  dT        = timeIncrement.dT;
+    double&       pNewDT    = timeIncrement.pNewDT;
 
     (void)pNewDT;
 
