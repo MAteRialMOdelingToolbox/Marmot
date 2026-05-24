@@ -98,29 +98,11 @@ namespace {
     expected.Pe = Eigen::VectorXd::Zero( totalNDof );
 
     for ( int q = 0; q < element.getNumberOfQuadraturePoints(); ++q ) {
-      std::cerr << "[computeExpectedResponseFromGaussPoints] q = " << q << " start" << std::endl;
-
-      auto& qp = element.qps[q];
-
-      std::cerr << "[q=" << q << "] managedStateVars = " << qp.managedStateVars.get() << std::endl;
-      std::cerr << "[q=" << q << "] material         = " << qp.material.get() << std::endl;
-      std::cerr << "[q=" << q << "] qps.size         = " << element.qps.size() << std::endl;
-      std::cerr << "[q=" << q << "] nQP reported     = " << element.getNumberOfQuadraturePoints() << std::endl;
-
-      throwExceptionOnFailure( qp.managedStateVars != nullptr,
-                               "managedStateVars is null at qp " + std::to_string( q ) );
-      throwExceptionOnFailure( qp.material != nullptr, "material is null at qp " + std::to_string( q ) );
-
+      auto&       qp    = element.qps[q];
       const auto& Nside = qp.NmatSide;
       const auto& Bside = qp.BmatSide;
       const auto& Njump = qp.NmatJump;
       const auto& Bavg  = qp.BmatAverage;
-
-      std::cerr << "[q=" << q << "] Nside = " << Nside.rows() << "x" << Nside.cols() << std::endl;
-      std::cerr << "[q=" << q << "] Bside = " << Bside.rows() << "x" << Bside.cols() << std::endl;
-      std::cerr << "[q=" << q << "] Njump = " << Njump.rows() << "x" << Njump.cols() << std::endl;
-      std::cerr << "[q=" << q << "] Bavg  = " << Bavg.rows() << "x" << Bavg.cols() << std::endl;
-      std::cerr << "[q=" << q << "] normal size = " << qp.normal.size() << ", norm = " << qp.normal.norm() << std::endl;
 
       const int nTensor = static_cast< int >( Bside.rows() );
 
@@ -148,21 +130,9 @@ namespace {
                                                                    dSurfaceStrainGp.data(),
                                                                    qp.normal.data() };
       MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time, dT, pNewDT };
-
-      std::cerr << "[q=" << q << "] force size before         = " << force.size() << std::endl;
-      std::cerr << "[q=" << q << "] surfaceStress size before = " << surfaceStress.size() << std::endl;
-      std::cerr << "[q=" << q << "] materialStateVars size    = " << qp.managedStateVars->materialStateVars.size()
-                << std::endl;
-      std::cerr << "[q=" << q << "] dUGp size                 = " << dUGp.size() << std::endl;
-      std::cerr << "[q=" << q << "] dSurfaceStrainGp size     = " << dSurfaceStrainGp.size() << std::endl;
-      std::cerr << "[q=" << q << "] before material computeStress" << std::endl;
-
       qp.material->computeStress( state, tangents, deformation, timeIncrement );
 
-      std::cerr << "[q=" << q << "] after material computeStress" << std::endl;
-
       const double J0xW = integrationWeight( qp );
-      std::cerr << "[q=" << q << "] J0xW = " << J0xW << std::endl;
 
       throwExceptionOnFailure( std::isfinite( J0xW ) && J0xW > 0.0,
                                "Invalid computed integration weight at qp " + std::to_string( q ) );
@@ -503,41 +473,16 @@ void TestAngledInterfaceKinematics()
   }
 }
 
-// int main()
-//{
-//   auto tests = std::vector<
-//     std::function< void() > >{ TestSingleInputFileElementGeometryMatrices,
-//                                TestSingleInputFileElementMaterialResponseIsFinite,
-//                                TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
-//                                TestSingleInputFileElementRigidTranslationGivesZeroResidual,
-//                                TestAngledInterfaceKinematics };
-//
-//   executeTestsAndCollectExceptions( tests );
-//
-//   return 0;
-// }
-
 int main()
 {
-  auto run = []( const std::string& name, const std::function< void() >& test ) {
-    std::cerr << "\n[START] " << name << std::endl;
-    test();
-    std::cerr << "[PASS]  " << name << std::endl;
-  };
+  auto tests = std::vector<
+    std::function< void() > >{ TestSingleInputFileElementGeometryMatrices,
+                               TestSingleInputFileElementMaterialResponseIsFinite,
+                               TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
+                               TestSingleInputFileElementRigidTranslationGivesZeroResidual,
+                               TestAngledInterfaceKinematics };
 
-  auto tests = std::vector< std::pair< std::string, std::function< void() > > >{
-    { "TestSingleInputFileElementGeometryMatrices", TestSingleInputFileElementGeometryMatrices },
-    { "TestSingleInputFileElementMaterialResponseIsFinite", TestSingleInputFileElementMaterialResponseIsFinite },
-    { "TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual",
-      TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual },
-    { "TestSingleInputFileElementRigidTranslationGivesZeroResidual",
-      TestSingleInputFileElementRigidTranslationGivesZeroResidual },
-    { "TestAngledInterfaceKinematics", TestAngledInterfaceKinematics },
-  };
-
-  for ( const auto& [name, test] : tests ) {
-    run( name, test );
-  }
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }
