@@ -9,6 +9,16 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
+  double LinearViscoelasticPowerLaw::getDensity( const double* stateVars ) const
+  {
+    if ( nMaterialProperties < 8 ) {
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
+    }
+    else {
+      return materialProperties[7];
+    }
+  }
   LinearViscoelasticPowerLaw::LinearViscoelasticPowerLaw( const double* materialProperties,
                                                           int           nMaterialProperties,
                                                           int           materialLabel )
@@ -25,7 +35,8 @@ namespace Marmot::Materials {
       timeToDays                        ( materialProperties[6] )
   // clang-format on
   {
-    initializeStateLayout();
+    stateLayout.add( "kelvinStateVars", 6 * nKelvin );
+    stateLayout.finalize();
 
     // assume sqrt( 10 ) spacing between retardation times
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
@@ -42,14 +53,14 @@ namespace Marmot::Materials {
   }
 
   void LinearViscoelasticPowerLaw::computeStress( state3D&        state,
-                                                  double*         dStressDDStrain,
-                                                  const double*   dStrain,
+                                                  Matrix6d&       dStressDDStrain,
+                                                  const Vector6d& dStrain,
                                                   const timeInfo& timeInfo ) const
 
   {
-    mVector6d nomStress( state.stress.data() );
-    Vector6d  dE( dStrain );
-    mMatrix6d C( dStressDDStrain );
+    mVector6d             nomStress( state.stress.data() );
+    Map< const Vector6d > dE( dStrain.data() );
+    mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT = timeInfo.dT;
 

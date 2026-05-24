@@ -48,6 +48,18 @@ mathjax3_config = {
             "DelNu": "\\mathbb{D}_\\nu",
             "PhiRate": "\\dot{\\Phi}",
             "JRate": "\\dot{J}",
+            "kl": "\\kappa",  # local field variable
+            "knl": "\\bar{\\kl}",  # nonlocal field variable
+            "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}",  # shape function vector for the nonlocal field variable
+            "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}",  # element internal force vector associated with the displacement degrees of freedom
+            "fext": "f_\\mathrm{ext,e}",  # element external load vector
+            "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}",  # body-force vector
+            "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}",  # distributed load vector
+            "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}",  # element load vector associated with the nonlocal degrees of freedom
+            "qu": "q^{\\mathrm{u}}",  # displacement nodal field vector
+            "qk": "q^{\\mathrm{\\knl}}",  # nonlocal nodal field vector
+            "ru": "r^{\\mathrm{u}}",  # displacement nodal field vector
+            "rk": "r^{\\mathrm{\\knl}}",  # nonlocal nodal field vector
         },
     },
 }
@@ -86,6 +98,10 @@ breathe_projects_source = {
     "MarmotMechanicsCore": (
         "../modules/core/MarmotMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotMechanicsCore/include/Marmot/"),
+    ),
+    "MarmotGradientMechanicsCore": (
+        "../modules/core/MarmotGradientMechanicsCore/include/Marmot",
+        getAllHeadersInFolder("../modules/core/MarmotGradientMechanicsCore/include/Marmot/"),
     ),
 }
 

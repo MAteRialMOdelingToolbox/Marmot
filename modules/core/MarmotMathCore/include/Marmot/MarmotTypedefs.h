@@ -29,7 +29,10 @@
 #pragma once
 #include "Eigen/Dense"
 #include "autodiff/forward/dual/dual.hpp"
+#include "autodiff/forward/dual/eigen.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
+
+#define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
 namespace Marmot {
   typedef Eigen::Matrix< double, 6, 6 > Matrix6d;

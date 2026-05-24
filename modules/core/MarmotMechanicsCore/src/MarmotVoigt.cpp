@@ -94,6 +94,26 @@ namespace Marmot {
       return stiffness;
     }
 
+    FastorStandardTensors::Tensor3333d voigtToStiffnessFastor( const Marmot::Matrix6d& voigtStiffness )
+    {
+      FastorStandardTensors::Tensor3333d stiffness( 0. );
+      int                                row;
+      int                                col;
+      using namespace TensorUtility::IndexNotation;
+      for ( int i = 0; i < 3; i++ ) {
+        for ( int j = 0; j < 3; j++ ) {
+          row = toVoigt< 3 >( i, j );
+          for ( int k = 0; k < 3; k++ ) {
+            for ( int l = 0; l < 3; l++ ) {
+              col = toVoigt< 3 >( k, l );
+              stiffness( i, j, k, l ) += voigtStiffness( row, col );
+            };
+          };
+        };
+      };
+      return stiffness;
+    };
+
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
     {
       /* converts a 6d voigt Vector with Abaqus notation

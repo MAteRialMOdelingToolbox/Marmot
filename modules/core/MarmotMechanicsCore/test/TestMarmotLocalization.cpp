@@ -43,7 +43,7 @@ void testMarmotLocalization()
   timeInfo.time = 1.0;
   timeInfo.dT   = dT;
   // evaluate material
-  material.computeStress( state, dStress_dStrain.data(), dStrain.data(), timeInfo );
+  material.computeStress( state, dStress_dStrain, dStrain, timeInfo );
 
   // normal vector
   Marmot::Vector3d n;

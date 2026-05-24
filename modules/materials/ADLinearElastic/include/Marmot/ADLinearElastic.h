@@ -25,10 +25,8 @@
  */
 
 #pragma once
-#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
-#include <Eigen/src/Core/Map.h>
-#include <string>
+#include "Marmot/MarmotTypedefs.h"
 
 using namespace Marmot;
 
@@ -42,17 +40,16 @@ namespace Marmot::Materials {
   public:
     using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
 
-    /// @brief Young's modulus for isotropic materials
-    const double& E;
-
-    /// @brief Poisson's ratio for isotropic materials
-    const double& nu;
+    /// @brief Elasticity tensor for isotropic materials
+    const autodiff::MatrixXdual C;
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-  protected:
-    void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) const;
+    double getDensity( const double* stateVars ) const override;
 
-    void initializeStateLayout() { stateLayout.finalize(); }
+  protected:
+    void computeStressAD( state3DAD&                 state,
+                          const Marmot::Vector6dual& dStrain,
+                          const timeInfo&            timeInfo ) const override;
   };
 } // namespace Marmot::Materials

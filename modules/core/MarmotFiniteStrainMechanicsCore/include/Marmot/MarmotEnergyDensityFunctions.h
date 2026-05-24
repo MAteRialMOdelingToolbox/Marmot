@@ -26,7 +26,6 @@
  */
 
 #pragma once
-#include "Fastor/Fastor.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 
 namespace Marmot::ContinuumMechanics {
@@ -86,10 +85,10 @@ namespace Marmot::ContinuumMechanics {
     T PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
     {
 
-      const T J  = sqrt( determinant( C ) );
-      const T I1 = trace( C );
+      const T detC = determinant( C );
+      const T I1   = trace( C );
 
-      T res = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
+      T res = K / 8. * ( detC + 1. / detC - 2. ) + G / 2. * ( I1 * pow( detC, -1. / 3 ) - 3. );
 
       return res;
     }
@@ -121,6 +120,101 @@ namespace Marmot::ContinuumMechanics {
       T res = G / 2. * ( I1 - 3. ) + 3. * G * G / ( 3. * K - 2. * G ) * ( pow( J, 2. / 3 - K / G ) - 1 );
 
       return res;
+    }
+
+    /**
+     * @brief Mooney-Rivlin Hyperelastic Energy Density Function
+     * The energy density function \f$W_{MR}\f$ is given as
+     * \f[
+     *   W_{MR} = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_2 - 3) + \frac{1}{D_1} (J - 1)^2
+     * \f]
+     * where \f$ \bar{I}_1 = I_1 J^{-\frac{2}{3}} \f$ and \f$ \bar{I}_2 = I_2 J^{-\frac{4}{3}} \f$ are the first
+     * and second invariant of the isochoric right Cauchy-Green tensor, respectively, \f$ I_1 =
+     * \text{tr}(\boldsymbol{C}) \f$ and \f$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) \f$ are the first and
+     * second invariant of the right Cauchy-Green tensor \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J
+     * = \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$
+     * C_1, C_2, D_1 \f$ are material parameters.
+     *
+     * @tparam T Scalar type, e.g. double, float, etc.
+     * @param C Right Cauchy-Green tensor
+     * @param C1 Mooney-Rivlin material parameter C1
+     * @param C2 Mooney-Rivlin material parameter C2
+     * @param D1 Mooney-Rivlin material parameter D1
+     * @return Energy density
+     */
+    template < typename T >
+    T MooneyRivlinPotential( const Tensor33t< T >& C, const double C1, const double C2, const double D1 )
+    {
+
+      const T J   = sqrt( determinant( C ) );
+      const T I1  = trace( C );
+      const T I1_ = I1 * pow( J, -2. / 3. );
+      const T I2_ = 0.5 * ( I1 * I1 - trace( C % C ) ) * pow( J, -4. / 3. );
+      T       res = C1 * ( I1_ - 3. ) + C2 * ( I2_ - 3. ) + 1. / D1 * ( 0.5 * ( J * J - 1 ) - log( J ) );
+
+      return res;
+    }
+
+    /** @brief Yeoh hyperelastic energy density function.
+     *
+     *  The energy density function is given as
+     *  \f[
+     *    W = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_1 - 3)^2 + C_3 (\bar{I}_1 - 3)^3 + \frac{1}{D_1}\left(
+     *    \frac{J^2 - 1}{2} - \ln J \right)
+     *  \f]
+     *  where \f$\bar{I}_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol{C})\f$, and
+     *  \f$J = \sqrt{\det(\boldsymbol{C})}\f$.
+     *
+     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param C1 Yeoh material parameter.
+     * @param C2 Yeoh material parameter.
+     * @param C3 Yeoh material parameter.
+     * @param D1 Volumetric penalty parameter.
+     * @return Energy density.
+     */
+    template < typename T >
+    T YeohPotential( const Tensor33t< T >& C, const double C1, const double C2, const double C3, const double D1 )
+    {
+
+      const T J         = sqrt( determinant( C ) );
+      const T I1        = trace( C );
+      const T I1_minus3 = I1 * pow( J, -2. / 3. ) - 3.;
+      T       res       = C1 * I1_minus3 + C2 * I1_minus3 * I1_minus3 + C3 * I1_minus3 * I1_minus3 * I1_minus3 +
+              1. / D1 * ( 0.5 * ( J * J - 1 ) - log( J ) );
+      return res;
+    }
+
+    /** @brief Standard compressible Neo-Hooke energy density function in terms of \f$\boldsymbol{C}\f$.
+     *
+     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param K Bulk modulus.
+     * @param G Shear modulus.
+     * @return Energy density.
+     */
+    template < typename T >
+    T standardNeoHooke( const Tensor33t< T >& C, const double K, const double G )
+    {
+      const double lambda = K - 2.0 / 3.0 * G;
+
+      /*
+       * we use the potential in terms of C
+       * Psi = G/2 ( tr(C) - 3 - 2 ln(J) ) + lambda/2 ( 0.5 ( J^2 - 1 ) - ln(J) )
+       * where J = sqrt( det(C) ) and ln(J) = 0.5 ln( det(C) )
+       *
+       * we can the rewrite as
+       * Psi = G/2 ( tr(C) - 3 - ln(det(C)) ) + lambda/2 ( 0.5 ( det(C) - 1 ) - 0.5 ln(det(C)) )
+       *
+       */
+
+      const T trC    = trace( C );
+      const T detC   = determinant( C );
+      const T lnDetC = log( detC );
+      // energy density
+      const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
+
+      return psi;
     }
 
     namespace FirstOrderDerived {
@@ -243,8 +337,111 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dC, d2Psi_dCdC };
       }
 
+      /** @brief Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t.
+       * \f$\boldsymbol{C}\f$.
+       *
+       * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+       * @param C Right Cauchy-Green tensor.
+       * @param K Bulk modulus.
+       * @param G Shear modulus.
+       * @return Tuple of energy density, first derivative and second derivative w.r.t. \f$\boldsymbol{C}\f$.
+       */
+      template < typename T >
+      std::tuple< T, FastorStandardTensors::Tensor33t< T >, FastorStandardTensors::Tensor3333t< T > > standardNeoHooke(
+        const FastorStandardTensors::Tensor33t< T >& C,
+        const double&                                K,
+        const double&                                G )
+      {
+        const double lambda = K - 2.0 / 3.0 * G;
+
+        /*
+         * we use the potential in terms of C
+         * Psi = G/2 ( tr(C) - 3 - 2 ln(J) ) + lambda/2 ( 0.5 ( J^2 - 1 ) - ln(J) )
+         * where J = sqrt( det(C) ) and ln(J) = 0.5 ln( det(C) )
+         *
+         * we can the rewrite as
+         * Psi = G/2 ( tr(C) - 3 - ln(det(C)) ) + lambda/2 ( 0.5 ( det(C) - 1 ) - 0.5 ln(det(C)) )
+         *
+         */
+
+        const T trC    = trace( C );
+        const T detC   = determinant( C );
+        const T lnDetC = log( detC );
+        // energy density
+        const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
+
+        // first derivative quantities
+        const Tensor33t< T >& dTrC_dC    = makeOtherScalarType< T >( Spatial3D::I );
+        const Tensor33t< T >  invCt      = transpose( inverse( C ) );
+        const Tensor33t< T >  dDetC_dC   = multiplyFastorTensorWithScalar( invCt, detC );
+        const Tensor33t< T >& dLnDetC_dC = invCt;
+
+        // first derivative with respect to C
+        const Tensor33t< T > dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) + lambda / 4 * ( dDetC_dC - dLnDetC_dC );
+
+        // second derivative quantities
+        using namespace FastorIndices;
+        using lj                          = Index< l_, j_ >;
+        using li                          = Index< l_, i_ >;
+        const Tensor3333t< T > dInvCt_dC  = -0.5 * ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
+                                                    einsum< jk, li, to_ijkl >( invCt, invCt ) );
+        const Tensor3333t< T > d2DetC_dC2 = multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
+                                            einsum< ij, kl, to_ijkl >( invCt, dDetC_dC );
+        const Tensor3333t< T >& d2LnDetC_dC2 = dInvCt_dC;
+
+        // second derivative with respect to C
+        const Tensor3333t< T > d2Psi_dC2 = lambda / 4.0 * d2DetC_dC2 - ( G / 2.0 + lambda / 4.0 ) * d2LnDetC_dC2;
+        return { psi, dPsi_dC, d2Psi_dC2 };
+      }
+
+      /** @brief Isotropic Biot-Neo-Hooke energy density and derivatives w.r.t. right stretch \f$\boldsymbol{U}\f$.
+       *
+       * @details Internally evaluates the standard Neo-Hooke potential in terms of
+       * \f$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}\f$ and applies chain-rule transformations.
+       *
+       * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+       * @param U Right stretch tensor.
+       * @param K Bulk modulus.
+       * @param G Shear modulus.
+       * @return Tuple of energy density, first derivative and second derivative w.r.t. \f$\boldsymbol{U}\f$.
+       */
+      template < typename T >
+      std::tuple< T, FastorStandardTensors::Tensor33t< T >, FastorStandardTensors::Tensor3333t< T > > BiotNeoHooke(
+        const FastorStandardTensors::Tensor33t< T >& U,
+        const double&                                K,
+        const double&                                G )
+      {
+        using namespace FastorIndices;
+        Tensor3333t< T > I4       = makeOtherScalarType< T >( Spatial3D::I4 );
+        Tensor33t< T >   C        = U % U;
+        Tensor3333t< T > dC_dU    = 2 * einsum< iL, ijkl >( U, I4 );
+        Tensor3333t< T > d2C_dUdU = 2 * I4;
+
+        auto [psi, dPsi_dC, d2Psi_dCdC] = standardNeoHooke< T >( C, K, G );
+
+        Tensor33t< T >   dPsi_dU    = einsum< kl, klmn >( dPsi_dC, dC_dU );
+        Tensor3333t< T > d2Psi_dUdU = einsum< ijkl, klmn >( einsum< ijkl, ijmn >( dC_dU, d2Psi_dCdC ), dC_dU ) +
+                                      einsum< jL, ijkl >( dPsi_dC, d2C_dUdU );
+
+        return { psi, dPsi_dU, d2Psi_dUdU };
+      }
+
     } // namespace SecondOrderDerived
 
+    namespace ThirdOrderDerived {
+      /** @brief Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t.
+       * \f$\boldsymbol{C}\f$.
+       *
+       * @param C Right Cauchy-Green tensor.
+       * @param K Bulk modulus.
+       * @param G Shear modulus.
+       * @return Tuple of energy density, first derivative, second derivative and third derivative.
+       */
+      std::tuple< double, FastorStandardTensors::Tensor33d, FastorStandardTensors::Tensor3333d, FastorStandardTensors::Tensor333333d > standardNeoHooke(
+        const FastorStandardTensors::Tensor33d& C,
+        const double&                           K,
+        const double&                           G );
+    } // namespace ThirdOrderDerived
   }   // namespace EnergyDensityFunctions
 
 } // namespace Marmot::ContinuumMechanics

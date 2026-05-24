@@ -29,6 +29,7 @@
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotJournal.h"
@@ -283,14 +284,40 @@ namespace Marmot::Elements {
                           double&       pNewdT );
 
     /**
+     * @brief Compute internal force only (no tangent stiffness).
+     * @details Uses the small-strain relation \f$\Delta\boldsymbol{\varepsilon}=\mathbf{B}\,\Delta\mathbf{u}\f$ and
+     * integrates
+     * \f[
+     * \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\, J_0 w.
+     * \f]
+     * If pNewdT<1, the routine returns early to signal time step reduction.
+     * @param QTotal Total displacement vector.
+     * @param dQ Incremental displacement.
+     * @param Pe Internal force vector (accumulated).
+     * @param time Time data forwarded to materials.
+     * @param dT Time increment.
+     * @param pNewdT Suggested scaling of dT by the material; if reduced (<1), the routine returns early.
+     */
+    void computeYourselfExplicit( const double* QTotal,
+                                  const double* dQ,
+                                  double*       Pe,
+                                  const double* time,
+                                  double        dT,
+                                  double&       pNewdT );
+    /**
      * @brief Compute consistent mass matrix using material density.
      * @details \f$\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$.
      */
     void computeConsistentInertia( double* M );
 
     /**
-     * @brief Compute lumped mass vector via row-sum of consistent mass.
-     * @details \f$\mathbf{m}_e = \mathrm{rowsum}(\mathbf{M}_e)\f$.
+     * @brief Compute the lumped (diagonal) mass matrix.
+     * @details Uses the manifold-based lumping scheme according to
+     * Yang et al. (2017) "A rigorous and unified mass lumping scheme for higher-order elements", CMAME.
+     * The lumped mass entries are computed using a weighted shape function
+     * \f$\hat{N} = \tfrac{1}{2}N + \tfrac{1}{2}N_\mathrm{lin}\f$,
+     * where \f$N\f$ is the high-order shape function and \f$N_\mathrm{lin}\f$ is the corresponding
+     * linear (corner-node) shape function on the same element.
      */
     void computeLumpedInertia( double* M );
 
@@ -489,9 +516,9 @@ namespace Marmot::Elements {
         timeInfo.time = time[1];
         timeInfo.dT   = dT;
         try {
-          qp.material->computeUniaxialStress( state, C.data(), dE.data(), timeInfo );
+          qp.material->computeUniaxialStress( state, C[0], dE[0], timeInfo );
         }
-        catch ( const std::runtime_error& e ) {
+        catch ( const Marmot::StressUpdateFailed& e ) {
           pNewDT = 0.5;
           return;
         }
@@ -516,9 +543,9 @@ namespace Marmot::Elements {
           timeInfo.time = time[1];
           timeInfo.dT   = dT;
           try {
-            qp.material->computePlaneStress( state, C.data(), dE.data(), timeInfo );
+            qp.material->computePlaneStress( state, C, dE, timeInfo );
           }
-          catch ( const std::runtime_error& e ) {
+          catch ( const Marmot::StressUpdateFailed& e ) {
             pNewDT = 0.5;
             return;
           }
@@ -544,9 +571,9 @@ namespace Marmot::Elements {
           timeInfo.time = time[1];
           timeInfo.dT   = dT;
           try {
-            qp.material->computeStress( state, C66.data(), dE6.data(), timeInfo );
+            qp.material->computeStress( state, C66, dE6, timeInfo );
           }
-          catch ( const std::runtime_error& e ) {
+          catch ( const Marmot::StressUpdateFailed& e ) {
             pNewDT = 0.5;
             return;
           }
@@ -572,9 +599,9 @@ namespace Marmot::Elements {
           timeInfo.time = time[1];
           timeInfo.dT   = dT;
           try {
-            qp.material->computeStress( state, C.data(), dE.data(), timeInfo );
+            qp.material->computeStress( state, C, dE, timeInfo );
           }
-          catch ( const std::runtime_error& e ) {
+          catch ( const Marmot::StressUpdateFailed& e ) {
             pNewDT = 0.5;
             return;
           }
@@ -590,6 +617,122 @@ namespace Marmot::Elements {
     }
   }
 
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::computeYourselfExplicit( const double* QTotal_,
+                                                                           const double* dQ_,
+                                                                           double*       Pe_,
+                                                                           const double* time,
+                                                                           double        dT,
+                                                                           double&       pNewDT )
+  {
+    using namespace Marmot;
+    using namespace ContinuumMechanics::VoigtNotation;
+
+    Map< const RhsSized > QTotal( QTotal_ );
+    Map< const RhsSized > dQ( dQ_ );
+    Map< RhsSized >       Pe( Pe_ );
+
+    Voigt S  = Voigt::Zero();
+    Voigt dE = Voigt::Zero();
+
+    for ( QuadraturePoint& qp : qps ) {
+
+      const BSized& B = qp.B;
+      dE              = B * dQ;
+
+      if constexpr ( nDim == 1 ) {
+
+        throw std::runtime_error( "Explicit uniaxial stress not implemented yet" );
+      }
+
+      else if constexpr ( nDim == 2 ) {
+
+        if ( sectionType == SectionType::PlaneStress ) {
+
+          /* MarmotMaterialHypoElastic::state2D  state; */
+          /* MarmotMaterialHypoElastic::timeInfo timeInfo; */
+
+          /* // set state info */
+          /* state.stress              = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress
+           * ); */
+          /* state.strainEnergyDensity = 0.0; */
+          /* state.stateVars           = qp.managedStateVars->materialStateVars.data(); */
+
+          /* // set time info */
+          /* timeInfo.time = time[1]; */
+          /* timeInfo.dT   = dT; */
+          /* try { */
+          /*   qp.material->computePlaneStress( state, C.data(), dE.data(), timeInfo ); */
+          /* } */
+          /* catch ( const std::runtime_error& e ) { */
+          /*   pNewDT = 0.5; */
+          /*   return; */
+          /* } */
+          /* qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( state.stress ); */
+          /* S                           = state.stress; */
+          throw std::runtime_error( "Explicit plane stress not implemented yet" );
+        }
+
+        else if ( sectionType == SectionType::PlaneStrain ) {
+
+          Vector6d dE6 = planeVoigtToVoigt( dE );
+
+          // Vector6d S6 = qp.managedStateVars->stress;
+          MarmotMaterialHypoElastic::state3D  state;
+          MarmotMaterialHypoElastic::timeInfo timeInfo;
+
+          // set state info
+          state.stress              = qp.managedStateVars->stress;
+          state.strainEnergyDensity = 0.0;
+          state.stateVars           = qp.managedStateVars->materialStateVars.data();
+
+          // set time info
+          timeInfo.time = time[1];
+          timeInfo.dT   = dT;
+          try {
+            qp.material->computeStressExplicit( state, dE6, timeInfo );
+          }
+          catch ( const Marmot::StressUpdateFailed& e ) {
+            pNewDT = 0.5;
+            return;
+          }
+          qp.managedStateVars->stress = state.stress;
+
+          S = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
+        }
+      }
+
+      else if constexpr ( nDim == 3 ) {
+        if ( sectionType == SectionType::Solid ) {
+
+          MarmotMaterialHypoElastic::state3D  state;
+          MarmotMaterialHypoElastic::timeInfo timeInfo;
+
+          // set state info
+          state.stress              = qp.managedStateVars->stress;
+          state.strainEnergyDensity = 0.0;
+          state.stateVars           = qp.managedStateVars->materialStateVars.data();
+
+          // set time info
+          timeInfo.time = time[1];
+          timeInfo.dT   = dT;
+          try {
+            qp.material->computeStressExplicit( state, dE, timeInfo );
+          }
+          catch ( const Marmot::StressUpdateFailed& e ) {
+            pNewDT = 0.5;
+            return;
+          }
+          qp.managedStateVars->stress = state.stress;
+          S                           = state.stress;
+        }
+      }
+
+      qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
+
+      Pe -= B.transpose() * S * qp.J0xW;
+    }
+  }
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
   {
@@ -695,21 +838,32 @@ namespace Marmot::Elements {
 
     for ( const auto& qp : qps ) {
       const auto   N_  = this->NB( this->N( qp.xi ) );
-      const double rho = qp.material->getDensity();
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       Me += N_.transpose() * N_ * qp.detJ * qp.weight * rho;
     }
   }
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::computeLumpedInertia( double* M )
   {
-    Map< RhsSized > Me( M );
-    Me.setZero();
+    Map< RhsSized > LMM( M );
+    LMM.setZero();
 
-    KeSizedMatrix CMM;
-    CMM.setZero();
-    computeConsistentInertia( CMM.data() );
+    constexpr int nNodesLinear  = ( 1 << nDim );
+    auto          linGeometryEl = MarmotGeometryElement< nDim, nNodesLinear >();
+    for ( const auto& qp : qps ) {
+      const auto N_    = this->N( qp.xi );
+      const auto N_lin = linGeometryEl.N( qp.xi );
 
-    Me = CMM.rowwise().sum();
+      VectorXd N_weighted = 0.5 * ( N_ );
+      N_weighted.head( nNodesLinear ) += 0.5 * N_lin;
+
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      VectorXd     m_  = N_weighted * qp.detJ * qp.weight * rho;
+      for ( int i = 0; i < nNodes; i++ ) {
+        for ( int d = 0; d < nDim; d++ )
+          LMM( i * nDim + d ) += m_( i );
+      }
+    }
   }
 
   template < int nDim, int nNodes >

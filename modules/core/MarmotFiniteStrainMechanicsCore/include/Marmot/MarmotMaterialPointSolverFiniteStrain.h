@@ -135,6 +135,25 @@ namespace Marmot {
             std::cout << "]" << std::endl;
           }
         }
+
+        // constructor for easy creation
+        HistoryEntry( double                                    time,
+                      const FastorStandardTensors::Tensor33d&   stress,
+                      const FastorStandardTensors::Tensor33d&   F,
+                      const FastorStandardTensors::Tensor3333d& dTau_dF,
+                      const Eigen::VectorXd&                    stateVars )
+          : time( time ), stress( stress ), F( F ), dTau_dF( dTau_dF ), stateVars( stateVars )
+        {
+        }
+        // default constructor
+        HistoryEntry()
+          : time( 0.0 ),
+            stress( FastorStandardTensors::Tensor33d( 0.0 ) ),
+            F( FastorStandardTensors::Tensor33d( 0.0 ) ),
+            dTau_dF( FastorStandardTensors::Tensor3333d( 0.0 ) ),
+            stateVars( Eigen::VectorXd() )
+        {
+        }
       };
 
       /**
@@ -154,9 +173,9 @@ namespace Marmot {
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
        */
-      MarmotMaterialPointSolverFiniteStrain( std::string&         materialName,
-                                             double*              materialProperties,
-                                             int                  nMaterialProperties,
+      MarmotMaterialPointSolverFiniteStrain( const std::string&   materialName,
+                                             const double*        materialProperties,
+                                             const int            nMaterialProperties,
                                              const SolverOptions& options );
 
       /**
@@ -206,7 +225,7 @@ namespace Marmot {
        * @brief Get the recorded history of the simulation
        * @return A vector of HistoryEntry containing the recorded history
        */
-      std::vector< HistoryEntry > getHistory() const { return history; }
+      const std::vector< HistoryEntry >& getHistory() const { return history; }
 
       /**
        * @brief Clear the recorded history
@@ -308,7 +327,7 @@ namespace Marmot {
       std::vector< Step > steps;
 
       /// @brief History of the simulation
-      std::vector< HistoryEntry > history;
+      std::vector< HistoryEntry > history = std::vector< HistoryEntry >();
 
       /// @brief Solver options
       const SolverOptions options;

@@ -28,8 +28,6 @@
 #pragma once
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotVoigt.h"
-#include <Fastor/Fastor.h>
 #include <utility>
 
 namespace Marmot {
@@ -347,30 +345,6 @@ namespace Marmot {
      * @return 3x3 matrix representing the dyadic product.
      */
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 );
-
-    /**
-     * @brief Convert a 4th-order Fastor tensor (3x3x3x3) to a 9x9 Eigen matrix.
-     * @details First two indices (i,j) form rows and last two indices (k,l) form columns.
-     */
-    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9(
-      const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor );
-
-    /**
-     * @brief Convert a 3rd-order Fastor tensor (3x3x3) to a 9x3 Eigen matrix.
-     * @details First two indices (i,j) form rows and last index (k) forms columns.
-     */
-    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
-
-    /**
-     * @brief Convert a 3rd-order Fastor tensor (3x3x3) to a 3x9 Eigen matrix.
-     * @details First index (i) forms rows and last two indices (j,k) form columns.
-     */
-    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
-
-    /**
-     * @brief Convert a 2nd-order Fastor tensor (3x3) to a 3x3 Eigen matrix.
-     */
-    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor );
 
     namespace IndexNotation {
       /**

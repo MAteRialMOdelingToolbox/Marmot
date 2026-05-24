@@ -1,28 +1,29 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotAutomaticDifferentiation.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <autodiff/forward/dual/eigen.hpp>
 
 using namespace Eigen;
 using namespace autodiff;
 
-void MarmotMaterialHypoElasticAD::computeStress( state3D&        state,
-                                                 double*         dStressDDStrain,
-                                                 const double*   dStrain,
-                                                 const timeInfo& timeInfo
+void MarmotMaterialHypoElasticAD::computeStress( state3D&                state,
+                                                 Marmot::Matrix6d&       dStressDDStrain,
+                                                 const Marmot::Vector6d& dStrain,
+                                                 const timeInfo&         timeInfo
 
 ) const
 {
 
   using namespace Marmot;
   mVector6d       S( state.stress.data() );
-  const Vector6d  dEps = Map< const Vector6d >( dStrain );
+  const Vector6d  dEps = Map< const Vector6d >( dStrain.data() );
   Map< VectorXd > stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
 
   // remember old state
   const VectorXd stateVarsOld = stateVars;
   const Vector6d SOld         = S;
 
-  mMatrix6d C( dStressDDStrain );
+  mMatrix6d C( dStressDDStrain.data() );
   // ----------------------------------------
   // autodiff part
   // ----------------------------------------
@@ -36,16 +37,15 @@ void MarmotMaterialHypoElasticAD::computeStress( state3D&        state,
 
       // construct AD state
       state3DAD stateAD;
-      stateAD.stress              = s.data();
+      stateAD.stress              = s;
       stateAD.strainEnergyDensity = state.strainEnergyDensity;
       stateAD.stateVars           = stateVars.data();
 
       // compute stress
-      computeStressAD( stateAD, dE_.data(), timeInfo );
+      computeStressAD( stateAD, dE_, timeInfo );
 
-      Marmot::Vector6dual stressAD( stateAD.stress );
-
-      return stressAD;
+      // Marmot::Vector6dual res = stateAD.stress;
+      return stateAD.stress;
     },
     dEps );
   // ----------------------------------------

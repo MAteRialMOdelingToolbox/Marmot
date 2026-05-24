@@ -2,6 +2,7 @@
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include <Fastor/expressions/linalg_ops/unary_trans_op.h>
 #include <Fastor/tensor/Tensor.h>
@@ -21,7 +22,7 @@ namespace Marmot::Materials {
                                                   int           materialLabel )
     : MarmotMaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel )
   {
-    initializeStateLayout();
+    stateLayout.finalize();
   }
 
   void ADCompressibleNeoHooke::computeStressAD( ConstitutiveResponseAD< 3 >& response,
@@ -45,7 +46,6 @@ namespace Marmot::Materials {
 
     const auto tau                = StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                  = tau;
-    response.rho                  = 1.0;
     response.elasticEnergyDensity = Math::makeReal( psi_ );
   }
 } // namespace Marmot::Materials

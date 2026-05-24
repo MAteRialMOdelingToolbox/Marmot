@@ -31,7 +31,7 @@ void testSetup( const std::string& testName,
   ADCompressibleNeoHooke::Deformation< 3 > def     = { Tensor33d( 0.0 ) };
   ADCompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
 
-  ADCompressibleNeoHooke::ConstitutiveResponse< 3 > response = { Tensor33d( 0.0 ), 0.0, 0.0, nullptr };
+  ADCompressibleNeoHooke::ConstitutiveResponse< 3 > response = { Tensor33d( 0.0 ), 0.0, nullptr };
   ADCompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent  = { Tensor3333d( 0.0 ) };
 
   // Prescribe a deformation gradient tensor F for the considered load case

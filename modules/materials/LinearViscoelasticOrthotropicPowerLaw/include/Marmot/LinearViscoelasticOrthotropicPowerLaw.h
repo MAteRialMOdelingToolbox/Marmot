@@ -108,17 +108,12 @@ namespace Marmot::Materials {
                                            int           nMaterialProperties,
                                            int           materialLabel );
 
-    void computeStress( state3D& state,
-                        double*  dStressDDStrain,
+    void computeStress( state3D&                state,
+                        Marmot::Matrix6d&       dStressDDStrain,
+                        const Marmot::Vector6d& dStrain,
+                        const timeInfo&         timeInfo ) const override;
 
-                        const double*   dStrain,
-                        const timeInfo& timeInfo ) const override;
-
-    void initializeStateLayout() override
-    {
-      stateLayout.add( "kelvinStateVars", 6 * nKelvin );
-      stateLayout.finalize();
-    }
+    double getDensity( const double* stateVars ) const override;
 
   private:
     /// @brief Elastic moduli of the Kelvin chain units

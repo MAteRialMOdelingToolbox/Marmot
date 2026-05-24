@@ -75,10 +75,14 @@ namespace Marmot::Materials {
                           const DeformationAD< 3 >&,
                           const TimeIncrement& ) const override;
 
-    /**
-     * @brief Initialize the state layout (no state variables here).
-     */
-    void initializeStateLayout() override { stateLayout.finalize(); }
+    double getDensity( const double* stateVars ) const override
+    {
+      if ( this->nMaterialProperties < 3 ) {
+        throw std::runtime_error(
+          std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 3." ) );
+      }
+      return this->materialProperties[2];
+    }
   };
 
 } // namespace Marmot::Materials

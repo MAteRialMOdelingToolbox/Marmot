@@ -14,6 +14,16 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
+  double LinearViscoelasticOrthotropicPowerLaw::getDensity( const double* stateVars ) const
+  {
+    if ( nMaterialProperties < 24 ) {
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
+    }
+    else {
+      return materialProperties[23];
+    }
+  }
   LinearViscoelasticOrthotropicPowerLaw::LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
                                                                                 int           nMaterialProperties,
                                                                                 int           materialLabel )
@@ -43,7 +53,8 @@ namespace Marmot::Materials {
       direction2                        ( { materialProperties[20], materialProperties[21], materialProperties[22] } )
   // clang-format on
   {
-    initializeStateLayout();
+    stateLayout.add( "kelvinStateVars", 6 * nKelvin );
+    stateLayout.finalize();
 
     retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
 
@@ -107,14 +118,14 @@ namespace Marmot::Materials {
   }
 
   void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
-                                                             double*         dStressDDStrain,
-                                                             const double*   dStrain,
+                                                             Matrix6d&       dStressDDStrain,
+                                                             const Vector6d& dStrain,
                                                              const timeInfo& timeInfo ) const
 
   {
-    mVector6d nomStress( state.stress.data() );
-    Vector6d  dE( dStrain );
-    mMatrix6d C( dStressDDStrain );
+    mVector6d             nomStress( state.stress.data() );
+    Map< const Vector6d > dE( dStrain.data() );
+    mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT = timeInfo.dT;
 

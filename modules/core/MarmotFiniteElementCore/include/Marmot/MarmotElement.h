@@ -149,6 +149,26 @@ public:
                                 double&       pNewdT ) = 0;
 
   /**
+   * @brief Perform element computations for explicit time integration.
+   * @param[in] QTotal Total dof vector.
+   * @param[in] dQ Incremental dof vector.
+   * @param[out] Pint Internal force vector.
+   * @param[in] time Current time.
+   * @param[in] dT Time step size.
+   * @param[out] pNewdT Suggested new time step size.
+   *
+   * @note Default implementation throws an exception.
+   */
+  virtual void computeYourselfExplicit( const double* QTotal,
+                                        const double* dQ,
+                                        double*       Pint,
+                                        const double* time,
+                                        double        dT,
+                                        double&       pNewdT )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+  };
+  /**
    * @brief Compute contribution from distributed surface loads.
    * @param[in] loadType Type of load.
    * @param[out] Pext External load vector.

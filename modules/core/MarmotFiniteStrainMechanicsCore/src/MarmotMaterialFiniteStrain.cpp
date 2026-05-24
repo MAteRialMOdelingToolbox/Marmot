@@ -84,7 +84,7 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
   using namespace Marmot;
 
   Deformation< 3 >          deformation = { 0.0 };
-  ConstitutiveResponse< 3 > response = { .tau = 0.0, .rho = 0.0, .elasticEnergyDensity = 0.0, .stateVars = stateVars };
+  ConstitutiveResponse< 3 > response    = { .tau = 0.0, .elasticEnergyDensity = 0.0, .stateVars = stateVars };
   AlgorithmicModuli< 3 >    tangents;
 
   const double        time[] = { 0.0, 0.0 };

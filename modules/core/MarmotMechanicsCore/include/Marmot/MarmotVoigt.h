@@ -28,11 +28,10 @@
  */
 
 #pragma once
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-
-#define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
 namespace Marmot {
   /**
@@ -324,6 +323,15 @@ namespace Marmot {
      *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
      */
     EigenTensors::Tensor3333d voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness );
+
+    /**
+     * @brief Converts a stiffness matrix in Voigt notation (\f$ 6 \times 6 \f$ matrix) to a 4th-order stiffness tensor
+     * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
+     * @param voigtStiffness The \f$ 6 \times 6 \f$ matrix representing the stiffness in Voigt notation.
+     * @return a Fastor::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor.
+     *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
+     */
+    Marmot::FastorStandardTensors::Tensor3333d voigtToStiffnessFastor( const Marmot::Matrix6d& voigtStiffness );
 
     /**
      * @brief Converts a stress vector in Voigt notation to its corresponding tensor form.

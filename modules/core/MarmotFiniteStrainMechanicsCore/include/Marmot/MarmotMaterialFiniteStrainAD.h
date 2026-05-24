@@ -56,7 +56,6 @@ public:
   template < int nDim >
   struct ConstitutiveResponseAD {
     Fastor::Tensor< autodiff::dual, nDim, nDim > tau;                  ///< Kirchhoff stress
-    double                                       rho;                  ///< mass density
     double                                       elasticEnergyDensity; ///< elastic energy per unit volume
     double*                                      stateVars;            ///< pointer to state variables
   };
@@ -124,7 +123,6 @@ public:
 
         ConstitutiveResponseAD< 3 > responseAD;
         responseAD.tau                  = tauAD;
-        responseAD.rho                  = response.rho;
         responseAD.elasticEnergyDensity = response.elasticEnergyDensity;
         responseAD.stateVars            = stateVars.data();
 

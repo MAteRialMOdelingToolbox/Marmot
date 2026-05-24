@@ -330,7 +330,7 @@ void testGetDensityIsotropic()
   double expectedDensityI = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityI, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity( nullptr ), expectedDensityI, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -352,7 +352,7 @@ void testGetDensityTransverselyIsotropic()
   double expectedDensityTI = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityTI, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity( nullptr ), expectedDensityTI, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -379,7 +379,7 @@ void testGetDensityOrthotropic()
   double expectedDensityO = 10;
 
   // Compare the retrieved density with the given number
-  throwExceptionOnFailure( checkIfEqual( mat.getDensity(), expectedDensityO, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity( nullptr ), expectedDensityO, 1e-10 ),
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 

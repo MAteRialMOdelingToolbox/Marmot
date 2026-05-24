@@ -27,7 +27,6 @@
 
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "autodiff/forward/dual.hpp"
 
 class MarmotMaterialHypoElasticAD : public MarmotMaterialHypoElastic {
 
@@ -35,9 +34,9 @@ public:
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
   struct state3DAD {
-    autodiff::dual* stress;              ///< Cauchy stress tensor in Voigt notation
-    double          strainEnergyDensity; ///< Strain energy density
-    double*         stateVars;           ///< Pointer to array of state variables
+    Marmot::Vector6dual stress;              ///< Cauchy stress tensor in Voigt notation
+    double              strainEnergyDensity; ///< Strain energy density
+    double*             stateVars;           ///< Pointer to array of state variables
   };
   /**
    * @brief Compute the Cauchy stress tensor \f$\boldsymbol{\sigma}\f$ given an increment of the linearized strain
@@ -50,14 +49,14 @@ public:
    *
    * @param[in,out] stress  Cauchy stress tensor
    * @param[in]             dStrain linearized strain increment
-   * @param[in]             timeOld Old (pseudo-)time
-   * @param[in]             dT (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time
-   * @param[in,out]         pNewDT Suggestion for a new time increment
+   * @param[in]             timeInfo Old (pseudo-)time
    */
-  virtual void computeStressAD( state3DAD& state, const autodiff::dual* dStrain, const timeInfo& timeInfo ) const = 0;
+  virtual void computeStressAD( state3DAD&                 state,
+                                const Marmot::Vector6dual& dStrain,
+                                const timeInfo&            timeInfo ) const = 0;
 
-  virtual void computeStress( state3D&        state,
-                              double*         dStressDDStrain,
-                              const double*   dStrain,
-                              const timeInfo& timeInfo ) const override;
+  virtual void computeStress( state3D&                state,
+                              Marmot::Matrix6d&       dStressDDStrain,
+                              const Marmot::Vector6d& dStrain,
+                              const timeInfo&         timeInfo ) const override;
 };
