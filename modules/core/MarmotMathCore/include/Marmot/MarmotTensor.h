@@ -28,6 +28,7 @@
 #pragma once
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <Fastor/Fastor.h>
 #include <utility>
 
 namespace Marmot {
@@ -230,6 +231,15 @@ namespace Marmot {
   } // namespace ContinuumMechanics::CommonTensors
 
   namespace ContinuumMechanics::TensorUtility {
+    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9(
+      const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor );
+
+    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
+
+    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
+
+    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor );
+
     /** @brief Kronecker delta function \f$ \delta_{ab} \f$.
      * @return 1 if a == b, otherwise 0.
      */

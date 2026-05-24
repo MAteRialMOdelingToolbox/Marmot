@@ -10,9 +10,11 @@
 #include <cmath>
 #include <stdexcept>
 
-using namespace Marmot;
-
 namespace Marmot::Materials {
+
+  using namespace Eigen;
+  using namespace Marmot;
+
   LinearViscoElasticWiechert::LinearViscoElasticWiechert( const double* materialProperties,
                                                           int           nMaterialProperties,
                                                           int           materialNumber )
@@ -38,23 +40,15 @@ namespace Marmot::Materials {
     elasticModuli   = Marmot::Materials::Wiechert::initializeElasticModuli( nMaxwell, n );
   }
 
-  namespace {
-    using VoigtVector6d       = Marmot::Vector6d;
-    using VoigtMatrix6d       = Marmot::Matrix6d;
-    using ConstVoigtVectorMap = Eigen::Map< const VoigtVector6d >;
-    using TangentMatrixMap    = Eigen::Map< Eigen::Matrix< double, 6, 6, Eigen::RowMajor > >;
-  } // namespace
-
   void LinearViscoElasticWiechert::computeStress( state3D&        state,
-                                                  double*         dStressDDStrain,
-                                                  const double*   dStrain,
+                                                  Matrix6d&       dStressDDStrain,
+                                                  const Vector6d& dStrain,
                                                   const timeInfo& timeInfo ) const
   {
-    mVector6d           nomStress( state.stress.data() );
-    Vector6d            dE( dStrain );
-    mMatrix6d           D( dStressDDStrain );
-    const VoigtVector6d dEVec = dE;
-    const double&       dT    = timeInfo.dT;
+    mVector6d     nomStress( state.stress.data() );
+    mMatrix6d     D( dStressDDStrain.data() );
+    const auto    dE = Map< const Vector6d >( dStrain.data() );
+    const double& dT = timeInfo.dT;
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       D = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -87,5 +81,14 @@ namespace Marmot::Materials {
     Wiechert::updateStateVarMatrix( dTimeDays, elasticModuli, relaxationTimes, creepStateVars, deltaStress, CelUnit );
 
     return;
+  }
+
+  double LinearViscoElasticWiechert::getDensity( const double* stateVars ) const
+  {
+    if ( nMaterialProperties >= 7 + 1 ) {
+      throw std::runtime_error(
+        std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
+    }
+    return this->materialProperties[7];
   }
 } // namespace Marmot::Materials

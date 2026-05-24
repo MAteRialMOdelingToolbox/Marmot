@@ -123,14 +123,16 @@ namespace Marmot::Materials {
       throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not provided." );
     }
 
-    Eigen::Matrix< double, 6, 6, Eigen::RowMajor >
-            C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
-    double& kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
+    // Eigen::Matrix< double, 6, 6, Eigen::RowMajor >
+    //         C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
+
+    Marmot::Matrix6d C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
+    double&          kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
 
     MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
 
-    vonMisesModel->computeStress( vonMisesState, C_ep.data(), dStrainAvgVoigt.data(), vonMisesTimeInfo );
+    vonMisesModel->computeStress( vonMisesState, C_ep, dStrainAvgVoigt, vonMisesTimeInfo );
     averageStressVoigt = vonMisesState.stress;
 
     auto [Z_ijkl_ep, Q_ij_ep, H_ijk_ep, Y_ijkl_ep] = calculateInterfaceMaterialParameters( normalFtensor, C_ep );
