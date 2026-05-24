@@ -197,6 +197,7 @@ namespace Marmot::Elements {
          */
         inline const static auto layout = makeLayout( {
           { .name = "force", .length = nDim },
+          { .name = "alignment padding", .length = nDim % 2 },
           { .name = "surface stress", .length = nDim * nDim },
           { .name = "displacement", .length = 2 * nDim },
           { .name = "surface strain", .length = 2 * nDim * nDim },
