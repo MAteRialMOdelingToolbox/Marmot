@@ -10,6 +10,7 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include <Fastor/tensor/TensorMap.h>
+#include <cstdint>
 #include <iostream>
 
 namespace Marmot::Materials {
@@ -162,7 +163,22 @@ namespace Marmot::Materials {
 
     std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 1 add" << std::endl;
 
+    std::cerr << "[debug] surfaceStress ptr      = " << state.surfaceStress << std::endl;
+    std::cerr << "[debug] surfaceStress mod 16   = "
+              << ( reinterpret_cast< std::uintptr_t >( state.surfaceStress ) % 16 ) << std::endl;
+    std::cerr << "[debug] surfaceStress mod 32   = "
+              << ( reinterpret_cast< std::uintptr_t >( state.surfaceStress ) % 32 ) << std::endl;
+
+    std::cerr << "[debug] surfaceStress[0] before scalar TensorMap write = " << state.surfaceStress[0] << std::endl;
+
+    surface_stress_ftensor( 0, 0 ) += 0.0;
+
+    std::cerr << "[debug] scalar TensorMap write ok" << std::endl;
+    std::cerr << "[debug] before TensorMap add" << std::endl;
+
     surface_stress_ftensor += dSurfaceStress_Z;
+
+    std::cerr << "[debug] after TensorMap add" << std::endl;
 
     std::cerr << "[LinearElasticInterface::computeStress] after surface stress update 1 add" << std::endl;
 
