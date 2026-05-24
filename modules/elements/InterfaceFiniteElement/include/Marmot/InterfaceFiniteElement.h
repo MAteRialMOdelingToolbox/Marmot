@@ -201,6 +201,8 @@ namespace Marmot::Elements {
           { .name = "surface stress", .length = nDim * nDim },
           { .name = "displacement", .length = 2 * nDim },
           { .name = "surface strain", .length = 2 * nDim * nDim },
+          { .name   = "state block alignment padding",
+            .length = ( 4 - ( ( nDim + ( nDim % 2 ) + nDim * nDim + 2 * nDim + 2 * nDim * nDim ) % 4 ) ) % 4 },
           { .name = "begin of material state", .length = 0 },
         } );
 
