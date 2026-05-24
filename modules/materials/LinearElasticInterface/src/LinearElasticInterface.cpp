@@ -144,12 +144,28 @@ namespace Marmot::Materials {
                                      Fastor::OIndex< i > >( H_inv_nF_ijk_ftensor,
                                                             average_dSurface_strain_ftensor_reshape );
     std::cerr << "[LinearElasticInterface::computeStress] after force update 2" << std::endl;
-    std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 1" << std::endl;
-    surface_stress_ftensor += Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                              Fastor::Index< k, l >,
-                                              Fastor::OIndex< i, j > >( Z_ijkl_ftensor,
-                                                                        average_dSurface_strain_ftensor_reshape );
-    std::cerr << "[LinearElasticInterface::computeStress] after surface stress update 1" << std::endl;
+    // std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 1" << std::endl;
+    // surface_stress_ftensor += Fastor::einsum< Fastor::Index< i, j, k, l >,
+    //                                           Fastor::Index< k, l >,
+    //                                           Fastor::OIndex< i, j > >( Z_ijkl_ftensor,
+    //                                                                     average_dSurface_strain_ftensor_reshape );
+    // std::cerr << "[LinearElasticInterface::computeStress] after surface stress update 1" << std::endl;
+    std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 1 RHS" << std::endl;
+
+    Tensor2D dSurfaceStress_Z = Fastor::einsum< Fastor::Index< i, j, k, l >,
+                                                Fastor::Index< k, l >,
+                                                Fastor::OIndex< i, j > >( Z_ijkl_ftensor,
+                                                                          average_dSurface_strain_ftensor_reshape );
+
+    std::cerr << "[LinearElasticInterface::computeStress] after surface stress update 1 RHS, norm = "
+              << Fastor::norm( dSurfaceStress_Z ) << std::endl;
+
+    std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 1 add" << std::endl;
+
+    surface_stress_ftensor += dSurfaceStress_Z;
+
+    std::cerr << "[LinearElasticInterface::computeStress] after surface stress update 1 add" << std::endl;
+
     std::cerr << "[LinearElasticInterface::computeStress] before surface stress update 2" << std::endl;
     surface_stress_ftensor += Fastor::einsum< Fastor::Index< i, j, k, l >,
                                               Fastor::Index< k, l >,
