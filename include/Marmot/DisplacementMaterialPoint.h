@@ -214,7 +214,6 @@ namespace Marmot::MaterialPoints {
   void DisplacementMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
   {
     state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
-    material->assignStateVars( state->materialState.data(), state->materialState.size() );
   }
 
   template < int nDim >
@@ -224,7 +223,7 @@ namespace Marmot::MaterialPoints {
     if ( state->contains( stateName ) )
       return state->getStateView( stateName );
     else
-      return material->getStateView( stateName );
+      return material->getStateView( stateName, state->materialState.data() );
   }
 
   template < int nDim >
@@ -248,7 +247,7 @@ namespace Marmot::MaterialPoints {
     state->dY_dX.eye();
     /* state->dx_dY.eye(); */
     this->prepareYourself( 0, 0 );
-    material->initializeYourself();
+    material->initializeYourself( state->materialState.data(), state->materialState.size() );
   }
 
   template < int nDim >
