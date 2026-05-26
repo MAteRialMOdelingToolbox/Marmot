@@ -26,65 +26,51 @@
 # * ---------------------------------------------------------------------
 # */
 
-MESSAGE("+--------------------------------------------------------------------+")
-MESSAGE("|                                                                    |")
-MESSAGE("|                              MARMOT                                |")
-MESSAGE("|                                                                    |")
-MESSAGE("|                  -- MAteRialMOdellingToolbox --                    |")
-MESSAGE("|                                                                    |")
-MESSAGE("+--------------------------------------------------------------------+")
+# cmake_minimum_required must be the very first command so that the correct
+# CMake policies are active when the rest of the file is parsed.
+cmake_minimum_required(VERSION 3.16)
 
-MESSAGE(STATUS "This is CMake ${CMAKE_VERSION}")
-MESSAGE(STATUS "")
+message("+--------------------------------------------------------------------+")
+message("|                                                                    |")
+message("|                              MARMOT                                |")
+message("|                                                                    |")
+message("|                  -- MAteRialMOdellingToolbox --                    |")
+message("|                                                                    |")
+message("+--------------------------------------------------------------------+")
+message(STATUS "This is CMake ${CMAKE_VERSION}")
+message(STATUS "")
 
-cmake_minimum_required(VERSION 3.12)
-
-project(Marmot CXX Fortran)
+# Fortran is not used by Marmot; keep the language list to CXX only so that
+# a Fortran compiler is not required.
+project(Marmot VERSION 1.0.0 LANGUAGES CXX)
 
 # avoid in-source compilation
-if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
-  message(FATAL_ERROR "In-source builds are not allowed. Create and/or change to your build folder \
-  and run then cmake from there, e.g. mkdir build && cd build && cmake ../ . \\n
-  You first may need to remove CMakeCache.txt and CMakeFiles/*.")
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+  message(FATAL_ERROR "In-source builds are not allowed. Create and/or change to your build \
+folder and run cmake from there, e.g.:\n  mkdir build && cd build && cmake ../\n\
+You may need to remove CMakeCache.txt and CMakeFiles/ first.")
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_FIND_LIBRARY_PREFIXES lib)
-
-# enable testing
-enable_testing()
-
-# custom function to add tests
-function(add_marmot_test test_name test_source)
-  add_executable(${test_name} ${test_source})
-  target_include_directories(${test_name} PRIVATE "${CMAKE_SOURCE_DIR}/include")
-  target_include_directories(${test_name} PRIVATE "${INSTALLED_MODULEPATHS}/include")
-  target_include_directories(${test_name} PRIVATE include)
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
-  add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-endfunction()
 
 # set install directories
 include(GNUInstallDirs)
 
-# Compiler specific stettings
+# Compiler-specific settings
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-long-long")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
-    # only activate if you know what you are doing:
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 ")
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx")
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    # -O3 belongs only in Release builds, not Debug.
+    add_compile_options($<$<CONFIG:Release>:-O3>)
+    # add_compile_options(-mavx)
+    # add_compile_options(-ffast-math)
+    add_compile_options($<$<CONFIG:Debug>:-g>)
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -104,227 +90,191 @@ endif()
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
 
 ## find Eigen library
-find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-include_directories(${EIGEN3_INCLUDE_DIR})
+## The include directory is provided transitively via the Eigen3::Eigen imported target;
+## no separate include_directories() call is needed.
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 ## find autodiff library (https://autodiff.github.io/)
-find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED NO_MODULE)
-include_directories(${AUTODIFF_INCLUDE_DIR})
+find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED)
 message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
+
+## find Fastor library (https://github.com/romeric/Fastor)
+find_path(FASTOR_INCLUDE_DIR Fastor REQUIRED)
+message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
+
+# enable testing
+enable_testing()
+
+# Custom function to add a test executable.
+# Include directories are propagated transitively from the Marmot library target
+# (PUBLIC includes), so no explicit target_include_directories call is needed here.
+function(add_marmot_test test_name test_source)
+  add_executable(${test_name} ${test_source})
+  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
+  add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endfunction()
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 set(SHARED_LIBRARIES "")
+
+# Accumulated lists populated by module.cmake files
+set(sources "")
+set(publicheaders "")
+set(INSTALLED_MODULE_INCLUDE_DIRS "")
+
+# ── Module discovery helpers ──────────────────────────────────────────────────
+
+# subdirlist: populate <result> with the names of immediate subdirectories of <curdir>.
+function(subdirlist result curdir)
+  file(GLOB _children RELATIVE "${curdir}" "${curdir}/*")
+  set(_dirs "")
+  foreach(_child ${_children})
+    if(IS_DIRECTORY "${curdir}/${_child}")
+      list(APPEND _dirs "${_child}")
+    endif()
+  endforeach()
+  set(${result} ${_dirs} PARENT_SCOPE)
+endfunction()
+
+# register_module_category: scan <category_path> for subdirectories that contain a
+# module.cmake file, apply the optional filter list stored in the variable named
+# <filter_var>, and append matching entries to INSTALLED_MODULES and
+# INSTALLED_MODULEPATHS in the calling scope.
 #
-# Add sources
+# Usage:
+#   register_module_category(<path> <filter-variable-name> "<label>")
 #
-file(GLOB sources "")
-file(GLOB publicheaders "")
+# A module is included when either:
+#   - the filter variable is undefined (defaults to "all"), or
+#   - the filter variable equals "all", or
+#   - the directory name appears in the filter list.
+macro(register_module_category category_path filter_var category_label)
+  message("+------------------------------------------------------------------------------+")
+  message("Checking for ${category_label} modules in ${category_path}.")
+  if(EXISTS "${category_path}")
+    subdirlist(_rmc_dirs "${category_path}")
+    foreach(_rmc_dir IN LISTS _rmc_dirs)
+      set(_rmc_modulepath "${category_path}/${_rmc_dir}")
+      if(EXISTS "${_rmc_modulepath}/module.cmake")
+        if(NOT DEFINED ${filter_var})
+          set(${filter_var} "all")
+        endif()
+        if("${${filter_var}}" STREQUAL "all" OR ${_rmc_dir} IN_LIST ${filter_var})
+          message("--> found ${_rmc_dir}")
+          list(APPEND INSTALLED_MODULES "${_rmc_dir}")
+          list(APPEND INSTALLED_MODULEPATHS "${_rmc_modulepath}")
+        endif()
+      endif()
+    endforeach()
+    unset(_rmc_dirs)
+    unset(_rmc_dir)
+    unset(_rmc_modulepath)
+  endif()
+endmacro()
 
-
-
-# INSTALL MODULES
-
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
-
-get_filename_component(COREPATH ${MODULES_DIR}/core ABSOLUTE)
-get_filename_component(MATERIALSPATH ${MODULES_DIR}/materials ABSOLUTE)
-get_filename_component(PARTICLESPATH ${MODULES_DIR}/particles ABSOLUTE)
-get_filename_component(MATERIALPOINTSPATH ${MODULES_DIR}/materialpoints ABSOLUTE)
-get_filename_component(ELEMENTSPATH ${MODULES_DIR}/elements ABSOLUTE)
-get_filename_component(CELLSPATH ${MODULES_DIR}/cells ABSOLUTE)
-get_filename_component(CELLELEMENTSPATH ${MODULES_DIR}/cellelements ABSOLUTE)
-
-SUBDIRLIST(COREDIRS ${COREPATH})
-SUBDIRLIST(MATERIALSDIRS ${MATERIALSPATH})
-SUBDIRLIST(PARTICLESDIRS ${PARTICLESPATH})
-SUBDIRLIST(MATERIALPOINTSDIRS ${MATERIALPOINTSPATH})
-SUBDIRLIST(ELEMENTSDIRS ${ELEMENTSPATH})
-SUBDIRLIST(CELLSDIRS ${CELLSPATH})
-SUBDIRLIST(CELLELEMENTSDIRS ${CELLELEMENTSPATH})
+# ── Discover modules ──────────────────────────────────────────────────────────
 
 set(INSTALLED_MODULES "")
-set(INSTALLED_MODULE_PATHS "")
-message("+------------------------------------------------------------------------------+")
+set(INSTALLED_MODULEPATHS "")
 
-message("checking for modules in
-${COREPATH}.
-"       "If you want to install a Marmot Core module, make sure it is in this directory.")
-foreach(DIRNAME ${COREDIRS})
-    get_filename_component(MODULEPATH "${COREPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED CORE_MODULES)
-            set(CORE_MODULES "all")
-        endif()
-        if( CORE_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CORE_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${MATERIALSPATH}.
-"       "If you want to install a Marmot Material, make sure it is in this directory.")
-foreach(DIRNAME ${MATERIALSDIRS})
-    get_filename_component(MODULEPATH "${MATERIALSPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED MATERIAL_MODULES)
-            set(MATERIAL_MODULES "all")
-        endif()
-        if(MATERIAL_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST MATERIAL_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${ELEMENTSPATH}.
-"       "If you want to install a Marmot Finite Element, make sure it is in this directory.")
-foreach(DIRNAME ${ELEMENTSDIRS})
-    get_filename_component(MODULEPATH "${ELEMENTSPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED ELEMENT_MODULES)
-            set(ELEMENT_MODULES "all")
-        endif()
-        if(ELEMENT_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST ELEMENT_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${PARTICLESPATH}.
-"       "If you want to install a Marmot Particle module, make sure it is in this directory.")
-foreach(DIRNAME ${PARTICLESDIRS})
-    get_filename_component(MODULEPATH "${PARTICLESPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED PARTICLE_MODULES)
-            set(PARTICLE_MODULES "all")
-        endif()
-        if(PARTICLE_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST PARTICLE_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${MATERIALPOINTSPATH}.
-"       "If you want to install a Marmot Particle module, make sure it is in this directory.")
-foreach(DIRNAME ${MATERIALPOINTSDIRS})
-    get_filename_component(MODULEPATH "${MATERIALPOINTSPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED MATERIALPOINT_MODULES)
-            set(MATERIALPOINT_MODULES "all")
-        endif()
-        if(MATERIALPOINT_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST MATERIALPOINT_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${CELLSPATH}.
-"       "If you want to install a Marmot Cell module, make sure it is in this directory.")
-
-foreach(DIRNAME ${CELLSDIRS})
-    get_filename_component(MODULEPATH "${CELLSPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED CELL_MODULES)
-            set(CELL_MODULES "all")
-        endif()
-        if(CELL_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CELL_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Checking for modules in
-${CELLELEMENTSPATH}.
-"       "If you want to install a Marmot CellElement module, make sure it is in this directory.")
-
-foreach(DIRNAME ${CELLELEMENTSDIRS})
-    get_filename_component(MODULEPATH "${CELLELEMENTSPATH}/${DIRNAME}" ABSOLUTE)
-    if(EXISTS ${MODULEPATH}/module.cmake)
-        if (NOT DEFINED CELLELEMENT_MODULES)
-            set(CELLELEMENT_MODULES "all")
-        endif()
-        if(CELLELEMENT_MODULES STREQUAL "all" OR ${DIRNAME} IN_LIST CELLELEMENT_MODULES)
-            message("--> found ${DIRNAME}")
-            list(APPEND INSTALLED_MODULES ${DIRNAME})
-            list(APPEND INSTALLED_MODULEPATHS ${MODULEPATH})
-        endif()
-    endif()
-endforeach(DIRNAME)
-message("+------------------------------------------------------------------------------+")
-
-message("Now check if all of your modules are listed. If one is missing in this list
-"       "despite being present in the correct directory, also check if the module has a
-"       "proper module.cmake file.")
+register_module_category("${MODULES_DIR}/core"           CORE_MODULES          "Core")
+register_module_category("${MODULES_DIR}/materials"      MATERIAL_MODULES      "Material")
+register_module_category("${MODULES_DIR}/elements"       ELEMENT_MODULES       "Element")
+register_module_category("${MODULES_DIR}/particles"      PARTICLE_MODULES      "Particle")
+register_module_category("${MODULES_DIR}/materialpoints" MATERIALPOINT_MODULES "MaterialPoint")
+register_module_category("${MODULES_DIR}/cells"          CELL_MODULES          "Cell")
+register_module_category("${MODULES_DIR}/cellelements"   CELLELEMENT_MODULES   "CellElement")
 
 message("+------------------------------------------------------------------------------+")
+message("Check the list above: if a module is missing despite being in the correct")
+message("directory, verify that it has a proper module.cmake file.")
+message("+------------------------------------------------------------------------------+")
 
-foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
-    include(${MODULEPATH}/module.cmake)
-endforeach(MODULEPATH)
+# Include all discovered module.cmake files.
+# Each file appends to: sources, publicheaders, INSTALLED_MODULE_INCLUDE_DIRS.
+foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+    include("${MODULEPATH}/module.cmake")
+endforeach()
 
 message("+------------------------------------------------------------------------------+")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
-# compile the shared library
-add_library(${PROJECT_NAME} SHARED ${sources})
-target_include_directories(${PROJECT_NAME} PRIVATE include)
-target_link_libraries (${PROJECT_NAME} Eigen3::Eigen)
+# ── Build the shared library ──────────────────────────────────────────────────
 
-if (SHARED_LIBRARIES)
+add_library(${PROJECT_NAME} SHARED ${sources})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    VERSION       ${PROJECT_VERSION}
+    SOVERSION     ${PROJECT_VERSION_MAJOR}
+    PUBLIC_HEADER "${publicheaders}"
+)
+
+# Include-directory strategy:
+#   BUILD_INTERFACE  – source-tree paths used when building Marmot and its tests.
+#   INSTALL_INTERFACE – the single installed include root used by find_package consumers.
+# Making these PUBLIC means test executables that link against ${PROJECT_NAME} receive
+# the include paths transitively without any explicit target_include_directories call.
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
+)
+foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
+endforeach()
+
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+
+if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
     message("Marmot modules have requested to link against following shared libraries:")
-    foreach(SHARED_LIBRARY ${SHARED_LIBRARIES})
+    foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
         message("--> ${SHARED_LIBRARY}")
-        target_link_libraries (${PROJECT_NAME} ${SHARED_LIBRARY})
+        target_link_libraries(${PROJECT_NAME} PRIVATE "${SHARED_LIBRARY}")
     endforeach()
     message("+------------------------------------------------------------------------------+")
 endif()
 
-foreach(MODULEPATH ${INSTALLED_MODULEPATHS})
-    if(EXISTS ${MODULEPATH}/test.cmake)
-        include(${MODULEPATH}/test.cmake)
+# Include test definitions for all installed modules
+foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+    if(EXISTS "${MODULEPATH}/test.cmake")
+        include("${MODULEPATH}/test.cmake")
     endif()
-endforeach(MODULEPATH)
+endforeach()
 
-# and finally install the library to the system location
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    PUBLIC_HEADER "${publicheaders}"
-)
-
+# ── Install ───────────────────────────────────────────────────────────────────
 
 install(TARGETS ${PROJECT_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/Marmot
-    )
+    EXPORT        MarmotTargets
+    LIBRARY       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Marmot"
+)
+
+install(EXPORT MarmotTargets
+    FILE        MarmotTargets.cmake
+    NAMESPACE   Marmot::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Marmot"
+)
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/MarmotConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfig.cmake"
+    INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Marmot"
+)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfigVersion.cmake"
+    VERSION       ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfigVersion.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Marmot"
+)
