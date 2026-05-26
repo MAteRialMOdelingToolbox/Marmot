@@ -214,7 +214,6 @@ namespace Marmot::MaterialPoints {
   void DisplacementMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
   {
     state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
-    // material->assignStateVars( state->materialState.data(), state->materialState.size() );
   }
 
   template < int nDim >
@@ -230,16 +229,16 @@ namespace Marmot::MaterialPoints {
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
-    material = std::unique_ptr< Material >( dynamic_cast< Material* >(
-      MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
-                                                                        section.materialProperties,
-                                                                        section.nMaterialProperties,
-                                                                        _mpNumber ) ) );
+    material = std::unique_ptr< Material >( MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial(
+      section.materialName,
+      section.materialProperties,
+      section.nMaterialProperties,
+      _mpNumber ) );
 
     if ( !material )
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__
-                                   << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
+                                   << ": invalid finite strain material assigned!" );
   }
 
   template < int nDim >
