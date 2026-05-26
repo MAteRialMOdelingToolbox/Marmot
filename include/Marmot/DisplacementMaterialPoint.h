@@ -30,6 +30,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
@@ -229,16 +230,16 @@ namespace Marmot::MaterialPoints {
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
-    material = std::unique_ptr< Material >(
-      dynamic_cast< Material* >( MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
-                                                                                       section.materialProperties,
-                                                                                       section.nMaterialProperties,
-                                                                                       _mpNumber ) ) );
+    material = std::unique_ptr< Material >( MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial(
+      section.materialName,
+      section.materialProperties,
+      section.nMaterialProperties,
+      _mpNumber ) );
 
     if ( !material )
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__
-                                   << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
+                                   << ": invalid finite strain material assigned!" );
   }
 
   template < int nDim >
