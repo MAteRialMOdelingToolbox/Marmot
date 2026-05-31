@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -53,21 +51,21 @@ public:
 protected:
   /// An entry in the statevar vector consists of the name and a certain length
   struct StateVarEntryDefinition {
-    std::string name;
-    int         length;
+    std::string name;   ///< Unique name identifying the state variable entry
+    int         length; ///< Number of consecutive doubles occupied by this entry
   };
 
   /// The location in the statevar vector consists of the index and its certain length
   struct StateVarEntryLocation {
-    int index;
-    int length;
+    int index;  ///< Zero-based offset into the statevar array where the entry begins
+    int length; ///< Number of consecutive doubles occupied by this entry
   };
 
   /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar
   /// vector
   struct StateVarVectorLayout {
-    std::unordered_map< std::string, StateVarEntryLocation > entries;
-    int                                                      nRequiredStateVars;
+    std::unordered_map< std::string, StateVarEntryLocation > entries; ///< Map from entry name to its location
+    int                                                      nRequiredStateVars; ///< Total number of doubles required
   };
 
   /// generate the statevar vector layout from a list of entries, defined by name and length
@@ -89,6 +87,9 @@ protected:
   /// a const reference to the respective layout
   const StateVarVectorLayout& theLayout;
 
+  /// @brief Constructs the manager from an existing statevar array and a pre-built layout.
+  /// @param theStateVars Pointer to the first element of the statevar array.
+  /// @param theLayout_ Layout describing the offsets and lengths of each named entry.
   MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
     : theStateVars( theStateVars ), theLayout( theLayout_ ){};
 };

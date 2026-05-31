@@ -73,11 +73,11 @@ namespace Marmot::Materials {
     auto [psi, S_biot, dS_biot_dU] = EnergyDensityFunctions::SecondOrderDerived::BiotNeoHooke( U, K, G );
 
     // retrieve Biot stress from the previous increment
-    Tensor33d& S_biot_old = stateLayout.getAs< Tensor33d& >( response.stateVars, "S0_old" );
+    Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute the increment in Biot stress
     const Tensor33t< scalar > dS_biot = S_biot - makeDual( S_biot_old );
-    memcpy( S_biot_old.data(), makeReal( S_biot ).data(), 9 * sizeof( double ) );
+    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), makeReal( S_biot ).data(), 9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress using the generalized Maxwell model
     ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel<

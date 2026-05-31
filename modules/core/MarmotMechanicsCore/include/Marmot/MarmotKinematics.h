@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -44,7 +42,7 @@ namespace Marmot {
        * @brief Computes the derivative of the Green-Lagrange strain tensor with respect to the deformation gradient.
        *
        * @param F The deformation gradient tensor as a 3x3 matrix.
-       * @return A \f$ 6 \times 3 \times 3 tensor representing the derivative of the Green-Lagrange strain tensor.
+       * @return A \f$6 \times 3 \times 3\f$ tensor representing the derivative of the Green-Lagrange strain tensor.
        */
       Marmot::EigenTensors::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F );
     } // namespace Strain

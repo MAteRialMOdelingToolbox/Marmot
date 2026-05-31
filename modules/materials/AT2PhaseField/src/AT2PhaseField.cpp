@@ -28,7 +28,6 @@ namespace Marmot::Materials {
       throw std::runtime_error( "Viscosity not provided in material properties for AT2PhaseField." );
     return { materialProperties[5] };
   }
-
   void AT2PhaseField::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
     // material properties

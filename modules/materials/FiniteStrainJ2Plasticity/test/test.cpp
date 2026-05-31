@@ -69,7 +69,7 @@ void testSetup( const std::string& testName,
     FiniteStrainJ2Plasticity::Deformation< 3 > def;
     FiniteStrainJ2Plasticity::TimeIncrement    timeInc = { 0, 0.1 };
 
-    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response = { 0.0, 0.0, stateVars_.data() };
+    FiniteStrainJ2Plasticity::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, stateVars_.data() );
     FiniteStrainJ2Plasticity::AlgorithmicModuli< 3 >    tangent;
 
     // Prescribe a deformation gradient tensor F for the considered load case

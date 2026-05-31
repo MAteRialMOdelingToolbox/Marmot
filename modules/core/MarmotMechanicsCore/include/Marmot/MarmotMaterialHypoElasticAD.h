@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -28,15 +26,38 @@
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
 
+/**
+ * @brief Derived class of MarmotMaterialHypoElastic providing automatic differentiation support
+ *        for computing the algorithmic tangent via dual numbers.
+ */
 class MarmotMaterialHypoElasticAD : public MarmotMaterialHypoElastic {
 
 public:
+  /// @brief Inherits the base-class constructor; see MarmotMaterialHypoElastic::MarmotMaterialHypoElastic().
   using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
+  /// @brief Structure holding the material state for 3D using dual numbers (for automatic differentiation).
   struct state3DAD {
-    Marmot::Vector6dual stress;              ///< Cauchy stress tensor in Voigt notation
-    double              strainEnergyDensity; ///< Strain energy density
-    double*             stateVars;           ///< Pointer to array of state variables
+    Marmot::Vector6dual stress;               ///< Cauchy stress tensor in Voigt notation
+    double              elasticEnergyDensity; ///< Elastic strain energy density
+    double              dissipation;          ///< Dissipation
+    double*             stateVars;            ///< Pointer to array of state variables
+    /**
+     * @brief Default constructor for initializing state3DAD
+     * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
+     */
+    state3DAD()
+      : stress( Marmot::Vector6dual::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr ){};
+    /**
+     * @brief Constructor for initializing state3DAD
+     *@param state A state3D object containing the initial values for stress, energy density, dissipation, and state
+     *variables.
+     */
+    state3DAD( const state3D& state )
+      : stress( state.stress ),
+        elasticEnergyDensity( state.elasticEnergyDensity ),
+        dissipation( state.dissipation ),
+        stateVars( state.stateVars ){};
   };
   /**
    * @brief Compute the Cauchy stress tensor \f$\boldsymbol{\sigma}\f$ given an increment of the linearized strain
@@ -47,7 +68,7 @@ public:
    * \f$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\f$ can be obtained by means
    * of automatic differentiation.
    *
-   * @param[in,out] stress  Cauchy stress tensor
+   * @param[in,out] state  State carrying the dual Cauchy stress, strain energy, and state variables
    * @param[in]             dStrain linearized strain increment
    * @param[in]             timeInfo Old (pseudo-)time
    */

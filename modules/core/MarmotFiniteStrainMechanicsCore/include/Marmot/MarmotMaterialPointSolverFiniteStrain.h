@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -32,11 +30,11 @@
 #include <string>
 #include <utility>
 #include <vector>
-#pragma once
 
 namespace Marmot {
   namespace Solvers {
     /**
+     * @class Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
      * @brief Solver for material point problems with finite strain materials
      * @details This class implements a solver for material point problems
      * using finite strain material models. It supports loading steps with
@@ -108,6 +106,9 @@ namespace Marmot {
         FastorStandardTensors::Tensor3333d dTau_dF;   ///< Material tangent at the history entry
         Eigen::VectorXd                    stateVars; ///< State variables at the history entry
 
+        /**
+         * @brief Print the history entry to the console
+         */
         void print() const
         {
           std::cout.precision( 6 );
@@ -135,8 +136,14 @@ namespace Marmot {
             std::cout << "]" << std::endl;
           }
         }
-
-        // constructor for easy creation
+        /**
+         * @brief Constructor for HistoryEntry
+         * @param time Time at the history entry
+         * @param stress Stress tensor at the history entry
+         * @param F Deformation gradient at the history entry
+         * @param dTau_dF Material tangent at the history entry
+         * @param stateVars State variables at the history entry
+         */
         HistoryEntry( double                                    time,
                       const FastorStandardTensors::Tensor33d&   stress,
                       const FastorStandardTensors::Tensor33d&   F,
@@ -172,6 +179,7 @@ namespace Marmot {
        * @param materialName Name of the finite strain material model
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
+       * @param options Solver options controlling nonlinear iteration settings
        */
       MarmotMaterialPointSolverFiniteStrain( const std::string&   materialName,
                                              const double*        materialProperties,

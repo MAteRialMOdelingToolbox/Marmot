@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -28,11 +26,22 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
+/**
+ * @file YieldSurfaceCombinationManager.h
+ * @brief Manager for multi-surface yield-surface combinations in multi-surface plasticity.
+ */
+
 namespace Marmot {
   namespace NumericalAlgorithms {
-    /** Manager for yield surface combinations for multisurface plasticity:
-     * Try different yield surface combinations and track already used combinations
-     * */
+    /**
+     * @brief Tracks and iterates over yield-surface activity combinations for multi-surface plasticity.
+     *
+     * Maintains a table of all \f$2^n - 1\f$ non-empty subsets of @p nYieldSurfaces yield
+     * surfaces and provides an interface to iterate over them during the return-mapping
+     * algorithm, marking already-tried combinations as used.
+     *
+     * @tparam nYieldSurfaces  Number of yield surfaces.
+     */
     template < int nYieldSurfaces >
     class YieldSurfaceCombinationManager {
       /// Column in the YieldSurfFlagArr for marking a combination as used

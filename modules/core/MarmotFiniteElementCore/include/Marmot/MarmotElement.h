@@ -11,9 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -48,14 +45,14 @@ public:
   /** @brief Types of element state variables used in initialization and output. */
   enum StateTypes {
 
-    Sigma11,
-    Sigma22,
-    Sigma33,
-    HydrostaticStress,
-    GeostaticStress,
-    MarmotMaterialStateVars,
-    MarmotMaterialInitialization,
-    HasEigenDeformation,
+    Sigma11,                      ///< Normal stress component σ₁₁.
+    Sigma22,                      ///< Normal stress component σ₂₂.
+    Sigma33,                      ///< Normal stress component σ₃₃.
+    HydrostaticStress,            ///< Hydrostatic (mean) stress.
+    GeostaticStress,              ///< Geostatic in-situ stress state.
+    MarmotMaterialStateVars,      ///< Internal material state variables.
+    MarmotMaterialInitialization, ///< Trigger for material model initialization.
+    HasEigenDeformation,          ///< Flag indicating presence of eigen (initial) deformation.
   };
 
   /** @brief Types of distributed loads applicable to element boundaries. */
@@ -220,6 +217,27 @@ public:
    * @note Default implementation throws an exception.
    */
   virtual void computeConsistentInertia( double* I )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+  };
+
+  /**
+   * @brief Compute critical time step for explicit dynamics.
+   * @param[out] criticalTimeStep Suggested critical time step size.
+   * @param[in] QTotal Total dof vector.
+   * @note Default implementation throws an exception.
+   */
+  virtual void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+  };
+
+  /**
+   * @brief Compute internal energy of the element.
+   * @param[out] internalEnergy Computed internal energy.
+   * @note Default implementation throws an exception.
+   */
+  virtual void computeInternalEnergy( double& internalEnergy )
   {
     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };

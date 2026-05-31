@@ -11,9 +11,6 @@
 # *
 # * festigkeitslehre@uibk.ac.at
 # *
-# * Matthias Neuner matthias.neuner@uibk.ac.at
-# * Magdalena Schreter magdalena.schreter@uibk.ac.at
-# *
 # * This file is part of the MAteRialMOdellingToolbox (marmot).
 # *
 # * This library is free software; you can redistribute it and/or

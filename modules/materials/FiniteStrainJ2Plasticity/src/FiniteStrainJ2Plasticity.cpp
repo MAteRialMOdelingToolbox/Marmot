@@ -66,7 +66,7 @@ namespace Marmot::Materials {
                                                                      const TimeIncrement&       timeIncrement ) const
   {
 
-    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
+    TensorMap33d    Fp = stateLayout.getAs< TensorMap33d >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
     double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
@@ -85,10 +85,10 @@ namespace Marmot::Materials {
     Tensor33d dFp;
     dFp.eye();
     Tensor33d Fe = FeTrial;
-    /* std::cout << "FeTrial: " << std::endl << FeTrial << std::endl; */
+
     if ( isYielding( FeTrial, betaP ) ) {
 
-      size_t counter = 0;
+      int counter = 0;
 
       using mV9d = Eigen::Map< Eigen::Matrix< double, 9, 1 > >;
       VectorXd X( 11 );
@@ -111,7 +111,6 @@ namespace Marmot::Materials {
         std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial, alphaPOld );
         counter += 1;
       }
-      /* std::cout << "inner newton iters: " << counter << std::endl; */
 
       // update plastic deformation increment
       Fe              = X.segment( 0, 9 ).data();
@@ -138,6 +137,8 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      auto [betaP_new, _]           = computeBetaP( alphaP );
+      response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
 
       // compute tangent operator
       using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
@@ -155,8 +156,6 @@ namespace Marmot::Materials {
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
 
-      /* tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) +
-       * dTau_dF_partial; */
       tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) + einsum< ijKL, KLMN >( dTau_dFe_partial, dFe_dF );
     }
     else {
@@ -178,14 +177,13 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      response.dissipation += 0.0;
 
       // compute tangent operator
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dFe_dF   = einsum< IK, JL, to_IJKL >( Spatial3D::I, transpose( Fastor::inverse( FpOld ) ) );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
 
-      /* tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) +
-       * dTau_dF_partial; */
       tangents.dTau_dF = einsum< IJKL, KLMN >( dTau_dPK2, dPK2_dF ) + einsum< ijKL, KLMN >( dTau_dFe_partial, dFe_dF );
     }
   }
@@ -196,7 +194,7 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement ) const
   {
 
-    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
+    TensorMap33d    Fp = stateLayout.getAs< TensorMap33d >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
     double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
@@ -293,6 +291,8 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      auto [betaP_new, _]           = computeBetaP( alphaP );
+      response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
 
       // compute tangent operator
       using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
@@ -356,7 +356,7 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement ) const
   {
 
-    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
+    TensorMap33d    Fp = stateLayout.getAs< TensorMap33d >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
     double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
@@ -453,6 +453,8 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      auto [betaP_new, _]           = computeBetaP( alphaP );
+      response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
 
       // compute tangent operator
       using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
@@ -499,6 +501,8 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      auto [betaP_new, _]           = computeBetaP( alphaP );
+      response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
 
       // compute tangent operator
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
@@ -517,7 +521,7 @@ namespace Marmot::Materials {
                                                     const TimeIncrement&       timeIncrement ) const
   {
 
-    Tensor33d&      Fp = stateLayout.getAs< Tensor33d& >( response.stateVars, "Fp" );
+    TensorMap33d    Fp = stateLayout.getAs< TensorMap33d >( response.stateVars, "Fp" );
     const Tensor33d FpOld( Fp );
     double&         alphaP    = stateLayout.getAs< double& >( response.stateVars, "alphaP" );
     const double    alphaPOld = alphaP;
@@ -613,6 +617,8 @@ namespace Marmot::Materials {
                 dTau_dPK2,
                 dTau_dFe_partial )  = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
+      auto [betaP_new, _]           = computeBetaP( alphaP );
+      response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
 
       // compute tangent operator
       using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
@@ -678,7 +684,7 @@ namespace Marmot::Materials {
       stateVars[i] = 0.0;
     }
 
-    Tensor33d& Fp = stateLayout.getAs< Tensor33d& >( stateVars, "Fp" );
+    TensorMap33d Fp = stateLayout.getAs< TensorMap33d >( stateVars, "Fp" );
     memcpy( Fp.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
   }
 } // namespace Marmot::Materials

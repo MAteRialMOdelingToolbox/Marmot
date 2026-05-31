@@ -81,13 +81,13 @@ namespace Marmot::Materials {
     Tensor33t< scalar > S_biot = einsum< ijkl, kl >( dBiotStress_dU, evaluate( U - I ) );
 
     // get old Biot stress from state variables
-    Tensor33d& S_biot_old = stateLayout.getAs< Tensor33d& >( response.stateVars, "S0_old" );
+    Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute change in Biot stress
     const Tensor33t< scalar > dS_biot = S_biot - makeDual( S_biot_old );
 
     // store current Biot stress in state variables
-    memcpy( S_biot_old.data(), makeReal( S_biot ).data(), 9 * sizeof( double ) );
+    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), makeReal( S_biot ).data(), 9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress
     ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel<

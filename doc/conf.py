@@ -8,10 +8,11 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.inheritance_diagram",
     "sphinx.ext.napoleon",
+    "sphinxcontrib.bibtex",
 ]
 
 project = "Marmot"
-copyright = "2025, University of Innsbruck, BOKU Vienna and other authors"
+copyright = "2026, University of Innsbruck, BOKU Vienna and other authors"
 
 # set sphinx "read the docs" theme
 html_theme = "sphinx_rtd_theme"
@@ -82,7 +83,6 @@ breathe_default_project = "Marmot"
 
 breathe_projects_source = {
     "Marmot": ("../", []),
-    "MarmotTopLevel": ("../include/Marmot", ["Marmot.h", "MarmotElement.h", "MarmotMaterial.h"]),
     "MarmotFiniteElementCore": (
         "../modules/core/MarmotFiniteElementCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotFiniteElementCore/include/Marmot/"),
@@ -99,6 +99,10 @@ breathe_projects_source = {
         "../modules/core/MarmotMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotMechanicsCore/include/Marmot/"),
     ),
+    "MarmotUtilitiesCore": (
+        "../modules/core/MarmotUtilitiesCore/include/Marmot",
+        getAllHeadersInFolder("../modules/core/MarmotUtilitiesCore/include/Marmot/"),
+    ),
     "MarmotGradientMechanicsCore": (
         "../modules/core/MarmotGradientMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotGradientMechanicsCore/include/Marmot/"),
@@ -106,3 +110,18 @@ breathe_projects_source = {
 }
 
 breathe_default_members = ("members", "private-members", "protected-members", "undoc-members")
+
+suppress_warnings = [
+    # Shared headers (e.g. Marmot.h, MarmotTypedefs.h) are picked up by every
+    # per-module autodoxygenindex page and re-emit the same cpp:type directives.
+    "duplicate_declaration.cpp",
+    # Some Doxygen-generated declarations use nested templates that Sphinx's C++
+    # domain parser cannot handle; suppress the resulting parse errors.
+    "error.cpp",
+    # Duplicate RST target names produced by repeated Doxygen anchors.
+    "ref.duplicate",
+]
+
+# sphinxcontrib-bibtex configuration
+bibtex_bibfiles = ["pages/publications.bib"]
+bibtex_default_style = "unsrt"

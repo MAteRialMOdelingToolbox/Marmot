@@ -11,9 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -31,7 +28,7 @@
 
 namespace Marmot {
   namespace Constants {
-    /** @brief Constant expression for $\pi$ */
+    /** @brief Constant expression for \f$\pi\f$ */
     constexpr double Pi = 3.141592653589793238463;
     /** @brief Constant expression for 1e-16 */
     constexpr double numZeroPos = 1e-16;

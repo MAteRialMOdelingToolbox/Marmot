@@ -11,10 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -31,6 +27,15 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+
+/**
+ * @file HaighWestergaard.h
+ * @brief Haigh–Westergaard stress and strain invariant coordinates.
+ *
+ * Provides the @c HaighWestergaardCoordinates aggregate and functions for
+ * computing the hydrostatic component \f$\xi\f$, deviatoric radius \f$\rho\f$,
+ * and Lode angle \f$\theta\f$ from stress or strain tensors in Voigt notation.
+ */
 
 namespace Marmot {
   namespace ContinuumMechanics::HaighWestergaard {
@@ -60,7 +65,7 @@ namespace Marmot {
      * \f[\rho=\sqrt{2\,J_2}\f]
      * \f[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\f]
      *
-     * @param stress Stress tensor \f$\sig\f$ given in \ref voigtnotation "Voigt notation".
+     * @param stress Stress tensor \f$\sig\f$ given in Voigt notation.
      */
     template < typename T = double >
     HaighWestergaardCoordinates< T > haighWestergaard( const Eigen::Matrix< T, 6, 1 >& stress )
@@ -92,10 +97,10 @@ namespace Marmot {
     /**
      * Computes the strain coordinates in the Haigh-Westergaard space.
      *
-     * \note The computation is equal to @ref haighWestergaard by replacing the stress invariants with the strain
+     * \note The computation is equal to haighWestergaard() by replacing the stress invariants with the strain
      * invariants.
      *
-     * @param strain Strain tensor \f$\eps\f$ given in \ref voignotation "Voigt notation".
+     * @param strain Strain tensor \f$\eps\f$ given in Voigt notation.
      */
     HaighWestergaardCoordinates< double > haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 

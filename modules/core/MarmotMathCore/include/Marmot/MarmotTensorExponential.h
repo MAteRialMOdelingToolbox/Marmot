@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -99,10 +97,13 @@ namespace Marmot {
         return theExponential;
       }
 
+      /// @brief Result aggregate returned by the first-order-derived tensor exponential.
       template < typename T, std::size_t tensorSize >
       struct TensorExponentialResult {
-        Fastor::Tensor< T, tensorSize, tensorSize >                         theExponential;
-        Fastor::Tensor< T, tensorSize, tensorSize, tensorSize, tensorSize > theExponentialDerivative;
+        Fastor::Tensor< T, tensorSize, tensorSize > theExponential; ///< The matrix exponential \f$\exp(\mathbf{A})\f$
+        Fastor::Tensor< T, tensorSize, tensorSize, tensorSize, tensorSize >
+          theExponentialDerivative; ///< First-order derivative of the matrix exponential with respect to the input
+                                    ///< tensor
       };
 
       namespace FirstOrderDerived {

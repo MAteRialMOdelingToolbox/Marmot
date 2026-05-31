@@ -1,13 +1,9 @@
 #include "Marmot/MarmotMaterialHypoElastic.h"
-#include "Marmot/HughesWinget.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotKinematics.h"
 #include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMath.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
-#include <iostream>
 
 using namespace Eigen;
 
@@ -37,18 +33,19 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&                stat
   // assumption of isochoric deformation for initial guess
   dStrain3DTemp( 2 ) = ( -dStrain2D( 0 ) - dStrain2D( 1 ) );
 
-  state3D state;
-  state.stress              = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
-  state.stateVars           = stateVars.data();
-  state.strainEnergyDensity = state2D_.strainEnergyDensity;
+  state3D state( Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D ),
+                 state2D_.elasticEnergyDensity,
+                 state2D_.dissipation,
+                 stateVars.data() );
 
   int planeStressCount = 1;
   while ( true ) {
 
     stateVars = stateVarsOld;
 
-    state.stress              = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
-    state.strainEnergyDensity = state2D_.strainEnergyDensity;
+    state.stress               = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( stress2D );
+    state.elasticEnergyDensity = state2D_.elasticEnergyDensity;
+    state.dissipation          = state2D_.dissipation;
 
     computeStress( state, dStress_dStrain3D, dStrain3DTemp, timeInfo );
 
@@ -62,7 +59,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&                stat
     if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 )
       tangentCompliance = 1e10;
 
-    dStrain3DTemp[2] -= tangentCompliance * state.stress[2];
+    dStrain3DTemp( 2 ) -= tangentCompliance * state.stress( 2 );
 
     planeStressCount += 1;
     if ( planeStressCount > 13 ) {
@@ -71,14 +68,16 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&                stat
     }
   }
 
-  stress2D                     = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( state.stress );
-  dStress_dStrain2D            = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
-  state2D_.strainEnergyDensity = state.strainEnergyDensity;
+  state2D_.stress               = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::TwoD >( state.stress );
+  state2D_.elasticEnergyDensity = state.elasticEnergyDensity;
+  state2D_.dissipation          = state.dissipation;
+  state2D_.stateVars            = stateVars.data();
+
+  dStress_dStrain2D_ = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
 }
 
-void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
-                                                       double&  dStress_dStrain1D_,
-
+void MarmotMaterialHypoElastic::computeUniaxialStress( state1D&        state1D_,
+                                                       double&         dStress_dStrain1D_,
                                                        const double    dStrain1D_,
                                                        const timeInfo& timeInfo ) const
 {
@@ -94,15 +93,18 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
   VectorXd stateVarsOld  = stateVars;
   Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( dStrain1D );
 
-  state3D state;
-  state.stress              = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
-  state.stateVars           = stateVars.data();
-  state.strainEnergyDensity = state1D_.strainEnergyDensity;
-  int count                 = 1;
+  state3D state( Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D ),
+                 state1D_.elasticEnergyDensity,
+                 state1D_.dissipation,
+                 stateVars.data() );
+
+  int count = 1;
   while ( true ) {
-    stateVars                 = stateVarsOld;
-    state.stress              = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
-    state.strainEnergyDensity = state1D_.strainEnergyDensity;
+    stateVars = stateVarsOld;
+
+    state.stress               = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D );
+    state.elasticEnergyDensity = state1D_.elasticEnergyDensity;
+    state.dissipation          = state1D_.dissipation;
 
     computeStress( state, dStress_dStrain3D, dStrain3DTemp, timeInfo );
 
@@ -122,7 +124,37 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D& state1D_,
     }
   }
 
-  stress1D                     = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::OneD >( state.stress );
-  dStress_dStrain1D_           = ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( dStress_dStrain3D );
-  state1D_.strainEnergyDensity = state.strainEnergyDensity;
+  state1D_.stress = ContinuumMechanics::VoigtNotation::reduce3DVoigt< VoigtSize::OneD >( state.stress )[0];
+  state1D_.elasticEnergyDensity = state.elasticEnergyDensity;
+  state1D_.dissipation          = state.dissipation;
+  state1D_.stateVars            = stateVars.data();
+
+  dStress_dStrain1D_ = ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( dStress_dStrain3D );
+}
+double MarmotMaterialHypoElastic::getMaximumWaveSpeed( const state3D& state ) const
+{
+  const int nStateVars = getNumberOfRequiredStateVars();
+
+  std::vector< double > stateVarsCopy( nStateVars, 0.0 );
+  if ( state.stateVars != nullptr && nStateVars > 0 ) {
+    std::copy_n( state.stateVars, nStateVars, stateVarsCopy.begin() );
+  }
+
+  state3D stateCopy( state.stress, state.elasticEnergyDensity, state.dissipation, stateVarsCopy.data() );
+
+  Marmot::Matrix6d dStress_dStrain = Marmot::Matrix6d::Zero();
+  const auto       dStrain         = Marmot::Vector6d::Zero();
+  const timeInfo   timeInfo{ 0.0, 1.0 };
+
+  computeStress( stateCopy, dStress_dStrain, dStrain, timeInfo );
+
+  const double maxStiffnessDiagonal = std::max( { dStress_dStrain( 0, 0 ),
+                                                  dStress_dStrain( 1, 1 ),
+                                                  dStress_dStrain( 2, 2 ),
+                                                  dStress_dStrain( 3, 3 ),
+                                                  dStress_dStrain( 4, 4 ),
+                                                  dStress_dStrain( 5, 5 ) } );
+  const double density              = getDensity( stateCopy.stateVars );
+
+  return density > 0.0 ? std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / density ) : 0.0;
 }

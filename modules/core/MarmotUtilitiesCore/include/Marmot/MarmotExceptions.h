@@ -35,6 +35,10 @@ namespace Marmot {
    */
   class StressUpdateFailed : public std::runtime_error {
   public:
+    /**
+     * @brief Constructor for StressUpdateFailed exception.
+     * @param message A descriptive error message explaining the reason for the exception.
+     */
     explicit StressUpdateFailed( const std::string& message ) : std::runtime_error( message ) {}
   };
 
@@ -44,6 +48,10 @@ namespace Marmot {
    */
   class SolverConvergenceFailed : public std::runtime_error {
   public:
+    /**
+     * @brief Constructor for SolverConvergenceFailed exception.
+     * @param message A descriptive error message explaining the reason for the exception.
+     */
     explicit SolverConvergenceFailed( const std::string& message ) : std::runtime_error( message ) {}
   };
 
@@ -53,6 +61,10 @@ namespace Marmot {
    */
   class SolverTimestepExhausted : public std::runtime_error {
   public:
+    /**
+     * @brief Constructor for SolverTimestepExhausted exception.
+     * @param message A descriptive error message explaining the reason for the exception.
+     */
     explicit SolverTimestepExhausted( const std::string& message ) : std::runtime_error( message ) {}
   };
 
@@ -62,6 +74,10 @@ namespace Marmot {
    */
   class SolverIncrementsExhausted : public std::runtime_error {
   public:
+    /**
+     * @brief Constructor for SolverIncrementsExhausted exception.
+     * @param message A descriptive error message explaining the reason for the exception.
+     */
     explicit SolverIncrementsExhausted( const std::string& message ) : std::runtime_error( message ) {}
   };
 

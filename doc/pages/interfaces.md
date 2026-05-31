@@ -1,10 +1,20 @@
 # Interfaces
 
-\page interfaces Interfacing with Marmot
-
-There are several conventient ways to interface with Marmot.
+There are several convenient ways to interface with Marmot.
 If you want to use Marmot in a finite element framework,
 you may want to try one of the existing available interfaces.
+
+## How to use Marmot with EdelweissFE
+
+The [EdelweissFE](https://github.com/Edelweiss-Numerics/EdelweissFE) finite element code is designed to work seamlessly with ```Marmot```.
+After the installation of `Marmot`, EdelweissFE can be installed via
+
+```bash
+git clone https://github.com/Edelweiss-Numerics/EdelweissFE.git
+cd EdelweissFE
+conda install --file requirements.txt
+pip install .
+```
 
 ## How to use Marmot with Abaqus
 
@@ -17,51 +27,65 @@ A singularity container recipe is [available](https://github.com/matthiasneuner/
 
 ## Create your custom interface
 
-To create your custom interface to Marmot, you can leverage the MarmotLibrary::MarmotMaterialFactory and MarmotLibrary::MarmotElementFactory factories to create
+To create your custom interface to Marmot, you can leverage the `MarmotLibrary::MarmotMaterialHypoElasticFactory` and `MarmotLibrary::MarmotElementFactory` factories to create
 instances of registered material models and finite elements.
-In general, specialized Marmot materials are derived from the general parent class MarmotMaterial, and
-Marmot finite elements are derived from the general parent class MarmotElement.
-In particular for Marmot materials, Marmot strongly makes use of inheritance to specialize
-on specific continuum theories, e.g., MarmotMaterialHypoElastic for hypoelastic materials.
+Marmot provides two main base classes for materials:
 
-Base classes MarmotMaterial and MarmotElement are considered the most general description of materials and finite elements.
-In particular, MarmotMaterial essentially is only defined by a a identification number, a set of material properties and an internal state (represented by a set of state variables) and may describe any material, e.g., a mechanical, a thermal or a couple thermo-mechanical material.
-Similarly, MarmotElement makes no assumption on the actual physics described by the finite element, but may represent any finite element.
+- `MarmotMaterialHypoElastic` — for small-strain materials formulated in rate form (hypoelastic constitutive relations).
+- `MarmotMaterialFiniteStrain` — for large-strain materials formulated in terms of the deformation gradient.
 
-For materials, physical interpretation is introduced by derivation and specialization of MarmotMaterial.
-For instance, the hypoelastic material MarmotMaterialHypoElastic (computes stresses in rate form) is derived from the more general MarmotMaterialMechanical (computes stresses from a deformation state), which itself is a specialization of MarmotMaterial (reads material properties and may have an internal state).
+Finite elements are derived from the general parent class `MarmotElement`.
 
-Instances of MarmotMaterial are casted down to their specialization.
-For instance, following procedure may be employed to create an instance of a Marmot::Materials::LinearElastic material model,
-which belongs to the class of MarmotMaterialHypoElastic materials, and compute the current stress state:
+For instance, the following procedure may be employed to create an instance of a `Marmot::Materials::LinearElastic` material model,
+which belongs to the class of `MarmotMaterialHypoElastic` materials, and compute the current stress state:
 ```cpp
-// Get the unique material ID of the registered material "LINEARELASTIC"
-const auto materialCode = MarmotMaterialFactory::getMaterialCodeFromName( "LINEARELASTIC" );
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-// Create the instance and cast to a hypoelastic material
-auto material = std::unique_ptr<MarmotMaterialHypoElastic> (
-        dynamic_cast<MarmotMaterialHypoElastic*> (
-            MarmotLibrary::MarmotMaterialFactory::createMaterial( materialCode, materialProperties, nMaterialProperties, anArbitraryIdentificationCode )));
-
-// assign a set of state vars
-material->assignStateVars(stateVars, nStateVars);
+// Create the instance by material name
+auto material = std::unique_ptr<MarmotMaterialHypoElastic>(
+        MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial(
+            "LINEARELASTIC", materialProperties, nMaterialProperties, anArbitraryIdentificationCode ));
 
 // assign a characteristic length parameter (specific to hypoelastic materials)
-material->setCharacteristicElementLength(theCharacteristicElementLength);
+material->setCharacteristicElementLength( theCharacteristicElementLength );
+
+// set up a material state (stress, strain energy, state variables)
+const int             nStateVars = material->getNumberOfRequiredStateVars();
+std::vector< double > stateVars( nStateVars, 0.0 );
+
+MarmotMaterialHypoElastic::state3D state = MarmotMaterialHypoElastic::state3D()
+state.stateVars           = stateVars.data();
 
 // compute stresses
-material->computeStress(stress_in_and_out, dstress_dstrain_out,  dstrain_in, time_in, dtime_in, pNewDT_in_and_out);
+Marmot::Matrix6d                          dStress_dStrain;
+const Marmot::Vector6d                    dStrain  = Marmot::Vector6d::Zero(); // strain increment
+const double                              time     = 0.0;                      // current time
+const double                              dTime    = 0.01;                     // time increment
+const MarmotMaterialHypoElastic::timeInfo timeInfo = { time, dTime };
+material->computeStress( state, dStress_dStrain, dStrain, timeInfo );
 ```
 
 ## Registering a material or finite element
 
-Materials and finite elements are registered using the MarmotMaterialFactory::registerMaterial and MarmotElementFactory::registerElement interfaces.
-Both functions take a unique name (a string chosen by the user), a unique integer identifier (chosen by the user), and factory functions.
-Those Factory functions are used by Marmot to create specific instances of the material or element,
-providing a custom element number (MarmotElement) or a material number and a set of material properties (MarmotMaterial).
+Materials are registered using the `MarmotMaterialHypoElasticFactory::registerMaterial` interface.
+The function takes a unique name (a string chosen by the user) and the concrete material type as a template parameter.
 
-For instance, the 4 node, plane strain displacement finite element "CPE4" is registered as
+For instance, the `LinearElastic` material is registered as
 ```cpp
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
+
+const static bool LinearElasticIsRegistered =
+    MarmotLibrary::MarmotMaterialHypoElasticFactory::registerMaterial< Marmot::Materials::LinearElastic >(
+        "LINEARELASTIC" );
+```
+
+Finite elements are registered using the `MarmotElementFactory::registerElement` interface.
+The function takes a unique name (a string chosen by the user) and a factory function.
+
+For instance, the 4-node plane strain displacement finite element "CPE4" is registered as
+```cpp
+#include "Marmot/MarmotElementFactory.h"
+
 template < class T,
            Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
            typename T::SectionType                             sectionType >
@@ -70,38 +94,42 @@ MarmotLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction(
     return []( int elementID ) -> MarmotElement* { return new T( elementID, integrationType, sectionType ); };
 }
 
-MarmotElementFactory:: registerElement( "CPE4",
-                         MarmotLibrary::ElementCode::CPE4,
-                         makeFactoryFunction< DisplacementFiniteElement< 2, 4 >,
-                                              FullIntegration,
-                                              DisplacementFiniteElement< 2, 4 >::PlaneStrain >() );
+const static bool CPE4_isRegistered = MarmotLibrary::MarmotElementFactory::
+    registerElement( "CPE4",
+                     makeFactoryFunction< DisplacementFiniteElement< 2, 4 >,
+                                          FullIntegration,
+                                          DisplacementFiniteElement< 2, 4 >::PlaneStrain >() );
 ```
 making use of an auxiliary factory function generator.
 
-Creating the specific instance and computing the kernel is easy as
+Creating a specific element instance and computing the kernel is straightforward:
 ```cpp
-const auto elementCode = Marmot::getElementCodeFromName( "CPE4" );
+#include "Marmot/MarmotElementFactory.h"
+#include "Marmot/MarmotElementProperty.h"
 
 int elementNumber = 1;
 
-// create the instance
-auto theElement = std::unique_ptr<MarmotElement> ( MarmotLibrary::MarmotElementFactory::createElement(elementCode,  elementNumber) );
+// create the instance by element name
+auto theElement = std::unique_ptr<MarmotElement>(
+        MarmotLibrary::MarmotElementFactory::createElement( "CPE4", elementNumber ) );
 
-// assign properties (e.g, thickness)
+// assign nodal coordinates
+theElement->assignNodeCoordinates( coordinates );
+
+// assign properties (e.g., thickness)
 theElement->assignProperty( ElementProperties( propertiesElement, nPropertiesElement ) );
 
-// assign a material section
-// in the present case: a MarmotMaterial setion
+// assign a material section by material name
 // MarmotElement takes care to create the required instances of MarmotMaterial
-theElement->assignProperty( MarmotMaterialSection( materialID, propertiesMaterial, nPropertiesMaterial) );
+theElement->assignProperty( MarmotMaterialSection( "LINEARELASTIC", propertiesMaterial, nPropertiesMaterial ) );
 
 // assign state vars to the element
 // MarmotElement automatically assigns the state vars also to MarmotMaterial instances
-theElement->assignStateVars(stateVars, nStateVars);
+theElement->assignStateVars( stateVars, nStateVars );
 
 // initialization
-theElement->initializeYourself(coordinates);
+theElement->initializeYourself();
 
 // compute the kernel
-theElement->computeYourself(U , dU, rightHandSide, KMatrix, time, dTime, pNewDT);
+theElement->computeYourself( U, dU, rightHandSide, KMatrix, time, dTime, pNewDT );
 ```

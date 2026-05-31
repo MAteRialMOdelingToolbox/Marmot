@@ -1,4 +1,3 @@
-
 /* ---------------------------------------------------------------------
  *                                       _
  *  _ __ ___   __ _ _ __ _ __ ___   ___ | |_
@@ -11,8 +10,6 @@
  * 2020 - today
  *
  * festigkeitslehre@uibk.ac.at
- *
- * Alexander Dummer alexander.dummer@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *

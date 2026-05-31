@@ -39,6 +39,8 @@ namespace MarmotLibrary {
   template < int nNonlocalVariables >
   class MarmotMaterialGeneralGradientEnhancedHypoElasticFactory {
   public:
+    /// Type alias for the material factory function, which creates instances of
+    /// MarmotMaterialGeneralGradientEnhancedHypoElastic.
     using materialFactoryFunction = std::function< MarmotMaterialGeneralGradientEnhancedHypoElastic<
       nNonlocalVariables >*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
@@ -76,7 +78,7 @@ namespace MarmotLibrary {
       };
       return true;
     }
-
+    /// @brief Type alias for the map of material factory functions by material name.
     using MaterialFactoryMap = std::unordered_map< std::string, materialFactoryFunction >;
     /// @brief Get the map of material factory functions by material name.
     static MaterialFactoryMap& materialFactoryFunctionByName();

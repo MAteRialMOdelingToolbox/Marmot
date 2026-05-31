@@ -36,16 +36,12 @@ void MarmotMaterialHypoElasticAD::computeStress( state3D&                state,
       Marmot::Vector6dual s( SOld );
 
       // construct AD state
-      state3DAD stateAD;
-      stateAD.stress              = s;
-      stateAD.strainEnergyDensity = state.strainEnergyDensity;
-      stateAD.stateVars           = stateVars.data();
-
+      state3DAD stateAD = state3DAD( state );
       // compute stress
       computeStressAD( stateAD, dE_, timeInfo );
 
-      // Marmot::Vector6dual res = stateAD.stress;
-      return stateAD.stress;
+      Marmot::Vector6dual res = stateAD.stress;
+      return res;
     },
     dEps );
   // ----------------------------------------

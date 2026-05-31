@@ -138,10 +138,7 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     stressTemp = stress;
 
     // set up state and time info for material
-    MarmotMaterialHypoElastic::state3D state;
-    state.stress              = stressTemp;
-    state.strainEnergyDensity = 0.0;
-    state.stateVars           = stateVarsTemp.data();
+    MarmotMaterialHypoElastic::state3D state( stressTemp, 0.0, 0.0, stateVarsTemp.data() );
 
     MarmotMaterialHypoElastic::timeInfo timeInfo;
     timeInfo.time = increment.timeOld + increment.dT;
