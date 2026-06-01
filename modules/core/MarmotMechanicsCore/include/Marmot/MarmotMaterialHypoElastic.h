@@ -28,6 +28,9 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
+#include <string>
+#include <utility>
 #include <vector>
 
 /**
@@ -56,8 +59,10 @@
 class MarmotMaterialHypoElastic {
 
 protected:
-  const double* materialProperties;  ///< Pointer to the array of material properties
-  const int     nMaterialProperties; ///< Number of material properties
+  std::vector< double > materialPropertyStorage; ///< Owned storage of material properties
+  double*               materialProperties;      ///< Pointer to the array of material properties
+  const int             nMaterialProperties;     ///< Number of material properties
+  std::vector< std::string > materialPropertyNames; ///< Ordered list of valid material property names
 
 public:
   const int materialNumber; ///< Integer identifier for this material instance
@@ -68,14 +73,59 @@ public:
    * @param[in] materialNumber_      Integer identifying this material instance.
    */
   MarmotMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-    : materialProperties( matProperties_ ),
+    : materialPropertyStorage( matProperties_, matProperties_ + nMaterialProperties_ ),
+      materialProperties( materialPropertyStorage.data() ),
       nMaterialProperties( nMaterialProperties_ ),
+      materialPropertyNames( nMaterialProperties_ ),
       materialNumber( materialNumber_ )
   {
+    for ( int i = 0; i < nMaterialProperties; ++i ) {
+      materialPropertyNames[i] = "materialProperty" + std::to_string( i );
+    }
   }
 
   /// Default destructor
   virtual ~MarmotMaterialHypoElastic() = default;
+
+  /**
+   * @brief Get the valid material property names in assignment order.
+   * @return Ordered list of valid material property names.
+   */
+  std::vector< std::string > getValidMaterialProperties() const { return materialPropertyNames; }
+
+  /**
+   * @brief Assign a single material property by name.
+   * @param name Name of the material property.
+   * @param value Value to assign.
+   * @throws std::invalid_argument If the property name is unknown.
+   */
+  void assignMaterialProperty( const std::string& name, double value )
+  {
+    const auto it = std::find( materialPropertyNames.begin(), materialPropertyNames.end(), name );
+    if ( it == materialPropertyNames.end() ) {
+      throw std::invalid_argument( "Unknown material property: " + name );
+    }
+
+    const auto idx              = std::distance( materialPropertyNames.begin(), it );
+    materialPropertyStorage[idx] = value;
+  }
+
+protected:
+  /**
+   * @brief Override the valid material property names.
+   * @param names Property names in the same order as the assigned material properties.
+   * @throws std::invalid_argument If @p names has the wrong size.
+   */
+  void setValidMaterialProperties( std::vector< std::string > names )
+  {
+    if ( names.size() != materialPropertyStorage.size() ) {
+      throw std::invalid_argument( "Number of material property names does not match number of material properties." );
+    }
+
+    materialPropertyNames = std::move( names );
+  }
+
+public:
 
   /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;
