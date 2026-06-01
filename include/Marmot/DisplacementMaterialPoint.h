@@ -25,11 +25,11 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/Marmot.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
@@ -214,7 +214,6 @@ namespace Marmot::MaterialPoints {
   void DisplacementMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
   {
     state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
-    material->assignStateVars( state->materialState.data(), state->materialState.size() );
   }
 
   template < int nDim >
@@ -224,22 +223,22 @@ namespace Marmot::MaterialPoints {
     if ( state->contains( stateName ) )
       return state->getStateView( stateName );
     else
-      return material->getStateView( stateName );
+      return material->getStateView( stateName, state->materialState.data() );
   }
 
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
-    material = std::unique_ptr< Material >(
-      dynamic_cast< Material* >( MarmotLibrary::MarmotMaterialFactory::createMaterial( section.materialCode,
-                                                                                       section.materialProperties,
-                                                                                       section.nMaterialProperties,
-                                                                                       _mpNumber ) ) );
+    material = std::unique_ptr< Material >( MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial(
+      section.materialName,
+      section.materialProperties,
+      section.nMaterialProperties,
+      _mpNumber ) );
 
     if ( !material )
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__
-                                   << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
+                                   << ": invalid finite strain material assigned!" );
   }
 
   template < int nDim >
@@ -248,7 +247,7 @@ namespace Marmot::MaterialPoints {
     state->dY_dX.eye();
     /* state->dx_dY.eye(); */
     this->prepareYourself( 0, 0 );
-    material->initializeYourself();
+    material->initializeYourself( state->materialState.data(), state->materialState.size() );
   }
 
   template < int nDim >

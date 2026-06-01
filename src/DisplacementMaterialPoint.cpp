@@ -22,7 +22,7 @@ namespace Marmot::MaterialPoints {
 
     using namespace Marmot;
 
-    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0 };
+    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0, state->materialState.data() };
 
     Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
@@ -51,7 +51,7 @@ namespace Marmot::MaterialPoints {
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
 
-    _density = material->getDensity();
+    _density = material->getDensity( state->materialState.data() );
   }
 
   void DisplacementMaterialPoint3D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
@@ -70,7 +70,7 @@ namespace Marmot::MaterialPoints {
 
     using namespace Marmot;
 
-    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0 };
+    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0,  state->materialState.data() };
 
     Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
@@ -95,7 +95,7 @@ namespace Marmot::MaterialPoints {
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
 
-    _density = material->getDensity();
+    _density = material->getDensity( state->materialState.data() );
   }
 
 } // namespace Marmot::MaterialPoints
