@@ -153,7 +153,7 @@ namespace Marmot::Meshfree {
                                           double        timeNew,
                                           double        dT ) const {};
 
-    virtual void computeDistributedExplicit( int           type,
+    virtual void computeDistributedLoadExplicit( int           type,
                                              int           boundaryFaceID,
                                              const double* load,
                                              double*       fExt,
