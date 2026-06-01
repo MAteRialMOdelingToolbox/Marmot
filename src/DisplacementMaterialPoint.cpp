@@ -22,7 +22,7 @@ namespace Marmot::MaterialPoints {
 
     using namespace Marmot;
 
-    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, state->materialState.data() };
+    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0, state->materialState.data() };
 
     Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
@@ -70,7 +70,7 @@ namespace Marmot::MaterialPoints {
 
     using namespace Marmot;
 
-    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, state->materialState.data() };
+    Material::ConstitutiveResponse< 3 > response3D{ 0, 0, 0,  state->materialState.data() };
 
     Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
