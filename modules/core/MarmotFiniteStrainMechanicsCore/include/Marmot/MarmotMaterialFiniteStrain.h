@@ -43,7 +43,7 @@ class MarmotMaterialFiniteStrain {
 
 protected:
   std::vector< double > materialPropertyStorage; ///< Owned storage of material property values.
-  double*               materialProperties;      ///< Pointer to the array of material property values.
+  const double*         materialProperties;      ///< Pointer to the array of material property values.
   const int             nMaterialProperties;     ///< Number of material property values.
   std::vector< std::string > materialPropertyNames; ///< Ordered list of valid material property names.
 
@@ -75,7 +75,7 @@ public:
    * @brief Get the valid material property names in assignment order.
    * @return Ordered list of valid material property names.
    */
-  std::vector< std::string > getValidMaterialProperties() const { return materialPropertyNames; }
+  const std::vector< std::string >& getValidMaterialProperties() const { return materialPropertyNames; }
 
   /**
    * @brief Assign a single material property by name.

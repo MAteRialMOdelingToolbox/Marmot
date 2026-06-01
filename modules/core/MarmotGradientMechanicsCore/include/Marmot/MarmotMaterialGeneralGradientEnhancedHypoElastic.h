@@ -58,7 +58,7 @@ class MarmotMaterialGeneralGradientEnhancedHypoElastic {
 protected:
   /// @brief Pointer to the array of material properties.
   std::vector< double > materialPropertyStorage;
-  double*               materialProperties;
+  const double*         materialProperties;
   /// @brief Number of material properties.
   const int nMaterialProperties;
   std::vector< std::string > materialPropertyNames;
@@ -91,7 +91,7 @@ public:
    * @brief Get the valid material property names in assignment order.
    * @return Ordered list of valid material property names.
    */
-  std::vector< std::string > getValidMaterialProperties() const { return materialPropertyNames; }
+  const std::vector< std::string >& getValidMaterialProperties() const { return materialPropertyNames; }
 
   /**
    * @brief Assign a single material property by name.
