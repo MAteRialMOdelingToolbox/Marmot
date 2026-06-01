@@ -130,10 +130,10 @@ set(INSTALLED_MODULE_INCLUDE_DIRS "")
 
 # subdirlist: populate <result> with the names of immediate subdirectories of <curdir>.
 function(subdirlist result curdir)
-  file(GLOB _children RELATIVE "${curdir}" "${curdir}/*")
+  file(GLOB _children CONFIGURE_DEPENDS RELATIVE "${curdir}" "${curdir}/*")
   set(_dirs "")
   foreach(_child ${_children})
-  file(GLOB _children CONFIGURE_DEPENDS RELATIVE "${curdir}" "${curdir}/*")
+    if(IS_DIRECTORY "${curdir}/${_child}")
       list(APPEND _dirs "${_child}")
     endif()
   endforeach()
