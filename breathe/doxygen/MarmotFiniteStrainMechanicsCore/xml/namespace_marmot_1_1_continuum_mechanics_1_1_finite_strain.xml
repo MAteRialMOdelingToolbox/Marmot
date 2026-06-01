@@ -3,10 +3,11 @@
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::FiniteStrain</compoundname>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity">Marmot::ContinuumMechanics::FiniteStrain::Plasticity</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity">Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="33" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="40" column="3"/>
   </compounddef>
 </doxygen>

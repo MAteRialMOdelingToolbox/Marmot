@@ -5,7 +5,7 @@ Requirements
 ************
 
 Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library,
-autodiff `autodiff <github.com/autodiff/autodiff>`_,
+`autodiff <https://github.com/autodiff/autodiff>`_,
 and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
@@ -28,8 +28,8 @@ If necessary, get Miniforge:
    :caption: Step 1
 
     curl -L -O \
-        https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
-    bash Miniforge3-Linux-aarch64.sh -b -p ./miniforge3
+        "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+    bash "Miniforge3-$(uname)-$(uname -m).sh" -b -p ./miniforge3
 
 Add conda to your environment:
 

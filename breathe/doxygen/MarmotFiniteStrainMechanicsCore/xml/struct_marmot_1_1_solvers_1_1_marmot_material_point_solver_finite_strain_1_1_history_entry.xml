@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</compoundname>
+    <includes refid="_marmot_material_point_solver_finite_strain_8h" local="no">MarmotMaterialPointSolverFiniteStrain.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1aad1456473c7dc95674e65cb79dac729c" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::time</qualifiedname>
+        <briefdescription>
+<para>Time at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="103" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1ab0f5d978943ef2bd5fd03d3c28b9ab9b" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor33d</type>
+        <definition>FastorStandardTensors::Tensor33d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stress</qualifiedname>
+        <briefdescription>
+<para>Stress at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="104" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a488d704f4e400ff603e5b52048364e9e" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor33d</type>
+        <definition>FastorStandardTensors::Tensor33d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::F</definition>
+        <argsstring></argsstring>
+        <name>F</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::F</qualifiedname>
+        <briefdescription>
+<para>deformation gradient at the history entry </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="105" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a20f93a97a746771aa6f1de6b56c7090f" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor3333d</type>
+        <definition>FastorStandardTensors::Tensor3333d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::dTau_dF</definition>
+        <argsstring></argsstring>
+        <name>dTau_dF</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::dTau_dF</qualifiedname>
+        <briefdescription>
+<para>Material tangent at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="106" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="106" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a846067b2ecf9bee16e58caaaff6f4235" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stateVars</qualifiedname>
+        <briefdescription>
+<para>State variables at the history entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="107" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a33fe670b05aa9641fd0173e643b9d7ec" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::print</definition>
+        <argsstring>() const</argsstring>
+        <name>print</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::print</qualifiedname>
+        <briefdescription>
+<para>Print the history entry to the console. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="112" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="112" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a55c20c2585d2c729fb2fa63f25240ee1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry</definition>
+        <argsstring>(double time, const FastorStandardTensors::Tensor33d &amp;stress, const FastorStandardTensors::Tensor33d &amp;F, const FastorStandardTensors::Tensor3333d &amp;dTau_dF, const Eigen::VectorXd &amp;stateVars)</argsstring>
+        <name>HistoryEntry</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>const FastorStandardTensors::Tensor33d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const FastorStandardTensors::Tensor33d &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const FastorStandardTensors::Tensor3333d &amp;</type>
+          <declname>dTau_dF</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kindref="compound">HistoryEntry</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the history entry </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress tensor at the history entry </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient at the history entry </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dTau_dF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material tangent at the history entry </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variables at the history entry </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="147" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="147" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a1f93cfc5a4af4f3dd76c8aea34031674" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry</definition>
+        <argsstring>()</argsstring>
+        <name>HistoryEntry</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="156" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="156" bodyend="163"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to record the history of the simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each entry contains time, stress, deformation, and state variables. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="102" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="102" bodyend="164"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a20f93a97a746771aa6f1de6b56c7090f" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>dTau_dF</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a488d704f4e400ff603e5b52048364e9e" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>F</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a55c20c2585d2c729fb2fa63f25240ee1" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>HistoryEntry</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a1f93cfc5a4af4f3dd76c8aea34031674" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>HistoryEntry</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a33fe670b05aa9641fd0173e643b9d7ec" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>print</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a846067b2ecf9bee16e58caaaff6f4235" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1ab0f5d978943ef2bd5fd03d3c28b9ab9b" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>stress</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1aad1456473c7dc95674e65cb79dac729c" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

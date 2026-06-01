@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_automatic_differentiation_1_1_third_order" kind="namespace" language="C++">
+    <compoundname>Marmot::AutomaticDifferentiation::ThirdOrder</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1afe518aeea4dc7f29dd8c9105f6a5a2a9" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; dual3rd(const Fastor::Tensor&lt; dual3rd, dim, dim &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::AutomaticDifferentiation::ThirdOrder::tensor_to_scalar_function_type =  std::function&lt; dual3rd( const Fastor::Tensor&lt; dual3rd, dim, dim &gt;&amp; T ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>tensor_to_scalar_function_type</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::ThirdOrder::tensor_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+<para>Alias for a function mapping a tensor to a scalar with third order dual numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>dimension of the input tensor (dim x dim)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The implementation is currently limited to second rank (dim x dim) tensors </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="287" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="287" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a54dbc5043b98792a972219e15fc2b4be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>dim</declname>
+            <defname>dim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim, dim, dim &gt; &gt;</type>
+        <definition>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim, dim, dim &gt; &gt; Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3</definition>
+        <argsstring>(const tensor_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T)</argsstring>
+        <name>d3f_dT3</name>
+        <qualifiedname>Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3</qualifiedname>
+        <param>
+          <type>const tensor_to_scalar_function_type&lt; dim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, dim, dim &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <briefdescription>
+<para>Computes the third derivative of a function that maps a tensor to a scalar. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>dimension of the input tensor (dim x dim) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function mapping a (dim x dim) tensor to a scalar </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input tensor at which the derivative is evaluated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>tuple of function value, first derivative, second derivative and third derivative of F with respect to T first derivative has shape (dim, dim) second derivative has shape (dim, dim, dim, dim) third derivative has shape (dim, dim, dim, dim, dim, dim)</para>
+</simplesect>
+<simplesect kind="note"><para>The implementation is currently limited to second rank (dim x dim) tensors </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="304" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="304" bodyend="345"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="278" column="5"/>
+  </compounddef>
+</doxygen>

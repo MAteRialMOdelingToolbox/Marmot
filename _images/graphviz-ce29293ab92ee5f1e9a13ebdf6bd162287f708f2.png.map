@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::StressUpdateFailed" alt="" coords="5,5,304,53"/>
+<area shape="rect" id="node2" title="std::runtime_error" alt="" coords="56,101,253,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="156,52,157,87,152,85,153,56"/>
+</map>

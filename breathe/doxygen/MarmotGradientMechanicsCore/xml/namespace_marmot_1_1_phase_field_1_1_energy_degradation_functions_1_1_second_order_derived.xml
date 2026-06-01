@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions_1_1_second_order_derived" kind="namespace" language="C++">
+    <compoundname>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1a96924090a4282e25c29ba93ec01a0386" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quadratic</definition>
+        <argsstring>(const double pf)</argsstring>
+        <name>quadratic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quadratic</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Quadratic degradation function and its first and second derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
+</simplesect>
+This function returns the value of the quadratic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="0">\[ g(\phi) = (1 - \phi)^2,\]</formula> and its derivatives are given by <formula id="9">\[ g&apos;(\phi) = -2(1 - \phi), \quad g&apos;&apos;(\phi) = 2. \]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="125" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" declline="125" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1a97193d6541870538c3de90139c155eb5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::cubic</definition>
+        <argsstring>(const double pf)</argsstring>
+        <name>cubic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::cubic</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Cubic degradation function and its first and second derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
+</simplesect>
+This function returns the value of the cubic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="2">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> and its derivatives are given by <formula id="10">\[ g&apos;(\phi) = -6(1 - \phi)\phi, \quad g&apos;&apos;(\phi) = 12\phi - 6. \]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="136" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" declline="136" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1a6e4f75b6e61a92bab810d47cfa4782dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quartic</definition>
+        <argsstring>(const double pf)</argsstring>
+        <name>quartic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quartic</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Quartic degradation function and its first and second derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
+</simplesect>
+This function returns the value of the quartic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="3">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> and its derivatives are given by  <formula id="11">\[ g&apos;(\phi) = -12(1 - \phi)^2 + 12(1 - \phi)^3, \quad g&apos;&apos;(\phi) = 24(1 - \phi) -
+36(1 - \phi)^2. \]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="148" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" declline="148" declcolumn="18"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1ab4904b60f75e0bf8f8076b0de8cf834f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::generic</definition>
+        <argsstring>(const double pf, const double p, const double a1, const double a2, const double a3)</argsstring>
+        <name>generic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::generic</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a1</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a2</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a3</declname>
+        </param>
+        <briefdescription>
+<para>Generic degradation function and its first and second derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Exponent parameter controlling the shape of the degradation function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the linear term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the quadratic term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the cubic term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
+</simplesect>
+This function returns the value of the generic degradation function along with its first and second derivatives. The degradation function is defined as  <formula id="12">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi
+(1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable, and <formula id="5">$p$</formula>, <formula id="6">$a_1$</formula>, <formula id="7">$a_2$</formula>, and <formula id="8">$a_3$</formula> are parameters that control the shape of the degradation function. The first and second derivatives are computed using automatic differentiation with hyper-dual numbers. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="165" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" declline="165" declcolumn="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="114" column="5"/>
+  </compounddef>
+</doxygen>

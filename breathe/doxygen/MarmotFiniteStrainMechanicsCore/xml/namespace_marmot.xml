@@ -3,10 +3,12 @@
   <compounddef id="namespace_marmot" kind="namespace" language="C++">
     <compoundname>Marmot</compoundname>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_materials">Marmot::Materials</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_solvers">Marmot::Solvers</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="32" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="29" column="1"/>
   </compounddef>
 </doxygen>

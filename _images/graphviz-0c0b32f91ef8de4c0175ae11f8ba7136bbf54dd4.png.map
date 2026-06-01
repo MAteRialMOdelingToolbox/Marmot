@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Materials::B4" alt="" coords="33,5,271,53"/>
+<area shape="rect" id="node2" title="MarmotMaterialHypoElastic" alt="" coords="5,101,299,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="154,52,154,87,150,85,150,56"/>
+</map>

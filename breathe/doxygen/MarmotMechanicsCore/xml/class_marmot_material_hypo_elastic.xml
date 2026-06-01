@@ -2,10 +2,75 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_material_hypo_elastic" kind="class" language="C++" prot="public" abstract="yes">
     <compoundname>MarmotMaterialHypoElastic</compoundname>
-    <basecompoundref refid="class_marmot_material_mechanical" prot="public" virt="non-virtual">MarmotMaterialMechanical</basecompoundref>
     <derivedcompoundref refid="class_marmot_material_hypo_elastic_a_d" prot="public" virt="non-virtual">MarmotMaterialHypoElasticAD</derivedcompoundref>
     <includes refid="_marmot_material_hypo_elastic_8h" local="no">MarmotMaterialHypoElastic.h</includes>
+    <innerclass refid="struct_marmot_material_hypo_elastic_1_1state1_d" prot="public">MarmotMaterialHypoElastic::state1D</innerclass>
+    <innerclass refid="struct_marmot_material_hypo_elastic_1_1state2_d" prot="public">MarmotMaterialHypoElastic::state2D</innerclass>
+    <innerclass refid="struct_marmot_material_hypo_elastic_1_1state3_d" prot="public">MarmotMaterialHypoElastic::state3D</innerclass>
+    <innerclass refid="struct_marmot_material_hypo_elastic_1_1time_info" prot="public">MarmotMaterialHypoElastic::timeInfo</innerclass>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_material_hypo_elastic_1a706a93d8061610826b9aaf79038f60ec" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* MarmotMaterialHypoElastic::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>MarmotMaterialHypoElastic::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="59" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_hypo_elastic_1ace64e351bd6ba3e08c915b15888e994b" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int MarmotMaterialHypoElastic::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>MarmotMaterialHypoElastic::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>Number of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="60" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_material_hypo_elastic_1a544a90b3429a5b52c5c3458bccbc4cbd" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int MarmotMaterialHypoElastic::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>MarmotMaterialHypoElastic::materialNumber</qualifiedname>
+        <briefdescription>
+<para>Integer identifier for this material instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="63" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_material_hypo_elastic_1a9999e819720778a8168c8df32e09d958" prot="public" static="no" mutable="no">
+        <type>MarmotStateLayoutDynamic</type>
+        <definition>MarmotStateLayoutDynamic MarmotMaterialHypoElastic::stateLayout</definition>
+        <argsstring></argsstring>
+        <name>stateLayout</name>
+        <qualifiedname>MarmotMaterialHypoElastic::stateLayout</qualifiedname>
+        <briefdescription>
+<para>Layout of the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="81" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
       <memberdef kind="variable" id="class_marmot_material_hypo_elastic_1af526ea494a3ba4d70de3be5d2d55b5a0" prot="public" static="no" mutable="no">
         <type>double</type>
         <definition>double MarmotMaterialHypoElastic::characteristicElementLength</definition>
@@ -19,10 +84,78 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="60" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="60" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="145" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="145" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a9d3a107e88311ad5aeda1948c54a3d7e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>MarmotMaterialHypoElastic::MarmotMaterialHypoElastic</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>MarmotMaterialHypoElastic</name>
+        <qualifiedname>MarmotMaterialHypoElastic::MarmotMaterialHypoElastic</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the material with a given set of material properties and an identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of entries in <computeroutput>matProperties_</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Integer identifying this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="70" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="70" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a50fdcfbf6d1e8321141d9a66804a65d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual MarmotMaterialHypoElastic::~MarmotMaterialHypoElastic</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MarmotMaterialHypoElastic</name>
+        <qualifiedname>MarmotMaterialHypoElastic::~MarmotMaterialHypoElastic</qualifiedname>
+        <briefdescription>
+<para>Default destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="78" column="11"/>
+      </memberdef>
       <memberdef kind="function" id="class_marmot_material_hypo_elastic_1aee2d34ac568027969f668999154b4b20" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
         <definition>void MarmotMaterialHypoElastic::setCharacteristicElementLength</definition>
@@ -50,158 +183,46 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="68" column="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="153" column="8"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a5c718df3ee25eb2462b707d3e06c9621" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
         <definition>virtual void MarmotMaterialHypoElastic::computeStress</definition>
-        <argsstring>(double *stress, double *dStressDDStrain, const double *FOld, const double *FNew, const double *timeOld, const double dT, double &amp;pNewDT) override</argsstring>
+        <argsstring>(state3D &amp;state, Marmot::Matrix6d &amp;dStress_dStrain, const Marmot::Vector6d &amp;dStrain, const timeInfo &amp;timeInfo) const =0</argsstring>
         <name>computeStress</name>
         <qualifiedname>MarmotMaterialHypoElastic::computeStress</qualifiedname>
-        <reimplements refid="class_marmot_material_mechanical_1ad41c3e35947773970340d5a315b3e52a">computeStress</reimplements>
+        <reimplementedby refid="class_marmot_material_hypo_elastic_a_d_1a0e9ccf3ea4764526ef87a933a2575ea1">computeStress</reimplementedby>
         <param>
-          <type>double *</type>
-          <declname>stress</declname>
+          <type><ref refid="struct_marmot_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> &amp;</type>
+          <declname>state</declname>
         </param>
         <param>
-          <type>double *</type>
-          <declname>dStressDDStrain</declname>
+          <type>Marmot::Matrix6d &amp;</type>
+          <declname>dStress_dStrain</declname>
         </param>
         <param>
-          <type>const double *</type>
-          <declname>FOld</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>FNew</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
-        </param>
-        <param>
-          <type>const double</type>
-          <declname>dT</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-<para>For a given deformation gradient at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="12">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{F}^{(n+1)}}$</formula>.</para>
-<para><xrefsect id="todo_1_todo000003"><xreftitle>Todo</xreftitle><xrefdescription><para>A default implementation is provided.</para>
-</xrefdescription></xrefsect></para>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername direction="inout">stress</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Cauchy stress </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="inout">dSdE</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the deformation gradient <formula id="13">$\boldsymbol{F}$</formula> </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">FOld</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Deformation gradient at the old (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">FNew</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Deformation gradient at the current (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">timeOld</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Old (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">dt</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="inout">pNewDT</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Suggestion for a new time increment </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="85" column="16"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a4751feeb33fc3205fc5c2b75fdc0d30c" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
-        <type>void</type>
-        <definition>virtual void MarmotMaterialHypoElastic::computeStress</definition>
-        <argsstring>(double *stress, double *dStressDDStrain, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT)=0</argsstring>
-        <name>computeStress</name>
-        <qualifiedname>MarmotMaterialHypoElastic::computeStress</qualifiedname>
-        <reimplementedby refid="class_marmot_material_hypo_elastic_a_d_1a8bab35fe61d2cb2a0b157832aa040e12">computeStress</reimplementedby>
-        <param>
-          <type>double *</type>
-          <declname>stress</declname>
-        </param>
-        <param>
-          <type>double *</type>
-          <declname>dStressDDStrain</declname>
-        </param>
-        <param>
-          <type>const double *</type>
+          <type>const Marmot::Vector6d &amp;</type>
           <declname>dStrain</declname>
         </param>
         <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
-        </param>
-        <param>
-          <type>const double</type>
-          <declname>dT</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
+          <type>const <ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref> &amp;</type>
+          <declname>timeInfo</declname>
         </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given linearized strain increment <formula id="14">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="15">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para>For a given linearized strain increment <formula id="52">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="53">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername direction="inout">stress</parametername>
+<parametername direction="inout">state</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Cauchy stress </para>
+<para>A <ref refid="struct_marmot_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> instance carrying stress, strain energy, and state variables </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
-<parametername direction="inout">dStressDDstrain</parametername>
+<parametername direction="inout">dStress_dStrain</parametername>
 </parameternamelist>
 <parameterdescription>
 <para>Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </para>
@@ -217,26 +238,10 @@
 </parameteritem>
 <parameteritem>
 <parameternamelist>
-<parametername direction="in">timeOld</parametername>
+<parametername direction="in"><ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref></parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Old (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">dt</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="inout">pNewDT</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Suggestion for a new time increment </para>
+<para>Structure carrying the current (pseudo-)time and the (pseudo-)time increment </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -244,237 +249,338 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="106" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="166" column="16"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a2c703a3ac8f0b1211402c28712ad9609" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a312a9d1538e79e189ba6dbed2fa6d77a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
-        <definition>virtual void MarmotMaterialHypoElastic::computePlaneStress</definition>
-        <argsstring>(double *stress2D, double *dStress_dStrain2D, const double *dStrain2D, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
-        <name>computePlaneStress</name>
-        <qualifiedname>MarmotMaterialHypoElastic::computePlaneStress</qualifiedname>
+        <definition>virtual void MarmotMaterialHypoElastic::computeStressExplicit</definition>
+        <argsstring>(state3D &amp;state, const Marmot::Vector6d &amp;dStrain, const timeInfo &amp;timeInfo) const</argsstring>
+        <name>computeStressExplicit</name>
+        <qualifiedname>MarmotMaterialHypoElastic::computeStressExplicit</qualifiedname>
         <param>
-          <type>double *</type>
-          <declname>stress2D</declname>
+          <type><ref refid="struct_marmot_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> &amp;</type>
+          <declname>state</declname>
         </param>
         <param>
-          <type>double *</type>
-          <declname>dStress_dStrain2D</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>dStrain2D</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
-        </param>
-        <param>
-          <type>const double</type>
-          <declname>dT</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="117" column="16"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1aed09321cbadf6521263ddf4001288c5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>virtual void MarmotMaterialHypoElastic::computeUniaxialStress</definition>
-        <argsstring>(double *stress1D, double *dStress_dStrain1D, const double *dStrain, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
-        <name>computeUniaxialStress</name>
-        <qualifiedname>MarmotMaterialHypoElastic::computeUniaxialStress</qualifiedname>
-        <param>
-          <type>double *</type>
-          <declname>stress1D</declname>
-        </param>
-        <param>
-          <type>double *</type>
-          <declname>dStress_dStrain1D</declname>
-        </param>
-        <param>
-          <type>const double *</type>
+          <type>const Marmot::Vector6d &amp;</type>
           <declname>dStrain</declname>
         </param>
         <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
-        </param>
-        <param>
-          <type>const double</type>
-          <declname>dT</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
+          <type>const <ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref> &amp;</type>
+          <declname>timeInfo</declname>
         </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
+<para>Explicit version of <ref refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" kindref="member">computeStress</ref> for use in explicit time integration schemes. The algorithmic tangent is not needed in explicit schemes and will therefore not be computed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <ref refid="struct_marmot_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> instance carrying stress, strain energy, and state variables </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>linearized strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in"><ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Structure carrying time information</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation calls <ref refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" kindref="member">computeStress</ref> and ignores the algorithmic tangent. </para>
+</simplesect>
+<simplesect kind="note"><para>Derived classes may override this method for efficiency reasons. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="128" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="181" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="181" bodyend="185"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1adc72d0bff4f72a5eaed2baf11dc02f24" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a28a60ba5b01d5536853bd6c42d5a756d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>virtual void MarmotMaterialMechanical::computePlaneStress</definition>
-        <argsstring>(double *stress2D, double *dStress_dF2DNew, const double *FOld2D, const double *FNew2D, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
+        <definition>virtual void MarmotMaterialHypoElastic::computePlaneStress</definition>
+        <argsstring>(state2D &amp;stress2D, Marmot::Matrix3d &amp;dStress_dStrain2D, const Marmot::Vector3d &amp;dStrain2D, const timeInfo &amp;timeInfo) const</argsstring>
         <name>computePlaneStress</name>
         <qualifiedname>MarmotMaterialHypoElastic::computePlaneStress</qualifiedname>
-        <reimplements refid="class_marmot_material_mechanical_1adc72d0bff4f72a5eaed2baf11dc02f24">computePlaneStress</reimplements>
         <param>
-          <type>double *</type>
+          <type><ref refid="struct_marmot_material_hypo_elastic_1_1state2_d" kindref="compound">state2D</ref> &amp;</type>
           <declname>stress2D</declname>
         </param>
         <param>
-          <type>double *</type>
-          <declname>dStress_dF2DNew</declname>
+          <type>Marmot::Matrix3d &amp;</type>
+          <declname>dStress_dStrain2D</declname>
         </param>
         <param>
-          <type>const double *</type>
-          <declname>FOld2D</declname>
+          <type>const Marmot::Vector3d &amp;</type>
+          <declname>dStrain2D</declname>
         </param>
         <param>
-          <type>const double *</type>
-          <declname>FNew2D</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
-        </param>
-        <param>
-          <type>const double</type>
-          <declname>dT</declname>
-        </param>
-        <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
+          <type>const <ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref> &amp;</type>
+          <declname>timeInfo</declname>
         </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Plane stress implementation of <ref refid="class_marmot_material_hypo_elastic_1a5c718df3ee25eb2462b707d3e06c9621" kindref="member">computeStress</ref>. </para>
+<para>Plane stress implementation of <ref refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" kindref="member">computeStress</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="116" column="3"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="190" column="16"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a914feb016e64919cee4f1d7ab5029cd8" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a89bbeb4be69cf9b037f0d77909280fd2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
-        <definition>virtual void MarmotMaterialMechanical::computeUniaxialStress</definition>
-        <argsstring>(double *stress1D, double *dStress1D_dF1DNew, const double *F1DOld, const double *F1DNew, const double *timeOld, const double dT, double &amp;pNewDT)</argsstring>
+        <definition>virtual void MarmotMaterialHypoElastic::computeUniaxialStress</definition>
+        <argsstring>(state1D &amp;stress1D, double &amp;dStress_dStrain1D, const double dStrain, const timeInfo &amp;timeInfo) const</argsstring>
         <name>computeUniaxialStress</name>
         <qualifiedname>MarmotMaterialHypoElastic::computeUniaxialStress</qualifiedname>
-        <reimplements refid="class_marmot_material_mechanical_1a914feb016e64919cee4f1d7ab5029cd8">computeUniaxialStress</reimplements>
         <param>
-          <type>double *</type>
+          <type><ref refid="struct_marmot_material_hypo_elastic_1_1state1_d" kindref="compound">state1D</ref> &amp;</type>
           <declname>stress1D</declname>
         </param>
         <param>
-          <type>double *</type>
-          <declname>dStress1D_dF1DNew</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>F1DOld</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>F1DNew</declname>
-        </param>
-        <param>
-          <type>const double *</type>
-          <declname>timeOld</declname>
+          <type>double &amp;</type>
+          <declname>dStress_dStrain1D</declname>
         </param>
         <param>
           <type>const double</type>
-          <declname>dT</declname>
+          <declname>dStrain</declname>
         </param>
         <param>
-          <type>double &amp;</type>
-          <declname>pNewDT</declname>
+          <type>const <ref refid="struct_marmot_material_hypo_elastic_1_1time_info" kindref="compound">timeInfo</ref> &amp;</type>
+          <declname>timeInfo</declname>
         </param>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Uniaxial stress implementation of <ref refid="class_marmot_material_hypo_elastic_1a5c718df3ee25eb2462b707d3e06c9621" kindref="member">computeStress</ref>. </para>
+<para>Uniaxial stress implementation of <ref refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" kindref="member">computeStress</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="127" column="3"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="198" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a32d18c99729dabd8e0bed1ad853e01d3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>StateView</type>
+        <definition>StateView MarmotMaterialHypoElastic::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>MarmotMaterialHypoElastic::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get a view to the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>StatView to access the state variable </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="209" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="209" bodyend="212"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1ab74195ef389dbab4bd9222859fd2e730" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int MarmotMaterialHypoElastic::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>MarmotMaterialHypoElastic::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Get the total number of required state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Total number of required state variables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="218" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="218" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1ac38d9e0835bf325471ca11698ff058f0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void MarmotMaterialHypoElastic::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>MarmotMaterialHypoElastic::initializeYourself</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables at a material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation initializes all state variables to zero. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="227" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="227" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a03f6899cd7331927cc98ad68d5a4d47a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>virtual double MarmotMaterialHypoElastic::getMaximumWaveSpeed</definition>
+        <argsstring>(const state3D &amp;state) const</argsstring>
+        <name>getMaximumWaveSpeed</name>
+        <qualifiedname>MarmotMaterialHypoElastic::getMaximumWaveSpeed</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <briefdescription>
+<para>Get the maximum wave speed of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current material state </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Maximum wave speed</para>
+</simplesect>
+The default implementation computes the 3D algorithmic tangent and returns <computeroutput>sqrt(max(C_ii) / rho)</computeroutput> with <computeroutput>C_ii</computeroutput> from the Voigt tangent diagonal entries. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="241" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_material_hypo_elastic_1a22deae189dd5b49be608c54e5364fca4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double MarmotMaterialHypoElastic::getDensity</definition>
+        <argsstring>(const double *stateVars) const =0</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>MarmotMaterialHypoElastic::getDensity</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get the mass density of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Mass density of the material </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="248" column="18"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="4">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="5">$ \sig $</formula>, the stretching rate tensor <formula id="6">$ \epsRate $</formula> and the time <formula id="7">$ t $</formula>.</para>
-<para><formula id="8">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="57">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="58">$ \sig $</formula>, the stretching rate tensor <formula id="59">$ \epsRate $</formula> and the time <formula id="60">$ t $</formula>.</para>
+<para><formula id="61">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="9">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
+<para><formula id="62">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="10">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
+<para><formula id="63">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
 <para>and the algorithmic tangent</para>
-<para><formula id="11">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
+<para><formula id="64">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
 <para>This formulation is compatible with an Abaqus interface. </para>
     </detaileddescription>
     <inheritancegraph>
-      <node id="3">
-        <label>MarmotMaterial</label>
-      </node>
       <node id="1">
         <label>MarmotMaterialHypoElastic</label>
         <link refid="class_marmot_material_hypo_elastic"/>
-        <childnode refid="2" relation="public-inheritance">
-        </childnode>
       </node>
-      <node id="4">
+      <node id="2">
         <label>MarmotMaterialHypoElasticAD</label>
         <link refid="class_marmot_material_hypo_elastic_a_d"/>
         <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2">
-        <label>MarmotMaterialMechanical</label>
-        <link refid="class_marmot_material_mechanical"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
-      </node>
     </inheritancegraph>
-    <collaborationgraph>
-      <node id="3">
-        <label>MarmotMaterial</label>
-      </node>
-      <node id="1">
-        <label>MarmotMaterialHypoElastic</label>
-        <link refid="class_marmot_material_hypo_elastic"/>
-        <childnode refid="2" relation="public-inheritance">
-        </childnode>
-      </node>
-      <node id="2">
-        <label>MarmotMaterialMechanical</label>
-        <link refid="class_marmot_material_mechanical"/>
-        <childnode refid="3" relation="public-inheritance">
-        </childnode>
-      </node>
-    </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="54" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="54" bodyend="134"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="56" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="56" bodyend="249"/>
     <listofallmembers>
       <member refid="class_marmot_material_hypo_elastic_1af526ea494a3ba4d70de3be5d2d55b5a0" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>characteristicElementLength</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1a2c703a3ac8f0b1211402c28712ad9609" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computePlaneStress</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1adc72d0bff4f72a5eaed2baf11dc02f24" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computePlaneStress</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1a5c718df3ee25eb2462b707d3e06c9621" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeStress</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1a4751feeb33fc3205fc5c2b75fdc0d30c" prot="public" virt="pure-virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeStress</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1aed09321cbadf6521263ddf4001288c5a" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeUniaxialStress</name></member>
-      <member refid="class_marmot_material_hypo_elastic_1a914feb016e64919cee4f1d7ab5029cd8" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeUniaxialStress</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a28a60ba5b01d5536853bd6c42d5a756d" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computePlaneStress</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" prot="public" virt="pure-virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeStress</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a312a9d1538e79e189ba6dbed2fa6d77a" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a89bbeb4be69cf9b037f0d77909280fd2" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>computeUniaxialStress</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a22deae189dd5b49be608c54e5364fca4" prot="public" virt="pure-virtual"><scope>MarmotMaterialHypoElastic</scope><name>getDensity</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a03f6899cd7331927cc98ad68d5a4d47a" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>getMaximumWaveSpeed</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1ab74195ef389dbab4bd9222859fd2e730" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a32d18c99729dabd8e0bed1ad853e01d3" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>getStateView</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1ac38d9e0835bf325471ca11698ff058f0" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a9d3a107e88311ad5aeda1948c54a3d7e" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>MarmotMaterialHypoElastic</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a544a90b3429a5b52c5c3458bccbc4cbd" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a706a93d8061610826b9aaf79038f60ec" prot="protected" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1ace64e351bd6ba3e08c915b15888e994b" prot="protected" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>nMaterialProperties</name></member>
       <member refid="class_marmot_material_hypo_elastic_1aee2d34ac568027969f668999154b4b20" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a9999e819720778a8168c8df32e09d958" prot="public" virt="non-virtual"><scope>MarmotMaterialHypoElastic</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_material_hypo_elastic_1a50fdcfbf6d1e8321141d9a66804a65d7" prot="public" virt="virtual"><scope>MarmotMaterialHypoElastic</scope><name>~MarmotMaterialHypoElastic</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_first_order_derived" kind="namespace" language="C++">
+    <compoundname>Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_decreasing_interactions_8h_1a4fd2824818a7a64325288e6fd0821e95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double &gt;</type>
+        <definition>std::tuple&lt; double, double &gt; Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived::poh</definition>
+        <argsstring>(double omega, double eta, double R)</argsstring>
+        <name>poh</name>
+        <qualifiedname>Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived::poh</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>omega</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>R</declname>
+        </param>
+        <briefdescription>
+<para>First-order derivative of the Poh &amp; Sun (2017) interaction function with respect to damage. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>omega</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>damage variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>eta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter controlling the rate of decrease of interactions with damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>R</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter controlling the residual interactions at full damage </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a tuple containing the interaction function value and its first derivative with respect to damage</para>
+</simplesect>
+The first-order derivative variant of the interaction function <computeroutput>poh</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" line="66" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" declline="66" declcolumn="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" line="56" column="5"/>
+  </compounddef>
+</doxygen>

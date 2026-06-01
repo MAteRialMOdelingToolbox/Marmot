@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialFiniteStrainAD::DeformationAD</compoundname>
+    <includes refid="_marmot_material_finite_strain_a_d_8h" local="no">MarmotMaterialFiniteStrainAD.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt; MarmotMaterialFiniteStrainAD::DeformationAD&lt; nDim &gt;::F</definition>
+        <argsstring></argsstring>
+        <name>F</name>
+        <qualifiedname>MarmotMaterialFiniteStrainAD::DeformationAD::F</qualifiedname>
+        <briefdescription>
+<para>deformation gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="101" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents the deformation state of a material. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This struct holds the deformation gradient <formula id="43">$\boldsymbol{F}$</formula> which describes the local deformation of a material. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="100" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="100" bodyend="102"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" prot="public" virt="non-virtual"><scope>MarmotMaterialFiniteStrainAD::DeformationAD</scope><name>F</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

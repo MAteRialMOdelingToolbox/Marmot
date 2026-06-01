@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory" kind="class" language="C++" prot="public">
+    <compoundname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h" local="no">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nNonlocalVariables</declname>
+        <defname>nNonlocalVariables</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a12a7b98a0b925293ea72fbff352a1415" prot="public" static="no">
+        <type>std::function&lt; <ref refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kindref="compound">MarmotMaterialGeneralGradientEnhancedHypoElastic</ref>&lt; nNonlocalVariables &gt; *(const double *materialProperties, int nMaterialProperties, int materialNumber) &gt;</type>
+        <definition>using MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::materialFactoryFunction =  std::function&lt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt;
+      nNonlocalVariables &gt;*( const double* materialProperties, int nMaterialProperties, int materialNumber ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>materialFactoryFunction</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::materialFactoryFunction</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Type alias for the material factory function, which creates instances of <ref refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kindref="compound">MarmotMaterialGeneralGradientEnhancedHypoElastic</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a2e9adacedad3ecfb18bab8d248997b48" prot="public" static="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a12a7b98a0b925293ea72fbff352a1415" kindref="member">materialFactoryFunction</ref> &gt;</type>
+        <definition>using MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::MaterialFactoryMap =  std::unordered_map&lt; std::string, materialFactoryFunction &gt;</definition>
+        <argsstring></argsstring>
+        <name>MaterialFactoryMap</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::MaterialFactoryMap</qualifiedname>
+        <briefdescription>
+<para>Type alias for the map of material factory functions by material name. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="82" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a449a5bd49894cce208fadc5fb691f4db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="47" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ad94d5030b1ac48eb7937a27d97fe2eb2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kindref="compound">MarmotMaterialGeneralGradientEnhancedHypoElastic</ref>&lt; nNonlocalVariables &gt; *</type>
+        <definition>static MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt; * MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::createMaterial</definition>
+        <argsstring>(const std::string &amp;materialName, const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>createMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::createMaterial</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+<para>Create a material instance based on its unique name and properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique name of the material to create. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of properties in the array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created MarmotMaterial instance, or nullptr if creation failed. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="57" column="61"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae6e949b3db0a092a3743fd000b50473d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>static bool MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::registerMaterial</definition>
+        <argsstring>(const std::string &amp;materialName)</argsstring>
+        <name>registerMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::registerMaterial</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <briefdescription>
+<para>Register a material with its code and factory function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if registration was successful, false if the code already exists. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="69" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" bodystart="69" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae0f67a6740b90cebb1de990dc04f1cc1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a2e9adacedad3ecfb18bab8d248997b48" kindref="member">MaterialFactoryMap</ref> &amp;</type>
+        <definition>static MaterialFactoryMap &amp; MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory&lt; nNonlocalVariables &gt;::materialFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>materialFactoryFunctionByName</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::materialFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+<para>Get the map of material factory functions by material name. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="84" column="31"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Factory class for creating <ref refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kindref="compound">MarmotMaterialGeneralGradientEnhancedHypoElastic</ref> instances. This class uses the Factory Design Pattern to manage the creation of different <ref refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kindref="compound">MarmotMaterialGeneralGradientEnhancedHypoElastic</ref> materials based on unique material names. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" line="40" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h" bodystart="40" bodyend="85"/>
+    <listofallmembers>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ad94d5030b1ac48eb7937a27d97fe2eb2" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>createMaterial</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a449a5bd49894cce208fadc5fb691f4db" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a12a7b98a0b925293ea72fbff352a1415" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>materialFactoryFunction</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae0f67a6740b90cebb1de990dc04f1cc1" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>materialFactoryFunctionByName</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a2e9adacedad3ecfb18bab8d248997b48" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>MaterialFactoryMap</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae6e949b3db0a092a3743fd000b50473d" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</scope><name>registerMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

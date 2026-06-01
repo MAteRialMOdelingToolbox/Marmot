@@ -22,7 +22,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="23">$e$</formula>). </para>
+<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="279">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
@@ -40,18 +40,19 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="23">$e$</formula>). </para>
+<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="279">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Reduction of the generalized failure criterion to a specific type. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="99" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="99" bodyend="112"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="93" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="93" bodyend="106"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-attrib">
@@ -62,12 +63,13 @@
         <name>param</name>
         <qualifiedname>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::param</qualifiedname>
         <briefdescription>
+<para>Menetrey Willam parameters. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="96" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="90" column="23"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -94,11 +96,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Constructor that takes the uniaxial tensile strength <formula id="19">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="20">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam param. </para>
+<para>Constructor that takes the uniaxial tensile strength <formula id="276">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="277">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam <computeroutput>param</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="120" column="7"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="114" column="7"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a995459659e174b5cedc31adc02a0f708" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -121,11 +123,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>This function can be used to reset the type of the specified failure criterion by entering the uniaxial compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref>, the uniaxial tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref> and the <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>. </para>
+<para>This function can be used to reset the type of the specified failure criterion by entering the uniaxial compressive strength <computeroutput>fc</computeroutput>, the uniaxial tensile strength <computeroutput>ft</computeroutput> and the <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="129" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="123" column="12"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a3ade49f99ffbbd015f920f20d4a62af2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -145,11 +147,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="21">$r$</formula> from the Lode angle <formula id="22">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters param. </para>
+<para>Compute the polar radius <formula id="278">$r$</formula> from the Lode angle <formula id="29">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters <computeroutput>param</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="136" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="136" bodyend="139"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="130" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="130" bodyend="133"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5d358b2889e8ad693043f1e7a8617bdb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -169,11 +171,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="21">$r$</formula> and its derivative <formula id="24">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="22">$\theta$</formula>. The eccentricity parameter will be used from the param struct. </para>
+<para>Compute the polar radius <formula id="278">$r$</formula> and its derivative <formula id="280">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="29">$\theta$</formula>. The eccentricity parameter will be used from the <computeroutput>param</computeroutput> struct. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="173" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="173" bodyend="176"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="167" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="167" bodyend="170"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a901c05dc72df2e3e9ee027aeba4fbe80" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -198,14 +200,14 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the yield function <formula id="26">$f$</formula> depending on the Haigh-Westergaard stress coordinates hw. <formula id="27">$f&lt;0$</formula> means no yielding while <formula id="28">$f\geq0$</formula> means yielding. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
+<para>Evaluate the yield function <formula id="282">$f$</formula> depending on the Haigh-Westergaard stress coordinates <computeroutput>hw</computeroutput>. <formula id="283">$f&lt;0$</formula> means no yielding while <formula id="284">$f\geq0$</formula> means yielding. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
 <para><simplesect kind="note"><para>The yield function can be also used as plastic potential function if needed. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="273" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="273" bodyend="285"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="274" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="274" bodyend="286"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a1349a9d288bda6205d42fecacfee5fa0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -230,11 +232,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="29">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter varEps is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
+<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="285">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="295" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="295" bodyend="318"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="296" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="296" bodyend="319"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -260,11 +262,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="21">$r$</formula> from the Lode angle <formula id="22">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="23">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="278">$r$</formula> from the Lode angle <formula id="29">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="279">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="147" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="147" bodyend="166"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="141" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="141" bodyend="160"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4345f2cf3aa0b78579ae6a778acdb1af" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -288,11 +290,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="25">$r$$</formula> and its derivative <formula id="24">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="22">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="23">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="281">$r$$</formula> and its derivative <formula id="280">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="29">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="279">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="184" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="184" bodyend="221"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="178" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="178" bodyend="215"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ad641e370821d42158d53517fffeb7142" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -314,12 +316,42 @@
           <declname>e</declname>
         </param>
         <briefdescription>
+<para>Compute the polar radius and its first and second derivative with respect to the Lode angle. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lode angle </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>eccentricity parameter </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>tuple of polar radius, its first and second derivative with respect to the Lode angle </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="224" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="224" bodyend="262"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="225" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="225" bodyend="263"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a32841026833c72581b33e4382f0e9cf2" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -338,11 +370,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as Abaqus does. This parameter is only relevant in the case of the Drucker-Prager or the Mohr-Coulomb criterion. The calculated smoothing value can then be used as the optional input argument varEps in <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a901c05dc72df2e3e9ee027aeba4fbe80" kindref="member">yieldFunction</ref> and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a1349a9d288bda6205d42fecacfee5fa0" kindref="member">dYieldFunction_dHaighWestergaard</ref>. </para>
+<para>Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as Abaqus does. This parameter is only relevant in the case of the Drucker-Prager or the Mohr-Coulomb criterion. The calculated smoothing value can then be used as the optional input argument <computeroutput>varEps</computeroutput> in <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a901c05dc72df2e3e9ee027aeba4fbe80" kindref="member">yieldFunction</ref> and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a1349a9d288bda6205d42fecacfee5fa0" kindref="member">dYieldFunction_dHaighWestergaard</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="326" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="326" bodyend="329"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="327" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="327" bodyend="330"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a9575c86015d34dc830a80260733068f9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -361,11 +393,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the eccentricity parameter based on a given compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> and tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref>. </para>
+<para>Compute the eccentricity parameter based on a given compressive strength <computeroutput>fc</computeroutput> and tensile strength <computeroutput>ft</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="335" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="335" bodyend="335"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="336" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="336" bodyend="336"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1abd3d40fc494ae13b2c49ddc1070d6290" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -384,11 +416,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the cohesion based on a given compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> and tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref>. </para>
+<para>Compute the cohesion based on a given compressive strength <computeroutput>fc</computeroutput> and tensile strength <computeroutput>ft</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="341" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="341" bodyend="345"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="342" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="342" bodyend="346"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4804c0380beab98aba8dbd67789ed1ea" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -407,11 +439,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the friction angle in radian based on a given compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kindref="member">fc</ref> and tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kindref="member">ft</ref>. </para>
+<para>Compute the friction angle in radian based on a given compressive strength <computeroutput>fc</computeroutput> and tensile strength <computeroutput>ft</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="351" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="351" bodyend="351"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="352" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="352" bodyend="352"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -430,11 +462,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the tensile strength based on a given cohesion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1abd3d40fc494ae13b2c49ddc1070d6290" kindref="member">c</ref> and a friction angle <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4804c0380beab98aba8dbd67789ed1ea" kindref="member">phi</ref>. </para>
+<para>Compute the tensile strength based on a given cohesion <computeroutput>c</computeroutput> and a friction angle <computeroutput>phi</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="356" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="356" bodyend="359"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="357" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="357" bodyend="360"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -453,26 +485,24 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the compressive strength based on a given cohesion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1abd3d40fc494ae13b2c49ddc1070d6290" kindref="member">c</ref> and a friction angle <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4804c0380beab98aba8dbd67789ed1ea" kindref="member">phi</ref>. </para>
+<para>Compute the compressive strength based on a given cohesion <computeroutput>c</computeroutput> and a friction angle <computeroutput>phi</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="364" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="364" bodyend="367"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="365" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="365" bodyend="368"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Generalized failure criterion proposed by Menétrey and Willam. </para>
     </briefdescription>
     <detaileddescription>
-<para>Implementation of the generalized failure criterion proposed by Menétrey and Willam    <formula id="16">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
+<para>Implementation of the generalized failure criterion proposed by Menétrey and Willam</para>
+<para><formula id="273">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
 \]</formula></para>
-<para>with the Haigh-Westergaard coordinates <formula id="17">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="18">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>).</para>
-<para><image type="html" name="yieldSurfaceDeviatoric_MenetreyWillam.png" width="75%"></image>
- <image type="latex" name="yieldSurfaceDeviatoric_MenetreyWillam.png" width="75%"></image>
-</para>
+<para>with the Haigh-Westergaard coordinates <formula id="274">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="275">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kindref="member">MenetreyWillamType</ref>).</para>
 <sect1 id="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1autotoc_md0">
 <title>Example</title><para>For a given pair of principal stress components in the Haigh-Westergaard stress space, evaluate the Mohr-Coulomb failure criterion: <programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;Marmot/MenetreyWillam.h&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Marmot/HaighWestergaard.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_haigh_westergaard_8h" kindref="compound">Marmot/HaighWestergaard.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline><highlight class="normal"></highlight></codeline>
 <codeline><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot;</highlight></codeline>
 <codeline><highlight class="normal"></highlight></codeline>
@@ -503,7 +533,7 @@
         <link refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters"/>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="79" bodyend="368"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="73" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="73" bodyend="369"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a32841026833c72581b33e4382f0e9cf2" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam</scope><name>abaqusMohrCoulombPotentialVarEpsToMenetreyWillam</name></member>
       <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1abd3d40fc494ae13b2c49ddc1070d6290" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam</scope><name>c</name></member>

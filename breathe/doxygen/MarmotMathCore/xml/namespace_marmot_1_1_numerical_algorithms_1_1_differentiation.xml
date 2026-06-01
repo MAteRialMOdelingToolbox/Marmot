@@ -20,7 +20,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="39" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="39" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="37" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1ac9b0be30ffd7559ab0a92eea4ee75f72" prot="public" static="no">
         <type>std::function&lt; Eigen::VectorXd(const Eigen::VectorXd &amp;X) &gt;</type>
@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="42" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="42" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -76,12 +76,12 @@
 </parameterlist>
 <simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
 </simplesect>
-It actually computes   <formula id="32">\[ f&apos;(x) \approx \frac{f(x + h) - f(x)}{h}
-\]</formula> with <formula id="33">$ h = \sqrt{\epsilon}\, \max(1,|x|) $</formula> and <formula id="34">$ \epsilon $</formula> being the machine precision. </para>
+It actually computes   <formula id="19">\[ f&apos;(x) \approx \frac{f(x + h) - f(x)}{h}
+\]</formula> with <formula id="20">$ h = \sqrt{\epsilon}\, \max(1,|x|) $</formula> and <formula id="21">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="57" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="57" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="55" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="55" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a7de02aa48201ccdb190450dcfd34fa97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -120,12 +120,12 @@ It actually computes   <formula id="32">\[ f&apos;(x) \approx \frac{f(x + h) - f
 </parameterlist>
 <simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
 </simplesect>
-It actually approximates the first derivative by   <formula id="35">\[ f&apos;(x) \approx \frac{f(x + h) - f(x - h)}{2h}
-\]</formula> with <formula id="36">$ h = \sqrt[3]{\epsilon}\,\max( 1, |x|)$</formula> and <formula id="34">$ \epsilon $</formula> being the machine precision. </para>
+It actually approximates the first derivative by   <formula id="22">\[ f&apos;(x) \approx \frac{f(x + h) - f(x - h)}{2h}
+\]</formula> with <formula id="23">$ h = \sqrt[3]{\epsilon}\,\max( 1, |x|)$</formula> and <formula id="21">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="70" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="70" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="68" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="68" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1ac30aa22a7012705933cae722441e8405" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -164,12 +164,12 @@ It actually approximates the first derivative by   <formula id="35">\[ f&apos;(x
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually computes   <formula id="37">\[  J_{ij} \approx \frac{F_i(X + h e_j) - F_i(X)}{h}
-\]</formula> with <formula id="38">$ h = \sqrt{\epsilon} (1 + |X_j|) $</formula>, <formula id="39">$ e_j $</formula> being the unit vector in the j-th direction, and  <formula id="40">$\epsilon $</formula> being the machine precision. </para>
+It actually computes   <formula id="24">\[  J_{ij} \approx \frac{F_i(X + h e_j) - F_i(X)}{h}
+\]</formula> with <formula id="25">$ h = \sqrt{\epsilon} (1 + |X_j|) $</formula>, <formula id="26">$ e_j $</formula> being the unit vector in the j-th direction, and  <formula id="27">$\epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="84" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="84" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="82" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="82" declcolumn="21"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a9d471ea1961edac3a8c0b7883db494f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -208,18 +208,18 @@ It actually computes   <formula id="37">\[  J_{ij} \approx \frac{F_i(X + h e_j) 
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually approximates the Jacobian matrix by   <formula id="41">\[  J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
-\]</formula> with <formula id="42">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, <formula id="39">$ e_j $</formula> being the unit vector in the j-th direction, and <formula id="34">$ \epsilon $</formula> being the machine precision. </para>
+It actually approximates the Jacobian matrix by   <formula id="28">\[  J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
+\]</formula> with <formula id="29">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, <formula id="26">$ e_j $</formula> being the unit vector in the j-th direction, and <formula id="21">$ \epsilon $</formula> being the machine precision. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="98" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="98" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="96" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="96" declcolumn="21"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="37" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="35" column="3"/>
   </compounddef>
 </doxygen>

@@ -24,15 +24,15 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the stress coordinates in the Haigh-Westergaard space.</para>
-<para><simplesect kind="note"><para>The stress coordinates are computed from the invariants <formula id="78">$I_1,\,J_2,\,J_3$</formula> of the stress tensor as follows:</para>
+<para><simplesect kind="note"><para>The stress coordinates are computed from the invariants <formula id="30">$I_1,\,J_2,\,J_3$</formula> of the stress tensor as follows:</para>
 </simplesect>
-<formula id="79">\[\xi=I_1/\sqrt{3}\]</formula> <formula id="80">\[\rho=\sqrt{2\,J_2}\]</formula> <formula id="81">\[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\]</formula></para>
+<formula id="31">\[\xi=I_1/\sqrt{3}\]</formula> <formula id="32">\[\rho=\sqrt{2\,J_2}\]</formula> <formula id="33">\[\theta=\frac{1}{3}\,\arccos{\left(\frac{3\,\sqrt{3}}{2}\,\frac{J_3}{\sqrt{J_2^3}}\right)}\]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>stress</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Stress tensor <formula id="82">$\sig$</formula> given in Voigt notation. </para>
+<para>Stress tensor <formula id="34">$\sig$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -40,7 +40,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="66" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="66" bodyend="91"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="71" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="71" bodyend="96"/>
       </memberdef>
       <memberdef kind="function" id="_haigh_westergaard_8h_1aba76e1eed469a8f4fd743397df312257" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates</ref>&lt; double &gt;</type>
@@ -56,14 +56,14 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the strain coordinates in the Haigh-Westergaard space.</para>
-<para><simplesect kind="note"><para>The computation is equal to haighWestergaard by replacing the stress invariants with the strain invariants.</para>
+<para><simplesect kind="note"><para>The computation is equal to <ref refid="_haigh_westergaard_8h_1a3fbea908311f240aaaf3e552357f5fc8" kindref="member">haighWestergaard()</ref> by replacing the stress invariants with the strain invariants.</para>
 </simplesect>
 <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>strain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Strain tensor <formula id="83">$\eps$</formula> given in Voigt notation. </para>
+<para>Strain tensor <formula id="35">$\eps$</formula> given in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -71,13 +71,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="100" column="33" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" declline="100" declcolumn="33"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="105" column="33" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" declline="105" declcolumn="33"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="36" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="41" column="3"/>
   </compounddef>
 </doxygen>

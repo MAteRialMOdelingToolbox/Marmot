@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" local="no">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a129f1fd4967a9a31d17bdfb13e9241f7" prot="public" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::stress</qualifiedname>
+        <briefdescription>
+<para>Stress tensor in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="91" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a82f03a5a5c04b0c2ba1ec53cc136607b" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; double, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Vector&lt; double, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::KLocal</definition>
+        <argsstring></argsstring>
+        <name>KLocal</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::KLocal</qualifiedname>
+        <briefdescription>
+<para>Local driving variables at the current increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="92" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3af01e5be1845f339e5da3c144865c21" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; double, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Vector&lt; double, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::c</definition>
+        <argsstring></argsstring>
+        <name>c</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::c</qualifiedname>
+        <briefdescription>
+<para>Nonlocal interaction parameters at the current increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="93" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1aad7ee9c805ecedead1bd0413adfb94ce" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::stateVars</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="94" column="48" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a8666aff52917f0f1d6b5f2fc6ef17f34" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+<para>Elastic strain energy density. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="95" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3c1978b89a94b7687f394a01bb27f4c7" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response::dissipation</definition>
+        <argsstring></argsstring>
+        <name>dissipation</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::response::dissipation</qualifiedname>
+        <briefdescription>
+<para>Dissipation (if applicable) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="96" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to hold the material response information. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="90" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="90" bodyend="97"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3af01e5be1845f339e5da3c144865c21" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>c</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3c1978b89a94b7687f394a01bb27f4c7" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a8666aff52917f0f1d6b5f2fc6ef17f34" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a82f03a5a5c04b0c2ba1ec53cc136607b" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>KLocal</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1aad7ee9c805ecedead1bd0413adfb94ce" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a129f1fd4967a9a31d17bdfb13e9241f7" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</scope><name>stress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

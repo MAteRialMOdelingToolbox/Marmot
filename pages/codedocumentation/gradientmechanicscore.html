@@ -1,0 +1,1119 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarmotGradientMechanicsCore &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MarmotMathCore" href="mathcore.html" />
+    <link rel="prev" title="MarmotFiniteStrainMechanicsCore" href="finitestrainmechanicscore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../documentation.html">Code documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="finiteelementcore.html">MarmotFiniteElementCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finitestrainmechanicscore.html">MarmotFiniteStrainMechanicsCore</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MarmotGradientMechanicsCore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9incrementE"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment7dStrainE"><code class="docutils literal notranslate"><span class="pre">dStrain</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment1KE"><code class="docutils literal notranslate"><span class="pre">K</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dKE"><code class="docutils literal notranslate"><span class="pre">dK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment4timeE"><code class="docutils literal notranslate"><span class="pre">time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dTE"><code class="docutils literal notranslate"><span class="pre">dT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_iE48MarmotMaterialGeneralGradientEnhancedHypoElastic"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic48MarmotMaterialGeneralGradientEnhancedHypoElasticEPKdii"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic13computeStressER8responseR8tangentsRK9increment"><code class="docutils literal notranslate"><span class="pre">computeStress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic21computeStressExplicitER8responseRK9increment"><code class="docutils literal notranslate"><span class="pre">computeStressExplicit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment"><code class="docutils literal notranslate"><span class="pre">computePlaneStress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic26computePlaneStressExplicitER8responseRK9increment"><code class="docutils literal notranslate"><span class="pre">computePlaneStressExplicit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic12getStateViewERKNSt6stringEPd"><code class="docutils literal notranslate"><span class="pre">getStateView()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic28getNumberOfRequiredStateVarsEv"><code class="docutils literal notranslate"><span class="pre">getNumberOfRequiredStateVars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18initializeYourselfEPdi"><code class="docutils literal notranslate"><span class="pre">initializeYourself()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic10getDensityEPKd"><code class="docutils literal notranslate"><span class="pre">getDensity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic19getMaximumWaveSpeedERK8response"><code class="docutils literal notranslate"><span class="pre">getMaximumWaveSpeed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic20getNonlocalViscosityEPKd"><code class="docutils literal notranslate"><span class="pre">getNonlocalViscosity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic14materialNumberE"><code class="docutils literal notranslate"><span class="pre">materialNumber</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic11stateLayoutE"><code class="docutils literal notranslate"><span class="pre">stateLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18materialPropertiesE"><code class="docutils literal notranslate"><span class="pre">materialProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic19nMaterialPropertiesE"><code class="docutils literal notranslate"><span class="pre">nMaterialProperties</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE"><code class="docutils literal notranslate"><span class="pre">MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE"><code class="docutils literal notranslate"><span class="pre">materialFactoryFunction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE"><code class="docutils literal notranslate"><span class="pre">MaterialFactoryMap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryEv"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory14createMaterialERKNSt6stringEPKdii"><code class="docutils literal notranslate"><span class="pre">createMaterial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory16registerMaterialEbRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">registerMaterial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory29materialFactoryFunctionByNameEv"><code class="docutils literal notranslate"><span class="pre">materialFactoryFunctionByName()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8responseE"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic::response</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6stressE"><code class="docutils literal notranslate"><span class="pre">stress</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6KLocalE"><code class="docutils literal notranslate"><span class="pre">KLocal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response1cE"><code class="docutils literal notranslate"><span class="pre">c</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response9stateVarsE"><code class="docutils literal notranslate"><span class="pre">stateVars</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response20elasticEnergyDensityE"><code class="docutils literal notranslate"><span class="pre">elasticEnergyDensity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response11dissipationE"><code class="docutils literal notranslate"><span class="pre">dissipation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangentsE"><code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dStressddStrainE"><code class="docutils literal notranslate"><span class="pre">dStressddStrain</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dStressddKE"><code class="docutils literal notranslate"><span class="pre">dStressddK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dKLocalddStrainE"><code class="docutils literal notranslate"><span class="pre">dKLocalddStrain</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dKLocalddKE"><code class="docutils literal notranslate"><span class="pre">dKLocalddK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents5dcddKE"><code class="docutils literal notranslate"><span class="pre">dcddK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents7d2cddK2E"><code class="docutils literal notranslate"><span class="pre">d2cddK2</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv46Marmot"><code class="docutils literal notranslate"><span class="pre">Marmot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamageE"><code class="docutils literal notranslate"><span class="pre">Marmot::GradientDamage</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractionsE"><code class="docutils literal notranslate"><span class="pre">Marmot::GradientDamage::DecreasingInteractions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1T1Tdd"><code class="docutils literal notranslate"><span class="pre">poh()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerivedE"><code class="docutils literal notranslate"><span class="pre">Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerived3pohEddd"><code class="docutils literal notranslate"><span class="pre">poh()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerivedE"><code class="docutils literal notranslate"><span class="pre">Marmot::GradientDamage::DecreasingInteractions::SecondOrderDerived</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerived3pohEddd"><code class="docutils literal notranslate"><span class="pre">poh()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseFieldE"><code class="docutils literal notranslate"><span class="pre">Marmot::PhaseField</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctionsE"><code class="docutils literal notranslate"><span class="pre">Marmot::PhaseField::EnergyDegradationFunctions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticE1TK1T"><code class="docutils literal notranslate"><span class="pre">quadratic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicE1TK1T"><code class="docutils literal notranslate"><span class="pre">cubic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticE1TK1T"><code class="docutils literal notranslate"><span class="pre">quartic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericE1TK1TKdKdKdKd"><code class="docutils literal notranslate"><span class="pre">generic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerivedE"><code class="docutils literal notranslate"><span class="pre">Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived9quadraticEKd"><code class="docutils literal notranslate"><span class="pre">quadratic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived5cubicEKd"><code class="docutils literal notranslate"><span class="pre">cubic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7quarticEKd"><code class="docutils literal notranslate"><span class="pre">quartic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7genericEKdKdKdKdKd"><code class="docutils literal notranslate"><span class="pre">generic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv413MarmotLibrary"><code class="docutils literal notranslate"><span class="pre">MarmotLibrary</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mathcore.html">MarmotMathCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mechanicscore.html">MarmotMechanicsCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilitiescore.html">MarmotUtilitiesCore</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../documentation.html">Code documentation</a></li>
+      <li class="breadcrumb-item active">MarmotGradientMechanicsCore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/codedocumentation/gradientmechanicscore.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="marmotgradientmechanicscore">
+<h1>MarmotGradientMechanicsCore<a class="headerlink" href="#marmotgradientmechanicscore" title="Link to this heading"></a></h1>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9incrementE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9incrementE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9incrementE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">increment</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9incrementE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_8h"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></a>&gt;</em></div>
+<p>Struct to hold the increment information. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment7dStrainE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment7dStrainE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment7dStrainE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dStrain__Marmot::Vector6d"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a18e8b4e9484800fbd170785a010188a2"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dStrain</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment7dStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>Increment of the strain tensor in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment1KE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment1KE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment1KE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::K__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acdb2d6d26b8c0a6ccbf6bf574e199728"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment1KE" title="Link to this definition"></a><br /></dt>
+<dd><p>Nonlocal variables at the current increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dKE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dKE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dKE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dK__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a741c44d4b298033b331b34b6860b9f6a"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dK</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Increment of the nonlocal variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment4timeE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment4timeE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment4timeE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::time__double"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acad6d61b954c7009a1e72a41dcc3625b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment4timeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Current time. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dTE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dTE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dTE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dT__double"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a7003006f9ada450f558730d12585e4e5"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic9increment2dTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Time increment. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iE48MarmotMaterialGeneralGradientEnhancedHypoElastic">
+<span id="_CPPv3I_iE48MarmotMaterialGeneralGradientEnhancedHypoElastic"></span><span id="_CPPv2I_iE48MarmotMaterialGeneralGradientEnhancedHypoElastic"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNonlocalVariables</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span></span><a class="headerlink" href="#_CPPv4I_iE48MarmotMaterialGeneralGradientEnhancedHypoElastic" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_8h"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></a>&gt;</em></div>
+<p>Base class for general gradient-enhanced hypoelastic material models. </p>
+<p>This class defines the interface for general gradient-enhanced hypoelastic material models, including methods for computing stress, plane stress response, and managing state variables. The template parameter <code class="docutils literal notranslate"><span class="pre">nNonlocalVariables</span></code> specifies the number of nonlocal variables used in the material model.</p>
+<p>In addition to the standard balance of linear momentum each nonlocal variable introduces an additional balance equation, which is solved simultaneously with the balance of linear momentum. This balance equation is defined as: <div class="math notranslate nohighlight">
+\[ \knl_i - \nabla ( c( \knl_i )\, \nabla \knl_i ) = s_i (\boldsymbol \varepsilon,\, \knl_i ) \]</div>
+ where <span class="math notranslate nohighlight">\( \knl_i \)</span> is the nonlocal variable, <span class="math notranslate nohighlight">\( c( \knl_i ) \)</span> is the nonlocal interaction parameter, and <span class="math notranslate nohighlight">\( s_i \)</span> is the local driving variable for the nonlocal variable <span class="math notranslate nohighlight">\( \knl_i \)</span>. The interaction parameter <span class="math notranslate nohighlight">\( c( \knl_i ) \)</span> defines the influence of the nonlocal variable on its own gradient and can be used to model phenomena such as damage-dependent interactions. Also phase-field models can be implemented in this framework by defining the nonlocal variable as the phase-field variable and the local driving variable as a function of the strain tensor. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic48MarmotMaterialGeneralGradientEnhancedHypoElasticEPKdii">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic48MarmotMaterialGeneralGradientEnhancedHypoElasticEPKdii"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic48MarmotMaterialGeneralGradientEnhancedHypoElasticEPKdii"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::MarmotMaterialGeneralGradientEnhancedHypoElastic__doubleCP.i.i"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a1897789e048d5af75c613f7e40127ed1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic48MarmotMaterialGeneralGradientEnhancedHypoElasticEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor for the general gradient-enhanced hypoelastic material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – Pointer to the array of material properties. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – Number of material properties. </p></li>
+<li><p><strong>materialNumber_</strong> – Material number (identifier for the material). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic13computeStressER8responseR8tangentsRK9increment">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic13computeStressER8responseR8tangentsRK9increment"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic13computeStressER8responseR8tangentsRK9increment"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::computeStress__responseR.tangentsR.incrementCRC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a9860f796ad26818200a0cd86b24be056"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic13computeStressER8responseR8tangentsRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the stress response of the material model including the algorithmic tangents. </p>
+<p>
+This method must be implemented in derived classes to compute the stress response based on the specific material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed stress and other response variables. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the computed algorithmic tangent matrices. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic21computeStressExplicitER8responseRK9increment">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic21computeStressExplicitER8responseRK9increment"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic21computeStressExplicitER8responseRK9increment"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::computeStressExplicit__responseR.incrementCRC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1afefe46fe7c052828dace64090184b879"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressExplicit</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic21computeStressExplicitER8responseRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the stress response of the material model. </p>
+<p>
+This method can be used when only the stress response is needed without the tangents, e.g., for explicit dynamics. The default implementation calls the <code class="docutils literal notranslate"><span class="pre">computeStress</span></code> method and ignores the tangents, which can be computationally expensive to compute. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed stress and other response variables. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::computePlaneStress__responseR.tangentsR.incrementCRC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a71dbdef7e55e3bd6ae6528835340cdd0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the plane stress response of the material model. </p>
+<p>
+This method provides a default implementation for computing the plane stress response using an iterative approach. It assumes an initial guess of isochoric deformation and iteratively corrects the out-of-plane strain until convergence is achieved. Derived classes can override this method if a different approach for plane stress computation is desired. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed plane stress and other response variables. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the computed algorithmic tangent matrices for plane stress. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic26computePlaneStressExplicitER8responseRK9increment">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic26computePlaneStressExplicitER8responseRK9increment"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic26computePlaneStressExplicitER8responseRK9increment"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::computePlaneStressExplicit__responseR.incrementCRC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ac260cf28dacd2955d9f460fb07c9ee95"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStressExplicit</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic26computePlaneStressExplicitER8responseRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the plane stress response of the material model without computing tangents. </p>
+<p>
+This method can be used when only the plane stress response is needed without the tangents, e.g., for explicit dynamics. The default implementation calls the <code class="docutils literal notranslate"><span class="pre">computePlaneStress</span></code> method ignoring the tangents. This method maybe overridden in derived classes if a different approach for plane stress computation is desired. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed plane stress and other response variables. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic12getStateViewERKNSt6stringEPd">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic12getStateViewERKNSt6stringEPd"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic12getStateViewERKNSt6stringEPd"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::getStateView__ssCR.doublePC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a9e067dc3bdc7caa4dbcdb772c3c4ee8d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="utilitiescore.html#_CPPv49StateView" title="StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic12getStateViewERKNSt6stringEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a view to the state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – Name of the state variable </p></li>
+<li><p><strong>stateVars</strong> – Pointer to the state variable array </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>StatView to access the state variable </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic28getNumberOfRequiredStateVarsEv"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::getNumberOfRequiredStateVarsC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ac0486ec1b5aca6c8fe49ea09d52d1321"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the total number of required state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number of required state variables </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18initializeYourselfEPdi">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic18initializeYourselfEPdi"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic18initializeYourselfEPdi"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::initializeYourself__doubleP.i"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a67f5c938713e82005b738eb3b7db51c9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18initializeYourselfEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the state variables at a material point. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default implementation initializes all state variables to zero. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – Pointer to the state variable array </p></li>
+<li><p><strong>nStateVars</strong> – Number of state variables</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic10getDensityEPKd">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic10getDensityEPKd"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic10getDensityEPKd"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::getDensity__doubleCPC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a88fc70f64291d9d14728c71eb0f520c8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the density of the material. </p>
+<p>
+This method must be implemented in derived classes to return the density of the material, which is required for dynamic analyses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density of the material</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic19getMaximumWaveSpeedERK8response">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic19getMaximumWaveSpeedERK8response"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic19getMaximumWaveSpeedERK8response"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::getMaximumWaveSpeed__responseCRC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1af6693d84f5cc934a58bf2560699b6bf9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMaximumWaveSpeed</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">currentResponse</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic19getMaximumWaveSpeedERK8response" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the maximum wave speed for the current response state. </p>
+<p>
+The default implementation computes the 3D algorithmic tangent and returns <code class="docutils literal notranslate"><span class="pre">sqrt(max(C_ii)</span> <span class="pre">/</span> <span class="pre">rho)</span></code> with <code class="docutils literal notranslate"><span class="pre">C_ii</span></code> from the Voigt tangent diagonal entries. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>currentResponse</strong> – Current response state </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Maximum wave speed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic20getNonlocalViscosityEPKd">
+<span id="_CPPv3NK48MarmotMaterialGeneralGradientEnhancedHypoElastic20getNonlocalViscosityEPKd"></span><span id="_CPPv2NK48MarmotMaterialGeneralGradientEnhancedHypoElastic20getNonlocalViscosityEPKd"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalViscosity__doubleCPC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a2579559cc7a0357a90f57ecb6f0e3fc0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalViscosity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK48MarmotMaterialGeneralGradientEnhancedHypoElastic20getNonlocalViscosityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the nonlocal viscosity of the material. </p>
+<p>
+This method must be implemented in derived classes to return the nonlocal viscosity values, which are required for dynamic analyses involving nonlocal variables. The returned vector should have a length equal to <code class="docutils literal notranslate"><span class="pre">nNonlocalVariables</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector containing the nonlocal viscosity values for each nonlocal variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic14materialNumberE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic14materialNumberE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic14materialNumberE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::materialNumber__iC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a62983a18a691619438086b9c2d35470c"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialNumber</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic14materialNumberE" title="Link to this definition"></a><br /></dt>
+<dd><p>Material number (identifier for the material). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic11stateLayoutE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic11stateLayoutE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic11stateLayoutE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::stateLayout__MarmotStateLayoutDynamic"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a5c996337237851ae5024cb01e48a2ef3"></span><a class="reference internal" href="utilitiescore.html#_CPPv424MarmotStateLayoutDynamic" title="MarmotStateLayoutDynamic"><span class="n"><span class="pre">MarmotStateLayoutDynamic</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateLayout</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic11stateLayoutE" title="Link to this definition"></a><br /></dt>
+<dd><p>Layout of the state variables for the material model. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Must be defined in derived classes to specify the structure and organization of the state variables used in the material model. </p>
+</div>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18materialPropertiesE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic18materialPropertiesE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic18materialPropertiesE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::materialProperties__doubleCP"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ad26551fda1395c4e8f53e538258cb47e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">materialProperties</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic18materialPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the array of material properties. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic19nMaterialPropertiesE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic19nMaterialPropertiesE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic19nMaterialPropertiesE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::nMaterialProperties__iC"></span><span class="target" id="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ad2d41c7ec72a89d0f8a702703a82c1e0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMaterialProperties</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic19nMaterialPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of material properties. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE">
+<span id="_CPPv3I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE"></span><span id="_CPPv2I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNonlocalVariables</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</span></span></span><a class="headerlink" href="#_CPPv4I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</span></a>&gt;</em></div>
+<p>Factory class for creating <a class="reference internal" href="#class_marmot_material_general_gradient_enhanced_hypo_elastic"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></a> instances. This class uses the Factory Design Pattern to manage the creation of different <a class="reference internal" href="#class_marmot_material_general_gradient_enhanced_hypo_elastic"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></a> materials based on unique material names. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE">
+<span id="_CPPv3N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE"></span><span id="_CPPv2N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE"></span><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a12a7b98a0b925293ea72fbff352a1415"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialFactoryFunction</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE" title="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">materialProperties</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nMaterialProperties</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">materialNumber</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type alias for the material factory function, which creates instances of <a class="reference internal" href="#class_marmot_material_general_gradient_enhanced_hypo_elastic"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE">
+<span id="_CPPv3N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE"></span><span id="_CPPv2N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE"></span><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a2e9adacedad3ecfb18bab8d248997b48"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialFactoryMap</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory23materialFactoryFunctionE" title="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::materialFactoryFunction"><span class="n"><span class="pre">materialFactoryFunction</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type alias for the map of material factory functions by material name. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryEv">
+<span id="_CPPv3N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryEv"></span><span id="_CPPv2N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryEv"></span><span id="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory"></span><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a449a5bd49894cce208fadc5fb691f4db"></span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory14createMaterialERKNSt6stringEPKdii">
+<span id="_CPPv3N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory14createMaterialERKNSt6stringEPKdii"></span><span id="_CPPv2N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory14createMaterialERKNSt6stringEPKdii"></span><span id="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::createMaterial__ssCR.doubleCP.i.i"></span><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ad94d5030b1ac48eb7937a27d97fe2eb2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_iEN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactoryE" title="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">createMaterial</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory14createMaterialERKNSt6stringEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a material instance based on its unique name and properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialName</strong> – <strong>[in]</strong> Unique name of the material to create. </p></li>
+<li><p><strong>materialProperties</strong> – <strong>[in]</strong> Array of material properties. </p></li>
+<li><p><strong>nMaterialProperties</strong> – <strong>[in]</strong> Number of properties in the array. </p></li>
+<li><p><strong>materialNumber</strong> – <strong>[in]</strong> Unique identifier for the material instance. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer to the created MarmotMaterial instance, or nullptr if creation failed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory16registerMaterialEbRKNSt6stringE">
+<span id="_CPPv3I0EN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory16registerMaterialERKNSt6stringE"></span><span id="_CPPv2I0EN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory16registerMaterialERKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae6e949b3db0a092a3743fd000b50473d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">registerMaterial</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory16registerMaterialEbRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a material with its code and factory function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>materialName</strong> – <strong>[in]</strong> Name of the material. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if registration was successful, false if the code already exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory29materialFactoryFunctionByNameEv">
+<span id="_CPPv3N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory29materialFactoryFunctionByNameEv"></span><span id="_CPPv2N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory29materialFactoryFunctionByNameEv"></span><span id="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::materialFactoryFunctionByName"></span><span class="target" id="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae0f67a6740b90cebb1de990dc04f1cc1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory18MaterialFactoryMapE" title="MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory::MaterialFactoryMap"><span class="n"><span class="pre">MaterialFactoryMap</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">materialFactoryFunctionByName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotLibrary55MarmotMaterialGeneralGradientEnhancedHypoElasticFactory29materialFactoryFunctionByNameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the map of material factory functions by material name. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8responseE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8responseE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8responseE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">response</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8responseE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_8h"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></a>&gt;</em></div>
+<p>Struct to hold the material response information. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6stressE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6stressE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6stressE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::stress__Marmot::Vector6d"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a129f1fd4967a9a31d17bdfb13e9241f7"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6stressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Stress tensor in Voigt notation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6KLocalE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6KLocalE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6KLocalE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::KLocal__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a82f03a5a5c04b0c2ba1ec53cc136607b"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KLocal</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response6KLocalE" title="Link to this definition"></a><br /></dt>
+<dd><p>Local driving variables at the current increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response1cE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response1cE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response1cE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::c__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3af01e5be1845f339e5da3c144865c21"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response1cE" title="Link to this definition"></a><br /></dt>
+<dd><p>Nonlocal interaction parameters at the current increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response9stateVarsE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response9stateVarsE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response9stateVarsE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::stateVars__doubleP"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1aad7ee9c805ecedead1bd0413adfb94ce"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response9stateVarsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the array of state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response20elasticEnergyDensityE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response20elasticEnergyDensityE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response20elasticEnergyDensityE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::elasticEnergyDensity__double"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a8666aff52917f0f1d6b5f2fc6ef17f34"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticEnergyDensity</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response20elasticEnergyDensityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic strain energy density. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response11dissipationE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response11dissipationE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response11dissipationE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::response::dissipation__double"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3c1978b89a94b7687f394a01bb27f4c7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dissipation</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8response11dissipationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Dissipation (if applicable) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangentsE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangentsE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangentsE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangents</span></span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangentsE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_8h"><span class="std std-ref">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></a>&gt;</em></div>
+<p>Struct to hold the algorithmic tangent matrices for the material model. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dStressddStrainE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dStressddStrainE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dStressddStrainE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dStressddStrain__Marmot::Matrix6d"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a923dfbfb396acd9d9fac039a401ef644"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dStressddStrain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dStressddStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>Algorithmic tangent matrix relating the increment of stress to the increment of strain. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dStressddKE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dStressddKE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dStressddKE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dStressddK__Eigen::Matrix:double.6.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a59233ce22b9f7e9d759d176c7d2606c1"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dStressddK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dStressddKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Algorithmic tangent matrix relating the increment of stress to the increment of nonlocal variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dKLocalddStrainE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dKLocalddStrainE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dKLocalddStrainE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dKLocalddStrain__Eigen::Matrix:double.nNonlocalVariables.6:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a7f6694d4139d1bf35b82e3156abc598b"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dKLocalddStrain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents15dKLocalddStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>Algorithmic tangent matrix relating the increment of local driving variables to the increment of strain. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dKLocalddKE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dKLocalddKE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dKLocalddKE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dKLocalddK__Eigen::Matrix:double.nNonlocalVariables.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a2d0d0744262a5fe478ba567468443a88"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dKLocalddK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents10dKLocalddKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Algorithmic tangent matrix relating the increment of local driving variables to the increment of nonlocal variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents5dcddKE">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents5dcddKE"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents5dcddKE"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dcddK__Eigen::Matrix:double.nNonlocalVariables.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a0b8294d74b17c1f2fc7acd79db29240d"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dcddK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents5dcddKE" title="Link to this definition"></a><br /></dt>
+<dd><p>First derivative of nonlocal interaction parameters with respect to nonlocal variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents7d2cddK2E">
+<span id="_CPPv3N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents7d2cddK2E"></span><span id="_CPPv2N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents7d2cddK2E"></span><span id="MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::d2cddK2__Eigen::Matrix:double.nNonlocalVariables.nNonlocalVariables:"></span><span class="target" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1ab581f90b67e24c86ace5b613c394ce45"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">d2cddK2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">nNonlocalVariables</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N48MarmotMaterialGeneralGradientEnhancedHypoElastic8tangents7d2cddK2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Second derivative of nonlocal interaction parameters with respect to nonlocal variables. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46Marmot">
+<span id="_CPPv36Marmot"></span><span id="_CPPv26Marmot"></span><span id="Marmot"></span><span class="target" id="namespace_marmot"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Marmot</span></span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamageE">
+<span id="_CPPv3N6Marmot14GradientDamageE"></span><span id="_CPPv2N6Marmot14GradientDamageE"></span><span id="Marmot::GradientDamage"></span><span class="target" id="namespace_marmot_1_1_gradient_damage"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientDamage</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamageE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamage22DecreasingInteractionsE">
+<span id="_CPPv3N6Marmot14GradientDamage22DecreasingInteractionsE"></span><span id="_CPPv2N6Marmot14GradientDamage22DecreasingInteractionsE"></span><span id="Marmot::GradientDamage::DecreasingInteractions"></span><span class="target" id="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DecreasingInteractions</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractionsE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1T1Tdd">
+<span id="_CPPv3I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1Tdd"></span><span id="_CPPv2I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1Tdd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_decreasing_interactions_8h_1a62dbce5b28ca1d62043f765622de8b8b"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1T1Tdd" title="Marmot::GradientDamage::DecreasingInteractions::poh::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">poh</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1T1Tdd" title="Marmot::GradientDamage::DecreasingInteractions::poh::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">omega</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">R</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot14GradientDamage22DecreasingInteractions3pohE1T1Tdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Damage dependent nonlocal interaction function acc. Poh &amp; Sun (2017) </p>
+<p>
+The function is defined as: <div class="math notranslate nohighlight">
+\[ g(\omega) = \frac{(1 - R) \exp(-\eta \, \omega) + R - \exp(-\eta) }{ 1 - \exp(-\eta)} \]</div>
+ where <span class="math notranslate nohighlight">\( \omega \)</span> is the damage variable, <span class="math notranslate nohighlight">\( \eta \)</span> controls the rate of decrease of interactions with damage, and <span class="math notranslate nohighlight">\( R \)</span> controls the residual interactions at full damage. The function is designed to decrease as damage increases, with a residual interaction value of <span class="math notranslate nohighlight">\( R \)</span> at full damage ( <span class="math notranslate nohighlight">\( \omega = 1 \)</span>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>omega</strong> – damage variable </p></li>
+<li><p><strong>eta</strong> – parameter controlling the rate of decrease of interactions with damage </p></li>
+<li><p><strong>R</strong> – parameter controlling the residual interactions at full damage </p></li>
+</ul>
+</dd>
+<dt class="field-even">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – type of the interaction function value (e.g., double, dual, etc.) </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>interaction function value</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerivedE">
+<span id="_CPPv3N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerivedE"></span><span id="_CPPv2N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerivedE"></span><span id="Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived"></span><span class="target" id="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_first_order_derived"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FirstOrderDerived</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerivedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerived3pohEddd">
+<span id="_CPPv3N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerived3pohEddd"></span><span id="_CPPv2N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerived3pohEddd"></span><span id="Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived::poh__double.double.double"></span><span class="target" id="_marmot_decreasing_interactions_8h_1a4fd2824818a7a64325288e6fd0821e95"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">poh</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">omega</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">R</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions17FirstOrderDerived3pohEddd" title="Link to this definition"></a><br /></dt>
+<dd><p>First-order derivative of the Poh &amp; Sun (2017) interaction function with respect to damage. </p>
+<p>
+The first-order derivative variant of the interaction function <code class="docutils literal notranslate"><span class="pre">poh</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>omega</strong> – damage variable </p></li>
+<li><p><strong>eta</strong> – parameter controlling the rate of decrease of interactions with damage </p></li>
+<li><p><strong>R</strong> – parameter controlling the residual interactions at full damage </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a tuple containing the interaction function value and its first derivative with respect to damage</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerivedE">
+<span id="_CPPv3N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerivedE"></span><span id="_CPPv2N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerivedE"></span><span id="Marmot::GradientDamage::DecreasingInteractions::SecondOrderDerived"></span><span class="target" id="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_second_order_derived"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SecondOrderDerived</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerivedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerived3pohEddd">
+<span id="_CPPv3N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerived3pohEddd"></span><span id="_CPPv2N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerived3pohEddd"></span><span id="Marmot::GradientDamage::DecreasingInteractions::SecondOrderDerived::poh__double.double.double"></span><span class="target" id="_marmot_decreasing_interactions_8h_1a37743b8d23db68926adf2258a4a80777"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">poh</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">omega</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">R</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot14GradientDamage22DecreasingInteractions18SecondOrderDerived3pohEddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Second-order derivative of the Poh &amp; Sun (2017) interaction function with respect to damage. </p>
+<p>
+The second-order derivative variant of the interaction function <code class="docutils literal notranslate"><span class="pre">poh</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>omega</strong> – damage variable </p></li>
+<li><p><strong>eta</strong> – parameter controlling the rate of decrease of interactions with damage </p></li>
+<li><p><strong>R</strong> – parameter controlling the residual interactions at full damage </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a tuple containing the interaction function value, its first derivative, and its second derivative with respect to damage</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseFieldE">
+<span id="_CPPv3N6Marmot10PhaseFieldE"></span><span id="_CPPv2N6Marmot10PhaseFieldE"></span><span id="Marmot::PhaseField"></span><span class="target" id="namespace_marmot_1_1_phase_field"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhaseField</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseFieldE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctionsE">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctionsE"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctionsE"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions"></span><span class="target" id="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EnergyDegradationFunctions</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctionsE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticE1TK1T">
+<span id="_CPPv3I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticEK1T"></span><span id="_CPPv2I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_phase_field_energy_degradation_8h_1af84706f29a4e3eb2e720255f37c331f2"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::quadratic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::quadratic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions9quadraticE1TK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Quadratic degradation function. </p>
+<p>
+This function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = (1 - \phi)^2,\]</div>
+ where <span class="math notranslate nohighlight">\(\phi\)</span> is the phase field variable. It represents a quadratic degradation of the material stiffness as the phase field variable increases. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – Numeric type (e.g., double, float). </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Degradation function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicE1TK1T">
+<span id="_CPPv3I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicEK1T"></span><span id="_CPPv2I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_phase_field_energy_degradation_8h_1a66ea4932852404f201d1f85f7b10e9f0"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::cubic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cubic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::cubic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions5cubicE1TK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Cubic degradation function. </p>
+<p>
+This function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</div>
+ where <span class="math notranslate nohighlight">\(\phi\)</span> is the phase field variable. It represents a cubic degradation of the material stiffness as the phase field variable increases, providing a smoother transition compared to the quadratic function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – Numeric type (e.g., double, float). </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Degradation function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticE1TK1T">
+<span id="_CPPv3I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticEK1T"></span><span id="_CPPv2I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_phase_field_energy_degradation_8h_1af31c2bef36e05bb707f5eb4ab9d8f8c1"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::quartic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quartic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticE1TK1T" title="Marmot::PhaseField::EnergyDegradationFunctions::quartic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7quarticE1TK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Quartic degradation function. </p>
+<p>
+This function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</div>
+ where <span class="math notranslate nohighlight">\(\phi\)</span> is the phase field variable. It represents a quartic degradation of the material stiffness as the phase field variable increases, providing an even smoother transition compared to the cubic function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – Numeric type (e.g., double, float). </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Degradation function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericE1TK1TKdKdKdKd">
+<span id="_CPPv3I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericEK1TKdKdKdKd"></span><span id="_CPPv2I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericEK1TKdKdKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_phase_field_energy_degradation_8h_1afca31c3ac980ff4ea58281229377f1cb"></span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericE1TK1TKdKdKdKd" title="Marmot::PhaseField::EnergyDegradationFunctions::generic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">generic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericE1TK1TKdKdKdKd" title="Marmot::PhaseField::EnergyDegradationFunctions::generic::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a3</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot10PhaseField26EnergyDegradationFunctions7genericE1TK1TKdKdKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Generic degradation function acc. to Wu, JMPS (2017). </p>
+<p>
+This function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi (1 + a_2 \phi (1 + a_3 \phi))},\]</div>
+ where <span class="math notranslate nohighlight">\(\phi\)</span> is the phase field variable, and <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(a_1\)</span>, <span class="math notranslate nohighlight">\(a_2\)</span>, and <span class="math notranslate nohighlight">\(a_3\)</span> are parameters that control the shape of the degradation function. This generic form allows for a wide range of degradation behaviors by adjusting the parameters accordingly. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pf</strong> – Phase field variable. </p></li>
+<li><p><strong>p</strong> – Exponent parameter controlling the shape of the degradation function. </p></li>
+<li><p><strong>a1</strong> – Coefficient for the linear term in the denominator. </p></li>
+<li><p><strong>a2</strong> – Coefficient for the quadratic term in the denominator. </p></li>
+<li><p><strong>a3</strong> – Coefficient for the cubic term in the denominator. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>T</strong> – Numeric type (e.g., double, float). </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Degradation function value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerivedE">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerivedE"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerivedE"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived"></span><span class="target" id="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions_1_1_second_order_derived"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SecondOrderDerived</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerivedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived9quadraticEKd">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived9quadraticEKd"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived9quadraticEKd"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quadratic__doubleC"></span><span class="target" id="_marmot_phase_field_energy_degradation_8h_1a96924090a4282e25c29ba93ec01a0386"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived9quadraticEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Quadratic degradation function and its first and second derivatives. </p>
+<p>
+This function returns the value of the quadratic degradation function along with its first and second derivatives. The degradation function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = (1 - \phi)^2,\]</div>
+ and its derivatives are given by <div class="math notranslate nohighlight">
+\[ g'(\phi) = -2(1 - \phi), \quad g''(\phi) = 2. \]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived5cubicEKd">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived5cubicEKd"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived5cubicEKd"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::cubic__doubleC"></span><span class="target" id="_marmot_phase_field_energy_degradation_8h_1a97193d6541870538c3de90139c155eb5"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cubic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived5cubicEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Cubic degradation function and its first and second derivatives. </p>
+<p>
+This function returns the value of the cubic degradation function along with its first and second derivatives. The degradation function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</div>
+ and its derivatives are given by <div class="math notranslate nohighlight">
+\[ g'(\phi) = -6(1 - \phi)\phi, \quad g''(\phi) = 12\phi - 6. \]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7quarticEKd">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7quarticEKd"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7quarticEKd"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quartic__doubleC"></span><span class="target" id="_marmot_phase_field_energy_degradation_8h_1a6e4f75b6e61a92bab810d47cfa4782dd"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quartic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7quarticEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Quartic degradation function and its first and second derivatives. </p>
+<p>
+This function returns the value of the quartic degradation function along with its first and second derivatives. The degradation function is defined as <div class="math notranslate nohighlight">
+\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</div>
+ and its derivatives are given by  <div class="math notranslate nohighlight">
+\[ g'(\phi) = -12(1 - \phi)^2 + 12(1 - \phi)^3, \quad g''(\phi) = 24(1 - \phi) -
+36(1 - \phi)^2. \]</div>
+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> – Phase field variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7genericEKdKdKdKdKd">
+<span id="_CPPv3N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7genericEKdKdKdKdKd"></span><span id="_CPPv2N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7genericEKdKdKdKdKd"></span><span id="Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived::generic__doubleC.doubleC.doubleC.doubleC.doubleC"></span><span class="target" id="_marmot_phase_field_energy_degradation_8h_1ab4904b60f75e0bf8f8076b0de8cf834f"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">generic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pf</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a2</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a3</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot10PhaseField26EnergyDegradationFunctions18SecondOrderDerived7genericEKdKdKdKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Generic degradation function and its first and second derivatives. </p>
+<p>
+This function returns the value of the generic degradation function along with its first and second derivatives. The degradation function is defined as  <div class="math notranslate nohighlight">
+\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi
+(1 + a_2 \phi (1 + a_3 \phi))},\]</div>
+ where <span class="math notranslate nohighlight">\(\phi\)</span> is the phase field variable, and <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(a_1\)</span>, <span class="math notranslate nohighlight">\(a_2\)</span>, and <span class="math notranslate nohighlight">\(a_3\)</span> are parameters that control the shape of the degradation function. The first and second derivatives are computed using automatic differentiation with hyper-dual numbers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pf</strong> – Phase field variable. </p></li>
+<li><p><strong>p</strong> – Exponent parameter controlling the shape of the degradation function. </p></li>
+<li><p><strong>a1</strong> – Coefficient for the linear term in the denominator. </p></li>
+<li><p><strong>a2</strong> – Coefficient for the quadratic term in the denominator. </p></li>
+<li><p><strong>a3</strong> – Coefficient for the cubic term in the denominator. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv413MarmotLibrary">
+<span id="_CPPv313MarmotLibrary"></span><span id="_CPPv213MarmotLibrary"></span><span id="MarmotLibrary"></span><span class="target" id="namespace_marmot_library"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotLibrary</span></span></span><br /></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_decreasing_interactions_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotDecreasingInteractions.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include &lt;cmath&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;tuple&gt;</em></div>
+<p>Include dependency graph for MarmotDecreasingInteractions.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-54d7bed947ba058e703ffcf00dcd9868c26d6f58.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;3&quot; [label=&quot;tuple&quot; tooltip=&quot;tuple&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_material_general_gradient_enhanced_hypo_elastic_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “Marmot/MarmotExceptions.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotMath.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotStateHelpers.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotTypedefs.h”</em></div>
+<div class="docutils container">
+<em>#include &lt;algorithm&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;cmath&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;vector&gt;</em></div>
+<p>Include dependency graph for MarmotMaterialGeneralGradientEnhancedHypoElastic.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ded962c222867db8111c541b0b79621d9f70162d.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;6&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>This graph shows which files directly or indirectly include MarmotMaterialGeneralGradientEnhancedHypoElastic.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-9ecf6ecd7730250ec2930e30b43083389a7628e0.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “<a class="reference internal" href="#_marmot_material_general_gradient_enhanced_hypo_elastic_8h"><span class="std std-ref">Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h</span></a>”</em></div>
+<div class="docutils container">
+<em>#include &lt;cassert&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;functional&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;unordered_map&gt;</em></div>
+<p>Include dependency graph for MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a9c9e67dce434e167b908d839ab759b4f2002594.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;7&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;10&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
+    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;11&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;12&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;13&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;9&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_phase_field_energy_degradation_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotPhaseFieldEnergyDegradation.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include &lt;cmath&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;tuple&gt;</em></div>
+<p>Include dependency graph for MarmotPhaseFieldEnergyDegradation.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7ecee7c92531ee2e81fd265f03548f36117a6d15.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;3&quot; [label=&quot;tuple&quot; tooltip=&quot;tuple&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_6d4da112a1331882b0b6514a341190a0"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_ae7d1473f9685d7f125464aad8593cea"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_d9442681c17ebc98c0be903c28f69d82"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_7bc30a1980c776800491f3ee7b71f343"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_e05d7e2b1ecd646af5bb94391405f3b5"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules</span></span></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="finitestrainmechanicscore.html" class="btn btn-neutral float-left" title="MarmotFiniteStrainMechanicsCore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mathcore.html" class="btn btn-neutral float-right" title="MarmotMathCore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

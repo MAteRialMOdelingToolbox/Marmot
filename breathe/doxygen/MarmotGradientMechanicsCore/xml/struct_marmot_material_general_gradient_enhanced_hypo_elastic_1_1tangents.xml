@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" local="no">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a923dfbfb396acd9d9fac039a401ef644" prot="public" static="no" mutable="no">
+        <type>Marmot::Matrix6d</type>
+        <definition>Marmot::Matrix6d MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::dStressddStrain</definition>
+        <argsstring></argsstring>
+        <name>dStressddStrain</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dStressddStrain</qualifiedname>
+        <initializer>= Marmot::Matrix6d::Zero()</initializer>
+        <briefdescription>
+<para>Algorithmic tangent matrix relating the increment of stress to the increment of strain. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="102" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a59233ce22b9f7e9d759d176c7d2606c1" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, 6, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Matrix&lt; double, 6, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::dStressddK</definition>
+        <argsstring></argsstring>
+        <name>dStressddK</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dStressddK</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, 6, nNonlocalVariables &gt;::Zero()</initializer>
+        <briefdescription>
+<para>Algorithmic tangent matrix relating the increment of stress to the increment of nonlocal variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="104" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="104" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a7f6694d4139d1bf35b82e3156abc598b" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nNonlocalVariables, 6 &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nNonlocalVariables, 6 &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::dKLocalddStrain</definition>
+        <argsstring></argsstring>
+        <name>dKLocalddStrain</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dKLocalddStrain</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, nNonlocalVariables, 6 &gt;::Zero()</initializer>
+        <briefdescription>
+<para>Algorithmic tangent matrix relating the increment of local driving variables to the increment of strain. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="107" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a2d0d0744262a5fe478ba567468443a88" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::dKLocalddK</definition>
+        <argsstring></argsstring>
+        <name>dKLocalddK</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dKLocalddK</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;::Zero()</initializer>
+        <briefdescription>
+<para>Algorithmic tangent matrix relating the increment of local driving variables to the increment of nonlocal variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="111" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a0b8294d74b17c1f2fc7acd79db29240d" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::dcddK</definition>
+        <argsstring></argsstring>
+        <name>dcddK</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::dcddK</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;::Zero()</initializer>
+        <briefdescription>
+<para>First derivative of nonlocal interaction parameters with respect to nonlocal variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="114" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1ab581f90b67e24c86ace5b613c394ce45" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::tangents::d2cddK2</definition>
+        <argsstring></argsstring>
+        <name>d2cddK2</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents::d2cddK2</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, nNonlocalVariables, nNonlocalVariables &gt;::Zero()</initializer>
+        <briefdescription>
+<para>Second derivative of nonlocal interaction parameters with respect to nonlocal variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="117" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to hold the algorithmic tangent matrices for the material model. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="100" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="100" bodyend="118"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1ab581f90b67e24c86ace5b613c394ce45" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>d2cddK2</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a0b8294d74b17c1f2fc7acd79db29240d" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>dcddK</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a2d0d0744262a5fe478ba567468443a88" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>dKLocalddK</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a7f6694d4139d1bf35b82e3156abc598b" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>dKLocalddStrain</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a59233ce22b9f7e9d759d176c7d2606c1" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>dStressddK</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a923dfbfb396acd9d9fac039a401ef644" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</scope><name>dStressddStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

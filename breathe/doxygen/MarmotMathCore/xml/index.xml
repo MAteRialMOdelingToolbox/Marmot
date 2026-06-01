@@ -51,6 +51,9 @@
     <member refid="_marmot_typedefs_8h_1a92e92658ec8f3b5f376dde69375da320" kind="typedef"><name>Matrix9d</name></member>
     <member refid="_marmot_typedefs_8h_1a6381919ddfb218b0b24594f833bc97b6" kind="typedef"><name>complexDouble</name></member>
     <member refid="_marmot_typedefs_8h_1affa6bc20e2333a803af3a115ce67eed5" kind="typedef"><name>Vector6cd</name></member>
+    <member refid="_marmot_typedefs_8h_1ae3359451e67811ad0e37fabdcaab90bf" kind="typedef"><name>Vector6dual</name></member>
+    <member refid="_marmot_typedefs_8h_1ab3c4eaf98359eab56484df50adc637da" kind="typedef"><name>mVector6dual</name></member>
+    <member refid="_marmot_typedefs_8h_1ab16ca2e5768420138a11a36c12761c5d" kind="typedef"><name>mVector6dualConst</name></member>
     <member refid="_marmot_typedefs_8h_1a76293141af2ab8beafd9aed3ae8b1b1f" kind="typedef"><name>Vector6t</name></member>
     <member refid="_marmot_typedefs_8h_1a84db4851c64a953358752fe25430f7ee" kind="typedef"><name>VectorXt</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1acbee7445de295709f4135cb148214f5e" kind="function"><name>mapEigenToFastor</name></member>
@@ -71,20 +74,18 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1acc8deec5875096e9aae6c710f89e0690" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a6b27c38160146824cbd182e6753899ac" kind="function"><name>makeDual</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a1272f1655d8334837578afe9ac2ca92d" kind="function"><name>makeHigherOrderDual</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1ae5a0143d78a88d30eeec6fa0bbc8d4e0" kind="function"><name>makeOtherScalarType</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a279263d82f5f86f5127f6840f9835bf0" kind="function"><name>symmetric</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad8af416a52bd57f2eadaa0c931cd438e" kind="function"><name>deviatoric</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1adc23918bbb6930316f6c3205f885dd40" kind="function"><name>invertMinorSymmetricFourthOrderTensor</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_automatic_differentiation" kind="namespace"><name>Marmot::AutomaticDifferentiation</name>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1aee8267e1c1d89842e73fb874cdb80d0e" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad17f2d76b0904d01b6249ada27eecdaf" kind="typedef"><name>scalar_to_scalar_function_type_2nd</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a18ea932f42e59dd7f58875216ecd49e1" kind="typedef"><name>vector_to_vector_function_type_dual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a8e858fa54bfb2c41332ce3dc7cf5e45c" kind="typedef"><name>vector_to_vector_function_type_dual2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" kind="function"><name>dF_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1abd557d65d9c216aac93099bd98863e44" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a76d8057dbc112c363ce2436df8e04f3a" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a37db7167c4a2d4cb39e61c2fec762760" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a0e33dd3b85e07ce522ba99b42af9565b" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a2dfa9ae7badec377cddd95c193df72a1" kind="function"><name>valnode</name></member>
@@ -97,12 +98,20 @@
     <member refid="_marmot_automatic_differentiation_8h_1abd064183bd43fcae3cd6078f9a150ab5" kind="function"><name>df_dx</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a37fa3eec636936303f0bb6ded3b3288d" kind="function"><name>dF_dX</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1afe3a1926bfc33ef4201b9ddb3ffc3d19" kind="function"><name>dF_dX_2nd</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a90b3b2b1526ecba6b611c5a51bf86a66" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a6c89fdfd4ef801c108cc51e8a178d2cd" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a64e5b14fad670ebdd8af30a77b1e64b1" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7ab174ba4f9bb176f5085009b4360f50" kind="function"><name>dF_dT</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_automatic_differentiation_1_1_second_order" kind="namespace"><name>Marmot::AutomaticDifferentiation::SecondOrder</name>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a81fa1bac17c8d27d45ecb414c659ce78" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a78715c46ca01c2e9a6f125b636af0664" kind="typedef"><name>tensor_and_scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a625b3988552211bfe44936bee620e32a" kind="function"><name>d2f_dT2</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a0e87b1a80e0e084e1ee007e662f9e03e" kind="function"><name>d2f_dTensor_dScalar</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_automatic_differentiation_1_1_third_order" kind="namespace"><name>Marmot::AutomaticDifferentiation::ThirdOrder</name>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1afe518aeea4dc7f29dd8c9105f6a5a2a9" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a54dbc5043b98792a972219e15fc2b4be" kind="function"><name>d3f_dT3</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_constants" kind="namespace"><name>Marmot::Constants</name>
     <member refid="_marmot_constants_8h_1ae565cccf603a560e0f36d2a3dc9c23dc" kind="variable"><name>Pi</name></member>
@@ -178,22 +187,24 @@
     <member refid="_marmot_typedefs_8h_1a947b6c4f78fa69504090bb3f782ccadc" kind="typedef"><name>Tensor33d</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_fastor_indices" kind="namespace"><name>Marmot::FastorIndices</name>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39" kind="enum"><name></name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39acdf7065361dffc840c550a20ba320ee4" kind="enumvalue"><name>i_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a0537a8aba35403e38f58a4f2ae7467d6" kind="enumvalue"><name>j_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a90dc60bb4906f65f3917e7eeef4a6441" kind="enumvalue"><name>k_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a7f2338db7ffedf10e0d5af2863b06f53" kind="enumvalue"><name>l_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39ab2889fcef08ea0d057abe225d20b5275" kind="enumvalue"><name>m_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a1067cd424faf958524e35f750d76e1ea" kind="enumvalue"><name>n_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a314fe4118eca61bfa0b179c6dedd5345" kind="enumvalue"><name>A_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a291b5f5340e05cfb0628d5a38fec9089" kind="enumvalue"><name>B_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a30e6b15f9fb2845daf63d15bc47f2f56" kind="enumvalue"><name>I_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39af1d170350aeb11a3967a93fae4f3cfdc" kind="enumvalue"><name>J_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39abe1209ebf409f29408d899a1cae10018" kind="enumvalue"><name>K_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a75dd49b86e5279a99b801fe214820b09" kind="enumvalue"><name>L_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a85b39acfa89536ffaf01df0f7d22e8aa" kind="enumvalue"><name>M_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39ad428ce06c97fbab94b04191edfd0809e" kind="enumvalue"><name>N_</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a9506efcca717c73fed55c34c15203b39a7e33fd42d7d411116c8b7fef1fd118a8" kind="enumvalue"><name>P_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3" kind="enum"><name>IndexTag</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3acdf7065361dffc840c550a20ba320ee4" kind="enumvalue"><name>i_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a0537a8aba35403e38f58a4f2ae7467d6" kind="enumvalue"><name>j_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a90dc60bb4906f65f3917e7eeef4a6441" kind="enumvalue"><name>k_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a7f2338db7ffedf10e0d5af2863b06f53" kind="enumvalue"><name>l_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3ab2889fcef08ea0d057abe225d20b5275" kind="enumvalue"><name>m_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a1067cd424faf958524e35f750d76e1ea" kind="enumvalue"><name>n_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a305f875f7abf43476daa0f42afaa4eb9" kind="enumvalue"><name>o_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3aa9afa9f40350c4735f05f624222fc5d0" kind="enumvalue"><name>p_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a314fe4118eca61bfa0b179c6dedd5345" kind="enumvalue"><name>A_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a291b5f5340e05cfb0628d5a38fec9089" kind="enumvalue"><name>B_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a30e6b15f9fb2845daf63d15bc47f2f56" kind="enumvalue"><name>I_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3af1d170350aeb11a3967a93fae4f3cfdc" kind="enumvalue"><name>J_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3abe1209ebf409f29408d899a1cae10018" kind="enumvalue"><name>K_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a75dd49b86e5279a99b801fe214820b09" kind="enumvalue"><name>L_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a85b39acfa89536ffaf01df0f7d22e8aa" kind="enumvalue"><name>M_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3ad428ce06c97fbab94b04191edfd0809e" kind="enumvalue"><name>N_</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a8459cb58daa3eea119c5adf89dbd79a3a7e33fd42d7d411116c8b7fef1fd118a8" kind="enumvalue"><name>P_</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9f3224f6dcf25787355052d779a41a2c" kind="typedef"><name>A</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad729a2acacc83d9b985ce8d341066d4e" kind="typedef"><name>Ai</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a4a11700808755eed37912241d3fdd0ad" kind="typedef"><name>AB</name></member>
@@ -270,12 +281,14 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1a49fa49f49e7894d695d59aef643844c3" kind="typedef"><name>ijkB</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aec2012ba83ef1eec377a4c22b8179477" kind="typedef"><name>ijkK</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9b878370175b9abeebbc7ac11b5e6763" kind="typedef"><name>ijkl</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a0370d4f75f178a8cfdeca64a3a6e347c" kind="typedef"><name>klmnop</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9c1b77d50210bccafe5571d888c9bf8e" kind="typedef"><name>ijl</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a3f4781e9bf857d7d30556d2cc6a47637" kind="typedef"><name>ijm</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a786643f05644464ce076175ec7239e50" kind="typedef"><name>ijmn</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1acf3c9222bacbef6cfcf6db6733633641" kind="typedef"><name>ijnk</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a6bb1352312c955c22988a37781453e05" kind="typedef"><name>ijnm</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad74738b78cc0d92dbc7b20dbafc46a0a" kind="typedef"><name>ik</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a4d11610ebc32237baa49fb547a1c471e" kind="typedef"><name>il</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad4e1d45822d60ff2d2b48af8dcf8c788" kind="typedef"><name>im</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad68e518ac62aa316cf10fa7a5854be9f" kind="typedef"><name>imk</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a8737a3156d8a30d461a82f22e73416b4" kind="typedef"><name>imkl</name></member>
@@ -297,6 +310,7 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1ab2742dc7df57c4f65b8e0f19ea97e2f2" kind="typedef"><name>jkB</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9690ff03705cc61b503be036850083dc" kind="typedef"><name>jkl</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ae7f33156616bf871ec58faf822bc1a28" kind="typedef"><name>jl</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1aef0b9e91ccee96c862d75853b891210a" kind="typedef"><name>jn</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a85eb6106aac55482e62eaf6616b95050" kind="typedef"><name>k</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1af0d957165a4d2cc2bf9ee06e1eaa2658" kind="typedef"><name>kA</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a7635fea2386ece70093a280a632eee99" kind="typedef"><name>kB</name></member>
@@ -308,6 +322,7 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1afaa8030731b41f6cfc93af6292ed7e20" kind="typedef"><name>kj</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a0817d3e85fafbe8927e454e73c2fd587" kind="typedef"><name>kJ</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a269fa48488f4597af17fae3ca2602b49" kind="typedef"><name>kl</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a137e6618838f3e2b58c7b032eae8c528" kind="typedef"><name>klmn</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aec185be43210c3294a0be6a34967bc3c" kind="typedef"><name>km</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a850818d7ef140d69a9e199cb184dcf6a" kind="typedef"><name>l</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a68bb1582bff9197a493c231ed2dbd4c1" kind="typedef"><name>lB</name></member>
@@ -323,6 +338,7 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1ac73a6727561151c0000757d851c0b88f" kind="typedef"><name>mnkB</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a615be7ccf14092f6b82a6b3a9ba821fb" kind="typedef"><name>mnkL</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1add8b91e671bf55c0c1308af3d56d6be0" kind="typedef"><name>nB</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1ac8a231009cf231bd9448d831a280df25" kind="typedef"><name>ijklmn</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1abdc00af96edfbd916c89fa66324417a2" kind="typedef"><name>to_IJKL</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ac4d05a1acfd47fe592f5db083d5ec70e" kind="typedef"><name>to_IJkK</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aa29a54f1e2485243499cf7c767925a1d" kind="typedef"><name>to_IJkL</name></member>
@@ -354,20 +370,28 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1aa0e149158e38ea71acdff01486c7752a" kind="typedef"><name>to_jkiB</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aa48ef671f4ea8bb3a84fbece10251c68" kind="typedef"><name>to_kK</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ac07d21dcdf0275cfb545074e3a990a52" kind="typedef"><name>to_kL</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a42eaab23737cb130eb7c3e688565d872" kind="typedef"><name>to_ijklmn</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_fastor_standard_tensors" kind="namespace"><name>Marmot::FastorStandardTensors</name>
     <member refid="_marmot_fastor_tensor_basics_8h_1af7db5f44a943a4a967b78b83ce4e9e42" kind="typedef"><name>Tensor3d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a7ce3d36f5f3b545d636d13bee501d420" kind="typedef"><name>Tensor33d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ab304038cf8a25542db9b842136caa964" kind="typedef"><name>Tensor333d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a65c78c55ef6ae2d308d54d2e8b214d67" kind="typedef"><name>Tensor3333d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a3d45bbcb9003d6a5143a74a2e332ecd2" kind="typedef"><name>Tensor333333d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1acb0e551cebc79ad4b5f02087db075e72" kind="typedef"><name>TensorMap33d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a4469e98ebd6dd3ff0371607165fedc75" kind="typedef"><name>Tensor3t</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1af247e2b29b4bc9e170538bb33421094c" kind="typedef"><name>Tensor33t</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aa1fb7bbdecc6aca659f47fe768c56f1d" kind="typedef"><name>Tensor333t</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1af768231067623bc43d62cb462bee922e" kind="typedef"><name>Tensor3333t</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a52690671de57169e33fc74301755a302" kind="typedef"><name>TensorMap3d</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1acb0e551cebc79ad4b5f02087db075e72" kind="typedef"><name>TensorMap33d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a072e9bb72e41973bad54b04e85198839" kind="typedef"><name>TensorMap333d</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a59700181c81ecbf8d351da7a0e03a745" kind="typedef"><name>TensorMap3333d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a0c6338dcd9d62665d8138153dca43fcb" kind="typedef"><name>Tensor9d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a6fba789591ec189e7bd702aeba3643d5" kind="typedef"><name>Tensor99d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a564d5f0752ab6369a82597524d18bcd0" kind="typedef"><name>Tensor9t</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a14f1c65024a8731aaa7447103eeb9464" kind="typedef"><name>Tensor99t</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a24687b2f59516035d3d6ed879d8c42dd" kind="typedef"><name>TensorMap9d</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1aa540937781c2a234fc5ac1e44698a54e" kind="typedef"><name>TensorMap99d</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_fastor_standard_tensors_1_1_spatial3_d" kind="namespace"><name>Marmot::FastorStandardTensors::Spatial3D</name>
     <member refid="_marmot_fastor_tensor_basics_8h_1ac7886a56e9b9adf66dd3635be909ed9e" kind="variable"><name>I</name></member>
@@ -382,6 +406,8 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1a731497ac99afd6102cbc4f11f2956a3b" kind="variable"><name>DeviatoricSymmetric</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
+    <member refid="_marmot_eigen_systems_8h_1afd25eadadd905d54b987ea03b923d11d" kind="function"><name>computeEigenSystemJacobi</name></member>
+    <member refid="_marmot_eigen_systems_8h_1ae93db1c7551070b12b45fc18c94539a3" kind="function"><name>computeEigenSystemWithCardano</name></member>
     <member refid="_marmot_math_8h_1ad3a65166e9b849eb54ccef942368b6e6" kind="function"><name>isNaN</name></member>
     <member refid="_marmot_math_8h_1aa14a646adfd201e379c86f6bd85d942a" kind="function"><name>linearInterpolation</name></member>
     <member refid="_marmot_math_8h_1a20088570076b71e5f4f0bb08fa7ba44d" kind="function"><name>exp</name></member>
@@ -475,6 +501,8 @@
   </compound>
   <compound refid="_marmot_constants_8h" kind="file"><name>MarmotConstants.h</name>
   </compound>
+  <compound refid="_marmot_eigen_systems_8h" kind="file"><name>MarmotEigenSystems.h</name>
+  </compound>
   <compound refid="_marmot_fastor_tensor_basics_8h" kind="file"><name>MarmotFastorTensorBasics.h</name>
   </compound>
   <compound refid="_marmot_math_8h" kind="file"><name>MarmotMath.h</name>
@@ -490,6 +518,7 @@
   <compound refid="_marmot_tensor_exponential_8h" kind="file"><name>MarmotTensorExponential.h</name>
   </compound>
   <compound refid="_marmot_typedefs_8h" kind="file"><name>MarmotTypedefs.h</name>
+    <member refid="_marmot_typedefs_8h_1ab05a2676268f62bf9214105a0fe8e614" kind="define"><name>VOIGTFROMDIM</name></member>
   </compound>
   <compound refid="_newton_convergence_checker_8h" kind="file"><name>NewtonConvergenceChecker.h</name>
   </compound>

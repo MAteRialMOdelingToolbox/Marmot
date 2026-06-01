@@ -1,0 +1,696 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</compoundname>
+    <includes refid="_marmot_material_point_solver_finite_strain_8h" local="no">MarmotMaterialPointSolverFiniteStrain.h</includes>
+    <innerclass refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" prot="public">Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</innerclass>
+    <innerclass refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" prot="public">Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</innerclass>
+    <innerclass refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options" prot="public">Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions</innerclass>
+    <innerclass refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" prot="public">Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step</innerclass>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab0e4862d6c7f0792b2b750655ed317ce" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_marmot_material_finite_strain" kindref="compound">MarmotMaterialFiniteStrain</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; MarmotMaterialFiniteStrain &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::material</definition>
+        <argsstring></argsstring>
+        <name>material</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::material</qualifiedname>
+        <briefdescription>
+<para>The finite strain material model. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="308" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a060c1895709d246cdd0af7a558ea5937" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::nStateVars</definition>
+        <argsstring></argsstring>
+        <name>nStateVars</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::nStateVars</qualifiedname>
+        <briefdescription>
+<para>Number of state variables in the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="311" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="311" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a7f6731e2a9af21c9c742c1d2d446c71c" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVars</qualifiedname>
+        <briefdescription>
+<para>Current state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="314" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="314" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a36861b8b06712b8fa84203e3d0672a52" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStateVars</definition>
+        <argsstring></argsstring>
+        <name>_initialStateVars</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStateVars</qualifiedname>
+        <briefdescription>
+<para>Initial state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="317" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="317" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1af74a4072f5f3716c77c5d837d0262377" prot="private" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVarsTemp</definition>
+        <argsstring></argsstring>
+        <name>stateVarsTemp</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVarsTemp</qualifiedname>
+        <briefdescription>
+<para>Temporary state variables for computations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="320" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="320" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ac99993dbf80832c5f970a9c05f2e4b67" prot="private" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor33d</type>
+        <definition>FastorStandardTensors::Tensor33d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stress</qualifiedname>
+        <initializer>= FastorStandardTensors::Tensor33d( 0.0 )</initializer>
+        <briefdescription>
+<para>The Kirchhoff stress. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="323" column="40" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="323" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a9345f16373cefc6156e1b6f0a0e8fa84" prot="private" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor33d</type>
+        <definition>FastorStandardTensors::Tensor33d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStress</definition>
+        <argsstring></argsstring>
+        <name>_initialStress</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStress</qualifiedname>
+        <initializer>= FastorStandardTensors::Tensor33d( 0.0 )</initializer>
+        <briefdescription>
+<para>The initial Kirchhoff stress. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="326" column="40" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="326" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3cdf71f50cff8032b571f9a19f7a5153" prot="private" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor33d</type>
+        <definition>FastorStandardTensors::Tensor33d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::gradU</definition>
+        <argsstring></argsstring>
+        <name>gradU</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::gradU</qualifiedname>
+        <initializer>= FastorStandardTensors::Tensor33d( 0.0 )</initializer>
+        <briefdescription>
+<para>The displacement gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="329" column="40" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="329" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad84d9f433fc9940cd40467cb124570ee" prot="private" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor3333d</type>
+        <definition>FastorStandardTensors::Tensor3333d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::dTau_dF</definition>
+        <argsstring></argsstring>
+        <name>dTau_dF</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::dTau_dF</qualifiedname>
+        <initializer>= FastorStandardTensors::Tensor3333d( 0.0 )</initializer>
+        <briefdescription>
+<para>The material tangent dTau/dF. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="332" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="332" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aafb49c5b3f4412a6c0dc1d332035adbb" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> &gt;</type>
+        <definition>std::vector&lt; Step &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::steps</definition>
+        <argsstring></argsstring>
+        <name>steps</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::steps</qualifiedname>
+        <briefdescription>
+<para>List of loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="335" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="335" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3844aaa4c9133150648d30d4116dc3ee" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kindref="compound">HistoryEntry</ref> &gt;</type>
+        <definition>std::vector&lt; HistoryEntry &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::history</definition>
+        <argsstring></argsstring>
+        <name>history</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::history</qualifiedname>
+        <initializer>= std::vector&lt; <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kindref="compound">HistoryEntry</ref> &gt;()</initializer>
+        <briefdescription>
+<para>History of the simulation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="338" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="338" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab16cd25b6b64f3987929fb2c8379efd4" prot="private" static="no" mutable="no">
+        <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options" kindref="compound">SolverOptions</ref></type>
+        <definition>const SolverOptions Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::options</definition>
+        <argsstring></argsstring>
+        <name>options</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::options</qualifiedname>
+        <briefdescription>
+<para>Solver options. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="341" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="341" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a1795eddc0ae6a711af0bbaceead2bff2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain</definition>
+        <argsstring>(const std::string &amp;materialName, const double *materialProperties, const int nMaterialProperties, const SolverOptions &amp;options)</argsstring>
+        <name>MarmotMaterialPointSolverFiniteStrain</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options" kindref="compound">SolverOptions</ref> &amp;</type>
+          <declname>options</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for the <ref refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain" kindref="compound">MarmotMaterialPointSolverFiniteStrain</ref> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the finite strain material model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of material properties </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material properties </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>options</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Solver options controlling nonlinear iteration settings </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="184" column="7"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a92eaaad62bfe81c8e6efbf427dcfe507" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::addStep</definition>
+        <argsstring>(const Step &amp;step)</argsstring>
+        <name>addStep</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::addStep</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+<para>Add a loading step to the solver. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> to be added </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="193" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad8e272dc0fdeba6d0f3713c97c911c5c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> &gt;</type>
+        <definition>std::vector&lt; Step &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getSteps</definition>
+        <argsstring>() const</argsstring>
+        <name>getSteps</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getSteps</qualifiedname>
+        <briefdescription>
+<para>Get the list of added loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> containing the added steps </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="199" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="199" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aaf9c2d3afe013d5a4283a311e4564b6c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearSteps</definition>
+        <argsstring>()</argsstring>
+        <name>clearSteps</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearSteps</qualifiedname>
+        <briefdescription>
+<para>Clear all added loading steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="204" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="204" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab298b252101c9a5ae4723a6a238e2071" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::setInitialState</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33d &amp;initialStress, const Eigen::VectorXd &amp;initialStateVars)</argsstring>
+        <name>setInitialState</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::setInitialState</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33d &amp;</type>
+          <declname>initialStress</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>initialStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Set the initial state of the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial stress in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>initialStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The initial state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="211" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aa199d4abb0eb00f2c040c845f63dbc5f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getNumberOfStateVariables</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfStateVariables</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getNumberOfStateVariables</qualifiedname>
+        <briefdescription>
+<para>Get the number of state variables in the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The number of state variables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="218" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="218" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a04147554138c145592592b02251ddc0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::resetToInitialState</definition>
+        <argsstring>()</argsstring>
+        <name>resetToInitialState</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::resetToInitialState</qualifiedname>
+        <briefdescription>
+<para>Reset the solver to the initial state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function resets the initial stress and state variables of the material model. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="225" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a45110dbb641c78c3ccc1ccf3d2899f18" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solve</definition>
+        <argsstring>()</argsstring>
+        <name>solve</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solve</qualifiedname>
+        <briefdescription>
+<para>Solve the material point problem for all added steps. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="230" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad5da0c147346dabde5faba5d619da5df" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::vector&lt; <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kindref="compound">HistoryEntry</ref> &gt; &amp;</type>
+        <definition>const std::vector&lt; HistoryEntry &gt; &amp; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getHistory</definition>
+        <argsstring>() const</argsstring>
+        <name>getHistory</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getHistory</qualifiedname>
+        <briefdescription>
+<para>Get the recorded history of the simulation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kindref="compound">HistoryEntry</ref> containing the recorded history </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="236" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="236" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a0e2a5a36158c0716e0a7cd3decc047c2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearHistory</definition>
+        <argsstring>()</argsstring>
+        <name>clearHistory</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearHistory</qualifiedname>
+        <briefdescription>
+<para>Clear the recorded history. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="241" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="241" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a11838c92ee97bc5c15033e1be8736390" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::printHistory</definition>
+        <argsstring>()</argsstring>
+        <name>printHistory</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::printHistory</qualifiedname>
+        <briefdescription>
+<para>Print the recorded history to the console. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="246" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a4b8ec5c0e10c83e963c7e62f7854a4b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV</definition>
+        <argsstring>(const std::string &amp;filename)</argsstring>
+        <name>exportHistoryToCSV</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>filename</declname>
+        </param>
+        <briefdescription>
+<para>Export the recorded history to a CSV file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>filename</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the CSV file to export to </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="252" column="12"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab55c12b1d7f63fea3fd757c7b7f36a89" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveStep</definition>
+        <argsstring>(const Step &amp;step)</argsstring>
+        <name>solveStep</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveStep</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> &amp;</type>
+          <declname>step</declname>
+        </param>
+        <briefdescription>
+<para>Solve a single loading step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>step</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kindref="compound">Step</ref> to be solved</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function iterates over the increments defined in the step, calling solveIncrement for each increment. It manages time stepping and ensures that the entire step is covered. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="264" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a42a6708f2d72e257776c6ec6349ee201" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveIncrement</definition>
+        <argsstring>(const Increment &amp;increment)</argsstring>
+        <name>solveIncrement</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveIncrement</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Solve a single increment within a loading step. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> to be solved </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the solver does not converge</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function implements a Newton-Raphson iterative solver to compute the stress and deformation state for the given increment. It updates the material state variables and records the history after convergence. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="276" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a522ca653bb455453aa434f8e7fc50aab" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FastorStandardTensors::Tensor9d</type>
+        <definition>FastorStandardTensors::Tensor9d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::computeResidual</definition>
+        <argsstring>(const FastorStandardTensors::Tensor9d &amp;stressIncrement, const FastorStandardTensors::Tensor9d &amp;target, const Increment &amp;increment)</argsstring>
+        <name>computeResidual</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::computeResidual</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor9d &amp;</type>
+          <declname>stressIncrement</declname>
+        </param>
+        <param>
+          <type>const FastorStandardTensors::Tensor9d &amp;</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Compute the residual for the current increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stressIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The computed stress increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target (mixed) stress/strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> containing control information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The computed residual vector</para>
+</simplesect>
+This function calculates the residual vector based on the difference between the computed stress increment and the target increment, taking into account which components are controlled by strain or stress. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="290" column="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab5175c300da76e16284b989d35dccc1e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::modifyTangent</definition>
+        <argsstring>(FastorStandardTensors::Tensor99d &amp;tangent, const Increment &amp;increment)</argsstring>
+        <name>modifyTangent</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::modifyTangent</qualifiedname>
+        <param>
+          <type>FastorStandardTensors::Tensor99d &amp;</type>
+          <declname>tangent</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> &amp;</type>
+          <declname>increment</declname>
+        </param>
+        <briefdescription>
+<para>Modify the material tangent matrix based on control type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material tangent matrix to be modified </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>increment</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kindref="compound">Increment</ref> containing control information</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This function adjusts the tangent matrix to account for the components that are controlled by displacement gradient or stress, ensuring that the solver correctly handles mixed control scenarios. This is done by zeroing out rows corresponding to displacement gradient controlled components and setting their diagonal entries to one. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="305" column="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Solver for material point problems with finite strain materials. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class implements a solver for material point problems using finite strain material models. It supports loading steps with controlled displacement gradient and stress components, adaptive time stepping, and history recording. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="44" bodyend="342"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a36861b8b06712b8fa84203e3d0672a52" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>_initialStateVars</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a9345f16373cefc6156e1b6f0a0e8fa84" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>_initialStress</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a92eaaad62bfe81c8e6efbf427dcfe507" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>addStep</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a0e2a5a36158c0716e0a7cd3decc047c2" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>clearHistory</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aaf9c2d3afe013d5a4283a311e4564b6c" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>clearSteps</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a522ca653bb455453aa434f8e7fc50aab" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>computeResidual</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad84d9f433fc9940cd40467cb124570ee" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>dTau_dF</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a4b8ec5c0e10c83e963c7e62f7854a4b3" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>exportHistoryToCSV</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad5da0c147346dabde5faba5d619da5df" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>getHistory</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aa199d4abb0eb00f2c040c845f63dbc5f" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>getNumberOfStateVariables</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad8e272dc0fdeba6d0f3713c97c911c5c" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>getSteps</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3cdf71f50cff8032b571f9a19f7a5153" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>gradU</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3844aaa4c9133150648d30d4116dc3ee" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>history</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a1795eddc0ae6a711af0bbaceead2bff2" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>MarmotMaterialPointSolverFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab0e4862d6c7f0792b2b750655ed317ce" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>material</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab5175c300da76e16284b989d35dccc1e" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>modifyTangent</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a060c1895709d246cdd0af7a558ea5937" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>nStateVars</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab16cd25b6b64f3987929fb2c8379efd4" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>options</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a11838c92ee97bc5c15033e1be8736390" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>printHistory</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a04147554138c145592592b02251ddc0e" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>resetToInitialState</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab298b252101c9a5ae4723a6a238e2071" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>setInitialState</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a45110dbb641c78c3ccc1ccf3d2899f18" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>solve</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a42a6708f2d72e257776c6ec6349ee201" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>solveIncrement</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab55c12b1d7f63fea3fd757c7b7f36a89" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>solveStep</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a7f6731e2a9af21c9c742c1d2d446c71c" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>stateVars</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1af74a4072f5f3716c77c5d837d0262377" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>stateVarsTemp</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aafb49c5b3f4412a6c0dc1d332035adbb" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>steps</name></member>
+      <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ac99993dbf80832c5f970a9c05f2e4b67" prot="private" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</scope><name>stress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

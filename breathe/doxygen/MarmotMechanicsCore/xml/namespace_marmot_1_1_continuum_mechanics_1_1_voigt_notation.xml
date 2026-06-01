@@ -48,7 +48,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="47" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="47" bodyend="47"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="46" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="46" bodyend="46"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -66,7 +66,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="63" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="63" declcolumn="35"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="62" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="62" declcolumn="35"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_voigt_8h_1a80e5caee708bb8aa73d42a256c8a714a" prot="public" static="no" extern="yes" mutable="no">
         <type>const Marmot::Vector6d</type>
@@ -82,7 +82,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="68" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="68" declcolumn="35"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="67" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="67" declcolumn="35"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_voigt_8h_1acf9352cae95af25313c71032e776af4f" prot="public" static="no" extern="yes" mutable="no">
         <type>const Marmot::Vector6d</type>
@@ -98,7 +98,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="73" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="73" declcolumn="35"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="72" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="72" declcolumn="35"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_voigt_8h_1abebf5caff1d107a6c8f5993bf6639ac9" prot="public" static="no" extern="yes" mutable="no">
         <type>const Marmot::Vector6d</type>
@@ -114,7 +114,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="78" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="78" declcolumn="35"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="77" column="35" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="77" declcolumn="35"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_voigt_8h_1a37017d3a6a002dee6ca7127fc7f42736" prot="public" static="no" extern="yes" mutable="no">
         <type>const Matrix6d</type>
@@ -126,11 +126,11 @@
 <para>Deviatoric projection tensor in Voigt notation. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="139">$ 6 \times 6 $</formula> matrix. </para>
+<para><formula id="112">$ 6 \times 6 $</formula> matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="83" column="27" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="83" declcolumn="27"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="82" column="27" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="82" declcolumn="27"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -159,13 +159,13 @@
 </parameterlist>
 <simplesect kind="return"><para>The size of the Voigt notation array as a VoigtSize. </para>
 </simplesect>
-<simplesect kind="note"><para>The calculation is based on the formula: <formula id="138">$ \frac{x * x + x}{2} $</formula>. </para>
+<simplesect kind="note"><para>The calculation is based on the formula: <formula id="111">$ \frac{x * x + x}{2} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="55" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="55" bodyend="58"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="54" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="54" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1ac44e1e21a8541d4bc7a989810c929e30" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Vector3d</type>
@@ -186,14 +186,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component 3D stress vector in Voigt notation:     <formula id="140">\[\begin{bmatrix}
+<para>6-component 3D stress vector in Voigt notation:     <formula id="113">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
-\]</formula> where <formula id="141">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula> in plane stress conditions. </para>
+\]</formula> where <formula id="114">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula> in plane stress conditions. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3-component plane stress vector in Voigt notation:     <formula id="142">\[\begin{bmatrix}
+<simplesect kind="return"><para>3-component plane stress vector in Voigt notation:     <formula id="115">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12}
 \end{bmatrix}^T
 \]</formula> </para>
@@ -204,7 +204,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="104" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="104" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="103" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="103" declcolumn="21"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1aa86b1eb47a5be769028c3286112f8a72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Vector4d</type>
@@ -222,7 +222,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="105" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="105" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="104" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="104" declcolumn="21"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1ab3ceb10ac45895af2d82391eae901810" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Marmot::Vector6d</type>
@@ -243,14 +243,14 @@
 <parametername>voigtPlane</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3-component plane stress vector in Voigt notation:     <formula id="142">\[\begin{bmatrix}
+<para>3-component plane stress vector in Voigt notation:     <formula id="115">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component 3D stress vector in Voigt notation:     <formula id="143">\[\begin{bmatrix}
+<simplesect kind="return"><para>6-component 3D stress vector in Voigt notation:     <formula id="116">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; 0 &amp; \sigma_{12} &amp; 0 &amp; 0
 \end{bmatrix}^T
 \]</formula> </para>
@@ -261,7 +261,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="123" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="123" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="122" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="122" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1a12ebb5daa216ecc29c8d7868058e549d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Vector6d</type>
@@ -279,7 +279,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="124" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="124" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="123" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="123" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1af99f601e98c1a9135caef4de888542c6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -323,7 +323,7 @@
 <simplesect kind="return"><para>Reduced Voigt vector of size <computeroutput>voigtSize</computeroutput>. </para>
 </simplesect>
 <simplesect kind="note"><para>Considered cases:<itemizedlist>
-<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns the <formula id="144">$\sigma_{11}$</formula> component.</para>
+<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns the <formula id="117">$\sigma_{11}$</formula> component.</para>
 </listitem><listitem><para><computeroutput>voigtSize = 3</computeroutput>: Returns the plane stress components using <computeroutput>voigtToPlaneVoigt()</computeroutput>.</para>
 </listitem><listitem><para><computeroutput>voigtSize = 6</computeroutput>: Returns the input 3D vector unchanged. </para>
 </listitem></itemizedlist>
@@ -342,7 +342,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="138" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="138" bodyend="148"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="137" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="137" bodyend="147"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1a5bb68f6bf21cd36b0d38703692e98a90" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -386,7 +386,7 @@
 <simplesect kind="return"><para>6-component 3D Voigt vector. </para>
 </simplesect>
 <simplesect kind="note"><para>Considered cases:<itemizedlist>
-<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns a 3D vector with only <formula id="144">$\sigma_{11}$</formula> non-zero:     <formula id="145">\[\begin{bmatrix}
+<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns a 3D vector with only <formula id="117">$\sigma_{11}$</formula> non-zero:     <formula id="118">\[\begin{bmatrix}
 \sigma_{11} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
 \end{bmatrix}^T
 \]</formula></para>
@@ -408,7 +408,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="167" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="167" bodyend="179"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="166" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="166" bodyend="178"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1aa1776cbb1ed1825ecdd9a96b4e7ddfa4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -443,14 +443,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component strain vector in Voigt notation:     <formula id="146">\[\begin{bmatrix}
+<para>6-component strain vector in Voigt notation:     <formula id="119">\[\begin{bmatrix}
 \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3x3 strain tensor:       <formula id="147">\[\begin{bmatrix}
+<simplesect kind="return"><para>3x3 strain tensor:       <formula id="120">\[\begin{bmatrix}
 \varepsilon_{11} &amp; \gamma_{12}/2 &amp; \gamma_{13}/2 \\
 \gamma_{12}/2 &amp; \varepsilon_{22} &amp; \gamma_{23}/2 \\
 \gamma_{13}/2 &amp; \gamma_{23}/2 &amp; \varepsilon_{33} \\
@@ -463,7 +463,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="203" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="203" bodyend="212"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="202" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="202" bodyend="211"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1ae1581dc1677ced10242837a5f509df51" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -498,14 +498,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component stress vector in Voigt notation:     <formula id="140">\[\begin{bmatrix}
+<para>6-component stress vector in Voigt notation:     <formula id="113">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3x3 stress tensor:       <formula id="148">\[\begin{bmatrix}
+<simplesect kind="return"><para>3x3 stress tensor:       <formula id="121">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
 \sigma_{12} &amp; \sigma_{22} &amp; \sigma_{23} \\
 \sigma_{13} &amp; \sigma_{23} &amp; \sigma_{33} \\
@@ -516,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="233" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="233" bodyend="242"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="232" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="232" bodyend="241"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1acaf4a0c04d16233a574008900e128857" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Marmot::Vector6d</type>
@@ -537,7 +537,7 @@
 <parametername>strainTensor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3x3 strain tensor:        <formula id="149">\[\boldsymbol{\varepsilon} =
+<para>3x3 strain tensor:        <formula id="122">\[\boldsymbol{\varepsilon} =
 \begin{bmatrix}
 \varepsilon_{11} &amp; \varepsilon_{12} &amp; \varepsilon_{13} \\
 \varepsilon_{21} &amp; \varepsilon_{22} &amp; \varepsilon_{23} \\
@@ -547,7 +547,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component strain vector in Voigt notation:             <formula id="150">\[\begin{aligned}
+<simplesect kind="return"><para>6-component strain vector in Voigt notation:             <formula id="123">\[\begin{aligned}
 \boldsymbol{\varepsilon}^{\text{Voigt}} &amp;=
 \begin{bmatrix}
   \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
@@ -560,13 +560,13 @@
 \end{aligned}
 \]</formula> </para>
 </simplesect>
-<simplesect kind="note"><para>Shear components in the Voigt vector ( <formula id="151">$\gamma_{ij}$</formula> ) are engineering strains, which are twice the tensor shear components. </para>
+<simplesect kind="note"><para>Shear components in the Voigt vector ( <formula id="124">$\gamma_{ij}$</formula> ) are engineering strains, which are twice the tensor shear components. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="272" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="272" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="271" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="271" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1a02fcdad0184c1dd32f766a0f7c26c0e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -602,7 +602,7 @@
 <parametername>stressTensor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3x3 stress tensor:        <formula id="152">\[\boldsymbol{\sigma} =
+<para>3x3 stress tensor:        <formula id="125">\[\boldsymbol{\sigma} =
 \begin{bmatrix}
 \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
 \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\
@@ -612,7 +612,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component stress vector in Voigt notation:      <formula id="153">\[\boldsymbol{\sigma}^{\text{Voigt}} =
+<simplesect kind="return"><para>6-component stress vector in Voigt notation:      <formula id="126">\[\boldsymbol{\sigma}^{\text{Voigt}} =
 \begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
@@ -624,20 +624,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="296" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="296" bodyend="308"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="295" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="295" bodyend="307"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_voigt_8h_1a37df806bdfd78a6e1aea78100a0d37f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_voigt_8h_1afa21f2ad2f43a90916727d1241a9495c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix&lt; double, 6, 6 &gt;</type>
         <definition>Eigen::Matrix&lt; double, 6, 6 &gt; Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt</definition>
-        <argsstring>(const Eigen::Tensor&lt; double, 4 &gt; &amp;C)</argsstring>
+        <argsstring>(const EigenTensors::Tensor3333d &amp;C)</argsstring>
         <name>stiffnessToVoigt</name>
         <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt</qualifiedname>
         <param>
-          <type>const Eigen::Tensor&lt; double, 4 &gt; &amp;</type>
+          <type>const EigenTensors::Tensor3333d &amp;</type>
           <declname>C</declname>
         </param>
         <briefdescription>
-<para>Converts a fourth-order stiffness tensor to its Voigt notation representation ( <formula id="139">$ 6 \times 6 $</formula> matrix). </para>
+<para>Converts a fourth-order stiffness tensor to its Voigt notation representation ( <formula id="112">$ 6 \times 6 $</formula> matrix). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -657,11 +657,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="317" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="317" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="316" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="316" declcolumn="19"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_voigt_8h_1a6b2fa55a7bde17330067d476a6338702" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Eigen::Tensor&lt; double, 4 &gt;</type>
-        <definition>Eigen::Tensor&lt; double, 4 &gt; Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness</definition>
+      <memberdef kind="function" id="_marmot_voigt_8h_1af2be3ea06cd31196eb19547c317d094c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>EigenTensors::Tensor3333d</type>
+        <definition>EigenTensors::Tensor3333d Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness</definition>
         <argsstring>(const Eigen::Matrix&lt; double, 6, 6 &gt; &amp;voigtStiffness)</argsstring>
         <name>voigtToStiffness</name>
         <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness</qualifiedname>
@@ -670,7 +670,7 @@
           <declname>voigtStiffness</declname>
         </param>
         <briefdescription>
-<para>Converts a stiffness matrix in Voigt notation ( <formula id="139">$ 6 \times 6 $</formula> matrix) to a 4th-order stiffness tensor ( <formula id="154">$ 3 \times 3 \times 3 \times 3 $</formula> tensor). </para>
+<para>Converts a stiffness matrix in Voigt notation ( <formula id="112">$ 6 \times 6 $</formula> matrix) to a 4th-order stiffness tensor ( <formula id="127">$ 3 \times 3 \times 3 \times 3 $</formula> tensor). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -678,17 +678,48 @@
 <parametername>voigtStiffness</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="139">$ 6 \times 6 $</formula> matrix representing the stiffness in Voigt notation. </para>
+<para>The <formula id="112">$ 6 \times 6 $</formula> matrix representing the stiffness in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>An Eigen::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor. The dimensions of the tensor are <formula id="154">$ 3 \times 3 \times 3 \times 3 $</formula>. </para>
+<simplesect kind="return"><para>An Eigen::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor. The dimensions of the tensor are <formula id="127">$ 3 \times 3 \times 3 \times 3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="326" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="326" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="325" column="31" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="325" declcolumn="31"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a0760a0f82c2d9212e157431faec76da8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::FastorStandardTensors::Tensor3333d</type>
+        <definition>Marmot::FastorStandardTensors::Tensor3333d Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffnessFastor</definition>
+        <argsstring>(const Marmot::Matrix6d &amp;voigtStiffness)</argsstring>
+        <name>voigtToStiffnessFastor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffnessFastor</qualifiedname>
+        <param>
+          <type>const Marmot::Matrix6d &amp;</type>
+          <declname>voigtStiffness</declname>
+        </param>
+        <briefdescription>
+<para>Converts a stiffness matrix in Voigt notation ( <formula id="112">$ 6 \times 6 $</formula> matrix) to a 4th-order stiffness tensor ( <formula id="127">$ 3 \times 3 \times 3 \times 3 $</formula> tensor). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>voigtStiffness</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="112">$ 6 \times 6 $</formula> matrix representing the stiffness in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor. The dimensions of the tensor are <formula id="127">$ 3 \times 3 \times 3 \times 3 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="334" column="48" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="334" declcolumn="48"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1ac1e1d50ccf1ef1340c6447e1fbd54dac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -726,11 +757,11 @@
 </parameternamelist>
 <parameterdescription>
 <para>Input stress vector in Voigt notation, size <computeroutput>VOIGTFROMDIM(nDim) x 1</computeroutput>:<itemizedlist>
-<listitem><para>1D:  <formula id="155">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+<listitem><para>1D:  <formula id="128">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>2D:  <formula id="156">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+</listitem><listitem><para>2D:  <formula id="129">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>3D:   <formula id="157">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+</listitem><listitem><para>3D:   <formula id="130">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T $</formula> </para>
 </listitem></itemizedlist>
@@ -738,7 +769,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Symmetric stress tensor of size <formula id="158">$ nDim \times nDim $</formula>. </para>
+<simplesect kind="return"><para>Symmetric stress tensor of size <formula id="131">$ nDim \times nDim $</formula>. </para>
 </simplesect>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
@@ -755,7 +786,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="348" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="348" bodyend="359"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="356" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="356" bodyend="367"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_voigt_8h_1ae8eac19a17822352de1d8c2bc2775b86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -797,11 +828,11 @@
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Column vector of size <computeroutput>VOIGTFROMDIM(nDim) x 1</computeroutput> representing the strain in Voigt notation.<itemizedlist>
-<listitem><para>1D:  <formula id="159">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+<listitem><para>1D:  <formula id="132">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>2D:  <formula id="160">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+</listitem><listitem><para>2D:  <formula id="133">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} &amp; \varepsilon_{22} &amp; 2 \varepsilon_{12} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>3D:   <formula id="161">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+</listitem><listitem><para>3D:   <formula id="134">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; 2 \varepsilon_{12} &amp; 2
 \varepsilon_{13} &amp; 2 \varepsilon_{23} \end{bmatrix}^T $</formula> </para>
 </listitem></itemizedlist>
@@ -822,13 +853,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="380" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="380" bodyend="394"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="388" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="388" bodyend="402"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="43" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="42" column="3"/>
   </compounddef>
 </doxygen>

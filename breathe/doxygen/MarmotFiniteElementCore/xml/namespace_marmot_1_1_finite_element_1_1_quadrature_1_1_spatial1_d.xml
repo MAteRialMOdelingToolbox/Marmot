@@ -11,12 +11,13 @@
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial1D::nDim</qualifiedname>
         <initializer>= 1</initializer>
         <briefdescription>
+<para>Number of spatial dimensions for 1-D quadrature. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="455" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="455" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="607" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="607" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a3297a12c8a56f98ec6dd181fd5193499" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -28,12 +29,13 @@
                 { ( Eigen::VectorXd ( 1 ) &lt;&lt; 0 ).finished(),               2.0 }
             }</initializer>
         <briefdescription>
+<para>1-point Gauss rule for 1-D elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="458" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="458" bodyend="460"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="611" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="611" bodyend="613"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1aeeab70ab64b494a299f2ae57e151da1b" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -42,16 +44,17 @@
         <name>gaussPointList2</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial1D::gaussPointList2</qualifiedname>
         <initializer>= {
-                { ( Eigen::VectorXd ( 1 ) &lt;&lt; -gp2 ).finished(),           1.0 },
-                { ( Eigen::VectorXd ( 1 ) &lt;&lt; +gp2 ).finished(),           1.0 }
+                { ( Eigen::VectorXd ( 1 ) &lt;&lt; -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),           1.0 },
+                { ( Eigen::VectorXd ( 1 ) &lt;&lt; +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),           1.0 }
             }</initializer>
         <briefdescription>
+<para>2-point Gauss rule for 1-D elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="462" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="462" bodyend="465"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="616" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="616" bodyend="619"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1ac04ef8b8cc965d2935b2560fb9eec626" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -60,23 +63,24 @@
         <name>gaussPointList3</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial1D::gaussPointList3</qualifiedname>
         <initializer>= {
-                { ( Eigen::VectorXd ( 1 ) &lt;&lt; -gp3 ).finished(),            5./9 },
+                { ( Eigen::VectorXd ( 1 ) &lt;&lt; -<ref refid="_marmot_finite_element_8h_1ab9b6183986556ec9bec1f6797c4fcd95" kindref="member">gp3</ref> ).finished(),            5./9 },
                 { ( Eigen::VectorXd ( 1 ) &lt;&lt; 0.   ).finished(),            8./9 },
-                { ( Eigen::VectorXd ( 1 ) &lt;&lt; +gp3 ).finished(),            5./9 }
+                { ( Eigen::VectorXd ( 1 ) &lt;&lt; +<ref refid="_marmot_finite_element_8h_1ab9b6183986556ec9bec1f6797c4fcd95" kindref="member">gp3</ref> ).finished(),            5./9 }
             }</initializer>
         <briefdescription>
+<para>3-point Gauss rule for 1-D elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="467" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="467" bodyend="471"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="622" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="622" bodyend="626"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="454" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="606" column="5"/>
   </compounddef>
 </doxygen>

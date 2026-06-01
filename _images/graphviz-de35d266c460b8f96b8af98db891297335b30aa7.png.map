@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::SolverConvergenceFailed" alt="" coords="5,5,358,53"/>
+<area shape="rect" id="node2" title="std::runtime_error" alt="" coords="83,101,280,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="183,52,184,87,179,85,180,56"/>
+</map>

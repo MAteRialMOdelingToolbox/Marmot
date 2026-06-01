@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="_marmot_material_finite_strain_a_d_8h" kind="file" language="C++">
+    <compoundname>MarmotMaterialFiniteStrainAD.h</compoundname>
+    <includes local="yes">Marmot/MarmotAutomaticDifferentiationForFastor.h</includes>
+    <includes local="yes">Marmot/MarmotFastorTensorBasics.h</includes>
+    <includes refid="_marmot_material_finite_strain_8h" local="yes">Marmot/MarmotMaterialFiniteStrain.h</includes>
+    <includes local="no">Eigen/Core</includes>
+    <includes local="no">functional</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotMaterialFiniteStrain.h</label>
+        <link refid="_marmot_material_finite_strain_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h</label>
+        <link refid="_marmot_material_finite_strain_a_d_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="6">
+        <label>Fastor/tensor/Tensor.h</label>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotAutomaticDifferentiationForFastor.h</label>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotStateHelpers.h</label>
+      </node>
+      <node id="7">
+        <label>algorithm</label>
+      </node>
+      <node id="8">
+        <label>cmath</label>
+      </node>
+      <node id="11">
+        <label>functional</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_material_finite_strain_a_d" prot="public">MarmotMaterialFiniteStrainAD</innerclass>
+    <innerclass refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d" prot="public">MarmotMaterialFiniteStrainAD::ConstitutiveResponseAD</innerclass>
+    <innerclass refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" prot="public">MarmotMaterialFiniteStrainAD::DeformationAD</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotAutomaticDifferentiationForFastor.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotFastorTensorBasics.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMaterialFiniteStrain.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="class_marmot_material_finite_strain_a_d" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_material_finite_strain_a_d_1a3d9018980cf02b50141828446b73c1ba" kindref="member">MarmotMaterialFiniteStrainAD</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_marmot_material_finite_strain_1afbc11d3b83d7555858475007d28ebe0c" kindref="member">MarmotMaterialFiniteStrain</ref><sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="49" refid="class_marmot_material_finite_strain_a_d_1a3d9018980cf02b50141828446b73c1ba" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_marmot_material_finite_strain_a_d_1a3d9018980cf02b50141828446b73c1ba" kindref="member">MarmotMaterialFiniteStrainAD</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>matProperties_,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nMaterialProperties_,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>materialNumber_<sp/>)</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/>:<sp/><ref refid="class_marmot_material_finite_strain_1afbc11d3b83d7555858475007d28ebe0c" kindref="member">MarmotMaterialFiniteStrain</ref>(<sp/>matProperties_,<sp/>nMaterialProperties_,<sp/>materialNumber_<sp/>)</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim<sp/>&gt;</highlight></codeline>
+<codeline lineno="61" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a95dd152f7ba59a92990e97621d26cfdd" kindref="member">ConstitutiveResponseAD</ref><sp/>{</highlight></codeline>
+<codeline lineno="62" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>autodiff::dual,<sp/>nDim,<sp/>nDim<sp/>&gt;<sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="63" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref>;<sp/></highlight></codeline>
+<codeline lineno="64" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref>;<sp/></highlight></codeline>
+<codeline lineno="65" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" kindref="member">stateVars</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a95dd152f7ba59a92990e97621d26cfdd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a95dd152f7ba59a92990e97621d26cfdd" kindref="member">ConstitutiveResponseAD</ref>()</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref>(<sp/>Fastor::Tensor&lt;<sp/>autodiff::dual,<sp/>nDim,<sp/>nDim<sp/>&gt;(<sp/>0.0<sp/>)<sp/>),</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref>(<sp/>0.0<sp/>),</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref>(<sp/>0.0<sp/>),</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" kindref="member">stateVars</ref>(<sp/>nullptr<sp/>)</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab276e43a752f2708d3dbb29da80e8c19" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab276e43a752f2708d3dbb29da80e8c19" kindref="member">ConstitutiveResponseAD</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse&lt; nDim &gt;</ref>&amp;<sp/>response<sp/>)</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref>(<sp/>Marmot::makeDual(<sp/>response.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref><sp/>)<sp/>),</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref>(<sp/>response.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref><sp/>),</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref>(<sp/>response.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref><sp/>),</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" kindref="member">stateVars</ref>(<sp/>response.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" kindref="member">stateVars</ref><sp/>)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim<sp/>&gt;</highlight></codeline>
+<codeline lineno="100" refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" kindref="compound">DeformationAD</ref><sp/>{</highlight></codeline>
+<codeline lineno="101" refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Fastor::Tensor&lt;<sp/>autodiff::dual,<sp/>nDim,<sp/>nDim<sp/>&gt;<sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" kindref="member">F</ref>;<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126" refid="class_marmot_material_finite_strain_a_d_1a9790fdf5d31af4b389c57e48b48f89bc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_material_finite_strain_a_d_1a9790fdf5d31af4b389c57e48b48f89bc" kindref="member">computeStress</ref>(<sp/><ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse&lt; 3 &gt;</ref>&amp;<sp/>response,</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli&lt; 3 &gt;</ref>&amp;<sp/><sp/><sp/><sp/>tangents,</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_material_finite_strain_1_1_deformation" kindref="compound">Deformation&lt; 3 &gt;</ref>&amp;<sp/><sp/><sp/><sp/>deformation,</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>timeIncrement<sp/>)</highlight><highlight class="keyword"><sp/>const<sp/>override</highlight></codeline>
+<codeline lineno="130"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot;</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">FastorStandardTensors;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalar<sp/>=<sp/>autodiff::dual;</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Map&lt;<sp/>Eigen::VectorXd<sp/>&gt;<sp/>stateVars(<sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1ab0862a1ac3498d95348f4f97191c1126" kindref="member">stateVars</ref>,<sp/>this-&gt;getNumberOfRequiredStateVars()<sp/>);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Remember<sp/>old<sp/>state<sp/>to<sp/>reset<sp/>during<sp/>potential<sp/>multiple<sp/>AD<sp/>evaluations</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd<sp/>stateVarsOld<sp/>=<sp/>stateVars;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Tensor33d<sp/><sp/><sp/><sp/><sp/><sp/><sp/>tauOld<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d" kindref="member">tau</ref>;</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d" kindref="compound">ConstitutiveResponseAD&lt; 3 &gt;</ref><sp/>responseAD(<sp/>response<sp/>);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>std::function&lt;<sp/>Tensor33t&lt;<sp/>scalar<sp/>&gt;(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Tensor33t&lt;<sp/>scalar<sp/>&gt;&amp;<sp/>)<sp/>&gt;<sp/>computeTauAD<sp/>=</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Tensor33t&lt;<sp/>scalar<sp/>&gt;&amp;<sp/>F_<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Reset<sp/>stateVars<sp/>to<sp/>old<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stateVars<sp/>=<sp/>stateVarsOld;</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"></highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Construct<sp/>AD<sp/>state</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" kindref="compound">DeformationAD&lt; 3 &gt;</ref><sp/>deformationAD;</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>deformationAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" kindref="member">F</ref><sp/>=<sp/>F_;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>Marmot::makeDual(<sp/>tauOld<sp/>);<sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>tau<sp/>with<sp/>old<sp/>value<sp/>for<sp/>consistency</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref><sp/>=<sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a" kindref="member">elasticEnergyDensity</ref>;<sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>energy<sp/>density</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a24d39c119eb072fdb2d041a596facdfe" kindref="member">dissipation</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>dissipation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>stress<sp/>utilizing<sp/>the<sp/>child<sp/>class&apos;s<sp/>AD<sp/>implementation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this-&gt;<ref refid="class_marmot_material_finite_strain_a_d_1a66c6fec0d170786c0f258b7993f46db2" kindref="member">computeStressAD</ref>(<sp/>responseAD,<sp/>deformationAD,<sp/>timeIncrement<sp/>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Extract<sp/>and<sp/>return<sp/>the<sp/>dual<sp/>stress<sp/>tensor<sp/>for<sp/>differentiation</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Tensor33t&lt;<sp/>scalar<sp/>&gt;<sp/>res<sp/>=<sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kindref="member">tau</ref>;</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>res;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Compute<sp/>Kirchhoff<sp/>stress<sp/>(tau)<sp/>and<sp/>algorithmic<sp/>tangent<sp/>(dTau_dF)<sp/>with<sp/>autodiff</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/>std::tie(<sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d" kindref="member">tau</ref>,<sp/>tangents.<ref refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli_1ac80dc43e863ef0a9350f7eb73a723e82" kindref="member">dTau_dF</ref><sp/>)<sp/>=<sp/>Marmot::AutomaticDifferentiation::dF_dT(<sp/>computeTauAD,<sp/>deformation.<ref refid="struct_marmot_material_finite_strain_1_1_deformation_1ae25c16182615666f73ba70264cf18fe1" kindref="member">F</ref><sp/>);</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a" kindref="member">elasticEnergyDensity</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kindref="member">elasticEnergyDensity</ref>;</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>response.<ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a24d39c119eb072fdb2d041a596facdfe" kindref="member">dissipation</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>responseAD.<ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kindref="member">dissipation</ref>;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"></highlight></codeline>
+<codeline lineno="189" refid="class_marmot_material_finite_strain_a_d_1a66c6fec0d170786c0f258b7993f46db2" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_material_finite_strain_a_d_1a66c6fec0d170786c0f258b7993f46db2" kindref="member">computeStressAD</ref>(<sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d" kindref="compound">ConstitutiveResponseAD&lt; 3 &gt;</ref>&amp;<sp/>response,</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" kindref="compound">DeformationAD&lt; 3 &gt;</ref>&amp;<sp/><sp/><sp/><sp/>deformation,</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>timeIncrement<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="192"><highlight class="normal">};</highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,647 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_testing" kind="namespace" language="C++">
+    <compoundname>Marmot::Testing</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const double a, const double b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two <computeroutput>double</computeroutput> values are equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if <computeroutput>|a - b| &lt;= tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="54" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="54" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const autodiff::dual a, const autodiff::dual b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const autodiff::dual</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const autodiff::dual</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two <computeroutput>autodiff::dual</computeroutput> values are equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First dual number. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second dual number. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance applied to the real part (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the values compare equal within <computeroutput>tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="63" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="63" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const std::complex&lt; double &gt; a, const std::complex&lt; double &gt; b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const std::complex&lt; double &gt;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const std::complex&lt; double &gt;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two <computeroutput>std::complex&lt;double&gt;</computeroutput> values are equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First complex value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second complex value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if both real and imaginary parts are within <computeroutput>tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="72" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="72" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Testing::getString</definition>
+        <argsstring>(const double a)</argsstring>
+        <name>getString</name>
+        <qualifiedname>Marmot::Testing::getString</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+<para>Convert a <computeroutput>double</computeroutput> to its string representation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>String representation of <computeroutput>a</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="79" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="79" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Testing::getString</definition>
+        <argsstring>(const autodiff::dual a)</argsstring>
+        <name>getString</name>
+        <qualifiedname>Marmot::Testing::getString</qualifiedname>
+        <param>
+          <type>const autodiff::dual</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+<para>Convert an <computeroutput>autodiff::dual</computeroutput> to its string representation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dual number to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>String representation of <computeroutput>a</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="86" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="86" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;a, const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; T, -1, -1 &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two dynamic Eigen matrices are element-wise equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prints a hint to <computeroutput>stdout</computeroutput> identifying the first mismatching entry before returning <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type of the matrices. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance per element (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if all elements satisfy <computeroutput>|a(i,j) - b(i,j)| &lt;= tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="100" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" bodystart="100" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>long int...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;a, const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const Eigen::TensorFixedSize&lt; T, Eigen::Sizes&lt; Rest... &gt; &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two fixed-size Eigen tensors are element-wise equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prints a hint to <computeroutput>stdout</computeroutput> identifying the first mismatching entry before returning <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type of the tensors. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Compile-time dimension pack. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance per element (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if all elements satisfy <computeroutput>|a(i) - b(i)| &lt;= tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="133" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" bodystart="133" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Testing::checkIfEqual</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;a, const Fastor::Tensor&lt; T, Rest... &gt; &amp;b, const double tol=1e-15)</argsstring>
+        <name>checkIfEqual</name>
+        <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>tol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Check whether two Fastor tensors are element-wise equal within a tolerance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Prints a hint to <computeroutput>stdout</computeroutput> identifying the first mismatching entry before returning <computeroutput>false</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type of the tensors. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Compile-time dimension pack. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Absolute tolerance per element (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if all elements satisfy <computeroutput>|a(i) - b(i)| &lt;= tol</computeroutput>, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="164" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" bodystart="164" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Testing::throwExceptionOnFailure</definition>
+        <argsstring>(const bool condition, const std::string &amp;message=&quot;&quot;)</argsstring>
+        <name>throwExceptionOnFailure</name>
+        <qualifiedname>Marmot::Testing::throwExceptionOnFailure</qualifiedname>
+        <param>
+          <type>const bool</type>
+          <declname>condition</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+<para>Throw a <computeroutput>std::runtime_error</computeroutput> when <computeroutput>condition</computeroutput> is <computeroutput>false</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>condition</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The condition to check; an exception is thrown when <computeroutput>false</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Optional message included in the exception (default: &quot;&quot;). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="186" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="186" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Testing::executeTestsAndCollectExceptions</definition>
+        <argsstring>(const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;testFunctions)</argsstring>
+        <name>executeTestsAndCollectExceptions</name>
+        <qualifiedname>Marmot::Testing::executeTestsAndCollectExceptions</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::function&lt; void() &gt; &gt; &amp;</type>
+          <declname>testFunctions</declname>
+        </param>
+        <briefdescription>
+<para>Execute a list of test functions and collect any exceptions they throw. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Each function in <computeroutput>testFunctions</computeroutput> is called in order. Exceptions are caught, their messages accumulated, and a single combined exception is re-thrown after all tests have run so that every failure is reported.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>testFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of zero-argument callables to execute. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="197" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="197" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>N</declname>
+            <defname>N</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, N, 2 &gt;</type>
+        <definition>Eigen::Matrix&lt; double, N, 2 &gt; Marmot::Testing::fibonacciLatticeHemisphere</definition>
+        <argsstring>()</argsstring>
+        <name>fibonacciLatticeHemisphere</name>
+        <qualifiedname>Marmot::Testing::fibonacciLatticeHemisphere</qualifiedname>
+        <briefdescription>
+<para>Generate a Fibonacci-lattice sampling of the hemisphere. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Returns <computeroutput>N</computeroutput> evenly-distributed (φ, θ) angle pairs on the upper hemisphere using the golden-angle Fibonacci lattice.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of sample points. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>An Nx2 matrix where each row is <computeroutput>(phi, theta)</computeroutput> in radians. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="209" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" bodystart="209" bodyend="225"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_testing_8h_1a7f83c06f97eb229ff703807161cedd33" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Testing::spinTurbokreisel</definition>
+        <argsstring>(Marmot::Solvers::MarmotMaterialPointSolverHypoElastic &amp;solver, double stressTol=1e-15, double stiffnessTol=1e-15)</argsstring>
+        <name>spinTurbokreisel</name>
+        <qualifiedname>Marmot::Testing::spinTurbokreisel</qualifiedname>
+        <param>
+          <type>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic &amp;</type>
+          <declname>solver</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>stressTol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>stiffnessTol</declname>
+          <defval>1e-15</defval>
+        </param>
+        <briefdescription>
+<para>Stress/stiffness objectivity test (&quot;spinning top&quot; test) for hypo-elastic materials. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Applies a sequence of large rigid-body rotations to a material point and verifies that the Cauchy stress and algorithmic tangent remain objective to within the specified tolerances.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>solver</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The hypo-elastic material-point solver to test. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stressTol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tolerance for the stress objectivity check (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stiffnessTol</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tolerance for the stiffness objectivity check (default: 1e-15). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the solver passes both checks, <computeroutput>false</computeroutput> otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="239" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" declline="239" declcolumn="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="45" column="1"/>
+  </compounddef>
+</doxygen>

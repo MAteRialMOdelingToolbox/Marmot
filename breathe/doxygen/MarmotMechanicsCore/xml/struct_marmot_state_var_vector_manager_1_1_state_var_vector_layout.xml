@@ -11,12 +11,13 @@
         <name>entries</name>
         <qualifiedname>MarmotStateVarVectorManager::StateVarVectorLayout::entries</qualifiedname>
         <briefdescription>
+<para>Map from entry name to its location. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="69" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="69" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="67" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="67" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1aec22f82dd4e3ab562445012e042a2dc9" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -25,12 +26,13 @@
         <name>nRequiredStateVars</name>
         <qualifiedname>MarmotStateVarVectorManager::StateVarVectorLayout::nRequiredStateVars</qualifiedname>
         <briefdescription>
+<para>Total number of doubles required. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="70" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="70" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="68" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="68" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -38,7 +40,7 @@
     <detaileddescription>
 <para>The layout is defined by a map of names to Locations, and the resulting required total length of the statevar vector </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="68" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="68" bodyend="71"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="66" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="66" bodyend="69"/>
     <listofallmembers>
       <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1a5af0d626c00ddde9d4c91ab3669a0bc4" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarVectorLayout</scope><name>entries</name></member>
       <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1aec22f82dd4e3ab562445012e042a2dc9" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarVectorLayout</scope><name>nRequiredStateVars</name></member>

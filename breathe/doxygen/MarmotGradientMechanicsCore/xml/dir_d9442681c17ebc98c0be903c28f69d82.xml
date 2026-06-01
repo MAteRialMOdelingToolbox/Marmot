@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="dir_d9442681c17ebc98c0be903c28f69d82" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot</compoundname>
+    <innerfile refid="_marmot_decreasing_interactions_8h">MarmotDecreasingInteractions.h</innerfile>
+    <innerfile refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</innerfile>
+    <innerfile refid="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h">MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</innerfile>
+    <innerfile refid="_marmot_phase_field_energy_degradation_8h">MarmotPhaseFieldEnergyDegradation.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/"/>
+  </compounddef>
+</doxygen>

@@ -3,70 +3,78 @@
   <compounddef id="namespace_marmot_1_1_finite_element_1_1_e_a_s" kind="namespace" language="C++">
     <compoundname>Marmot::FiniteElement::EAS</compoundname>
     <sectiondef kind="enum">
-      <memberdef kind="enum" id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aa" prot="public" static="no" strong="no">
+      <memberdef kind="enum" id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aa" prot="public" static="no" strong="no">
         <type></type>
         <name>EASType</name>
         <qualifiedname>Marmot::FiniteElement::EAS::EASType</qualifiedname>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa45e87b443695fcbc23e8e263c8d0dfb2" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa45e87b443695fcbc23e8e263c8d0dfb2" prot="public">
           <name>DeBorstEAS2</name>
           <briefdescription>
+<para>De Borst 2-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa003c169fbc28861440f42b86dfa2b9cc" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa003c169fbc28861440f42b86dfa2b9cc" prot="public">
           <name>DeBorstEAS2_P2</name>
           <briefdescription>
+<para>De Borst 2-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>, variant P2. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa4cc34969ce70913c057d79a1c32818e9" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa4cc34969ce70913c057d79a1c32818e9" prot="public">
           <name>EAS3</name>
           <briefdescription>
+<para>3-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa6d6ce5305b0579297e21d4e3cf9a6813" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa6d6ce5305b0579297e21d4e3cf9a6813" prot="public">
           <name>DeBorstEAS6b</name>
           <briefdescription>
+<para>De Borst 6-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>, variant b. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa412d959ecbb9dff7a805da769fafdcac" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa412d959ecbb9dff7a805da769fafdcac" prot="public">
           <name>DeBorstEAS9</name>
           <briefdescription>
+<para>De Borst 9-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaaa7d782b8cb14ecead7584e6ad346e0b2" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaaa7d782b8cb14ecead7584e6ad346e0b2" prot="public">
           <name>SimoRifaiEAS5</name>
           <briefdescription>
+<para>Simo–Rifai 5-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
-        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1a5c4676500200a84f62767fb4740717aaa241c74b8c56ddd47c46fc03b3feb7cf3" prot="public">
+        <enumvalue id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aaa241c74b8c56ddd47c46fc03b3feb7cf3" prot="public">
           <name>SimoRifaiEAS4</name>
           <briefdescription>
+<para>Simo–Rifai 4-parameter <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Supported <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> enrichment types. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="33" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" bodystart="33" bodyend="41"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="41" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" bodystart="41" bodyend="49"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_enhanced_assumed_strain_8h_1a8849b2e477cdf62cfca5cf2614256c91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a8849b2e477cdf62cfca5cf2614256c91" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
         <definition>Eigen::MatrixXd Marmot::FiniteElement::EAS::F</definition>
         <argsstring>(const Eigen::MatrixXd &amp;J)</argsstring>
@@ -77,21 +85,34 @@
           <declname>J</declname>
         </param>
         <briefdescription>
+<para>Computes the <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> transformation matrix from the element Jacobian. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>J</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element Jacobian matrix at the reference point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Transformation matrix <formula id="0">$\mathbf{F}$</formula> for mapping <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> modes. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="43" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="43" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="56" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="56" declcolumn="21"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_enhanced_assumed_strain_8h_1a988a8476619b95f92db9654db98ed7e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a988a8476619b95f92db9654db98ed7e9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
         <definition>Eigen::MatrixXd Marmot::FiniteElement::EAS::EASInterpolation</definition>
         <argsstring>(EASType type, const Eigen::VectorXd &amp;xi)</argsstring>
         <name>EASInterpolation</name>
         <qualifiedname>Marmot::FiniteElement::EAS::EASInterpolation</qualifiedname>
         <param>
-          <type>EASType</type>
+          <type><ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s_1a5c4676500200a84f62767fb4740717aa" kindref="member">EASType</ref></type>
           <declname>type</declname>
         </param>
         <param>
@@ -99,18 +120,41 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
+<para>Evaluates the <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> interpolation matrix at a given natural coordinate. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> enrichment type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Natural coordinates of the integration point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> interpolation matrix <formula id="1">$\mathbf{M}$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="45" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="45" declcolumn="21"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="64" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="64" declcolumn="21"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Enhanced Assumed Strain (<ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref>) element enrichment utilities. </para>
     </briefdescription>
     <detaileddescription>
+<para>Functions and enumerations for constructing the <ref refid="namespace_marmot_1_1_finite_element_1_1_e_a_s" kindref="compound">EAS</ref> interpolation matrices used in incompatible-mode and enhanced assumed strain finite element formulations (de Borst, Simo &amp; Rifai variants). </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="31" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="36" column="3"/>
   </compounddef>
 </doxygen>

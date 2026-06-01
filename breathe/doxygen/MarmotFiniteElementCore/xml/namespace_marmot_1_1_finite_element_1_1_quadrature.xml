@@ -14,6 +14,7 @@
         <enumvalue id="_marmot_finite_element_8h_1a1ee0398d36d7eb708541aa02dadfde4ba74364ae1148a7e6d2d7ccb79155ba5e5" prot="public">
           <name>FullIntegration</name>
           <briefdescription>
+<para>Full (exact) Gauss integration. </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
@@ -21,17 +22,19 @@
         <enumvalue id="_marmot_finite_element_8h_1a1ee0398d36d7eb708541aa02dadfde4baaf847a4c119b6ccc6fbc653e20423ab1" prot="public">
           <name>ReducedIntegration</name>
           <briefdescription>
+<para>Reduced integration (one order lower). </para>
           </briefdescription>
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
+<para>Gauss quadrature integration order options. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="442" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="442" bodyend="442"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="575" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="575" bodyend="578"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -43,12 +46,13 @@
         <qualifiedname>Marmot::FiniteElement::Quadrature::gp2</qualifiedname>
         <initializer>= 0.577350269189625764509</initializer>
         <briefdescription>
+<para>Gauss point abscissa for 2-point rule: <formula id="2">$1/\sqrt{3}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="439" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="439" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="569" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="569" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1ab9b6183986556ec9bec1f6797c4fcd95" prot="public" static="no" constexpr="yes" mutable="no">
         <type>double</type>
@@ -58,12 +62,13 @@
         <qualifiedname>Marmot::FiniteElement::Quadrature::gp3</qualifiedname>
         <initializer>= 0.774596669241483</initializer>
         <briefdescription>
+<para>Gauss point abscissa for 3-point rule: <formula id="3">$\sqrt{3/5}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="440" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="440" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="570" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="570" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -74,20 +79,41 @@
         <name>getGaussPointInfo</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::getGaussPointInfo</qualifiedname>
         <param>
-          <type>Marmot::FiniteElement::ElementShapes</type>
+          <type><ref refid="namespace_marmot_1_1_finite_element_1a49b09e61f616525d0bb8d744c9d46b17" kindref="member">Marmot::FiniteElement::ElementShapes</ref></type>
           <declname>shape</declname>
         </param>
         <param>
-          <type>IntegrationTypes</type>
+          <type><ref refid="_marmot_finite_element_8h_1a1ee0398d36d7eb708541aa02dadfde4b" kindref="member">IntegrationTypes</ref></type>
           <declname>integrationType</declname>
         </param>
         <briefdescription>
+<para>Return the predefined Gauss point list for a given element shape and integration type. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">shape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element shape enumerator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">integrationType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Full or reduced integration. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Const reference to the corresponding vector of <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">Marmot::FiniteElement::Quadrature::QuadraturePointInfo</ref> entries. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="449" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="449" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="595" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="595" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a60edef9368f841a46eec922c507a0e4e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -96,26 +122,47 @@
         <name>getNumGaussPoints</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::getNumGaussPoints</qualifiedname>
         <param>
-          <type>Marmot::FiniteElement::ElementShapes</type>
+          <type><ref refid="namespace_marmot_1_1_finite_element_1a49b09e61f616525d0bb8d744c9d46b17" kindref="member">Marmot::FiniteElement::ElementShapes</ref></type>
           <declname>shape</declname>
         </param>
         <param>
-          <type>IntegrationTypes</type>
+          <type><ref refid="_marmot_finite_element_8h_1a1ee0398d36d7eb708541aa02dadfde4b" kindref="member">IntegrationTypes</ref></type>
           <declname>integrationType</declname>
         </param>
         <briefdescription>
+<para>Return the number of Gauss points for a given element shape and integration type. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">shape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element shape enumerator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">integrationType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Full or reduced integration. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Number of quadrature points. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="452" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="452" declcolumn="9"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="604" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="604" declcolumn="9"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="438" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="568" column="3"/>
   </compounddef>
 </doxygen>

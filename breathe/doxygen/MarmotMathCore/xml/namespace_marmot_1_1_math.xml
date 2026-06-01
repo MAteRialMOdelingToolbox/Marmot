@@ -3,6 +3,54 @@
   <compounddef id="namespace_marmot_1_1_math" kind="namespace" language="C++">
     <compoundname>Marmot::Math</compoundname>
     <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_eigen_systems_8h_1afd25eadadd905d54b987ea03b923d11d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+            <defval>double</defval>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemJacobi</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;A_in)</argsstring>
+        <name>computeEigenSystemJacobi</name>
+        <qualifiedname>Marmot::Math::computeEigenSystemJacobi</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>A_in</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="37" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="37" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_eigen_systems_8h_1ae93db1c7551070b12b45fc18c94539a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+            <defval>double</defval>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemWithCardano</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;A)</argsstring>
+        <name>computeEigenSystemWithCardano</name>
+        <qualifiedname>Marmot::Math::computeEigenSystemWithCardano</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="149" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="149" bodyend="341"/>
+      </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ad3a65166e9b849eb54ccef942368b6e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
@@ -37,7 +85,7 @@ Checks if value x is NaN (not a number). This is done by checking if x is unequa
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="50" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="50" bodyend="53"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="45" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="45" bodyend="48"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aa14a646adfd201e379c86f6bd85d942a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -116,7 +164,7 @@ Performs linear interpolation to find the value at point x given two known point
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="66" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="66" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="61" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="61" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a20088570076b71e5f4f0bb08fa7ba44d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -129,7 +177,7 @@ Performs linear interpolation to find the value at point x given two known point
           <declname>x</declname>
         </param>
         <briefdescription>
-<para>Computes the exponential of value x with numerical limits check. </para>
+<para>Computes the exponential of value <computeroutput>x</computeroutput> with numerical limits check. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -143,11 +191,11 @@ Performs linear interpolation to find the value at point x given two known point
 </parameterlist>
 <simplesect kind="return"><para>exponential of x</para>
 </simplesect>
-If x is larger than the maximum limit of double precision floating point numbers, the maximum limit is returned. If x is smaller than the minimum limit, the minimum limit is returned. </para>
+If x is larger than the maximum limit of double precision floating point numbers, the maximum limit is returned. If <computeroutput>x</computeroutput> is smaller than the minimum limit, the minimum limit is returned. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="75" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="75" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="70" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="70" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aaafa5eacbbe8796046e2c9bf0202f510" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -178,7 +226,7 @@ If x is larger than the maximum limit of double precision floating point numbers
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="82" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="82" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="77" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="77" declcolumn="19"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ae070a2cdcdf4ae5cb71899ba67edc62e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -209,7 +257,7 @@ This function extracts the exponent to the power of ten from a given floating po
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="92" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="92" declcolumn="9"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="87" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="87" declcolumn="9"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a5a688bedd924217d02e9c1773907ee82" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -240,7 +288,7 @@ Converts angle alpha given in radiant to degree. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="100" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="100" bodyend="103"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="95" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="95" bodyend="98"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aabc6dcb6af42136caacd1b79a1750b54" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -271,7 +319,7 @@ Converts angle alpha given in degree to radiant. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="111" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="111" bodyend="114"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="106" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="106" bodyend="109"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a6df59eeb030f379b61b830c7bd115fe7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -298,7 +346,7 @@ Converts angle alpha given in degree to radiant. </para>
 </parameterlist>
 <simplesect kind="return"><para>Positive part of scalar</para>
 </simplesect>
-The Macaulay function, also as positive part operator, is defined as:       <formula id="6">\[\langle x \rangle =
+The Macaulay function, also as positive part operator, is defined as:       <formula id="40">\[\langle x \rangle =
 \begin{cases}
 x, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -307,7 +355,7 @@ x, &amp; x \geq 0 \\
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="129" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="129" bodyend="132"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="124" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="124" bodyend="127"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a057c092d86779e08ca193ccc04f41901" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -334,7 +382,7 @@ x, &amp; x \geq 0 \\
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt;= 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function is defined as:       <formula id="7">\[H(x) =
+The Heaviside step function is defined as:       <formula id="41">\[H(x) =
 \begin{cases}
 1, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -343,7 +391,7 @@ The Heaviside step function is defined as:       <formula id="7">\[H(x) =
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="147" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="147" bodyend="150"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="142" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="142" bodyend="145"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a986ba8aa6ef55e38d21228170220325b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -370,7 +418,7 @@ The Heaviside step function is defined as:       <formula id="7">\[H(x) =
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt; 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function excluding zero is defined as:       <formula id="8">\[H(x) =
+The Heaviside step function excluding zero is defined as:       <formula id="42">\[H(x) =
 \begin{cases}
 1, &amp; x &gt; 0 \\
 0, &amp; x \leq 0
@@ -379,7 +427,7 @@ The Heaviside step function excluding zero is defined as:       <formula id="8">
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="165" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="165" bodyend="168"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="160" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="160" bodyend="163"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aeab5c0a8ec2b02dccbcabcec543f2765" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
         <templateparamlist>
@@ -411,7 +459,7 @@ The Heaviside step function excluding zero is defined as:       <formula id="8">
 </parameterlist>
 <simplesect kind="return"><para>1 if val &gt; 0, -1 if val &lt; 0, 0 if val == 0</para>
 </simplesect>
-The sign function is defined as:        <formula id="9">\[ \text{sign}(x) =
+The sign function is defined as:        <formula id="43">\[ \text{sign}(x) =
  \begin{cases}
  1, &amp; x &gt; 0 \\
  0, &amp; x = 0 \\
@@ -421,7 +469,7 @@ The sign function is defined as:        <formula id="9">\[ \text{sign}(x) =
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="185" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="185" bodyend="188"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="180" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="180" bodyend="183"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a335a5f714ab10341744d8fea021e08dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -460,7 +508,7 @@ This function converts input values of different numeric types, including:<itemi
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="203" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="203" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="198" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="198" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1addb82ef87d972fcdc7123c0896eee245" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -478,7 +526,7 @@ This function converts input values of different numeric types, including:<itemi
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="204" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="204" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="199" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="199" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1affe40f6c8efff9f4b45aa107d84f035a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -496,7 +544,7 @@ This function converts input values of different numeric types, including:<itemi
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="205" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="205" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a69172724abb6467891288c900d513c41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -528,8 +576,7 @@ This function converts input values of different numeric types, including:<itemi
 <para>Underlying type of the autodiff::dual number </para>
 </parameterdescription>
 </parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
+<parameteritem>
 <parameternamelist>
 <parametername>G</parametername>
 </parameternamelist>
@@ -537,7 +584,8 @@ This function converts input values of different numeric types, including:<itemi
 <para>Gradient type of the autodiff::dual number </para>
 </parameterdescription>
 </parameteritem>
-<parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>number</parametername>
 </parameternamelist>
@@ -552,7 +600,7 @@ This function converts an autodiff::dual number to a double precision floating p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="217" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="217" bodyend="220"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="212" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="212" bodyend="215"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a92d6268751bba3290bce9671666ae6fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -610,7 +658,7 @@ This function converts an autodiff::dual number to a double precision floating p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="229" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="229" bodyend="241"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="224" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="224" bodyend="236"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ab39bca6f7dd1d9f60631cf267ec05847" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -655,7 +703,7 @@ This function converts an autodiff::dual number to a double precision floating p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="249" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="249" bodyend="258"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="244" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="244" bodyend="253"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a17783b288ece1a97c5a43490744c98c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -717,7 +765,7 @@ Applies the Macaulay function element-wise to the input matrix.</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="272" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="272" bodyend="281"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="267" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="267" bodyend="276"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a459bb7440ffa3c6e0af2dc7069973663" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -793,11 +841,11 @@ Applies the Macaulay function element-wise to the input matrix.</para>
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method: <formula id="10">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="13">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
+This function computes one single time step using the explicit Euler method: <formula id="44">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="47">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="297" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="297" bodyend="300"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="292" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="292" bodyend="295"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aa70f058118d023378595a10df1872291" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -875,14 +923,14 @@ This function computes one single time step using the explicit Euler method: <fo
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="14">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="15">$\boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
+This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="48">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="49">$\boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
 <para><xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Is this really semi-implicit? It looks like a fully implicit Euler step for linear systems. </para>
 <para>: Use external central difference function?</para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="321" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="321" bodyend="342"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="316" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="316" bodyend="346"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a50eb2b47c8a8215c8edd2b67a3939183" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -983,13 +1031,13 @@ This function computes one single time step using the implicit Euler method for 
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="17">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="51">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="363" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="363" bodyend="371"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="367" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="367" bodyend="375"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ae0bc2ac83263a20489572132640c80e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -1046,23 +1094,6 @@ f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \bold
 </parameteritem>
 <parameteritem>
 <parameternamelist>
-<parametername>yType</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Type of the current value </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>Args</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Additional argument types for the rate function </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
 <parametername>functionType</parametername>
 </parameternamelist>
 <parameterdescription>
@@ -1077,7 +1108,8 @@ f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \bold
 <para>Additional argument types for the rate function </para>
 </parameterdescription>
 </parameteritem>
-<parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>yN</parametername>
 </parameternamelist>
@@ -1120,27 +1152,27 @@ f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \bold
 </parameterlist>
 <simplesect kind="return"><para>Tuple containing the updated value after time step and the new time step size</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="18">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="52">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
 f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="11">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="12">$ \Delta t $</formula> is the current time step size, and <formula id="16">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
-<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance TOL. The new time step size is computed as:  <formula id="19">\[ \Delta t_{\text{new}} =
-\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="20">$ EST $</formula> is the estimated error.</para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the current time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
+<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance <computeroutput>TOL</computeroutput>. The new time step size is computed as:  <formula id="53">\[ \Delta t_{\text{new}} =
+\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="54">$ EST $</formula> is the estimated error.</para>
 <para><xrefsect id="todo_1_todo000003"><xreftitle>Todo</xreftitle><xrefdescription><para>: reuse explicitEulerRichardson function? </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="403" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="403" bodyend="434"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="405" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="405" bodyend="436"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ad3ad1d152a8910ba18d583323a662a9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix3d</type>
+        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
         <definition>Matrix3d Marmot::Math::directionCosines</definition>
         <argsstring>(const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>directionCosines</name>
         <qualifiedname>Marmot::Math::directionCosines</qualifiedname>
         <param>
-          <type>const Matrix3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1162,20 +1194,20 @@ The direction cosines are computed as the dot products between the basis vectors
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="444" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="444" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="446" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="446" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1af414d1d24c08314c9d16d36bc5a33ed4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix3d</type>
+        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
         <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
         <argsstring>(Vector3d &amp;normalVector)</argsstring>
         <name>orthonormalCoordinateSystem</name>
         <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
         <param>
-          <type>Vector3d &amp;</type>
+          <type><ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
           <declname>normalVector</declname>
         </param>
         <briefdescription>
-<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="21">$x_1$</formula>-axis. </para>
+<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="55">$x_1$</formula>-axis. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1183,16 +1215,16 @@ The direction cosines are computed as the dot products between the basis vectors
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Input normal vector, which will be normalized and used as <formula id="21">$x_1$</formula>-axis. </para>
+<para>Input normal vector, which will be normalized and used as <formula id="55">$x_1$</formula>-axis. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Orthonormal coordinate system as a 3x3 matrix.</para>
 </simplesect>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="21">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="22">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="23">$x_3$</formula>-axis).</para>
+<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="55">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="56">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="57">$x_3$</formula>-axis).</para>
 </listitem></itemizedlist>
 </para>
 <para><simplesect kind="note"><para>Do not use this function if you want to control the direction of the axes in the plane orthogonal to the normal vector. </para>
@@ -1202,20 +1234,20 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="460" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="460" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="462" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="462" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ac4c04c61c51f99273d455957b84675e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix3d</type>
+        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
         <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
         <argsstring>(const Vector3d &amp;n1, const Vector3d &amp;n2)</argsstring>
         <name>orthonormalCoordinateSystem</name>
         <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
         <param>
-          <type>const Vector3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
           <declname>n1</declname>
         </param>
         <param>
-          <type>const Vector3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
           <declname>n2</declname>
         </param>
         <briefdescription>
@@ -1251,28 +1283,28 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
 </parameteritem>
 </parameterlist>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="21">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="22">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="23">$x_3$</formula>-axis). </para>
+<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="55">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="56">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="57">$x_3$</formula>-axis). </para>
 </listitem></itemizedlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="475" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="475" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="477" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="477" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a18f8a3d44ea78c43dbcc054549f149de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix3d</type>
+        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
         <definition>Matrix3d Marmot::Math::transformToLocalSystem</definition>
         <argsstring>(const Matrix3d &amp;T, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>transformToLocalSystem</name>
         <qualifiedname>Marmot::Math::transformToLocalSystem</qualifiedname>
         <param>
-          <type>const Matrix3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
           <declname>T</declname>
         </param>
         <param>
-          <type>const Matrix3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1298,24 +1330,24 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
 </parameterlist>
 <simplesect kind="return"><para>The tensor represented in the local coordinate system as a 3x3 matrix.</para>
 </simplesect>
-The transformation is performed as: <formula id="24">$ T_{local} = Q^T \, T_{global} \, Q $</formula>, where <formula id="25">$ Q $</formula> is the transformation matrix. </para>
+The transformation is performed as: <formula id="58">$ T_{local} = Q^T \, T_{global} \, Q $</formula>, where <formula id="59">$ Q $</formula> is the transformation matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="487" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="487" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="489" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="489" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a55041eeea5a7c3aebca15ebecc5d393e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Matrix3d</type>
+        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
         <definition>Matrix3d Marmot::Math::transformToGlobalSystem</definition>
         <argsstring>(const Matrix3d &amp;T, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>transformToGlobalSystem</name>
         <qualifiedname>Marmot::Math::transformToGlobalSystem</qualifiedname>
         <param>
-          <type>const Matrix3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
           <declname>T</declname>
         </param>
         <param>
-          <type>const Matrix3d &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1341,17 +1373,17 @@ The transformation is performed as: <formula id="24">$ T_{local} = Q^T \, T_{glo
 </parameterlist>
 <simplesect kind="return"><para>The tensor represented in the global coordinate system as a 3x3 matrix.</para>
 </simplesect>
-The transformation is performed as: <formula id="26">$ T_{global} = Q \, T_{local} \, Q^T $</formula>, where <formula id="25">$ Q $</formula> is the transformation matrix. </para>
+The transformation is performed as: <formula id="60">$ T_{global} = Q \, T_{local} \, Q^T $</formula>, where <formula id="59">$ Q $</formula> is the transformation matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="499" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="499" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="501" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="501" declcolumn="14"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="40" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="34" column="3"/>
   </compounddef>
 </doxygen>

@@ -1,3 +1,5 @@
+.. _compressibleneohooke:
+
 Compressible Neo Hooke model
 ============================
 

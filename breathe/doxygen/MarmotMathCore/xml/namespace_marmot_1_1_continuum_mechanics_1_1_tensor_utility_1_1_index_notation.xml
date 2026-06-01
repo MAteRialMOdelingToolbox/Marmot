@@ -58,7 +58,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="363" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="363" bodyend="387"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="360" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="360" bodyend="384"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a930cfeffbe0dc8d4266f80cacae0e1da" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -126,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="400" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="400" bodyend="413"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="397" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="397" bodyend="410"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1a033d62bc36b10a471ec07373704850cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -136,7 +136,7 @@
             <defname>nDim</defname>
           </param>
         </templateparamlist>
-        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; VOIGTFROMDIM(nDim), nDim, nDim &gt; &gt;</type>
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; <ref refid="_marmot_typedefs_8h_1ab05a2676268f62bf9214105a0fe8e614" kindref="member">VOIGTFROMDIM</ref>(nDim), nDim, nDim &gt; &gt;</type>
         <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; VOIGTFROMDIM(nDim), nDim, nDim &gt; &gt; Marmot::ContinuumMechanics::TensorUtility::IndexNotation::voigtMap</definition>
         <argsstring>()</argsstring>
         <name>voigtMap</name>
@@ -161,13 +161,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="427" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="427" bodyend="436"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="424" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="424" bodyend="433"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="350" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="347" column="5"/>
   </compounddef>
 </doxygen>

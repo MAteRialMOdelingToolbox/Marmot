@@ -4,46 +4,49 @@
     <compoundname>Marmot::FiniteElement::Spatial3D::Hexa8</compoundname>
     <sectiondef kind="typedef">
       <memberdef kind="typedef" id="_marmot_finite_element_8h_1a74297a20961cb300331e9289dc7c6e8f" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, nNodes *nDim, 1 &gt;</type>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a9fc109acc5f7bd7e979da17bb68ba5cf" kindref="member">nNodes</ref> *<ref refid="_marmot_finite_element_8h_1a9ac5ef64e27d7a96bb28a4c670713f58" kindref="member">nDim</ref>, 1 &gt;</type>
         <definition>using Marmot::FiniteElement::Spatial3D::Hexa8::CoordinateSized =  Eigen::Matrix&lt; double, nNodes * nDim, 1 &gt;</definition>
         <argsstring></argsstring>
         <name>CoordinateSized</name>
         <qualifiedname>Marmot::FiniteElement::Spatial3D::Hexa8::CoordinateSized</qualifiedname>
         <briefdescription>
+<para>Flat vector of nodal coordinates. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="357" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="357" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="457" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="457" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_finite_element_8h_1a8017064d3b09c1a70aa956691ab83dfb" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, 1, nNodes &gt;</type>
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="_marmot_finite_element_8h_1a9fc109acc5f7bd7e979da17bb68ba5cf" kindref="member">nNodes</ref> &gt;</type>
         <definition>using Marmot::FiniteElement::Spatial3D::Hexa8::NSized =  Eigen::Matrix&lt; double, 1, nNodes &gt;</definition>
         <argsstring></argsstring>
         <name>NSized</name>
         <qualifiedname>Marmot::FiniteElement::Spatial3D::Hexa8::NSized</qualifiedname>
         <briefdescription>
+<para>Row vector of shape function values. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="358" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="358" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="458" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="458" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_finite_element_8h_1a80d8087cde55b5f2dc743b2074d7fb9f" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, nDim, nNodes &gt;</type>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a9ac5ef64e27d7a96bb28a4c670713f58" kindref="member">nDim</ref>, <ref refid="_marmot_finite_element_8h_1a9fc109acc5f7bd7e979da17bb68ba5cf" kindref="member">nNodes</ref> &gt;</type>
         <definition>using Marmot::FiniteElement::Spatial3D::Hexa8::dNdXiSized =  Eigen::Matrix&lt; double, nDim, nNodes &gt;</definition>
         <argsstring></argsstring>
         <name>dNdXiSized</name>
         <qualifiedname>Marmot::FiniteElement::Spatial3D::Hexa8::dNdXiSized</qualifiedname>
         <briefdescription>
+<para>Matrix of shape function natural derivatives. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="359" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="359" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="459" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="459" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -55,17 +58,18 @@
         <qualifiedname>Marmot::FiniteElement::Spatial3D::Hexa8::nNodes</qualifiedname>
         <initializer>= 8</initializer>
         <briefdescription>
+<para>Number of nodes for a Hexa8 element. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="356" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="356" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="456" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="456" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="_marmot_finite_element_8h_1afc17ec3655d6863b6db3b3a5d710416c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>NSized</type>
+        <type><ref refid="_marmot_finite_element_8h_1a8017064d3b09c1a70aa956691ab83dfb" kindref="member">NSized</ref></type>
         <definition>NSized Marmot::FiniteElement::Spatial3D::Hexa8::N</definition>
         <argsstring>(const Eigen::Vector3d &amp;xi)</argsstring>
         <name>N</name>
@@ -75,15 +79,16 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
+<para>Evaluate Hexa8 shape functions at natural coordinates <computeroutput>xi</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="361" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="361" declcolumn="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="462" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="462" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1abcc74f713bfe55de59c4ce065a28dc9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>dNdXiSized</type>
+        <type><ref refid="_marmot_finite_element_8h_1a80d8087cde55b5f2dc743b2074d7fb9f" kindref="member">dNdXiSized</ref></type>
         <definition>dNdXiSized Marmot::FiniteElement::Spatial3D::Hexa8::dNdXi</definition>
         <argsstring>(const Eigen::Vector3d &amp;xi)</argsstring>
         <name>dNdXi</name>
@@ -93,12 +98,13 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
+<para>Evaluate Hexa8 shape function natural derivatives at <computeroutput>xi</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="362" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="362" declcolumn="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="464" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="464" declcolumn="20"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a5e673c596e1c2ab447a8c17cdc103ff9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Vector4i</type>
@@ -111,18 +117,19 @@
           <declname>faceID</declname>
         </param>
         <briefdescription>
+<para>Return the local node indices for boundary face <computeroutput>faceID</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="364" column="25" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="364" declcolumn="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="467" column="25" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="467" declcolumn="25"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="355" column="7"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="455" column="7"/>
   </compounddef>
 </doxygen>

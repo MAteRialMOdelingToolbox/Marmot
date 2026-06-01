@@ -19,7 +19,7 @@
           <declname>F</declname>
         </param>
         <briefdescription>
-<para>Computes the right Cauchy-Green tensor <formula id="0">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="6">$\boldsymbol{F}$</formula>. </para>
+<para>Computes the right Cauchy-Green tensor <formula id="22">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="43">$\boldsymbol{F}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -42,14 +42,14 @@
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the right Cauchy-Green tensor C and its derivative with respect to F</para>
 </simplesect>
-The right Cauchy-Green deformation tensor is defined as:   <formula id="1">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
-\]</formula> or in index notation:   <formula id="2">\[  C_{IJ} = F_{iI} F_{iJ}
-\]</formula> The derivative of <formula id="0">$\boldsymbol{C}$</formula> with respect to <formula id="6">$\boldsymbol{F}$</formula> is given by:   <formula id="7">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+The right Cauchy-Green deformation tensor is defined as:   <formula id="44">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</formula> or in index notation:   <formula id="45">\[  C_{IJ} = F_{iI} F_{iJ}
+\]</formula> The derivative of <formula id="22">$\boldsymbol{C}$</formula> with respect to <formula id="43">$\boldsymbol{F}$</formula> is given by:   <formula id="49">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="103" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="103" bodyend="111"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="101" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="101" bodyend="109"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_deformation_measures_8h_1a5baf88c57ed2c9d2f5688a8470664095" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -67,7 +67,7 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="1">\[  \
           <declname>F</declname>
         </param>
         <briefdescription>
-<para>Computes the left Cauchy-Green tensor <formula id="3">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="6">$\boldsymbol{F}$</formula>. </para>
+<para>Computes the left Cauchy-Green tensor <formula id="46">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="43">$\boldsymbol{F}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -90,14 +90,14 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="1">\[  \
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the left Cauchy-Green tensor b and its derivative with respect to F</para>
 </simplesect>
-The left Cauchy-Green deformation tensor is defined as:   <formula id="4">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
-\]</formula> or in index notation:   <formula id="5">\[  b_{ij} = F_{iI} F_{jI}
-\]</formula> The derivative of <formula id="3">$\boldsymbol{b}$</formula> with respect to <formula id="6">$\boldsymbol{F}$</formula> is given by:   <formula id="8">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+The left Cauchy-Green deformation tensor is defined as:   <formula id="47">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</formula> or in index notation:   <formula id="48">\[  b_{ij} = F_{iI} F_{jI}
+\]</formula> The derivative of <formula id="46">$\boldsymbol{b}$</formula> with respect to <formula id="43">$\boldsymbol{F}$</formula> is given by:   <formula id="50">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="133" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="133" bodyend="141"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="131" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="131" bodyend="139"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_deformation_measures_8h_1afe1cee55a65c7dff42c2954d04424fa4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -143,12 +143,12 @@ The left Cauchy-Green deformation tensor is defined as:   <formula id="4">\[  \b
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the deformed normal vector and its derivative with respect to FInv</para>
 </simplesect>
-The deformed normal vector is defined as:   <formula id="9">\[  n_i = \frac{ F^{-1}_{Ii} N_{I} J dA_0 } { \| F^{-1}_{Ki} N_{K} J dA_0 \| }
+The deformed normal vector is defined as:   <formula id="51">\[  n_i = \frac{ F^{-1}_{Ii} N_{I} J dA_0 } { \| F^{-1}_{Ki} N_{K} J dA_0 \| }
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="156" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="156" bodyend="193"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="154" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="154" bodyend="191"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_deformation_measures_8h_1a7e97b96c5884554fe236227ca8ee2bb1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -194,13 +194,13 @@ The deformed normal vector is defined as:   <formula id="9">\[  n_i = \frac{ F^{
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the deformed normal projection tensor and its derivative with respect to FInv</para>
 </simplesect>
-The deformed normal projection tensor is defined as:    <formula id="10">\[  N_{ij} = n_i n_j = \frac{ F^{-1}_{Ii} N_{I} J dA_0 \times F^{-1}_{Jj} N_{J} J dA_0} { \| F^{-1}_{Ki} N_{K} J
+The deformed normal projection tensor is defined as:    <formula id="52">\[  N_{ij} = n_i n_j = \frac{ F^{-1}_{Ii} N_{I} J dA_0 \times F^{-1}_{Jj} N_{J} J dA_0} { \| F^{-1}_{Ki} N_{K} J
 dA_0 \|^2 }
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="208" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="208" bodyend="225"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="206" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="206" bodyend="223"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_deformation_measures_8h_1a20525108a8feabca3515588000a1a391" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -234,19 +234,19 @@ dA_0 \|^2 }
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the inverse of the deformation gradient and its derivative with respect to F</para>
 </simplesect>
-The inverse of the deformation gradient is defined as:   <formula id="11">\[ \boldsymbol{F}^{-1}
-\]</formula> The derivative of <formula id="12">$\boldsymbol{F}^{-1}$</formula> with respect to <formula id="6">$\boldsymbol{F}$</formula> is given by:   <formula id="13">\[ \frac{\partial F^{-1}_{iK}}{\partial F_{jL}} = - F^{-1}_{iL} F^{-1}_{jK}
+The inverse of the deformation gradient is defined as:   <formula id="53">\[ \boldsymbol{F}^{-1}
+\]</formula> The derivative of <formula id="54">$\boldsymbol{F}^{-1}$</formula> with respect to <formula id="43">$\boldsymbol{F}$</formula> is given by:   <formula id="55">\[ \frac{\partial F^{-1}_{iK}}{\partial F_{jL}} = - F^{-1}_{iL} F^{-1}_{jK}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="243" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="243" bodyend="256"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="241" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="241" bodyend="254"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="81" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="79" column="5"/>
   </compounddef>
 </doxygen>

@@ -18,7 +18,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="51" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="51" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="49" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a050e4314ad75a330c5e3d900cf174681" prot="public" static="no" mutable="no">
         <type>Matrix6d</type>
@@ -30,11 +30,11 @@
 <para>Ultimate (equilibrium) stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Represents the stiffness contribution that persists at long times ( <formula id="315">$t \to \infty$</formula>), outside the viscoelastic relaxation terms. </para>
+<para>Represents the stiffness contribution that persists at long times ( <formula id="48">$t \to \infty$</formula>), outside the viscoelastic relaxation terms. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="59" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="59" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="57" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="57" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b" prot="public" static="no" mutable="no">
         <type>Matrix&lt; double, 6, -1 &gt;</type>
@@ -46,11 +46,11 @@
 <para>Stiffness matrices of each Prony series term. </para>
         </briefdescription>
         <detaileddescription>
-<para>Stored as a block matrix of size <formula id="316">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="317">$6\times 6$</formula> block corresponding to the stiffness matrix of one Maxwell branch. </para>
+<para>Stored as a block matrix of size <formula id="49">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="50">$6\times 6$</formula> block corresponding to the stiffness matrix of one Maxwell branch. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="68" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="66" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="66" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" prot="public" static="no" mutable="no">
         <type>Matrix&lt; double, 6, -1 &gt;</type>
@@ -62,11 +62,11 @@
 <para>Relaxation times of each Prony series term. </para>
         </briefdescription>
         <detaileddescription>
-<para>Stored as a block matrix of size <formula id="316">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="317">$6\times 6$</formula> block containing the relaxation times associated with one Maxwell branch. </para>
+<para>Stored as a block matrix of size <formula id="49">$6 \times (6 \cdot nPronyTerms)$</formula>, with each <formula id="50">$6\times 6$</formula> block containing the relaxation times associated with one Maxwell branch. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="77" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="77" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="75" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="75" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -75,7 +75,7 @@
     <detaileddescription>
 <para>This structure stores the parameters required for evaluating the viscoelastic stress response of a material represented by a Prony series expansion. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="44" bodyend="78"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" line="42" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h" bodystart="42" bodyend="76"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a80c1544e808a4714e5fc21f0d320fd17" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>nPronyTerms</name></member>
       <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</scope><name>pronyRelaxationTimes</name></member>

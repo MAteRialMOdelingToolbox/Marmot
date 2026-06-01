@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
+  <compound refid="class_make_string" kind="class"><name>MakeString</name>
+    <member refid="class_make_string_1a81b5bb4a52ad4612c9e6a8620e4a8691" kind="variable"><name>stream</name></member>
+    <member refid="class_make_string_1afcf4c7d21e62074820cad078d6b2b449" kind="function"><name>operator std::string</name></member>
+    <member refid="class_make_string_1a0bed086d03acc5a34ab06324b39d0dfd" kind="function"><name>operator&lt;&lt;</name></member>
+  </compound>
+  <compound refid="class_marmot_journal" kind="class"><name>MarmotJournal</name>
+    <member refid="class_marmot_journal_1a2bc6eb1e3722defb63a2747e188910d5" kind="variable"><name>output</name></member>
+    <member refid="class_marmot_journal_1aec32a294fda0f71118cc69ab8f5f8453" kind="function"><name>getInstance</name></member>
+    <member refid="class_marmot_journal_1acd37fb2c4858066bcac9377b09c7a5ac" kind="function"><name>MarmotJournal</name></member>
+    <member refid="class_marmot_journal_1ae3bda2f1b17ff6fcc7d331b1d0b7a78e" kind="function"><name>MarmotJournal</name></member>
+    <member refid="class_marmot_journal_1a146bd889594dd2d9408beed1259ae2a5" kind="function"><name>operator=</name></member>
+    <member refid="class_marmot_journal_1aba36e05ad5a8e246c89d687af76f76df" kind="function"><name>setMSGOutputDirection</name></member>
+    <member refid="class_marmot_journal_1a8c5a22ab8c67629c388d07747d8d8e11" kind="function"><name>warningToMSG</name></member>
+    <member refid="class_marmot_journal_1af95371cfa0570065da35eb3ba8b7aa69" kind="function"><name>notificationToMSG</name></member>
+  </compound>
+  <compound refid="class_marmot_state_layout_dynamic" kind="class"><name>MarmotStateLayoutDynamic</name>
+    <member refid="class_marmot_state_layout_dynamic_1a8540841c816171ba107c3d7f71f5e74f" kind="variable"><name>variables</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a2a95d842a8ffa41e6735505608b036de" kind="variable"><name>name_to_index</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1ac33ab1f4bf3dc5fead2854089bdb35b3" kind="variable"><name>finalized</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1aaf45130cc01c8f8f89028f1074430acf" kind="variable"><name>total_sz</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a6cabfe5343f86e2621d22d9ee8f313d3" kind="function"><name>add</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b" kind="function"><name>finalize</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a29c6892e8632aa9c56c03991a54df60c" kind="function"><name>getInfo</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a82f1724ee229a8368fa81b5ab08f57b4" kind="function"><name>get</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a980ade3bc3beeb6c9de41eb94ed5f4d4" kind="function"><name>getPtr</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1ac4d142f1849b222578db4d87532eef16" kind="function"><name>getSpan</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a30cc5346313e03f634da5b95537b772a" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a0d360e2c135d3db22f8bdc4da20590d5" kind="function"><name>getAs</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a705b766faa72e026db76fed3775c5437" kind="function"><name>getAs</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a1e7bbde01658788214531934e504fc53" kind="function"><name>totalSize</name></member>
+    <member refid="class_marmot_state_layout_dynamic_1a27717c6967398d2c0d8854b8f07592c0" kind="function"><name>isFinalized</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_solver_convergence_failed" kind="class"><name>Marmot::SolverConvergenceFailed</name>
+    <member refid="class_marmot_1_1_solver_convergence_failed_1a6838faa19333f9516f932cc296767354" kind="function"><name>SolverConvergenceFailed</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_solver_increments_exhausted" kind="class"><name>Marmot::SolverIncrementsExhausted</name>
+    <member refid="class_marmot_1_1_solver_increments_exhausted_1aebc3834ed20084c26025b5b73dac7c0c" kind="function"><name>SolverIncrementsExhausted</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_solver_timestep_exhausted" kind="class"><name>Marmot::SolverTimestepExhausted</name>
+    <member refid="class_marmot_1_1_solver_timestep_exhausted_1a56d63c6e3e6829d2b6875c7f193e9719" kind="function"><name>SolverTimestepExhausted</name></member>
+  </compound>
+  <compound refid="struct_state_mapper" kind="struct"><name>StateMapper</name>
+  </compound>
+  <compound refid="struct_state_view" kind="struct"><name>StateView</name>
+    <member refid="struct_state_view_1a36a36a4b042dd08eae9bbdc1071f4abb" kind="variable"><name>stateLocation</name></member>
+    <member refid="struct_state_view_1aba92824616071cea7209bb5181cd55e0" kind="variable"><name>stateSize</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_stress_update_failed" kind="class"><name>Marmot::StressUpdateFailed</name>
+    <member refid="class_marmot_1_1_stress_update_failed_1ac065319ac460c0a48ebb3c881590aba1" kind="function"><name>StressUpdateFailed</name></member>
+  </compound>
+  <compound refid="struct_marmot_state_layout_dynamic_1_1_var_info" kind="struct"><name>MarmotStateLayoutDynamic::VarInfo</name>
+    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1ad43a91f073dcb1d8d02b0c09f5713a7d" kind="variable"><name>name</name></member>
+    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1a22647047c61b1c0d98b498ef8496b9ba" kind="variable"><name>size</name></member>
+    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1ace6b2a7b789cd8b098eb7bb8646fc560" kind="variable"><name>offset</name></member>
+  </compound>
+  <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
+    <member refid="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" kind="function"><name>getString</name></member>
+    <member refid="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" kind="function"><name>getString</name></member>
+    <member refid="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db" kind="function"><name>throwExceptionOnFailure</name></member>
+    <member refid="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a" kind="function"><name>executeTestsAndCollectExceptions</name></member>
+    <member refid="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f" kind="function"><name>fibonacciLatticeHemisphere</name></member>
+    <member refid="_marmot_testing_8h_1a7f83c06f97eb229ff703807161cedd33" kind="function"><name>spinTurbokreisel</name></member>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="_marmot_exceptions_8h" kind="file"><name>MarmotExceptions.h</name>
+  </compound>
+  <compound refid="_marmot_journal_8h" kind="file"><name>MarmotJournal.h</name>
+  </compound>
+  <compound refid="_marmot_state_helpers_8h" kind="file"><name>MarmotStateHelpers.h</name>
+  </compound>
+  <compound refid="_marmot_testing_8h" kind="file"><name>MarmotTesting.h</name>
+  </compound>
+  <compound refid="_marmot_utils_8h" kind="file"><name>MarmotUtils.h</name>
+  </compound>
+  <compound refid="dir_6d4da112a1331882b0b6514a341190a0" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core</name>
+  </compound>
+  <compound refid="dir_6f1c5bff1b18c05144096258aee3fe15" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include</name>
+  </compound>
+  <compound refid="dir_bda42dbf2424ef6a9b08d1ad39474d75" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot</name>
+  </compound>
+  <compound refid="dir_cd98dc821d284f1f2626be1d87ec35e4" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore</name>
+  </compound>
+  <compound refid="dir_e05d7e2b1ecd646af5bb94391405f3b5" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules</name>
+  </compound>
+</doxygenindex>

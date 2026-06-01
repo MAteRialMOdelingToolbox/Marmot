@@ -5,6 +5,7 @@
     <innerfile refid="_marmot_automatic_differentiation_8h">MarmotAutomaticDifferentiation.h</innerfile>
     <innerfile refid="_marmot_automatic_differentiation_for_fastor_8h">MarmotAutomaticDifferentiationForFastor.h</innerfile>
     <innerfile refid="_marmot_constants_8h">MarmotConstants.h</innerfile>
+    <innerfile refid="_marmot_eigen_systems_8h">MarmotEigenSystems.h</innerfile>
     <innerfile refid="_marmot_fastor_tensor_basics_8h">MarmotFastorTensorBasics.h</innerfile>
     <innerfile refid="_marmot_math_8h">MarmotMath.h</innerfile>
     <innerfile refid="_marmot_numerical_differentiation_8h">MarmotNumericalDifferentiation.h</innerfile>

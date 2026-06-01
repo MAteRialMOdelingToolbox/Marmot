@@ -5,7 +5,12 @@
     <innerfile refid="_marmot_deformation_measures_8h">MarmotDeformationMeasures.h</innerfile>
     <innerfile refid="_marmot_energy_density_functions_8h">MarmotEnergyDensityFunctions.h</innerfile>
     <innerfile refid="_marmot_finite_strain_plasticity_8h">MarmotFiniteStrainPlasticity.h</innerfile>
+    <innerfile refid="_marmot_finite_strain_viscoelasticity_8h">MarmotFiniteStrainViscoelasticity.h</innerfile>
     <innerfile refid="_marmot_material_finite_strain_8h">MarmotMaterialFiniteStrain.h</innerfile>
+    <innerfile refid="_marmot_material_finite_strain_a_d_8h">MarmotMaterialFiniteStrainAD.h</innerfile>
+    <innerfile refid="_marmot_material_finite_strain_factory_8h">MarmotMaterialFiniteStrainFactory.h</innerfile>
+    <innerfile refid="_marmot_material_finite_strain_substepped_8h">MarmotMaterialFiniteStrainSubstepped.h</innerfile>
+    <innerfile refid="_marmot_material_point_solver_finite_strain_8h">MarmotMaterialPointSolverFiniteStrain.h</innerfile>
     <innerfile refid="_marmot_stress_measures_8h">MarmotStressMeasures.h</innerfile>
     <briefdescription>
     </briefdescription>

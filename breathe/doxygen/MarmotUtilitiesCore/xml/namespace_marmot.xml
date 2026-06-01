@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot" kind="namespace" language="C++">
+    <compoundname>Marmot</compoundname>
+    <innerclass refid="class_marmot_1_1_solver_convergence_failed" prot="public">Marmot::SolverConvergenceFailed</innerclass>
+    <innerclass refid="class_marmot_1_1_solver_increments_exhausted" prot="public">Marmot::SolverIncrementsExhausted</innerclass>
+    <innerclass refid="class_marmot_1_1_solver_timestep_exhausted" prot="public">Marmot::SolverTimestepExhausted</innerclass>
+    <innerclass refid="class_marmot_1_1_stress_update_failed" prot="public">Marmot::StressUpdateFailed</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_testing">Marmot::Testing</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h" line="45" column="1"/>
+  </compounddef>
+</doxygen>

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; Marmot  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=6bdb3f50" />
 
@@ -89,7 +89,7 @@
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>Marmot itself requires the <a class="reference external" href="https://eigen.tuxfamily.org/">Eigen</a> library,
-autodiff <a class="reference external" href="github.com/autodiff/autodiff">autodiff</a>,
+<a class="reference external" href="https://github.com/autodiff/autodiff">autodiff</a>,
 and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
 <p>These are header-only libraries, so no compilation is required.</p>
 </section>
@@ -105,8 +105,8 @@ environment:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> curl -L -O \</span>
-<span class="go">     https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh</span>
-<span class="go"> bash Miniforge3-Linux-aarch64.sh -b -p ./miniforge3</span>
+<span class="go">     &quot;https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh&quot;</span>
+<span class="go"> bash &quot;Miniforge3-$(uname)-$(uname -m).sh&quot; -b -p ./miniforge3</span>
 </pre></div>
 </div>
 </div>
@@ -208,7 +208,7 @@ environment:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, University of Innsbruck, BOKU Vienna and other authors.</p>
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

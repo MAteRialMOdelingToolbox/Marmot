@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment" kind="struct" language="C++" prot="public">
+    <compoundname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" local="no">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a18e8b4e9484800fbd170785a010188a2" prot="public" static="no" mutable="no">
+        <type>Marmot::Vector6d</type>
+        <definition>Marmot::Vector6d MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::increment::dStrain</definition>
+        <argsstring></argsstring>
+        <name>dStrain</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dStrain</qualifiedname>
+        <briefdescription>
+<para>Increment of the strain tensor in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="82" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acdb2d6d26b8c0a6ccbf6bf574e199728" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; double, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Vector&lt; double, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::increment::K</definition>
+        <argsstring></argsstring>
+        <name>K</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::K</qualifiedname>
+        <briefdescription>
+<para>Nonlocal variables at the current increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="83" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a741c44d4b298033b331b34b6860b9f6a" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; double, nNonlocalVariables &gt;</type>
+        <definition>Eigen::Vector&lt; double, nNonlocalVariables &gt; MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::increment::dK</definition>
+        <argsstring></argsstring>
+        <name>dK</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dK</qualifiedname>
+        <briefdescription>
+<para>Increment of the nonlocal variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="84" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acad6d61b954c7009a1e72a41dcc3625b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::increment::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::time</qualifiedname>
+        <briefdescription>
+<para>Current time. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="85" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a7003006f9ada450f558730d12585e4e5" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::increment::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment::dT</qualifiedname>
+        <briefdescription>
+<para>Time increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="86" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to hold the increment information. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="81" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="81" bodyend="87"/>
+    <listofallmembers>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a741c44d4b298033b331b34b6860b9f6a" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</scope><name>dK</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a18e8b4e9484800fbd170785a010188a2" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</scope><name>dStrain</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a7003006f9ada450f558730d12585e4e5" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</scope><name>dT</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acdb2d6d26b8c0a6ccbf6bf574e199728" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</scope><name>K</name></member>
+      <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acad6d61b954c7009a1e72a41dcc3625b" prot="public" virt="non-virtual"><scope>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

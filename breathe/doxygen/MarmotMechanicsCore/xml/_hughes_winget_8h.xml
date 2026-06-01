@@ -19,14 +19,19 @@
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
       </node>
       <node id="3">
-        <label>Marmot/MarmotJournal.h</label>
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
       </node>
       <node id="4">
-        <label>Marmot/MarmotMath.h</label>
+        <label>Marmot/MarmotJournal.h</label>
       </node>
       <node id="5">
+        <label>Marmot/MarmotMath.h</label>
+      </node>
+      <node id="6">
         <label>Marmot/MarmotTypedefs.h</label>
       </node>
     </incdepgraph>
@@ -34,8 +39,10 @@
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_numerical_algorithms">Marmot::NumericalAlgorithms</innernamespace>
     <briefdescription>
+<para>Hughes–Winget objective stress-rate integrator. </para>
     </briefdescription>
     <detaileddescription>
+<para>Provides the <computeroutput>HughesWinget</computeroutput> class that, given old and new deformation gradients, computes the objective strain increment, the incremental rotation tensor, and the tangent operator contributions required by hypoelastic constitutive updates. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
@@ -51,50 +58,49 @@
 <codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
 <codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
 <codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Matthias<sp/>Neuner<sp/>matthias.neuner@uibk.ac.at</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
 <codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
-<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
-<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
-<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
-<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
-<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
-<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
-<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
-<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
-<codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="27"><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::NumericalAlgorithms<sp/>{</highlight></codeline>
-<codeline lineno="32" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">HughesWinget<sp/>{</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>Formulation<sp/>{</highlight></codeline>
-<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>AbaqusLike</highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
 <codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>HughesWinget(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FOld,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FNew,<sp/>Formulation<sp/>formulation<sp/>);</highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>getStrainIncrement();</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>getRotationIncrement();</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>rotateTensor(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>tensor<sp/>);</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"></highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::EigenTensors::Tensor633d<sp/>compute_dS_dF(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>stress,</highlight></codeline>
-<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/><sp/>FInv,</highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Matrix6d&amp;<sp/>dChauchyDEps<sp/>);</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>compute_dScalar_dF(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FInv,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>dScalarDEps<sp/>);</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/>Formulation<sp/><sp/><sp/><sp/><sp/><sp/>theFormulation;</highlight></codeline>
-<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>l;</highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>dOmega;</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>dR;</highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>dEps;</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
-<codeline lineno="57"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::NumericalAlgorithms</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::NumericalAlgorithms<sp/>{</highlight></codeline>
+<codeline lineno="51" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" kindref="member">HughesWinget</ref><sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="56" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" kindref="member">Formulation</ref><sp/>{</highlight></codeline>
+<codeline lineno="57" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" kindref="member">AbaqusLike</ref><sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" kindref="member">HughesWinget</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FOld,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FNew,<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" kindref="member">Formulation</ref><sp/>formulation<sp/>);</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a624f64f6906e6c77d6d530535c8eabe7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a624f64f6906e6c77d6d530535c8eabe7" kindref="member">getStrainIncrement</ref>();</highlight></codeline>
+<codeline lineno="71" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a9ab00adf92045424b6833e55dd4ee12a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a9ab00adf92045424b6833e55dd4ee12a" kindref="member">getRotationIncrement</ref>();</highlight></codeline>
+<codeline lineno="77" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" kindref="member">rotateTensor</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>tensor<sp/>);</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="91" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::EigenTensors::Tensor633d<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" kindref="member">compute_dS_dF</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>stress,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/><sp/>FInv,</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Matrix6d&amp;<sp/>dChauchyDEps<sp/>);</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" kindref="member">compute_dScalar_dF</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix3d&amp;<sp/>FInv,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>dScalarDEps<sp/>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" kindref="member">Formulation</ref><sp/><sp/><sp/><sp/><sp/><sp/>theFormulation;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>l;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>dOmega;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/><sp/>dR;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>dEps;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="115"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::NumericalAlgorithms</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h"/>
   </compounddef>

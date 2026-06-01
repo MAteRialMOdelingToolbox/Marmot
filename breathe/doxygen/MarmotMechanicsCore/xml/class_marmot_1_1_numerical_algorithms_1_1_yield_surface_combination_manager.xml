@@ -24,7 +24,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="45" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="54" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a4c08c14f06a50c1dbf99327644af0e4b" prot="public" static="no">
         <type>Eigen::Array&lt; double, 1, nYieldSurfaces &gt;</type>
@@ -39,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="47" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="47" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="56" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="56" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -56,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="39" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="39" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="48" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="48" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-attrib">
@@ -73,7 +73,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="43" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="43" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="52" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="52" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -89,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="49" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="63" bodyend="73"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="58" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="72" bodyend="82"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ac7fb245059d3a71cc9d8e76024851f66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -108,7 +108,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="51" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="76" bodyend="87"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="60" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="85" bodyend="96"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ad123c6b480d1e490e5b25ecc07335b9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -127,7 +127,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="53" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="96" bodyend="101"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="62" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="105" bodyend="110"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a1f8a7654554eb1b769b4a6583994734c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -142,15 +142,26 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="55" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="90" bodyend="93"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="64" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="99" bodyend="102"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Tracks and iterates over yield-surface activity combinations for multi-surface plasticity. </para>
     </briefdescription>
     <detaileddescription>
-<para>Manager for yield surface combinations for multisurface plasticity: Try different yield surface combinations and track already used combinations </para>
+<para>Maintains a table of all <formula id="271">$2^n - 1$</formula> non-empty subsets of <computeroutput>nYieldSurfaces</computeroutput> yield surfaces and provides an interface to iterate over them during the return-mapping algorithm, marking already-tried combinations as used.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nYieldSurfaces</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of yield surfaces. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="37" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="37" bodyend="56"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" line="46" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/YieldSurfaceCombinationManager.h" bodystart="46" bodyend="65"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ac7fb245059d3a71cc9d8e76024851f66" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>getAnotherYieldFlagCombination</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a4b7e9405a505eb7cd2a00658fd532ef2" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</scope><name>idxUsedFlag</name></member>

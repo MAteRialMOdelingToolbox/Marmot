@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AT2 Phase Field Fracture &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="B4 model" href="b4.html" />
+    <link rel="prev" title="Material models" href="materials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">AT2 Phase Field Fracture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">AT2 Phase Field Fracture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/at2phasefield.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="at2-phase-field-fracture">
+<h1>AT2 Phase Field Fracture<a class="headerlink" href="#at2-phase-field-fracture" title="Link to this heading"></a></h1>
+<p>A linear elastic phase-field model for brittle fracture based on the AT2 formulation.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Index</strong></p></th>
+<th class="head"><p><strong>Model Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(E\)</span></p></td>
+<td><p>Young’s modulus</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+<td><p>Poisson’s ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(G_c\)</span></p></td>
+<td><p>Critical fracture energy (energy release rate)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(l\)</span></p></td>
+<td><p>Internal length scale</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>State Variable</strong></p></th>
+<th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathcal{H}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">maxCrackDrivingForce</span></code></p></td>
+<td><p>Crack driving force history variable (maximum elastic strain energy density)</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">strain</span></code></p></td>
+<td><p>Total strain tensor (Voigt notation)</p></td>
+</tr>
+</tbody>
+</table>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The AT2 model couples a linear elastic material with a phase-field variable
+<span class="math notranslate nohighlight">\(d \in [0, 1]\)</span>, where <span class="math notranslate nohighlight">\(d = 0\)</span> represents intact material and
+<span class="math notranslate nohighlight">\(d = 1\)</span> represents fully fractured material.</p>
+<section id="degraded-stress">
+<h3>Degraded Stress<a class="headerlink" href="#degraded-stress" title="Link to this heading"></a></h3>
+<p>The stress is degraded by a quadratic degradation function <span class="math notranslate nohighlight">\(g(\varphi)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma} = g(d)\, \mathbb{C} : \boldsymbol{\varepsilon}\]</div>
+<p>with the isotropic elastic stiffness tensor <span class="math notranslate nohighlight">\(\mathbb{C}\)</span> and the quadratic degradation function</p>
+<div class="math notranslate nohighlight">
+\[g(d) = (1 - d)^2.\]</div>
+</section>
+<section id="phase-field-evolution-equation">
+<h3>Phase-Field Evolution Equation<a class="headerlink" href="#phase-field-evolution-equation" title="Link to this heading"></a></h3>
+<p>The phase-field variable <span class="math notranslate nohighlight">\(d\)</span> is governed by the balance equation</p>
+<div class="math notranslate nohighlight">
+\[d - l^2 \Delta d = -\frac{2l}{G_c}g'(d)\,\mathcal{H}(\boldsymbol{\varepsilon}),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{H}\)</span> is the crack driving force history variable, defined as the
+maximum positive elastic strain energy density encountered up to the current time:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{H}^{n+1} = \max\!\left( \mathcal{H}^{n},\, \psi(\boldsymbol{\varepsilon}^{n+1}) \right),
+\quad \psi(\boldsymbol{\varepsilon}) = \tfrac{1}{2}\boldsymbol{\varepsilon} : \mathbb{C} : \boldsymbol{\varepsilon}.\]</div>
+<p>The irreversibility of crack growth is enforced through the history variable <span class="math notranslate nohighlight">\(\mathcal{H}\)</span>,
+which ensures the phase field can only grow monotonically.</p>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The model is implemented within the general gradient-enhanced hypoelastic framework
+(<code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></code>), treating the phase-field
+variable <span class="math notranslate nohighlight">\(d\)</span> as the single nonlocal variable (<span class="math notranslate nohighlight">\(\bar\kappa = d\)</span>).
+The gradient enhancement coefficient is constant: <span class="math notranslate nohighlight">\(c = l^2\)</span>.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseFieldE">
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseFieldE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseFieldE"></span><span id="Marmot::Materials::AT2PhaseField"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AT2PhaseField</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseFieldE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::AT2PhaseField:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-4209f81cbf83cf14fb57f32d2e89f219e5990591.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::AT2PhaseField&quot; tooltip=&quot;Marmot::Materials::AT2PhaseField&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::AT2PhaseField:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a7dabfb0e276d5876727716ed839f4186d3cac3d.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::AT2PhaseField&quot; tooltip=&quot;Marmot::Materials::AT2PhaseField&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
+    &quot;3&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Simple AT2 phase-field model for fracture simulations. </p>
+<p>Implements the simple AT2 phase-field fracture model within the general gradient-enhanced hypoelastic framework. See the documentation for details on the theory.</p>
+<p><strong>Material properties</strong> (in order):<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( E \)</span> : Young’s modulus</p></li>
+<li><p><span class="math notranslate nohighlight">\( \nu \)</span> : Poisson’s ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\( G_c \)</span> : Critical fracture energy</p></li>
+<li><p><span class="math notranslate nohighlight">\( l \)</span> : Internal length scale</p></li>
+<li><p><span class="math notranslate nohighlight">\( \rho \)</span> : Mass density (optional, mandatory for dynamic simulations)</p></li>
+<li><p><span class="math notranslate nohighlight">\( \eta \)</span> : phase-field viscosity (optional, mandatory for dynamic simulations) </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseField13AT2PhaseFieldEPKdii">
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseField13AT2PhaseFieldEPKdii"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseField13AT2PhaseFieldEPKdii"></span><span id="Marmot::Materials::AT2PhaseField::AT2PhaseField__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a1082a74304d48cd112de33f2e375d804"></span><span class="sig-name descname"><span class="n"><span class="pre">AT2PhaseField</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseField13AT2PhaseFieldEPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13AT2PhaseField13computeStressER8responseR8tangentsRK9increment">
+<span id="_CPPv3NK6Marmot9Materials13AT2PhaseField13computeStressER8responseR8tangentsRK9increment"></span><span id="_CPPv2NK6Marmot9Materials13AT2PhaseField13computeStressER8responseR8tangentsRK9increment"></span><span id="Marmot::Materials::AT2PhaseField::computeStress__responseR.tangentsR.incrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1aea8c3d4525bc7e0a1c9b9dba2f805694"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13AT2PhaseField13computeStressER8responseR8tangentsRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the stress response of the material model including the algorithmic tangents. </p>
+<p>
+This method must be implemented in derived classes to compute the stress response based on the specific material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed stress and other response variables. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the computed algorithmic tangent matrices. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseField21initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseField21initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseField21initializeStateLayoutEv"></span><span id="Marmot::Materials::AT2PhaseField::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a377e4508371864b46ebc9d936f9977f4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseField21initializeStateLayoutEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13AT2PhaseField10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials13AT2PhaseField10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials13AT2PhaseField10getDensityEPKd"></span><span id="Marmot::Materials::AT2PhaseField::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1aa5cad46d14396b1f32eadfaa69df3efe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13AT2PhaseField10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the density of the material. </p>
+<p>
+This method must be implemented in derived classes to return the density of the material, which is required for dynamic analyses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density of the material</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13AT2PhaseField20getNonlocalViscosityEPKd">
+<span id="_CPPv3NK6Marmot9Materials13AT2PhaseField20getNonlocalViscosityEPKd"></span><span id="_CPPv2NK6Marmot9Materials13AT2PhaseField20getNonlocalViscosityEPKd"></span><span id="Marmot::Materials::AT2PhaseField::getNonlocalViscosity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a324f9939436f37d385feea8553457ce5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalViscosity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13AT2PhaseField20getNonlocalViscosityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the nonlocal viscosity of the material. </p>
+<p>
+This method must be implemented in derived classes to return the nonlocal viscosity values, which are required for dynamic analyses involving nonlocal variables. The returned vector should have a length equal to <code class="docutils literal notranslate"><span class="pre">nNonlocalVariables</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector containing the nonlocal viscosity values for each nonlocal variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseField1CE">
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseField1CE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseField1CE"></span><span id="Marmot::Materials::AT2PhaseField::C__Marmot::Matrix6dC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a40ed6b6e065937e91ba5d792c0447314"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">C</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseField1CE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic stiffness tensor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="materials.html" class="btn btn-neutral float-left" title="Material models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="b4.html" class="btn btn-neutral float-right" title="B4 model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

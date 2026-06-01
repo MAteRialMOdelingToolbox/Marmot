@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</compoundname>
+    <includes refid="_marmot_material_finite_strain_substepped_8h" local="no">MarmotMaterialFiniteStrainSubstepped.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a084b5599356632ff5bfcf715cba20bfd" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::StateSensitivities::dState_dF</definition>
+        <argsstring></argsstring>
+        <name>dState_dF</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities::dState_dF</qualifiedname>
+        <briefdescription>
+<para>Jacobian of State_new w.r.t <ref refid="struct_marmot_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> Gradient F_new. Size: nStateVars x 9. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="62" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1ac9689f00e644a34da3fc3b21c0318e5a" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::StateSensitivities::dState_dStateOld</definition>
+        <argsstring></argsstring>
+        <name>dState_dStateOld</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities::dState_dStateOld</qualifiedname>
+        <briefdescription>
+<para>Jacobian of State_new w.r.t State_old. Size: nStateVars x nStateVars. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="67" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a0e771d0de67831cf884359509a115687" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::StateSensitivities::dStress_dStateOld</definition>
+        <argsstring></argsstring>
+        <name>dStress_dStateOld</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities::dStress_dStateOld</qualifiedname>
+        <briefdescription>
+<para>Jacobian of Stress w.r.t State_old. Size: 9 x nStateVars. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="72" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Sensitivity matrices required for analytical substepping. All matrices represent derivatives of flattened arrays and are stored in Eigen&apos;s column-major format. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="58" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="58" bodyend="73"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a084b5599356632ff5bfcf715cba20bfd" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</scope><name>dState_dF</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1ac9689f00e644a34da3fc3b21c0318e5a" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</scope><name>dState_dStateOld</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a0e771d0de67831cf884359509a115687" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</scope><name>dStress_dStateOld</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

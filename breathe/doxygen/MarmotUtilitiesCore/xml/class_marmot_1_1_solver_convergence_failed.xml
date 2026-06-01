@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_solver_convergence_failed" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::SolverConvergenceFailed</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::runtime_error</basecompoundref>
+    <includes refid="_marmot_exceptions_8h" local="no">MarmotExceptions.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_solver_convergence_failed_1a6838faa19333f9516f932cc296767354" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::SolverConvergenceFailed::SolverConvergenceFailed</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>SolverConvergenceFailed</name>
+        <qualifiedname>Marmot::SolverConvergenceFailed::SolverConvergenceFailed</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for <ref refid="class_marmot_1_1_solver_convergence_failed" kindref="compound">SolverConvergenceFailed</ref> exception. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A descriptive error message explaining the reason for the exception. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="55" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="55" bodyend="55"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Exception thrown when the Newton-Raphson iteration in a material-point solver fails to converge (maximum number of iterations reached or NaN encountered). </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::SolverConvergenceFailed</label>
+        <link refid="class_marmot_1_1_solver_convergence_failed"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::SolverConvergenceFailed</label>
+        <link refid="class_marmot_1_1_solver_convergence_failed"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="49" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="49" bodyend="56"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_solver_convergence_failed_1a6838faa19333f9516f932cc296767354" prot="public" virt="non-virtual"><scope>Marmot::SolverConvergenceFailed</scope><name>SolverConvergenceFailed</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

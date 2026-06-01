@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</compoundname>
+    <includes refid="_marmot_material_point_solver_finite_strain_8h" local="no">MarmotMaterialPointSolverFiniteStrain.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a8e6e64567d21822c98cb9696edcd20e8" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor9d</type>
+        <definition>FastorStandardTensors::Tensor9d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::gradUIncrement</definition>
+        <argsstring></argsstring>
+        <name>gradUIncrement</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::gradUIncrement</qualifiedname>
+        <briefdescription>
+<para>Target displacement gradient increment for the step. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="88" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a2ae5c57d382f4e3b87d0550c5a8fe18d" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor9d</type>
+        <definition>FastorStandardTensors::Tensor9d Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::stressIncrement</definition>
+        <argsstring></argsstring>
+        <name>stressIncrement</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::stressIncrement</qualifiedname>
+        <briefdescription>
+<para>Target Kirchhoff stress increment for the step. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="89" column="49" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a327ae9daa7e4222140d67e7ebc432d49" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor9t&lt; bool &gt;</type>
+        <definition>FastorStandardTensors::Tensor9t&lt; bool &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isGradUComponentControlled</definition>
+        <argsstring></argsstring>
+        <name>isGradUComponentControlled</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isGradUComponentControlled</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Flags to indicate which displecement gradient components are controlled </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="90" column="41" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a34d8d0d1a9b8f367145df9644998cae9" prot="public" static="no" mutable="no">
+        <type>FastorStandardTensors::Tensor9t&lt; bool &gt;</type>
+        <definition>FastorStandardTensors::Tensor9t&lt; bool &gt; Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isStressComponentControlled</definition>
+        <argsstring></argsstring>
+        <name>isStressComponentControlled</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isStressComponentControlled</qualifiedname>
+        <briefdescription>
+<para>Flags to indicate which stress components are controlled. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="93" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1ab99ba150fb203bd08ec627a5c881f735" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::timeOld</definition>
+        <argsstring></argsstring>
+        <name>timeOld</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::timeOld</qualifiedname>
+        <briefdescription>
+<para>Old time at the beginning of the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="94" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a9e5670d0b6dab1610b24ba7dac8ff74a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::dT</qualifiedname>
+        <briefdescription>
+<para>Time step size for the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="95" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to define a loading increment. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each increment contains displacement gradient and stress increments, control flags, time information, and iteration limits. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="87" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="87" bodyend="96"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a9e5670d0b6dab1610b24ba7dac8ff74a" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a8e6e64567d21822c98cb9696edcd20e8" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>gradUIncrement</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a327ae9daa7e4222140d67e7ebc432d49" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>isGradUComponentControlled</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a34d8d0d1a9b8f367145df9644998cae9" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>isStressComponentControlled</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a2ae5c57d382f4e3b87d0550c5a8fe18d" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>stressIncrement</name></member>
+      <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1ab99ba150fb203bd08ec627a5c881f735" prot="public" virt="non-virtual"><scope>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</scope><name>timeOld</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

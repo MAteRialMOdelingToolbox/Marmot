@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
   <compounddef id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper" kind="class" language="C++" prot="public">
     <compoundname>Marmot::NumericalAlgorithms::AdaptiveSubstepper</compoundname>
+    <includes refid="_adaptive_substepper_8h" local="no">AdaptiveSubstepper.h</includes>
     <templateparamlist>
       <param>
         <type>size_t</type>
@@ -46,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="103"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="124" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="124" bodyend="124"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-type">
@@ -60,12 +61,10 @@
 <para>Matrix for describing the nonlinear equation system of the return mapping algorithm. </para>
         </briefdescription>
         <detaileddescription>
-<para>Adaptive Substepper, employing an error estimation and Richardson Extrapolation for an Implicit Return Mapping algorithm</para>
-<para>Matthias Neuner (2016), developed within the DK-CIM collaboration </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="43" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="43" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="54" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a35849a3b7625b1e878989c3802f76023" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, nIntegrationDependentStateVars, 1 &gt;</type>
@@ -80,7 +79,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="45" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="56" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="56" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -96,7 +95,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="82" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ac46c65467fb10a173f3aae401703a82c" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -110,7 +109,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="82" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aa66fce8012deaf0cc2fe6b55c28a532b" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -124,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="82" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a165555be9d61400aafbae546045495fe" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -138,7 +137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="82" column="67" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="67" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a485fc847b25f45867ebfa9c333079328" prot="private" static="no" mutable="no">
         <type>const double</type>
@@ -152,7 +151,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="82" column="83" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="103" column="83" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1652c5300ba9396086d274daeae8200b" prot="private" static="no" mutable="no">
         <type>const int</type>
@@ -166,7 +165,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="83" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="83" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="104" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1afa02f2a2e37f3108c7d5d6dcf0900f2e" prot="private" static="no" mutable="no">
         <type>const bool</type>
@@ -180,7 +179,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="84" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="84" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="105" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="105" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1af9abba392972ca1c77dafbd93a31a69d" prot="private" static="no" mutable="no">
         <type>double</type>
@@ -194,7 +193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="86" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="86" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="107" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="107" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a037bbe7771a9e3969d0105b6340bb715" prot="private" static="no" mutable="no">
         <type>double</type>
@@ -208,7 +207,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="87" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="87" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="108" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="108" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a2e63421a8623e4618763c5f188263eb4" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -222,7 +221,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="88" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="88" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="109" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="109" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a514ec174a061deb39da60185b7260738" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -236,7 +235,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="89" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="89" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="110" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="110" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a30b93bd0f677eba9858244374698fea6" prot="private" static="no" mutable="no">
         <type>Marmot::Vector6d</type>
@@ -251,7 +250,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="92" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="92" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="113" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="113" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a97c42e3c1c02ebc0068b265f298df84d" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a35849a3b7625b1e878989c3802f76023" kindref="member">IntegrationStateVector</ref></type>
@@ -265,7 +264,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="93" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="93" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="114" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="114" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a305f7b7fa12e33835419569dde766c57" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a586e986d4cc9a228232e4e27b4cc175a" kindref="member">TangentSizedMatrix</ref></type>
@@ -279,7 +278,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="94" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="94" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="115" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="115" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a0e8f0a4b0dfb81ba581f91217050d63b" prot="private" static="no" mutable="no">
         <type>Marmot::Vector6d</type>
@@ -293,7 +292,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="97" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="97" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="118" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="118" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aeeb4a41cfbdc3496df658a3a6e3c3c40" prot="private" static="no" mutable="no">
         <type>Marmot::Vector6d</type>
@@ -307,7 +306,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="97" column="51" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="97" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="118" column="51" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="118" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a43f936b2c3c2ebe83150b4e5d2cd06ca" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a35849a3b7625b1e878989c3802f76023" kindref="member">IntegrationStateVector</ref></type>
@@ -321,7 +320,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="98" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="98" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="119" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="119" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a64964b07ac5f9b9ad472d37cc7edbe15" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a35849a3b7625b1e878989c3802f76023" kindref="member">IntegrationStateVector</ref></type>
@@ -335,7 +334,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="98" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="98" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="119" column="50" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="119" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a4708de71d4dc94b8771db5dedaf97dc9" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a586e986d4cc9a228232e4e27b4cc175a" kindref="member">TangentSizedMatrix</ref></type>
@@ -349,7 +348,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="99" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="99" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="120" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="120" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a788173c628bdffebfaf9fb54d7363b81" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a586e986d4cc9a228232e4e27b4cc175a" kindref="member">TangentSizedMatrix</ref></type>
@@ -363,7 +362,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="99" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="99" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="120" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="120" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a5f5d66c60d5d12a7e6c5774c63155dca" prot="private" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a586e986d4cc9a228232e4e27b4cc175a" kindref="member">TangentSizedMatrix</ref></type>
@@ -377,7 +376,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="101" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="101" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="122" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="122" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1ed959a6a816f4b4d2fc979ef1344c37" prot="private" static="no" mutable="no">
         <type>SubsteppingState</type>
@@ -391,7 +390,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="104" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="104" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="125" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="125" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -430,12 +429,71 @@
           <declname>Cel</declname>
         </param>
         <briefdescription>
+<para>Construct an <ref refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper" kindref="compound">AdaptiveSubstepper</ref>. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>initialStepSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial sub-step size as a fraction of the total increment (0, 1]. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>minimumStepSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Minimum allowable sub-step size; triggers a warning if reached. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxScaleUpFactor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum factor by which the sub-step size may be increased. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scaleDownFactor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factor applied to the sub-step size when a sub-step is discarded. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>integrationErrorTolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Richardson-extrapolation error threshold for accepting a sub-step. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nPassesToIncrease</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of successful sub-steps before the step size is allowed to grow. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Cel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linear-elastic stiffness matrix (6×6). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="47" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="113" bodyend="147"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="68" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="134" bodyend="168"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a3737c55eb045f30a370101a86c62257d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -458,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="56" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="150" bodyend="155"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="77" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="171" bodyend="176"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae18579fd2d253cda7fafba63dfb43ca1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -473,7 +531,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="58" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="158" bodyend="161"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="79" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="179" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ab572cf9f8cdd71ca07f9973cf843e472" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -488,7 +546,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="60" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="164" bodyend="185"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="81" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="185" bodyend="206"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aae48f8954120c2b898ec0e6eaa6e14d5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -503,7 +561,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="62" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="400" bodyend="403"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="83" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="421" bodyend="424"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aa813700ad8a367bda8da0875d94692d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -530,7 +588,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="64" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="253" bodyend="327"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="85" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="274" bodyend="348"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1b1071c0fc54dab6ba07a158bf6a9739" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -549,7 +607,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="68" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="330" bodyend="356"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="89" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="351" bodyend="377"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a980aa6046a1bd0e45984bd4661a472d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -564,7 +622,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="70" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="210" bodyend="236"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="91" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="231" bodyend="257"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae94f73c8353b2a3f4fb6083979e21f9a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -583,7 +641,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="72" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="239" bodyend="250"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="93" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="260" bodyend="271"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a23ed6b7499d6b23f1ea939b737cbbfdb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -606,7 +664,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="75" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="187" bodyend="207"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="96" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="208" bodyend="228"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a9c327f7de90a76e9a942286e14f30074" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Matrix6d</type>
@@ -621,7 +679,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="77" column="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="98" column="14"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a9a791c11976d9da416b18385a1d597ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -648,7 +706,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="79" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="359" bodyend="366"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="100" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="380" bodyend="387"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -664,7 +722,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="106" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="369" bodyend="379"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="127" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="390" bodyend="400"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a751a7723ca4331da03ffcc58656efa29" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -678,14 +736,34 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="107" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="382" bodyend="398"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="128" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="403" bodyend="419"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
+<para>Adaptive sub-stepper employing error estimation and Richardson extrapolation. </para>
     </briefdescription>
     <detaileddescription>
+<para>Splits a strain increment into sub-increments, performs a full-step and two half-steps for each sub-increment, and estimates the integration error via Richardson extrapolation. The sub-increment size is adapted automatically based on the error estimate.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>materialTangentSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the material tangent matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nIntegrationDependentStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of integration-dependent state variables.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Reference: Matthias Neuner (2016), developed within the DK-CIM collaboration. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="35" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="35" bodyend="108"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="51" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" bodystart="51" bodyend="129"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae126e57d71268f7e8012b06f44ca89eb" prot="private" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepper</scope><name>acceptSubstepWithFullStepOnly</name></member>
       <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aeba40d83fd81b76dd1450acc9596d4ef" prot="public" virt="non-virtual"><scope>Marmot::NumericalAlgorithms::AdaptiveSubstepper</scope><name>AdaptiveSubstepper</name></member>

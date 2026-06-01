@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="struct_state_mapper" kind="struct" language="C++" prot="public">
+    <compoundname>StateMapper</compoundname>
+    <includes refid="_marmot_state_helpers_8h" local="no">MarmotStateHelpers.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class View</type>
+      </param>
+      <param>
+        <type>int...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>Template struct to map raw double pointers and sizes to specific views. Specializations of this struct should provide a static <computeroutput>map</computeroutput> method that takes a <computeroutput>double*</computeroutput> and a <computeroutput>std::size_t</computeroutput> size, returning the desired view type. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="38" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="44" bodyend="-1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

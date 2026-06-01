@@ -11,12 +11,13 @@
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial3D::nDim</qualifiedname>
         <initializer>= 3</initializer>
         <briefdescription>
+<para>Number of spatial dimensions for 3-D quadrature. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="508" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="508" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="671" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="671" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a20ae8757dc6a09daae091c74c3147f24" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -28,12 +29,13 @@
                 { Eigen::Vector3d::Zero(),                                         8.0 }
             }</initializer>
         <briefdescription>
+<para>1×1×1 Gauss rule for 3-D hexahedral elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="511" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="511" bodyend="513"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="675" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="675" bodyend="677"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a1780303fead6d721dac665fcde2fc523" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -45,12 +47,13 @@
                 { (Eigen::Vector3d() &lt;&lt; 1./4, 1./4, 1./4).finished(),  1./6}
             }</initializer>
         <briefdescription>
+<para>1-point rule for Tetra4 elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="515" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="515" bodyend="517"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="680" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="680" bodyend="682"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1adec22aca90d64b847662d4eaa9610238" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -65,12 +68,13 @@
                 { (Eigen::Vector3d() &lt;&lt; (5+3*std::sqrt(5))/20,  (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20     ).finished(),  1./24},
             }</initializer>
         <briefdescription>
+<para>4-point rule for Tetra10 elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="519" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="519" bodyend="524"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="685" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="685" bodyend="690"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a9acbe8ab5b16207b00b6cb5c29439c73" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -79,22 +83,23 @@
         <name>gaussPointList2x2x2</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointList2x2x2</qualifiedname>
         <initializer>= {
-                { ( Eigen::Vector3d () &lt;&lt; -gp2,    -gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; +gp2,    -gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; +gp2,    +gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; -gp2,    +gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; -gp2,    -gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; +gp2,    -gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; +gp2,    +gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () &lt;&lt; -gp2,    +gp2,   +gp2 ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
+                { ( Eigen::Vector3d () &lt;&lt; -<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,    +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref>,   +<ref refid="_marmot_finite_element_8h_1a5069b1a95836b4cc9d5098ed4aafd315" kindref="member">gp2</ref> ).finished(),       1.0},
             }</initializer>
         <briefdescription>
+<para>2×2×2 Gauss rule for 3-D hexahedral elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="526" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="526" bodyend="535"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="693" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="693" bodyend="702"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a79863b6c68ef34bbea1b16a33196726c" prot="public" static="no" mutable="no">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_finite_element_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt;</type>
@@ -103,18 +108,19 @@
         <name>gaussPointList3x3x3</name>
         <qualifiedname>Marmot::FiniteElement::Quadrature::Spatial3D::gaussPointList3x3x3</qualifiedname>
         <briefdescription>
+<para>3×3×3 Gauss rule for 3-D hexahedral elements. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="537" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="537" bodyend="567"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="705" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="705" bodyend="735"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="507" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="670" column="5"/>
   </compounddef>
 </doxygen>

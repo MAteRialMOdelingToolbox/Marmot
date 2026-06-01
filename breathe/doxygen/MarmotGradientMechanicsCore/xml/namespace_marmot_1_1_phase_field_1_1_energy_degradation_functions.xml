@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions" kind="namespace" language="C++">
+    <compoundname>Marmot::PhaseField::EnergyDegradationFunctions</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions_1_1_second_order_derived">Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1af84706f29a4e3eb2e720255f37c331f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::PhaseField::EnergyDegradationFunctions::quadratic</definition>
+        <argsstring>(const T pf)</argsstring>
+        <name>quadratic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::quadratic</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Quadratic degradation function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Degradation function value.</para>
+</simplesect>
+This function is defined as <formula id="0">\[ g(\phi) = (1 - \phi)^2,\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable. It represents a quadratic degradation of the material stiffness as the phase field variable increases. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="47" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" bodystart="47" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1a66ea4932852404f201d1f85f7b10e9f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::PhaseField::EnergyDegradationFunctions::cubic</definition>
+        <argsstring>(const T pf)</argsstring>
+        <name>cubic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::cubic</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Cubic degradation function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Degradation function value.</para>
+</simplesect>
+This function is defined as <formula id="2">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable. It represents a cubic degradation of the material stiffness as the phase field variable increases, providing a smoother transition compared to the quadratic function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="64" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" bodystart="64" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1af31c2bef36e05bb707f5eb4ab9d8f8c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::PhaseField::EnergyDegradationFunctions::quartic</definition>
+        <argsstring>(const T pf)</argsstring>
+        <name>quartic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::quartic</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>pf</declname>
+        </param>
+        <briefdescription>
+<para>Quartic degradation function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Degradation function value.</para>
+</simplesect>
+This function is defined as <formula id="3">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable. It represents a quartic degradation of the material stiffness as the phase field variable increases, providing an even smoother transition compared to the cubic function. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="82" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" bodystart="82" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_phase_field_energy_degradation_8h_1afca31c3ac980ff4ea58281229377f1cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::PhaseField::EnergyDegradationFunctions::generic</definition>
+        <argsstring>(const T pf, const double p, const double a1, const double a2, const double a3)</argsstring>
+        <name>generic</name>
+        <qualifiedname>Marmot::PhaseField::EnergyDegradationFunctions::generic</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>pf</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a1</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a2</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>a3</declname>
+        </param>
+        <briefdescription>
+<para>Generic degradation function acc. to Wu, JMPS (2017). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pf</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Phase field variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Exponent parameter controlling the shape of the degradation function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the linear term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the quadratic term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>a3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coefficient for the cubic term in the denominator. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Degradation function value.</para>
+</simplesect>
+This function is defined as <formula id="4">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi (1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable, and <formula id="5">$p$</formula>, <formula id="6">$a_1$</formula>, <formula id="7">$a_2$</formula>, and <formula id="8">$a_3$</formula> are parameters that control the shape of the degradation function. This generic form allows for a wide range of degradation behaviors by adjusting the parameters accordingly. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="104" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" bodystart="104" bodyend="112"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" line="33" column="3"/>
+  </compounddef>
+</doxygen>

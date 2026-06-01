@@ -7,3 +7,4 @@ This section contains the available solvers.
   :maxdepth: 1
 
   materialpointsolverhypoelastic
+  materialpointsolverfinitestrain

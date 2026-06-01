@@ -1,6 +1,9 @@
-## What is Marmot?
+---
+orphan: true
+---
+# What is Marmot?
 
-Marmot (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and open source codes like MOOSE or OpenSees, are ready-to-use available.
+Marmot (MAteRialMOdellingToolbox) is a C++-library aiming to provide robust and efficient implementations of state-of-the-art constitutive models for different materials, in particular for quasi-brittle materials such as (sprayed) concrete, rock and soils. It uses modern, object-oriented programming techniques and provides a generic interface that can be easily wrapped into your application. It can be seamlessly used with the [EdelweissFE](https://github.com/Edelweiss-Numerics/EdelweissFE) finite element code, but also with commercial and open source finite element codes. Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis and open source codes like [MOOSE](https://github.com/idaholab/moose) or OpenSees, are ready-to-use available.
 
 
 ![Truss in compression using a micropolar von Mises plasticity model](../share/truss.gif)

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_solver_timestep_exhausted" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::SolverTimestepExhausted</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::runtime_error</basecompoundref>
+    <includes refid="_marmot_exceptions_8h" local="no">MarmotExceptions.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_solver_timestep_exhausted_1a56d63c6e3e6829d2b6875c7f193e9719" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::SolverTimestepExhausted::SolverTimestepExhausted</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>SolverTimestepExhausted</name>
+        <qualifiedname>Marmot::SolverTimestepExhausted::SolverTimestepExhausted</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for <ref refid="class_marmot_1_1_solver_timestep_exhausted" kindref="compound">SolverTimestepExhausted</ref> exception. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A descriptive error message explaining the reason for the exception. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="68" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="68" bodyend="68"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Exception thrown when the material-point solver cannot reduce the time step below the prescribed minimum. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::SolverTimestepExhausted</label>
+        <link refid="class_marmot_1_1_solver_timestep_exhausted"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::SolverTimestepExhausted</label>
+        <link refid="class_marmot_1_1_solver_timestep_exhausted"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="62" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="62" bodyend="69"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_solver_timestep_exhausted_1a56d63c6e3e6829d2b6875c7f193e9719" prot="public" virt="non-virtual"><scope>Marmot::SolverTimestepExhausted</scope><name>SolverTimestepExhausted</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

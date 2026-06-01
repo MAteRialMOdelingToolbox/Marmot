@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compressible Finite-Strain Linear Viscoelasticity &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Finite-Strain Isotropic Biot Viscoelasticity" href="finitestrainisotropicbiotviscoelasticity.html" />
+    <link rel="prev" title="Compressible Neo Hooke model (Automatic Differentiation)" href="adcompressibleneohooke.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Compressible Finite-Strain Linear Viscoelasticity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Compressible Finite-Strain Linear Viscoelasticity</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/compressiblefinitestrainlinearviscoelasticity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="compressible-finite-strain-linear-viscoelasticity">
+<h1>Compressible Finite-Strain Linear Viscoelasticity<a class="headerlink" href="#compressible-finite-strain-linear-viscoelasticity" title="Link to this heading"></a></h1>
+<p>A finite-strain viscoelastic material model based on a generalized Maxwell model.
+The instantaneous hyperelastic response is provided by a selectable compressible
+hyperelastic base potential, and the viscous contribution is formulated in terms of
+the second Piola–Kirchhoff stress.</p>
+<p class="rubric">Material parameters</p>
+<p>The material parameters are provided as a flat vector with the following layout:</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Index</strong></p></th>
+<th class="head"><p><strong>Model Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>hyperelasticBase</p></td>
+<td><p>Hyperelastic base model selector: <code class="docutils literal notranslate"><span class="pre">0</span></code> = NeoHooke, <code class="docutils literal notranslate"><span class="pre">1</span></code> = Yeoh,
+<code class="docutils literal notranslate"><span class="pre">2</span></code> = MooneyRivlin, <code class="docutils literal notranslate"><span class="pre">3</span></code> = PenceGouNeoHooke (variant B)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>onlyShearCreep</p></td>
+<td><p>Flag: <code class="docutils literal notranslate"><span class="pre">1</span></code> restricts viscoelastic creep to the deviatoric (shear) part only,
+<code class="docutils literal notranslate"><span class="pre">0</span></code> applies creep to the full stress</p></td>
+</tr>
+<tr class="row-even"><td><p>2 … 2+n<sub>e</sub>−1</p></td>
+<td><p>elastic properties</p></td>
+<td><p>Elastic properties of the selected hyperelastic base model (see below)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2+n<sub>e</sub></p></td>
+<td><p>n<sub>M</sub></p></td>
+<td><p>Number of Maxwell elements</p></td>
+</tr>
+<tr class="row-even"><td><p>2+n<sub>e</sub>+1 … 2+n<sub>e</sub>+2n<sub>M</sub></p></td>
+<td><p><span class="math notranslate nohighlight">\(\gamma_i,\,\tau_i\)</span></p></td>
+<td><p>Pairs of relative stiffness weight <span class="math notranslate nohighlight">\(\gamma_i\)</span> and relaxation time
+<span class="math notranslate nohighlight">\(\tau_i\)</span> for each Maxwell element (<span class="math notranslate nohighlight">\(i=1,\ldots,n_M\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>2+n<sub>e</sub>+1+2n<sub>M</sub> <em>(optional)</em></p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>Density</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Elastic properties by base model</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Base model</strong></p></th>
+<th class="head"><p><strong>selector value</strong></p></th>
+<th class="head"><p><strong>n</strong><sub>e</sub></p></th>
+<th class="head"><p><strong>Properties (in order)</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NeoHooke</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(K\)</span> (bulk modulus), <span class="math notranslate nohighlight">\(G\)</span> (shear modulus)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Yeoh</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{10}\)</span>, <span class="math notranslate nohighlight">\(C_{20}\)</span>, <span class="math notranslate nohighlight">\(C_{30}\)</span>, <span class="math notranslate nohighlight">\(K\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>MooneyRivlin</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{10}\)</span>, <span class="math notranslate nohighlight">\(C_{01}\)</span>, <span class="math notranslate nohighlight">\(K\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>PenceGouNeoHooke</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(K\)</span> (bulk modulus), <span class="math notranslate nohighlight">\(G\)</span> (shear modulus)</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>State Variable</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">S0_old</span></code> (9 components)</p></td>
+<td><p>Second Piola–Kirchhoff stress from the previous increment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">creepStateVars</span></code> (9 × n<sub>M</sub> components)</p></td>
+<td><p>Creep state tensors for each Maxwell element</p></td>
+</tr>
+</tbody>
+</table>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The model is a finite-strain generalization of the linear viscoelastic model
+described, e.g., in Liu et al. (2021). A generalized Maxwell model is employed
+in which the long-term elastic part is provided by the chosen hyperelastic base
+potential.</p>
+<p>The total second Piola–Kirchhoff stress reads</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{S} = \boldsymbol{S}_{\infty} + \sum_{i=1}^{n_M} \boldsymbol{h}_i,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{S}_{\infty}\)</span> is the long-term (hyperelastic) stress and
+<span class="math notranslate nohighlight">\(\boldsymbol{h}_i\)</span> are the non-equilibrium (viscous) overstresses of each
+Maxwell element.</p>
+<p>The evolution of each overstress is governed by</p>
+<div class="math notranslate nohighlight">
+\[\dot{\boldsymbol{h}}_i + \frac{\boldsymbol{h}_i}{\tau_i}
+= \gamma_i\,\mathbb{C}_0^{-1} : \dot{\boldsymbol{S}}_0,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tau_i\)</span> is the relaxation time, <span class="math notranslate nohighlight">\(\gamma_i\)</span> the relative
+stiffness weight, <span class="math notranslate nohighlight">\(\mathbb{C}_0\)</span> the instantaneous (reference) stiffness
+tensor, and <span class="math notranslate nohighlight">\(\boldsymbol{S}_0\)</span> the instantaneous stress.</p>
+<p>The algorithmic update uses a mid-point rule (see Liu et al. 2021):</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{h}_i^{n+1}
+= e^{-\Delta t/\tau_i}\,\boldsymbol{h}_i^n
+  + \gamma_i\,\mathbb{C}_0^{-1} :
+    \frac{1 - e^{-\Delta t/\tau_i}}{\Delta t/\tau_i}\,\Delta\boldsymbol{S}_0.\]</div>
+<p>Primary reference: Liu et al. 2021, <em>A continuum and computational framework for
+viscoelastodynamics: I. Finite deformation linear models</em>, Comput. Meth. Appl.
+Mech. Engrg. 385, 114059.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticityE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticityE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticityE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompressibleFiniteStrainLinearViscoelasticity</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity26MarmotMaterialFiniteStrainEPKdii" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::MarmotMaterialFiniteStrain"><span class="n"><span class="pre">MarmotMaterialFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-3e1b8cf64f4487bba9253a291311363cbe5ecb54.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity&quot; tooltip=&quot;Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6ea130c3196b334249ad4a0da87f9f8170fe8ae5.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties&quot; tooltip=&quot;Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity&quot; tooltip=&quot;Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
+    &quot;3&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Finite-strain compressible hyper-viscoelastic material model. </p>
+<p>The model combines a selectable hyperelastic base potential with a generalized Maxwell viscoelastic evolution in the second Piola-Kirchhoff stress space.</p>
+<p><dl class="simple">
+<dt><strong>Material parameters</strong></dt><dd><p><ul class="simple">
+<li><p><strong>baseModel</strong> - hyperelastic base identifier (<code class="docutils literal notranslate"><span class="pre">NeoHooke</span></code>, <code class="docutils literal notranslate"><span class="pre">Yeoh</span></code>, <code class="docutils literal notranslate"><span class="pre">MooneyRivlin</span></code>, <code class="docutils literal notranslate"><span class="pre">PenceGouNeoHooke</span></code>)</p></li>
+<li><p><strong>onlyShearCreep</strong> - flag to restrict viscoelastic evolution to the deviatoric part</p></li>
+<li><p><strong>elasticProperties</strong> - coefficients required by the selected base model</p></li>
+<li><p><strong>n_Maxwell</strong> - number of Maxwell elements</p></li>
+<li><p><strong>tau</strong>[i], beta[i] (i = 1..n_Maxwell) - Maxwell retardation times and relative weights</p></li>
+<li><p><strong>rho</strong> - density (optional; read from the last material property entry)</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>State variables</strong></dt><dd><p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S0_old</span></code> - previous step stress-like internal variable used in viscoelastic update</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">creepStateVars</span></code> - internal variables for the generalized Maxwell chain </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity45CompressibleFiniteStrainLinearViscoelasticityEPKdii">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity45CompressibleFiniteStrainLinearViscoelasticityEPKdii"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity45CompressibleFiniteStrainLinearViscoelasticityEPKdii"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1ab29601155b6194f0ada4621bc22c8903"></span><span class="sig-name descname"><span class="n"><span class="pre">CompressibleFiniteStrainLinearViscoelasticity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity45CompressibleFiniteStrainLinearViscoelasticityEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity"><span class="std std-ref">CompressibleFiniteStrainLinearViscoelasticity</span></a> material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – Pointer to the material properties vector. </p></li>
+<li><p><strong>nMaterialProperties</strong> – Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p></li>
+<li><p><strong>materialLabel</strong> – Material label. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a46106eb54f4cbc16c0f2cfdc3e4e8fe5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the Kirchhoff stress and the algorithmic tangent for the current step. </p>
+<p>
+Template parameter <code class="docutils literal notranslate"><span class="pre">&lt;3&gt;</span></code> indicates 3D. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">tau</span></code> - Kirchhoff stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elasticEnergyDensity</span></code> - elastic energy density <span class="math notranslate nohighlight">\(\psi\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> - density (unused here). </p></li>
+</ul>
+</p></li>
+<li><p><strong>tangents</strong> – <strong>[inout]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dTau_dF</span></code> - algorithmic tangent <span class="math notranslate nohighlight">\(\partial\boldsymbol{\tau}/\partial\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> - deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. </p></li>
+</ul>
+</p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> <ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> - old time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dT</span></code> - time increment.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity10getDensityEPKd"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a90ae2da14ce165f57ad0cdbe8b0bea24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the material density. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to state variables (unused). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density from the last entry in <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity26MarmotMaterialFiniteStrainEPKdii">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity26MarmotMaterialFiniteStrainEPKdii"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity26MarmotMaterialFiniteStrainEPKdii"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::MarmotMaterialFiniteStrain__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1afbc11d3b83d7555858475007d28ebe0c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialFiniteStrain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity26MarmotMaterialFiniteStrainEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a MarmotMaterialFiniteStrain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> Pointer to the array of material property values. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of material property values. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Unique identifier for this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a049767a6be68963c8f4a3deb943ea5dc"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HyperelasticBase</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Hyperelastic base model type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase8NeoHookeE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase8NeoHookeE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase8NeoHookeE"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a049767a6be68963c8f4a3deb943ea5dcaa8ffc99e505c32bedf78bea5c49a300c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NeoHooke</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase8NeoHookeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase4YeohE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase4YeohE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase4YeohE"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a049767a6be68963c8f4a3deb943ea5dcabde656b4629a151999241d5e2dba6c36"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Yeoh</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase4YeohE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase12MooneyRivlinE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase12MooneyRivlinE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase12MooneyRivlinE"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a049767a6be68963c8f4a3deb943ea5dca4cc3160b9633a01b7114589df9fcd76c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MooneyRivlin</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase12MooneyRivlinE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase16PenceGouNeoHookeE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase16PenceGouNeoHookeE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase16PenceGouNeoHookeE"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a049767a6be68963c8f4a3deb943ea5dca7dd23a149abbb5b39e53b9154bd23a3e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PenceGouNeoHooke</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase16PenceGouNeoHookeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21initializeStateLayoutEv"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1abe1522114e0613310ba07f5163c2597b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21initializeStateLayoutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Define the layout of persistent state variables. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity34computeEnergyDensityAndDerivativesERKN21FastorStandardTensors9Tensor33dE">
+<span id="_CPPv3NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity34computeEnergyDensityAndDerivativesERKN21FastorStandardTensors9Tensor33dE"></span><span id="_CPPv2NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity34computeEnergyDensityAndDerivativesERKN21FastorStandardTensors9Tensor33dE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives__FastorStandardTensors::Tensor33dCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a15f0c47839960a95708c288be23445db"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors13Tensor333333dE" title="Marmot::FastorStandardTensors::Tensor333333d"><span class="n"><span class="pre">Tensor333333d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeEnergyDensityAndDerivatives</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity34computeEnergyDensityAndDerivativesERKN21FastorStandardTensors9Tensor33dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute strain energy density and derivatives with respect to <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>C</strong> – <strong>[in]</strong> Right Cauchy-Green deformation tensor. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing energy density and first, second and third derivatives. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21nElasticPropertiesMapE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21nElasticPropertiesMapE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21nElasticPropertiesMapE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::nElasticPropertiesMap__std::map:HyperelasticBase.i:C"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1aa56be8754ed43403dfc7bbd34d8c5d6a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::HyperelasticBase"><span class="n"><span class="pre">HyperelasticBase</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nElasticPropertiesMap</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase8NeoHookeE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::NeoHooke"><span class="n"><span class="pre">NeoHooke</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase4YeohE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::Yeoh"><span class="n"><span class="pre">Yeoh</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase12MooneyRivlinE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::MooneyRivlin"><span class="n"><span class="pre">MooneyRivlin</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBase16PenceGouNeoHookeE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::PenceGouNeoHooke"><span class="n"><span class="pre">PenceGouNeoHooke</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity21nElasticPropertiesMapE" title="Link to this definition"></a><br /></dt>
+<dd><p>Mapping from hyperelastic base model to required number of elastic properties. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16hyperelasticBaseE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16hyperelasticBaseE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16hyperelasticBaseE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::hyperelasticBase__HyperelasticBaseC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1ad098e8fd52958b9744c2d959ed582e5a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16HyperelasticBaseE" title="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::HyperelasticBase"><span class="n"><span class="pre">HyperelasticBase</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hyperelasticBase</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity16hyperelasticBaseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Selected hyperelastic base model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity14onlyShearCreepE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity14onlyShearCreepE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity14onlyShearCreepE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::onlyShearCreep__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1ad5f94fc126fdbb6a4e2c9c60291375c1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onlyShearCreep</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity14onlyShearCreepE" title="Link to this definition"></a><br /></dt>
+<dd><p>Flag indicating whether viscoelasticity acts on deviatoric stresses only. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17elasticPropertiesE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17elasticPropertiesE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17elasticPropertiesE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::elasticProperties__Eigen::Map:Eigen::VectorXdC:C"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a9ab4a68d4fe5db24f0291824fba0c876"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17elasticPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic coefficients of the selected hyperelastic base model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17maxwellPropertiesE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17maxwellPropertiesE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17maxwellPropertiesE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::maxwellProperties__ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellPropertiesC"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1ad0d04ae3487b69d77ee20bddd22d95cb"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrainE" title="Marmot::ContinuumMechanics::FiniteStrain"><span class="n"><span class="pre">FiniteStrain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain15ViscoelasticityE" title="Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity"><span class="n"><span class="pre">Viscoelasticity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain15Viscoelasticity17MaxwellPropertiesE" title="Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties"><span class="n"><span class="pre">MaxwellProperties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxwellProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17maxwellPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Generalized Maxwell model parameters. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17initialComplianceE">
+<span id="_CPPv3N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17initialComplianceE"></span><span id="_CPPv2N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17initialComplianceE"></span><span id="Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity::initialCompliance__FastorStandardTensors::Tensor3333d"></span><span class="target" id="classMarmot_1_1Materials_1_1CompressibleFiniteStrainLinearViscoelasticity_1a2a68d30ecebce2ef5e628ecc8407d678"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initialCompliance</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials45CompressibleFiniteStrainLinearViscoelasticity17initialComplianceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Initial compliance tensor used for viscoelastic stress update. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="adcompressibleneohooke.html" class="btn btn-neutral float-left" title="Compressible Neo Hooke model (Automatic Differentiation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="finitestrainisotropicbiotviscoelasticity.html" class="btn btn-neutral float-right" title="Finite-Strain Isotropic Biot Viscoelasticity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

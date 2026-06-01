@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_third_order_derived" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_energy_density_functions_8h_1aa433182a38a9d065c2f3fc070f7f2534" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, FastorStandardTensors::Tensor33d, FastorStandardTensors::Tensor3333d, FastorStandardTensors::Tensor333333d &gt;</type>
+        <definition>std::tuple&lt; double, FastorStandardTensors::Tensor33d, FastorStandardTensors::Tensor3333d, FastorStandardTensors::Tensor333333d &gt; Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived::standardNeoHooke</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33d &amp;C, const double &amp;K, const double &amp;G)</argsstring>
+        <name>standardNeoHooke</name>
+        <qualifiedname>Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived::standardNeoHooke</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33d &amp;</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+<para>Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t. <formula id="22">$\boldsymbol{C}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple of energy density, first derivative, second derivative and third derivative. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="438" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" declline="438" declcolumn="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="429" column="5"/>
+  </compounddef>
+</doxygen>

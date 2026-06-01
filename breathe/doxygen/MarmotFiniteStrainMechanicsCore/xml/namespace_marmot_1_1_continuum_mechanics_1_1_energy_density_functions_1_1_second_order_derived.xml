@@ -30,10 +30,10 @@
 <para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first and second derivative w.r.t. C. </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="33">$W_b$</formula> is given as   <formula id="40">\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-\]</formula> where <formula id="29">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="30">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="31">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="32">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
-<para>Additionally, the first and second derivative w.r.t. <formula id="0">$\boldsymbol{C}$</formula>, i.e.,    <formula id="41">\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+<para>The energy density function <formula id="6">$W_b$</formula> is given as   <formula id="26">\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="2">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="3">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="4">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="5">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>Additionally, the first and second derivative w.r.t. <formula id="22">$\boldsymbol{C}$</formula>, i.e.,    <formula id="27">\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
 \frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
 \]</formula> are computed.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -76,13 +76,152 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="212" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="212" bodyend="244"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="304" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="304" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_energy_density_functions_8h_1ac1cbfd4afe386e41ecf496f1da07b9b3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; T, FastorStandardTensors::Tensor33t&lt; T &gt;, FastorStandardTensors::Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::tuple&lt; T, FastorStandardTensors::Tensor33t&lt; T &gt;, FastorStandardTensors::Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::standardNeoHooke</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;C, const double &amp;K, const double &amp;G)</argsstring>
+        <name>standardNeoHooke</name>
+        <qualifiedname>Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::standardNeoHooke</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+<para>Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t. <formula id="22">$\boldsymbol{C}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, autodiff scalar. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="22">$\boldsymbol{C}$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="348" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="348" bodyend="393"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_energy_density_functions_8h_1a004c9a5d6302ca5bccf5b2474cd71211" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; T, FastorStandardTensors::Tensor33t&lt; T &gt;, FastorStandardTensors::Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::tuple&lt; T, FastorStandardTensors::Tensor33t&lt; T &gt;, FastorStandardTensors::Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::BiotNeoHooke</definition>
+        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;U, const double &amp;K, const double &amp;G)</argsstring>
+        <name>BiotNeoHooke</name>
+        <qualifiedname>Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::BiotNeoHooke</qualifiedname>
+        <param>
+          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>U</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+<para>Isotropic Biot-Neo-Hooke energy density and derivatives w.r.t. right stretch <formula id="28">$\boldsymbol{U}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Internally evaluates the standard Neo-Hooke potential in terms of <formula id="29">$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}$</formula> and applies chain-rule transformations.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, autodiff scalar. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>U</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right stretch tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="28">$\boldsymbol{U}$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="407" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="407" bodyend="425"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="182" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="274" column="5"/>
   </compounddef>
 </doxygen>

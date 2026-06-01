@@ -30,7 +30,7 @@
 <para>Logarithmic power-law compliance function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the compliance function   <formula id="0">\[  \Phi(\tau) = m \, \ln\!\left( 1 + \tau^n \right),
+<para>Computes the compliance function   <formula id="54">\[  \Phi(\tau) = m \, \ln\!\left( 1 + \tau^n \right),
 \]</formula> creep for long times.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -66,13 +66,13 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The compliance value <formula id="1">$\Phi(\tau)$</formula>. </para>
+<simplesect kind="return"><para>The compliance value <formula id="55">$\Phi(\tau)$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="59" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="59" bodyend="63"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="56" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="56" bodyend="60"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a680c3eda9be51338682998b90ca75598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -101,7 +101,7 @@
 <para>Power-law compliance function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the compliance function   <formula id="2">\[  \Phi(\tau) = m \, \tau^n,
+<para>Computes the compliance function   <formula id="56">\[  \Phi(\tau) = m \, \tau^n,
 \]</formula> creep for short times.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -137,19 +137,19 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The compliance value <formula id="1">$\Phi(\tau)$</formula>. </para>
+<simplesect kind="return"><para>The compliance value <formula id="55">$\Phi(\tau)$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="82" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="82" bodyend="86"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="79" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="79" bodyend="83"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="38" column="7"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="35" column="7"/>
   </compounddef>
 </doxygen>

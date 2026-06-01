@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</compoundname>
+    <basecompoundref refid="class_marmot_material_finite_strain" prot="public" virt="non-virtual">MarmotMaterialFiniteStrain</basecompoundref>
+    <includes refid="_marmot_material_finite_strain_substepped_8h" local="no">MarmotMaterialFiniteStrainSubstepped.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities" prot="public">Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename BaseMaterialType</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1af21787af3d7360b530d46884978f8523" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; BaseMaterialType &gt;</type>
+        <definition>std::unique_ptr&lt; BaseMaterialType &gt; Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::baseMaterial</definition>
+        <argsstring></argsstring>
+        <name>baseMaterial</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::baseMaterial</qualifiedname>
+        <briefdescription>
+<para>Wrapped base material instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="49" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a08bb5c063481f9b5b1fa415688fbb331" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::nSubsteps</definition>
+        <argsstring></argsstring>
+        <name>nSubsteps</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::nSubsteps</qualifiedname>
+        <briefdescription>
+<para>Number of sub-steps for time substepping. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="50" column="41" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a800216fb31d086b7854887bc716289f3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::MarmotMaterialFiniteStrainSubstepped</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>MarmotMaterialFiniteStrainSubstepped</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::MarmotMaterialFiniteStrainSubstepped</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct a <ref refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped" kindref="compound">MarmotMaterialFiniteStrainSubstepped</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material property values. The first entry is interpreted as the number of sub-steps; the remaining entries are forwarded to the wrapped base material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total number of material property values (including nSubsteps). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="83" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="83" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1afe7beb365d523e37a4ce831b886da939" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::~MarmotMaterialFiniteStrainSubstepped</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MarmotMaterialFiniteStrainSubstepped</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::~MarmotMaterialFiniteStrainSubstepped</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="100" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a73bb326f6c4aa780c9784bb4a6456923" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::getDensity</definition>
+        <argsstring>(const double *stateVars) const override</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::getDensity</qualifiedname>
+        <reimplements refid="class_marmot_material_finite_strain_1a813742e2a66f7dfd8fdebb7122b1b955">getDensity</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get the mass density of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Mass density </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="102" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="102" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1ac006ab71889faa741505f74e994ff0cf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::initializeStateLayout</definition>
+        <argsstring>()</argsstring>
+        <name>initializeStateLayout</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::initializeStateLayout</qualifiedname>
+        <briefdescription>
+<para>Initialize the state layout for substepping. The state variables are organized as follows: </para>
+        </briefdescription>
+        <detaileddescription>
+<para><itemizedlist>
+<listitem><para>&quot;Substepping_F_n&quot; (9 variables): <ref refid="struct_marmot_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient at the start of the global step (F_n).</para>
+</listitem><listitem><para>&quot;materialstate&quot; (baseMaterial-&gt;<ref refid="class_marmot_material_finite_strain_1aeab6c2985e19de95a2ed851225d97e0e" kindref="member">getNumberOfRequiredStateVars()</ref> variables): State variables required by the wrapped base material. The total number of state variables is the sum of the above. The layout is finalized at the end of this function. </para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="112" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="112" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a4e6ad8ed7f24a6c9d5e5761c96505868" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars) override</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::initializeYourself</qualifiedname>
+        <reimplements refid="class_marmot_material_finite_strain_1a73823bcf3cc55df7ffc2847c91317b1a">initializeYourself</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables at a material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation initializes all state variables to zero. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="124" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="124" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a65087185617630145ec21a7601ebee86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::computeStressWithSensitivities</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, StateSensitivities &amp;sensitivities, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computeStressWithSensitivities</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::computeStressWithSensitivities</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities" kindref="compound">StateSensitivities</ref> &amp;</type>
+          <declname>sensitivities</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Extended stress update computing sensitivities for substepping. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><itemizedlist>
+<listitem><para>The default implementation uses Forward Finite Differences. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response to be computed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli to be computed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sensitivities</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sensitivity matrices to be computed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation state. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This function can be overridden in derived classes to provide analytical sensitivities. </para>
+</simplesect>
+<simplesect kind="note"><para>The base material&apos;s computeStress function is called within this function. </para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="148" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="148" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a71ee0360f837cbcd654ffa945fcfe31f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::computeStress</qualifiedname>
+        <reimplements refid="class_marmot_material_finite_strain_1a88a61a579f908cd61a0bf9a7c5394fbd">computeStress</reimplements>
+        <param>
+          <type><ref refid="struct_marmot_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Compute stress with time substepping and analytical tangent accumulation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response to be computed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli to be computed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation state. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The deformation increment is divided into nSubsteps sub-increments. For each sub-increment, the base material&apos;s stress update is called, and the sensitivities are used to accumulate the overall tangent. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="249" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="249" bodyend="319"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A decorator that applies time substepping with analytical tangent accumulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BaseMaterialType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The concrete material class to wrap. Properties: [nSubsteps, Prop1, Prop2, ...] </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialFiniteStrain</label>
+        <link refid="class_marmot_material_finite_strain"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>MarmotMaterialFiniteStrain</label>
+        <link refid="class_marmot_material_finite_strain"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="47" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" bodystart="47" bodyend="320"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1af21787af3d7360b530d46884978f8523" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>baseMaterial</name></member>
+      <member refid="class_marmot_material_finite_strain_1a41df4452f395f5125fec2680480e2e19" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_material_finite_strain_1a5beaba701eac2a493704fe015a09e447" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_material_finite_strain_1a3b79fcdf7e45f65076c94a2cc464712b" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_material_finite_strain_1aebea5001278b5103858e6c40a04cc940" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_material_finite_strain_1a5a4a539cbba5a51c7a4f97f5efca07ee" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStress</name></member>
+      <member refid="class_marmot_material_finite_strain_1af4452edf7ce6bcf738d4801a4968a7ed" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computePlaneStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a71ee0360f837cbcd654ffa945fcfe31f" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computeStress</name></member>
+      <member refid="class_marmot_material_finite_strain_1ac9b86677188301ae56779fa9327f275c" prot="public" virt="virtual" ambiguityscope="MarmotMaterialFiniteStrain::"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computeStress</name></member>
+      <member refid="class_marmot_material_finite_strain_1ab7174369076150bfc116d2e404d9eb53" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a65087185617630145ec21a7601ebee86" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>computeStressWithSensitivities</name></member>
+      <member refid="class_marmot_material_finite_strain_1ac96dc146dc87a26160e91c8f239f2882" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a73bb326f6c4aa780c9784bb4a6456923" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>getDensity</name></member>
+      <member refid="class_marmot_material_finite_strain_1aac695d1b8c9d639387e633b0d0aa71fe" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>getMaximumWaveSpeed</name></member>
+      <member refid="class_marmot_material_finite_strain_1aeab6c2985e19de95a2ed851225d97e0e" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_material_finite_strain_1a5c7e383c872566fee41f6f12d863ed4c" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1ac006ab71889faa741505f74e994ff0cf" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>initializeStateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a4e6ad8ed7f24a6c9d5e5761c96505868" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_material_finite_strain_1afbc11d3b83d7555858475007d28ebe0c" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>MarmotMaterialFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a800216fb31d086b7854887bc716289f3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>MarmotMaterialFiniteStrainSubstepped</name></member>
+      <member refid="class_marmot_material_finite_strain_1a6660b8aaa6e786198f43548d55ba01db" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_material_finite_strain_1adadfd1c68a90429237bf01f17c1492a4" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_material_finite_strain_1af2c2b36c75e1109b723f50f9cf1e6db8" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a08bb5c063481f9b5b1fa415688fbb331" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>nSubsteps</name></member>
+      <member refid="class_marmot_material_finite_strain_1a4323a79f3c76c032bb451131ef5a0700" prot="public" virt="non-virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_material_finite_strain_1ae137c8535072fd84da855b7fc9efbf5c" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>~MarmotMaterialFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1afe7beb365d523e37a4ce831b886da939" prot="public" virt="virtual"><scope>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</scope><name>~MarmotMaterialFiniteStrainSubstepped</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

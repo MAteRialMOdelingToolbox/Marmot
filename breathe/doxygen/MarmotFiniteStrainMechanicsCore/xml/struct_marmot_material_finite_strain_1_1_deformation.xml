@@ -24,16 +24,16 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="76" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="76" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="130" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="130" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Represents the deformation state of a material. </para>
     </briefdescription>
     <detaileddescription>
-<para>This struct holds the deformation gradient <formula id="6">$\boldsymbol{F}$</formula> which describes the local deformation of a material. </para>
+<para>This struct holds the deformation gradient <formula id="43">$\boldsymbol{F}$</formula> which describes the local deformation of a material. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="75" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="75" bodyend="77"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="129" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="129" bodyend="131"/>
     <listofallmembers>
       <member refid="struct_marmot_material_finite_strain_1_1_deformation_1ae25c16182615666f73ba70264cf18fe1" prot="public" virt="non-virtual"><scope>MarmotMaterialFiniteStrain::Deformation</scope><name>F</name></member>
     </listofallmembers>

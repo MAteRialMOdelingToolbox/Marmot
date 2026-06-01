@@ -1,0 +1,1230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarmotUtilitiesCore &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Publications" href="../publications.html" />
+    <link rel="prev" title="MarmotMechanicsCore" href="mechanicscore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../documentation.html">Code documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="finiteelementcore.html">MarmotFiniteElementCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finitestrainmechanicscore.html">MarmotFiniteStrainMechanicsCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gradientmechanicscore.html">MarmotGradientMechanicsCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mathcore.html">MarmotMathCore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mechanicscore.html">MarmotMechanicsCore</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">MarmotUtilitiesCore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv410MakeString"><code class="docutils literal notranslate"><span class="pre">MakeString</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK10MakeStringcvNSt6stringEEv"><code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">std::string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN10MakeStringlsER10MakeStringRK1T"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N10MakeString6streamE"><code class="docutils literal notranslate"><span class="pre">stream</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv413MarmotJournal"><code class="docutils literal notranslate"><span class="pre">MarmotJournal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal13MarmotJournalERK13MarmotJournal"><code class="docutils literal notranslate"><span class="pre">MarmotJournal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournalaSERK13MarmotJournal"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal21setMSGOutputDirectionERNSt7ostreamE"><code class="docutils literal notranslate"><span class="pre">setMSGOutputDirection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal12warningToMSGERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">warningToMSG()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal17notificationToMSGERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">notificationToMSG()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal13MarmotJournalEv"><code class="docutils literal notranslate"><span class="pre">MarmotJournal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal6outputE"><code class="docutils literal notranslate"><span class="pre">output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N13MarmotJournal11getInstanceEv"><code class="docutils literal notranslate"><span class="pre">getInstance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv424MarmotStateLayoutDynamic"><code class="docutils literal notranslate"><span class="pre">MarmotStateLayoutDynamic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic3addENSt6stringENSt6size_tE"><code class="docutils literal notranslate"><span class="pre">add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic8finalizeEv"><code class="docutils literal notranslate"><span class="pre">finalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic7getInfoERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">getInfo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic3getERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic6getPtrEPdRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">getPtr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic7getSpanEPdRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">getSpan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic12getStateViewEPdRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">getStateView()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPdRKNSt6stringEDpRR4Args"><code class="docutils literal notranslate"><span class="pre">getAs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPKdRKNSt6stringEDpRR4Args"><code class="docutils literal notranslate"><span class="pre">getAs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic9totalSizeEv"><code class="docutils literal notranslate"><span class="pre">totalSize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK24MarmotStateLayoutDynamic11isFinalizedEv"><code class="docutils literal notranslate"><span class="pre">isFinalized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic9variablesE"><code class="docutils literal notranslate"><span class="pre">variables</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic13name_to_indexE"><code class="docutils literal notranslate"><span class="pre">name_to_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic9finalizedE"><code class="docutils literal notranslate"><span class="pre">finalized</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic8total_szE"><code class="docutils literal notranslate"><span class="pre">total_sz</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot23SolverConvergenceFailedE"><code class="docutils literal notranslate"><span class="pre">Marmot::SolverConvergenceFailed</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot23SolverConvergenceFailed23SolverConvergenceFailedERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">SolverConvergenceFailed()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot25SolverIncrementsExhaustedE"><code class="docutils literal notranslate"><span class="pre">Marmot::SolverIncrementsExhausted</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot25SolverIncrementsExhausted25SolverIncrementsExhaustedERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">SolverIncrementsExhausted()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot23SolverTimestepExhaustedE"><code class="docutils literal notranslate"><span class="pre">Marmot::SolverTimestepExhausted</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot23SolverTimestepExhausted23SolverTimestepExhaustedERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">SolverTimestepExhausted()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4I0_DpiE11StateMapper"><code class="docutils literal notranslate"><span class="pre">StateMapper</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv49StateView"><code class="docutils literal notranslate"><span class="pre">StateView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N9StateView13stateLocationE"><code class="docutils literal notranslate"><span class="pre">stateLocation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N9StateView9stateSizeE"><code class="docutils literal notranslate"><span class="pre">stateSize</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18StressUpdateFailedE"><code class="docutils literal notranslate"><span class="pre">Marmot::StressUpdateFailed</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18StressUpdateFailed18StressUpdateFailedERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">StressUpdateFailed()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfoE"><code class="docutils literal notranslate"><span class="pre">MarmotStateLayoutDynamic::VarInfo</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo4nameE"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo4sizeE"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo6offsetE"><code class="docutils literal notranslate"><span class="pre">offset</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv46Marmot"><code class="docutils literal notranslate"><span class="pre">Marmot</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot7TestingE"><code class="docutils literal notranslate"><span class="pre">Marmot::Testing</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKdKdKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKN8autodiff4dualEKN8autodiff4dualEKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKNSt7complexIdEEKNSt7complexIdEEKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing9getStringEKd"><code class="docutils literal notranslate"><span class="pre">getString()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing9getStringEKN8autodiff4dualE"><code class="docutils literal notranslate"><span class="pre">getString()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot7Testing12checkIfEqualEbRKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd"><code class="docutils literal notranslate"><span class="pre">checkIfEqual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing23throwExceptionOnFailureEKbRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">throwExceptionOnFailure()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing32executeTestsAndCollectExceptionsERKNSt6vectorINSt8functionIFvvEEEEE"><code class="docutils literal notranslate"><span class="pre">executeTestsAndCollectExceptions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEN5Eigen6MatrixId1NXL2EEEEv"><code class="docutils literal notranslate"><span class="pre">fibonacciLatticeHemisphere()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot7Testing16spinTurbokreiselERN6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticEdd"><code class="docutils literal notranslate"><span class="pre">spinTurbokreisel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4St"><code class="docutils literal notranslate"><span class="pre">std</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../documentation.html">Code documentation</a></li>
+      <li class="breadcrumb-item active">MarmotUtilitiesCore</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/codedocumentation/utilitiescore.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="marmotutilitiescore">
+<h1>MarmotUtilitiesCore<a class="headerlink" href="#marmotutilitiescore" title="Link to this heading"></a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410MakeString">
+<span id="_CPPv310MakeString"></span><span id="_CPPv210MakeString"></span><span id="MakeString"></span><span class="target" id="class_make_string"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeString</span></span></span><a class="headerlink" href="#_CPPv410MakeString" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_journal_8h"><span class="std std-ref">MarmotJournal.h</span></a>&gt;</em></div>
+<p>Utility class for constructing strings with stream-like syntax. </p>
+<p>This class allows for easy string construction using the stream insertion operator. It can be used to build complex strings in a readable manner. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10MakeStringcvNSt6stringEEv">
+<span id="_CPPv3NK10MakeStringcvNSt6stringEEv"></span><span id="_CPPv2NK10MakeStringcvNSt6stringEEv"></span><span id="MakeString::castto-ss-operatorC"></span><span class="target" id="class_make_string_1afcf4c7d21e62074820cad078d6b2b449"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK10MakeStringcvNSt6stringEEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert the accumulated stream content to a <code class="docutils literal notranslate"><span class="pre">std::string</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN10MakeStringlsER10MakeStringRK1T">
+<span id="_CPPv3I0EN10MakeStringlsERK1T"></span><span id="_CPPv2I0EN10MakeStringlsERK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_make_string_1a0bed086d03acc5a34ab06324b39d0dfd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv410MakeString" title="MakeString"><span class="n"><span class="pre">MakeString</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN10MakeStringlsER10MakeStringRK1T" title="MakeString::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">VAR</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN10MakeStringlsER10MakeStringRK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Append a value to the internal stream. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Type of the value to append. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>VAR</strong> – Value to insert into the stream. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to <code class="docutils literal notranslate"><span class="pre">*this</span></code> for chaining. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10MakeString6streamE">
+<span id="_CPPv3N10MakeString6streamE"></span><span id="_CPPv2N10MakeString6streamE"></span><span id="MakeString::stream__std::stringstream"></span><span class="target" id="class_make_string_1a81b5bb4a52ad4612c9e6a8620e4a8691"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">stringstream</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stream</span></span></span><a class="headerlink" href="#_CPPv4N10MakeString6streamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal string stream used for building the output string. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv413MarmotJournal">
+<span id="_CPPv313MarmotJournal"></span><span id="_CPPv213MarmotJournal"></span><span id="MarmotJournal"></span><span class="target" id="class_marmot_journal"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotJournal</span></span></span><a class="headerlink" href="#_CPPv413MarmotJournal" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_journal_8h"><span class="std std-ref">MarmotJournal.h</span></a>&gt;</em></div>
+<p>Singleton class for managing output messages in the Marmot framework. </p>
+<p>This class provides a centralized way to handle warning and notification messages, allowing them to be directed to a specified output stream (e.g., console, file). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal13MarmotJournalERK13MarmotJournal">
+<span id="_CPPv3N13MarmotJournal13MarmotJournalERK13MarmotJournal"></span><span id="_CPPv2N13MarmotJournal13MarmotJournalERK13MarmotJournal"></span><span id="MarmotJournal::MarmotJournal__MarmotJournalCR"></span><span class="target" id="class_marmot_journal_1ae3bda2f1b17ff6fcc7d331b1d0b7a78e"></span><span class="sig-name descname"><span class="n"><span class="pre">MarmotJournal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N13MarmotJournal13MarmotJournalERK13MarmotJournal" title="MarmotJournal::MarmotJournal"><span class="n"><span class="pre">MarmotJournal</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N13MarmotJournal13MarmotJournalERK13MarmotJournal" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournalaSERK13MarmotJournal">
+<span id="_CPPv3N13MarmotJournalaSERK13MarmotJournal"></span><span id="_CPPv2N13MarmotJournalaSERK13MarmotJournal"></span><span id="MarmotJournal::assign-operator__MarmotJournalCR"></span><span class="target" id="class_marmot_journal_1a146bd889594dd2d9408beed1259ae2a5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413MarmotJournal" title="MarmotJournal"><span class="n"><span class="pre">MarmotJournal</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N13MarmotJournalaSERK13MarmotJournal" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal21setMSGOutputDirectionERNSt7ostreamE">
+<span id="_CPPv3N13MarmotJournal21setMSGOutputDirectionERNSt7ostreamE"></span><span id="_CPPv2N13MarmotJournal21setMSGOutputDirectionERNSt7ostreamE"></span><span id="MarmotJournal::setMSGOutputDirection__osR"></span><span class="target" id="class_marmot_journal_1aba36e05ad5a8e246c89d687af76f76df"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setMSGOutputDirection</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">newOutputStream</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotJournal21setMSGOutputDirectionERNSt7ostreamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Redirect all subsequent journal output to <code class="docutils literal notranslate"><span class="pre">newOutputStream</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>newOutputStream</strong> – The output stream that warnings and notifications are written to. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal12warningToMSGERKNSt6stringE">
+<span id="_CPPv3N13MarmotJournal12warningToMSGERKNSt6stringE"></span><span id="_CPPv2N13MarmotJournal12warningToMSGERKNSt6stringE"></span><span id="MarmotJournal::warningToMSG__ssCR"></span><span class="target" id="class_marmot_journal_1a8c5a22ab8c67629c388d07747d8d8e11"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">warningToMSG</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotJournal12warningToMSGERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Write a warning message to the journal output stream. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – The warning text to emit. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> after the message has been written. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal17notificationToMSGERKNSt6stringE">
+<span id="_CPPv3N13MarmotJournal17notificationToMSGERKNSt6stringE"></span><span id="_CPPv2N13MarmotJournal17notificationToMSGERKNSt6stringE"></span><span id="MarmotJournal::notificationToMSG__ssCR"></span><span class="target" id="class_marmot_journal_1af95371cfa0570065da35eb3ba8b7aa69"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">notificationToMSG</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotJournal17notificationToMSGERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Write a notification message to the journal output stream. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – The notification text to emit. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> after the message has been written. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal13MarmotJournalEv">
+<span id="_CPPv3N13MarmotJournal13MarmotJournalEv"></span><span id="_CPPv2N13MarmotJournal13MarmotJournalEv"></span><span id="MarmotJournal::MarmotJournal"></span><span class="target" id="class_marmot_journal_1acd37fb2c4858066bcac9377b09c7a5ac"></span><span class="sig-name descname"><span class="n"><span class="pre">MarmotJournal</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotJournal13MarmotJournalEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal6outputE">
+<span id="_CPPv3N13MarmotJournal6outputE"></span><span id="_CPPv2N13MarmotJournal6outputE"></span><span id="MarmotJournal::output__os"></span><span class="target" id="class_marmot_journal_1a2bc6eb1e3722defb63a2747e188910d5"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output</span></span></span><a class="headerlink" href="#_CPPv4N13MarmotJournal6outputE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13MarmotJournal11getInstanceEv">
+<span id="_CPPv3N13MarmotJournal11getInstanceEv"></span><span id="_CPPv2N13MarmotJournal11getInstanceEv"></span><span id="MarmotJournal::getInstance"></span><span class="target" id="class_marmot_journal_1aec32a294fda0f71118cc69ab8f5f8453"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413MarmotJournal" title="MarmotJournal"><span class="n"><span class="pre">MarmotJournal</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getInstance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13MarmotJournal11getInstanceEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv424MarmotStateLayoutDynamic">
+<span id="_CPPv324MarmotStateLayoutDynamic"></span><span id="_CPPv224MarmotStateLayoutDynamic"></span><span id="MarmotStateLayoutDynamic"></span><span class="target" id="class_marmot_state_layout_dynamic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotStateLayoutDynamic</span></span></span><a class="headerlink" href="#_CPPv424MarmotStateLayoutDynamic" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_state_helpers_8h"><span class="std std-ref">MarmotStateHelpers.h</span></a>&gt;</em></div>
+<p>Runtime-defined layout for a flat array of named <code class="docutils literal notranslate"><span class="pre">double</span></code> state variables. </p>
+<p>Variables are registered by name and size via <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a6cabfe5343f86e2621d22d9ee8f313d3"><span class="std std-ref">add()</span></a>, then the layout is locked with <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"><span class="std std-ref">finalize()</span></a>, which assigns contiguous offsets. After finalization the various <code class="docutils literal notranslate"><span class="pre">get*</span></code> accessors can be used to reach individual variables inside any conforming state vector. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic3addENSt6stringENSt6size_tE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic3addENSt6stringENSt6size_tE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic3addENSt6stringENSt6size_tE"></span><span id="MarmotStateLayoutDynamic::add__ss.std::s"></span><span class="target" id="class_marmot_state_layout_dynamic_1a6cabfe5343f86e2621d22d9ee8f313d3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic3addENSt6stringENSt6size_tE" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a new named state variable. </p>
+<p>Must be called before <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"><span class="std std-ref">finalize()</span></a>. Adding a variable with an already-registered name or calling this method after <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"><span class="std std-ref">finalize()</span></a> throws <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Unique name for the state variable. </p></li>
+<li><p><strong>size</strong> – Number of <code class="docutils literal notranslate"><span class="pre">double</span></code> values required by the variable. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic8finalizeEv">
+<span id="_CPPv3N24MarmotStateLayoutDynamic8finalizeEv"></span><span id="_CPPv2N24MarmotStateLayoutDynamic8finalizeEv"></span><span id="MarmotStateLayoutDynamic::finalize"></span><span class="target" id="class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finalize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic8finalizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute and lock the offsets of all registered variables. </p>
+<p>Iterates over the registered variables in registration order, assigns each a contiguous offset, and sets the total size. After this call no further variables may be added. Calling <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"><span class="std std-ref">finalize()</span></a> a second time throws <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic7getInfoERKNSt6stringE">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic7getInfoERKNSt6stringE"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic7getInfoERKNSt6stringE"></span><span id="MarmotStateLayoutDynamic::getInfo__ssCRC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a29c6892e8632aa9c56c03991a54df60c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfoE" title="MarmotStateLayoutDynamic::VarInfo"><span class="n"><span class="pre">VarInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getInfo</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic7getInfoERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the <a class="reference internal" href="#struct_marmot_state_layout_dynamic_1_1_var_info"><span class="std std-ref">VarInfo</span></a> record for a registered variable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of the variable to look up. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Const reference to the corresponding <a class="reference internal" href="#struct_marmot_state_layout_dynamic_1_1_var_info"><span class="std std-ref">VarInfo</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic3getERKNSt6stringE">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic3getERKNSt6stringE"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic3getERKNSt6stringE"></span><span id="MarmotStateLayoutDynamic::get__ssCRC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a82f1724ee229a8368fa81b5ab08f57b4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic3getERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the {offset, size} pair for a registered variable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of the variable. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pair <code class="docutils literal notranslate"><span class="pre">{offset,</span> <span class="pre">size}</span></code> (both in units of <code class="docutils literal notranslate"><span class="pre">double</span></code>). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic6getPtrEPdRKNSt6stringE">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic6getPtrEPdRKNSt6stringE"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic6getPtrEPdRKNSt6stringE"></span><span id="MarmotStateLayoutDynamic::getPtr__doubleP.ssCRC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a980ade3bc3beeb6c9de41eb94ed5f4d4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">getPtr</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic6getPtrEPdRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return a raw pointer to a variable inside a state vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base</strong> – Pointer to the beginning of the state vector. </p></li>
+<li><p><strong>name</strong> – Name of the variable. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">base</span> <span class="pre">+</span> <span class="pre">offset</span></code> for the named variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic7getSpanEPdRKNSt6stringE">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic7getSpanEPdRKNSt6stringE"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic7getSpanEPdRKNSt6stringE"></span><span id="MarmotStateLayoutDynamic::getSpan__doubleP.ssCRC"></span><span class="target" id="class_marmot_state_layout_dynamic_1ac4d142f1849b222578db4d87532eef16"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSpan</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic7getSpanEPdRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return a <code class="docutils literal notranslate"><span class="pre">std::span&lt;double&gt;</span></code> view of a variable inside a state vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base</strong> – Pointer to the beginning of the state vector. </p></li>
+<li><p><strong>name</strong> – Name of the variable. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A span covering <code class="docutils literal notranslate"><span class="pre">[base</span> <span class="pre">+</span> <span class="pre">offset,</span> <span class="pre">base</span> <span class="pre">+</span> <span class="pre">offset</span> <span class="pre">+</span> <span class="pre">size)</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic12getStateViewEPdRKNSt6stringE">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic12getStateViewEPdRKNSt6stringE"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic12getStateViewEPdRKNSt6stringE"></span><span id="MarmotStateLayoutDynamic::getStateView__doubleP.ssCRC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a30cc5346313e03f634da5b95537b772a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv49StateView" title="StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic12getStateViewEPdRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return a <a class="reference internal" href="#struct_state_view"><span class="std std-ref">StateView</span></a> for a variable inside a state vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base</strong> – Pointer to the beginning of the state vector. </p></li>
+<li><p><strong>name</strong> – Name of the variable. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <a class="reference internal" href="#struct_state_view"><span class="std std-ref">StateView</span></a> with <code class="docutils literal notranslate"><span class="pre">stateLocation</span> <span class="pre">=</span> <span class="pre">base</span> <span class="pre">+</span> <span class="pre">offset</span></code> and <code class="docutils literal notranslate"><span class="pre">stateSize</span> <span class="pre">=</span> <span class="pre">size</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPdRKNSt6stringEDpRR4Args">
+<span id="_CPPv3I0DpENK24MarmotStateLayoutDynamic5getAsEPdRKNSt6stringEDpRR4Args"></span><span id="_CPPv2I0DpENK24MarmotStateLayoutDynamic5getAsEPdRKNSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">View</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_state_layout_dynamic_1a0d360e2c135d3db22f8bdc4da20590d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPdRKNSt6stringEDpRR4Args" title="MarmotStateLayoutDynamic::getAs::View"><span class="n"><span class="pre">View</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAs</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPdRKNSt6stringEDpRR4Args" title="MarmotStateLayoutDynamic::getAs::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPdRKNSt6stringEDpRR4Args" title="Link to this definition"></a><br /></dt>
+<dd><p>Map a variable inside a state vector to a typed view via <code class="docutils literal notranslate"><a class="reference internal" href="#struct_state_mapper"><span class="std std-ref"><span class="pre">StateMapper</span></span></a></code>. </p>
+<p>Delegates to <code class="docutils literal notranslate"><a class="reference internal" href="#struct_state_mapper"><span class="std std-ref"><span class="pre">StateMapper</span></span></a><span class="pre">&lt;View&gt;::map(base</span> <span class="pre">+</span> <span class="pre">offset,</span> <span class="pre">size,</span> <span class="pre">args...)</span></code>. The layout must have been finalized before calling this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>View</strong> – Target view type (must have a matching <code class="docutils literal notranslate"><a class="reference internal" href="#struct_state_mapper"><span class="std std-ref"><span class="pre">StateMapper</span></span></a></code> specialization). </p></li>
+<li><p><strong>Args</strong> – Additional constructor arguments forwarded to <code class="docutils literal notranslate"><span class="pre">StateMapper::map</span></code>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>base</strong> – Pointer to the beginning of the state vector. </p></li>
+<li><p><strong>name</strong> – Name of the variable. </p></li>
+<li><p><strong>args</strong> – Extra arguments forwarded to <code class="docutils literal notranslate"><span class="pre">StateMapper::map</span></code>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the layout is not finalized or <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mapped view of the requested variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPKdRKNSt6stringEDpRR4Args">
+<span id="_CPPv3I0DpENK24MarmotStateLayoutDynamic5getAsEPKdRKNSt6stringEDpRR4Args"></span><span id="_CPPv2I0DpENK24MarmotStateLayoutDynamic5getAsEPKdRKNSt6stringEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">View</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_state_layout_dynamic_1a705b766faa72e026db76fed3775c5437"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPKdRKNSt6stringEDpRR4Args" title="MarmotStateLayoutDynamic::getAs::View"><span class="n"><span class="pre">View</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPKdRKNSt6stringEDpRR4Args" title="MarmotStateLayoutDynamic::getAs::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0DpENK24MarmotStateLayoutDynamic5getAsE4ViewPKdRKNSt6stringEDpRR4Args" title="Link to this definition"></a><br /></dt>
+<dd><p>Const version of <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a0d360e2c135d3db22f8bdc4da20590d5"><span class="std std-ref">getAs</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>View</strong> – Target view type (must have a matching <code class="docutils literal notranslate"><a class="reference internal" href="#struct_state_mapper"><span class="std std-ref"><span class="pre">StateMapper</span></span></a></code> specialization). </p></li>
+<li><p><strong>Args</strong> – Additional constructor arguments forwarded to <code class="docutils literal notranslate"><span class="pre">StateMapper::map</span></code>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>base</strong> – Pointer to the beginning of the state vector. </p></li>
+<li><p><strong>name</strong> – Name of the variable. </p></li>
+<li><p><strong>args</strong> – Extra arguments forwarded to <code class="docutils literal notranslate"><span class="pre">StateMapper::map</span></code>. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the layout is not finalized or <code class="docutils literal notranslate"><span class="pre">name</span></code> is not registered. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mapped view of the requested variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic9totalSizeEv">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic9totalSizeEv"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic9totalSizeEv"></span><span id="MarmotStateLayoutDynamic::totalSizeC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a1e7bbde01658788214531934e504fc53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">totalSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic9totalSizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return the total size (in units of <code class="docutils literal notranslate"><span class="pre">double</span></code>) of the state layout. This is the size of the state vector required to hold all registered variables. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK24MarmotStateLayoutDynamic11isFinalizedEv">
+<span id="_CPPv3NK24MarmotStateLayoutDynamic11isFinalizedEv"></span><span id="_CPPv2NK24MarmotStateLayoutDynamic11isFinalizedEv"></span><span id="MarmotStateLayoutDynamic::isFinalizedC"></span><span class="target" id="class_marmot_state_layout_dynamic_1a27717c6967398d2c0d8854b8f07592c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isFinalized</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK24MarmotStateLayoutDynamic11isFinalizedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Check if the layout has been finalized. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <a class="reference internal" href="#class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b"><span class="std std-ref">finalize()</span></a> has been called, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic9variablesE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic9variablesE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic9variablesE"></span><span id="MarmotStateLayoutDynamic::variables__std::vector:VarInfo:"></span><span class="target" id="class_marmot_state_layout_dynamic_1a8540841c816171ba107c3d7f71f5e74f"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfoE" title="MarmotStateLayoutDynamic::VarInfo"><span class="n"><span class="pre">VarInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">variables</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic9variablesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic13name_to_indexE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic13name_to_indexE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic13name_to_indexE"></span><span id="MarmotStateLayoutDynamic::name_to_index__std::unordered_map:ss.std::s:"></span><span class="target" id="class_marmot_state_layout_dynamic_1a2a95d842a8ffa41e6735505608b036de"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name_to_index</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic13name_to_indexE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic9finalizedE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic9finalizedE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic9finalizedE"></span><span id="MarmotStateLayoutDynamic::finalized__b"></span><span class="target" id="class_marmot_state_layout_dynamic_1ac33ab1f4bf3dc5fead2854089bdb35b3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finalized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic9finalizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic8total_szE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic8total_szE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic8total_szE"></span><span id="MarmotStateLayoutDynamic::total_sz__i"></span><span class="target" id="class_marmot_state_layout_dynamic_1aaf45130cc01c8f8f89028f1074430acf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">total_sz</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic8total_szE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot23SolverConvergenceFailedE">
+<span id="_CPPv3N6Marmot23SolverConvergenceFailedE"></span><span id="_CPPv2N6Marmot23SolverConvergenceFailedE"></span><span id="Marmot::SolverConvergenceFailed"></span><span class="target" id="class_marmot_1_1_solver_convergence_failed"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverConvergenceFailed</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N6Marmot23SolverConvergenceFailedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_exceptions_8h"><span class="std std-ref">MarmotExceptions.h</span></a>&gt;</em></div>
+<p>Inheritance diagram for Marmot::SolverConvergenceFailed:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-de35d266c460b8f96b8af98db891297335b30aa7.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverConvergenceFailed&quot; tooltip=&quot;Marmot::SolverConvergenceFailed&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::SolverConvergenceFailed:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-de35d266c460b8f96b8af98db891297335b30aa7.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverConvergenceFailed&quot; tooltip=&quot;Marmot::SolverConvergenceFailed&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Exception thrown when the Newton-Raphson iteration in a material-point solver fails to converge (maximum number of iterations reached or NaN encountered). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot23SolverConvergenceFailed23SolverConvergenceFailedERKNSt6stringE">
+<span id="_CPPv3N6Marmot23SolverConvergenceFailed23SolverConvergenceFailedERKNSt6stringE"></span><span id="_CPPv2N6Marmot23SolverConvergenceFailed23SolverConvergenceFailedERKNSt6stringE"></span><span id="Marmot::SolverConvergenceFailed::SolverConvergenceFailed__ssCR"></span><span class="target" id="class_marmot_1_1_solver_convergence_failed_1a6838faa19333f9516f932cc296767354"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverConvergenceFailed</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot23SolverConvergenceFailed23SolverConvergenceFailedERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_marmot_1_1_solver_convergence_failed"><span class="std std-ref">SolverConvergenceFailed</span></a> exception. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A descriptive error message explaining the reason for the exception. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot25SolverIncrementsExhaustedE">
+<span id="_CPPv3N6Marmot25SolverIncrementsExhaustedE"></span><span id="_CPPv2N6Marmot25SolverIncrementsExhaustedE"></span><span id="Marmot::SolverIncrementsExhausted"></span><span class="target" id="class_marmot_1_1_solver_increments_exhausted"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverIncrementsExhausted</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N6Marmot25SolverIncrementsExhaustedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_exceptions_8h"><span class="std std-ref">MarmotExceptions.h</span></a>&gt;</em></div>
+<p>Inheritance diagram for Marmot::SolverIncrementsExhausted:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-bb15cf583aed60ad9ae3264320fe0720ab273a97.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverIncrementsExhausted&quot; tooltip=&quot;Marmot::SolverIncrementsExhausted&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::SolverIncrementsExhausted:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-bb15cf583aed60ad9ae3264320fe0720ab273a97.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverIncrementsExhausted&quot; tooltip=&quot;Marmot::SolverIncrementsExhausted&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Exception thrown when the material-point solver exhausts the maximum number of increments without completing the step. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot25SolverIncrementsExhausted25SolverIncrementsExhaustedERKNSt6stringE">
+<span id="_CPPv3N6Marmot25SolverIncrementsExhausted25SolverIncrementsExhaustedERKNSt6stringE"></span><span id="_CPPv2N6Marmot25SolverIncrementsExhausted25SolverIncrementsExhaustedERKNSt6stringE"></span><span id="Marmot::SolverIncrementsExhausted::SolverIncrementsExhausted__ssCR"></span><span class="target" id="class_marmot_1_1_solver_increments_exhausted_1aebc3834ed20084c26025b5b73dac7c0c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverIncrementsExhausted</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot25SolverIncrementsExhausted25SolverIncrementsExhaustedERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_marmot_1_1_solver_increments_exhausted"><span class="std std-ref">SolverIncrementsExhausted</span></a> exception. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A descriptive error message explaining the reason for the exception. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot23SolverTimestepExhaustedE">
+<span id="_CPPv3N6Marmot23SolverTimestepExhaustedE"></span><span id="_CPPv2N6Marmot23SolverTimestepExhaustedE"></span><span id="Marmot::SolverTimestepExhausted"></span><span class="target" id="class_marmot_1_1_solver_timestep_exhausted"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverTimestepExhausted</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N6Marmot23SolverTimestepExhaustedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_exceptions_8h"><span class="std std-ref">MarmotExceptions.h</span></a>&gt;</em></div>
+<p>Inheritance diagram for Marmot::SolverTimestepExhausted:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-44ff6ab2f00033c82318fdb2812778adfdcc3f78.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverTimestepExhausted&quot; tooltip=&quot;Marmot::SolverTimestepExhausted&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::SolverTimestepExhausted:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-44ff6ab2f00033c82318fdb2812778adfdcc3f78.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::SolverTimestepExhausted&quot; tooltip=&quot;Marmot::SolverTimestepExhausted&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Exception thrown when the material-point solver cannot reduce the time step below the prescribed minimum. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot23SolverTimestepExhausted23SolverTimestepExhaustedERKNSt6stringE">
+<span id="_CPPv3N6Marmot23SolverTimestepExhausted23SolverTimestepExhaustedERKNSt6stringE"></span><span id="_CPPv2N6Marmot23SolverTimestepExhausted23SolverTimestepExhaustedERKNSt6stringE"></span><span id="Marmot::SolverTimestepExhausted::SolverTimestepExhausted__ssCR"></span><span class="target" id="class_marmot_1_1_solver_timestep_exhausted_1a56d63c6e3e6829d2b6875c7f193e9719"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverTimestepExhausted</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot23SolverTimestepExhausted23SolverTimestepExhaustedERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_marmot_1_1_solver_timestep_exhausted"><span class="std std-ref">SolverTimestepExhausted</span></a> exception. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A descriptive error message explaining the reason for the exception. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0_DpiE11StateMapper">
+<span id="_CPPv3I0_DpiE11StateMapper"></span><span id="_CPPv2I0_DpiE11StateMapper"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">View</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="struct_state_mapper"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StateMapper</span></span></span><a class="headerlink" href="#_CPPv4I0_DpiE11StateMapper" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_state_helpers_8h"><span class="std std-ref">MarmotStateHelpers.h</span></a>&gt;</em></div>
+<p>Template struct to map raw double pointers and sizes to specific views. Specializations of this struct should provide a static <code class="docutils literal notranslate"><span class="pre">map</span></code> method that takes a <code class="docutils literal notranslate"><span class="pre">double*</span></code> and a <code class="docutils literal notranslate"><span class="pre">std::size_t</span></code> size, returning the desired view type. </p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv49StateView">
+<span id="_CPPv39StateView"></span><span id="_CPPv29StateView"></span><span id="StateView"></span><span class="target" id="struct_state_view"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StateView</span></span></span><a class="headerlink" href="#_CPPv49StateView" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_utils_8h"><span class="std std-ref">MarmotUtils.h</span></a>&gt;</em></div>
+<p>Structure to hold a pointer to the state location and its size. </p>
+<p>This structure is used to provide a view of the state variables in a finite element or material, allowing access to the state data without copying it. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9StateView13stateLocationE">
+<span id="_CPPv3N9StateView13stateLocationE"></span><span id="_CPPv2N9StateView13stateLocationE"></span><span id="StateView::stateLocation__doubleP"></span><span class="target" id="struct_state_view_1a36a36a4b042dd08eae9bbdc1071f4abb"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stateLocation</span></span></span><a class="headerlink" href="#_CPPv4N9StateView13stateLocationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the first element of the state variable block. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9StateView9stateSizeE">
+<span id="_CPPv3N9StateView9stateSizeE"></span><span id="_CPPv2N9StateView9stateSizeE"></span><span id="StateView::stateSize__i"></span><span class="target" id="struct_state_view_1aba92824616071cea7209bb5181cd55e0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateSize</span></span></span><a class="headerlink" href="#_CPPv4N9StateView9stateSizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of <code class="docutils literal notranslate"><span class="pre">double</span></code> values in the state variable block. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18StressUpdateFailedE">
+<span id="_CPPv3N6Marmot18StressUpdateFailedE"></span><span id="_CPPv2N6Marmot18StressUpdateFailedE"></span><span id="Marmot::StressUpdateFailed"></span><span class="target" id="class_marmot_1_1_stress_update_failed"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StressUpdateFailed</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">runtime_error</span></span><a class="headerlink" href="#_CPPv4N6Marmot18StressUpdateFailedE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_exceptions_8h"><span class="std std-ref">MarmotExceptions.h</span></a>&gt;</em></div>
+<p>Inheritance diagram for Marmot::StressUpdateFailed:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ce29293ab92ee5f1e9a13ebdf6bd162287f708f2.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::StressUpdateFailed&quot; tooltip=&quot;Marmot::StressUpdateFailed&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::StressUpdateFailed:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ce29293ab92ee5f1e9a13ebdf6bd162287f708f2.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::StressUpdateFailed&quot; tooltip=&quot;Marmot::StressUpdateFailed&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;std::runtime_error&quot; tooltip=&quot;std::runtime_error&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Exception thrown when a stress update (e.g., return-mapping iteration) fails to converge inside a material model. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot18StressUpdateFailed18StressUpdateFailedERKNSt6stringE">
+<span id="_CPPv3N6Marmot18StressUpdateFailed18StressUpdateFailedERKNSt6stringE"></span><span id="_CPPv2N6Marmot18StressUpdateFailed18StressUpdateFailedERKNSt6stringE"></span><span id="Marmot::StressUpdateFailed::StressUpdateFailed__ssCR"></span><span class="target" id="class_marmot_1_1_stress_update_failed_1ac065319ac460c0a48ebb3c881590aba1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StressUpdateFailed</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18StressUpdateFailed18StressUpdateFailedERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#class_marmot_1_1_stress_update_failed"><span class="std std-ref">StressUpdateFailed</span></a> exception. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> – A descriptive error message explaining the reason for the exception. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic7VarInfoE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic7VarInfoE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic7VarInfoE"></span><span id="MarmotStateLayoutDynamic::VarInfo"></span><span class="target" id="struct_marmot_state_layout_dynamic_1_1_var_info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VarInfo</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfoE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_state_helpers_8h"><span class="std std-ref">MarmotStateHelpers.h</span></a>&gt;</em></div>
+<p>Describes a single named state variable registered in the layout. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic7VarInfo4nameE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic7VarInfo4nameE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic7VarInfo4nameE"></span><span id="MarmotStateLayoutDynamic::VarInfo::name__ss"></span><span class="target" id="struct_marmot_state_layout_dynamic_1_1_var_info_1ad43a91f073dcb1d8d02b0c09f5713a7d"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo4nameE" title="Link to this definition"></a><br /></dt>
+<dd><p>Unique name of the state variable. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic7VarInfo4sizeE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic7VarInfo4sizeE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic7VarInfo4sizeE"></span><span id="MarmotStateLayoutDynamic::VarInfo::size__std::s"></span><span class="target" id="struct_marmot_state_layout_dynamic_1_1_var_info_1a22647047c61b1c0d98b498ef8496b9ba"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo4sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of <code class="docutils literal notranslate"><span class="pre">double</span></code> values occupied by this variable. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MarmotStateLayoutDynamic7VarInfo6offsetE">
+<span id="_CPPv3N24MarmotStateLayoutDynamic7VarInfo6offsetE"></span><span id="_CPPv2N24MarmotStateLayoutDynamic7VarInfo6offsetE"></span><span id="MarmotStateLayoutDynamic::VarInfo::offset__std::s"></span><span class="target" id="struct_marmot_state_layout_dynamic_1_1_var_info_1ace6b2a7b789cd8b098eb7bb8646fc560"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset</span></span></span><a class="headerlink" href="#_CPPv4N24MarmotStateLayoutDynamic7VarInfo6offsetE" title="Link to this definition"></a><br /></dt>
+<dd><p>Byte-offset (in units of <code class="docutils literal notranslate"><span class="pre">double</span></code>) from the beginning of the state vector. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46Marmot">
+<span id="_CPPv36Marmot"></span><span id="_CPPv26Marmot"></span><span id="Marmot"></span><span class="target" id="namespace_marmot"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Marmot</span></span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7TestingE">
+<span id="_CPPv3N6Marmot7TestingE"></span><span id="_CPPv2N6Marmot7TestingE"></span><span id="Marmot::Testing"></span><span class="target" id="namespace_marmot_1_1_testing"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Testing</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot7TestingE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing12checkIfEqualEKdKdKd">
+<span id="_CPPv3N6Marmot7Testing12checkIfEqualEKdKdKd"></span><span id="_CPPv2N6Marmot7Testing12checkIfEqualEKdKdKd"></span><span id="Marmot::Testing::checkIfEqual__doubleC.doubleC.doubleC"></span><span class="target" id="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKdKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two <code class="docutils literal notranslate"><span class="pre">double</span></code> values are equal within a tolerance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – First value. </p></li>
+<li><p><strong>b</strong> – Second value. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">|a</span> <span class="pre">-</span> <span class="pre">b|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing12checkIfEqualEKN8autodiff4dualEKN8autodiff4dualEKd">
+<span id="_CPPv3N6Marmot7Testing12checkIfEqualEKN8autodiff4dualEKN8autodiff4dualEKd"></span><span id="_CPPv2N6Marmot7Testing12checkIfEqualEKN8autodiff4dualEKN8autodiff4dualEKd"></span><span id="Marmot::Testing::checkIfEqual__autodiff::dualC.autodiff::dualC.doubleC"></span><span class="target" id="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKN8autodiff4dualEKN8autodiff4dualEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two <code class="docutils literal notranslate"><span class="pre">autodiff::dual</span></code> values are equal within a tolerance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – First dual number. </p></li>
+<li><p><strong>b</strong> – Second dual number. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance applied to the real part (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the values compare equal within <code class="docutils literal notranslate"><span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing12checkIfEqualEKNSt7complexIdEEKNSt7complexIdEEKd">
+<span id="_CPPv3N6Marmot7Testing12checkIfEqualEKNSt7complexIdEEKNSt7complexIdEEKd"></span><span id="_CPPv2N6Marmot7Testing12checkIfEqualEKNSt7complexIdEEKNSt7complexIdEEKd"></span><span id="Marmot::Testing::checkIfEqual__std::complex:double:C.std::complex:double:C.doubleC"></span><span class="target" id="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">complex</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">complex</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing12checkIfEqualEKNSt7complexIdEEKNSt7complexIdEEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two <code class="docutils literal notranslate"><span class="pre">std::complex&lt;double&gt;</span></code> values are equal within a tolerance. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – First complex value. </p></li>
+<li><p><strong>b</strong> – Second complex value. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if both real and imaginary parts are within <code class="docutils literal notranslate"><span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing9getStringEKd">
+<span id="_CPPv3N6Marmot7Testing9getStringEKd"></span><span id="_CPPv2N6Marmot7Testing9getStringEKd"></span><span id="Marmot::Testing::getString__doubleC"></span><span class="target" id="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing9getStringEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert a <code class="docutils literal notranslate"><span class="pre">double</span></code> to its string representation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – Value to convert. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String representation of <code class="docutils literal notranslate"><span class="pre">a</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing9getStringEKN8autodiff4dualE">
+<span id="_CPPv3N6Marmot7Testing9getStringEKN8autodiff4dualE"></span><span id="_CPPv2N6Marmot7Testing9getStringEKN8autodiff4dualE"></span><span id="Marmot::Testing::getString__autodiff::dualC"></span><span class="target" id="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing9getStringEKN8autodiff4dualE" title="Link to this definition"></a><br /></dt>
+<dd><p>Convert an <code class="docutils literal notranslate"><span class="pre">autodiff::dual</span></code> to its string representation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>a</strong> – Dual number to convert. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String representation of <code class="docutils literal notranslate"><span class="pre">a</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot7Testing12checkIfEqualEbRKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd">
+<span id="_CPPv3I0EN6Marmot7Testing12checkIfEqualERKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd"></span><span id="_CPPv2I0EN6Marmot7Testing12checkIfEqualERKN5Eigen6MatrixI1TX-1EX-1EEERKN5Eigen6MatrixI1TX-1EX-1EEEKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot7Testing12checkIfEqualEbRKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot7Testing12checkIfEqualEbRKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot7Testing12checkIfEqualEbRKN5Eigen6MatrixI1TXngL1EEXngL1EEEERKN5Eigen6MatrixI1TXngL1EEXngL1EEEEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two dynamic Eigen matrices are element-wise equal within a tolerance. </p>
+<p>Prints a hint to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> identifying the first mismatching entry before returning <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type of the matrices. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – First matrix. </p></li>
+<li><p><strong>b</strong> – Second matrix. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance per element (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if all elements satisfy <code class="docutils literal notranslate"><span class="pre">|a(i,j)</span> <span class="pre">-</span> <span class="pre">b(i,j)|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd">
+<span id="_CPPv3I0_DplEN6Marmot7Testing12checkIfEqualERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd"></span><span id="_CPPv2I0_DplEN6Marmot7Testing12checkIfEqualERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rest</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorFixedSize</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sizes</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd" title="Marmot::Testing::checkIfEqual::Rest"><span class="n"><span class="pre">Rest</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorFixedSize</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sizes</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd" title="Marmot::Testing::checkIfEqual::Rest"><span class="n"><span class="pre">Rest</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_DplEN6Marmot7Testing12checkIfEqualEbRKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEERKN5Eigen15TensorFixedSizeI1TN5Eigen5SizesIDp4RestEEEEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two fixed-size Eigen tensors are element-wise equal within a tolerance. </p>
+<p>Prints a hint to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> identifying the first mismatching entry before returning <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Scalar type of the tensors. </p></li>
+<li><p><strong>Rest</strong> – Compile-time dimension pack. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – First tensor. </p></li>
+<li><p><strong>b</strong> – Second tensor. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance per element (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if all elements satisfy <code class="docutils literal notranslate"><span class="pre">|a(i)</span> <span class="pre">-</span> <span class="pre">b(i)|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd">
+<span id="_CPPv3I0_Dp6size_tEN6Marmot7Testing12checkIfEqualERKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd"></span><span id="_CPPv2I0_Dp6size_tEN6Marmot7Testing12checkIfEqualERKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rest</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfEqual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finitestrainmechanicscore.html#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd" title="Marmot::Testing::checkIfEqual::Rest"><span class="n"><span class="pre">Rest</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finitestrainmechanicscore.html#_CPPv46Fastor" title="Fastor"><span class="n"><span class="pre">Fastor</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd" title="Marmot::Testing::checkIfEqual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd" title="Marmot::Testing::checkIfEqual::Rest"><span class="n"><span class="pre">Rest</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_Dp6size_tEN6Marmot7Testing12checkIfEqualEbRKN6Fastor6TensorI1TDp4RestEERKN6Fastor6TensorI1TDp4RestEEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether two Fastor tensors are element-wise equal within a tolerance. </p>
+<p>Prints a hint to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> identifying the first mismatching entry before returning <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Scalar type of the tensors. </p></li>
+<li><p><strong>Rest</strong> – Compile-time dimension pack. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – First tensor. </p></li>
+<li><p><strong>b</strong> – Second tensor. </p></li>
+<li><p><strong>tol</strong> – Absolute tolerance per element (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if all elements satisfy <code class="docutils literal notranslate"><span class="pre">|a(i)</span> <span class="pre">-</span> <span class="pre">b(i)|</span> <span class="pre">&lt;=</span> <span class="pre">tol</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing23throwExceptionOnFailureEKbRKNSt6stringE">
+<span id="_CPPv3N6Marmot7Testing23throwExceptionOnFailureEKbRKNSt6stringE"></span><span id="_CPPv2N6Marmot7Testing23throwExceptionOnFailureEKbRKNSt6stringE"></span><span id="Marmot::Testing::throwExceptionOnFailure__bC.ssCR"></span><span class="target" id="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">throwExceptionOnFailure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">condition</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">message</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing23throwExceptionOnFailureEKbRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Throw a <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code> when <code class="docutils literal notranslate"><span class="pre">condition</span></code> is <code class="docutils literal notranslate"><span class="pre">false</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> – The condition to check; an exception is thrown when <code class="docutils literal notranslate"><span class="pre">false</span></code>. </p></li>
+<li><p><strong>message</strong> – Optional message included in the exception (default: “”). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing32executeTestsAndCollectExceptionsERKNSt6vectorINSt8functionIFvvEEEEE">
+<span id="_CPPv3N6Marmot7Testing32executeTestsAndCollectExceptionsERKNSt6vectorINSt8functionIFvvEEEEE"></span><span id="_CPPv2N6Marmot7Testing32executeTestsAndCollectExceptionsERKNSt6vectorINSt8functionIFvvEEEEE"></span><span class="target" id="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">executeTestsAndCollectExceptions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">testFunctions</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing32executeTestsAndCollectExceptionsERKNSt6vectorINSt8functionIFvvEEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute a list of test functions and collect any exceptions they throw. </p>
+<p>Each function in <code class="docutils literal notranslate"><span class="pre">testFunctions</span></code> is called in order. Exceptions are caught, their messages accumulated, and a single combined exception is re-thrown after all tests have run so that every failure is reported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>testFunctions</strong> – Vector of zero-argument callables to execute. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEN5Eigen6MatrixId1NXL2EEEEv">
+<span id="_CPPv3I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEv"></span><span id="_CPPv2I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEN5Eigen6MatrixId1NXL2EEEEv" title="Marmot::Testing::fibonacciLatticeHemisphere::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fibonacciLatticeHemisphere</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot7Testing26fibonacciLatticeHemisphereEN5Eigen6MatrixId1NXL2EEEEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Generate a Fibonacci-lattice sampling of the hemisphere. </p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">N</span></code> evenly-distributed (φ, θ) angle pairs on the upper hemisphere using the golden-angle Fibonacci lattice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> – Number of sample points. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An Nx2 matrix where each row is <code class="docutils literal notranslate"><span class="pre">(phi,</span> <span class="pre">theta)</span></code> in radians. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Testing16spinTurbokreiselERN6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticEdd">
+<span id="_CPPv3N6Marmot7Testing16spinTurbokreiselERN6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticEdd"></span><span id="_CPPv2N6Marmot7Testing16spinTurbokreiselERN6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticEdd"></span><span id="Marmot::Testing::spinTurbokreisel__Marmot::Solvers::MarmotMaterialPointSolverHypoElasticR.double.double"></span><span class="target" id="_marmot_testing_8h_1a7f83c06f97eb229ff703807161cedd33"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">spinTurbokreisel</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="finitestrainmechanicscore.html#_CPPv4N6Marmot7SolversE" title="Marmot::Solvers"><span class="n"><span class="pre">Solvers</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mechanicscore.html#_CPPv4N6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticE" title="Marmot::Solvers::MarmotMaterialPointSolverHypoElastic"><span class="n"><span class="pre">MarmotMaterialPointSolverHypoElastic</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">solver</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stressTol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stiffnessTol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-15</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot7Testing16spinTurbokreiselERN6Marmot7Solvers36MarmotMaterialPointSolverHypoElasticEdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Stress/stiffness objectivity test (“spinning top” test) for hypo-elastic materials. </p>
+<p>Applies a sequence of large rigid-body rotations to a material point and verifies that the Cauchy stress and algorithmic tangent remain objective to within the specified tolerances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solver</strong> – The hypo-elastic material-point solver to test. </p></li>
+<li><p><strong>stressTol</strong> – Tolerance for the stress objectivity check (default: 1e-15). </p></li>
+<li><p><strong>stiffnessTol</strong> – Tolerance for the stiffness objectivity check (default: 1e-15). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the solver passes both checks, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4St">
+<span id="_CPPv3St"></span><span id="_CPPv2St"></span><span id="std"></span><span class="target" id="namespacestd"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">std</span></span></span><br /></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_exceptions_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotExceptions.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include &lt;stdexcept&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<p>Include dependency graph for MarmotExceptions.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-97d681026ff707458e3f32cc02e9cab3ab71ccd7.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;3&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_journal_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotJournal.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include &lt;iostream&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;sstream&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<p>Include dependency graph for MarmotJournal.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fa3c1985178eb6e3549b6bd12884f4195104dc2b.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
+    &quot;3&quot; [label=&quot;sstream&quot; tooltip=&quot;sstream&quot;]
+    &quot;4&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_state_helpers_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotStateHelpers.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “Fastor/Fastor.h”</em></div>
+<div class="docutils container">
+<em>#include “<a class="reference internal" href="#_marmot_utils_8h"><span class="std std-ref">Marmot/MarmotUtils.h</span></a>”</em></div>
+<div class="docutils container">
+<em>#include &lt;Eigen/Dense&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;cstddef&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;span&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;stdexcept&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;unordered_map&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;vector&gt;</em></div>
+<p>Include dependency graph for MarmotStateHelpers.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a9c82873b9cc6d95ef55f13550ca1b77b7287631.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
+    &quot;4&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
+    &quot;2&quot; [label=&quot;Fastor/Fastor.h&quot; tooltip=&quot;Fastor/Fastor.h&quot;]
+    &quot;5&quot; [label=&quot;cstddef&quot; tooltip=&quot;cstddef&quot;]
+    &quot;6&quot; [label=&quot;span&quot; tooltip=&quot;span&quot;]
+    &quot;7&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;8&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;9&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;10&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_testing_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotTesting.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “Marmot/MarmotConstants.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotMaterialHypoElastic.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotMaterialPointSolverHypoElastic.h”</em></div>
+<div class="docutils container">
+<em>#include “autodiff/forward/dual/dual.hpp”</em></div>
+<div class="docutils container">
+<em>#include “unsupported/Eigen/CXX11/Tensor”</em></div>
+<div class="docutils container">
+<em>#include &lt;Eigen/Core&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;Fastor/Fastor.h&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;iostream&gt;</em></div>
+<p>Include dependency graph for MarmotTesting.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-181f0c7e0575607fd7c8c47a39f33a6b63547c7a.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotTesting.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;7&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
+    &quot;8&quot; [label=&quot;Fastor/Fastor.h&quot; tooltip=&quot;Fastor/Fastor.h&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotConstants.h&quot; tooltip=&quot;Marmot/MarmotConstants.h&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotMaterialPointSolverHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialPointSolverHypoElastic.h&quot;]
+    &quot;5&quot; [label=&quot;autodiff/forward/dual/dual.hpp&quot; tooltip=&quot;autodiff/forward/dual/dual.hpp&quot;]
+    &quot;9&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
+    &quot;6&quot; [label=&quot;unsupported/Eigen/CXX11/Tensor&quot; tooltip=&quot;unsupported/Eigen/CXX11/Tensor&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Lightweight unit-test helpers for Marmot material and numerical routines. </p>
+<p>Provides templated equality checks (<code class="docutils literal notranslate"><span class="pre">checkIfEqual</span></code>) for scalars, Eigen matrices, Eigen tensors and Fastor tensors, as well as higher-level utilities such as <code class="docutils literal notranslate"><span class="pre">throwExceptionOnFailure</span></code>, the Fibonacci hemisphere sampler <code class="docutils literal notranslate"><span class="pre">fibonacciLatticeHemisphere</span></code>, and the <code class="docutils literal notranslate"><span class="pre">spinTurbokreisel</span></code> material-point test. </p>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_utils_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotUtils.h</span></span></dt>
+<dd><p>This graph shows which files directly or indirectly include MarmotUtils.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6dd20335e54686a9621e7720dc0d7be093b5f416.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_6d4da112a1331882b0b6514a341190a0"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_6f1c5bff1b18c05144096258aee3fe15"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_bda42dbf2424ef6a9b08d1ad39474d75"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_cd98dc821d284f1f2626be1d87ec35e4"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="dir_e05d7e2b1ecd646af5bb94391405f3b5"></span><em><span class="pre">dir</span></em> <span class="sig-name descname"><span class="pre">/home/runner/work/Marmot/Marmot/modules</span></span></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mechanicscore.html" class="btn btn-neutral float-left" title="MarmotMechanicsCore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../publications.html" class="btn btn-neutral float-right" title="Publications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

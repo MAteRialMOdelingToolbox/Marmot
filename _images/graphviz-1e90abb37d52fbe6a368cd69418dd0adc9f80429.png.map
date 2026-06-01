@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" alt="" coords="669,5,1770,53"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" alt="" coords="5,101,1175,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="1050,56,747,103,746,98,1045,56"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" alt="" coords="1198,101,2502,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="1392,54,1696,101,1690,101,1392,59"/>
+</map>

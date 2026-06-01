@@ -4,32 +4,34 @@
     <compoundname>Marmot::FiniteElement::Spatial1D::Bar2</compoundname>
     <sectiondef kind="typedef">
       <memberdef kind="typedef" id="_marmot_finite_element_8h_1ae0ded2215036409c7649c6498b79f63f" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, 1, nNodes &gt;</type>
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="_marmot_finite_element_8h_1a8845d78aaed05788ae17874ac3cabefb" kindref="member">nNodes</ref> &gt;</type>
         <definition>using Marmot::FiniteElement::Spatial1D::Bar2::NSized =  Eigen::Matrix&lt; double, 1, nNodes &gt;</definition>
         <argsstring></argsstring>
         <name>NSized</name>
         <qualifiedname>Marmot::FiniteElement::Spatial1D::Bar2::NSized</qualifiedname>
         <briefdescription>
+<para>Row vector of shape function values. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="93" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="93" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="136" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="136" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_finite_element_8h_1ac0153292e7b4b7e49b36b1848e1fa482" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, 1, nNodes &gt;</type>
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="_marmot_finite_element_8h_1a8845d78aaed05788ae17874ac3cabefb" kindref="member">nNodes</ref> &gt;</type>
         <definition>using Marmot::FiniteElement::Spatial1D::Bar2::dNdXiSized =  Eigen::Matrix&lt; double, 1, nNodes &gt;</definition>
         <argsstring></argsstring>
         <name>dNdXiSized</name>
         <qualifiedname>Marmot::FiniteElement::Spatial1D::Bar2::dNdXiSized</qualifiedname>
         <briefdescription>
+<para>Row vector of shape function natural derivatives. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="94" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="94" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="137" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="137" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -41,17 +43,18 @@
         <qualifiedname>Marmot::FiniteElement::Spatial1D::Bar2::nNodes</qualifiedname>
         <initializer>= 2</initializer>
         <briefdescription>
+<para>Number of nodes for a Bar2 element. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="92" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="92" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="135" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="135" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="_marmot_finite_element_8h_1a5e2b890c91c0ffcfc6727723d22d95d7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>NSized</type>
+        <type><ref refid="_marmot_finite_element_8h_1ae0ded2215036409c7649c6498b79f63f" kindref="member">NSized</ref></type>
         <definition>NSized Marmot::FiniteElement::Spatial1D::Bar2::N</definition>
         <argsstring>(double xi)</argsstring>
         <name>N</name>
@@ -61,15 +64,16 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
+<para>Evaluate Bar2 shape functions at natural coordinate <computeroutput>xi</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="96" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="96" declcolumn="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="140" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="140" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a1c15d7c8a1608a7944b967fc40f547ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>dNdXiSized</type>
+        <type><ref refid="_marmot_finite_element_8h_1ac0153292e7b4b7e49b36b1848e1fa482" kindref="member">dNdXiSized</ref></type>
         <definition>dNdXiSized Marmot::FiniteElement::Spatial1D::Bar2::dNdXi</definition>
         <argsstring>(double xi)</argsstring>
         <name>dNdXi</name>
@@ -79,18 +83,19 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
+<para>Evaluate Bar2 shape function derivatives at natural coordinate <computeroutput>xi</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="97" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="97" declcolumn="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="142" column="20" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="142" declcolumn="20"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="90" column="7"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="133" column="7"/>
   </compounddef>
 </doxygen>

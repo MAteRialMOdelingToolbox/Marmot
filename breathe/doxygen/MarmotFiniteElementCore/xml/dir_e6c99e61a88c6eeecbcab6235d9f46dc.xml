@@ -3,6 +3,9 @@
   <compounddef id="dir_e6c99e61a88c6eeecbcab6235d9f46dc" kind="dir">
     <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot</compoundname>
     <innerfile refid="_marmot_dof_layout_tools_8h">MarmotDofLayoutTools.h</innerfile>
+    <innerfile refid="_marmot_element_8h">MarmotElement.h</innerfile>
+    <innerfile refid="_marmot_element_factory_8h">MarmotElementFactory.h</innerfile>
+    <innerfile refid="_marmot_element_property_8h">MarmotElementProperty.h</innerfile>
     <innerfile refid="_marmot_enhanced_assumed_strain_8h">MarmotEnhancedAssumedStrain.h</innerfile>
     <innerfile refid="_marmot_finite_element_8h">MarmotFiniteElement.h</innerfile>
     <innerfile refid="_marmot_finite_element_spatial_wrapper_8h">MarmotFiniteElementSpatialWrapper.h</innerfile>

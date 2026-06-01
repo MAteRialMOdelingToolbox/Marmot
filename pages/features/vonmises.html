@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Von Mises model &mdash; Marmot  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
 
@@ -18,7 +18,7 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}"}}}</script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -53,9 +53,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
 <li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
@@ -290,33 +295,27 @@ Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol
 <span id="_CPPv3N6Marmot9Materials13VonMisesModelE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModelE"></span><span id="Marmot::Materials::VonMisesModel"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VonMisesModel</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv425MarmotMaterialHypoElastic" title="MarmotMaterialHypoElastic"><span class="n"><span class="pre">MarmotMaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModelE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::VonMisesModel:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e43c31e46f65baaa479782863e6fdd0beab0078a.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-110e4e59bbc133e9e0aeafa6cd2d9eb01f1bd6ab.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::VonMisesModel&quot; tooltip=&quot;Marmot::Materials::VonMisesModel&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
     &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
 <p>Collaboration diagram for Marmot::Materials::VonMisesModel:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e43c31e46f65baaa479782863e6fdd0beab0078a.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-11cea75bfc45fd250fcaa9dc95b5d41532ccf3d4.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::VonMisesModel&quot; tooltip=&quot;Marmot::Materials::VonMisesModel&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;4&quot; [label=&quot;MarmotMaterial&quot; tooltip=&quot;MarmotMaterial&quot;]
     &quot;2&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialMechanical&quot; tooltip=&quot;MarmotMaterialMechanical&quot;]
+    &quot;3&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -324,140 +323,64 @@ Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel13computeStressEPdPdPKdPKdKdRd">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel13computeStressEPdPdPKdPKdKdRd"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel13computeStressEPdPdPKdPKdKdRd"></span><span id="Marmot::Materials::VonMisesModel::computeStress__doubleP.doubleP.doubleCP.doubleCP.doubleC.doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1ababd11360100202afc960452da26545b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStress_dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">timeOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pNewDT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel13computeStressEPdPdPKdPKdKdRd" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel13VonMisesModelEPKdKiKi">
+<span id="_CPPv3N6Marmot9Materials13VonMisesModel13VonMisesModelEPKdKiKi"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel13VonMisesModelEPKdKiKi"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModel__doubleCP.iC.iC"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1a131b2892113383b0aee0de5fd862c4e8"></span><span class="sig-name descname"><span class="n"><span class="pre">VonMisesModel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel13VonMisesModelEPKdKiKi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot8Matrix6dERKN6Marmot8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot8Matrix6dERKN6Marmot8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot8Matrix6dERKN6Marmot8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::VonMisesModel::computeStress__state3DR.Marmot::Matrix6dR.Marmot::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1a36126d5b6c9da2dc780af1cfcd689df1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot8Matrix6dERKN6Marmot8Vector6dERK8timeInfo" title="Marmot::Materials::VonMisesModel::computeStress::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot8Matrix6dERKN6Marmot8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
 <dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stress</strong> – <strong>[inout]</strong> Cauchy stress </p></li>
-<li><p><strong>dStressDDstrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>state</strong> – <strong>[inout]</strong> A state3D instance carrying stress, strain energy, and state variables </p></li>
+<li><p><strong>dStress_dStrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
 <li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
-<li><p><strong>timeOld</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
-<li><p><strong>dt</strong> – <strong>[in]</strong> (Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </p></li>
-<li><p><strong>pNewDT</strong> – <strong>[inout]</strong> Suggestion for a new time increment </p></li>
+<li><p><strong>timeInfo</strong> – Structure carrying the current (pseudo-)time and the (pseudo-)time increment </p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel10getDensityEv">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel10getDensityEv"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel10getDensityEv"></span><span id="Marmot::Materials::VonMisesModel::getDensity"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1aef6cb497f4cfac2c6064099dc0420c7d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel10getDensityEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Get material density. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Throws<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if density is not defined. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Density value. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28getNumberOfRequiredStateVarsEv">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::VonMisesModel::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1ad743f6cb33422636e6350981f2a9c74a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Number of state variables required by the material. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel15assignStateVarsEPdi">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel15assignStateVarsEPdi"></span><span id="Marmot::Materials::VonMisesModel::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1a40f9ce9ccc2fbb16b4136656916ebb5f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Assign state variable array to material. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::VonMisesModel::computeStressExplicit__state3DR.Marmot::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1aa6ad1af02353930b417a68f59f003adc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressExplicit</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Vector6dE" title="Marmot::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot8Vector6dERK8timeInfo" title="Marmot::Materials::VonMisesModel::computeStressExplicit::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dd><p>Explicit version of <a class="reference internal" href="#classMarmot_1_1Materials_1_1VonMisesModel_1a36126d5b6c9da2dc780af1cfcd689df1"><span class="std std-ref">computeStress</span></a> for use in explicit time integration schemes. The algorithmic tangent is not needed in explicit schemes and will therefore not be computed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default implementation calls <a class="reference internal" href="#classMarmot_1_1Materials_1_1VonMisesModel_1a36126d5b6c9da2dc780af1cfcd689df1"><span class="std std-ref">computeStress</span></a> and ignores the algorithmic tangent. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Derived classes may override this method for efficiency reasons. </p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
-<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+<li><p><strong>state</strong> – <strong>[inout]</strong> A state3D instance carrying stress, strain energy, and state variables </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeInfo</strong> – Structure carrying time information</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel12getStateViewERKNSt6stringE">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel12getStateViewERKNSt6stringE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel12getStateViewERKNSt6stringE"></span><span id="Marmot::Materials::VonMisesModel::getStateView__ssCR"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1ac35d22d569565f0afbb4b85e333082ce"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">StateView</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">result</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd><p>Access material state variables by name. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13VonMisesModel10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials13VonMisesModel10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials13VonMisesModel10getDensityEPKd"></span><span id="Marmot::Materials::VonMisesModel::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1a7211f6746b4d3e9082509b74ce8eb1e3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13VonMisesModel10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the mass density of the material. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stateName</strong> – <strong>[in]</strong> Name of the requested state variable. </p>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the state variable array </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A view into the state variable array. </p>
+<dd class="field-even"><p>Mass density of the material </p>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel16managedStateVarsE">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel16managedStateVarsE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel16managedStateVarsE"></span><span id="Marmot::Materials::VonMisesModel::managedStateVars__std::unique_ptr:VonMisesModelStateVarManager:"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1a829187e2625a88c74d45f515f4ccaa3b"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManagerE" title="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager"><span class="n"><span class="pre">VonMisesModelStateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managedStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel16managedStateVarsE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-</div>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManagerE">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManagerE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManagerE"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VonMisesModelStateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv427MarmotStateVarVectorManager" title="MarmotStateVarVectorManager"><span class="n"><span class="pre">MarmotStateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManagerE" title="Link to this definition"></a><br /></dt>
-<dd><p>Inheritance diagram for Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager:</p>
-<figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-05f1d430e7471e349f5c92d6dba820ed23f7b956.png" alt="digraph {
-    graph [bgcolor=&quot;#00000000&quot;]
-    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
-    edge [color=&quot;#1414CE&quot;]
-    &quot;1&quot; [label=&quot;Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager&quot; tooltip=&quot;Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
-    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-}" class="graphviz" /></div>
-</div>
-</figure>
-<p>Collaboration diagram for Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager:</p>
-<figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a2412349b78389df144ec0dc174df6e28bce4475.png" alt="digraph {
-    graph [bgcolor=&quot;#00000000&quot;]
-    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
-    edge [color=&quot;#1414CE&quot;]
-    &quot;1&quot; [label=&quot;Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager&quot; tooltip=&quot;Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;MarmotStateVarVectorManager&quot; tooltip=&quot;MarmotStateVarVectorManager&quot;]
-    &quot;3&quot; [label=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot; tooltip=&quot;MarmotStateVarVectorManager::StateVarVectorLayout&quot;]
-    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
-}" class="graphviz" /></div>
-</div>
-</figure>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager28VonMisesModelStateVarManagerEPd">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager28VonMisesModelStateVarManagerEPd"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager28VonMisesModelStateVarManagerEPd"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager::VonMisesModelStateVarManager__doubleP"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aac22a50e2634de7caf7af3d92063f7ff"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VonMisesModelStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager28VonMisesModelStateVarManagerEPd" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager::kappa__doubleR"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1aa5bd7193977af81ff8bda544e6df6462"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">kappa</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager5kappaE" title="Link to this definition"></a><br /></dt>
-<dd><p>Hardening parameter. </p>
-</dd></dl>
-
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
-<dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager6layoutE">
-<span id="_CPPv3N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager6layoutE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager6layoutE"></span><span id="Marmot::Materials::VonMisesModel::VonMisesModelStateVarManager::layout__autoC"></span><span class="target" id="classMarmot_1_1Materials_1_1VonMisesModel_1_1VonMisesModelStateVarManager_1a0fe8e031c6b51ef80983108dbadee4b6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><code class="docutils literal notranslate"><span class="pre">makeLayout(</span> <span class="pre">{{</span> <span class="pre">.name</span> <span class="pre">=</span> <span class="pre">&quot;kappa&quot;,</span> <span class="pre">.length</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">},}</span> <span class="pre">)</span></code><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel28VonMisesModelStateVarManager6layoutE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-</div>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -475,7 +398,7 @@ Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, University of Innsbruck, BOKU Vienna and other authors.</p>
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_solvers" kind="namespace" language="C++">
+    <compoundname>Marmot::Solvers</compoundname>
+    <innerclass refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic" prot="public">Marmot::Solvers::MarmotMaterialPointSolverHypoElastic</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="32" column="3"/>
+  </compounddef>
+</doxygen>

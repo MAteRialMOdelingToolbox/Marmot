@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="class_marmot_library_1_1_marmot_material_finite_strain_factory" kind="class" language="C++" prot="public">
+    <compoundname>MarmotLibrary::MarmotMaterialFiniteStrainFactory</compoundname>
+    <includes refid="_marmot_material_finite_strain_factory_8h" local="no">MarmotMaterialFiniteStrainFactory.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa6660bdf86fb078d88a4419f844447a5" prot="public" static="no">
+        <type>std::function&lt; <ref refid="class_marmot_material_finite_strain" kindref="compound">MarmotMaterialFiniteStrain</ref> *(const double *materialProperties, int nMaterialProperties, int materialNumber) &gt;</type>
+        <definition>using MarmotLibrary::MarmotMaterialFiniteStrainFactory::materialFactoryFunction =  std::function&lt;
+      MarmotMaterialFiniteStrain*( const double* materialProperties, int nMaterialProperties, int materialNumber ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>materialFactoryFunction</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::materialFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Factory function type: creates a <ref refid="class_marmot_material_finite_strain" kindref="compound">MarmotMaterialFiniteStrain</ref> from properties and a material number. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="45" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a721bdc7c85d74cc79d7b24fc0d1d7293" prot="private" static="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa6660bdf86fb078d88a4419f844447a5" kindref="member">materialFactoryFunction</ref> &gt;</type>
+        <definition>using MarmotLibrary::MarmotMaterialFiniteStrainFactory::MaterialFactoryMap =  std::unordered_map&lt; std::string, materialFactoryFunction &gt;</definition>
+        <argsstring></argsstring>
+        <name>MaterialFactoryMap</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::MaterialFactoryMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="83" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a10da5120ed919036bb65cfca0fd7363d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>MarmotLibrary::MarmotMaterialFiniteStrainFactory::MarmotMaterialFiniteStrainFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>MarmotMaterialFiniteStrainFactory</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::MarmotMaterialFiniteStrainFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="48" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa820a5e2fd7e0b380105ad0aaf7fb9ef" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_material_finite_strain" kindref="compound">MarmotMaterialFiniteStrain</ref> *</type>
+        <definition>static MarmotMaterialFiniteStrain * MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial</definition>
+        <argsstring>(const std::string &amp;materialName, const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>createMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+<para>Create a material instance based on its name and properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name of the material type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of properties in the array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created <ref refid="class_marmot_material_finite_strain" kindref="compound">MarmotMaterialFiniteStrain</ref> instance. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="58" column="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a5c3b2fc57d7ac2c00134f10d14b5e2b9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>static bool MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial</definition>
+        <argsstring>(const std::string &amp;materialName)</argsstring>
+        <name>registerMaterial</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <briefdescription>
+<para>Register a material type with its name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Concrete material class to register; must be constructible from (const double* materialProperties, int nMaterialProperties, int materialNumber). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name for the material type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if registration was successful. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="71" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" bodystart="71" bodyend="80"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a551a8aaffa18d6d8084bf1e0cc6f0b0f" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>MaterialFactoryMap &amp;</type>
+        <definition>static MaterialFactoryMap &amp; MarmotLibrary::MarmotMaterialFiniteStrainFactory::materialFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>materialFactoryFunctionByName</name>
+        <qualifiedname>MarmotLibrary::MarmotMaterialFiniteStrainFactory::materialFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="84" column="31"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Factory class for creating finite-strain material instances. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides a mechanism to register materials by their name, and to create material instances based on their properties. It allows for dynamic material creation without hardcoding specific material types. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainFactory.h" bodystart="42" bodyend="85"/>
+    <listofallmembers>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa820a5e2fd7e0b380105ad0aaf7fb9ef" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>createMaterial</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a10da5120ed919036bb65cfca0fd7363d" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>MarmotMaterialFiniteStrainFactory</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa6660bdf86fb078d88a4419f844447a5" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>materialFactoryFunction</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a551a8aaffa18d6d8084bf1e0cc6f0b0f" prot="private" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>materialFactoryFunctionByName</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a721bdc7c85d74cc79d7b24fc0d1d7293" prot="private" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>MaterialFactoryMap</name></member>
+      <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a5c3b2fc57d7ac2c00134f10d14b5e2b9" prot="public" virt="non-virtual"><scope>MarmotLibrary::MarmotMaterialFiniteStrainFactory</scope><name>registerMaterial</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

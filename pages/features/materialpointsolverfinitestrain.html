@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material Point Solver for Finite Strain Materials &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Material models" href="materials.html" />
+    <link rel="prev" title="Material Point Solver for Hypo-Elastic Materials" href="materialpointsolverhypoelastic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="solvers.html">Solvers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="materialpointsolverhypoelastic.html">Material Point Solver for Hypo-Elastic Materials</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Material Point Solver for Finite Strain Materials</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-features">Main Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#solver-structure">Solver Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage-workflow">Usage Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typical-output">Typical Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#guidelines-and-notes">Guidelines and Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csv-export">CSV Export</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="solvers.html">Solvers</a></li>
+      <li class="breadcrumb-item active">Material Point Solver for Finite Strain Materials</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/materialpointsolverfinitestrain.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="material-point-solver-for-finite-strain-materials">
+<h1>Material Point Solver for Finite Strain Materials<a class="headerlink" href="#material-point-solver-for-finite-strain-materials" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <strong>Material Point Solver (Finite Strain)</strong> provides a standalone driver for simulating
+the response of a single material point using <strong>finite strain constitutive models</strong>
+from the <em>MAteRialMOdellingToolbox (marmot)</em> framework.</p>
+<p>Unlike the hypo-elastic solver, this class handles large deformations using full <span class="math notranslate nohighlight">\(3\times3\)</span>
+tensor kinematics. It solves for the <strong>Displacement Gradient</strong> (<span class="math notranslate nohighlight">\(\nabla \mathbf{u}\)</span>)
+and the <strong>Kirchhoff Stress</strong> (<span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>).</p>
+<p>It is designed for:</p>
+<ul class="simple">
+<li><p>Testing and verifying finite strain material models (e.g., hyperelasticity, finite plasticity),</p></li>
+<li><p>Performing mixed displacement-gradient/stress-controlled loading paths,</p></li>
+<li><p>Recording full tensor histories including material tangents and internal state variables.</p></li>
+</ul>
+<p>The solver automatically handles time stepping, adaptive cutbacks upon non-convergence,
+and output formatting.</p>
+</section>
+<section id="main-features">
+<h2>Main Features<a class="headerlink" href="#main-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Finite Strain Kinematics</strong>: Solves for <span class="math notranslate nohighlight">\(\mathbf{F} = \mathbf{I} + \nabla \mathbf{u}\)</span>.</p></li>
+<li><p><strong>Mixed Control</strong>: Supports independent control of displacement gradient or stress for each of the 9 tensor components.</p></li>
+<li><p><strong>Adaptive Time Stepping</strong>: Automatically reduces time step size (<span class="math notranslate nohighlight">\(\Delta t\)</span>) if convergence fails.</p></li>
+<li><p><strong>Newton–Raphson Solver</strong>: robust iterative solver with configurable residual and correction tolerances.</p></li>
+<li><p><strong>History Recording</strong>: Stores time, stress, deformation gradient, tangent moduli, and state variables.</p></li>
+<li><p><strong>CSV Export</strong>: Exports simulation history for post-processing.</p></li>
+</ul>
+</section>
+<section id="solver-structure">
+<h2>Solver Structure<a class="headerlink" href="#solver-structure" title="Link to this heading"></a></h2>
+<p>The solver is organized around a few key data structures:</p>
+<ul class="simple">
+<li><p><strong>SolverOptions</strong> — Defines numerical tolerances (residual/correction) and iteration limits.</p></li>
+<li><p><strong>Step</strong> — Represents a loading phase. It defines target increments for <span class="math notranslate nohighlight">\(\nabla \mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>, along with boolean flags determining which variable controls which tensor component.</p></li>
+<li><p><strong>Increment</strong> — A sub-step automatically generated within each Step based on time discretization.</p></li>
+<li><p><strong>HistoryEntry</strong> — Records the converged state (Time, <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>, <span class="math notranslate nohighlight">\(\mathbb{C}\)</span>, state variables) at specific points.</p></li>
+</ul>
+</section>
+<section id="usage-workflow">
+<h2>Usage Workflow<a class="headerlink" href="#usage-workflow" title="Link to this heading"></a></h2>
+<p>A typical workflow consists of:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialize</strong> the solver with a material model name and properties.</p></li>
+<li><p><strong>Set</strong> the initial state (initial stress and internal variables).</p></li>
+<li><p><strong>Define</strong> one or more loading <code class="docutils literal notranslate"><span class="pre">Step</span></code> objects with control flags and targets.</p></li>
+<li><p><strong>Add</strong> the steps to the solver.</p></li>
+<li><p><strong>Solve</strong> the problem.</p></li>
+<li><p><strong>Inspect or export</strong> the resulting history.</p></li>
+</ol>
+</section>
+<section id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
+<p>Here is a simple example demonstrating how to set up and run the finite strain material point solver using a compressible Neo-Hookean material model.
+It can be found in the <cite>examples/finite-strain-mp-solver/CompressibleNeoHooke</cite> directory of the Marmot repository together with the appropriate <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Finite Strain Solver Example</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotFastorTensorBasics.h&quot;</span>
+<span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotMaterialPointSolverFiniteStrain.h&quot;</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="linenos"> 5</span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Marmot</span><span class="o">::</span><span class="nn">Solvers</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Marmot</span><span class="o">::</span><span class="nn">FastorStandardTensors</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="c1">// 1) Define the material model</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">materialName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;COMPRESSIBLENEOHOOKE&quot;</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">double</span><span class="w">      </span><span class="n">properties</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">3500</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// Example: Bulk and Shear moduli</span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">int</span><span class="w">         </span><span class="n">nProps</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">  </span><span class="c1">// 2) Configure solver options</span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">MarmotMaterialPointSolverFiniteStrain</span><span class="o">::</span><span class="n">SolverOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="linenos">16</span><span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">maxIterations</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span>
+<span class="linenos">17</span><span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">residualTolerance</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">;</span>
+<span class="linenos">18</span><span class="w">  </span><span class="n">options</span><span class="p">.</span><span class="n">correctionTolerance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">;</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="w">  </span><span class="c1">// 3) Create solver instance</span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">MarmotMaterialPointSolverFiniteStrain</span><span class="w"> </span><span class="nf">solver</span><span class="p">(</span><span class="w"> </span><span class="n">materialName</span><span class="p">,</span><span class="w"> </span><span class="n">properties</span><span class="p">,</span><span class="w"> </span><span class="n">nProps</span><span class="p">,</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="w">  </span><span class="c1">// 4) Set the initial state</span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w">             </span><span class="n">nSV</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">solver</span><span class="p">.</span><span class="n">getNumberOfStateVariables</span><span class="p">();</span>
+<span class="linenos">25</span><span class="w">  </span><span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXd</span><span class="w"> </span><span class="n">initialSV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXd</span><span class="o">::</span><span class="n">Zero</span><span class="p">(</span><span class="w"> </span><span class="n">nSV</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">  </span><span class="c1">// Initial stress is zero</span>
+<span class="linenos">28</span><span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">setInitialState</span><span class="p">(</span><span class="w"> </span><span class="n">Tensor33d</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">initialSV</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="w">  </span><span class="c1">// 5) Define a loading step (Uniaxial extension in 11-direction)</span>
+<span class="linenos">31</span><span class="w">  </span><span class="n">MarmotMaterialPointSolverFiniteStrain</span><span class="o">::</span><span class="n">Step</span><span class="w"> </span><span class="n">step</span><span class="p">;</span>
+<span class="linenos">32</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">timeStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="linenos">33</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">timeEnd</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span>
+<span class="linenos">34</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTStart</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span>
+<span class="linenos">35</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTMin</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span>
+<span class="linenos">36</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">dTMax</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span><span class="w">  </span><span class="c1">// Initialize targets and flags</span>
+<span class="linenos">39</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">gradUIncrementTarget</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor33d</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">40</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">stressIncrementTarget</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor33d</span><span class="p">(</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">41</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isGradUComponentControlled</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">42</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isStressComponentControlled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="w">  </span><span class="c1">// Setup Control:</span>
+<span class="linenos">45</span><span class="w">  </span><span class="c1">// - Control gradU_11 (stretch to 50%)</span>
+<span class="linenos">46</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">gradUIncrementTarget</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span>
+<span class="linenos">47</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isGradUComponentControlled</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">48</span>
+<span class="linenos">49</span><span class="w">  </span><span class="c1">// - Unset control on tau_11</span>
+<span class="linenos">50</span><span class="w">  </span><span class="n">step</span><span class="p">.</span><span class="n">isStressComponentControlled</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="linenos">51</span>
+<span class="linenos">52</span><span class="w">  </span><span class="c1">// 6) Run the solver</span>
+<span class="linenos">53</span><span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">addStep</span><span class="p">(</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">54</span><span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">solve</span><span class="p">();</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="w">  </span><span class="c1">// 7) Output the results</span>
+<span class="linenos">57</span><span class="w">  </span><span class="n">solver</span><span class="p">.</span><span class="n">exportHistoryToCSV</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;finite_strain_history.csv&quot;</span><span class="w"> </span><span class="p">);</span>
+<span class="linenos">58</span>
+<span class="linenos">59</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">60</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>To compile and run the example, you can use <code class="docutils literal notranslate"><span class="pre">cmake</span></code> with the configuration <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>. Ensure that the paths to Marmot, Eigen, and Fastor match your system configuration.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">cmake configuration for Finite Strain Material Point Solver Example</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.16</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="nb">project</span><span class="p">(</span><span class="s">MarmotSolverExample</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">20</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_EXTENSIONS</span><span class="w"> </span><span class="s">OFF</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="nb">find_package</span><span class="p">(</span><span class="s">Python3</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">Interpreter</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="nb">execute_process</span><span class="p">(</span>
+<span class="linenos">11</span><span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s2">&quot;${Python3_EXECUTABLE}&quot;</span><span class="w"> </span><span class="s">-c</span><span class="w"> </span><span class="s2">&quot;import sys; print(sys.prefix, end=&#39;&#39;)&quot;</span>
+<span class="linenos">12</span><span class="w">    </span><span class="s">OUTPUT_VARIABLE</span><span class="w"> </span><span class="s">PYTHON_PREFIX</span>
+<span class="linenos">13</span><span class="w">    </span><span class="s">OUTPUT_STRIP_TRAILING_WHITESPACE</span>
+<span class="linenos">14</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="nb">set</span><span class="p">(</span><span class="s">MARMOT_ROOT</span><span class="w"> </span><span class="s2">&quot;${PYTHON_PREFIX}&quot;</span><span class="p">)</span>
+<span class="linenos">17</span><span class="nb">set</span><span class="p">(</span><span class="s">EIGEN_DIR</span><span class="w">   </span><span class="s2">&quot;${PYTHON_PREFIX}/include/eigen3&quot;</span><span class="p">)</span>
+<span class="linenos">18</span><span class="nb">set</span><span class="p">(</span><span class="s">FASTOR_DIR</span><span class="w">  </span><span class="s2">&quot;${PYTHON_PREFIX}/include/Fastor&quot;</span><span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">example.cpp</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="linenos">23</span><span class="w">    </span><span class="s2">&quot;${MARMOT_ROOT}/include&quot;</span>
+<span class="linenos">24</span><span class="w">    </span><span class="s2">&quot;${EIGEN_DIR}&quot;</span>
+<span class="linenos">25</span><span class="w">    </span><span class="s2">&quot;${FASTOR_DIR}&quot;</span>
+<span class="linenos">26</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="nb">target_link_directories</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s2">&quot;${MARMOT_ROOT}/lib&quot;</span><span class="p">)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Marmot</span><span class="p">)</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-fPIC</span><span class="p">)</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="nb">set_target_properties</span><span class="p">(</span><span class="s">solver_example</span><span class="w"> </span><span class="s">PROPERTIES</span>
+<span class="linenos">35</span><span class="w">    </span><span class="s">BUILD_RPATH</span><span class="w">   </span><span class="s2">&quot;${MARMOT_ROOT}/lib&quot;</span>
+<span class="linenos">36</span><span class="w">    </span><span class="s">INSTALL_RPATH</span><span class="w"> </span><span class="s2">&quot;${MARMOT_ROOT}/lib&quot;</span>
+<span class="linenos">37</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="typical-output">
+<h2>Typical Output<a class="headerlink" href="#typical-output" title="Link to this heading"></a></h2>
+<p>Running the solver prints detailed convergence information to the console:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Solving step from 0 to 1
++------------------------------------------------------------------------------+
+  Solving increment 1, time: 0 to 0.1, dT: 0.1
+    Iteration 0, ||ddGradU||: 0.00e+00, ||R||: 5.00e-02
+    Iteration 1, ||ddGradU||: 1.25e-03, ||R||: 4.12e-05
+    Iteration 2, ||ddGradU||: 2.10e-07, ||R||: 1.10e-11
+    Converged after 3 iterations.
+  Material state for time: 1.000000e-01
+  tau:
+   [2.500000e+01, 0.000000e+00, 0.000000e+00
+    0.000000e+00, 0.000000e+00, 0.000000e+00
+    0.000000e+00, 0.000000e+00, 0.000000e+00]
+  ...
+</pre></div>
+</div>
+</section>
+<section id="guidelines-and-notes">
+<h2>Guidelines and Notes<a class="headerlink" href="#guidelines-and-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Tensors</strong>: The solver uses the <strong>Fastor</strong> library. Inputs usually expect <code class="docutils literal notranslate"><span class="pre">Tensor33d</span></code> (3x3 double) or <code class="docutils literal notranslate"><span class="pre">Tensor9d</span></code> (flattened 9x1 double).</p></li>
+<li><p><strong>Control Flags</strong>: For every component <span class="math notranslate nohighlight">\((i,j)\)</span> of the <span class="math notranslate nohighlight">\(3\times3\)</span> tensor, exactly <strong>one</strong> of <code class="docutils literal notranslate"><span class="pre">isGradUComponentControlled(i,j)</span></code> or <code class="docutils literal notranslate"><span class="pre">isStressComponentControlled(i,j)</span></code> must be set to true. The <code class="docutils literal notranslate"><span class="pre">Step::checkControl()</span></code> method enforces this.</p></li>
+<li><p><strong>Singularity Handling</strong>: When using mixed control, the tangent matrix is modified to ensure invertibility. Rows corresponding to displacement-controlled components are zeroed and the diagonal set to 1.</p></li>
+<li><p><strong>Stress Measure</strong>: The solver works with <strong>Kirchhoff stress</strong> (<span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>). If the material model computes Cauchy stress, it must be converted internally or by the model.</p></li>
+</ul>
+</section>
+<section id="csv-export">
+<h2>CSV Export<a class="headerlink" href="#csv-export" title="Link to this heading"></a></h2>
+<p>The history can be exported to CSV. The columns are formatted as follows:</p>
+<ul class="simple">
+<li><p><strong>Time</strong>: Simulation time.</p></li>
+<li><p><strong>tau[9]</strong>: Kirchhoff stress components (11, 12, 13, 21, 22, 23, 31, 32, 33).</p></li>
+<li><p><strong>F[9]</strong>: Deformation gradient components (11, 12, 13, 21, 22, 23, 31, 32, 33).</p></li>
+<li><p><strong>SV[N]</strong>: Internal state variables (SV1, SV2, …).</p></li>
+</ul>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrainE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrainE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrainE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialPointSolverFiniteStrain</span></span></span><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-210e4306797f93867821a57b9939c7e9823af127.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain&quot; tooltip=&quot;Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions&quot; tooltip=&quot;Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Solver for material point problems with finite strain materials. </p>
+<p>This class implements a solver for material point problems using finite strain material models. It supports loading steps with controlled displacement gradient and stress components, adaptive time stepping, and history recording. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain37MarmotMaterialPointSolverFiniteStrainERKNSt6stringEPKdKiRK13SolverOptions">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain37MarmotMaterialPointSolverFiniteStrainERKNSt6stringEPKdKiRK13SolverOptions"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain37MarmotMaterialPointSolverFiniteStrainERKNSt6stringEPKdKiRK13SolverOptions"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain__ssCR.doubleCP.iC.SolverOptionsCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a1795eddc0ae6a711af0bbaceead2bff2"></span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialPointSolverFiniteStrain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptionsE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions"><span class="n"><span class="pre">SolverOptions</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Constructor for the <a class="reference internal" href="#classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain"><span class="std std-ref">MarmotMaterialPointSolverFiniteStrain</span></a> class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialName</strong> – Name of the finite strain material model </p></li>
+<li><p><strong>materialProperties</strong> – Array of material properties </p></li>
+<li><p><strong>nMaterialProperties</strong> – Number of material properties </p></li>
+<li><p><strong>options</strong> – Solver options controlling nonlinear iteration settings </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7addStepERK4Step">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7addStepERK4Step"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7addStepERK4Step"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::addStep__StepCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a92eaaad62bfe81c8e6efbf427dcfe507"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addStep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step"><span class="n"><span class="pre">Step</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">step</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add a loading step to the solver. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step</strong> – The <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step"><span class="std std-ref">Step</span></a> to be added </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8getStepsEv">
+<span id="_CPPv3NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8getStepsEv"></span><span id="_CPPv2NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8getStepsEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getStepsC"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ad8e272dc0fdeba6d0f3713c97c911c5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step"><span class="n"><span class="pre">Step</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSteps</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the list of added loading steps. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A vector of <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step"><span class="std std-ref">Step</span></a> containing the added steps </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10clearStepsEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10clearStepsEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10clearStepsEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearSteps"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1aaf9c2d3afe013d5a4283a311e4564b6c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clearSteps</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Clear all added loading steps. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15setInitialStateERKN21FastorStandardTensors9Tensor33dERKN5Eigen8VectorXdE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15setInitialStateERKN21FastorStandardTensors9Tensor33dERKN5Eigen8VectorXdE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15setInitialStateERKN21FastorStandardTensors9Tensor33dERKN5Eigen8VectorXdE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::setInitialState__FastorStandardTensors::Tensor33dCR.Eigen::VectorXdCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ab298b252101c9a5ae4723a6a238e2071"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialState</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">initialStress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">initialStateVars</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Set the initial state of the material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initialStress</strong> – The initial stress in Voigt notation </p></li>
+<li><p><strong>initialStateVars</strong> – The initial state variables </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain25getNumberOfStateVariablesEv">
+<span id="_CPPv3NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain25getNumberOfStateVariablesEv"></span><span id="_CPPv2NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain25getNumberOfStateVariablesEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getNumberOfStateVariablesC"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1aa199d4abb0eb00f2c040c845f63dbc5f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfStateVariables</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the number of state variables in the material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of state variables </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain19resetToInitialStateEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain19resetToInitialStateEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain19resetToInitialStateEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::resetToInitialState"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a04147554138c145592592b02251ddc0e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resetToInitialState</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Reset the solver to the initial state. </p>
+<p>This function resets the initial stress and state variables of the material model. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5solveEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5solveEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5solveEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solve"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a45110dbb641c78c3ccc1ccf3d2899f18"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solve</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve the material point problem for all added steps. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10getHistoryEv">
+<span id="_CPPv3NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10getHistoryEv"></span><span id="_CPPv2NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10getHistoryEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::getHistoryC"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ad5da0c147346dabde5faba5d619da5df"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry"><span class="n"><span class="pre">HistoryEntry</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the recorded history of the simulation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A vector of <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry"><span class="std std-ref">HistoryEntry</span></a> containing the recorded history </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12clearHistoryEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12clearHistoryEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12clearHistoryEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::clearHistory"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a0e2a5a36158c0716e0a7cd3decc047c2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clearHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Clear the recorded history. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12printHistoryEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12printHistoryEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12printHistoryEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::printHistory"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a11838c92ee97bc5c15033e1be8736390"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">printHistory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Print the recorded history to the console. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain18exportHistoryToCSVERKNSt6stringE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain18exportHistoryToCSVERKNSt6stringE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain18exportHistoryToCSVERKNSt6stringE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV__ssCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a4b8ec5c0e10c83e963c7e62f7854a4b3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exportHistoryToCSV</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">filename</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Export the recorded history to a CSV file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – The name of the CSV file to export to </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9solveStepERK4Step">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9solveStepERK4Step"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9solveStepERK4Step"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveStep__StepCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ab55c12b1d7f63fea3fd757c7b7f36a89"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solveStep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step"><span class="n"><span class="pre">Step</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">step</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve a single loading step. </p>
+<p>
+This function iterates over the increments defined in the step, calling solveIncrement for each increment. It manages time stepping and ensures that the entire step is covered. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step</strong> – The <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step"><span class="std std-ref">Step</span></a> to be solved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14solveIncrementERK9Increment">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14solveIncrementERK9Increment"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14solveIncrementERK9Increment"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::solveIncrement__IncrementCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a42a6708f2d72e257776c6ec6349ee201"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">solveIncrement</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Solve a single increment within a loading step. </p>
+<p>
+This function implements a Newton-Raphson iterative solver to compute the stress and deformation state for the given increment. It updates the material state variables and records the history after convergence. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment"><span class="std std-ref">Increment</span></a> to be solved </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the solver does not converge</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15computeResidualERKN21FastorStandardTensors8Tensor9dERKN21FastorStandardTensors8Tensor9dERK9Increment">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15computeResidualERKN21FastorStandardTensors8Tensor9dERKN21FastorStandardTensors8Tensor9dERK9Increment"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain15computeResidualERKN21FastorStandardTensors8Tensor9dERKN21FastorStandardTensors8Tensor9dERK9Increment"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::computeResidual__FastorStandardTensors::Tensor9dCR.FastorStandardTensors::Tensor9dCR.IncrementCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a522ca653bb455453aa434f8e7fc50aab"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors8Tensor9dE" title="Marmot::FastorStandardTensors::Tensor9d"><span class="n"><span class="pre">Tensor9d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeResidual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors8Tensor9dE" title="Marmot::FastorStandardTensors::Tensor9d"><span class="n"><span class="pre">Tensor9d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stressIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors8Tensor9dE" title="Marmot::FastorStandardTensors::Tensor9d"><span class="n"><span class="pre">Tensor9d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Compute the residual for the current increment. </p>
+<p>
+This function calculates the residual vector based on the difference between the computed stress increment and the target increment, taking into account which components are controlled by strain or stress. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stressIncrement</strong> – The computed stress increment </p></li>
+<li><p><strong>target</strong> – The target (mixed) stress/strain increment </p></li>
+<li><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment"><span class="std std-ref">Increment</span></a> containing control information </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed residual vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13modifyTangentERN21FastorStandardTensors9Tensor99dERK9Increment">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13modifyTangentERN21FastorStandardTensors9Tensor99dERK9Increment"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13modifyTangentERN21FastorStandardTensors9Tensor99dERK9Increment"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::modifyTangent__FastorStandardTensors::Tensor99dR.IncrementCR"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ab5175c300da76e16284b989d35dccc1e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modifyTangent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor99dE" title="Marmot::FastorStandardTensors::Tensor99d"><span class="n"><span class="pre">Tensor99d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment"><span class="n"><span class="pre">Increment</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Modify the material tangent matrix based on control type. </p>
+<p>
+This function adjusts the tangent matrix to account for the components that are controlled by displacement gradient or stress, ensuring that the solver correctly handles mixed control scenarios. This is done by zeroing out rows corresponding to displacement gradient controlled components and setting their diagonal entries to one. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tangent</strong> – The material tangent matrix to be modified </p></li>
+<li><p><strong>increment</strong> – The <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment"><span class="std std-ref">Increment</span></a> containing control information</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8materialE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8materialE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain8materialE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::material__std::unique_ptr:MarmotMaterialFiniteStrain:"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ab0e4862d6c7f0792b2b750655ed317ce"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv426MarmotMaterialFiniteStrain" title="MarmotMaterialFiniteStrain"><span class="n"><span class="pre">MarmotMaterialFiniteStrain</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">material</span></span></span><br /></dt>
+<dd><p>The finite strain material model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10nStateVarsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10nStateVarsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain10nStateVarsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::nStateVars__i"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a060c1895709d246cdd0af7a558ea5937"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nStateVars</span></span></span><br /></dt>
+<dd><p>Number of state variables in the material model. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9stateVarsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9stateVarsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9stateVarsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVars__Eigen::VectorXd"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a7f6731e2a9af21c9c742c1d2d446c71c"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><br /></dt>
+<dd><p>Current state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain17_initialStateVarsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain17_initialStateVarsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain17_initialStateVarsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStateVars__Eigen::VectorXd"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a36861b8b06712b8fa84203e3d0672a52"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_initialStateVars</span></span></span><br /></dt>
+<dd><p>Initial state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13stateVarsTempE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13stateVarsTempE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13stateVarsTempE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stateVarsTemp__Eigen::VectorXd"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1af74a4072f5f3716c77c5d837d0262377"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVarsTemp</span></span></span><br /></dt>
+<dd><p>Temporary state variables for computations. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain6stressE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain6stressE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain6stressE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::stress__FastorStandardTensors::Tensor33d"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ac99993dbf80832c5f970a9c05f2e4b67"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The Kirchhoff stress. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14_initialStressE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14_initialStressE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain14_initialStressE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::_initialStress__FastorStandardTensors::Tensor33d"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a9345f16373cefc6156e1b6f0a0e8fa84"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_initialStress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The initial Kirchhoff stress. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5gradUE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5gradUE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5gradUE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::gradU__FastorStandardTensors::Tensor33d"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a3cdf71f50cff8032b571f9a19f7a5153"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The displacement gradient. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7dTau_dFE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7dTau_dFE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7dTau_dFE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::dTau_dF__FastorStandardTensors::Tensor3333d"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ad84d9f433fc9940cd40467cb124570ee"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau_dF</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The material tangent dTau/dF. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5stepsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5stepsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain5stepsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::steps__std::vector:Step:"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1aafb49c5b3f4412a6c0dc1d332035adbb"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step"><span class="n"><span class="pre">Step</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">steps</span></span></span><br /></dt>
+<dd><p>List of loading steps. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7historyE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7historyE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7historyE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::history__std::vector:HistoryEntry:"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1a3844aaa4c9133150648d30d4116dc3ee"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry"><span class="n"><span class="pre">HistoryEntry</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">history</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry"><span class="n"><span class="pre">HistoryEntry</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>History of the simulation. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7optionsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7optionsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain7optionsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::options__SolverOptionsC"></span><span class="target" id="classMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1ab16cd25b6b64f3987929fb2c8379efd4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptionsE" title="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions"><span class="n"><span class="pre">SolverOptions</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><br /></dt>
+<dd><p>Solver options. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntryE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HistoryEntry</span></span></span><br /></dt>
+<dd><p>Struct to record the history of the simulation. </p>
+<p>Each entry contains time, stress, deformation, and state variables. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry5printEv">
+<span id="_CPPv3NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry5printEv"></span><span id="_CPPv2NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry5printEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::printC"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a33fe670b05aa9641fd0173e643b9d7ec"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">print</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Print the history entry to the console. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEdRKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors11Tensor3333dERKN5Eigen8VectorXdE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEdRKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors11Tensor3333dERKN5Eigen8VectorXdE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEdRKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors9Tensor33dERKN21FastorStandardTensors11Tensor3333dERKN5Eigen8VectorXdE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry__double.FastorStandardTensors::Tensor33dCR.FastorStandardTensors::Tensor33dCR.FastorStandardTensors::Tensor3333dCR.Eigen::VectorXdCR"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a55c20c2585d2c729fb2fa63f25240ee1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HistoryEntry</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stress</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dTau_dF</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Constructor for <a class="reference internal" href="#structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry"><span class="std std-ref">HistoryEntry</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time</strong> – Time at the history entry </p></li>
+<li><p><strong>stress</strong> – Stress tensor at the history entry </p></li>
+<li><p><strong>F</strong> – Deformation gradient at the history entry </p></li>
+<li><p><strong>dTau_dF</strong> – Material tangent at the history entry </p></li>
+<li><p><strong>stateVars</strong> – State variables at the history entry </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEv">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEv"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry12HistoryEntryEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::HistoryEntry"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a1f93cfc5a4af4f3dd76c8aea34031674"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HistoryEntry</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry4timeE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry4timeE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry4timeE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::time__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1aad1456473c7dc95674e65cb79dac729c"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><br /></dt>
+<dd><p>Time at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry6stressE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry6stressE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry6stressE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stress__FastorStandardTensors::Tensor33d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1ab0f5d978943ef2bd5fd03d3c28b9ab9b"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><br /></dt>
+<dd><p>Stress at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry1FE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry1FE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry1FE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::F__FastorStandardTensors::Tensor33d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a488d704f4e400ff603e5b52048364e9e"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">F</span></span></span><br /></dt>
+<dd><p>deformation gradient at the history entry </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry7dTau_dFE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry7dTau_dFE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry7dTau_dFE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::dTau_dF__FastorStandardTensors::Tensor3333d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a20f93a97a746771aa6f1de6b56c7090f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors11Tensor3333dE" title="Marmot::FastorStandardTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau_dF</span></span></span><br /></dt>
+<dd><p>Material tangent at the history entry. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry9stateVarsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry9stateVarsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain12HistoryEntry9stateVarsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry::stateVars__Eigen::VectorXd"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1HistoryEntry_1a846067b2ecf9bee16e58caaaff6f4235"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><br /></dt>
+<dd><p>State variables at the history entry. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9IncrementE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Increment</span></span></span><br /></dt>
+<dd><p>Struct to define a loading increment. </p>
+<p>Each increment contains displacement gradient and stress increments, control flags, time information, and iteration limits. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment14gradUIncrementE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment14gradUIncrementE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment14gradUIncrementE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::gradUIncrement__FastorStandardTensors::Tensor9d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1a8e6e64567d21822c98cb9696edcd20e8"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors8Tensor9dE" title="Marmot::FastorStandardTensors::Tensor9d"><span class="n"><span class="pre">Tensor9d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradUIncrement</span></span></span><br /></dt>
+<dd><p>Target displacement gradient increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment15stressIncrementE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment15stressIncrementE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment15stressIncrementE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::stressIncrement__FastorStandardTensors::Tensor9d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1a2ae5c57d382f4e3b87d0550c5a8fe18d"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors8Tensor9dE" title="Marmot::FastorStandardTensors::Tensor9d"><span class="n"><span class="pre">Tensor9d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressIncrement</span></span></span><br /></dt>
+<dd><p>Target Kirchhoff stress increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment26isGradUComponentControlledE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment26isGradUComponentControlledE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment26isGradUComponentControlledE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isGradUComponentControlled__FastorStandardTensors::Tensor9t:b:"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1a327ae9daa7e4222140d67e7ebc432d49"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot21FastorStandardTensors8Tensor9tE" title="Marmot::FastorStandardTensors::Tensor9t"><span class="n"><span class="pre">Tensor9t</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isGradUComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which displecement gradient components are controlled </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment27isStressComponentControlledE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment27isStressComponentControlledE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment27isStressComponentControlledE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::isStressComponentControlled__FastorStandardTensors::Tensor9t:b:"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1a34d8d0d1a9b8f367145df9644998cae9"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot21FastorStandardTensors8Tensor9tE" title="Marmot::FastorStandardTensors::Tensor9t"><span class="n"><span class="pre">Tensor9t</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStressComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which stress components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment7timeOldE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment7timeOldE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment7timeOldE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::timeOld__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1ab99ba150fb203bd08ec627a5c881f735"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeOld</span></span></span><br /></dt>
+<dd><p>Old time at the beginning of the increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment2dTE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment2dTE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain9Increment2dTE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment::dT__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Increment_1a9e5670d0b6dab1610b24ba7dac8ff74a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><br /></dt>
+<dd><p>Time step size for the increment. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptionsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptionsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptionsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1SolverOptions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SolverOptions</span></span></span><br /></dt>
+<dd><p>Struct to define solver options. </p>
+<p>Contains parameters for controlling the solver’s behavior. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions13maxIterationsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions13maxIterationsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions13maxIterationsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions::maxIterations__i"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1SolverOptions_1a535e324b59956fd041f90cfdafac483a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxIterations</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">25</span></span><br /></dt>
+<dd><p>Maximum number of iterations per increment (default: 25) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions17residualToleranceE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions17residualToleranceE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions17residualToleranceE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions::residualTolerance__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1SolverOptions_1adb474eb471187a03ddab9616b77125ba"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">residualTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-10</span></span><br /></dt>
+<dd><p>Convergence tolerance (default: 1e-10) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions19correctionToleranceE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions19correctionToleranceE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain13SolverOptions19correctionToleranceE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions::correctionTolerance__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1SolverOptions_1a8dbda2872f21ea8fef615a12ef82ac03"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">correctionTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-10</span></span><br /></dt>
+<dd><p>Correction tolerance (default: 1e-10) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4StepE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Step</span></span></span><br /></dt>
+<dd><p>Struct to define a loading step. </p>
+<p>Each step contains targets for displacement gradient and stress states, time information and time step control parameters. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step12checkControlEv">
+<span id="_CPPv3NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step12checkControlEv"></span><span id="_CPPv2NK6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step12checkControlEv"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::checkControlC"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a0c8b4008ca3a75cb7be6a94c22750886"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkControl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Check that for each component, either deformation or stress is controlled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the condition is not met </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step20gradUIncrementTargetE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step20gradUIncrementTargetE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step20gradUIncrementTargetE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::gradUIncrementTarget__FastorStandardTensors::Tensor33d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a968938e8c8756455c3472789ac7c9735"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradUIncrementTarget</span></span></span><br /></dt>
+<dd><p>Target displacement gradient increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step21stressIncrementTargetE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step21stressIncrementTargetE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step21stressIncrementTargetE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::stressIncrementTarget__FastorStandardTensors::Tensor33d"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1afb3a3a222c67764bd758081c87b8cea0"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensors9Tensor33dE" title="Marmot::FastorStandardTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressIncrementTarget</span></span></span><br /></dt>
+<dd><p>Target Kirchhoff stress increment for the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step26isGradUComponentControlledE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step26isGradUComponentControlledE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step26isGradUComponentControlledE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::isGradUComponentControlled__FastorStandardTensors::Tensor33t:b:"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a2262dfbdb20579ccc3609b1c08d816cf"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot21FastorStandardTensors9Tensor33tE" title="Marmot::FastorStandardTensors::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isGradUComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which displacement gradient components are controlled </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step27isStressComponentControlledE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step27isStressComponentControlledE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step27isStressComponentControlledE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::isStressComponentControlled__FastorStandardTensors::Tensor33t:b:"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a1d63cc4b254b167ff234e511dd88079f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot21FastorStandardTensors9Tensor33tE" title="Marmot::FastorStandardTensors::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isStressComponentControlled</span></span></span><br /></dt>
+<dd><p>Flags to indicate which stress components are controlled. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step9timeStartE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step9timeStartE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step9timeStartE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::timeStart__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a70a3c53b81ee75f732aa95d3302f9b48"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeStart</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p>Start time of the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7timeEndE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7timeEndE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7timeEndE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::timeEnd__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a2f9e82242e0f75c7f3359ce25aab29b0"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeEnd</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0</span></span><br /></dt>
+<dd><p>End time of the step. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7dTStartE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7dTStartE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step7dTStartE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::dTStart__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1ad1bd94af79d8c7abd41db319da77cbe3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTStart</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.1</span></span><br /></dt>
+<dd><p>Initial time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMinE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMinE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMinE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::dTMin__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a30df026a96e7407824a72d2e7cf650e3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTMin</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><br /></dt>
+<dd><p>Minimum time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMaxE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMaxE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step5dTMaxE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::dTMax__double"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1ab43c9aa152e7e56732275d6071440ba1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTMax</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.5</span></span><br /></dt>
+<dd><p>Maximum time step size. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step13maxIncrementsE">
+<span id="_CPPv3N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step13maxIncrementsE"></span><span id="_CPPv2N6Marmot7Solvers37MarmotMaterialPointSolverFiniteStrain4Step13maxIncrementsE"></span><span id="Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step::maxIncrements__i"></span><span class="target" id="structMarmot_1_1Solvers_1_1MarmotMaterialPointSolverFiniteStrain_1_1Step_1a71c9159afcb7ba9112b6f7b43eac4fce"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxIncrements</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">100</span></span><br /></dt>
+<dd><p>Maximum number of increments in the step. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="materialpointsolverhypoelastic.html" class="btn btn-neutral float-left" title="Material Point Solver for Hypo-Elastic Materials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="materials.html" class="btn btn-neutral float-right" title="Material models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

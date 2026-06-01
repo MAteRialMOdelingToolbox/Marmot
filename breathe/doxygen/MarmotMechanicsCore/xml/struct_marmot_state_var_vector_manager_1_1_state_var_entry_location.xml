@@ -11,12 +11,13 @@
         <name>index</name>
         <qualifiedname>MarmotStateVarVectorManager::StateVarEntryLocation::index</qualifiedname>
         <briefdescription>
+<para>Zero-based offset into the statevar array where the entry begins. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="62" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="62" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="60" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="60" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a4941fde089ac245ca1b0e91e8f978162" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -25,12 +26,13 @@
         <name>length</name>
         <qualifiedname>MarmotStateVarVectorManager::StateVarEntryLocation::length</qualifiedname>
         <briefdescription>
+<para>Number of consecutive doubles occupied by this entry. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="63" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="63" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="61" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="61" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -38,7 +40,7 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="61" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="61" bodyend="64"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="59" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="59" bodyend="62"/>
     <listofallmembers>
       <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a64931f28694b5a7582ea2207bf0225b8" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarEntryLocation</scope><name>index</name></member>
       <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a4941fde089ac245ca1b0e91e8f978162" prot="public" virt="non-virtual"><scope>MarmotStateVarVectorManager::StateVarEntryLocation</scope><name>length</name></member>

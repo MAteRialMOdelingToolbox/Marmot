@@ -1,0 +1,24 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/MarmotConstants.h" alt="" coords="118,101,411,149"/>
+<area shape="rect" id="node9" title="cmath" alt="" coords="5,197,86,245"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="209,153,101,199,99,194,209,147"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" alt="" coords="392,5,1376,53"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="727,55,427,102,426,97,732,53"/>
+<area shape="rect" id="node3" title="Marmot/MarmotTypedefs.h" alt="" coords="473,101,756,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="819,53,697,98,695,93,814,55"/>
+<area shape="rect" id="node5" title="algorithm" alt="" coords="780,101,895,149"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="875,52,857,90,854,85,870,55"/>
+<area shape="rect" id="node6" title="autodiff/forward/dual/dual.hpp" alt="" coords="990,197,1301,245"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="894,52,920,101,938,126,959,147,995,171,1036,192,1031,191,992,176,956,151,934,129,915,103,892,56"/>
+<area shape="rect" id="node8" title="autodiff/forward/real/real.hpp" alt="" coords="970,101,1273,149"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="944,51,1051,95,1046,95,943,57"/>
+<area shape="rect" id="node10" title="complex" alt="" coords="1297,101,1397,149"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="1056,51,1165,71,1284,101,1279,101,1164,76,1056,57"/>
+<area shape="rect" id="node4" title="Eigen/Dense" alt="" coords="110,197,251,245"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="490,150,266,199,265,194,485,150"/>
+<area shape="poly" id="edge9" title="include" alt="" coords="748,147,1001,194,996,194,747,153"/>
+<area shape="rect" id="node7" title="autodiff/forward/dual/eigen.hpp" alt="" coords="275,197,597,245"/>
+<area shape="poly" id="edge10" title="include" alt="" coords="573,149,494,193,493,188,568,151"/>
+<area shape="rect" id="node11" title="unsupported/Eigen/CXX11/Tensor" alt="" coords="622,197,965,245"/>
+<area shape="poly" id="edge11" title="include" alt="" coords="660,147,739,190,733,190,659,153"/>
+</map>

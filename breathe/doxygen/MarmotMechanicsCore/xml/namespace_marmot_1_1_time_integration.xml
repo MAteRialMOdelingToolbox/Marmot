@@ -48,7 +48,7 @@
 <para>Newmark-Beta time integration. </para>
         </briefdescription>
         <detaileddescription>
-<para>This function implements the Newmark-Beta time integration method for linear dynamic problems. It updates the velocity and acceleration vectors based on the displacement increment and the time step. <parameterlist kind="param"><parameteritem>
+<para>This function implements the Newmark-Beta time integration method for linear dynamic problems. It updates the velocity and acceleration vectors based on the displacement increment and the time step. <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
 </parameternamelist>
@@ -56,7 +56,8 @@
 <para>Number of dimensions (2D or 3D) </para>
 </parameterdescription>
 </parameteritem>
-<parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>du</parametername>
 </parameternamelist>
@@ -113,8 +114,6 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>void </para>
-</simplesect>
 <simplesect kind="note"><para>The function assumes that the input vectors are of size nDim. </para>
 </simplesect>
 <simplesect kind="note"><para>The function also assumes that the time step is positive and that the Newmark-Beta parameter is not zero. </para>
@@ -125,13 +124,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" line="52" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" bodystart="52" bodyend="69"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" line="49" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" bodystart="49" bodyend="66"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" line="31" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h" line="29" column="1"/>
   </compounddef>
 </doxygen>

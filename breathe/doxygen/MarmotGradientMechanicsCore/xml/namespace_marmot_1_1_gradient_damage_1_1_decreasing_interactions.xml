@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions" kind="namespace" language="C++">
+    <compoundname>Marmot::GradientDamage::DecreasingInteractions</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_first_order_derived">Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_second_order_derived">Marmot::GradientDamage::DecreasingInteractions::SecondOrderDerived</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_decreasing_interactions_8h_1a62dbce5b28ca1d62043f765622de8b8b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::GradientDamage::DecreasingInteractions::poh</definition>
+        <argsstring>(T omega, double eta, double R)</argsstring>
+        <name>poh</name>
+        <qualifiedname>Marmot::GradientDamage::DecreasingInteractions::poh</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>omega</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>eta</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>R</declname>
+        </param>
+        <briefdescription>
+<para>Damage dependent nonlocal interaction function acc. Poh &amp; Sun (2017) </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>omega</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>damage variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>eta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter controlling the rate of decrease of interactions with damage </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>R</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter controlling the residual interactions at full damage </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type of the interaction function value (e.g., double, dual, etc.) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>interaction function value</para>
+</simplesect>
+The function is defined as: <formula id="13">\[ g(\omega) = \frac{(1 - R) \exp(-\eta \, \omega) + R - \exp(-\eta) }{ 1 - \exp(-\eta)} \]</formula> where <formula id="14">$ \omega $</formula> is the damage variable, <formula id="15">$ \eta $</formula> controls the rate of decrease of interactions with damage, and <formula id="16">$ R $</formula> controls the residual interactions at full damage. The function is designed to decrease as damage increases, with a residual interaction value of <formula id="16">$ R $</formula> at full damage ( <formula id="17">$ \omega = 1 $</formula>). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" line="50" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" bodystart="50" bodyend="54"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h" line="32" column="3"/>
+  </compounddef>
+</doxygen>

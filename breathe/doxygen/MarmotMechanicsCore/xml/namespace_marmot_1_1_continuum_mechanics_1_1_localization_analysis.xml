@@ -18,12 +18,33 @@
           <declname>normalVector</declname>
         </param>
         <briefdescription>
+<para>Computes the acoustic tensor for a given material tangent and normal vector. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>materialTangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fourth-order material tangent in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>normalVector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Candidate band normal <formula id="250">$\mathbf{n}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Acoustic tensor <formula id="289">$\mathbf{Q} = \mathbf{n} \cdot \mathbb{C} \cdot \mathbf{n}$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="34" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="34" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="47" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="47" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_localization_8h_1a2584a6773166e96f681967bc4e41090a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -36,12 +57,25 @@
           <declname>acousticTensor</declname>
         </param>
         <briefdescription>
+<para>Checks whether the given acoustic tensor indicates localization. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>acousticTensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Acoustic tensor to test. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if <formula id="290">$\det(\mathbf{Q}) \le 0$</formula> (localization detected). </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="37" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="37" declcolumn="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="55" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="55" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_localization_8h_1a25f0c7c37fb9434b5d74af0a5b5c86d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Marmot::Vector3d</type>
@@ -58,12 +92,33 @@
           <declname>beta</declname>
         </param>
         <briefdescription>
+<para>Constructs a unit normal vector from spherical angles. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>alpha</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polar angle (rad). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>beta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Azimuthal angle (rad). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Unit normal vector <formula id="250">$\mathbf{n}$</formula>. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="39" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="39" declcolumn="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="63" column="22" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="63" declcolumn="22"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_localization_8h_1af73e1300206b015b834ce93a24538060" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -76,18 +131,31 @@
           <declname>materialTangent</declname>
         </param>
         <briefdescription>
+<para>Computes the minimum determinant of the acoustic tensor over all band normals. </para>
         </briefdescription>
         <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>materialTangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fourth-order material tangent in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Minimum determinant of the acoustic tensor. </para>
+</simplesect>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="41" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="41" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="70" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" declline="70" declcolumn="12"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="32" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h" line="39" column="3"/>
   </compounddef>
 </doxygen>

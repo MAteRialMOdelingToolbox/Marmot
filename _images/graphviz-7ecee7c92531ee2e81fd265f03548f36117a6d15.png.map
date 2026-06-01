@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h" alt="" coords="5,5,1367,53"/>
+<area shape="rect" id="node2" title="cmath" alt="" coords="596,101,677,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="676,52,657,90,654,86,672,55"/>
+<area shape="rect" id="node3" title="tuple" alt="" coords="701,101,773,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="700,51,719,89,715,87,697,56"/>
+</map>

@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finite-Strain Orthotropic Biot Viscoelasticity &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Linear Elastic model" href="linearelastic.html" />
+    <link rel="prev" title="Finite-strain J2 plasticity" href="finitestrainj2plasticity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Finite-Strain Orthotropic Biot Viscoelasticity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Finite-Strain Orthotropic Biot Viscoelasticity</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/finitestrainorthotropicbiotviscoelasticity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="finite-strain-orthotropic-biot-viscoelasticity">
+<h1>Finite-Strain Orthotropic Biot Viscoelasticity<a class="headerlink" href="#finite-strain-orthotropic-biot-viscoelasticity" title="Link to this heading"></a></h1>
+<p>A finite-strain orthotropic viscoelastic material model based on a generalized Maxwell model
+formulated in terms of the Biot stress and the right stretch tensor <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span>.
+The instantaneous elastic response is governed by an orthotropic linear Biot constitutive law.
+The consistent algorithmic tangent is computed via automatic differentiation.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Index</strong></p></th>
+<th class="head"><p><strong>Model Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(E_1\)</span></p></td>
+<td><p>Young’s modulus in material direction 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(E_2\)</span></p></td>
+<td><p>Young’s modulus in material direction 2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(E_3\)</span></p></td>
+<td><p>Young’s modulus in material direction 3</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu_{12}\)</span></p></td>
+<td><p>Poisson’s ratio (1–2 plane)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu_{13}\)</span></p></td>
+<td><p>Poisson’s ratio (1–3 plane)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu_{23}\)</span></p></td>
+<td><p>Poisson’s ratio (2–3 plane)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><span class="math notranslate nohighlight">\(G_{12}\)</span></p></td>
+<td><p>Shear modulus in the 1–2 plane</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><span class="math notranslate nohighlight">\(G_{13}\)</span></p></td>
+<td><p>Shear modulus in the 1–3 plane</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><span class="math notranslate nohighlight">\(G_{23}\)</span></p></td>
+<td><p>Shear modulus in the 2–3 plane</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>n<sub>M</sub></p></td>
+<td><p>Number of Maxwell elements</p></td>
+</tr>
+<tr class="row-even"><td><p>10 … 10+2n<sub>M</sub>−1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\gamma_i,\,\tau_i\)</span></p></td>
+<td><p>Pairs of relative stiffness weight <span class="math notranslate nohighlight">\(\gamma_i\)</span> and relaxation time
+<span class="math notranslate nohighlight">\(\tau_i\)</span> for each Maxwell element (<span class="math notranslate nohighlight">\(i=1,\ldots,n_M\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>10+2n<sub>M</sub> <em>(optional)</em></p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>Density</p></td>
+</tr>
+</tbody>
+</table>
+<p>The Poisson’s ratio <span class="math notranslate nohighlight">\(\nu_{ij}\)</span> is defined as the ratio of lateral strain in
+direction <span class="math notranslate nohighlight">\(x_j\)</span> to axial strain in direction <span class="math notranslate nohighlight">\(x_i\)</span> under uniaxial stress in
+direction <span class="math notranslate nohighlight">\(x_i\)</span>. See namespace <code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::Elasticity</span></code> for details.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>State Variable</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">S0_old</span></code> (9 components)</p></td>
+<td><p>Biot stress from the previous increment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">creepStateVars</span></code> (9 × n<sub>M</sub> components)</p></td>
+<td><p>Creep state tensors for each Maxwell element</p></td>
+</tr>
+</tbody>
+</table>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The model is the orthotropic counterpart of the
+<a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html"><span class="doc">Finite-Strain Isotropic Biot Viscoelasticity</span></a>. It replaces the isotropic
+Neo-Hookean Biot potential with a fully orthotropic linear Biot constitutive
+relation.</p>
+<p>The polar decomposition <span class="math notranslate nohighlight">\(\boldsymbol{F} = \boldsymbol{R}\,\boldsymbol{U}\)</span>
+is used. The right stretch tensor <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> is obtained from the
+spectral decomposition of
+<span class="math notranslate nohighlight">\(\boldsymbol{C} = \boldsymbol{Q}\,\boldsymbol{\Lambda}\,\boldsymbol{Q}^{\mathsf{T}}\)</span>.</p>
+<p>The instantaneous Biot stress is given by the orthotropic linear relation</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{T}_{\rm Biot} = \mathbb{C}_{\rm Biot} : (\boldsymbol{U} - \boldsymbol{I}),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{C}_{\rm Biot}\)</span> is the fourth-order orthotropic stiffness tensor
+assembled from the nine independent engineering constants
+<span class="math notranslate nohighlight">\(E_1,\,E_2,\,E_3,\,\nu_{12},\,\nu_{13},\,\nu_{23},\,G_{12},\,G_{13},\,G_{23}\)</span>.</p>
+<p>The generalized Maxwell model introduces non-equilibrium overstresses:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{T}_{\rm Biot}
+= \boldsymbol{T}_{\rm Biot,\infty} + \sum_{i=1}^{n_M} \boldsymbol{h}_i.\]</div>
+<p>The algorithmic update for each overstress is</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{h}_i^{n+1}
+= e^{-\Delta t/\tau_i}\,\boldsymbol{h}_i^n
+  + \gamma_i\,\Delta\boldsymbol{T}_{\rm Biot,0}\,
+    \frac{1 - e^{-\Delta t/\tau_i}}{\Delta t/\tau_i}.\]</div>
+<p>The second Piola–Kirchhoff stress is recovered from the Biot stress in the
+principal-stretch frame via</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{S}_{IJ}
+= \frac{2\,T_{\rm Biot,IJ}}{\lambda_I + \lambda_J},
+\quad \lambda_I = \sqrt{\Lambda_{II}},\]</div>
+<p>and the Kirchhoff stress follows by push-forward:
+<span class="math notranslate nohighlight">\(\boldsymbol{\tau} = \boldsymbol{F}\,\boldsymbol{S}\,\boldsymbol{F}^{\mathsf{T}}\)</span>.</p>
+<p>Primary reference: Liu et al. 2021, <em>A continuum and computational framework for
+viscoelastodynamics: I. Finite deformation linear models</em>, Comput. Meth. Appl.
+Mech. Engrg. 385, 114059.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticityE">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticityE"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticityE"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FiniteStrainOrthotropicBiotViscoelasticity</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity28MarmotMaterialFiniteStrainADEPKdii" title="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::MarmotMaterialFiniteStrainAD"><span class="n"><span class="pre">MarmotMaterialFiniteStrainAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a88238167812bd41f6102bd30a716f02eca56fb9.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity&quot; tooltip=&quot;Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrainAD&quot; tooltip=&quot;MarmotMaterialFiniteStrainAD&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-bb829ae3aff7250eab5465e831ec7fec3ac035be.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;5&quot; [label=&quot;Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties&quot; tooltip=&quot;Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity&quot; tooltip=&quot;Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
+    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrainAD&quot; tooltip=&quot;MarmotMaterialFiniteStrainAD&quot;]
+    &quot;4&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Finite-strain orthotropic Biot-viscoelastic material model. </p>
+<p>The model combines orthotropic Biot-type hyperelasticity with a generalized Maxwell evolution in Biot stress space.</p>
+<p><dl class="simple">
+<dt><strong>Material parameters</strong></dt><dd><p><ul class="simple">
+<li><p><strong>E1</strong>, <strong>E2</strong>, <strong>E3</strong> - Young’s moduli in principal material directions</p></li>
+<li><p><strong>nu12</strong>, <strong>nu13</strong>, <strong>nu23</strong> - Poisson ratios</p></li>
+<li><p><strong>G12</strong>, <strong>G13</strong>, <strong>G23</strong> - shear moduli</p></li>
+<li><p><strong>n_Maxwell</strong> - number of Maxwell elements</p></li>
+<li><p><strong>tau</strong>[i], beta[i] (i = 1..n_Maxwell) - Maxwell retardation times and relative weights</p></li>
+<li><p><strong>rho</strong> - density (optional; read from the last material property entry)</p></li>
+</ul>
+</p>
+</dd>
+<dt><strong>State variables</strong></dt><dd><p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S0_old</span></code> - Biot stress from the previous increment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">creepStateVars</span></code> - internal variables for the generalized Maxwell chain </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity42FiniteStrainOrthotropicBiotViscoelasticityEPKdii">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity42FiniteStrainOrthotropicBiotViscoelasticityEPKdii"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity42FiniteStrainOrthotropicBiotViscoelasticityEPKdii"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::FiniteStrainOrthotropicBiotViscoelasticity__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a9ee842220a184e5df6dad69beea57753"></span><span class="sig-name descname"><span class="n"><span class="pre">FiniteStrainOrthotropicBiotViscoelasticity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity42FiniteStrainOrthotropicBiotViscoelasticityEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a <a class="reference internal" href="#classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity"><span class="std std-ref">FiniteStrainOrthotropicBiotViscoelasticity</span></a> material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – Pointer to the material properties vector. </p></li>
+<li><p><strong>nMaterialProperties</strong> – Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p></li>
+<li><p><strong>materialLabel</strong> – Material label. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity15computeStressADER22ConstitutiveResponseADIXL3EEERK13DeformationADIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity15computeStressADER22ConstitutiveResponseADIXL3EEERK13DeformationADIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity15computeStressADER22ConstitutiveResponseADIX3EERK13DeformationADIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::computeStressAD__ConstitutiveResponseAD:3:R.DeformationAD:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a89bee35b8f1e652eaca542c733bfba7e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponseAD</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">DeformationAD</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity15computeStressADER22ConstitutiveResponseADIXL3EEERK13DeformationADIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute Kirchhoff stress using automatic differentiation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response including stress, energy density and state variables. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation information with deformation gradient <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Time increment information. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity10getDensityEPKd"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1af625d1ab5d10bd3bfdd8d8deaf20da71"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the material density. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to state variables (unused). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density from the last entry in <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity28MarmotMaterialFiniteStrainADEPKdii">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity28MarmotMaterialFiniteStrainADEPKdii"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity28MarmotMaterialFiniteStrainADEPKdii"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::MarmotMaterialFiniteStrainAD__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a3d9018980cf02b50141828446b73c1ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialFiniteStrainAD</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity28MarmotMaterialFiniteStrainADEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a MarmotMaterialFiniteStrainAD. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> Pointer to the array of material property values. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of material property values. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Unique identifier for this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity21initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity21initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity21initializeStateLayoutEv"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a72f83711f47493741afbd67029875754"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity21initializeStateLayoutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Define the layout of persistent state variables. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E1E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E1E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E1E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::E1__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a84f7610b15dea7007d7d112751f904e8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E1</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in principal material direction 1. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E2E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E2E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E2E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::E2__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a30a21115a698393c99ed4a8fbf2276ee"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E2</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in principal material direction 2. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E3E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E3E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E3E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::E3__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a1a2085bf0a6bc96cb2c8abf7bd1cf232"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E3</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity2E3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus in principal material direction 3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu12E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu12E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu12E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::nu12__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1aaa93b243ac390ce26b19dd76264f4204"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nu12</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu12E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson ratio relating directions 1 and 2. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu13E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu13E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu13E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::nu13__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a2e83e2c18d393ba704e102acdb60e51b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nu13</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu13E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson ratio relating directions 1 and 3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu23E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu23E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu23E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::nu23__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a65916887514066b7689c3d84dc89cd77"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nu23</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity4nu23E" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson ratio relating directions 2 and 3. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G12E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G12E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G12E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::G12__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1af1b610fe17c90c2da9d8f803dcf244dc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G12</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G12E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus in the 1-2 plane. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G13E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G13E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G13E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::G13__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a2912d1bb98ad50529c88660fdabf1cfa"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G13</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G13E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus in the 1-3 plane. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G23E">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G23E"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G23E"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::G23__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a95ddff7043b3157abb54905b3c090fa8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G23</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity3G23E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear modulus in the 2-3 plane. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity17maxwellPropertiesE">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity17maxwellPropertiesE"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity17maxwellPropertiesE"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::maxwellProperties__ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellPropertiesC"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a5861006937fd0a738f892bf0cb73a81d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrainE" title="Marmot::ContinuumMechanics::FiniteStrain"><span class="n"><span class="pre">FiniteStrain</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain15ViscoelasticityE" title="Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity"><span class="n"><span class="pre">Viscoelasticity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics12FiniteStrain15Viscoelasticity17MaxwellPropertiesE" title="Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties"><span class="n"><span class="pre">MaxwellProperties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxwellProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity17maxwellPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Generalized Maxwell model parameters. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity14dBiotStress_dUE">
+<span id="_CPPv3N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity14dBiotStress_dUE"></span><span id="_CPPv2N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity14dBiotStress_dUE"></span><span id="Marmot::Materials::FiniteStrainOrthotropicBiotViscoelasticity::dBiotStress_dU__FastorStandardTensors::Tensor3333t:autodiff::dual:C"></span><span class="target" id="classMarmot_1_1Materials_1_1FiniteStrainOrthotropicBiotViscoelasticity_1a042afb567263240c83fde208035b2f5b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot21FastorStandardTensorsE" title="Marmot::FastorStandardTensors"><span class="n"><span class="pre">FastorStandardTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot21FastorStandardTensors11Tensor3333tE" title="Marmot::FastorStandardTensors::Tensor3333t"><span class="n"><span class="pre">Tensor3333t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv48autodiff" title="autodiff"><span class="n"><span class="pre">autodiff</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dual</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dBiotStress_dU</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42FiniteStrainOrthotropicBiotViscoelasticity14dBiotStress_dUE" title="Link to this definition"></a><br /></dt>
+<dd><p>Constant derivative of Biot stress with respect to right stretch tensor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="finitestrainj2plasticity.html" class="btn btn-neutral float-left" title="Finite-strain J2 plasticity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="linearelastic.html" class="btn btn-neutral float-right" title="Linear Elastic model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
