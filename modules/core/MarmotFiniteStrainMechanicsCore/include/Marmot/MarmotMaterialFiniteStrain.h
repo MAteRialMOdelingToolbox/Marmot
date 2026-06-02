@@ -60,7 +60,7 @@ public:
     : materialPropertyStorage( matProperties_, matProperties_ + nMaterialProperties_ ),
       materialProperties( materialPropertyStorage.data() ),
       nMaterialProperties( nMaterialProperties_ ),
-      materialPropertyNames( nMaterialProperties_ ),
+      materialPropertyNames(),
       materialNumber( materialNumber_ )
   {
   }
@@ -78,16 +78,25 @@ public:
    * @brief Assign a single material property by name.
    * @param name Name of the material property.
    * @param value Value to assign.
+   * @throws std::logic_error If setValidMaterialProperties() has not been called.
    * @throws std::invalid_argument If the property name is unknown.
+   * @note This method only updates the raw property storage (materialPropertyStorage).
+   *       Derived classes that cache property values into member variables during
+   *       construction will not have those cached values refreshed.  Call this method
+   *       only before the cached values are first consumed (i.e., before computeStress).
    */
-  void assignMaterialProperty( const std::string& name, double value )
+  virtual void assignMaterialProperty( const std::string& name, double value )
   {
+    if ( materialPropertyNames.empty() && nMaterialProperties > 0 ) {
+      throw std::logic_error(
+        "Material property names have not been set. Call setValidMaterialProperties() in the derived constructor." );
+    }
     const auto it = std::find( materialPropertyNames.begin(), materialPropertyNames.end(), name );
     if ( it == materialPropertyNames.end() ) {
       throw std::invalid_argument( "Unknown material property: " + name );
     }
 
-    const auto idx              = std::distance( materialPropertyNames.begin(), it );
+    const auto idx               = std::distance( materialPropertyNames.begin(), it );
     materialPropertyStorage[idx] = value;
   }
 
