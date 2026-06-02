@@ -24,6 +24,13 @@ namespace Marmot::Materials {
                                 const int     materialLabel )
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel )
   {
+    if ( nMaterialProperties > 7 ) {
+      throw std::invalid_argument( "Too many material properties for VonMisesModel." );
+    }
+    const std::vector< std::string > allPropertyNames = {
+      "E", "nu", "yieldStress", "HLin", "deltaYieldStress", "delta", "density" };
+    setValidMaterialProperties(
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();
   }

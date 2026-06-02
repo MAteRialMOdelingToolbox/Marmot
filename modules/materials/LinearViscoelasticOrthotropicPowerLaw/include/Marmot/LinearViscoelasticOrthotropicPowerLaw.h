@@ -106,6 +106,8 @@ namespace Marmot::Materials {
                                            int           nMaterialProperties,
                                            int           materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     void computeStress( state3D&                state,
                         Marmot::Matrix6d&       dStressDDStrain,
                         const Marmot::Vector6d& dStrain,

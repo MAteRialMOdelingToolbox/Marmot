@@ -94,10 +94,16 @@ namespace Marmot::Materials {
       baseMaterial = std::make_unique< BaseMaterialType >( matProperties_ + 1,
                                                            nMaterialProperties_ - 1,
                                                            materialNumber_ );
+      std::vector< std::string > propertyNames = { "nSubsteps" };
+      const auto&                baseNames     = baseMaterial->getValidMaterialProperties();
+      propertyNames.insert( propertyNames.end(), baseNames.begin(), baseNames.end() );
+      setValidMaterialProperties( std::move( propertyNames ) );
       initializeStateLayout();
     }
 
     virtual ~MarmotMaterialFiniteStrainSubstepped() = default;
+
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
 
     double getDensity( const double* stateVars ) const override { return baseMaterial->getDensity( stateVars ); }
 

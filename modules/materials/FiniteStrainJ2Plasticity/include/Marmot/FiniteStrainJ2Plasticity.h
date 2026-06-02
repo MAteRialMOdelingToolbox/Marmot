@@ -111,6 +111,8 @@ namespace Marmot::Materials {
      */
     FiniteStrainJ2Plasticity( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     /**
      * @brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.  Performs an elastic trial;
      * if yielding occurs, return mapping is performed.

@@ -97,6 +97,27 @@ namespace Marmot::Materials {
           createMaxwellProperties( materialProperties[2 + nElasticPropertiesMap.at( hyperelasticBase )],
                                    &materialProperties[3 + nElasticPropertiesMap.at( hyperelasticBase )] ) )
   {
+    std::vector< std::string > propertyNames = { "hyperelasticBase", "onlyShearCreep" };
+    switch ( hyperelasticBase ) {
+    case NeoHooke:
+    case PenceGouNeoHooke: propertyNames.insert( propertyNames.end(), { "K", "G" } ); break;
+    case Yeoh: propertyNames.insert( propertyNames.end(), { "C10", "C20", "C30", "K" } ); break;
+    case MooneyRivlin: propertyNames.insert( propertyNames.end(), { "C10", "C01", "K" } ); break;
+    default: throw std::runtime_error( "Unknown hyperelastic base in material property naming." );
+    }
+    propertyNames.push_back( "nMaxwell" );
+    for ( int i = 0; i < maxwellProperties.nMaxwell; ++i ) {
+      propertyNames.push_back( "tau" + std::to_string( i + 1 ) );
+      propertyNames.push_back( "beta" + std::to_string( i + 1 ) );
+    }
+    if ( static_cast< int >( propertyNames.size() ) < nMaterialProperties ) {
+      propertyNames.push_back( "density" );
+    }
+    if ( static_cast< int >( propertyNames.size() ) != nMaterialProperties ) {
+      throw std::invalid_argument(
+        "Unsupported number of material properties for CompressibleFiniteStrainLinearViscoelasticity." );
+    }
+    setValidMaterialProperties( std::move( propertyNames ) );
 
     if ( onlyShearCreep == 1.0 ) {
       double G = 0;

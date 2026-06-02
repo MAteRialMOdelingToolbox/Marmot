@@ -54,6 +54,8 @@ namespace Marmot::Materials {
      */
     ADCompressibleNeoHooke( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     /**
      * @brief Compute the Kirchhoff stress with dual numbers.
      *

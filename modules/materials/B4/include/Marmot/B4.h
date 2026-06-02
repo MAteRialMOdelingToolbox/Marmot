@@ -157,6 +157,8 @@ namespace Marmot::Materials {
 
     B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     double getDensity( const double* stateVars ) const override;
 
     void computeStress( state3D&                state,

@@ -63,6 +63,8 @@ namespace Marmot::Materials {
                                                    int           nMaterialProperties,
                                                    int           materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     /**
      * @brief Compute the Kirchhoff stress and the algorithmic tangent for the current step.
      *

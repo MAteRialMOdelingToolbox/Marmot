@@ -88,7 +88,7 @@ public:
    * @brief Get the valid material property names in assignment order.
    * @return Ordered list of valid material property names.
    */
-  const std::vector< std::string >& getValidMaterialProperties() const { return materialPropertyNames; }
+  virtual const std::vector< std::string >& getValidMaterialProperties() const = 0;
 
   /**
    * @brief Assign a single material property by name.
