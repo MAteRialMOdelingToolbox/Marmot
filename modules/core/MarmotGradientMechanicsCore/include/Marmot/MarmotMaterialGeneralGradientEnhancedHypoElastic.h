@@ -82,9 +82,6 @@ public:
       materialPropertyNames( nMaterialProperties_ ),
       materialNumber( materialNumber_ )
   {
-    for ( int i = 0; i < nMaterialProperties; ++i ) {
-      materialPropertyNames[i] = "materialProperty" + std::to_string( i );
-    }
   }
 
   /**
