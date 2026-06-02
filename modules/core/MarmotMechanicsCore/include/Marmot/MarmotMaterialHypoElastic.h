@@ -94,7 +94,7 @@ public:
    * @brief Assign a single material property by name.
    * @param name Name of the material property.
    * @param value Value to assign.
-   * @throws std::logic_error If setValidMaterialProperties() has not been called.
+   * @throws std::logic_error If material property names have not been initialized.
    * @throws std::invalid_argument If the property name is unknown.
    * @note This method only updates the raw property storage (materialPropertyStorage).
    *       Derived classes that cache property values into member variables during
@@ -105,7 +105,7 @@ public:
   {
     if ( materialPropertyNames.empty() && nMaterialProperties > 0 ) {
       throw std::logic_error(
-        "Material property names have not been set. Call setValidMaterialProperties() in the derived constructor." );
+        "Material property names have not been initialized in the derived material." );
     }
     const auto it = std::find( materialPropertyNames.begin(), materialPropertyNames.end(), name );
     if ( it == materialPropertyNames.end() ) {
@@ -114,21 +114,6 @@ public:
 
     const auto idx               = std::distance( materialPropertyNames.begin(), it );
     materialPropertyStorage[idx] = value;
-  }
-
-protected:
-  /**
-   * @brief Override the valid material property names.
-   * @param names Property names in the same order as the assigned material properties.
-   * @throws std::invalid_argument If @p names has the wrong size.
-   */
-  void setValidMaterialProperties( std::vector< std::string > names )
-  {
-    if ( names.size() != materialPropertyStorage.size() ) {
-      throw std::invalid_argument( "Number of material property names does not match number of material properties." );
-    }
-
-    materialPropertyNames = std::move( names );
   }
 
 public:

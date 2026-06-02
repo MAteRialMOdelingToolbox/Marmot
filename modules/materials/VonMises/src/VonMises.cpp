@@ -29,7 +29,7 @@ namespace Marmot::Materials {
     }
     const std::vector< std::string > allPropertyNames = {
       "E", "nu", "yieldStress", "HLin", "deltaYieldStress", "delta", "density" };
-    setValidMaterialProperties(
+    materialPropertyNames =
       std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();

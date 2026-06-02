@@ -55,7 +55,7 @@ namespace Marmot::Materials {
       throw std::invalid_argument(
         "Unsupported number of material properties for FiniteStrainIsotropicBiotViscoelasticity." );
     }
-    setValidMaterialProperties( std::move( propertyNames ) );
+    materialPropertyNames = std::move( propertyNames );
 
     initializeStateLayout();
   }

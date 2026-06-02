@@ -16,7 +16,7 @@ namespace Marmot::Materials {
       throw std::invalid_argument( "Too many material properties for AT2PhaseField." );
     }
     const std::vector< std::string > allPropertyNames = { "E", "nu", "Gc", "l", "density", "eta" };
-    setValidMaterialProperties(
+    materialPropertyNames =
       std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     initializeStateLayout();
   }

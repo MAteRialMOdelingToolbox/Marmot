@@ -71,7 +71,7 @@ namespace Marmot::Materials {
                                                            "castTime",
                                                            "timeToDays",
                                                            "density" };
-    setValidMaterialProperties(
+    materialPropertyNames =
       std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
 
     stateLayout.add( "basicCreepStateVars", nKelvinBasic * 6 );

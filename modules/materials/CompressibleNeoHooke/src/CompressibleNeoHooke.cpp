@@ -25,7 +25,7 @@ namespace Marmot::Materials {
       throw std::invalid_argument( "Too many material properties for CompressibleNeoHooke." );
     }
     const std::vector< std::string > allPropertyNames = { "K", "G", "density" };
-    setValidMaterialProperties(
+    materialPropertyNames =
       std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     stateLayout.finalize();
   }

@@ -97,7 +97,7 @@ namespace Marmot::Materials {
       std::vector< std::string > propertyNames = { "nSubsteps" };
       const auto&                baseNames     = baseMaterial->getValidMaterialProperties();
       propertyNames.insert( propertyNames.end(), baseNames.begin(), baseNames.end() );
-      setValidMaterialProperties( std::move( propertyNames ) );
+      materialPropertyNames = std::move( propertyNames );
       initializeStateLayout();
     }
 

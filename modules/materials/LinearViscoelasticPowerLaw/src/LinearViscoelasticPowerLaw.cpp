@@ -40,7 +40,7 @@ namespace Marmot::Materials {
     }
     const std::vector< std::string > allPropertyNames = {
       "E", "nu", "m", "n", "nKelvin", "minTau", "timeToDays", "density" };
-    setValidMaterialProperties(
+    materialPropertyNames =
       std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
 
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
