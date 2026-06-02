@@ -32,6 +32,7 @@
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <array>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -75,6 +76,8 @@ namespace Marmot::Materials {
   class FiniteStrainJ2Plasticity : public MarmotMaterialFiniteStrain {
   public:
     using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    static constexpr std::array< const char*, 8 > compileTimeMaterialPropertyNames = {
+      "K", "G", "fy", "fyInf", "eta", "H", "implementationType", "density" };
 
     // elastic constants
     /** Bulk modulus (read from @c materialProperties[0]) */
