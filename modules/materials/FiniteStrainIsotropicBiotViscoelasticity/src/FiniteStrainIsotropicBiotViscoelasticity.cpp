@@ -48,7 +48,7 @@ namespace Marmot::Materials {
       propertyNames.push_back( "tau" + std::to_string( i + 1 ) );
       propertyNames.push_back( "beta" + std::to_string( i + 1 ) );
     }
-    if ( static_cast< int >( propertyNames.size() ) < nMaterialProperties ) {
+    if ( nMaterialProperties - static_cast< int >( propertyNames.size() ) == 1 ) {
       propertyNames.push_back( "density" );
     }
     if ( static_cast< int >( propertyNames.size() ) != nMaterialProperties ) {
