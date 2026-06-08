@@ -102,7 +102,6 @@ public:
   struct TimeIncrement {
     const double* timeOld;
     double        dT;
-    double&       pNewDT;
   };
 
   /**

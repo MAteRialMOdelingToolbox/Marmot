@@ -50,13 +50,12 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
                     const double*                       timeOld,
-                    const double                        dT,
-                    double&                             pNewDT )
+                    const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
   MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
   MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
-  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT };
   mat.computeStress( state, tangents, deformation, timeIncrement );
 }
 
@@ -106,7 +105,6 @@ void testForceMaterialResponse()
   // Define time parameters for the material response calculation
   const double timeOld = 0.0; // Previous time step
   const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
 
   // Compute the stress response of the material
   computeStress( *mat,
@@ -121,8 +119,7 @@ void testForceMaterialResponse()
                  dSurface_strain,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // Define the expected stress values for the applied strain increment
   double forceTarget[3]          = { 0, 76923076.9230769, 0 };
@@ -197,7 +194,6 @@ void testSurfaceStressMaterialResponse()
   // Define time parameters for the material response calculation
   const double timeOld = 0.0; // Previous time step
   const double dT      = 1.0; // Time increment
-  double       pNewDT;        // Placeholder for the new time increment
 
   // Compute the stress response of the material
   computeStress( *mat,
@@ -212,8 +208,7 @@ void testSurfaceStressMaterialResponse()
                  dSurface_strain,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   double forceTarget[3]          = { 0, 0, 0 };
   double surface_stressTarget[9] = { 0, 7.69230769230769e-07, 0, 7.69230769230769e-07, 0, 0, 0, 0, 0 };

@@ -334,7 +334,7 @@ namespace Marmot::Elements {
         return "hexa8";
       }
       else if constexpr ( nDim == 2 && nNodes == 4 ) {
-        return "line2";
+        return "bar2";
       }
       else {
         return ParentGeometryElement::getElementShape();
@@ -668,12 +668,9 @@ namespace Marmot::Elements {
                                      qp.managedStateVars->materialStateVars.data() };
       Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
       Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
-      Material::TimeIncrement materialTimeIncrement{ time, dT, pNewDT };
+      Material::TimeIncrement materialTimeIncrement{ time, dT };
 
       qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
-
-      if ( pNewDT < 1.0 )
-        return;
 
       qp.managedStateVars->force         = force;
       qp.managedStateVars->surfaceStress = surface_stress;
@@ -694,7 +691,6 @@ namespace Marmot::Elements {
   {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
-      /* Interface material state is managed through qp.managedStateVars in v26.05 style. */
       break;
     }
 

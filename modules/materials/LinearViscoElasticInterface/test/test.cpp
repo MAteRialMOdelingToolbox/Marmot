@@ -51,13 +51,12 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
                     const double*                       timeOld,
-                    const double                        dT,
-                    double&                             pNewDT )
+                    const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
   MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
   MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
-  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT };
   mat.computeStress( state, tangents, deformation, timeIncrement );
 }
 
@@ -123,8 +122,7 @@ void testForceMaterialResponse()
                  dSurface_strain1,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // second increment ( load application )
   dT = 1e-6;
@@ -145,8 +143,7 @@ void testForceMaterialResponse()
                  dSurface_strain2,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // third increment ( constant strain, relaxation )
   dT = 100.;
@@ -166,8 +163,7 @@ void testForceMaterialResponse()
                  dSurface_strain3,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // expected force and surface stress
   double forceTarget[3]          = { 0, 38461538.461538, 0 };
@@ -245,8 +241,7 @@ void testSurfaceStressMaterialResponse()
                  dSurface_strain1,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // second increment ( load application )
   dT = 1e-6;
@@ -267,8 +262,7 @@ void testSurfaceStressMaterialResponse()
                  dSurface_strain2,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // third increment ( constant strain, relaxation )
   dT = 100.;
@@ -288,8 +282,7 @@ void testSurfaceStressMaterialResponse()
                  dSurface_strain3,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 
   // expected force and surface stress
   double forceTarget[3]          = { 0 };

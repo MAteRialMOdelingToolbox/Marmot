@@ -83,9 +83,6 @@ namespace Marmot::Materials {
     double*       stateVars = state.stateVars;
     const double* timeOld   = timeIncrement.timeOld;
     const double  dT        = timeIncrement.dT;
-    double&       pNewDT    = timeIncrement.pNewDT;
-
-    (void)pNewDT;
 
     if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
       throw std::runtime_error( "LinearViscoElasticInterface: state variables not provided." );

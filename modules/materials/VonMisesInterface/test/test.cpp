@@ -95,13 +95,12 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
                     const double*                       timeOld,
-                    const double                        dT,
-                    double&                             pNewDT )
+                    const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
   MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q_ij, Z_ijkl, H_ijk, Y_ijkl };
   MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
-  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT, pNewDT };
+  MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT };
   mat.computeStress( state, tangents, deformation, timeIncrement );
 }
 
@@ -118,8 +117,7 @@ void runSingleIncrement( const double* props,
                          const double* dSurfaceStrain,
                          const double* normal,
                          double*       force,
-                         double*       surfaceStress,
-                         double&       pNewDT )
+                         double*       surfaceStress )
 {
   auto mat = createMaterial( props, 7 );
 
@@ -148,8 +146,7 @@ void runSingleIncrement( const double* props,
                  dSurfaceStrain,
                  normal,
                  &timeOld,
-                 dT,
-                 pNewDT );
+                 dT );
 }
 
 // ===========================================================================
@@ -167,9 +164,8 @@ void testElasticDisplacementJump()
 
   double force[3]         = { 0. };
   double surfaceStress[9] = { 0. };
-  double pNewDT           = 1.0;
 
-  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress, pNewDT );
+  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress );
 
   // G = E/(2*(1+nu)) = 1e5/2.6
   // gamma_23 = dJumpU[1]/h = 1e-3/1e-3 = 1  ->  sigma_23 = G
@@ -188,7 +184,6 @@ void testElasticDisplacementJump()
   Eigen::Map< const Eigen::VectorXd > surfaceStressVec( surfaceStress, 9 );
   Eigen::Map< const Eigen::VectorXd > surfaceStressTgt( surfaceStressTarget, 9 );
 
-  throwExceptionOnFailure( pNewDT == 1.0, "Newton diverged in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( forceVec, forceTgt, 1e-6 ),
                            "force mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( surfaceStressVec, surfaceStressTgt, 1e-6 ),
@@ -210,9 +205,8 @@ void testElasticSurfaceStrain()
 
   double force[3]         = { 0. };
   double surfaceStress[9] = { 0. };
-  double pNewDT           = 1.0;
 
-  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress, pNewDT );
+  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress );
 
   // avg[0,1]=avg[1,0]=0.5*1e-2=5e-3
   // Voigt gamma_12=2*5e-3=1e-2  ->  sigma_12 = G*1e-2
@@ -230,7 +224,6 @@ void testElasticSurfaceStrain()
   Eigen::Map< const Eigen::VectorXd > surfaceStressVec( surfaceStress, 9 );
   Eigen::Map< const Eigen::VectorXd > surfaceStressTgt( surfaceStressTarget, 9 );
 
-  throwExceptionOnFailure( pNewDT == 1.0, "Newton diverged in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( forceVec, forceTgt, 1e-6 ),
                            "force mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( surfaceStressVec, surfaceStressTgt, 1e-6 ),
@@ -255,9 +248,8 @@ void testPlasticDisplacementJump()
 
   double force[3]         = { 0. };
   double surfaceStress[9] = { 0. };
-  double pNewDT           = 1.0;
 
-  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress, pNewDT );
+  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress );
 
   // Analytically computed true stress sigma_23
   const double S23 = 58.0633280;
@@ -270,7 +262,6 @@ void testPlasticDisplacementJump()
   Eigen::Map< const Eigen::VectorXd > surfaceStressVec( surfaceStress, 9 );
   Eigen::Map< const Eigen::VectorXd > surfaceStressTgt( surfaceStressTarget, 9 );
 
-  throwExceptionOnFailure( pNewDT == 1.0, "Newton diverged in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( forceVec, forceTgt, 1e-6 ),
                            "force mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( surfaceStressVec, surfaceStressTgt, 1e-6 ),
@@ -295,9 +286,8 @@ void testPlasticSurfaceStrain()
 
   double force[3]         = { 0. };
   double surfaceStress[9] = { 0. };
-  double pNewDT           = 1.0;
 
-  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress, pNewDT );
+  runSingleIncrement( props, dU, dSurfaceStrain, normal, force, surfaceStress );
 
   // Analytically computed true stress sigma_12
   const double S12 = 57.7633540;
@@ -310,7 +300,6 @@ void testPlasticSurfaceStrain()
   Eigen::Map< const Eigen::VectorXd > surfaceStressVec( surfaceStress, 9 );
   Eigen::Map< const Eigen::VectorXd > surfaceStressTgt( surfaceStressTarget, 9 );
 
-  throwExceptionOnFailure( pNewDT == 1.0, "Newton diverged in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( forceVec, forceTgt, 1e-6 ),
                            "force mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual< double >( surfaceStressVec, surfaceStressTgt, 1e-6 ),

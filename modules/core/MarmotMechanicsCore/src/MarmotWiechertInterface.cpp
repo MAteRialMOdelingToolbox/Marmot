@@ -152,8 +152,6 @@ namespace Marmot::Materials {
         auto unit_surface_stress_couple      = djumpU.transpose() * unitH_inv_nF_ijk;
         stateVars_surface_stress_us.col( i ) = ( lambda * D ) * unit_surface_stress_couple.transpose() +
                                                beta * stateVars_surface_stress_us.col( i );
-        // stateVars_surface_stress_us.col( i ) = ( lambda * D ) * unitH_inv_nF_ijk.transpose() * djumpU +
-        //                                        beta * stateVars_surface_stress_us.col( i );
       }
     }
 

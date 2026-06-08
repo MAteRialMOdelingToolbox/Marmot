@@ -52,11 +52,6 @@ namespace Marmot::Materials {
 
     const double* timeOld = timeIncrement.timeOld;
     const double  dT      = timeIncrement.dT;
-    double&       pNewDT  = timeIncrement.pNewDT;
-
-    (void)timeOld;
-    (void)dT;
-    (void)pNewDT;
 
     // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum

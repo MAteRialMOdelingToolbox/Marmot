@@ -64,9 +64,6 @@ namespace Marmot::Materials {
     double*       stateVars = state.stateVars;
     const double* timeOld   = timeIncrement.timeOld;
     const double  dT        = timeIncrement.dT;
-    double&       pNewDT    = timeIncrement.pNewDT;
-
-    (void)pNewDT;
 
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum

@@ -43,10 +43,6 @@ namespace Marmot::Materials {
    */
   class LinearElasticInterface : public MarmotInterfaceMaterialHypoElastic {
   public:
-    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-    using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
-    using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
-
     LinearElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void initializeStateLayout() override;
