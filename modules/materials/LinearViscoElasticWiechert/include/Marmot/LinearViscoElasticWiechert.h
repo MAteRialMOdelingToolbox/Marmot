@@ -34,7 +34,7 @@
 namespace Marmot::Materials {
   /**
    * \brief Implementation of a linear visco elastic material coming from
-   * the Wiecher model of parallel viscoelastic elements
+   * the Wiechert model of parallel viscoelastic elements
    * for 3D stress states.
    */
   class LinearViscoElasticWiechert : public MarmotMaterialHypoElastic {

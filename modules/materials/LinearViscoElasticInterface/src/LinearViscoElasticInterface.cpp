@@ -129,7 +129,6 @@ namespace Marmot::Materials {
     // handle zero strain increment
     if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld != nullptr &&
          timeOld[0] == 0.0 ) {
-      std::cout << "Zero strain increment in LinearViscoElasticInterface material.\n";
       Z_ijkl_Ftensor           = -h * E_0 * unitZ_ijkl;
       Yn_H_inv_Fn_ijkl_Ftensor = h * E_0 * unitYn_H_inv_Fn_ijkl;
       H_inv_ij_Ftensor         = 1. / h * E_0 * unitH_inv_ij;
