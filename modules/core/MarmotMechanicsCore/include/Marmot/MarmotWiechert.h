@@ -30,9 +30,9 @@
 #include "Marmot/MarmotNumericalIntegration.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "autodiff/forward/real.hpp"
-#include <fstream>  // **needed for std::ofstream**
+#include <fstream>
 #include <functional>
-#include <iostream> // for std::cout / std::cerr
+#include <iostream>
 //
 namespace Marmot::Materials {
 
@@ -109,13 +109,13 @@ namespace Marmot::Materials {
      * @param dStress In/out accumulated stress increment in Voigt notation.
      * @param factor Optional scaling factor for all branch contributions.
      */
-    void evaluateWiechert( const double      dT,
-                           const Properties& elasticModuli,
-                           const Properties& relaxationTimes,
-                           StateVarMatrix    stateVars,
-                           double&           uniaxialStiffness,
-                           Marmot::Vector6d& dStress,
-                           const double      factor );
+    void evaluateWiechert( const double                 dT,
+                           const Properties&            elasticModuli,
+                           const Properties&            relaxationTimes,
+                           Eigen::Ref< StateVarMatrix > stateVars,
+                           double&                      uniaxialStiffness,
+                           Marmot::Vector6d&            dStress,
+                           const double                 factor );
 
   } // namespace Wiechert
 } // namespace Marmot::Materials

@@ -28,7 +28,6 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/src/Core/Matrix.h>
 #include <Fastor/Fastor.h>
 #include <Fastor/tensor_algebra/indicial.h>
 #include <cmath>
@@ -38,16 +37,11 @@
 using namespace Eigen;
 using namespace Fastor;
 
-using Marmot::FastorStandardTensors::Tensor3333d;
-using Marmot::FastorStandardTensors::Tensor333d;
-using Marmot::FastorStandardTensors::Tensor33d;
-using Marmot::FastorStandardTensors::Tensor3d;
+using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
 
   namespace InterfaceMaterialHelperFunctions {
-
-    Tensor33d compute_inv( const Tensor33d& Q );
 
     std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(
       const Tensor33d&   N,
@@ -60,20 +54,66 @@ namespace Marmot::Materials {
       const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj );
 
-    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9( const Tensor3333d& tensor );
-    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Tensor333d& tensor );
-    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Tensor333d& tensor );
-    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Tensor33d& tensor );
-
+    /**
+     * @brief Calculates the FY tensor components for interface material formulation.
+     *
+     * This function computes six fourth and second-order tensor quantities that represent
+     * the FY components used in the interface element material formulation. These tensors
+     * are derived from the transformation matrices and elastic stiffness tensor.
+     *
+     * @param[in] N           3x3 direction cosine matrix for the interface normal direction
+     * @param[in] T           3x3 direction cosine matrix for the interface tangent direction
+     * @param[in] C_nu_aibj   4th-order elastic stiffness tensor (in Voigt-like notation)
+     *
+     * @return A tuple containing six tensors:
+     *         - Tensor3333d: 1st FY component (4th-order tensor)
+     *         - Tensor3333d: 2nd FY component (4th-order tensor)
+     *         - Tensor3333d: 3rd FY component (4th-order tensor)
+     *         - Tensor3333d: 4th FY component (4th-order tensor)
+     *         - Tensor33d:   5th FY component (2nd-order tensor)
+     *         - Tensor3333d: 6th FY component (4th-order tensor)
+     */
     std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
       const Tensor33d&   N,
       const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj );
 
+    /**
+     * @brief Calculates interface material parameters from a normal vector and Poisson's ratio.
+     *
+     * This overload computes interface material matrices assuming an isotropic elastic material
+     * defined by a normal direction and Poisson's ratio. The elastic properties are derived
+     * from these parameters.
+     *
+     * @param[in] normal   3-component unit normal vector to the interface
+     * @param[in] nu_0     Poisson's ratio of the interface material
+     *
+     * @return A tuple containing four tensors:
+     *         - Tensor3333d: 1st material matrix parameter (4th-order tensor)
+     *         - Tensor33d:   2nd material matrix parameter (2nd-order tensor)
+     *         - Tensor333d:  3rd material matrix parameter (3rd-order tensor)
+     *         - Tensor3333d: 4th material matrix parameter (4th-order tensor)
+     */
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
       const Tensor3d& normal,
       const double&   nu_0 );
 
+    /**
+     * @brief Calculates interface material parameters from a normal vector and elastic stiffness matrix.
+     *
+     * This overload computes interface material matrices given a normal direction and a 6x6 Voigt
+     * representation of the elastic stiffness tensor. This allows specification of arbitrary
+     * (including anisotropic) elastic properties for the interface material.
+     *
+     * @param[in] normal      3-component unit normal vector to the interface
+     * @param[in] C_ep_voigt  6x6 elastic stiffness matrix in Voigt notation
+     *
+     * @return A tuple containing four tensors:
+     *         - Tensor3333d: 1st material matrix parameter (4th-order tensor)
+     *         - Tensor33d:   2nd material matrix parameter (2nd-order tensor)
+     *         - Tensor333d:  3rd material matrix parameter (3rd-order tensor)
+     *         - Tensor3333d: 4th material matrix parameter (4th-order tensor)
+     */
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
       const Tensor3d&                      normal,
       const Eigen::Matrix< double, 6, 6 >& C_ep_voigt );

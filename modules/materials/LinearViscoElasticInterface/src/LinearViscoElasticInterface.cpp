@@ -114,10 +114,17 @@ namespace Marmot::Materials {
           unitYn_H_inv_Fn_ijkl] = calculateInterfaceMaterialParameters( normalFtensor, nu_0 );
 
     // Convert unit tensors to Voigt full matrices using helper functions
-    Eigen::Matrix< double, 3, 3 > unitH_inv_voigt_full      = convert2ndOrderTensorToMatrix_3x3( unitH_inv_ij );
-    Eigen::Matrix< double, 9, 9 > unitZ_voigt_full          = convert4thOrderTensorToMatrix_9x9( unitZ_ijkl );
-    Eigen::Matrix< double, 9, 9 > unitYn_H_inv_Fn_ijkl_full = convert4thOrderTensorToMatrix_9x9( unitYn_H_inv_Fn_ijkl );
-    Eigen::Matrix< double, 3, 9 > unitH_inv_nF_ijk_full_3_9 = convert3rdOrderTensorToMatrix_3x9( unitH_inv_nF_ijk );
+    Eigen::Matrix< double, 3, 3 >
+      unitH_inv_voigt_full = Marmot::ContinuumMechanics::TensorUtility::convert2ndOrderTensorToMatrix_3x3(
+        unitH_inv_ij );
+    Eigen::Matrix< double, 9, 9 >
+      unitZ_voigt_full = Marmot::ContinuumMechanics::TensorUtility::convert4thOrderTensorToMatrix_9x9( unitZ_ijkl );
+    Eigen::Matrix< double, 9, 9 >
+      unitYn_H_inv_Fn_ijkl_full = Marmot::ContinuumMechanics::TensorUtility::convert4thOrderTensorToMatrix_9x9(
+        unitYn_H_inv_Fn_ijkl );
+    Eigen::Matrix< double, 3, 9 >
+      unitH_inv_nF_ijk_full_3_9 = Marmot::ContinuumMechanics::TensorUtility::convert3rdOrderTensorToMatrix_3x9(
+        unitH_inv_nF_ijk );
     // Assign the material matrices to a larger structure. (Not necessary ...)
     // handle zero strain increment
     if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld != nullptr &&

@@ -23,13 +23,13 @@ namespace Marmot::Materials {
       return relaxationTimes;
     }
 
-    void evaluateWiechert( double            dT,
-                           const Properties& elasticModuli,
-                           const Properties& relaxationTimes,
-                           StateVarMatrix    stateVars,
-                           double&           uniaxialStiffness,
-                           Vector6d&         dStress,
-                           const double      factor )
+    void evaluateWiechert( const double                 dT,
+                           const Properties&            elasticModuli,
+                           const Properties&            relaxationTimes,
+                           Eigen::Ref< StateVarMatrix > stateVars,
+                           double&                      uniaxialStiffness,
+                           Marmot::Vector6d&            dStress,
+                           const double                 factor )
     {
       for ( int i = 0; i < relaxationTimes.size(); i++ ) {
         const double& tau = relaxationTimes( i );

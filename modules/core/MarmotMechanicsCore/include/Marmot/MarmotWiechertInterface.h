@@ -30,9 +30,9 @@
 #include "Marmot/MarmotNumericalIntegration.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "autodiff/forward/real.hpp"
-#include <fstream>  // **needed for std::ofstream**
+#include <fstream>
 #include <functional>
-#include <iostream> // for std::cout / std::cerr
+#include <iostream>
 //
 namespace Marmot::Materials {
 

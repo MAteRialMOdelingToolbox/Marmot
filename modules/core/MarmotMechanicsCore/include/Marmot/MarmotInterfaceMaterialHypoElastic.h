@@ -42,8 +42,7 @@
  *
  * Abstract base class for hypoelastic interface materials.
  *
- * This class follows the structural pattern of MarmotMaterialHypoElastic in
- * Marmot v26.05, but remains an independent interface-material base class
+ * This class remains an independent interface-material base class
  * because interface materials have their own stress-update signature.
  */
 class MarmotInterfaceMaterialHypoElastic {
@@ -67,9 +66,6 @@ public:
 
   /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;
-
-  using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
-  using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
 
   /// Characteristic element length
   double characteristicElementLength;

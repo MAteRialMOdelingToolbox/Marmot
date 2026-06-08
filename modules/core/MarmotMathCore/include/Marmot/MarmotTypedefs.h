@@ -57,6 +57,8 @@ namespace Marmot {
   typedef Eigen::Matrix< double, 3, 6 > Matrix36d;
   typedef Eigen::Matrix< double, 3, 6 > Matrix36;
   typedef Eigen::Matrix< double, 6, 3 > Matrix63d;
+  typedef Eigen::Matrix< double, 9, 3 > Matrix93d;
+  typedef Eigen::Matrix< double, 3, 9 > Matrix39d;
   typedef Eigen::Matrix< double, 9, 9 > Matrix9d;
 
   // complex matrix definitions
