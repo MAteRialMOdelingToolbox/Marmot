@@ -1,6 +1,4 @@
 #include "Marmot/MarmotWiechert.h"
-#include <iostream>
-#include <ostream>
 
 namespace Marmot::Materials {
 

@@ -33,15 +33,6 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Fastor/Fastor.h>
-#include <Fastor/expressions/linalg_ops/unary_norm_op.h>
-#include <Fastor/expressions/linalg_ops/unary_trans_op.h>
-#include <Fastor/tensor/AbstractTensorFunctions.h>
-#include <Fastor/tensor_algebra/einsum.h>
-#include <Fastor/tensor_algebra/indicial.h>
-#include <cassert>
-#include <cmath>
-#include <iostream>
-#include <ostream>
 #include <tuple>
 #include <unsupported/Eigen/CXX11/Tensor>
 

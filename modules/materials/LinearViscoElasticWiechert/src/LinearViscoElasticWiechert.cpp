@@ -85,7 +85,7 @@ namespace Marmot::Materials {
 
   double LinearViscoElasticWiechert::getDensity( const double* stateVars ) const
   {
-    if ( nMaterialProperties >= 7 + 1 ) {
+    if ( nMaterialProperties <= 7 + 1 ) {
       throw std::runtime_error(
         std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
     }

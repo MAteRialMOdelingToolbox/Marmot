@@ -5,19 +5,14 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotViscoelasticity.h"
 #include "Marmot/MarmotVoigt.h"
-#include "Marmot/MarmotWiechertInterface.h"
 #include "Marmot/VonMises.h"
 
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include <Eigen/src/Core/Matrix.h>
-#include <Eigen/src/Core/util/Constants.h>
-#include <Fastor/expressions/linalg_ops/unary_norm_op.h>
-#include <Fastor/tensor/TensorMap.h>
-
 #include "autodiff/forward/real.hpp"
+#include <Eigen/Core>
+#include <Eigen/Dense>
 #include <iostream>
 #include <map>
 #include <string>
@@ -122,9 +117,6 @@ namespace Marmot::Materials {
     if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
       throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not provided." );
     }
-
-    // Eigen::Matrix< double, 6, 6, Eigen::RowMajor >
-    //         C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
 
     Marmot::Matrix6d C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
     double&          kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
