@@ -72,7 +72,6 @@ namespace Marmot::Materials {
     // Stored as a member so that VonMisesModel can hold a pointer to them for its lifetime
     std::array< double, 6 > vonMisesProps;
 
-    // VonMisesModel is an implementation detail; keep it out of this public header.
     std::unique_ptr< VonMisesModel > vonMisesModel;
   };
 } // namespace Marmot::Materials

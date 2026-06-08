@@ -17,11 +17,6 @@ using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 
-// Function to create a MarmotMaterialHypoElastic object
-// Inputs:
-// - materialName: The name of the material (e.g., "LINEARELASTIC")
-// - materialProperties: Array of material parameters
-// - nMaterialProperties: Number of parameters in the materialProperties array
 std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( const std::string& materialName,
                                                                               const double*      materialProperties,
                                                                               int                nMaterialProperties )
