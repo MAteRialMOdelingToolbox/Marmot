@@ -100,8 +100,8 @@ public:
   };
 
   struct TimeIncrement {
-    const double* timeOld;
-    double        dT;
+    double timeOld;
+    double dT;
   };
 
   /**

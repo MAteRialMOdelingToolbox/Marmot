@@ -94,7 +94,7 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dU,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
-                    const double*                       timeOld,
+                    const double                        timeOld,
                     const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
@@ -145,7 +145,7 @@ void runSingleIncrement( const double* props,
                  dU,
                  dSurfaceStrain,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 }
 

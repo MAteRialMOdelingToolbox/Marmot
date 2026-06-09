@@ -50,9 +50,6 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    const double* timeOld = timeIncrement.timeOld;
-    const double  dT      = timeIncrement.dT;
-
     // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
     auto force_ftensor            = Fastor::TensorMap< double, 3 >( state.force );

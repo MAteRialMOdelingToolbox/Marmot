@@ -80,9 +80,9 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    double*       stateVars = state.stateVars;
-    const double* timeOld   = timeIncrement.timeOld;
-    const double  dT        = timeIncrement.dT;
+    double*      stateVars = state.stateVars;
+    const double timeOld   = timeIncrement.timeOld;
+    const double dT        = timeIncrement.dT;
 
     if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
       throw std::runtime_error( "LinearViscoElasticInterface: state variables not provided." );
@@ -124,8 +124,7 @@ namespace Marmot::Materials {
         unitH_inv_nF_ijk );
     // Assign the material matrices to a larger structure. (Not necessary ...)
     // handle zero strain increment
-    if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld != nullptr &&
-         timeOld[0] == 0.0 ) {
+    if ( Fastor::norm( dUFtensor ) < 1e-14 && Fastor::norm( dSurfaceStrainFtensor ) < 1e-14 && timeOld == 0.0 ) {
       Z_ijkl_Ftensor           = -h * E_0 * unitZ_ijkl;
       Yn_H_inv_Fn_ijkl_Ftensor = h * E_0 * unitYn_H_inv_Fn_ijkl;
       H_inv_ij_Ftensor         = 1. / h * E_0 * unitH_inv_ij;

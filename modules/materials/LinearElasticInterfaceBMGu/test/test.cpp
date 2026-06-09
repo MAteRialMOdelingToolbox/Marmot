@@ -49,7 +49,7 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dU,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
-                    const double*                       timeOld,
+                    const double                        timeOld,
                     const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
@@ -118,7 +118,7 @@ void testForceMaterialResponse()
                  dU,
                  dSurface_strain,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // Define the expected stress values for the applied strain increment
@@ -207,7 +207,7 @@ void testSurfaceStressMaterialResponse()
                  dU,
                  dSurface_strain,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   double forceTarget[3]          = { 0, 0, 0 };

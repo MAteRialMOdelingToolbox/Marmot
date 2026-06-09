@@ -129,7 +129,7 @@ namespace {
       MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dUGp.data(),
                                                                    dSurfaceStrainGp.data(),
                                                                    qp.normal.data() };
-      MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time, dT };
+      MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time[0], dT };
       qp.material->computeStress( state, tangents, deformation, timeIncrement );
 
       const double J0xW = integrationWeight( qp );

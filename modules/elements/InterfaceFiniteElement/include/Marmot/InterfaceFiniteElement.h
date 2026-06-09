@@ -668,7 +668,7 @@ namespace Marmot::Elements {
                                      qp.managedStateVars->materialStateVars.data() };
       Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
       Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
-      Material::TimeIncrement materialTimeIncrement{ time, dT };
+      Material::TimeIncrement materialTimeIncrement{ time[0], dT };
 
       qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 

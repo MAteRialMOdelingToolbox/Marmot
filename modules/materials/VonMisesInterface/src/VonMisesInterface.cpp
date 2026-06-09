@@ -61,9 +61,9 @@ namespace Marmot::Materials {
     auto H_ijk_Ftensor_scaled        = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
     auto Y_ijkl_Ftensor_scaled       = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
 
-    double*       stateVars = state.stateVars;
-    const double* timeOld   = timeIncrement.timeOld;
-    const double  dT        = timeIncrement.dT;
+    double*      stateVars = state.stateVars;
+    const double timeOld   = timeIncrement.timeOld;
+    const double dT        = timeIncrement.dT;
 
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
@@ -119,7 +119,7 @@ namespace Marmot::Materials {
     double&          kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
 
     MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
-    MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld[0], dT };
+    MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld, dT };
 
     vonMisesModel->computeStress( vonMisesState, C_ep, dStrainAvgVoigt, vonMisesTimeInfo );
     averageStressVoigt = vonMisesState.stress;

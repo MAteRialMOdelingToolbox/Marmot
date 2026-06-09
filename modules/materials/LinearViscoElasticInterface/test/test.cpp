@@ -50,7 +50,7 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
                     const double*                       dU,
                     const double*                       dSurfaceStrain,
                     const double*                       normal,
-                    const double*                       timeOld,
+                    const double                        timeOld,
                     const double                        dT )
 {
   MarmotInterfaceMaterialHypoElastic::State         state{ force, surfaceStress, stateVars };
@@ -121,7 +121,7 @@ void testForceMaterialResponse()
                  dU1,
                  dSurface_strain1,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // second increment ( load application )
@@ -142,7 +142,7 @@ void testForceMaterialResponse()
                  dU2,
                  dSurface_strain2,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // third increment ( constant strain, relaxation )
@@ -162,7 +162,7 @@ void testForceMaterialResponse()
                  dU3,
                  dSurface_strain3,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // expected force and surface stress
@@ -240,7 +240,7 @@ void testSurfaceStressMaterialResponse()
                  dU1,
                  dSurface_strain1,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // second increment ( load application )
@@ -261,7 +261,7 @@ void testSurfaceStressMaterialResponse()
                  dU2,
                  dSurface_strain2,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // third increment ( constant strain, relaxation )
@@ -281,7 +281,7 @@ void testSurfaceStressMaterialResponse()
                  dU3,
                  dSurface_strain3,
                  normal,
-                 &timeOld,
+                 timeOld,
                  dT );
 
   // expected force and surface stress
