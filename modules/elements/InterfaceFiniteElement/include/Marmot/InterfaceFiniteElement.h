@@ -39,6 +39,7 @@
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryInterfaceElement.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
@@ -670,7 +671,13 @@ namespace Marmot::Elements {
       Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
       Material::TimeIncrement materialTimeIncrement{ time[0], dT };
 
-      qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+      try {
+        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+      }
+      catch ( const Marmot::StressUpdateFailed& ) {
+        pNewDT = 0.5;
+        return;
+      }
 
       qp.managedStateVars->force         = force;
       qp.managedStateVars->surfaceStress = surface_stress;

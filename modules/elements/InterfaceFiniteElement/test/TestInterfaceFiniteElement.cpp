@@ -17,6 +17,16 @@ using namespace Marmot::Elements;
 
 namespace {
 
+  class FailingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
+  public:
+    FailingInterfaceMaterial() : MarmotInterfaceMaterialHypoElastic( nullptr, 0, 0 ) {}
+
+    void computeStress( State&, Tangents&, const Deformation&, const TimeIncrement& ) override
+    {
+      throw Marmot::StressUpdateFailed( "Deliberate interface-material update failure." );
+    }
+  };
+
   template < typename DerivedA, typename DerivedB >
   void assertMatrixNear( const Eigen::MatrixBase< DerivedA >& actual,
                          const Eigen::MatrixBase< DerivedB >& expected,
@@ -138,6 +148,31 @@ namespace {
                              "InterfaceFiniteElement did not reject consistent inertia computation." );
     throwExceptionOnFailure( lumpedInertiaRejected,
                              "InterfaceFiniteElement did not reject lumped inertia computation." );
+  }
+
+  void TestStressUpdateFailureRequestsSmallerTimeStep()
+  {
+    auto element = makeSingleInputFileInterfaceElement();
+
+    std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->initializeYourself();
+
+    for ( auto& qp : element->qps ) {
+      qp.material = std::make_unique< FailingInterfaceMaterial >();
+    }
+
+    constexpr int                                     nElementDofs = 3 * 8;
+    std::array< double, nElementDofs >                QTotal{};
+    std::array< double, nElementDofs >                dQ{};
+    std::array< double, nElementDofs >                Pe{};
+    std::array< double, nElementDofs * nElementDofs > Ke{};
+    const std::array< double, 2 >                     time   = { 0.0, 0.0 };
+    double                                            pNewDT = 1.0;
+
+    element->computeYourself( QTotal.data(), dQ.data(), Pe.data(), Ke.data(), time.data(), 1.0, pNewDT );
+
+    throwExceptionOnFailure( pNewDT == 0.5, "InterfaceFiniteElement did not request a smaller time step." );
   }
 
   template < typename QuadraturePointType >
@@ -548,6 +583,7 @@ int main()
   auto tests = std::vector<
     std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
                                TestUnsupportedInertiaThrows,
+                               TestStressUpdateFailureRequestsSmallerTimeStep,
                                TestSingleInputFileElementGeometryMatrices,
                                TestSingleInputFileElementMaterialResponseIsFinite,
                                TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
