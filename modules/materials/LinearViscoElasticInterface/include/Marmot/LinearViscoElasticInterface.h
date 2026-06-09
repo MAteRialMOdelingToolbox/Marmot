@@ -78,8 +78,6 @@ namespace Marmot::Materials {
 
   public:
     using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-    using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
-    using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
 
     LinearViscoElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -89,8 +87,6 @@ namespace Marmot::Materials {
                         const TimeIncrement& timeIncrement ) override;
 
     int getNumberOfRequiredStateVars() const override;
-
-    void initializeStateLayout() override;
 
   private:
     /// @brief Young's modulus of the #nKelvin Kelvin units

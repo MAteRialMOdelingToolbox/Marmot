@@ -86,25 +86,8 @@ namespace Marmot::Materials {
     /// @brief Non-owning map view of `StateVarMatrix_surface_stress_us`.
     typedef Eigen::Map< StateVarMatrix_surface_stress_us > mapStateVarMatrix_surface_stress_us;
 
-    // TODO(v26.05): implement Post-Widder-based branch modulus generation utilities
-    // (e.g. computeElasticModuli_Ru / computeElasticModuli_Rs / generateRelaxationTimes)
-    // when interface-specific parameter identification is required.
-
-    /**
-     * @brief Initialize branch-wise elastic moduli with a constant value.
-     * @param nMaxwell Number of Maxwell branches.
-     * @param n Elastic modulus assigned to each branch.
-     * @return Vector of size `nMaxwell` with all entries set to `n`.
-     */
-    Properties initializeElasticModuli( int nMaxwell, double n );
-
-    /**
-     * @brief Initialize branch-wise relaxation times with a constant value.
-     * @param nMaxwell Number of Maxwell branches.
-     * @param m Relaxation time assigned to each branch.
-     * @return Vector of size `nMaxwell` with all entries set to `m`.
-     */
-    Properties initializeRelaxationTimes( int nMaxwell, double m );
+    // TODO(v26.05): Support generalized Maxwell chains with distinct branch moduli and relaxation times,
+    // supplied directly or generated from an interface-specific approximation such as a power law.
 
     /**
      * @brief Update branch state variables for the `force_uu` contribution.

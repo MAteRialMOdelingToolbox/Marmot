@@ -74,12 +74,8 @@ namespace Marmot::Materials {
   class LinearElasticInterfaceBMGu : public MarmotInterfaceMaterialHypoElastic {
   public:
     using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-    using Tensor1D = Fastor::Tensor< double, 3 >;
-    using Tensor2D = Fastor::Tensor< double, 3, 3 >;
 
     LinearElasticInterfaceBMGu( const double* materialProperties, int nMaterialProperties, int materialNumber );
-
-    void initializeStateLayout() override;
 
     void computeStress( State&               state,
                         Tangents&            tangents,

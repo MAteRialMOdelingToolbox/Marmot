@@ -45,8 +45,6 @@ namespace Marmot::Materials {
   public:
     LinearElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
-    void initializeStateLayout() override;
-
     void computeStress( State&               state,
                         Tangents&            tangents,
                         const Deformation&   deformation,

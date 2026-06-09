@@ -410,12 +410,12 @@ namespace Marmot::Elements {
                           double&       pNewdT );
 
     /**
-     * @brief Compute consistent mass contribution (currently zero matrix).
+     * @brief Report that consistent inertia is unsupported for interface elements.
      */
     void computeConsistentInertia( double* M );
 
     /**
-     * @brief Compute lumped mass contribution (currently zero vector).
+     * @brief Report that lumped inertia is unsupported for interface elements.
      */
     void computeLumpedInertia( double* M );
 
@@ -691,6 +691,10 @@ namespace Marmot::Elements {
   {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
+      for ( QuadraturePoint& qp : qps ) {
+        qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
+                                         qp.managedStateVars->materialStateVars.size() );
+      }
       break;
     }
 
@@ -733,15 +737,15 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::computeConsistentInertia( double* M )
   {
-    Eigen::Map< KeSizedMatrix > Me( M );
-    Me.setZero();
+    throw std::runtime_error( MakeString()
+                              << __PRETTY_FUNCTION__ << ": inertia is not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::computeLumpedInertia( double* M )
   {
-    Eigen::Map< RhsSized > Me( M );
-    Me.setZero();
+    throw std::runtime_error( MakeString()
+                              << __PRETTY_FUNCTION__ << ": inertia is not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >

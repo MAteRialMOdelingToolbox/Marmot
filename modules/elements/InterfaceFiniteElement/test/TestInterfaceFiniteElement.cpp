@@ -70,6 +70,76 @@ namespace {
     element.setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
   }
 
+  void TestMaterialInitializationResetsMaterialState()
+  {
+    constexpr int nDim   = 3;
+    constexpr int nNodes = 8;
+
+    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
+
+    static std::array< double, nDim* nNodes > coordinates = {
+      -0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.5, 0.5, 0.0, -0.5, 0.5, 0.0,
+      -0.5, -0.5, 0.1, 0.5, -0.5, 0.1, 0.5, 0.5, 0.1, -0.5, 0.5, 0.1,
+    };
+    element->assignNodeCoordinates( coordinates.data() );
+
+    static std::array< double, 1 > elementProperties = { 1.0 };
+    ElementProperties              properties( elementProperties.data(), elementProperties.size() );
+    element->assignProperty( properties );
+
+    static std::array< double, 8 > materialProperties = { 1e4, 0.3, 0.1, 1e-2, 1e-8, 1, 1e-2, 1.0 };
+    element->assignMaterial( "LINEARVISCOELASTICINTERFACE", materialProperties.data(), materialProperties.size() );
+
+    std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+    element->assignStateVars( stateVars.data(), stateVars.size() );
+
+    for ( auto& qp : element->qps ) {
+      qp.managedStateVars->materialStateVars.setOnes();
+    }
+
+    element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+
+    for ( const auto& qp : element->qps ) {
+      throwExceptionOnFailure( qp.managedStateVars->materialStateVars.isZero(),
+                               "MarmotMaterialInitialization did not reset interface-material state." );
+    }
+  }
+
+  void TestUnsupportedInertiaThrows()
+  {
+    constexpr int nDim         = 3;
+    constexpr int nNodes       = 8;
+    constexpr int nElementDofs = nDim * nNodes;
+
+    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
+
+    std::array< double, nElementDofs * nElementDofs > consistentInertia{};
+    std::array< double, nElementDofs >                lumpedInertia{};
+
+    bool consistentInertiaRejected = false;
+    try {
+      element->computeConsistentInertia( consistentInertia.data() );
+    }
+    catch ( const std::runtime_error& ) {
+      consistentInertiaRejected = true;
+    }
+
+    bool lumpedInertiaRejected = false;
+    try {
+      element->computeLumpedInertia( lumpedInertia.data() );
+    }
+    catch ( const std::runtime_error& ) {
+      lumpedInertiaRejected = true;
+    }
+
+    throwExceptionOnFailure( consistentInertiaRejected,
+                             "InterfaceFiniteElement did not reject consistent inertia computation." );
+    throwExceptionOnFailure( lumpedInertiaRejected,
+                             "InterfaceFiniteElement did not reject lumped inertia computation." );
+  }
+
   template < typename QuadraturePointType >
   double integrationWeight( const QuadraturePointType& qp )
   {
@@ -476,7 +546,9 @@ void TestAngledInterfaceKinematics()
 int main()
 {
   auto tests = std::vector<
-    std::function< void() > >{ TestSingleInputFileElementGeometryMatrices,
+    std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
+                               TestUnsupportedInertiaThrows,
+                               TestSingleInputFileElementGeometryMatrices,
                                TestSingleInputFileElementMaterialResponseIsFinite,
                                TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
                                TestSingleInputFileElementRigidTranslationGivesZeroResidual,

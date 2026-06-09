@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
+#include <stdexcept>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
@@ -58,6 +59,21 @@ void computeStress( MarmotInterfaceMaterialHypoElastic& mat,
   MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
   MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT };
   mat.computeStress( state, tangents, deformation, timeIncrement );
+}
+
+void testRejectsMultipleMaxwellElements()
+{
+  const double materialProperties[8] = { 1e4, 0.3, 1e-7, 1e-2, 1e-8, 2, 1e-2, 1e0 };
+
+  bool rejected = false;
+  try {
+    createMarmotInterfaceMaterialHypoElastic( "LINEARVISCOELASTICINTERFACE", materialProperties, 8 );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+
+  throwExceptionOnFailure( rejected, "LinearViscoElasticInterface accepted more than one Maxwell element." );
 }
 
 // Function to test the viscoelastic interface material response for a displacement jump
@@ -306,6 +322,7 @@ int main()
 {
 
   auto tests = std::vector< std::function< void() > >{
+    testRejectsMultipleMaxwellElements,
     testForceMaterialResponse,         // test for force response
     testSurfaceStressMaterialResponse, // test for surface stress response
   };

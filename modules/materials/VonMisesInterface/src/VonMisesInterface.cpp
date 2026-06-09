@@ -19,6 +19,7 @@
 
 using namespace Marmot;
 using namespace Eigen;
+using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
 
@@ -42,7 +43,8 @@ namespace Marmot::Materials {
   // clang-format on
   {
     vonMisesModel = std::make_unique< VonMisesModel >( vonMisesProps.data(), 6, materialNumber );
-    initializeStateLayout();
+    stateLayout.add( "kappa", 1 );
+    stateLayout.finalize();
   }
 
   VonMisesInterface::~VonMisesInterface() = default;
@@ -54,12 +56,12 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
     enum { i, j, k, l };
-    auto scaled_forceFtensor         = Fastor::TensorMap< double, 3 >( state.force );
-    auto scaled_averageStressFtensor = Fastor::TensorMap< double, 3, 3 >( state.surfaceStress );
-    auto Q_ij_Ftensor_scaled         = Fastor::TensorMap< double, 3, 3 >( tangents.Q_ij );
-    auto Z_ijkl_Ftensor_scaled       = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Z_ijkl );
-    auto H_ijk_Ftensor_scaled        = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
-    auto Y_ijkl_Ftensor_scaled       = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
+    auto scaled_forceFtensor         = TensorMap3d( state.force );
+    auto scaled_averageStressFtensor = TensorMap33d( state.surfaceStress );
+    auto Q_ij_Ftensor_scaled         = TensorMap33d( tangents.Q_ij );
+    auto Z_ijkl_Ftensor_scaled       = TensorMap3333d( tangents.Z_ijkl );
+    auto H_ijk_Ftensor_scaled        = TensorMap333d( tangents.H_ijk );
+    auto Y_ijkl_Ftensor_scaled       = TensorMap3333d( tangents.Y_ijkl );
 
     double*      stateVars = state.stateVars;
     const double timeOld   = timeIncrement.timeOld;
@@ -68,33 +70,30 @@ namespace Marmot::Materials {
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    Fastor::Tensor< double, 6, 1 >  dUFtensor( deformation.dU );
-    Fastor::Tensor< double, 18, 1 > dSurfaceDispGradientFtensor( deformation.dSurfaceStrain );
-    Fastor::Tensor< double, 3 >     normalFtensor( deformation.normal );
+    Tensor61d  dUFtensor( deformation.dU );
+    Tensor181d dSurfaceDispGradientFtensor( deformation.dSurfaceStrain );
+    Tensor3d   normalFtensor( deformation.normal );
 
     // Evaluate average stress on the layer using Von Mises yield criterion.
     // vonMisesModel.computeStress updates averageStress and writes the new
     // elastoplastic tangent into C_ep (state var), which persists across increments.
 
     // Displacement jump: top(0:3) - bottom(3:6)
-    Fastor::Tensor< double, 3 > dJumpU = dUFtensor( Fastor::seq( 0, 3 ), 0 ) -
-                                         dUFtensor( Fastor::seq( 3, Fastor::last ), 0 );
+    Tensor3d dJumpU = dUFtensor( Fastor::seq( 0, 3 ), 0 ) - dUFtensor( Fastor::seq( 3, Fastor::last ), 0 );
 
     // Average surface strain: 0.5*(top(0:9) + bottom(9:18)), reshaped to 3x3
-    Fastor::Tensor< double, 9, 1 >
-         dSurfaceDispGradientAvgFlat = 0.5 * ( dSurfaceDispGradientFtensor( Fastor::seq( 0, 9 ), 0 ) +
-                                            dSurfaceDispGradientFtensor( Fastor::seq( 9, Fastor::last ), 0 ) );
-    auto dSurfaceDispGradientAvg     = Fastor::Tensor< double, 3, 3 >(
-      Fastor::reshape< 3, 3 >( dSurfaceDispGradientAvgFlat ) );
+    Tensor91d dSurfaceDispGradientAvgFlat = 0.5 * ( dSurfaceDispGradientFtensor( Fastor::seq( 0, 9 ), 0 ) +
+                                                    dSurfaceDispGradientFtensor( Fastor::seq( 9, Fastor::last ), 0 ) );
+    auto      dSurfaceDispGradientAvg     = Tensor33d( Fastor::reshape< 3, 3 >( dSurfaceDispGradientAvgFlat ) );
     // Average displacement gradient: jump contribution (normal-to-layer) + surface strain
-    Fastor::Tensor< double, 3, 3 >
+    Tensor33d
       dU_kl_Jump = ( 1. / h ) *
                    Fastor::einsum< Fastor::Index< i >, Fastor::Index< j >, Fastor::OIndex< i, j > >( dJumpU,
                                                                                                      normalFtensor );
 
     // Symmetrize and include surface strain to obtain the full average strain increment
-    Fastor::Tensor< double, 3, 3 > dDispGradAvg = ( dU_kl_Jump + dSurfaceDispGradientAvg );
-    Fastor::Tensor< double, 3, 3 > dStrainAvg   = 0.5 * ( dDispGradAvg + Fastor::transpose( dDispGradAvg ) );
+    Tensor33d dDispGradAvg = dU_kl_Jump + dSurfaceDispGradientAvg;
+    Tensor33d dStrainAvg   = 0.5 * ( dDispGradAvg + Fastor::transpose( dDispGradAvg ) );
 
     // Convert 3x3 strain tensor to Voigt 6-vector (with factor 2 on shear components)
     Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > > dStrainAvgEigen( dStrainAvg.data() );
@@ -137,7 +136,7 @@ namespace Marmot::Materials {
     const Eigen::Matrix< double, 3, 3, Eigen::RowMajor >
       scaled_averageStressFull = h * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
 
-    auto scaled_averageStressFullFtensor = Fastor::TensorMap< const double, 3, 3 >( scaled_averageStressFull.data() );
+    const Tensor33d scaled_averageStressFullFtensor( scaled_averageStressFull.data() );
 
     scaled_averageStressFtensor = scaled_averageStressFullFtensor;
 

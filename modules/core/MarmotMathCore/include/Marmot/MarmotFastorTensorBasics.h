@@ -40,6 +40,9 @@ namespace Marmot {
     using Tensor333d    = Fastor::Tensor< double, 3, 3, 3 >;
     using Tensor3333d   = Fastor::Tensor< double, 3, 3, 3, 3 >;
     using Tensor333333d = Fastor::Tensor< double, 3, 3, 3, 3, 3, 3 >;
+    using Tensor61d     = Fastor::Tensor< double, 6, 1 >;
+    using Tensor91d     = Fastor::Tensor< double, 9, 1 >;
+    using Tensor181d    = Fastor::Tensor< double, 18, 1 >;
 
     template < typename T >
     using Tensor3t = Fastor::Tensor< T, 3 >;
@@ -49,11 +52,20 @@ namespace Marmot {
     using Tensor333t = Fastor::Tensor< T, 3, 3, 3 >;
     template < typename T >
     using Tensor3333t = Fastor::Tensor< T, 3, 3, 3, 3 >;
+    template < typename T >
+    using Tensor61t = Fastor::Tensor< T, 6, 1 >;
+    template < typename T >
+    using Tensor91t = Fastor::Tensor< T, 9, 1 >;
+    template < typename T >
+    using Tensor181t = Fastor::Tensor< T, 18, 1 >;
 
     using TensorMap3d    = Fastor::TensorMap< double, 3 >;
     using TensorMap33d   = Fastor::TensorMap< double, 3, 3 >;
     using TensorMap333d  = Fastor::TensorMap< double, 3, 3, 3 >;
     using TensorMap3333d = Fastor::TensorMap< double, 3, 3, 3, 3 >;
+    using TensorMap61d   = Fastor::TensorMap< double, 6, 1 >;
+    using TensorMap91d   = Fastor::TensorMap< double, 9, 1 >;
+    using TensorMap181d  = Fastor::TensorMap< double, 18, 1 >;
 
     using Tensor9d  = Fastor::Tensor< double, 9 >;
     using Tensor99d = Fastor::Tensor< double, 9, 9 >;

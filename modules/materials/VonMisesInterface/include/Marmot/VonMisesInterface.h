@@ -51,11 +51,6 @@ namespace Marmot::Materials {
                         const Deformation&   deformation,
                         const TimeIncrement& timeIncrement ) override;
 
-    void initializeStateLayout() override
-    {
-      stateLayout.add( "kappa", 1 );
-      stateLayout.finalize();
-    }
     double getDensity() override;
 
   private:

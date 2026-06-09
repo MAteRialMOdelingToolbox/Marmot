@@ -20,27 +20,14 @@
 #include "autodiff/forward/real.hpp"
 #include <iostream>
 #include <map>
+#include <stdexcept>
 #include <string>
 
 using namespace Marmot;
 using namespace Eigen;
-
-using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
-using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
-using Tensor3D = Marmot::FastorStandardTensors::Tensor333d;
-using Tensor4D = Marmot::FastorStandardTensors::Tensor3333d;
+using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
-
-  void LinearViscoElasticInterface::initializeStateLayout()
-  {
-    stateLayout.add( "MaxwellStateVars_force_uu", 3 * nMaxwell );
-    stateLayout.add( "MaxwellStateVars_force_us", 3 * nMaxwell );
-    stateLayout.add( "MaxwellStateVars_surface_stress_Z", 9 * nMaxwell );
-    stateLayout.add( "MaxwellStateVars_surface_stress_Y", 9 * nMaxwell );
-    stateLayout.add( "MaxwellStateVars_surface_stress_us", 9 * nMaxwell );
-    stateLayout.finalize();
-  }
 
   LinearViscoElasticInterface::LinearViscoElasticInterface( const double* materialProperties,
                                                             int           nMaterialProperties,
@@ -58,17 +45,24 @@ namespace Marmot::Materials {
       timeToDays( materialProperties[7] )
   // clang-format on
   {
-    initializeStateLayout();
+    if ( nMaxwell != 1 ) {
+      throw std::invalid_argument( "LinearViscoElasticInterface currently supports exactly one Maxwell element." );
+    }
 
-    relaxationTimes = Marmot::Materials::WiechertInterface::initializeRelaxationTimes( nMaxwell, m );
-    elasticModuli   = Marmot::Materials::WiechertInterface::initializeElasticModuli( nMaxwell, n );
+    stateLayout.add( "MaxwellStateVars_force_uu", 3 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_force_us", 3 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_Z", 9 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_Y", 9 * nMaxwell );
+    stateLayout.add( "MaxwellStateVars_surface_stress_us", 9 * nMaxwell );
+    stateLayout.finalize();
 
-    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    // elasticModuli_Ru =
-    // Marmot::Materials::WiechertInterface::computeElasticModuli_Ru<powerLawApproximationOrder>(phiRu_,
-    // retardationTimes_Ru); elasticModuli_Rs =
-    // Marmot::Materials::WiechertInterface::computeElasticModuli_Rs<powerLawApproximationOrder>(phiRs_,
-    // retardationTimes_Rs);
+    relaxationTimes.resize( nMaxwell );
+    relaxationTimes.setConstant( m );
+    elasticModuli.resize( nMaxwell );
+    elasticModuli.setConstant( n );
+
+    // TODO(v26.05): Support a generalized Maxwell chain by generating distinct branch moduli and relaxation times
+    // from the power-law parameters and minTau. Repeating the same (n, m) pair would only duplicate one branch.
 
     zerothWiechertStiffness = 0.0; // m_Ru*(1. - n_Ru )*pow( 2., n_Ru )*pow(minTau_Ru/sqrt(10.), n_Ru);
   }
@@ -91,19 +85,16 @@ namespace Marmot::Materials {
     // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    auto forceFtensor               = Fastor::TensorMap< double, 3 >( state.force );
-    auto surfaceStressFtensor       = Fastor::TensorMap< double, 3, 3 >( state.surfaceStress );
-    auto H_inv_ij_Ftensor           = Fastor::TensorMap< double, 3, 3 >( tangents.Q_ij );
-    auto Z_ijkl_Ftensor             = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Z_ijkl );
-    auto H_inv_nF_ijk_Ftensor       = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
-    auto Yn_H_inv_Fn_ijkl_Ftensor   = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
-    auto dUFtensorConst             = Fastor::TensorMap< const double, 6, 1 >( deformation.dU );
-    auto dSurfaceStrainFtensorConst = Fastor::TensorMap< const double, 18, 1 >( deformation.dSurfaceStrain );
-    auto normalFtensorConst         = Fastor::TensorMap< const double, 3 >( deformation.normal );
+    auto forceFtensor             = TensorMap3d( state.force );
+    auto surfaceStressFtensor     = TensorMap33d( state.surfaceStress );
+    auto H_inv_ij_Ftensor         = TensorMap33d( tangents.Q_ij );
+    auto Z_ijkl_Ftensor           = TensorMap3333d( tangents.Z_ijkl );
+    auto H_inv_nF_ijk_Ftensor     = TensorMap333d( tangents.H_ijk );
+    auto Yn_H_inv_Fn_ijkl_Ftensor = TensorMap3333d( tangents.Y_ijkl );
 
-    Fastor::Tensor< double, 6, 1 >  dUFtensor( dUFtensorConst.data() );
-    Fastor::Tensor< double, 18, 1 > dSurfaceStrainFtensor( dSurfaceStrainFtensorConst.data() );
-    Fastor::Tensor< double, 3 >     normalFtensor( normalFtensorConst.data() );
+    const Tensor61d  dUFtensor( deformation.dU );
+    const Tensor181d dSurfaceStrainFtensor( deformation.dSurfaceStrain );
+    const Tensor3d   normalFtensor( deformation.normal );
 
     auto [unitZ_ijkl,
           unitH_inv_ij,
@@ -196,63 +187,61 @@ namespace Marmot::Materials {
 
     enum { i, j, k, l };
     // Calculate jump increment
-    Tensor1D jumpUFtensor = dUFtensor( Fastor::seq( 0, 3 ), 0 ) - dUFtensor( Fastor::seq( 3, Fastor::last ), 0 );
+    Tensor3d jumpUFtensor = dUFtensor( Fastor::seq( 0, 3 ), 0 ) - dUFtensor( Fastor::seq( 3, Fastor::last ), 0 );
 
     // Calculate average surface strain increment
-    Fastor::Tensor< double, 9, 1 > averageDsurfaceStrainFtensor = 1. / 2. *
-                                                                  ( dSurfaceStrainFtensor( Fastor::seq( 0, 9 ), 0 ) +
-                                                                    dSurfaceStrainFtensor( Fastor::seq( 9,
-                                                                                                        Fastor::last ),
-                                                                                           0 ) );
+    Tensor91d averageDsurfaceStrainFtensor = 1. / 2. *
+                                             ( dSurfaceStrainFtensor( Fastor::seq( 0, 9 ), 0 ) +
+                                               dSurfaceStrainFtensor( Fastor::seq( 9, Fastor::last ), 0 ) );
     auto averageDsurfaceStrainFtensorReshape = Fastor::reshape< 3, 3 >( averageDsurfaceStrainFtensor );
 
     // Wrap Eigen vectors in Fastor TensorMaps (no copy)
-    Fastor::TensorMap< double, 3 > creep_force_uu_IncrementFastor( creep_force_uu_Increment.data() );
-    Fastor::TensorMap< double, 3 > creep_force_us_IncrementFastor( creep_force_us_Increment.data() );
+    Tensor3d creep_force_uu_IncrementFastor( creep_force_uu_Increment.data() );
+    Tensor3d creep_force_us_IncrementFastor( creep_force_us_Increment.data() );
 
     // Convert Eigen 9-element vectors to Fastor 3x3 tensors
     // Note: Fastor::reshape only works on Tensor, not TensorMap
     // Step 1: Wrap Eigen data in TensorMaps (no copy, just wraps the pointer)
-    Fastor::TensorMap< double, 9 > creep_surface_stress_Z_Increment_map( creep_surface_stress_Z_Increment.data() );
-    Fastor::TensorMap< double, 9 > creep_surface_stress_Y_Increment_map( creep_surface_stress_Y_Increment.data() );
-    Fastor::TensorMap< double, 9 > creep_surface_stress_us_Increment_map( creep_surface_stress_us_Increment.data() );
+    TensorMap9d creep_surface_stress_Z_Increment_map( creep_surface_stress_Z_Increment.data() );
+    TensorMap9d creep_surface_stress_Y_Increment_map( creep_surface_stress_Y_Increment.data() );
+    TensorMap9d creep_surface_stress_us_Increment_map( creep_surface_stress_us_Increment.data() );
     // Step 2: Copy TensorMap data into actual Tensors (required for reshape to work)
-    Fastor::Tensor< double, 9 > creep_surface_stress_Z_Increment_tensor  = creep_surface_stress_Z_Increment_map;
-    Fastor::Tensor< double, 9 > creep_surface_stress_Y_Increment_tensor  = creep_surface_stress_Y_Increment_map;
-    Fastor::Tensor< double, 9 > creep_surface_stress_us_Increment_tensor = creep_surface_stress_us_Increment_map;
+    Tensor9d creep_surface_stress_Z_Increment_tensor  = creep_surface_stress_Z_Increment_map;
+    Tensor9d creep_surface_stress_Y_Increment_tensor  = creep_surface_stress_Y_Increment_map;
+    Tensor9d creep_surface_stress_us_Increment_tensor = creep_surface_stress_us_Increment_map;
     // Step 3: Reshape 9-element tensors to 3×3 matrices
     auto creep_surface_stress_Z_IncrementFastor  = Fastor::reshape< 3, 3 >( creep_surface_stress_Z_Increment_tensor );
     auto creep_surface_stress_Y_IncrementFastor  = Fastor::reshape< 3, 3 >( creep_surface_stress_Y_Increment_tensor );
     auto creep_surface_stress_us_IncrementFastor = Fastor::reshape< 3, 3 >( creep_surface_stress_us_Increment_tensor );
 
-    Tensor1D
+    Tensor3d
       dForce_uu = Fastor::einsum< Fastor::Index< i, j >, Fastor::Index< j >, Fastor::OIndex< i > >( H_inv_ij_Ftensor,
                                                                                                     jumpUFtensor ) -
                   1. / h * creep_force_uu_IncrementFastor;
 
-    Tensor1D dForce_us = Fastor::einsum< Fastor::Index< i, j, k >,
+    Tensor3d dForce_us = Fastor::einsum< Fastor::Index< i, j, k >,
                                          Fastor::Index< j, k >,
                                          Fastor::OIndex< i > >( H_inv_nF_ijk_Ftensor,
                                                                 averageDsurfaceStrainFtensorReshape ) -
                          creep_force_us_IncrementFastor;
 
     // std::cout<<"creep_Rs_increment_fastor:\n"<<creep_Rs_increment_fastor<<'\n';
-    Tensor2D dSurfaceStress_Z_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                                   Fastor::Index< k, l >,
-                                                   Fastor::OIndex< i, j > >( Z_ijkl_Ftensor,
-                                                                             averageDsurfaceStrainFtensorReshape ) +
-                                   h * creep_surface_stress_Z_IncrementFastor;
+    Tensor33d dSurfaceStress_Z_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
+                                                    Fastor::Index< k, l >,
+                                                    Fastor::OIndex< i, j > >( Z_ijkl_Ftensor,
+                                                                              averageDsurfaceStrainFtensorReshape ) +
+                                    h * creep_surface_stress_Z_IncrementFastor;
 
-    Tensor2D dSurfaceStress_Y_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                                   Fastor::Index< k, l >,
-                                                   Fastor::OIndex< i, j > >( Yn_H_inv_Fn_ijkl_Ftensor,
-                                                                             averageDsurfaceStrainFtensorReshape ) -
-                                   h * creep_surface_stress_Y_IncrementFastor;
+    Tensor33d dSurfaceStress_Y_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
+                                                    Fastor::Index< k, l >,
+                                                    Fastor::OIndex< i, j > >( Yn_H_inv_Fn_ijkl_Ftensor,
+                                                                              averageDsurfaceStrainFtensorReshape ) -
+                                    h * creep_surface_stress_Y_IncrementFastor;
 
-    Tensor2D dSurfaceStress_us_ij = Fastor::einsum< Fastor::Index< i >,
-                                                    Fastor::Index< i, j, k >,
-                                                    Fastor::OIndex< j, k > >( jumpUFtensor, H_inv_nF_ijk_Ftensor ) -
-                                    creep_surface_stress_us_IncrementFastor;
+    Tensor33d dSurfaceStress_us_ij = Fastor::einsum< Fastor::Index< i >,
+                                                     Fastor::Index< i, j, k >,
+                                                     Fastor::OIndex< j, k > >( jumpUFtensor, H_inv_nF_ijk_Ftensor ) -
+                                     creep_surface_stress_us_IncrementFastor;
 
     forceFtensor += dForce_uu;
     forceFtensor -= dForce_us;

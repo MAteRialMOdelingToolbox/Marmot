@@ -9,20 +9,6 @@ namespace Marmot::Materials {
 
   namespace WiechertInterface {
 
-    Properties initializeElasticModuli( int nMaxwell, double n )
-    {
-      Properties elasticModuli( nMaxwell );
-      elasticModuli.setConstant( n );
-      return elasticModuli;
-    }
-
-    Properties initializeRelaxationTimes( int nMaxwell, double m )
-    {
-      Properties relaxationTimes( nMaxwell );
-      relaxationTimes.setConstant( m );
-      return relaxationTimes;
-    }
-
     void evaluateWiechert( double                                  dT,
                            const Properties&                       elasticModuli,
                            const Properties&                       relaxationTimes,

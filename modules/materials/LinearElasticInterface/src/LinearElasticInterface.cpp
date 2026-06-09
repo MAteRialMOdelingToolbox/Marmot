@@ -13,16 +13,10 @@
 
 namespace Marmot::Materials {
 
-  void LinearElasticInterface::initializeStateLayout() {}
-
   using namespace Marmot;
   using namespace Eigen;
   using namespace Fastor;
-
-  using Tensor1D = Marmot::FastorStandardTensors::Tensor3d;
-  using Tensor2D = Marmot::FastorStandardTensors::Tensor33d;
-  using Tensor3D = Marmot::FastorStandardTensors::Tensor333d;
-  using Tensor4D = Marmot::FastorStandardTensors::Tensor3333d;
+  using namespace Marmot::FastorStandardTensors;
 
   LinearElasticInterface::LinearElasticInterface( const double* materialProperties,
                                                   int           nMaterialProperties,
@@ -46,19 +40,15 @@ namespace Marmot::Materials {
 
     // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
-    auto force_ftensor                 = Fastor::TensorMap< double, 3 >( state.force );
-    auto surface_stress_ftensor        = Fastor::TensorMap< double, 3, 3 >( state.surfaceStress );
-    auto H_inv_ij_ftensor              = Fastor::TensorMap< double, 3, 3 >( tangents.Q_ij );
-    auto Z_ijkl_ftensor                = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Z_ijkl );
-    auto H_inv_nF_ijk_ftensor          = Fastor::TensorMap< double, 3, 3, 3 >( tangents.H_ijk );
-    auto Yn_H_inv_Fn_ijkl_ftensor      = Fastor::TensorMap< double, 3, 3, 3, 3 >( tangents.Y_ijkl );
-    auto dU_ftensor_const              = Fastor::TensorMap< const double, 6, 1 >( deformation.dU );
-    auto dSurface_strain_ftensor_const = Fastor::TensorMap< const double, 18, 1 >( deformation.dSurfaceStrain );
-    auto normal_ftensor_const          = Fastor::TensorMap< const double, 3 >( deformation.normal );
-
-    Fastor::Tensor< double, 6, 1 >  dU_ftensor( dU_ftensor_const.data() );
-    Fastor::Tensor< double, 18, 1 > dSurface_strain_ftensor( dSurface_strain_ftensor_const.data() );
-    Fastor::Tensor< double, 3 >     normal_ftensor( normal_ftensor_const.data() );
+    auto             force_ftensor            = TensorMap3d( state.force );
+    auto             surface_stress_ftensor   = TensorMap33d( state.surfaceStress );
+    auto             H_inv_ij_ftensor         = TensorMap33d( tangents.Q_ij );
+    auto             Z_ijkl_ftensor           = TensorMap3333d( tangents.Z_ijkl );
+    auto             H_inv_nF_ijk_ftensor     = TensorMap333d( tangents.H_ijk );
+    auto             Yn_H_inv_Fn_ijkl_ftensor = TensorMap3333d( tangents.Y_ijkl );
+    const Tensor61d  dU_ftensor( deformation.dU );
+    const Tensor181d dSurface_strain_ftensor( deformation.dSurfaceStrain );
+    const Tensor3d   normal_ftensor( deformation.normal );
 
     auto [unitZ_ijkl,
           unitH_inv_ij,
@@ -77,12 +67,11 @@ namespace Marmot::Materials {
     // elastic step
     enum { i, j, k, l };
 
-    Tensor1D jumpU_ftensor = dU_ftensor( Fastor::seq( 0, 3 ), 0 ) - dU_ftensor( Fastor::seq( 3, Fastor::last ), 0 );
+    Tensor3d jumpU_ftensor = dU_ftensor( Fastor::seq( 0, 3 ), 0 ) - dU_ftensor( Fastor::seq( 3, Fastor::last ), 0 );
 
-    Fastor::Tensor< double, 9, 1 >
-      average_dSurface_strain_ftensor = 1. / 2. *
-                                        ( dSurface_strain_ftensor( Fastor::seq( 0, 9 ), 0 ) +
-                                          dSurface_strain_ftensor( Fastor::seq( 9, Fastor::last ), 0 ) );
+    Tensor91d average_dSurface_strain_ftensor = 1. / 2. *
+                                                ( dSurface_strain_ftensor( Fastor::seq( 0, 9 ), 0 ) +
+                                                  dSurface_strain_ftensor( Fastor::seq( 9, Fastor::last ), 0 ) );
     auto average_dSurface_strain_ftensor_reshape = Fastor::reshape< 3, 3 >( average_dSurface_strain_ftensor );
     force_ftensor += Fastor::einsum< Fastor::Index< i, j >, Fastor::Index< j >, Fastor::OIndex< i > >( H_inv_ij_ftensor,
                                                                                                        jumpU_ftensor );
