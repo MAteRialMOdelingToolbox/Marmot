@@ -46,21 +46,6 @@ namespace Marmot::Materials {
 
       return std::make_tuple( B, L, A, G );
     }
-    std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
-      const Tensor33d&   N,
-      const Tensor3333d& C_nu_aibj )
-    {
-      Tensor33d   G_nu;
-      Tensor3333d A_nu;
-      Tensor3333d B_nu;
-      Tensor3333d L_nu;
-
-      std::tie( B_nu, L_nu, A_nu, G_nu ) = interfaceGeometrySystemCouplings( N, C_nu_aibj );
-      Tensor3333d F                      = Fastor::einsum< Am, mnBj, to_AnBj >( G_nu, L_nu );
-      Tensor3333d Y                      = Fastor::einsum< Aimn, nB, to_AimB >( L_nu, G_nu );
-      return std::make_tuple( F, Y, A_nu, L_nu, G_nu, B_nu );
-    }
-
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateMaterialMatrices(
       const Tensor3d&    normal,
       const Tensor33d&   N,
@@ -71,7 +56,10 @@ namespace Marmot::Materials {
       Tensor3333d Y;
       Tensor33d   G_nu;
       Tensor3333d B_nu;
-      std::tie( F, Y, std::ignore, std::ignore, G_nu, B_nu ) = calculateFY( N, C_nu_aibj );
+      Tensor3333d L_nu;
+      std::tie( B_nu, L_nu, std::ignore, G_nu ) = interfaceGeometrySystemCouplings( N, C_nu_aibj );
+      F                                         = Fastor::einsum< Am, mnBj, to_AnBj >( G_nu, L_nu );
+      Y                                         = Fastor::einsum< Aimn, nB, to_AimB >( L_nu, G_nu );
 
       Tensor33d H_inv = Fastor::inverse( G_nu );
 

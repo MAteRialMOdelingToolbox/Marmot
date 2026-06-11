@@ -85,8 +85,6 @@ namespace Marmot::Materials {
     Wiechert::Properties elasticModuli;
     /// @brief stiffness of the zeroth Wiechert unit
     double zerothWiechertStiffness;
-
-    static constexpr int powerLawApproximationOrder = 1;
   };
 
 } // namespace Marmot::Materials

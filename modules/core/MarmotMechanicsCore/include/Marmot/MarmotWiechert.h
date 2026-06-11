@@ -32,7 +32,7 @@ namespace Marmot::Materials {
 
   /**
    * @namespace Wiechert
-   * @brief Utilities for branch-wise Wiechert/Kelvin-chain viscoelastic updates in 3D Voigt notation.
+   * @brief Utilities for branch-wise Wiechert viscoelastic updates in 3D Voigt notation.
    *
    * @details
    * This namespace provides helper functions to initialize Maxwell branch properties,

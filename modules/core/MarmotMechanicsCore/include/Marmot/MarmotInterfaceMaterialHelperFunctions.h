@@ -26,8 +26,8 @@
  */
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotTypedefs.h"
 
-#include <Eigen/Core>
 #include <tuple>
 
 namespace Marmot::Materials {
@@ -82,28 +82,6 @@ namespace Marmot::Materials {
       const Tensor3333d& C_nu_aibj );
 
     /**
-     * @brief Calculates the FY tensor components for interface material formulation.
-     *
-     * This function computes six fourth and second-order tensor quantities that represent
-     * the FY components used in the interface element material formulation. These tensors
-     * are derived from the transformation matrices and elastic stiffness tensor.
-     *
-     * @param[in] N           3x3 direction cosine matrix for the interface normal direction
-     * @param[in] C_nu_aibj   4th-order elastic stiffness tensor (in Voigt-like notation)
-     *
-     * @return A tuple containing six tensors:
-     *         - Tensor3333d: 1st FY component (4th-order tensor)
-     *         - Tensor3333d: 2nd FY component (4th-order tensor)
-     *         - Tensor3333d: 3rd FY component (4th-order tensor)
-     *         - Tensor3333d: 4th FY component (4th-order tensor)
-     *         - Tensor33d:   5th FY component (2nd-order tensor)
-     *         - Tensor3333d: 6th FY component (4th-order tensor)
-     */
-    std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
-      const Tensor33d&   N,
-      const Tensor3333d& C_nu_aibj );
-
-    /**
      * @brief Calculates interface material parameters from a normal vector and Poisson's ratio.
      *
      * This overload computes interface material matrices assuming an isotropic elastic material
@@ -140,7 +118,7 @@ namespace Marmot::Materials {
      *         - Tensor3333d: 4th material matrix parameter (4th-order tensor)
      */
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
-      const Tensor3d&                      normal,
-      const Eigen::Matrix< double, 6, 6 >& C_ep_voigt );
+      const Tensor3d&         normal,
+      const Marmot::Matrix6d& C_ep_voigt );
   } // namespace InterfaceMaterialHelperFunctions
 } // namespace Marmot::Materials

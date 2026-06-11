@@ -64,10 +64,10 @@ namespace Marmot::Materials {
     /// \brief power law exponent for interphase layer
     const double& n;
 
-    /// \brief number of Kelvin units to approximate the viscoelastic compliance for interphase layer
+    /// \brief number of Maxwell branches
     const size_t nMaxwell;
 
-    /// \brief minimal retardation time used in the viscoelastic Kelvin chain for interphase layer
+    /// \brief minimal relaxation time reserved for a future generalized Maxwell-chain approximation
     const double& minTau;
 
     /// \brief ratio of simulation time to days
@@ -84,13 +84,11 @@ namespace Marmot::Materials {
     int getNumberOfRequiredStateVars() const override;
 
   private:
-    /// @brief Young's modulus of the #nKelvin Kelvin units
+    /// @brief Elastic moduli of the Maxwell branches
     WiechertInterface::Properties elasticModuli;
-    /// @brief relaxation times of the #nKelvin Kelvin units
+    /// @brief Relaxation times of the Maxwell branches
     WiechertInterface::Properties relaxationTimes;
-    /// @brief stiffness of the zeroth Kelvin unit (the elastic response)
+    /// @brief Stiffness of the equilibrium elastic branch
     double zerothWiechertStiffness;
-
-    static constexpr int powerLawApproximationOrder = 1;
   };
 } // namespace Marmot::Materials

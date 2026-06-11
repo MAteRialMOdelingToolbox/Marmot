@@ -121,9 +121,7 @@ namespace Marmot::Materials {
     const Eigen::Matrix< double, 3, 3, Eigen::RowMajor >
       scaled_averageStressFull = h * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( averageStressVoigt );
 
-    const Tensor33d scaled_averageStressFullFtensor( scaled_averageStressFull.data() );
-
-    scaled_averageStressFtensor = scaled_averageStressFullFtensor;
+    scaled_averageStressFtensor = Tensor33d( scaled_averageStressFull.data() );
 
     scaled_forceFtensor = ( 1.0 / h ) * Fastor::einsum< ij, j, to_i >( scaled_averageStressFtensor, normalFtensor );
 

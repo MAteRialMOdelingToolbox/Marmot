@@ -61,6 +61,7 @@ namespace Marmot::Elements {
    * The element combines geometric interface operators from
    * `MarmotGeometryInterfaceElement<nDim, nNodes>` with an interface-material
    * update (`MarmotInterfaceMaterialHypoElastic`) at each quadrature point.
+   * The current formulation uses linearized, small-deformation kinematics.
    * It stores quadrature-point state variables and assembles:
    * - element residual vector,
    * - algorithmic tangent matrix,
@@ -70,8 +71,6 @@ namespace Marmot::Elements {
   class InterfaceFiniteElement : public MarmotElement, public MarmotGeometryInterfaceElement< nDim, nNodes > {
 
   public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
     /**
      * @brief Section type selector for the interface element.
      */
@@ -130,8 +129,6 @@ namespace Marmot::Elements {
      * @brief Container for all per-quadrature-point data.
      */
     struct QuadraturePoint {
-      EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
       const XiSized xi;
       const double  weight;
 
@@ -279,7 +276,7 @@ namespace Marmot::Elements {
       }
     };
 
-    std::vector< QuadraturePoint, Eigen::aligned_allocator< QuadraturePoint > > qps;
+    std::vector< QuadraturePoint > qps;
 
     /**
      * @brief Construct an interface finite element.
