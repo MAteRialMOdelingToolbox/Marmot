@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::FastorIndices;
 
 namespace Marmot::Materials {
 
@@ -164,7 +165,6 @@ namespace Marmot::Materials {
     H_inv_ij_Ftensor         = 1. / h * barE * unitH_inv_ij;
     H_inv_nF_ijk_Ftensor     = barE * unitH_inv_nF_ijk;
 
-    enum { i, j, k, l };
     // Calculate jump increment
     Tensor3d jumpUFtensor = dUFtensor( Fastor::seq( 0, 3 ), 0 ) - dUFtensor( Fastor::seq( 3, Fastor::last ), 0 );
 
@@ -193,33 +193,22 @@ namespace Marmot::Materials {
     auto creep_surface_stress_Y_IncrementFastor  = Fastor::reshape< 3, 3 >( creep_surface_stress_Y_Increment_tensor );
     auto creep_surface_stress_us_IncrementFastor = Fastor::reshape< 3, 3 >( creep_surface_stress_us_Increment_tensor );
 
-    Tensor3d
-      dForce_uu = Fastor::einsum< Fastor::Index< i, j >, Fastor::Index< j >, Fastor::OIndex< i > >( H_inv_ij_Ftensor,
-                                                                                                    jumpUFtensor ) -
-                  1. / h * creep_force_uu_IncrementFastor;
+    Tensor3d dForce_uu = Fastor::einsum< ij, j, to_i >( H_inv_ij_Ftensor, jumpUFtensor ) -
+                         1. / h * creep_force_uu_IncrementFastor;
 
-    Tensor3d dForce_us = Fastor::einsum< Fastor::Index< i, j, k >,
-                                         Fastor::Index< j, k >,
-                                         Fastor::OIndex< i > >( H_inv_nF_ijk_Ftensor,
-                                                                averageDsurfaceStrainFtensorReshape ) -
+    Tensor3d dForce_us = Fastor::einsum< ijk, jk, to_i >( H_inv_nF_ijk_Ftensor, averageDsurfaceStrainFtensorReshape ) -
                          creep_force_us_IncrementFastor;
 
     // std::cout<<"creep_Rs_increment_fastor:\n"<<creep_Rs_increment_fastor<<'\n';
-    Tensor33d dSurfaceStress_Z_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                                    Fastor::Index< k, l >,
-                                                    Fastor::OIndex< i, j > >( Z_ijkl_Ftensor,
-                                                                              averageDsurfaceStrainFtensorReshape ) +
+    Tensor33d dSurfaceStress_Z_ij = Fastor::einsum< ijkl, kl, to_ij >( Z_ijkl_Ftensor,
+                                                                       averageDsurfaceStrainFtensorReshape ) +
                                     h * creep_surface_stress_Z_IncrementFastor;
 
-    Tensor33d dSurfaceStress_Y_ij = Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                                    Fastor::Index< k, l >,
-                                                    Fastor::OIndex< i, j > >( Yn_H_inv_Fn_ijkl_Ftensor,
-                                                                              averageDsurfaceStrainFtensorReshape ) -
+    Tensor33d dSurfaceStress_Y_ij = Fastor::einsum< ijkl, kl, to_ij >( Yn_H_inv_Fn_ijkl_Ftensor,
+                                                                       averageDsurfaceStrainFtensorReshape ) -
                                     h * creep_surface_stress_Y_IncrementFastor;
 
-    Tensor33d dSurfaceStress_us_ij = Fastor::einsum< Fastor::Index< i >,
-                                                     Fastor::Index< i, j, k >,
-                                                     Fastor::OIndex< j, k > >( jumpUFtensor, H_inv_nF_ijk_Ftensor ) -
+    Tensor33d dSurfaceStress_us_ij = Fastor::einsum< i, ijk, to_jk >( jumpUFtensor, H_inv_nF_ijk_Ftensor ) -
                                      creep_surface_stress_us_IncrementFastor;
 
     forceFtensor += dForce_uu;

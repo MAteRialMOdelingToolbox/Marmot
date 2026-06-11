@@ -6,6 +6,7 @@
 
 namespace Marmot::Materials {
 
+  using namespace Marmot::FastorIndices;
   using namespace Marmot::FastorStandardTensors;
 
   LinearElasticInterface::LinearElasticInterface( const double* materialProperties,
@@ -54,31 +55,19 @@ namespace Marmot::Materials {
       return;
     }
     // Compute stress increment
-    enum { i, j, k, l };
-
     Tensor3d jumpU_ftensor = dU_ftensor( Fastor::seq( 0, 3 ), 0 ) - dU_ftensor( Fastor::seq( 3, Fastor::last ), 0 );
 
     Tensor91d average_dSurface_strain_ftensor = 1. / 2. *
                                                 ( dSurface_strain_ftensor( Fastor::seq( 0, 9 ), 0 ) +
                                                   dSurface_strain_ftensor( Fastor::seq( 9, Fastor::last ), 0 ) );
     auto average_dSurface_strain_ftensor_reshape = Fastor::reshape< 3, 3 >( average_dSurface_strain_ftensor );
-    force_ftensor += Fastor::einsum< Fastor::Index< i, j >, Fastor::Index< j >, Fastor::OIndex< i > >( H_inv_ij_ftensor,
-                                                                                                       jumpU_ftensor );
-    force_ftensor += Fastor::einsum< Fastor::Index< i, j, k >,
-                                     Fastor::Index< j, k >,
-                                     Fastor::OIndex< i > >( H_inv_nF_ijk_ftensor,
-                                                            average_dSurface_strain_ftensor_reshape );
-    surface_stress_ftensor += Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                              Fastor::Index< k, l >,
-                                              Fastor::OIndex< i, j > >( Z_ijkl_ftensor,
-                                                                        average_dSurface_strain_ftensor_reshape );
-    surface_stress_ftensor += Fastor::einsum< Fastor::Index< i, j, k, l >,
-                                              Fastor::Index< k, l >,
-                                              Fastor::OIndex< i, j > >( Yn_H_inv_Fn_ijkl_ftensor,
-                                                                        average_dSurface_strain_ftensor_reshape );
-    surface_stress_ftensor += Fastor::einsum< Fastor::Index< i >,
-                                              Fastor::Index< i, j, k >,
-                                              Fastor::OIndex< j, k > >( jumpU_ftensor, H_inv_nF_ijk_ftensor );
+    force_ftensor += Fastor::einsum< ij, j, to_i >( H_inv_ij_ftensor, jumpU_ftensor );
+    force_ftensor += Fastor::einsum< ijk, jk, to_i >( H_inv_nF_ijk_ftensor, average_dSurface_strain_ftensor_reshape );
+    surface_stress_ftensor += Fastor::einsum< ijkl, kl, to_ij >( Z_ijkl_ftensor,
+                                                                 average_dSurface_strain_ftensor_reshape );
+    surface_stress_ftensor += Fastor::einsum< ijkl, kl, to_ij >( Yn_H_inv_Fn_ijkl_ftensor,
+                                                                 average_dSurface_strain_ftensor_reshape );
+    surface_stress_ftensor += Fastor::einsum< i, ijk, to_jk >( jumpU_ftensor, H_inv_nF_ijk_ftensor );
   };
 
 } // namespace Marmot::Materials

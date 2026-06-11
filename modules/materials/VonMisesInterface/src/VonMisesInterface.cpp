@@ -13,6 +13,7 @@
 #include <stdexcept>
 
 using namespace Marmot;
+using namespace Marmot::FastorIndices;
 using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
@@ -49,7 +50,6 @@ namespace Marmot::Materials {
                                          const TimeIncrement& timeIncrement )
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
-    enum { i, j, k, l };
     auto& scaled_forceFtensor         = state.force;
     auto& scaled_averageStressFtensor = state.surfaceStress;
     auto& Q_ij_Ftensor_scaled         = tangents.Q_ij;
@@ -79,10 +79,7 @@ namespace Marmot::Materials {
                                                     dSurfaceDispGradientFtensor( Fastor::seq( 9, Fastor::last ), 0 ) );
     auto      dSurfaceDispGradientAvg     = Tensor33d( Fastor::reshape< 3, 3 >( dSurfaceDispGradientAvgFlat ) );
     // Average displacement gradient: jump contribution (normal-to-layer) + surface strain
-    Tensor33d
-      dU_kl_Jump = ( 1. / h ) *
-                   Fastor::einsum< Fastor::Index< i >, Fastor::Index< j >, Fastor::OIndex< i, j > >( dJumpU,
-                                                                                                     normalFtensor );
+    Tensor33d dU_kl_Jump = ( 1. / h ) * Fastor::einsum< i, j, to_ij >( dJumpU, normalFtensor );
 
     // Symmetrize and include surface strain to obtain the full average strain increment
     Tensor33d dDispGradAvg = dU_kl_Jump + dSurfaceDispGradientAvg;
@@ -133,10 +130,7 @@ namespace Marmot::Materials {
 
     scaled_averageStressFtensor = scaled_averageStressFullFtensor;
 
-    scaled_forceFtensor = ( 1.0 / h ) *
-                          Fastor::einsum< Fastor::Index< i, j >,
-                                          Fastor::Index< j >,
-                                          Fastor::OIndex< i > >( scaled_averageStressFtensor, normalFtensor );
+    scaled_forceFtensor = ( 1.0 / h ) * Fastor::einsum< ij, j, to_i >( scaled_averageStressFtensor, normalFtensor );
 
     return;
   };
