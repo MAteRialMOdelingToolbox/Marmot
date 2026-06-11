@@ -34,7 +34,6 @@ namespace Marmot::Materials {
 
     std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& L )
     {
       Tensor33d Q = Fastor::einsum< AiBj, ij, to_AB >( L, N );
@@ -49,7 +48,6 @@ namespace Marmot::Materials {
     }
     std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj )
     {
       Tensor33d   G_nu;
@@ -57,7 +55,7 @@ namespace Marmot::Materials {
       Tensor3333d B_nu;
       Tensor3333d L_nu;
 
-      std::tie( B_nu, L_nu, A_nu, G_nu ) = interfaceGeometrySystemCouplings( N, T, C_nu_aibj );
+      std::tie( B_nu, L_nu, A_nu, G_nu ) = interfaceGeometrySystemCouplings( N, C_nu_aibj );
       Tensor3333d F                      = Fastor::einsum< Am, mnBj, to_AnBj >( G_nu, L_nu );
       Tensor3333d Y                      = Fastor::einsum< Aimn, nB, to_AimB >( L_nu, G_nu );
       return std::make_tuple( F, Y, A_nu, L_nu, G_nu, B_nu );
@@ -66,11 +64,14 @@ namespace Marmot::Materials {
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateMaterialMatrices(
       const Tensor3d&    normal,
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj )
     {
 
-      auto [F, Y, A_nu, L_nu, G_nu, B_nu] = calculateFY( N, T, C_nu_aibj );
+      Tensor3333d F;
+      Tensor3333d Y;
+      Tensor33d   G_nu;
+      Tensor3333d B_nu;
+      std::tie( F, Y, std::ignore, std::ignore, G_nu, B_nu ) = calculateFY( N, C_nu_aibj );
 
       Tensor33d H_inv = Fastor::inverse( G_nu );
 
@@ -92,12 +93,10 @@ namespace Marmot::Materials {
 
       Tensor33d N = Fastor::einsum< i, j, to_ij >( normal, normal );
 
-      Tensor33d T = Marmot::FastorStandardTensors::Spatial3D::I - N;
-
       const auto  C_nu_eigen = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( C_nu_voigt_full );
       Tensor3333d C_nu_aibj( C_nu_eigen.data(), Fastor::ColumnMajor );
 
-      auto [Z, H_inv, H_inv_nF, nY_H_inv_Fn] = calculateMaterialMatrices( normal, N, T, C_nu_aibj );
+      auto [Z, H_inv, H_inv_nF, nY_H_inv_Fn] = calculateMaterialMatrices( normal, N, C_nu_aibj );
 
       return { Z, H_inv, H_inv_nF, nY_H_inv_Fn };
     }

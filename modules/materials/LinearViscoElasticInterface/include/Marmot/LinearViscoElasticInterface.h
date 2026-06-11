@@ -74,8 +74,6 @@ namespace Marmot::Materials {
     const double& timeToDays;
 
   public:
-    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-
     LinearViscoElasticInterface( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void computeStress( State&               state,

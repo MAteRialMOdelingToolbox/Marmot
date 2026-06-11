@@ -68,8 +68,6 @@ namespace Marmot::Materials {
    */
   class LinearElasticInterfaceBMGu : public MarmotInterfaceMaterialHypoElastic {
   public:
-    using MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic;
-
     LinearElasticInterfaceBMGu( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void computeStress( State&               state,

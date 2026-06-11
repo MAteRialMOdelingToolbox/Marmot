@@ -39,15 +39,46 @@ namespace Marmot::Materials {
     using Marmot::FastorStandardTensors::Tensor33d;
     using Marmot::FastorStandardTensors::Tensor3d;
 
+    /**
+     * @brief Computes the geometry-system coupling tensors for an interface.
+     *
+     * Forms the contracted matrix \f$Q = L:N\f$ and its inverse \f$G\f$,
+     * then computes the coupling tensor \f$A = G \otimes N\f$ and the
+     * condensed constitutive tensor \f$B = L - L:A:L\f$.
+     *
+     * @param[in] N Normal projector \f$\boldsymbol{n} \otimes \boldsymbol{n}\f$.
+     * @param[in] L Fourth-order constitutive tensor.
+     *
+     * @return Tuple containing, in order:
+     *         - \f$B\f$: condensed fourth-order constitutive tensor,
+     *         - \f$L\f$: unchanged input constitutive tensor,
+     *         - \f$A\f$: fourth-order geometry-system coupling tensor,
+     *         - \f$G = Q^{-1}\f$: inverse contracted constitutive matrix.
+     */
     std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& L );
 
+    /**
+     * @brief Computes the four constitutive operators used by an interface material.
+     *
+     * Condenses the bulk constitutive tensor with respect to the interface
+     * normal direction and derives the operators coupling displacement jumps,
+     * surface strains, interface forces, and surface stresses.
+     *
+     * @param[in] normal Unit normal vector of the interface.
+     * @param[in] N Normal projector \f$\boldsymbol{n} \otimes \boldsymbol{n}\f$.
+     * @param[in] C_nu_aibj Fourth-order constitutive tensor.
+     *
+     * @return Tuple containing, in order:
+     *         - \f$Z\f$: condensed fourth-order surface-strain operator,
+     *         - \f$H^{-1}\f$: second-order displacement-jump operator,
+     *         - \f$H^{-1}nF\f$: third-order jump/surface-strain coupling operator,
+     *         - \f$nYH^{-1}Fn\f$: fourth-order coupling correction.
+     */
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateMaterialMatrices(
       const Tensor3d&    normal,
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj );
 
     /**
@@ -58,7 +89,6 @@ namespace Marmot::Materials {
      * are derived from the transformation matrices and elastic stiffness tensor.
      *
      * @param[in] N           3x3 direction cosine matrix for the interface normal direction
-     * @param[in] T           3x3 direction cosine matrix for the interface tangent direction
      * @param[in] C_nu_aibj   4th-order elastic stiffness tensor (in Voigt-like notation)
      *
      * @return A tuple containing six tensors:
@@ -71,7 +101,6 @@ namespace Marmot::Materials {
      */
     std::tuple< Tensor3333d, Tensor3333d, Tensor3333d, Tensor3333d, Tensor33d, Tensor3333d > calculateFY(
       const Tensor33d&   N,
-      const Tensor33d&   T,
       const Tensor3333d& C_nu_aibj );
 
     /**
