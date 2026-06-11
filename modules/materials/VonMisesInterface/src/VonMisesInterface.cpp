@@ -50,23 +50,22 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
     enum { i, j, k, l };
-    auto scaled_forceFtensor         = TensorMap3d( state.force );
-    auto scaled_averageStressFtensor = TensorMap33d( state.surfaceStress );
-    auto Q_ij_Ftensor_scaled         = TensorMap33d( tangents.Q_ij );
-    auto Z_ijkl_Ftensor_scaled       = TensorMap3333d( tangents.Z_ijkl );
-    auto H_ijk_Ftensor_scaled        = TensorMap333d( tangents.H_ijk );
-    auto Y_ijkl_Ftensor_scaled       = TensorMap3333d( tangents.Y_ijkl );
+    auto& scaled_forceFtensor         = state.force;
+    auto& scaled_averageStressFtensor = state.surfaceStress;
+    auto& Q_ij_Ftensor_scaled         = tangents.Q_ij;
+    auto& Z_ijkl_Ftensor_scaled       = tangents.Z_ijkl;
+    auto& H_ijk_Ftensor_scaled        = tangents.H_ijk;
+    auto& Y_ijkl_Ftensor_scaled       = tangents.Y_ijkl;
 
     double*      stateVars = state.stateVars;
     const double timeOld   = timeIncrement.timeOld;
     const double dT        = timeIncrement.dT;
 
-    // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    Tensor61d  dUFtensor( deformation.dU );
-    Tensor181d dSurfaceDispGradientFtensor( deformation.dSurfaceStrain );
-    Tensor3d   normalFtensor( deformation.normal );
+    auto        dUFtensor                   = deformation.dU;
+    auto        dSurfaceDispGradientFtensor = deformation.dSurfaceStrain;
+    const auto& normalFtensor               = deformation.normal;
 
     // Evaluate average stress on the layer using Von Mises yield criterion.
     // vonMisesModel.computeStress updates averageStress and writes the new
@@ -97,7 +96,7 @@ namespace Marmot::Materials {
     // VonMisesModel updates stress in-place (incremental hypoelastic-plastic);
     // read the current 3x3 averageStress, symmetrize, convert to Voigt 6-vector
     Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > > scaled_averageStressCurrent(
-      state.surfaceStress );
+      state.surfaceStress.data() );
     const Eigen::Matrix< double, 3, 3 > scaled_averageStressSym = 0.5 * ( scaled_averageStressCurrent +
                                                                           scaled_averageStressCurrent.transpose() );
     Marmot::Vector6d                    averageStressVoigt      = 1. / h *

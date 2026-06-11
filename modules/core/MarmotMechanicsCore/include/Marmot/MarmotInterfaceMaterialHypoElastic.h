@@ -28,6 +28,7 @@
 
 #pragma once
 
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotStateHelpers.h"
 
 #include <cassert>
@@ -49,6 +50,13 @@ protected:
   const int     nMaterialProperties;
 
 public:
+  using TensorMap3d    = Marmot::FastorStandardTensors::TensorMap3d;
+  using TensorMap33d   = Marmot::FastorStandardTensors::TensorMap33d;
+  using TensorMap333d  = Marmot::FastorStandardTensors::TensorMap333d;
+  using TensorMap3333d = Marmot::FastorStandardTensors::TensorMap3333d;
+  using TensorMap61d   = Marmot::FastorStandardTensors::TensorMap61d;
+  using TensorMap181d  = Marmot::FastorStandardTensors::TensorMap181d;
+
   const int materialNumber;
 
   MarmotInterfaceMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
@@ -78,22 +86,31 @@ public:
   void setCharacteristicElementLength( double length );
 
   struct State {
-    double* force;
-    double* surfaceStress;
-    double* stateVars;
+    TensorMap3d  force;
+    TensorMap33d surfaceStress;
+    double*      stateVars;
   };
 
   struct Tangents {
-    double* Q_ij;
-    double* Z_ijkl;
-    double* H_ijk;
-    double* Y_ijkl;
+    TensorMap33d   Q_ij;
+    TensorMap3333d Z_ijkl;
+    TensorMap333d  H_ijk;
+    TensorMap3333d Y_ijkl;
   };
 
   struct Deformation {
-    const double* dU;
-    const double* dSurfaceStrain;
-    const double* normal;
+    TensorMap61d  dU;
+    TensorMap181d dSurfaceStrain;
+    TensorMap3d   normal;
+
+    // Fastor's const TensorMap cannot be used with slicing and norm operations.
+    // These views are therefore mutable types but are exposed through const Deformation&.
+    Deformation( const double* dU_, const double* dSurfaceStrain_, const double* normal_ )
+      : dU( const_cast< double* >( dU_ ) ),
+        dSurfaceStrain( const_cast< double* >( dSurfaceStrain_ ) ),
+        normal( const_cast< double* >( normal_ ) )
+    {
+    }
   };
 
   struct TimeIncrement {

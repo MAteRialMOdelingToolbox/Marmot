@@ -65,19 +65,17 @@ namespace Marmot::Materials {
       throw std::runtime_error( "LinearViscoElasticInterface: state variables not provided." );
     }
 
-    // map to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
 
-    auto forceFtensor             = TensorMap3d( state.force );
-    auto surfaceStressFtensor     = TensorMap33d( state.surfaceStress );
-    auto H_inv_ij_Ftensor         = TensorMap33d( tangents.Q_ij );
-    auto Z_ijkl_Ftensor           = TensorMap3333d( tangents.Z_ijkl );
-    auto H_inv_nF_ijk_Ftensor     = TensorMap333d( tangents.H_ijk );
-    auto Yn_H_inv_Fn_ijkl_Ftensor = TensorMap3333d( tangents.Y_ijkl );
-
-    const Tensor61d  dUFtensor( deformation.dU );
-    const Tensor181d dSurfaceStrainFtensor( deformation.dSurfaceStrain );
-    const Tensor3d   normalFtensor( deformation.normal );
+    auto&       forceFtensor             = state.force;
+    auto&       surfaceStressFtensor     = state.surfaceStress;
+    auto&       H_inv_ij_Ftensor         = tangents.Q_ij;
+    auto&       Z_ijkl_Ftensor           = tangents.Z_ijkl;
+    auto&       H_inv_nF_ijk_Ftensor     = tangents.H_ijk;
+    auto&       Yn_H_inv_Fn_ijkl_Ftensor = tangents.Y_ijkl;
+    auto        dUFtensor                = deformation.dU;
+    auto        dSurfaceStrainFtensor    = deformation.dSurfaceStrain;
+    const auto& normalFtensor            = deformation.normal;
 
     auto [unitZ_ijkl,
           unitH_inv_ij,

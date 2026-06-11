@@ -35,18 +35,16 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    // map directly to force, surface stress, displacement, surface strain, normal and tangent stiffness
     // use Fastor because we really need to use the einsum
-    auto force_ftensor            = TensorMap3d( state.force );
-    auto surface_stress_ftensor   = TensorMap33d( state.surfaceStress );
-    auto H_inv_ij_ftensor         = TensorMap33d( tangents.Q_ij );
-    auto Z_ijkl_ftensor           = TensorMap3333d( tangents.Z_ijkl );
-    auto H_inv_nF_ijk_ftensor     = TensorMap333d( tangents.H_ijk );
-    auto Yn_H_inv_Fn_ijkl_ftensor = TensorMap3333d( tangents.Y_ijkl );
-
-    const Tensor61d  dU_ftensor( deformation.dU );
-    const Tensor181d dSurface_strain_ftensor( deformation.dSurfaceStrain );
-    const Tensor3d   normal_ftensor( deformation.normal );
+    auto&       force_ftensor            = state.force;
+    auto&       surface_stress_ftensor   = state.surfaceStress;
+    auto&       H_inv_ij_ftensor         = tangents.Q_ij;
+    auto&       Z_ijkl_ftensor           = tangents.Z_ijkl;
+    auto&       H_inv_nF_ijk_ftensor     = tangents.H_ijk;
+    auto&       Yn_H_inv_Fn_ijkl_ftensor = tangents.Y_ijkl;
+    auto        dU_ftensor               = deformation.dU;
+    auto        dSurface_strain_ftensor  = deformation.dSurfaceStrain;
+    const auto& normal_ftensor           = deformation.normal;
 
     auto [unitZ_ijkl,
           unitH_inv_ij,
