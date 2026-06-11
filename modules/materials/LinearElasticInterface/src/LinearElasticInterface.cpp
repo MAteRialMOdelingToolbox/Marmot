@@ -53,7 +53,7 @@ namespace Marmot::Materials {
     if ( Fastor::norm( dU_ftensor ) < 1e-14 && Fastor::norm( dSurface_strain_ftensor ) < 1e-14 ) {
       return;
     }
-    // elastic step
+    // Compute stress increment
     enum { i, j, k, l };
 
     Tensor3d jumpU_ftensor = dU_ftensor( Fastor::seq( 0, 3 ), 0 ) - dU_ftensor( Fastor::seq( 3, Fastor::last ), 0 );
