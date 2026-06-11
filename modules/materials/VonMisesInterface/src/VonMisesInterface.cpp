@@ -102,7 +102,7 @@ namespace Marmot::Materials {
     Marmot::Matrix6d C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
     double&          kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
-    MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
+    MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, 0.0, &kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld, dT };
 
     vonMisesModel->computeStress( vonMisesState, C_ep, dStrainAvgVoigt, vonMisesTimeInfo );

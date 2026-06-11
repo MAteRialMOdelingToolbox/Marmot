@@ -50,7 +50,7 @@ void testStressMaterialResponse()
   Eigen::VectorXd stateVar( nStateVars );
   stateVar.setZero();
 
-  MarmotMaterialHypoElastic::state3D state{ Marmot::Vector6d::Zero(), 0.0, stateVar.data() };
+  MarmotMaterialHypoElastic::state3D state{ Marmot::Vector6d::Zero(), 0.0, 0.0, stateVar.data() };
 
   MarmotMaterialHypoElastic::timeInfo timeInfo;
 
