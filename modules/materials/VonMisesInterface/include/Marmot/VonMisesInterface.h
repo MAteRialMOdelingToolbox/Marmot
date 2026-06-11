@@ -27,14 +27,10 @@
  */
 
 #pragma once
-#include "Fastor/Fastor.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
-#include <Eigen/Core>
+
 #include <array>
-#include <iostream>
 #include <memory>
-#include <string>
-#include <vector>
 
 namespace Marmot::Materials {
 

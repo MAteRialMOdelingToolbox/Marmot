@@ -24,21 +24,9 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
-// #`:pragma once
-// #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotTensor.h"
-#include "Marmot/MarmotTypedefs.h"
-#include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Fastor/Fastor.h>
-#include <tuple>
-#include <unsupported/Eigen/CXX11/Tensor>
 
-#include "Marmot/MarmotFastorTensorBasics.h"
-
-using namespace Eigen;
 using namespace Fastor;
 using namespace Marmot::FastorStandardTensors;
 using namespace Marmot::FastorIndices;

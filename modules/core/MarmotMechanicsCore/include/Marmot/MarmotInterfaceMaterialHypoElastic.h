@@ -28,10 +28,7 @@
 
 #pragma once
 
-#include "Fastor/Fastor.h"
-#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotStateHelpers.h"
-#include "Marmot/MarmotTypedefs.h"
 
 #include <cassert>
 #include <functional>

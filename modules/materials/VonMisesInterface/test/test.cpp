@@ -47,25 +47,17 @@
  */
 // clang-format on
 
-#include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
-#include "Marmot/MarmotWiechertInterface.h"
 #include "Marmot/VonMisesInterface.h"
+
 #include <Eigen/Dense>
-#include <algorithm>
 #include <functional>
-#include <iomanip>
-#include <iostream>
-#include <iterator>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
-using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
 // ---------------------------------------------------------------------------
 // Helper: create a VonMisesInterface material object

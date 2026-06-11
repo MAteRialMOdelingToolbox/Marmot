@@ -36,21 +36,16 @@
  */
 #pragma once
 
-#include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryInterfaceElement.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
-#include "Marmot/MarmotTypedefs.h"
 
 #include <Eigen/Dense>
 #include <Eigen/StdVector>
-#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <vector>

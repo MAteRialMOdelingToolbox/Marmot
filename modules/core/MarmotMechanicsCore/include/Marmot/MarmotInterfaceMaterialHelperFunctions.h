@@ -26,22 +26,18 @@
  */
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
+
 #include <Eigen/Core>
-#include <Eigen/Dense>
-#include <Fastor/Fastor.h>
-#include <Fastor/tensor_algebra/indicial.h>
-#include <cmath>
 #include <tuple>
-#include <unsupported/Eigen/CXX11/Tensor>
-
-using namespace Eigen;
-using namespace Fastor;
-
-using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
 
   namespace InterfaceMaterialHelperFunctions {
+
+    using Marmot::FastorStandardTensors::Tensor3333d;
+    using Marmot::FastorStandardTensors::Tensor333d;
+    using Marmot::FastorStandardTensors::Tensor33d;
+    using Marmot::FastorStandardTensors::Tensor3d;
 
     std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(
       const Tensor33d&   N,

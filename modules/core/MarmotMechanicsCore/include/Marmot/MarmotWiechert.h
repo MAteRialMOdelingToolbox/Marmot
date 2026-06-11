@@ -26,14 +26,8 @@
  */
 
 #pragma once
-#include "Marmot/MarmotKelvinChain.h"
-#include "Marmot/MarmotNumericalIntegration.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/real.hpp"
-#include <fstream>
-#include <functional>
-#include <iostream>
-//
+
 namespace Marmot::Materials {
 
   /**

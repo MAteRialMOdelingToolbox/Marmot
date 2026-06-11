@@ -1,21 +1,11 @@
 #include "Marmot/LinearElasticInterface.h"
-#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMath.h"
-#include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotVoigt.h"
+#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include <Fastor/tensor/TensorMap.h>
 
 namespace Marmot::Materials {
 
-  using namespace Marmot;
-  using namespace Eigen;
-  using namespace Fastor;
   using namespace Marmot::FastorStandardTensors;
 
   LinearElasticInterface::LinearElasticInterface( const double* materialProperties,

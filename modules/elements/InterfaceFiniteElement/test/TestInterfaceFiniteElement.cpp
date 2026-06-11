@@ -2,7 +2,6 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotTesting.h"
 
-#include <algorithm>
 #include <array>
 #include <cmath>
 #include <functional>

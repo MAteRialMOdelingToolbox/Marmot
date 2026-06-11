@@ -1,24 +1,18 @@
 #include "Marmot/VonMisesInterface.h"
 #include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/VonMises.h"
 
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include "autodiff/forward/real.hpp"
-#include <Eigen/Core>
 #include <Eigen/Dense>
-#include <iostream>
-#include <map>
-#include <string>
+
+#include <stdexcept>
 
 using namespace Marmot;
-using namespace Eigen;
 using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {

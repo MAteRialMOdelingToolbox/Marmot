@@ -1,4 +1,5 @@
 #include "Marmot/MarmotWiechert.h"
+#include "Marmot/MarmotKelvinChain.h"
 
 namespace Marmot::Materials {
 

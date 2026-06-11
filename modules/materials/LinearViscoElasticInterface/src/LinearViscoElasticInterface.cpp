@@ -1,30 +1,13 @@
 #include "Marmot/LinearViscoElasticInterface.h"
-#include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
-#include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
-#include "Marmot/MarmotViscoelasticity.h"
-#include "Marmot/MarmotVoigt.h"
 #include "Marmot/MarmotWiechertInterface.h"
 
 #include "Fastor/Fastor.h"
-#include "Marmot/MarmotFastorTensorBasics.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
-#include <Eigen/src/Core/Matrix.h>
-#include <Eigen/src/Core/util/Constants.h>
-#include <Fastor/expressions/linalg_ops/unary_norm_op.h>
-#include <Fastor/tensor/TensorMap.h>
-
-#include "autodiff/forward/real.hpp"
-#include <iostream>
-#include <map>
+#include <Eigen/Dense>
 #include <stdexcept>
-#include <string>
 
-using namespace Marmot;
-using namespace Eigen;
 using namespace Marmot::FastorStandardTensors;
 
 namespace Marmot::Materials {
@@ -174,8 +157,6 @@ namespace Marmot::Materials {
                                          creep_surface_stress_Y_Increment,
                                          creep_surface_stress_us_Increment,
                                          1.0 );
-
-    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
 
     // Evaluate effective compliances due to the displacement jump and the surface stress
 

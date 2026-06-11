@@ -1,21 +1,16 @@
 #include "Marmot/LinearViscoElasticInterface.h"
-#include "Marmot/MarmotElasticity.h"
-#include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
-#include "Marmot/MarmotWiechertInterface.h"
+
 #include <Eigen/Dense>
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <iterator>
+#include <functional>
+#include <memory>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
-using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
 // Function to create a MarmotMaterialHypoElastic object
 // Inputs:
@@ -105,7 +100,6 @@ void testForceMaterialResponse()
 
   // first increment ( load free )
   const double    timeOld = 0.0; // Previous time step
-  double          pNewDT;        // Placeholder for the new time increment
   Eigen::VectorXd time( 2 );
   time.setZero();
   double dT = 28.0; // time increment
@@ -224,7 +218,6 @@ void testSurfaceStressMaterialResponse()
 
   // first increment ( load free )
   const double    timeOld = 0.0; // Previous time step
-  double          pNewDT;        // Placeholder for the new time increment
   Eigen::VectorXd time( 2 );
   time.setZero();
   double dT = 28.0; // time increment

@@ -1,13 +1,10 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotViscoelasticity.h"
 #include "Marmot/MarmotWiechert.h"
 
 #include <Eigen/Core>
 
-#include <algorithm>
-#include <cmath>
 #include <stdexcept>
 
 namespace Marmot::Materials {
@@ -71,7 +68,6 @@ namespace Marmot::Materials {
                                 creepStressIncrement,
                                 1.0 );
 
-    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
     double effectiveStiffness = E + zerothWiechertStiffness + creepStiffness;
 
     D                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( effectiveStiffness, nu );

@@ -1,21 +1,16 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
-#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
-#include "Marmot/MarmotWiechert.h"
+
 #include <Eigen/Dense>
-#include <algorithm>
 #include <functional>
-#include <iomanip>
-#include <iostream>
-#include <iterator>
 #include <memory>
+#include <stdexcept>
+#include <string>
 #include <vector>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;
 
 std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( const std::string& materialName,
                                                                               const double*      materialProperties,
