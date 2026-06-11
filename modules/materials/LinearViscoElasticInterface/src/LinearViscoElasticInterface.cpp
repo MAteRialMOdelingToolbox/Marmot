@@ -58,13 +58,8 @@ namespace Marmot::Materials {
   {
     using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
 
-    double*      stateVars = state.stateVars;
-    const double timeOld   = timeIncrement.timeOld;
-    const double dT        = timeIncrement.dT;
-
-    if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
-      throw std::runtime_error( "LinearViscoElasticInterface: state variables not provided." );
-    }
+    const double& timeOld = timeIncrement.timeOld;
+    const double& dT      = timeIncrement.dT;
 
     // use Fastor because we really need to use the einsum
 
@@ -107,20 +102,20 @@ namespace Marmot::Materials {
     }
 
     // visco elastic step
-    auto creepStateVars_force_uu_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( stateVars,
+    auto creepStateVars_force_uu_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
                                                                                            "MaxwellStateVars_force_uu",
                                                                                            3,
                                                                                            nMaxwell );
-    auto creepStateVars_force_us_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( stateVars,
+    auto creepStateVars_force_us_map         = stateLayout.getAs< Eigen::Map< Eigen::MatrixXd > >( state.stateVars,
                                                                                            "MaxwellStateVars_force_us",
                                                                                            3,
                                                                                            nMaxwell );
     auto creepStateVars_surface_stress_Z_map = stateLayout.getAs<
-      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_Z", 9, nMaxwell );
+      Eigen::Map< Eigen::MatrixXd > >( state.stateVars, "MaxwellStateVars_surface_stress_Z", 9, nMaxwell );
     auto creepStateVars_surface_stress_Y_map = stateLayout.getAs<
-      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_Y", 9, nMaxwell );
+      Eigen::Map< Eigen::MatrixXd > >( state.stateVars, "MaxwellStateVars_surface_stress_Y", 9, nMaxwell );
     auto creepStateVars_surface_stress_us_map = stateLayout.getAs<
-      Eigen::Map< Eigen::MatrixXd > >( stateVars, "MaxwellStateVars_surface_stress_us", 9, nMaxwell );
+      Eigen::Map< Eigen::MatrixXd > >( state.stateVars, "MaxwellStateVars_surface_stress_us", 9, nMaxwell );
 
     Eigen::Ref< WiechertInterface::StateVarMatrix_force_uu > creepStateVars_force_uu( creepStateVars_force_uu_map );
     Eigen::Ref< WiechertInterface::StateVarMatrix_force_us > creepStateVars_force_us( creepStateVars_force_us_map );

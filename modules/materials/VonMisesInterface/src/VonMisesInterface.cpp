@@ -57,9 +57,8 @@ namespace Marmot::Materials {
     auto& H_ijk_Ftensor_scaled        = tangents.H_ijk;
     auto& Y_ijkl_Ftensor_scaled       = tangents.Y_ijkl;
 
-    double*      stateVars = state.stateVars;
-    const double timeOld   = timeIncrement.timeOld;
-    const double dT        = timeIncrement.dT;
+    const double& timeOld = timeIncrement.timeOld;
+    const double& dT      = timeIncrement.dT;
 
     // use Fastor because we really need to use the einsum
 
@@ -100,12 +99,8 @@ namespace Marmot::Materials {
                                           Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt(
                                             scaled_averageStressSym );
 
-    if ( stateVars == nullptr && getNumberOfRequiredStateVars() > 0 ) {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": state vars not provided." );
-    }
-
     Marmot::Matrix6d C_ep  = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E_0, nu_0 );
-    double&          kappa = stateLayout.getAs< double& >( stateVars, "kappa" );
+    double&          kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
     MarmotMaterialHypoElastic::state3D  vonMisesState{ averageStressVoigt, 0.0, &kappa };
     MarmotMaterialHypoElastic::timeInfo vonMisesTimeInfo{ timeOld, dT };
