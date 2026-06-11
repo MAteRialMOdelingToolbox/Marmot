@@ -11,9 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -144,15 +141,22 @@ namespace Marmot::Elements {
        */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
+        /// \hideinitializer
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 6 },
           { .name = "strain", .length = 6 },
+          { .name = "total strain energy", .length = 1 },
+          { .name = "elastic strain energy", .length = 1 },
+          { .name = "dissipation", .length = 1 },
           { .name = "begin of material state", .length = 0 },
         } );
 
       public:
         mVector6d                     stress;
         mVector6d                     strain;
+        double&                       totalStrainEnergy;
+        double&                       elasticStrainEnergy;
+        double&                       dissipation;
         Eigen::Map< Eigen::VectorXd > materialStateVars;
 
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
@@ -161,6 +165,9 @@ namespace Marmot::Elements {
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
             strain( &find( "strain" ) ),
+            totalStrainEnergy( find( "total strain energy" ) ),
+            elasticStrainEnergy( find( "elastic strain energy" ) ),
+            dissipation( find( "dissipation" ) ),
             materialStateVars( &find( "begin of material state" ),
                                nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
       };
@@ -345,32 +352,11 @@ namespace Marmot::Elements {
     /**
      * @brief Compute internal force without tangents.
      * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$,
-     * interpolates the non-local variables as \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces and consistent tangents
+     * interpolates the non-local variables as \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces
      * are evaluated by Gauss quadrature:
-     * \f[
-     * \mathbf{K}_e = \begin{bmatrix} \mathbf{K}_{uu} & \mathbf{K}_{uk} \\ \mathbf{K}_{ku} & \mathbf{K}_{kk}
-     * \end{bmatrix},\qquad
-     * \mathbf{\fuint} = \sum_{qp} \mathbf{B}^\mathsf{T}\, \sig\, J_0\, w_{qp}\, .
-     * \f]
-     * \f[
      * \mathbf{\fk} = \sum_{qp} \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x}
      * \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
      * J_0\, w_{qp} \, .
-     * \f]
-     * The stiffness submatrices are evaluated using the following expressions:
-     * \f[
-     * \mathbf{K}_{uu} = \sum_{qp} \mathbf{B}^\mathsf{T} \frac{\partial \mathbf{\sig}}{\partial \mathbf{\eps}}
-     * \mathbf{B}\, J_0\, w_{qp},\quad
-     * \mathbf{K}_{u\knl} = \sum_{qp} \mathbf{B}^\mathsf{T} \frac{\partial \mathbf{\sig}}{\partial \knl} \mathbf{\Nk}\,
-     * J_0\, w_{qp},\quad
-     * \mathbf{K}_{\knl u} = -\sum_{qp} \mathbf{\Nk}^\mathsf{T} \frac{\partial \kl}{\partial \mathbf{\eps}} \mathbf{B}\,
-     * J_0\, w_{qp},
-     * \f]
-     * \f[
-     * \mathbf{K}_{\knl\knl} = \sum_{qp} \left( \mathbf{\Nk}^\mathsf{T}\, \mathbf{\Nk} + c \, \partial_\mathbf{x}
-     * \mathbf{\Nk}^\mathsf{T} \,  \partial_\mathbf{x} \mathbf{\Nk} + \frac{\partial c}{\partial \knl} \,
-     * \partial_\mathbf{x} \mathbf{\Nk}^\mathsf{T} \, \partial_\mathbf{x}   \mathbf{\Nk}\, \qk \, \mathbf{\Nk} -
-     * \mathbf{\Nk}^\mathsf{T}\, \frac{\partial \kl}{\partial \knl} \right) J_0\, w_{qp}\, .
      * \f]
      * If pNewdT<1, the routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector in field-wise format: \f$\mathbf{q} = [\mathbf{\qu},
@@ -404,6 +390,24 @@ namespace Marmot::Elements {
      * linear (corner-node) shape function on the same element.
      */
     void computeLumpedInertia( double* M );
+
+    /**
+     * @brief Compute the critical time step for explicit dynamics based on
+     * the dilatational wave speed and the element size.
+     * @param criticalTimeStep Output parameter for the computed critical time step.
+     * @details Uses the formula \f$\Delta t_\mathrm{crit} = \frac{l_\mathrm{min}}{c_\mathrm{dil}}\f$,
+     * where \f$l_\mathrm{min}\f$ is the minimum characteristic element length and \f$c_\mathrm{dil}\f$
+     * is the dilatational wave speed computed from the material properties at the quadrature points.
+     * The minimum time step across all quadrature points is returned.
+     */
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal );
+
+    /**
+     * @brief Compute the internal energy of the element by summing the strain energy contributions from all quadrature
+     * points.
+     * @param internalEnergy Output parameter for the computed internal energy.
+     */
+    void computeInternalEnergy( double& internalEnergy );
 
     /**
      * @brief Access a named state view at a quadrature point.
@@ -648,12 +652,14 @@ namespace Marmot::Elements {
       increment inc;
       try {
         if constexpr ( nDim == 2 ) {
-          Vector6d dE6  = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
-          res.stress    = qp.managedStateVars->stress;
-          res.stateVars = qp.managedStateVars->materialStateVars.data();
-          inc           = { dE6, K, dK, time[1], dT };
-          CSized C      = CSized::Zero();
-          Voigt  S      = Voigt::Zero();
+          Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+          res.stress               = qp.managedStateVars->stress;
+          res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+          res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+          res.stateVars            = qp.managedStateVars->materialStateVars.data();
+          inc                      = { dE6, K, dK, time[1], dT };
+          CSized C                 = CSized::Zero();
+          Voigt  S                 = Voigt::Zero();
 
           if ( sectionType == SectionType::PlaneStress ) {
             qp.material->computePlaneStress( res, tan, inc );
@@ -698,9 +704,11 @@ namespace Marmot::Elements {
         else if ( nDim == 3 ) {
           if ( sectionType == Solid ) {
 
-            res.stress    = qp.managedStateVars->stress;
-            res.stateVars = qp.managedStateVars->materialStateVars.data();
-            inc           = { dE, K, dK, time[1], dT };
+            res.stress               = qp.managedStateVars->stress;
+            res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+            res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+            res.stateVars            = qp.managedStateVars->materialStateVars.data();
+            inc                      = { dE, K, dK, time[1], dT };
             qp.material->computeStress( res, tan, inc );
 
             fU -= B.transpose() * res.stress * qp.J0xW;
@@ -735,7 +743,10 @@ namespace Marmot::Elements {
         pNewDT = 0.25;
         return;
       }
-      qp.managedStateVars->stress = res.stress;
+      qp.managedStateVars->stress              = res.stress;
+      qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
+      qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
+      qp.managedStateVars->totalStrainEnergy   = ( res.elasticEnergyDensity + res.dissipation ) * qp.J0xW;
       qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
     }
   }
@@ -768,7 +779,6 @@ namespace Marmot::Elements {
     using namespace ContinuumMechanics::VoigtNotation;
 
     using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using tangents  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::tangents;
     using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
     for ( size_t i = 0; i < this->qps.size(); i++ ) {
@@ -792,26 +802,24 @@ namespace Marmot::Elements {
       }
 
       response  res;
-      tangents  tan;
       increment inc;
       try {
         if constexpr ( nDim == 2 ) {
-          Vector6d dE6  = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
-          res.stress    = qp.managedStateVars->stress;
-          res.stateVars = qp.managedStateVars->materialStateVars.data();
-          inc           = { dE6, K, dK, time[1], dT };
-          CSized C      = CSized::Zero();
-          Voigt  S      = Voigt::Zero();
+          Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+          res.stress               = qp.managedStateVars->stress;
+          res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+          res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+          res.stateVars            = qp.managedStateVars->materialStateVars.data();
+          inc                      = { dE6, K, dK, time[1], dT };
+          Voigt S                  = Voigt::Zero();
 
           if ( sectionType == SectionType::PlaneStress ) {
-            qp.material->computePlaneStress( res, tan, inc );
+            qp.material->computePlaneStressExplicit( res, inc );
             S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
-            C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
           }
           else if ( sectionType == SectionType::PlaneStrain ) {
-            qp.material->computeStress( res, tan, inc );
+            qp.material->computeStressExplicit( res, inc );
             S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
-            C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( tan.dStressddStrain );
           }
           else {
             throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
@@ -832,10 +840,12 @@ namespace Marmot::Elements {
         else if ( nDim == 3 ) {
           if ( sectionType == Solid ) {
 
-            res.stress    = qp.managedStateVars->stress;
-            res.stateVars = qp.managedStateVars->materialStateVars.data();
-            inc           = { dE, K, dK, time[1], dT };
-            qp.material->computeStress( res, tan, inc );
+            res.stress               = qp.managedStateVars->stress;
+            res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+            res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+            res.stateVars            = qp.managedStateVars->materialStateVars.data();
+            inc                      = { dE, K, dK, time[1], dT };
+            qp.material->computeStressExplicit( res, inc );
 
             fU -= B.transpose() * res.stress * qp.J0xW;
 
@@ -858,6 +868,9 @@ namespace Marmot::Elements {
       }
       qp.managedStateVars->stress = res.stress;
       qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
+      qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
+      qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
+      qp.managedStateVars->totalStrainEnergy   = ( res.elasticEnergyDensity + res.dissipation ) * qp.J0xW;
     }
   }
 
@@ -874,11 +887,11 @@ namespace Marmot::Elements {
       const double                rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       const std::vector< double > eta = qp.material->getNonlocalViscosity(
         qp.managedStateVars->materialStateVars.data() );
-      Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * qp.detJ * qp.J0xW * rho;
+      Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * qp.J0xW * rho;
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
         Me.bottomRightCorner( sizeDoFK, sizeDoFK )
-          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW * qp.weight * eta[idx];
+          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW * eta[n];
       }
     }
   }
@@ -912,17 +925,61 @@ namespace Marmot::Elements {
       const double                rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       const std::vector< double > eta = qp.material->getNonlocalViscosity(
         qp.managedStateVars->materialStateVars.data() );
-      VectorXd m_ = N_weighted * qp.detJ * qp.weight * rho;
+      VectorXd m_ = N_weighted * qp.J0xW * rho;
       for ( int i = 0; i < nNodes; i++ ) {
         for ( int d = 0; d < nDim; d++ )
           LMM( i * nDim + d ) += m_( i );
       }
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
-        VectorXd     mK  = N_weighted_nonlocal.segment( idx, nNonLocalNodes ) * qp.J0xW * qp.weight * eta[idx];
+        VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * eta[n];
         for ( int i = 0; i < nNonLocalNodes; i++ )
           LMM( sizeDoFU + idx + i ) += mK( i );
       }
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal )
+  {
+    using response = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+
+    // TODO: current implementation ignores nonlocal variables
+    criticalTimeStep = std::numeric_limits< double >::max();
+    for ( const auto& qp : qps ) {
+      double characteristicElementLength = 0.0;
+      if constexpr ( nDim == 3 )
+        characteristicElementLength = std::cbrt( 8 * qp.detJ );
+      if constexpr ( nDim == 2 )
+        characteristicElementLength = std::sqrt( 4 * qp.detJ );
+      if constexpr ( nDim == 1 )
+        characteristicElementLength = ( 2 * qp.detJ );
+      response waveSpeedResponse;
+      waveSpeedResponse.stress = qp.managedStateVars->stress;
+      waveSpeedResponse.KLocal.setZero();
+      waveSpeedResponse.c.setZero();
+      waveSpeedResponse.stateVars            = qp.managedStateVars->materialStateVars.data();
+      waveSpeedResponse.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+      waveSpeedResponse.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+
+      const double c = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
+      if ( c <= 0.0 )
+        throw std::runtime_error( "Material returned non-positive wave speed, cannot compute critical time step" );
+      const double& l  = characteristicElementLength;
+      double        dt = l / c;
+      if ( dt < criticalTimeStep )
+        criticalTimeStep = dt;
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    computeInternalEnergy( double& internalEnergy )
+  {
+    internalEnergy = 0.0;
+    for ( const auto& qp : qps ) {
+      internalEnergy += qp.managedStateVars->totalStrainEnergy;
     }
   }
 

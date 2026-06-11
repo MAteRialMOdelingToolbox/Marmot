@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -48,8 +46,8 @@ namespace Marmot::Materials {
   template < typename BaseMaterialType >
   class MarmotMaterialFiniteStrainSubstepped : public MarmotMaterialFiniteStrain {
   protected:
-    std::unique_ptr< BaseMaterialType > baseMaterial;
-    int                                 nSubsteps;
+    std::unique_ptr< BaseMaterialType > baseMaterial; ///< Wrapped base material instance.
+    int                                 nSubsteps;    ///< Number of sub-steps for time substepping.
 
   public:
     /**
@@ -74,6 +72,14 @@ namespace Marmot::Materials {
       Eigen::MatrixXd dStress_dStateOld;
     };
 
+    /**
+     * @brief Construct a MarmotMaterialFiniteStrainSubstepped.
+     * @param[in] matProperties_       Pointer to the array of material property values.
+     *                                 The first entry is interpreted as the number of sub-steps;
+     *                                 the remaining entries are forwarded to the wrapped base material.
+     * @param[in] nMaterialProperties_ Total number of material property values (including nSubsteps).
+     * @param[in] materialNumber_      Unique identifier for this material instance.
+     */
     MarmotMaterialFiniteStrainSubstepped( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
       : MarmotMaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
     {
@@ -95,6 +101,14 @@ namespace Marmot::Materials {
 
     double getDensity( const double* stateVars ) const override { return baseMaterial->getDensity( stateVars ); }
 
+    /**
+     * @brief Initialize the state layout for substepping.
+     * The state variables are organized as follows:
+     * - "Substepping_F_n" (9 variables): Deformation gradient at the start of the global step (F_n).
+     * - "materialstate" (baseMaterial->getNumberOfRequiredStateVars() variables): State variables required by the
+     * wrapped base material. The total number of state variables is the sum of the above. The layout is finalized at
+     * the end of this function.
+     */
     void initializeStateLayout()
     {
 
@@ -114,8 +128,8 @@ namespace Marmot::Materials {
 
       baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "materialstate" ), baseVarsCount );
 
-      FastorStandardTensors::Tensor33d&
-        Fn = this->stateLayout.getAs< FastorStandardTensors::Tensor33d& >( stateVars, "Substepping_F_n" );
+      FastorStandardTensors::TensorMap33d
+        Fn = this->stateLayout.getAs< FastorStandardTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
       memcpy( Fn.data(), FastorStandardTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
 
@@ -240,7 +254,7 @@ namespace Marmot::Materials {
       using namespace Eigen;
       using namespace FastorStandardTensors;
 
-      Tensor33d&      Fn_ref = this->stateLayout.getAs< Tensor33d& >( response.stateVars, "Substepping_F_n" );
+      TensorMap33d    Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, "Substepping_F_n" );
       const Tensor33d Fn     = Fn_ref;
       const Tensor33d Fn1    = deformation.F;
 
@@ -252,8 +266,10 @@ namespace Marmot::Materials {
       double dt_sub = timeIncrement.dT / static_cast< double >( nSubsteps );
       double t_curr = timeIncrement.time;
 
-      ConstitutiveResponse< 3 > subResponse = { Tensor33d( 0.0 ), 0.0, nullptr };
-      subResponse.stateVars                 = this->stateLayout.getPtr( response.stateVars, "materialstate" );
+      ConstitutiveResponse< 3 > subResponse( response.tau,
+                                             response.elasticEnergyDensity,
+                                             response.dissipation,
+                                             this->stateLayout.getPtr( response.stateVars, "materialstate" ) );
 
       AlgorithmicModuli< 3 > subTangents      = { Tensor3333d( 0.0 ) };
       StateSensitivities     subSensitivities = { MatrixXd(), MatrixXd(), MatrixXd() };
@@ -296,6 +312,7 @@ namespace Marmot::Materials {
       // set final response
       response.tau                  = subResponse.tau;
       response.elasticEnergyDensity = subResponse.elasticEnergyDensity;
+      response.dissipation          = subResponse.dissipation;
 
       // Update stored F_n to F_n1
       Fn_ref = deformation.F;

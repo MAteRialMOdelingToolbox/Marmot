@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -37,9 +35,17 @@
  */
 class MakeString {
 public:
-  std::stringstream stream;
+  std::stringstream stream; ///< Internal string stream used for building the output string.
+
+  /// Convert the accumulated stream content to a `std::string`.
   operator std::string() const { return stream.str(); }
 
+  /**
+   * @brief Append a value to the internal stream.
+   * @tparam T   Type of the value to append.
+   * @param VAR  Value to insert into the stream.
+   * @return     Reference to `*this` for chaining.
+   */
   template < class T >
   MakeString& operator<<( T const& VAR )
   {
@@ -67,9 +73,23 @@ public:
   MarmotJournal( MarmotJournal const& )  = delete;
   void operator=( MarmotJournal const& ) = delete;
 
+  /**
+   * @brief Redirect all subsequent journal output to @p newOutputStream.
+   * @param newOutputStream  The output stream that warnings and notifications are written to.
+   */
   static void setMSGOutputDirection( std::ostream& newOutputStream );
 
+  /**
+   * @brief Write a warning message to the journal output stream.
+   * @param message  The warning text to emit.
+   * @return `true` after the message has been written.
+   */
   static bool warningToMSG( const std::string& message );
 
+  /**
+   * @brief Write a notification message to the journal output stream.
+   * @param message  The notification text to emit.
+   * @return `true` after the message has been written.
+   */
   static bool notificationToMSG( const std::string& message );
 };

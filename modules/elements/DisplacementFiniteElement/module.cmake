@@ -1,21 +1,20 @@
-set(MODULE_NAME
-    "DisplacementFiniteElement")
+set(MODULE_NAME "DisplacementFiniteElement")
 
-set(MODULES_DEPENDENCIES
+set(MODULE_DEPENDENCIES
     MarmotMechanicsCore
     MarmotFiniteElementCore
     )
 
-set(DEPENDECIES_FULLFILLED TRUE)
-foreach( DEPENDENCY ${MODULES_DEPENDENCIES} )
-    if (NOT DEPENDENCY IN_LIST INSTALLED_MODULES)
-        message("----> " "module ${MODULE_NAME} dependency not fulfilled: ${DEPENDENCY}")
-        set(DEPENDECIES_FULLFILLED FALSE)
+set(DEPENDENCIES_FULFILLED TRUE)
+foreach(DEPENDENCY IN LISTS MODULE_DEPENDENCIES)
+    if(NOT DEPENDENCY IN_LIST INSTALLED_MODULES)
+        message("----> module ${MODULE_NAME} dependency not fulfilled: ${DEPENDENCY}")
+        set(DEPENDENCIES_FULFILLED FALSE)
     endif()
 endforeach()
 
-if ( DEPENDECIES_FULLFILLED )
-    include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
-    file(GLOB sources_material "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
-    list(APPEND sources ${sources_material})
+if(DEPENDENCIES_FULFILLED)
+    list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
+    file(GLOB module_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+    list(APPEND sources ${module_sources})
 endif()

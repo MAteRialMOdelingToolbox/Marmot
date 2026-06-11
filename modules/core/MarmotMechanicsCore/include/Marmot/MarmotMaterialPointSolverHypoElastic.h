@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -104,6 +102,9 @@ namespace Marmot {
         Marmot::Matrix6d dStressdStrain; ///< Material tangent at the history entry
         Eigen::VectorXd  stateVars;      ///< State variables at the history entry
 
+        /**
+         * @brief Print this history entry to `stdout`.
+         */
         void print() const
         {
           std::cout.precision( 6 );
@@ -131,6 +132,7 @@ namespace Marmot {
        * @param materialName Name of the hypo-elastic material model
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
+       * @param options Solver options controlling iteration limits and tolerances
        */
       MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
                                             double*              materialProperties,

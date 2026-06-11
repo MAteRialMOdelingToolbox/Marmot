@@ -24,13 +24,13 @@ The consistent algorithmic tangent is computed via automatic differentiation.
      - Young's modulus in material direction 3
    * - 3
      - :math:`\nu_{12}`
-     - Poisson's ratio (1–2 plane) [#f1]_
+     - Poisson's ratio (1–2 plane)
    * - 4
      - :math:`\nu_{13}`
-     - Poisson's ratio (1–3 plane) [#f1]_
+     - Poisson's ratio (1–3 plane)
    * - 5
      - :math:`\nu_{23}`
-     - Poisson's ratio (2–3 plane) [#f1]_
+     - Poisson's ratio (2–3 plane)
    * - 6
      - :math:`G_{12}`
      - Shear modulus in the 1–2 plane
@@ -51,9 +51,9 @@ The consistent algorithmic tangent is computed via automatic differentiation.
      - :math:`\rho`
      - Density
 
-.. [#f1] The Poisson's ratio :math:`\nu_{ij}` is defined as the ratio of lateral strain in
-   direction :math:`x_j` to axial strain in direction :math:`x_i` under uniaxial stress in
-   direction :math:`x_i`. See namespace :ref:`Marmot::ContinuumMechanics::Elasticity` for details.
+The Poisson's ratio :math:`\nu_{ij}` is defined as the ratio of lateral strain in
+direction :math:`x_j` to axial strain in direction :math:`x_i` under uniaxial stress in
+direction :math:`x_i`. See namespace ``Marmot::ContinuumMechanics::Elasticity`` for details.
 
 .. list-table::
    :header-rows: 1

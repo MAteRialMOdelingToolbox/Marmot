@@ -47,6 +47,7 @@ namespace Marmot::Materials {
     const auto [tau, dTau_dPK2, dTau_dF] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                         = tau;
     response.elasticEnergyDensity        = psi_;
+    response.dissipation                 = 0.0;
 
     // compute tangent operator
     tangents.dTau_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) + dTau_dF;

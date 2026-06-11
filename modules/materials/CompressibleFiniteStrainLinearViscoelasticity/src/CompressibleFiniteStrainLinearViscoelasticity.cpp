@@ -149,7 +149,7 @@ namespace Marmot::Materials {
     Tensor33d       PK2dev = PK2zero - PK2vol;
 
     // conpute increment in initial PK2dev
-    Tensor33d&      PK2dev_old = stateLayout.getAs< Tensor33d& >( response.stateVars, "S0_old" );
+    TensorMap33d    PK2dev_old = stateLayout.getAs< TensorMap33d >( response.stateVars, "S0_old" );
     const Tensor33d dPK2dev    = PK2dev - PK2dev_old;
 
     // update old PK2dev for next increment

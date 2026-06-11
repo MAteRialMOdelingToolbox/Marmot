@@ -81,7 +81,7 @@ The total shrinkage strain :math:`\epsSHR` is assumed as the sum of the autogeno
    \eps^\mathrm{shr,au}(t) = \boldsymbol{\mathrm{I}} \eps^\mathrm{shr,au}_\infty \left[ 1+ \left( \frac{\tau_\mathrm{shr,au}}{t} \right) ^\alpha \right]^{-4.5}
 
 in which :math:`\boldsymbol{\mathrm{I}}` is the second order identity tensor, :math:`\eps^\mathrm{shr,au}_\infty`, :math:`\tau_\mathrm{shr,au}` and :math:`\alpha` are the ultimate autogenous shrinkage strain, the autogenous shrinkage halftime, and a parameter depending on the concrete composition and on the cement type, respectively.
-The evoluztion of the drying shrinkage strain :math:`\eps^\mathrm{shr,d}` is defined as
+The evolution of the drying shrinkage strain :math:`\eps^\mathrm{shr,d}` is defined as
 
 .. math::
 

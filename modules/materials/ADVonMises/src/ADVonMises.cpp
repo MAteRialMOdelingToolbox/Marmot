@@ -96,12 +96,21 @@ namespace Marmot::Materials {
       const Vector6dual n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
 
       // update stress and hardening variable
-      S = trialStress - 2. * G * dLambda * n;
+      S          = trialStress - 2. * G * dLambda * n;
+      auto dEpsP = dLambda * n;
+      auto dEpsE = dE - dEpsP;
+      auto dS    = Cel * dEpsE;
       kappa += dKappa.val;
+      auto stressAvg = S - 0.5 * Cel * dEpsE;
+      state.elasticEnergyDensity += Math::makeReal( dEpsE.dot( stressAvg ) );
+      state.dissipation += Math::makeReal( dEpsP.dot( dS ) );
     }
     else {
       // elastic step
-      S = trialStress;
+      S              = trialStress;
+      auto stressAvg = S - 0.5 * Cel * dE;
+      state.elasticEnergyDensity += Math::makeReal( stressAvg.dot( dE ) );
+      state.dissipation += 0.0;
     }
   }
 } // namespace Marmot::Materials

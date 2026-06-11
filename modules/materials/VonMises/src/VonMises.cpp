@@ -121,11 +121,14 @@ namespace Marmot::Materials {
               2. * G * ( 1. / ( 1. + dfy_ddKappa( kappa ) / ( 3. * G ) ) - 2. * G * dLambda / rhoTrial ) *
                 ( n * n.transpose() ) -
               4. * G * G * dLambda / rhoTrial * IDevHalfShear;
+      state.elasticEnergyDensity += 0.5 * dE.dot( Cel * dE ) - 2. * G * dLambda * n.dot( dE );
+      state.dissipation += 2. * G * dLambda * n.dot( dE );
     }
     else {
       // elastic step
       S     = trialStress;
       dS_dE = Cel;
+      state.elasticEnergyDensity += 0.5 * dE.dot( Cel * dE );
     }
   }
 
@@ -215,10 +218,13 @@ namespace Marmot::Materials {
       // update material state
       S     = trialStress - 2. * G * dLambda * n;
       kappa = kappa + dKappa;
+      state.elasticEnergyDensity += 0.5 * dE.dot( Cel * dE ) - 2. * G * dLambda * n.dot( dE );
+      state.dissipation += 2. * G * dLambda * n.dot( dE );
     }
     else {
       // elastic step
       S = trialStress;
+      state.elasticEnergyDensity += 0.5 * dE.dot( Cel * dE );
     }
   }
 

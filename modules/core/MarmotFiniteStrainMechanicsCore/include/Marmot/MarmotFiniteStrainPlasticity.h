@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -28,6 +26,15 @@
 
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTensorExponential.h"
+
+/**
+ * @file MarmotFiniteStrainPlasticity.h
+ * @brief Helpers for integrating the plastic flow rule in finite-strain plasticity.
+ *
+ * Provides exponential-map and first-order approximations for the incremental
+ * plastic deformation gradient together with their derivatives with respect to
+ * the plastic velocity gradient.
+ */
 
 namespace Marmot {
   namespace ContinuumMechanics::FiniteStrain::Plasticity {

@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -29,21 +27,44 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 
+/**
+ * @file AdaptiveSubstepper.h
+ * @brief Adaptive sub-stepping with Richardson extrapolation for implicit return-mapping.
+ */
+
 namespace Marmot::NumericalAlgorithms {
 
+  /**
+   * @brief Adaptive sub-stepper employing error estimation and Richardson extrapolation.
+   *
+   * Splits a strain increment into sub-increments, performs a full-step and two
+   * half-steps for each sub-increment, and estimates the integration error via
+   * Richardson extrapolation.  The sub-increment size is adapted automatically
+   * based on the error estimate.
+   *
+   * @tparam materialTangentSize        Size of the material tangent matrix.
+   * @tparam nIntegrationDependentStateVars  Number of integration-dependent state variables.
+   *
+   * Reference: Matthias Neuner (2016), developed within the DK-CIM collaboration.
+   */
   template < size_t materialTangentSize, size_t nIntegrationDependentStateVars >
   class AdaptiveSubstepper {
-    /** Adaptive Substepper, employing an error estimation and
-     * Richardson Extrapolation for an Implicit Return  Mapping algorithm
-     *
-     * Matthias Neuner (2016), developed within the DK-CIM collaboration
-     * */
   public:
     /// Matrix for describing the nonlinear equation system of the return mapping algorithm
     typedef Eigen::Matrix< double, materialTangentSize, materialTangentSize > TangentSizedMatrix;
     /// Vector to carry the internal state of a material
     typedef Eigen::Matrix< double, nIntegrationDependentStateVars, 1 > IntegrationStateVector;
 
+    /**
+     * @brief Construct an AdaptiveSubstepper.
+     * @param initialStepSize            Initial sub-step size as a fraction of the total increment (0, 1].
+     * @param minimumStepSize            Minimum allowable sub-step size; triggers a warning if reached.
+     * @param maxScaleUpFactor           Maximum factor by which the sub-step size may be increased.
+     * @param scaleDownFactor            Factor applied to the sub-step size when a sub-step is discarded.
+     * @param integrationErrorTolerance  Richardson-extrapolation error threshold for accepting a sub-step.
+     * @param nPassesToIncrease          Number of successful sub-steps before the step size is allowed to grow.
+     * @param Cel                        Linear-elastic stiffness matrix (6×6).
+     */
     AdaptiveSubstepper( double          initialStepSize,
                         double          minimumStepSize,
                         double          maxScaleUpFactor,

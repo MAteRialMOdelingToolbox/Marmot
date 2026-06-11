@@ -61,7 +61,7 @@ namespace Marmot::GradientDamage {
        * @param eta parameter controlling the rate of decrease of interactions with damage
        * @param R parameter controlling the residual interactions at full damage
        * @return a tuple containing the interaction function value and its first derivative with respect to damage
-       * @details The first-order derivative variant of the interaction function @ref poh.
+       * @details The first-order derivative variant of the interaction function @p poh.
        */
       std::tuple< double, double > poh( double omega, double eta, double R );
 
@@ -76,7 +76,7 @@ namespace Marmot::GradientDamage {
        * @param R parameter controlling the residual interactions at full damage
        * @return a tuple containing the interaction function value, its first derivative, and its second derivative with
        * respect to damage
-       * @details The second-order derivative variant of the interaction function @ref poh.
+       * @details The second-order derivative variant of the interaction function @p poh.
        */
       std::tuple< double, double, double > poh( double omega, double eta, double R );
 

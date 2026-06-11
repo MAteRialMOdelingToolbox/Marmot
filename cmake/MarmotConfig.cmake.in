@@ -1,0 +1,50 @@
+#/* ---------------------------------------------------------------------
+# *
+# * CMake package configuration file for Marmot.
+# *
+# * After installation, downstream projects can locate Marmot with:
+# *
+# *   find_package(Marmot REQUIRED)
+# *   target_link_libraries(<target> PRIVATE Marmot::Marmot)
+# *
+# * The Marmot::Marmot imported target carries the necessary include
+# * directories and link libraries transitively.
+# *
+# * Prerequisites that must be found by the consuming project:
+# *   - Eigen3   (find_package(Eigen3 REQUIRED NO_MODULE))
+# *   - autodiff (find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED))
+# *   - Fastor   (find_path(FASTOR_INCLUDE_DIR Fastor REQUIRED))
+# *
+# * ---------------------------------------------------------------------
+# */
+
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Eigen3 is an imported target; ensure it is available before loading
+# MarmotTargets.cmake which references Eigen3::Eigen.
+find_dependency(Eigen3 3.3 REQUIRED NO_MODULE)
+
+find_path(AUTODIFF_INCLUDE_DIR autodiff)
+if(NOT AUTODIFF_INCLUDE_DIR)
+    set(Marmot_FOUND FALSE)
+    set(Marmot_NOT_FOUND_MESSAGE "Marmot requires autodiff headers, but they were not found.")
+    return()
+endif()
+
+find_path(FASTOR_INCLUDE_DIR Fastor)
+if(NOT FASTOR_INCLUDE_DIR)
+    set(Marmot_FOUND FALSE)
+    set(Marmot_NOT_FOUND_MESSAGE "Marmot requires Fastor headers, but they were not found.")
+    return()
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/MarmotTargets.cmake")
+set_property(TARGET Marmot::Marmot APPEND PROPERTY
+    INTERFACE_INCLUDE_DIRECTORIES
+        "${AUTODIFF_INCLUDE_DIR}"
+        "${FASTOR_INCLUDE_DIR}"
+)
+
+check_required_components(Marmot)

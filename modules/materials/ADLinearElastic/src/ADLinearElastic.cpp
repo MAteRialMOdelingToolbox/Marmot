@@ -32,6 +32,9 @@ namespace Marmot::Materials {
                                          const timeInfo&            timeInfo ) const
   {
 
-    state.stress = state.stress + C * dStrain;
+    const Vector6dual dStress = C * dStrain;
+    state.stress += dStress;
+    state.elasticEnergyDensity += 0.5 * Math::makeReal( dStrain.dot( dStress ) );
+    state.dissipation = 0.0;
   }
 } // namespace Marmot::Materials

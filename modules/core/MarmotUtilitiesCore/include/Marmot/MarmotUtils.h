@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -33,6 +31,6 @@
  * allowing access to the state data without copying it.
  */
 struct StateView {
-  double* stateLocation;
-  int     stateSize;
+  double* stateLocation; ///< Pointer to the first element of the state variable block.
+  int     stateSize;     ///< Number of `double` values in the state variable block.
 };

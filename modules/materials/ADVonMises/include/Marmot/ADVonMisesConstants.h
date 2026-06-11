@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Alexander Dummer alexander.dummer@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -27,9 +25,12 @@
 
 namespace Marmot::Materials {
 
+  /**
+   * @brief Numerical constants for the ADVonMises return-mapping algorithm.
+   */
   namespace ADVonMisesConstants {
-    const double innerNewtonTol        = 1e-10;
-    const int    nMaxInnerNewtonCycles = 15;
-  } // namespace ADVonMisesConstants
+    const double innerNewtonTol        = 1e-10; ///< Convergence tolerance for the inner Newton iteration.
+    const int    nMaxInnerNewtonCycles = 15;    ///< Maximum number of inner Newton iterations.
+  }                                             // namespace ADVonMisesConstants
 
 } // namespace Marmot::Materials

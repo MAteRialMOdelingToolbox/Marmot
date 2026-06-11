@@ -11,9 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -36,7 +33,7 @@ namespace Marmot {
     /**
      * \brief Generalized failure criterion proposed by Menétrey and Willam
      *
-     * Implementation of the generalized failure criterion proposed by Menétrey and Willam \cite{MenetreyWillam1995}
+     * Implementation of the generalized failure criterion proposed by Menétrey and Willam
      *
      * \f[
      *  f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
@@ -45,9 +42,6 @@ namespace Marmot {
      * with the Haigh-Westergaard coordinates \f$\xi,\,\rho,\,\theta\f$ and the parameters \f$A_f,\,B_f,\,C_f,\,m,\,e\f$
      * which are automatically evaluated dependent on the desired formulation (supported types see \ref
      * MenetreyWillamType).
-     *
-     * \image html yieldSurfaceDeviatoric_MenetreyWillam.png width=75%
-     * \image latex yieldSurfaceDeviatoric_MenetreyWillam.png width=75%
      *
      * # Example
      *
@@ -93,9 +87,9 @@ namespace Marmot {
         double e;  /**< Eccentricity parameter \f$e\f$; to obtain a smooth and
                       convex surface $e$ has to be in the range of \f$0.5\leq e
                       \leq 1\f$ */
-      } param;
+      } param;     ///< Menetrey Willam parameters
 
-      // Reduction of the generalized failure criterion to a specific type.
+      /// @brief Reduction of the generalized failure criterion to a specific type.
       enum class MenetreyWillamType {
         Mises,         /**< von-Mises failure criterion; only the tensile strength @ref
                           ft has to be specified. */
@@ -115,7 +109,7 @@ namespace Marmot {
        * Constructor that takes the uniaxial tensile strength \f$f_t\f$ and two
        * optional arguments consisting of the specific type of failure criterion \ref MenetreyWillamType
        * and the uniaxial compressive strength \f$f_c\f$. The call of the
-       * constructor automatically fills the corresponding Menetrey-Willam \ref param.
+       * constructor automatically fills the corresponding Menetrey-Willam \c param.
        */
       MenetreyWillam( const double              ft,
                       const MenetreyWillamType& type = MenetreyWillamType::Rankine,
@@ -123,14 +117,14 @@ namespace Marmot {
 
       /**
        * This function can be used to reset the type of the specified failure
-       * criterion by entering the uniaxial compressive strength \ref fc, the uniaxial tensile strength \ref ft
+       * criterion by entering the uniaxial compressive strength \c fc, the uniaxial tensile strength \c ft
        * and the \ref MenetreyWillamType.
        */
       void setParameters( const double ft, const double fc, const MenetreyWillamType& type );
 
       /**
        * Compute the polar radius \f$r\f$ from the Lode angle \f$\theta\f$. The
-       * eccentricity parameter will be used from the chosen Menetrey-Willam parameters \ref param.
+       * eccentricity parameter will be used from the chosen Menetrey-Willam parameters \c param.
        */
       template < typename T >
       T polarRadius( const double& theta ) const
@@ -167,7 +161,7 @@ namespace Marmot {
       /**
        * Compute the polar radius \f$r\f$ and its derivative
        * \f$\frac{dr}{d\theta}\f$ from the Lode angle \f$\theta\f$. The
-       * eccentricity parameter will be used from the @ref param struct.
+       * eccentricity parameter will be used from the \c param struct.
        */
       template < typename T >
       std::pair< T, T > dPolarRadius_dTheta( const T& theta ) const
@@ -220,6 +214,13 @@ namespace Marmot {
         return { r, dRdTheta };
       }
 
+      /**
+       * @brief Compute the polar radius and its first and second derivative with respect to the Lode angle
+       * @tparam T scalar type
+       * @param theta Lode angle
+       * @param e eccentricity parameter
+       * @return tuple of polar radius, its first and second derivative with respect to the Lode angle
+       */
       template < typename T >
       static std::tuple< T, T, T > d2PolarRadius_dTheta2( const T& theta, const double& e )
       {
@@ -263,8 +264,8 @@ namespace Marmot {
 
       /**
        * Evaluate the yield function \f$f\f$ depending on the Haigh-Westergaard stress
-       * coordinates @ref hw. \f$f<0\f$ means no yielding while \f$f\geq0\f$ means
-       * yielding. When the optional fillet parameter \ref varEps is given, a potential vertex
+       * coordinates @p hw. \f$f<0\f$ means no yielding while \f$f\geq0\f$ means
+       * yielding. When the optional fillet parameter @p varEps is given, a potential vertex
        * along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.
        *
        * \note The yield function can be also used as plastic potential function if needed.
@@ -287,7 +288,7 @@ namespace Marmot {
       /**
        * Evaluate the derivatives of the yield function with respect to the
        * Haigh-Westergaard stress coordinates, i.e.
-       * \f$df/d\xi,\,df/d\rho,\,df/d\theta\f$. When the optional fillet parameter \ref varEps is given, a potential
+       * \f$df/d\xi,\,df/d\rho,\,df/d\theta\f$. When the optional fillet parameter @p varEps is given, a potential
        * vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives
        * can be calculated uniquely.
        */
@@ -320,7 +321,7 @@ namespace Marmot {
       /**
        * Compute a fillet parameter for the vertex of the yield surface along the hydrostatic axis in the same way as
        * Abaqus does. This parameter is only relevant in the case of the Drucker-Prager or the Mohr-Coulomb criterion.
-       * The calculated smoothing value can then be used as the optional input argument \ref varEps in \ref
+       * The calculated smoothing value can then be used as the optional input argument @p varEps in \ref
        * yieldFunction and \ref dYieldFunction_dHaighWestergaard.
        */
       static inline double abaqusMohrCoulombPotentialVarEpsToMenetreyWillam( const double varEps, const double psi )
@@ -329,14 +330,14 @@ namespace Marmot {
       }
 
       /**
-       * Compute the eccentricity parameter based on a given compressive strength \ref fc and
-       * tensile strength \ref ft.
+       * Compute the eccentricity parameter based on a given compressive strength \c fc and
+       * tensile strength \c ft.
        */
       static inline double e( const double fc, const double ft ) { return ( fc + 2 * ft ) / ( 2 * fc + ft ); }
 
       /**
-       * Compute the cohesion based on a given compressive strength \ref fc and
-       * tensile strength \ref ft.
+       * Compute the cohesion based on a given compressive strength \c fc and
+       * tensile strength \c ft.
        */
       static inline double c( const double fc, const double ft )
       {
@@ -345,13 +346,13 @@ namespace Marmot {
       }
 
       /**
-       * Compute the friction angle in radian based on a given compressive strength \ref fc and
-       * tensile strength \ref ft.
+       * Compute the friction angle in radian based on a given compressive strength \c fc and
+       * tensile strength \c ft.
        */
       static inline double phi( const double fc, const double ft ) { return std::asin( ( fc - ft ) / ( fc + ft ) ); }
 
       /**
-       * Compute the tensile strength based on a given cohesion \ref c and a friction angle \ref phi.
+       * Compute the tensile strength based on a given cohesion \c c and a friction angle \c phi.
        */
       static inline double ft( const double c, const double phi )
       {
@@ -359,7 +360,7 @@ namespace Marmot {
       }
 
       /**
-       * Compute the compressive strength based on a given cohesion \ref c and a friction angle \ref phi.
+       * Compute the compressive strength based on a given cohesion \c c and a friction angle \c phi.
        */
       static inline double fc( const double c, const double phi )
       {

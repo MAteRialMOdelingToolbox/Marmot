@@ -11,9 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Matthias Neuner matthias.neuner@uibk.ac.at
- * Magdalena Schreter magdalena.schreter@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -31,6 +28,9 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <algorithm>
+#include <cmath>
+#include <vector>
 
 /**
  * @brief Base class for general gradient-enhanced hypoelastic material models.
@@ -40,9 +40,9 @@
  *
  * In addition to the standard balance of linear momentum each nonlocal variable introduces an additional balance
  * equation, which is solved simultaneously with the balance of linear momentum. This balance equation is defined as:
- * \f[ \knl_i - \nabla ( c( \knl_i )\, \nabla \knl_i ) = \sourceTerm_i (\boldsymbol \varepsilon,\, \knl_i ) \f]
+ * \f[ \knl_i - \nabla ( c( \knl_i )\, \nabla \knl_i ) = s_i (\boldsymbol \varepsilon,\, \knl_i ) \f]
  * where \f$ \knl_i \f$ is the nonlocal variable, \f$ c( \knl_i ) \f$ is the nonlocal interaction parameter, and
- * \f$ \sourceTerm_i \f$ is the local driving variable for the nonlocal variable \f$ \knl_i \f$. The interaction
+ * \f$ s_i \f$ is the local driving variable for the nonlocal variable \f$ \knl_i \f$. The interaction
  * parameter
  * \f$ c( \knl_i ) \f$ defines the influence of the nonlocal variable on its own gradient and can be used to model
  * phenomena such as damage-dependent interactions. Also phase-field models can be implemented in this framework by
@@ -92,6 +92,8 @@ public:
     Eigen::Vector< double, nNonlocalVariables > KLocal;    ///< Local driving variables at the current increment
     Eigen::Vector< double, nNonlocalVariables > c;         ///< Nonlocal interaction parameters at the current increment
     double*                                     stateVars; ///< Pointer to the array of state variables
+    double                                      elasticEnergyDensity; ///< Elastic strain energy density
+    double                                      dissipation;          ///< Dissipation (if applicable)
   };
 
   /// @brief Struct to hold the algorithmic tangent matrices for the material model.
@@ -123,7 +125,7 @@ public:
   MarmotStateLayoutDynamic stateLayout;
 
   /**
-   * @brief Compute the stress response of the material model.
+   * @brief Compute the stress response of the material model including the algorithmic tangents.
    * @param[in,out] res Reference to the response struct to be filled with the computed stress and other response
    * variables.
    * @param[in,out] tan Reference to the tangents struct to be filled with the computed algorithmic tangent matrices.
@@ -134,6 +136,23 @@ public:
    * model.
    */
   virtual void computeStress( response& res, tangents& tan, const increment& inc ) const = 0;
+
+  /**
+   * @brief Compute the stress response of the material model.
+   * @param[in,out] res Reference to the response struct to be filled with the computed stress and other response
+   * variables.
+   * @param[in] inc Reference to the increment struct containing the strain increment, nonlocal variable increments, and
+   * time information.
+   *
+   * This method can be used when only the stress response is needed without the tangents, e.g., for explicit dynamics.
+   * The default implementation calls the `computeStress` method and ignores the tangents, which can be computationally
+   * expensive to compute.
+   */
+  virtual void computeStressExplicit( response& res, const increment& inc ) const
+  {
+    tangents tan;
+    computeStress( res, tan, inc );
+  }
 
   /**
    * @brief Compute the plane stress response of the material model.
@@ -157,9 +176,8 @@ public:
     Map< VectorXd > stateVars( res.stateVars, stateLayout.totalSize() );
 
     VectorXd  stateVarsOld = stateVars;
-    response  resTemp      = { res.stress, res.KLocal, res.c, res.stateVars };
-    increment incTemp      = { inc.dStrain, inc.K, inc.dK, inc.time, inc.dT };
-    // assumption of isochoric deformation for initial guess
+    response  resTemp = { res.stress, res.KLocal, res.c, res.stateVars, res.elasticEnergyDensity, res.dissipation };
+    increment incTemp = { inc.dStrain, inc.K, inc.dK, inc.time, inc.dT };
 
     double residual          = 1;
     double tangentCompliance = 1.;
@@ -171,7 +189,12 @@ public:
     while ( true ) {
 
       // set old response
-      resTemp = { res.stress, res.KLocal, res.c, res.stateVars };
+      resTemp = { .stress               = res.stress,
+                  .KLocal               = res.KLocal,
+                  .c                    = res.c,
+                  .stateVars            = res.stateVars,
+                  .elasticEnergyDensity = res.elasticEnergyDensity,
+                  .dissipation          = res.dissipation };
       // set old state variables
       stateVars = stateVarsOld;
       // compute stress
@@ -198,7 +221,24 @@ public:
       }
     }
 
-    res = { resTemp.stress, resTemp.KLocal, resTemp.c, resTemp.stateVars };
+    res = resTemp;
+  }
+
+  /**
+   * @brief Compute the plane stress response of the material model without computing tangents.
+   * @param[in,out] res Reference to the response struct to be filled with the computed plane stress and other response
+   * variables.
+   * @param[in] inc Reference to the increment struct containing the strain increment, nonlocal variable increments, and
+   * time information.
+   *
+   * This method can be used when only the plane stress response is needed without the tangents, e.g., for explicit
+   * dynamics. The default implementation calls the `computePlaneStress` method ignoring the tangents.
+   * This method maybe overridden in derived classes if a different approach for plane stress computation is desired.
+   */
+  virtual void computePlaneStressExplicit( response& res, const increment& inc ) const
+  {
+    tangents tan;
+    computePlaneStress( res, tan, inc );
   }
 
   /**
@@ -233,6 +273,7 @@ public:
   }
   /**
    * @brief Get the density of the material.
+   * @param stateVars Pointer to the array of state variables
    * @return Density of the material
    *
    * This method must be implemented in derived classes to return the density of the material, which is required for
@@ -241,7 +282,48 @@ public:
   virtual double getDensity( const double* stateVars ) const = 0;
 
   /**
+   * @brief Get the maximum wave speed for the current response state.
+   * @param currentResponse Current response state
+   * @return Maximum wave speed
+   * @details The default implementation computes the 3D algorithmic tangent and returns
+   *          `sqrt(max(C_ii) / rho)` with `C_ii` from the Voigt tangent diagonal entries.
+   */
+  virtual double getMaximumWaveSpeed( const response& currentResponse ) const
+  {
+    const int nStateVars = getNumberOfRequiredStateVars();
+
+    std::vector< double > stateVarsCopy( nStateVars, 0.0 );
+    if ( currentResponse.stateVars != nullptr && nStateVars > 0 ) {
+      std::copy_n( currentResponse.stateVars, nStateVars, stateVarsCopy.begin() );
+    }
+
+    response responseCopy  = currentResponse;
+    responseCopy.stateVars = stateVarsCopy.data();
+
+    tangents  tan;
+    increment inc;
+    inc.dStrain = Marmot::Vector6d::Zero();
+    inc.K       = Eigen::Vector< double, nNonlocalVariables >::Zero();
+    inc.dK      = Eigen::Vector< double, nNonlocalVariables >::Zero();
+    inc.time    = 0.0;
+    inc.dT      = 1.0;
+
+    computeStress( responseCopy, tan, inc );
+
+    const double maxStiffnessDiagonal = std::max( { tan.dStressddStrain( 0, 0 ),
+                                                    tan.dStressddStrain( 1, 1 ),
+                                                    tan.dStressddStrain( 2, 2 ),
+                                                    tan.dStressddStrain( 3, 3 ),
+                                                    tan.dStressddStrain( 4, 4 ),
+                                                    tan.dStressddStrain( 5, 5 ) } );
+    const double density              = getDensity( responseCopy.stateVars );
+
+    return density > 0.0 ? std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / density ) : 0.0;
+  }
+
+  /**
    * @brief Get the nonlocal viscosity of the material.
+   * @param stateVars Pointer to the array of state variables
    * @return Vector containing the nonlocal viscosity values for each nonlocal variable
    *
    * This method must be implemented in derived classes to return the nonlocal viscosity values, which are required for
