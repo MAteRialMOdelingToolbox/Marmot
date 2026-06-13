@@ -10,6 +10,9 @@ add_marmot_test("TestMarmotElasticity" "${CURR_TEST_SOURCE_DIR}/TestMarmotElasti
 # Tests for MarmotKelvinChain
 add_marmot_test("TestMarmotKelvinChain" "${CURR_TEST_SOURCE_DIR}/TestMarmotKelvinChain.cpp")
 
+# Tests for MarmotWiechert
+add_marmot_test("TestMarmotWiechert" "${CURR_TEST_SOURCE_DIR}/TestMarmotWiechert.cpp")
+
 # Tests for MarmotKinematics
 add_marmot_test("TestMarmotKinematics" "${CURR_TEST_SOURCE_DIR}/TestMarmotKinematics.cpp")
 

@@ -26,7 +26,11 @@
  */
 
 #pragma once
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "autodiff/forward/real.hpp"
+
+#include <functional>
 
 namespace Marmot::Materials {
 
@@ -53,25 +57,75 @@ namespace Marmot::Materials {
     /// @brief Non-owning Eigen map view of `StateVarMatrix`.
     typedef Eigen::Map< StateVarMatrix > mapStateVarMatrix;
 
-    // TODO(v26.05): implement optional Post-Widder-based branch modulus generation helpers
-    // (e.g. computeElasticModuli_* / generateRelaxationTimes) when calibration workflow needs them.
-    // Right now only a Maxwell Element is implemented.
+    /**
+     * @brief Evaluate the Post-Widder approximation of a continuous relaxation spectrum.
+     *
+     * For a relaxation function
+     * \f[
+     *   \Psi(t) = \int_0^\infty H(\tau)e^{-t/\tau}\,d\ln\tau,
+     * \f]
+     * this evaluates
+     * \f[
+     *   H_k(\tau) =
+     *   \frac{(-k\tau)^k}{(k-1)!}\Psi^{(k)}(k\tau).
+     * \f]
+     *
+     * @tparam k Post-Widder approximation order.
+     * @param[in] psi Relaxation function whose spectrum is approximated.
+     * @param[in] tau Relaxation time at which the spectrum is evaluated.
+     * @return Approximate relaxation-spectrum value.
+     */
+    template < int k >
+    double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > psi,
+                                      double                                                                      tau )
+    {
+      autodiff::Real< k, double > evaluationTime( tau * k );
+      const double                coefficient = pow( -tau * k, k ) / double( Marmot::Math::factorial( k - 1 ) );
+      return coefficient * autodiff::derivatives( psi, autodiff::along( 1. ), autodiff::at( evaluationTime ) )[k];
+    }
 
     /**
-     * @brief Initialize branch-wise elastic moduli with a constant value.
-     * @param nMaxwell Number of Maxwell branches.
-     * @param n Elastic modulus assigned to every branch.
-     * @return Vector of size `nMaxwell` with all entries equal to `n`.
+     * @brief Compute generalized-Maxwell branch moduli from a relaxation function.
+     *
+     * The continuous spectrum is discretized on logarithmically spaced relaxation
+     * times using \f$E_\mu = \ln(s)H_k(\tau_\mu)\f$, where \f$s\f$ is the spacing.
+     *
+     * @tparam k Post-Widder approximation order.
+     * @param[in] psi Relaxation function whose spectrum is approximated.
+     * @param[in] relaxationTimes Branch relaxation times.
+     * @param[in] spacing Ratio between adjacent relaxation times.
+     * @param[in] gaussQuadrature Use a two-point Gauss rule within each logarithmic interval.
+     * @return Elastic modulus of every Maxwell branch.
      */
-    Properties initializeElasticModuli( int nMaxwell, double n );
+    template < int k >
+    Properties computeElasticModuli( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > psi,
+                                     const Properties& relaxationTimes,
+                                     double            spacing,
+                                     bool              gaussQuadrature = false )
+    {
+      Properties elasticModuli( relaxationTimes.size() );
+      for ( int i = 0; i < relaxationTimes.size(); ++i ) {
+        const double tau = relaxationTimes( i );
+        if ( !gaussQuadrature ) {
+          elasticModuli( i ) = log( spacing ) * evaluatePostWidderFormula< k >( psi, tau );
+        }
+        else {
+          elasticModuli( i ) = log( spacing ) / 2. *
+                               ( evaluatePostWidderFormula< k >( psi, tau * pow( spacing, -sqrt( 3. ) / 6. ) ) +
+                                 evaluatePostWidderFormula< k >( psi, tau * pow( spacing, sqrt( 3. ) / 6. ) ) );
+        }
+      }
+      return elasticModuli;
+    }
 
     /**
-     * @brief Initialize branch-wise relaxation times with a constant value.
-     * @param nMaxwell Number of Maxwell branches.
-     * @param m Relaxation time assigned to every branch.
-     * @return Vector of size `nMaxwell` with all entries equal to `m`.
+     * @brief Generate logarithmically spaced Maxwell-branch relaxation times.
+     * @param n Number of Maxwell branches.
+     * @param min First relaxation time.
+     * @param spacing Ratio between adjacent relaxation times.
+     * @return Relaxation times of the Maxwell branches.
      */
-    Properties initializeRelaxationTimes( int nMaxwell, double m );
+    Properties generateRelaxationTimes( int n, double min, double spacing );
 
     /**
      * @brief Update branch state variables for one incremental strain step.
@@ -79,14 +133,14 @@ namespace Marmot::Materials {
      * @param elasticModuli Branch-wise elastic moduli, passed by const reference.
      * @param relaxationTimes Branch-wise relaxation times, passed by const reference.
      * @param stateVars In/out branch state matrix (6 x nMaxwell).
-     * @param dStress Incremental driving quantity in Voigt notation.
+     * @param dStrain Strain increment in Voigt notation.
      * @param unitD_ijkl Elastic stiffness matrix used to map increment to stress-like branch updates.
      */
     void updateStateVarMatrix( const double                 dT,
                                const Properties&            elasticModuli,
                                const Properties&            relaxationTimes,
                                Eigen::Ref< StateVarMatrix > stateVars,
-                               const Marmot::Vector6d&      dStress,
+                               const Marmot::Vector6d&      dStrain,
                                const Marmot::Matrix6d&      unitD_ijkl );
 
     /**

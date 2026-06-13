@@ -1,6 +1,7 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotViscoelasticity.h"
 #include "Marmot/MarmotWiechert.h"
 
 #include <Eigen/Core>
@@ -20,21 +21,39 @@ namespace Marmot::Materials {
       // elasticity parameters
       E( materialProperties[0] ),
       nu( materialProperties[1] ),
-      // viscoelastic parameters for 1 Maxwell element, relaxation time
+      // power-law relaxation parameters
       m( materialProperties[2] ),
-      // viscoelastic parameters for 1 Maxwell element, elastic modulus
       n( materialProperties[3] ),
       nMaxwell( static_cast< size_t >( materialProperties[4] ) ),
       minTau( materialProperties[5] ),
       timeToDays( materialProperties[6] ),
-      relaxationTimes( static_cast< int >( nMaxwell ) ),
-      elasticModuli( static_cast< int >( nMaxwell ) ),
       zerothWiechertStiffness( 0.0 )
   // clang-format on
   {
+    if ( materialProperties[4] < 1.0 )
+      throw std::invalid_argument( "LinearViscoElasticWiechert requires at least one Maxwell element." );
+    if ( minTau <= 0.0 )
+      throw std::invalid_argument( "LinearViscoElasticWiechert requires a positive minimum relaxation time." );
+    if ( m < 0.0 || n <= 0.0 )
+      throw std::invalid_argument( "LinearViscoElasticWiechert requires m >= 0 and n > 0." );
+
     initializeStateLayout();
-    relaxationTimes = Marmot::Materials::Wiechert::initializeRelaxationTimes( nMaxwell, m );
-    elasticModuli   = Marmot::Materials::Wiechert::initializeElasticModuli( nMaxwell, n );
+
+    const double spacing = std::sqrt( 10. );
+    relaxationTimes      = Wiechert::generateRelaxationTimes( nMaxwell, minTau, spacing );
+
+    using namespace Marmot::ContinuumMechanics::Viscoelasticity;
+    auto relaxationFunction = [&]( autodiff::Real< powerLawApproximationOrder, double > time ) {
+      return RelaxationFunctions::powerLaw( time, m, n );
+    };
+    elasticModuli = Wiechert::computeElasticModuli< powerLawApproximationOrder >( relaxationFunction,
+                                                                                  relaxationTimes,
+                                                                                  spacing );
+
+    // Maxwell branches slower than the resolved range behave elastically over the represented time horizon.
+    const double spectrumCoefficient     = m * n * ( n + 1. ) * std::pow( 2., -n );
+    const double slowestResolvedBoundary = relaxationTimes( relaxationTimes.size() - 1 ) * std::sqrt( spacing );
+    zerothWiechertStiffness              = spectrumCoefficient / n * std::pow( slowestResolvedBoundary, -n );
   }
 
   void LinearViscoElasticWiechert::computeStress( state3D&        state,
@@ -74,14 +93,14 @@ namespace Marmot::Materials {
     Vector6d deltaStress = D * dE - creepStressIncrement;
     nomStress            = nomStress + deltaStress;
 
-    Wiechert::updateStateVarMatrix( dTimeDays, elasticModuli, relaxationTimes, creepStateVars, deltaStress, CelUnit );
+    Wiechert::updateStateVarMatrix( dTimeDays, elasticModuli, relaxationTimes, creepStateVars, dE, CelUnit );
 
     return;
   }
 
   double LinearViscoElasticWiechert::getDensity( const double* stateVars ) const
   {
-    if ( nMaterialProperties <= 7 + 1 ) {
+    if ( nMaterialProperties < 8 ) {
       throw std::runtime_error(
         std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
     }

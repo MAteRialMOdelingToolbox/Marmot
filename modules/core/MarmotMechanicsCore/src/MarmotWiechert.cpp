@@ -8,17 +8,11 @@ namespace Marmot::Materials {
 
   namespace Wiechert {
 
-    Properties initializeElasticModuli( int nMaxwell, double n )
+    Properties generateRelaxationTimes( int n, double min, double spacing )
     {
-      Properties elasticModuli( nMaxwell );
-      elasticModuli.setConstant( n );
-      return elasticModuli;
-    }
-
-    Properties initializeRelaxationTimes( int nMaxwell, double m )
-    {
-      Properties relaxationTimes( nMaxwell );
-      relaxationTimes.setConstant( m );
+      Properties relaxationTimes( n );
+      for ( int i = 0; i < n; ++i )
+        relaxationTimes( i ) = min * std::pow( spacing, i );
       return relaxationTimes;
     }
 

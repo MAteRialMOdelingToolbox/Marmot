@@ -33,9 +33,14 @@
 
 namespace Marmot::Materials {
   /**
-   * \brief Implementation of a linear visco elastic material coming from
-   * the Wiechert model of parallel viscoelastic elements
-   * for 3D stress states.
+   * @brief Isotropic linear viscoelastic material using a generalized Maxwell chain.
+   *
+   * A power-law relaxation function \f$\Psi(t)=m t^{-n}\f$ is approximated
+   * by logarithmically spaced Maxwell branches. `E` is the equilibrium
+   * Young's modulus.
+   *
+   * Material properties are ordered as
+   * `[E, nu, m, n, nMaxwell, minTau, timeToDays, optional density]`.
    */
   class LinearViscoElasticWiechert : public MarmotMaterialHypoElastic {
 
@@ -45,16 +50,16 @@ namespace Marmot::Materials {
     /// \brief Poisson's ratio
     const double& nu;
 
-    /// \brief power law compliance parameter for interphase layer
+    /// \brief scaling factor of the power-law relaxation function
     const double& m;
 
-    /// \brief power law exponent for interphase layer
+    /// \brief exponent of the power-law relaxation function
     const double& n;
 
-    /// \brief number of Maxwell units to approximate the viscoelastic compliance for interphase layer
+    /// \brief number of Maxwell units used to approximate the relaxation function
     const size_t nMaxwell;
 
-    /// \brief minimal relaxation time used in the viscoelastic Maxwell chain for interphase layer
+    /// \brief minimal relaxation time used in the viscoelastic Maxwell chain
     const double& minTau;
 
     /// \brief ratio of simulation time to days
@@ -85,6 +90,8 @@ namespace Marmot::Materials {
     Wiechert::Properties elasticModuli;
     /// @brief stiffness of the zeroth Wiechert unit
     double zerothWiechertStiffness;
+
+    static constexpr int powerLawApproximationOrder = 2;
   };
 
 } // namespace Marmot::Materials

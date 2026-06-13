@@ -82,6 +82,30 @@ namespace Marmot {
           return val;
         }
       } // namespace ComplianceFunctions
+
+      namespace RelaxationFunctions {
+
+        /**
+         * @brief Power-law relaxation function.
+         *
+         * Computes the relaxation function
+         * \f[
+         *   \Psi(\tau) = m \, \tau^{-n}.
+         * \f]
+         *
+         * @tparam T_ Scalar or autodiff type of the argument.
+         * @param[in] tau Relaxation time or evaluation point.
+         * @param[in] m Scaling factor.
+         * @param[in] n Positive exponent controlling the relaxation rate.
+         * @return The relaxation-function value \f$\Psi(\tau)\f$.
+         */
+        template < typename T_ >
+        T_ powerLaw( T_ tau, double m, double n )
+        {
+          return m * pow( tau, -n );
+        }
+
+      } // namespace RelaxationFunctions
     }   // namespace Viscoelasticity
   }     // namespace ContinuumMechanics
 } // namespace Marmot
