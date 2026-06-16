@@ -98,7 +98,7 @@ namespace {
     element->assignProperty( properties );
 
     static std::array< double, 8 > materialProperties = { 1e4, 0.3, 0.1, 1e-2, 1e-8, 1, 1e-2, 1.0 };
-    element->assignMaterial( "LINEARVISCOELASTICINTERFACE", materialProperties.data(), materialProperties.size() );
+    element->assignMaterial( "LINEARELASTICINTERFACE", materialProperties.data(), materialProperties.size() );
 
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
     element->assignStateVars( stateVars.data(), stateVars.size() );
