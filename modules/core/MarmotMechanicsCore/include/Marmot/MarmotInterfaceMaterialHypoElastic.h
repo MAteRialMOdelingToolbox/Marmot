@@ -29,12 +29,15 @@
 #pragma once
 
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotStateHelpers.h"
 
 #include <cassert>
 #include <functional>
+#include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 /**
  *
@@ -46,8 +49,11 @@
 class MarmotInterfaceMaterialHypoElastic {
 
 protected:
-  const double* materialProperties;
-  const int     nMaterialProperties;
+  const double*                                materialProperties;
+  const int                                    nMaterialProperties;
+  double                                       h = 0.0;
+  std::vector< double >                        baseMaterialProperties;
+  std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial;
 
 public:
   using TensorMap3d    = Marmot::FastorStandardTensors::TensorMap3d;
@@ -62,9 +68,17 @@ public:
   MarmotInterfaceMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
     : materialProperties( matProperties_ ),
       nMaterialProperties( nMaterialProperties_ ),
+      h( 0.0 ),
+      baseMaterialProperties(),
+      baseMaterial(),
       materialNumber( materialNumber_ )
   {
   }
+
+  MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
+                                      const double*      matProperties_,
+                                      int                nMaterialProperties_,
+                                      int                materialNumber_ );
 
   /// Default destructor
   virtual ~MarmotInterfaceMaterialHypoElastic() = default;
@@ -126,7 +140,7 @@ public:
   virtual void computeStress( State&               state,
                               Tangents&            tangents,
                               const Deformation&   deformation,
-                              const TimeIncrement& timeIncrement ) = 0;
+                              const TimeIncrement& timeIncrement );
 
   /**
    * @brief Get a view to the state variables.
@@ -152,14 +166,9 @@ public:
    *
    * The default implementation initializes all state variables to zero.
    */
-  virtual void initializeYourself( double* stateVars, int nStateVars )
-  {
-    for ( int i = 0; i < nStateVars; ++i ) {
-      stateVars[i] = 0.0;
-    }
-  }
+  virtual void initializeYourself( double* stateVars, int nStateVars );
 
-  virtual double getDensity() { return -1; }
+  virtual double getDensity();
 };
 
 namespace MarmotLibrary {
@@ -179,17 +188,7 @@ namespace MarmotLibrary {
     static MarmotInterfaceMaterialHypoElastic* createMaterial( const std::string& materialName,
                                                                const double*      materialProperties,
                                                                int                nMaterialProperties,
-                                                               int                materialNumber )
-    {
-      auto& map = materialFactoryFunctionByName();
-      auto  it  = map.find( materialName );
-
-      if ( it == map.end() ) {
-        return nullptr;
-      }
-
-      return it->second( materialProperties, nMaterialProperties, materialNumber );
-    }
+                                                               int                materialNumber );
 
     template < class T >
     static bool registerMaterial( const std::string& materialName )
