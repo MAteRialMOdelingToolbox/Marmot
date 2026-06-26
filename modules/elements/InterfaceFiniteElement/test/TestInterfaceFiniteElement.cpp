@@ -64,7 +64,7 @@ namespace {
     element->assignProperty( elProps );
 
     static std::array< double, 3 > materialProperties = { 4e5, 0.3, 0.01 };
-    element->assignMaterial( "LINEARELASTICINTERFACE",
+    element->assignMaterial( "LINEARELASTIC",
                              materialProperties.data(),
                              static_cast< int >( materialProperties.size() ) );
 
@@ -98,7 +98,7 @@ namespace {
     element->assignProperty( properties );
 
     static std::array< double, 3 > materialProperties = { 1e4, 0.3, 0.01 };
-    element->assignMaterial( "LINEARELASTICINTERFACE", materialProperties.data(), materialProperties.size() );
+    element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
 
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
     element->assignStateVars( stateVars.data(), stateVars.size() );

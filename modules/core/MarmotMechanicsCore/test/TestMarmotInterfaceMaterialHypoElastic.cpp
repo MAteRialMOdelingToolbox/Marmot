@@ -189,6 +189,13 @@ namespace {
     testGenericInterfaceAgainstBulkMaterial( "VONMISES", interfaceProperties, 8, bulkProperties, 7 );
   }
 
+  void testGenericLinearElasticInterface()
+  {
+    const double interfaceProperties[3] = { 1e5, 0.3, 0.01 };
+    const double bulkProperties[2]      = { 1e5, 0.3 };
+    testGenericInterfaceAgainstBulkMaterial( "LINEARELASTIC", interfaceProperties, 3, bulkProperties, 2 );
+  }
+
   void testGenericKelvinChainInterface()
   {
     const double interfaceProperties[8] = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
@@ -230,6 +237,7 @@ namespace {
 int main()
 {
   std::vector< std::function< void() > > tests = {
+    testGenericLinearElasticInterface,
     testGenericVonMisesInterface,
     testGenericKelvinChainInterface,
     testGenericWiechertInterface,
