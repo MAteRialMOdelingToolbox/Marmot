@@ -49,6 +49,20 @@ jobs:
       - name: Check out Marmot
         uses: actions/checkout@v4
 
+      - name: Debug checked-out Marmot API
+        shell: bash -l {0}
+        run: |
+          git log -1 --oneline
+          git status
+          echo "===== MarmotElement.h ====="
+          sed -n '120,210p' modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h
+          echo "===== InterfaceFiniteElement relevant signatures ====="
+          grep -n "computeYourself" modules/elements/InterfaceFiniteElement/include/Marmot/InterfaceFiniteElement.h || true
+          grep -n "computeKernels" modules/elements/InterfaceFiniteElement/include/Marmot/InterfaceFiniteElement.h || true
+          grep -n "computeDistributedLoad" modules/elements/InterfaceFiniteElement/include/Marmot/InterfaceFiniteElement.h || true
+          grep -n "computeBodyForce" modules/elements/InterfaceFiniteElement/include/Marmot/InterfaceFiniteElement.h || true
+
+
       - name: Install Marmot
         shell: bash -l {0}
         run: |
