@@ -340,7 +340,7 @@ namespace Marmot::Elements {
     void assignStateVars( double* stateVars, int nStateVars );
 
     /**
-     * @brief Assign element-level properties (e.g., interface thickness).
+     * @brief Assign element-level properties (e.g., extrusion thickness of the element).
      */
     void assignProperty( const ElementProperties& marmotElementProperty );
 
