@@ -214,35 +214,14 @@ namespace {
                              "Generic Wiechert interface density delegation failed." );
   }
 
-  void testLegacyInterfaceNamesResolveToGenericAdapter()
-  {
-    const double vonMisesProperties[8] = { 1e5, 0.3, 0.01, 100., 10., 0., 1., 2400. };
-    const double kelvinProperties[8]   = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
-    const double wiechertProperties[9] = { 1e8, 0.3, 0.01, 2e7, 0.25, 6., 1e-4, 1., 2400. };
-
-    auto vonMisesInterface = createInterfaceMaterial( "VONMISESINTERFACE", vonMisesProperties, 8 );
-    auto kelvinInterface   = createInterfaceMaterial( "KELVINCHAININTERFACE", kelvinProperties, 8 );
-    auto wiechertInterface = createInterfaceMaterial( "WIECHERTINTERFACE", wiechertProperties, 9 );
-
-    throwExceptionOnFailure( vonMisesInterface->getNumberOfRequiredStateVars() > 0,
-                             "VONMISESINTERFACE legacy alias did not create a usable material." );
-    throwExceptionOnFailure( kelvinInterface->getNumberOfRequiredStateVars() > 0,
-                             "KELVINCHAININTERFACE legacy alias did not create a usable material." );
-    throwExceptionOnFailure( wiechertInterface->getNumberOfRequiredStateVars() > 0,
-                             "WIECHERTINTERFACE legacy alias did not create a usable material." );
-  }
-
 } // namespace
 
 int main()
 {
-  std::vector< std::function< void() > > tests = {
-    testGenericLinearElasticInterface,
-    testGenericVonMisesInterface,
-    testGenericKelvinChainInterface,
-    testGenericWiechertInterface,
-    testLegacyInterfaceNamesResolveToGenericAdapter,
-  };
+  std::vector< std::function< void() > > tests = { testGenericLinearElasticInterface,
+                                                   testGenericVonMisesInterface,
+                                                   testGenericKelvinChainInterface,
+                                                   testGenericWiechertInterface };
   executeTestsAndCollectExceptions( tests );
   return 0;
 }

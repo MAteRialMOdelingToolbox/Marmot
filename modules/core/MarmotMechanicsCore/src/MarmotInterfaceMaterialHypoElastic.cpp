@@ -149,15 +149,6 @@ MarmotInterfaceMaterialHypoElastic* MarmotLibrary::MarmotInterfaceMaterialHypoEl
   }
 
   std::string baseMaterialName = materialName;
-  if ( materialName == "VONMISESINTERFACE" ) {
-    baseMaterialName = "VONMISES";
-  }
-  else if ( materialName == "KELVINCHAININTERFACE" ) {
-    baseMaterialName = "LINEARVISCOELASTICPOWERLAW";
-  }
-  else if ( materialName == "WIECHERTINTERFACE" ) {
-    baseMaterialName = "LINEARVISCOELASTICWIECHERT";
-  }
 
   return new MarmotInterfaceMaterialHypoElastic( baseMaterialName,
                                                  materialProperties,
