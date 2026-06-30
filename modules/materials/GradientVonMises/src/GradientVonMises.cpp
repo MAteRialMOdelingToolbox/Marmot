@@ -91,7 +91,13 @@ namespace Marmot::Materials {
       res.f( 0 )       = 0; // ensure yield function is exactly zero for elastic step
       dF_dKappa        = E; // set hardening derivative to Young's modulus for elastic step
       dF_dLaplaceKappa = dF_dLaplaceKappa_tr;
-      dF_ddStrain      = dF_dStress_tr.transpose() * C;
+      // The yield-function residual is forced to zero in the elastic branch (res.f = 0), so ALL of
+      // its derivatives must be zero for a consistent tangent. Setting dF_ddStrain = dF_dStress_tr^T*C
+      // here (≠ 0) makes the lambda-row coupling K_LU deformation-dependent while R_lambda ≡ 0, which
+      // drives a spurious plastic-multiplier increment that accumulates into kappa and — together with
+      // softening (H < 0) — eventually trips spurious yielding at large elastic loads, destroying
+      // one-iteration Newton convergence. Mirror the zero-increment branch above: keep dF_ddStrain = 0.
+      dF_ddStrain.setZero();
       dStressddStrain  = C;
       return;
     }
@@ -148,6 +154,25 @@ namespace Marmot::Materials {
     auto [f_tr, dF_dStress_tr, d2F_dStress2_tr, dF_dKappa_tr, dF_dLaplaceKappa_tr] = yieldFunction( trialStress,
                                                                                                     kappa,
                                                                                                     laplaceKappa );
+    // elastic step: trial stress is inside the yield surface.
+    // Keep the constant elastic tangent and leave dStressddLambda at its zero-initialized value
+    // so that the u-lambda off-diagonal block K_UL vanishes.
+    // Without this branch, dStressddLambda = -C * dF_dStress_tr is non-zero and grows with
+    // the current trial stress (i.e. with deformation magnitude), injecting a spurious
+    // displacement-dependent nonlinearity into the elastic path and preventing one-iteration
+    // Newton convergence at large displacements.
+    if ( f_tr <= 0 ) {
+      stress           = trialStress;
+      res.f( 0 )       = 0;
+      dF_dKappa        = E;
+      dF_dLaplaceKappa = dF_dLaplaceKappa_tr;
+      // R_lambda is forced to zero here, so its strain derivative must also be zero (see the detailed
+      // note in computeStressStandard). A non-zero dF_ddStrain re-introduces the deformation-dependent
+      // coupling this elastic short-circuit is meant to remove.
+      dF_ddStrain.setZero();
+      dStressddStrain  = C;
+      return;
+    }
     // update stress with trial return mapping direction
     stress = trialStress - C * ( dLambda * dF_dStress_tr );
 
