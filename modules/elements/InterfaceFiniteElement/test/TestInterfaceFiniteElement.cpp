@@ -63,11 +63,8 @@ namespace {
     ElementProperties              elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
 
-    static std::array< double, 3 > materialProperties = { 4e5, 0.3, 0.01 };
-    element->assignMaterial( "LINEARELASTIC",
-                             materialProperties.data(),
-                             static_cast< int >( materialProperties.size() ) );
-
+    static std::array< double, 8 > materialProperties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
+    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW", materialProperties.data(), materialProperties.size() );
     return element;
   }
 
@@ -97,8 +94,8 @@ namespace {
     ElementProperties              properties( elementProperties.data(), elementProperties.size() );
     element->assignProperty( properties );
 
-    static std::array< double, 3 > materialProperties = { 1e4, 0.3, 0.01 };
-    element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
+    static std::array< double, 8 > materialProperties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
+    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW", materialProperties.data(), materialProperties.size() );
 
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
     element->assignStateVars( stateVars.data(), stateVars.size() );
@@ -365,9 +362,9 @@ void TestSingleInputFileElementMaterialResponseIsFinite()
                            "The top-side x opening should produce a nonzero material residual." );
 }
 
-void TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual()
+void TestSingleInputFileElementGaussPointStiffnessAndResidual()
 {
-  std::cout << "\n--- TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual ---\n";
+  std::cout << "\n--- TestSingleInputFileElementGaussPointStiffnessAndResidual ---\n";
 
   constexpr int nDim      = 3;
   constexpr int nNodes    = 8;
@@ -542,6 +539,51 @@ void TestSingleInputFileElementRigidTranslationGivesZeroResidual()
                            "Equal rigid translation on both sides should produce zero interface residual." );
 }
 
+void TestAssignStateVarsPreservesHistoryAcrossIncrements()
+{
+  std::cout << "\n--- TestAssignStateVarsPreservesHistoryAcrossIncrements ---\n";
+
+  constexpr int nDim      = 3;
+  constexpr int nNodes    = 8;
+  constexpr int totalNDof = nDim * nNodes;
+
+  auto element = makeSingleInputFileInterfaceElement();
+
+  std::vector< double > stateVars;
+  initializeStateAndMaterial( *element, stateVars ); // proper one-time init: step1/inc1 equivalent
+
+  std::vector< double > U( totalNDof, 0.0 );
+  std::vector< double > dU( totalNDof, 0.0 );
+  std::vector< double > Pe( totalNDof, 0.0 );
+  std::vector< double > Ke( totalNDof * totalNDof, 0.0 );
+
+  const Eigen::VectorXd dUEigen = makeTopSideXOpeningIncrement();
+  for ( int i = 0; i < totalNDof; ++i )
+    dU[i] = dUEigen[i];
+
+  double time   = 0.0;
+  double dT     = 1.0;
+  double pNewDT = 1.0;
+
+  // simulate increment 1: some nonzero deformation drives material state away from zero
+  element->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &time, dT, pNewDT );
+
+  const Eigen::VectorXd stateAfterInc1 = element->qps[0].managedStateVars->materialStateVars;
+
+  throwExceptionOnFailure( stateAfterInc1.template lpNorm< Eigen::Infinity >() > 0.0,
+                           "Precondition failed: material state should be nonzero after a real increment." );
+
+  // simulate what Abaqus/UEL does on every subsequent call: re-point state vars at the
+  // same persistent buffer, WITHOUT requesting MarmotMaterialInitialization again
+  element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+
+  const Eigen::VectorXd stateAfterReassign = element->qps[0].managedStateVars->materialStateVars;
+
+  throwExceptionOnFailure( stateAfterReassign.isApprox( stateAfterInc1 ),
+                           "assignStateVars wiped accumulated material history — "
+                           "this breaks history-dependent materials (e.g. creep) across increments!" );
+}
+
 void TestAngledInterfaceKinematics()
 {
   std::cout << "\n--- TestAngledInterfaceKinematics ---\n";
@@ -579,15 +621,15 @@ void TestAngledInterfaceKinematics()
 
 int main()
 {
-  auto tests = std::vector<
-    std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
-                               TestUnsupportedInertiaThrows,
-                               TestStressUpdateFailureRequestsSmallerTimeStep,
-                               TestSingleInputFileElementGeometryMatrices,
-                               TestSingleInputFileElementMaterialResponseIsFinite,
-                               TestSingleInputFileElementLinearElasticGaussPointStiffnessAndResidual,
-                               TestSingleInputFileElementRigidTranslationGivesZeroResidual,
-                               TestAngledInterfaceKinematics };
+  auto tests = std::vector< std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
+                                                       TestUnsupportedInertiaThrows,
+                                                       TestStressUpdateFailureRequestsSmallerTimeStep,
+                                                       TestSingleInputFileElementGeometryMatrices,
+                                                       TestSingleInputFileElementMaterialResponseIsFinite,
+                                                       TestSingleInputFileElementGaussPointStiffnessAndResidual,
+                                                       TestSingleInputFileElementRigidTranslationGivesZeroResidual,
+                                                       TestAssignStateVarsPreservesHistoryAcrossIncrements,
+                                                       TestAngledInterfaceKinematics };
 
   executeTestsAndCollectExceptions( tests );
 

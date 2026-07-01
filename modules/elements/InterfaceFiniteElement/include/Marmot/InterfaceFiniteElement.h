@@ -246,9 +246,6 @@ namespace Marmot::Elements {
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
-
-        material->initializeYourself( managedStateVars->materialStateVars.data(),
-                                      managedStateVars->materialStateVars.size() );
       }
 
       /**
