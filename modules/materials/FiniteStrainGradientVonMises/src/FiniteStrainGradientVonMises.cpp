@@ -93,10 +93,48 @@ namespace Marmot::Materials {
     Tensor33t< dual > tauTrial = FeTrial % STrial % transpose( FeTrial );
     Tensor33t< dual > tTrial   = multiplyFastorTensorWithScalar( tauTrial, Jinv );
 
-    // Deviatoric trial Cauchy stress and J2
+    // Deviatoric trial Cauchy stress and J2 (used for the flow direction only; the
+    // complementarity residual below is evaluated at the UPDATED stress)
     Tensor33t< dual > tTrial_dev = Marmot::deviatoric( tTrial );
     dual              J2_tTrial  = dual( 0.5 ) * einsum_ij_ij_hardcoded( tTrial_dev, tTrial_dev );
-    dual              f_tr       = sqrt( dual( 3.0 ) * J2_tTrial ) - fy( kappa, laplaceKappa );
+
+    // Elastic short-circuit, adapted from the small-strain GradientVonMises FB
+    // implementation: if the trial state is inside the yield surface, return the trial
+    // stress (no return map), so that dTau_ddLambda vanishes EXACTLY. Without this branch,
+    // the exponential-map return would expose every stressed-but-elastic material point to
+    // a spurious, deformation-dependent U-lambda tangent coupling (dfp_dt != 0 whenever
+    // J2 > 0), which prevents global Newton convergence -- the same issue documented in
+    // the small-strain implementation. Unlike the small-strain version (which forces
+    // R_L = 0 with hand-set tangents), the complementarity residual here stays the
+    // Fischer-Burmeister function -- evaluated on the TRIAL yield function -- so residual
+    // and tangents remain continuous and sign-consistent across the elastic/plastic branch
+    // switch (an R_L = E*dLambda anchor was tried first and caused branch chattering: its
+    // +E lambda-diagonal has the opposite sign of the plastic branch's -scale).
+    // Scaling of the dLambda argument of the Fischer-Burmeister function, aligned with the
+    // small-strain GradientVonMises (1e4): it balances the two FB arguments near the yield
+    // point and thereby conditions the Newton linearization of the complementarity residual.
+    const double scale = 1e4;
+
+    const double f_tr_primal = std::sqrt( 3.0 * std::max( Math::makeReal( J2_tTrial ), 0.0 ) ) -
+                               Math::makeReal( fy( kappa, laplaceKappa ) );
+    if ( f_tr_primal <= 0.0 ) {
+      // Guarded like the flow direction above: sqrt is non-differentiable at zero
+      // deviatoric stress and its dual gradient is 0/0 = NaN, which would poison the
+      // stiffness of every virgin material point.
+      dual sqrt3J2_tr = 0.0;
+      if ( Math::makeReal( J2_tTrial ) > 1e-12 )
+        sqrt3J2_tr = sqrt( dual( 3.0 ) * J2_tTrial );
+      const dual f_tr = sqrt3J2_tr - fy( kappa, laplaceKappa );
+
+      stateLayout.getAs< double& >( res.stateVars, "kappa" )        = Math::makeReal( kappa );
+      stateLayout.getAs< double& >( res.stateVars, "laplaceKappa" ) = Math::makeReal( laplaceKappa );
+
+      res.tau                  = tauTrial;
+      res.f( 0 )               = fischerBurmeisterFunction( -f_tr, dLambda * scale, 1e-16 );
+      res.elasticEnergyDensity = psiTrial;
+      res.dissipation          = dual( 0.0 );
+      return;
+    }
 
     // Flow direction: df_p/dt = (3/2) * t_dev / sqrt(3 J2)
     // df_p/dM_{KL} = (df_p/dt_{ij}) * (1/J) * F^{e,-1}_{Ki} * F^{e}_{jL}
@@ -126,9 +164,24 @@ namespace Marmot::Materials {
     Tensor33t< dual > S   = multiplyFastorTensorWithScalar( dPsi_dCe, dual( 2.0 ) );
     Tensor33t< dual > tau = Fe % S % transpose( Fe );
 
-    // 4. Fischer-Burmeister complementarity function
-    double scale = 1e6;
-    dual   fFB   = fischerBurmeisterFunction( -f_tr, dLambda * scale, 1e-12 );
+    // 4. Fischer-Burmeister complementarity function.
+    // The yield function must be RE-EVALUATED at the UPDATED (returned) stress, exactly as
+    // in the small-strain GradientVonMises FB implementation: the trial yield function f_tr
+    // does not depend on the plastic flow (and with softening H < 0 it even GROWS with
+    // dLambda through fy), so a trial-based complementarity residual can never be driven to
+    // zero once yielding starts and the global Newton stalls at the onset of plasticity.
+    Tensor33t< dual > t_new     = multiplyFastorTensorWithScalar( tau, Jinv );
+    Tensor33t< dual > t_new_dev = Marmot::deviatoric( t_new );
+    dual              J2_t_new  = dual( 0.5 ) * einsum_ij_ij_hardcoded( t_new_dev, t_new_dev );
+    // Guarded like the small-strain GradientVonMises (zero derivatives for J2 < 1e-12):
+    // sqrt is non-differentiable at zero deviatoric stress and its dual gradient is
+    // 0/0 = NaN, which would poison the stiffness of every virgin material point.
+    dual sqrt3J2_new = 0.0;
+    if ( Math::makeReal( J2_t_new ) > 1e-12 )
+      sqrt3J2_new = sqrt( dual( 3.0 ) * J2_t_new );
+    const dual f_new = sqrt3J2_new - fy( kappa, laplaceKappa );
+
+    dual fFB = fischerBurmeisterFunction( -f_new, dLambda * scale, 1e-16 );
 
     // 5. Update state variables (primal values only)
     memcpy( stateLayout.getPtr( res.stateVars, "Fp" ), makeReal( FpNew ).data(), 9 * sizeof( double ) );
