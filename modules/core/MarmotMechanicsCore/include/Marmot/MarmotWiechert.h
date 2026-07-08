@@ -30,6 +30,7 @@
 
 #include "autodiff/forward/real.hpp"
 
+#include <cmath>
 #include <functional>
 
 namespace Marmot::Materials {
