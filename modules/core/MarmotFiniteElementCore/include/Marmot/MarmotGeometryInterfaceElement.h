@@ -416,11 +416,6 @@ public:
    */
   BSurfaceSized BSurfaceMatrix( const GradSized& gradN, const TensorDim& T ) const
   {
-    /*
-     * Each displacement component writes into its own component column. This
-     * preserves the full projected displacement-gradient layout expected by
-     * interface material routines.
-     */
     BSurfaceSized B;
     B.setZero();
 
@@ -428,25 +423,32 @@ public:
       for ( int i = 0; i < nDim; ++i ) {
         for ( int k = 0; k < nDim; ++k ) {
 
-          double value = 0.0;
-
           if constexpr ( nDim == 2 ) {
+            double value = 0.0;
+
             for ( int j = 0; j < nDim; ++j ) {
               value += gradN( j, A ) * T( j, k );
             }
+
+            const int row = i * nDim + k;
+            const int col = A * nDim + i;
+
+            B( row, col ) = value;
           }
           else if constexpr ( nDim == 3 ) {
             for ( int m = 0; m < nDim; ++m ) {
+              double value = 0.0;
+
               for ( int j = 0; j < nDim; ++j ) {
                 value += T( i, m ) * gradN( j, A ) * T( j, k );
               }
+
+              const int row = i * nDim + k;
+              const int col = A * nDim + m;
+
+              B( row, col ) = value;
             }
           }
-
-          const int row = i * nDim + k;
-          const int col = A * nDim + i;
-
-          B( row, col ) = value;
         }
       }
     }

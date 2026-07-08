@@ -341,6 +341,63 @@ void TestSingleInputFileElementGeometryMatrices()
   }
 }
 
+void TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling()
+{
+  std::cout << "\n--- TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling ---\n";
+
+  constexpr int nDim     = 3;
+  constexpr int nNodes   = 8;
+  constexpr int halfNDof = nDim * nNodes / 2;
+  constexpr int nTensor  = nDim * nDim;
+
+  auto element = makeSingleInputFileInterfaceElement();
+  element->initializeYourself();
+
+  const double tol = 1e-12;
+
+  for ( const auto& qp : element->qps ) {
+    Eigen::Matrix< double, nTensor, halfNDof > BExpected;
+    BExpected.setZero();
+
+    for ( int A = 0; A < nNodes / 2; ++A ) {
+      for ( int i = 0; i < nDim; ++i ) {
+        for ( int k = 0; k < nDim; ++k ) {
+          for ( int m = 0; m < nDim; ++m ) {
+            double value = 0.0;
+
+            for ( int j = 0; j < nDim; ++j )
+              value += qp.tangentProjection( i, m ) * qp.gradN( j, A ) * qp.tangentProjection( j, k );
+
+            BExpected( i * nDim + k, A * nDim + m ) = value;
+          }
+        }
+      }
+    }
+
+    assertMatrixNear( qp.BmatSide,
+                      BExpected,
+                      tol,
+                      "Projected 3D BmatSide must retain displacement-component coupling." );
+
+    bool hasOffComponentCoupling = false;
+    for ( int A = 0; A < nNodes / 2; ++A ) {
+      for ( int i = 0; i < nDim; ++i ) {
+        for ( int m = 0; m < nDim; ++m ) {
+          if ( i == m )
+            continue;
+
+          for ( int k = 0; k < nDim; ++k )
+            hasOffComponentCoupling = hasOffComponentCoupling ||
+                                      std::abs( BExpected( i * nDim + k, A * nDim + m ) ) > tol;
+        }
+      }
+    }
+
+    throwExceptionOnFailure( hasOffComponentCoupling,
+                             "Test geometry must exercise off-component projected-gradient coupling." );
+  }
+}
+
 void TestSingleInputFileElementMaterialResponseIsFinite()
 {
   std::cout << "\n--- TestSingleInputFileElementMaterialResponseIsFinite ---\n";
@@ -625,6 +682,7 @@ int main()
                                                        TestUnsupportedInertiaThrows,
                                                        TestStressUpdateFailureRequestsSmallerTimeStep,
                                                        TestSingleInputFileElementGeometryMatrices,
+                                                       TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling,
                                                        TestSingleInputFileElementMaterialResponseIsFinite,
                                                        TestSingleInputFileElementGaussPointStiffnessAndResidual,
                                                        TestSingleInputFileElementRigidTranslationGivesZeroResidual,
