@@ -10,22 +10,35 @@
 
 namespace Marmot::Materials {
 
+  namespace {
+
+    const double& checkedMaterialProperty( const double* materialProperties, int nMaterialProperties, int index )
+    {
+      if ( nMaterialProperties < 7 ) {
+        throw std::invalid_argument( "LinearViscoElasticWiechert requires at least 7 material properties." );
+      }
+      if ( materialProperties == nullptr ) {
+        throw std::invalid_argument( "LinearViscoElasticWiechert requires a valid material property array." );
+      }
+
+      return materialProperties[index];
+    }
+
+  } // namespace
+
   LinearViscoElasticWiechert::LinearViscoElasticWiechert( const double* materialProperties,
                                                           int           nMaterialProperties,
                                                           int           materialNumber )
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
-      E( materialProperties[0] ),
-      nu( materialProperties[1] ),
-      m( materialProperties[2] ),
-      n( materialProperties[3] ),
-      nMaxwell( static_cast< size_t >( materialProperties[4] ) ),
-      minTau( materialProperties[5] ),
-      timeToDays( materialProperties[6] ),
+      E( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      nu( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      m( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      n( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      nMaxwell( static_cast< size_t >( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ) ),
+      minTau( checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
+      timeToDays( checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
       zerothWiechertStiffness( 0.0 )
   {
-    if ( nMaterialProperties < 7 ) {
-      throw std::invalid_argument( "LinearViscoElasticWiechert requires at least 7 material properties." );
-    }
     if ( materialProperties[4] < 1.0 ) {
       throw std::invalid_argument( "LinearViscoElasticWiechert requires at least one Maxwell element." );
     }
