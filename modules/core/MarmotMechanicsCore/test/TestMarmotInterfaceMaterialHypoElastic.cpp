@@ -143,7 +143,10 @@ namespace {
 
       Marmot::Matrix6d                   bulkTangent = Marmot::Matrix6d::Zero();
       MarmotMaterialHypoElastic::state3D bulkState{ bulkStress, 0.0, 0.0, bulkStateVars.data() };
-      bulkMaterial->computeStress( bulkState, bulkTangent, bulkStrainIncrement, { timeOld, increment.dT } );
+      bulkMaterial->computeStress( bulkState,
+                                   bulkTangent,
+                                   bulkStrainIncrement,
+                                   { timeOld + increment.dT, increment.dT } );
       bulkStress = bulkState.stress;
 
       const Eigen::Matrix3d expectedStress = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( bulkStress );

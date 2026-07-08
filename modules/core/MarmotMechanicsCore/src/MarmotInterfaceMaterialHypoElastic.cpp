@@ -96,7 +96,7 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   Matrix6d tangent               = Matrix6d::Zero();
   double*  baseMaterialStateVars = stateLayout.getPtr( state.stateVars, "baseMaterialStateVars" );
   MarmotMaterialHypoElastic::state3D        baseState{ stressVoigt, 0.0, 0.0, baseMaterialStateVars };
-  const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.timeOld, timeIncrement.dT };
+  const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.timeOld + timeIncrement.dT, timeIncrement.dT };
 
   baseMaterial->computeStress( baseState, tangent, strainIncrementVoigt, timeInfo );
 
