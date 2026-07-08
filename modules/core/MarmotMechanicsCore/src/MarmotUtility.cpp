@@ -5,11 +5,4 @@
 
 namespace Marmot {
 
-  void discardTheIncrement( double& pNewDT, double value, const std::string& message )
-  {
-    pNewDT = value;
-    MarmotJournal::warningToMSG( message );
-    return;
-  }
-
 } // namespace Marmot

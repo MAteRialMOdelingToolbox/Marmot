@@ -144,13 +144,12 @@ void MarmotElementSpatialWrapper::assignNodeCoordinates( const double* coordinat
   childElement->assignNodeCoordinates( projectedCoordinates.data() );
 }
 
-void MarmotElementSpatialWrapper::computeYourself( const double* Q,
-                                                   const double* dQ,
-                                                   double*       Pe_,
-                                                   double*       Ke_,
-                                                   const double* time,
-                                                   double        dT,
-                                                   double&       pNewDT )
+void MarmotElementSpatialWrapper::computeKernels( const double* Q,
+                                                  const double* dQ,
+                                                  double*       Pe_,
+                                                  double*       Ke_,
+                                                  double        time,
+                                                  double        dT )
 {
   Map< const VectorXd > Q_Unprojected( Q, unprojectedSize );
   Map< const VectorXd > dQ_Unprojected( dQ, unprojectedSize );
@@ -161,16 +160,8 @@ void MarmotElementSpatialWrapper::computeYourself( const double* Q,
   VectorXd Pe_Projected = VectorXd::Zero( projectedSize );
   MatrixXd Ke_Projected = MatrixXd::Zero( projectedSize, projectedSize );
 
-  childElement->computeYourself( Q_Projected.data(),
-                                 dQ_Projected.data(),
-                                 Pe_Projected.data(),
-                                 Ke_Projected.data(),
-                                 time,
-                                 dT,
-                                 pNewDT );
-
-  if ( pNewDT < 1.0 )
-    return;
+  childElement
+    ->computeKernels( Q_Projected.data(), dQ_Projected.data(), Pe_Projected.data(), Ke_Projected.data(), time, dT );
 
   Map< VectorXd > Pe_Unprojected( Pe_, unprojectedSize );
   Map< MatrixXd > Ke_Unprojected( Ke_, unprojectedSize, unprojectedSize );
@@ -190,7 +181,7 @@ void MarmotElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes l
                                                           int                  elementFace,
                                                           const double*        load,
                                                           const double*        QTotal,
-                                                          const double*        time,
+                                                          double               time,
                                                           double               dT )
 {
   VectorXd P_Projected = VectorXd::Zero( projectedSize );
@@ -210,7 +201,7 @@ void MarmotElementSpatialWrapper::computeBodyForce( double*       P_,
                                                     double*       K,
                                                     const double* load,
                                                     const double* QTotal,
-                                                    const double* time,
+                                                    double        time,
                                                     double        dT )
 {
   VectorXd P_Projected = VectorXd::Zero( projectedSize );

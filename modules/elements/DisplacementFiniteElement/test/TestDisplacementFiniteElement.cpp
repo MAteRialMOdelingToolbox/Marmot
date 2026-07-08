@@ -112,10 +112,8 @@ void testStiffnessMatrixCalculationPlaneStress()
 
   double currentTime = 0.0;
   double dt          = 1.0; // Dummy time step (not critical for linear elastic stiffness)
-  double pNewDT      = 1.0; // Placeholder for adaptive time stepping (not used here)
-
   // Compute the stiffness matrix K and internal force vector P
-  element->computeYourself( u.data(), dQ.data(), P.data(), K.data(), &currentTime, dt, pNewDT );
+  element->computeKernels( u.data(), dQ.data(), P.data(), K.data(), currentTime, dt );
 
   // --- Stiffness Matrix Checks ---
   // The stiffness matrix K should be symmetric for linear elastic materials.
