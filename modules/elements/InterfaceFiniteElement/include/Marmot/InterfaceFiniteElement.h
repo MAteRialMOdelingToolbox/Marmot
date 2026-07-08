@@ -654,19 +654,100 @@ namespace Marmot::Elements {
       H_ijk.setZero();
       Y_ijkl.setZero();
 
-      Material::State         materialState{ force.data(),
-                                     surface_stress.data(),
-                                     qp.managedStateVars->materialStateVars.data() };
-      Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
-      Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
-      Material::TimeIncrement materialTimeIncrement{ time[0], dT };
+      if constexpr ( nDim == 3 ) {
+        Material::State         materialState{ force.data(),
+                                       surface_stress.data(),
+                                       qp.managedStateVars->materialStateVars.data() };
+        Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
+        Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
+        Material::TimeIncrement materialTimeIncrement{ time[0], dT };
 
-      try {
-        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+        try {
+          qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+        }
+        catch ( const Marmot::StressUpdateFailed& ) {
+          pNewDT = 0.5;
+          return;
+        }
       }
-      catch ( const Marmot::StressUpdateFailed& ) {
-        pNewDT = 0.5;
-        return;
+      else if constexpr ( nDim == 2 ) {
+        Eigen::Vector3d                                force3d = Eigen::Vector3d::Zero();
+        Eigen::Matrix< double, 9, 1 >                  surfaceStress3d;
+        Eigen::Matrix< double, 6, 1 >                  dU3d;
+        Eigen::Matrix< double, 18, 1 >                 dSurfaceStrain3d;
+        Eigen::Vector3d                                normal3d = Eigen::Vector3d::Zero();
+        Eigen::Matrix< double, 3, 3, Eigen::RowMajor > Q3d;
+        Eigen::Matrix< double, 9, 9, Eigen::RowMajor > Z3d;
+        Eigen::Matrix< double, 3, 9, Eigen::RowMajor > H3d;
+        Eigen::Matrix< double, 9, 9, Eigen::RowMajor > Y3d;
+
+        surfaceStress3d.setZero();
+        dU3d.setZero();
+        dSurfaceStrain3d.setZero();
+        Q3d.setZero();
+        Z3d.setZero();
+        H3d.setZero();
+        Y3d.setZero();
+
+        for ( int i = 0; i < nDim; ++i ) {
+          force3d( i )  = force( i );
+          normal3d( i ) = qp.normal( i );
+          dU3d( i )     = dU_GPs( i );
+          dU3d( 3 + i ) = dU_GPs( nDim + i );
+
+          for ( int j = 0; j < nDim; ++j ) {
+            const int index2d = i * nDim + j;
+            const int index3d = i * 3 + j;
+
+            surfaceStress3d( index3d )      = surface_stress( index2d );
+            dSurfaceStrain3d( index3d )     = dSurface_strain_GPs( index2d );
+            dSurfaceStrain3d( 9 + index3d ) = dSurface_strain_GPs( nTensor + index2d );
+          }
+        }
+
+        Material::State         materialState{ force3d.data(),
+                                       surfaceStress3d.data(),
+                                       qp.managedStateVars->materialStateVars.data() };
+        Material::Tangents      materialTangents{ Q3d.data(), Z3d.data(), H3d.data(), Y3d.data() };
+        Material::Deformation   materialDeformation{ dU3d.data(), dSurfaceStrain3d.data(), normal3d.data() };
+        Material::TimeIncrement materialTimeIncrement{ time[0], dT };
+
+        try {
+          qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+        }
+        catch ( const Marmot::StressUpdateFailed& ) {
+          pNewDT = 0.5;
+          return;
+        }
+
+        for ( int i = 0; i < nDim; ++i ) {
+          force( i ) = force3d( i );
+
+          for ( int j = 0; j < nDim; ++j ) {
+            const int index2d = i * nDim + j;
+            const int index3d = i * 3 + j;
+
+            surface_stress( index2d ) = surfaceStress3d( index3d );
+            Q_ij( i, j )              = Q3d( i, j );
+
+            for ( int k = 0; k < nDim; ++k ) {
+              const int tensorCol2d = j * nDim + k;
+              const int tensorCol3d = j * 3 + k;
+
+              H_ijk( i, tensorCol2d ) = H3d( i, tensorCol3d );
+
+              for ( int l = 0; l < nDim; ++l ) {
+                const int tensorRow2d  = i * nDim + j;
+                const int tensorRow3d  = i * 3 + j;
+                const int tensorCol2d4 = k * nDim + l;
+                const int tensorCol3d4 = k * 3 + l;
+
+                Z_ijkl( tensorRow2d, tensorCol2d4 ) = Z3d( tensorRow3d, tensorCol3d4 );
+                Y_ijkl( tensorRow2d, tensorCol2d4 ) = Y3d( tensorRow3d, tensorCol3d4 );
+              }
+            }
+          }
+        }
       }
 
       qp.managedStateVars->force         = force;

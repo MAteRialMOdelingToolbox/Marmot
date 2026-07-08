@@ -68,7 +68,41 @@ namespace {
     return element;
   }
 
-  void initializeStateAndMaterial( InterfaceFiniteElement< 3, 8 >& element, std::vector< double >& stateVars )
+  std::unique_ptr< InterfaceFiniteElement< 2, 4 > > makeTwoDimensionalInterfaceElement()
+  {
+    constexpr int nDim   = 2;
+    constexpr int nNodes = 4;
+
+    const int  elId    = 2;
+    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+
+    auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
+
+    static std::array< double, nDim* nNodes > coordinates = {
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+    };
+    element->assignNodeCoordinates( coordinates.data() );
+
+    static std::array< double, 1 > elPropsVec = { 1.0 };
+    ElementProperties              elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+    element->assignProperty( elProps );
+
+    static std::array< double, 3 > materialProperties = { 1000.0, 0.25, 0.1 };
+    element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
+
+    return element;
+  }
+
+  template < int nDim, int nNodes >
+  void initializeStateAndMaterial( InterfaceFiniteElement< nDim, nNodes >& element, std::vector< double >& stateVars )
   {
     stateVars.assign( element.getNumberOfRequiredStateVars(), 0.0 );
     element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
@@ -641,6 +675,174 @@ void TestAssignStateVarsPreservesHistoryAcrossIncrements()
                            "this breaks history-dependent materials (e.g. creep) across increments!" );
 }
 
+void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
+{
+  std::cout << "\n--- TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial ---\n";
+
+  constexpr int nDim      = 2;
+  constexpr int nNodes    = 4;
+  constexpr int totalNDof = nDim * nNodes;
+  constexpr int halfNDof  = totalNDof / 2;
+  constexpr int nTensor   = nDim * nDim;
+
+  auto element = makeTwoDimensionalInterfaceElement();
+
+  std::vector< double > stateVars;
+  initializeStateAndMaterial( *element, stateVars );
+
+  Eigen::Matrix< double, totalNDof, 1 >         U;
+  Eigen::Matrix< double, totalNDof, 1 >         dU;
+  Eigen::Matrix< double, totalNDof, 1 >         Pe;
+  Eigen::Matrix< double, totalNDof, totalNDof > Ke;
+
+  U.setZero();
+  dU.setZero();
+  Pe.setZero();
+  Ke.setZero();
+
+  dU << 0.0, -1.0e-5, 0.0, 2.0e-5, 1.0e-5, 1.2e-4, -2.0e-5, 8.0e-5;
+
+  Eigen::Matrix< double, totalNDof, 1 >         expectedPe;
+  Eigen::Matrix< double, totalNDof, totalNDof > expectedKe;
+  expectedPe.setZero();
+  expectedKe.setZero();
+
+  std::vector< Eigen::Matrix< double, nDim, 1 > >    expectedForce;
+  std::vector< Eigen::Matrix< double, nTensor, 1 > > expectedSurfaceStress;
+  const double                                       time = 0.0;
+  const double                                       dT   = 1.0;
+
+  for ( auto& qp : element->qps ) {
+    const auto& Nside = qp.NmatSide;
+    const auto& Bside = qp.BmatSide;
+    const auto& Njump = qp.NmatJump;
+    const auto& Bavg  = qp.BmatAverage;
+
+    Eigen::Matrix< double, 2 * nDim, 1 > dUGp;
+    dUGp.template segment< nDim >( 0 )    = Nside * dU.template segment< halfNDof >( halfNDof );
+    dUGp.template segment< nDim >( nDim ) = Nside * dU.template segment< halfNDof >( 0 );
+
+    Eigen::Matrix< double, 2 * nTensor, 1 > dSurfaceStrainGp;
+    dSurfaceStrainGp.template segment< nTensor >( 0 )       = Bside * dU.template segment< halfNDof >( halfNDof );
+    dSurfaceStrainGp.template segment< nTensor >( nTensor ) = Bside * dU.template segment< halfNDof >( 0 );
+
+    Eigen::Vector3d                                force3d = Eigen::Vector3d::Zero();
+    Eigen::Matrix< double, 9, 1 >                  surfaceStress3d;
+    Eigen::Matrix< double, 6, 1 >                  dU3d;
+    Eigen::Matrix< double, 18, 1 >                 dSurfaceStrain3d;
+    Eigen::Vector3d                                normal3d = Eigen::Vector3d::Zero();
+    Eigen::Matrix< double, 3, 3, Eigen::RowMajor > Q3d;
+    Eigen::Matrix< double, 9, 9, Eigen::RowMajor > Z3d;
+    Eigen::Matrix< double, 3, 9, Eigen::RowMajor > H3d;
+    Eigen::Matrix< double, 9, 9, Eigen::RowMajor > Y3d;
+
+    surfaceStress3d.setZero();
+    dU3d.setZero();
+    dSurfaceStrain3d.setZero();
+    Q3d.setZero();
+    Z3d.setZero();
+    H3d.setZero();
+    Y3d.setZero();
+
+    for ( int i = 0; i < nDim; ++i ) {
+      normal3d( i ) = qp.normal( i );
+      dU3d( i )     = dUGp( i );
+      dU3d( 3 + i ) = dUGp( nDim + i );
+
+      for ( int j = 0; j < nDim; ++j ) {
+        const int index2d = i * nDim + j;
+        const int index3d = i * 3 + j;
+
+        dSurfaceStrain3d( index3d )     = dSurfaceStrainGp( index2d );
+        dSurfaceStrain3d( 9 + index3d ) = dSurfaceStrainGp( nTensor + index2d );
+      }
+    }
+
+    std::vector< double > materialStateVars( qp.managedStateVars->materialStateVars.size(), 0.0 );
+
+    MarmotInterfaceMaterialHypoElastic::State       materialState{ force3d.data(),
+                                                             surfaceStress3d.data(),
+                                                             materialStateVars.data() };
+    MarmotInterfaceMaterialHypoElastic::Tangents    materialTangents{ Q3d.data(), Z3d.data(), H3d.data(), Y3d.data() };
+    MarmotInterfaceMaterialHypoElastic::Deformation materialDeformation{ dU3d.data(),
+                                                                         dSurfaceStrain3d.data(),
+                                                                         normal3d.data() };
+    MarmotInterfaceMaterialHypoElastic::TimeIncrement materialTimeIncrement{ time, dT };
+    qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+
+    Eigen::Matrix< double, nDim, 1 >                           force2d;
+    Eigen::Matrix< double, nTensor, 1 >                        surfaceStress2d;
+    Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor >       Q2d;
+    Eigen::Matrix< double, nTensor, nTensor, Eigen::RowMajor > Z2d;
+    Eigen::Matrix< double, nDim, nTensor, Eigen::RowMajor >    H2d;
+    Eigen::Matrix< double, nTensor, nTensor, Eigen::RowMajor > Y2d;
+
+    force2d.setZero();
+    surfaceStress2d.setZero();
+    Q2d.setZero();
+    Z2d.setZero();
+    H2d.setZero();
+    Y2d.setZero();
+
+    for ( int i = 0; i < nDim; ++i ) {
+      force2d( i ) = force3d( i );
+
+      for ( int j = 0; j < nDim; ++j ) {
+        const int index2d = i * nDim + j;
+        const int index3d = i * 3 + j;
+
+        surfaceStress2d( index2d ) = surfaceStress3d( index3d );
+        Q2d( i, j )                = Q3d( i, j );
+
+        for ( int k = 0; k < nDim; ++k ) {
+          const int tensorCol2d = j * nDim + k;
+          const int tensorCol3d = j * 3 + k;
+
+          H2d( i, tensorCol2d ) = H3d( i, tensorCol3d );
+
+          for ( int l = 0; l < nDim; ++l ) {
+            const int tensorRow2d  = i * nDim + j;
+            const int tensorRow3d  = i * 3 + j;
+            const int tensorCol2d4 = k * nDim + l;
+            const int tensorCol3d4 = k * 3 + l;
+
+            Z2d( tensorRow2d, tensorCol2d4 ) = Z3d( tensorRow3d, tensorCol3d4 );
+            Y2d( tensorRow2d, tensorCol2d4 ) = Y3d( tensorRow3d, tensorCol3d4 );
+          }
+        }
+      }
+    }
+
+    expectedForce.emplace_back( force2d );
+    expectedSurfaceStress.emplace_back( surfaceStress2d );
+
+    expectedPe -= Njump.transpose() * force2d * qp.J0xW;
+    expectedPe -= Bavg.transpose() * surfaceStress2d * qp.J0xW;
+
+    expectedKe += ( Njump.transpose() * Q2d * Njump + Bavg.transpose() * Z2d * Bavg + Bavg.transpose() * Y2d * Bavg +
+                    Njump.transpose() * H2d * Bavg + Bavg.transpose() * H2d.transpose() * Njump ) *
+                  qp.J0xW;
+  }
+
+  double pNewDT = 1.0;
+  element->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &time, dT, pNewDT );
+
+  throwExceptionOnFailure( pNewDT == 1.0, "2D interface element unexpectedly requested a smaller time step." );
+  assertMatrixNear( Pe, expectedPe, 1e-10, "2D interface element residual differs from embedded material response." );
+  assertMatrixNear( Ke, expectedKe, 1e-10, "2D interface element tangent differs from embedded material response." );
+
+  for ( int q = 0; q < element->getNumberOfQuadraturePoints(); ++q ) {
+    assertMatrixNear( element->qps[q].managedStateVars->force,
+                      expectedForce[q],
+                      1e-10,
+                      "2D interface force differs at qp " + std::to_string( q ) );
+    assertMatrixNear( element->qps[q].managedStateVars->surfaceStress,
+                      expectedSurfaceStress[q],
+                      1e-10,
+                      "2D interface surface stress differs at qp " + std::to_string( q ) );
+  }
+}
+
 void TestAngledInterfaceKinematics()
 {
   std::cout << "\n--- TestAngledInterfaceKinematics ---\n";
@@ -687,6 +889,7 @@ int main()
                                                        TestSingleInputFileElementGaussPointStiffnessAndResidual,
                                                        TestSingleInputFileElementRigidTranslationGivesZeroResidual,
                                                        TestAssignStateVarsPreservesHistoryAcrossIncrements,
+                                                       TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial,
                                                        TestAngledInterfaceKinematics };
 
   executeTestsAndCollectExceptions( tests );
