@@ -376,29 +376,18 @@ namespace Marmot::Elements {
                                  const int                           elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
-                                 const double*                       time,
+                                 double                              time,
                                  double                              dT );
 
     /**
      * @brief Body-force routine (currently not implemented).
      */
-    void computeBodyForce( double*       P,
-                           double*       K,
-                           const double* load,
-                           const double* QTotal,
-                           const double* time,
-                           double        dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
     /**
      * @brief Assemble residual and tangent for one increment.
      */
-    void computeYourself( const double* QTotal,
-                          const double* dQ,
-                          double*       Pe,
-                          double*       Ke,
-                          const double* time,
-                          double        dT,
-                          double&       pNewdT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
     /**
      * @brief Report that consistent inertia is unsupported for interface elements.
@@ -608,13 +597,12 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::computeYourself( const double* QTotal_,
-                                                                const double* dQ_,
-                                                                double*       Pe_,
-                                                                double*       Ke_,
-                                                                const double* time,
-                                                                double        dT,
-                                                                double&       pNewDT )
+  void InterfaceFiniteElement< nDim, nNodes >::computeKernels( const double* QTotal_,
+                                                               const double* dQ_,
+                                                               double*       Pe_,
+                                                               double*       Ke_,
+                                                               double        time,
+                                                               double        dT )
   {
     (void)QTotal_;
 
@@ -660,15 +648,9 @@ namespace Marmot::Elements {
                                        qp.managedStateVars->materialStateVars.data() };
         Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
         Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
-        Material::TimeIncrement materialTimeIncrement{ time[0], dT };
+        Material::TimeIncrement materialTimeIncrement{ time, dT };
 
-        try {
-          qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
-        }
-        catch ( const Marmot::StressUpdateFailed& ) {
-          pNewDT = 0.5;
-          return;
-        }
+        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
       }
       else if constexpr ( nDim == 2 ) {
         Eigen::Vector3d                                force3d = Eigen::Vector3d::Zero();
@@ -710,15 +692,9 @@ namespace Marmot::Elements {
                                        qp.managedStateVars->materialStateVars.data() };
         Material::Tangents      materialTangents{ Q3d.data(), Z3d.data(), H3d.data(), Y3d.data() };
         Material::Deformation   materialDeformation{ dU3d.data(), dSurfaceStrain3d.data(), normal3d.data() };
-        Material::TimeIncrement materialTimeIncrement{ time[0], dT };
+        Material::TimeIncrement materialTimeIncrement{ time, dT };
 
-        try {
-          qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
-        }
-        catch ( const Marmot::StressUpdateFailed& ) {
-          pNewDT = 0.5;
-          return;
-        }
+        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
         for ( int i = 0; i < nDim; ++i ) {
           force( i ) = force3d( i );
@@ -793,7 +769,7 @@ namespace Marmot::Elements {
                                                                        const int                           elementFace,
                                                                        const double*                       load,
                                                                        const double*                       QTotal,
-                                                                       const double*                       time,
+                                                                       double                              time,
                                                                        double                              dT )
   {
     throw std::invalid_argument(
@@ -805,7 +781,7 @@ namespace Marmot::Elements {
                                                                  double*       K,
                                                                  const double* load,
                                                                  const double* QTotal,
-                                                                 const double* time,
+                                                                 double        time,
                                                                  double        dT )
   {
     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__

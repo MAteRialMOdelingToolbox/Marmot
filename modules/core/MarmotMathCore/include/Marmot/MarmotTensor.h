@@ -24,9 +24,9 @@
  */
 
 #pragma once
+#include "Fastor/Fastor.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <Fastor/Fastor.h>
 #include <utility>
 
 namespace Marmot {

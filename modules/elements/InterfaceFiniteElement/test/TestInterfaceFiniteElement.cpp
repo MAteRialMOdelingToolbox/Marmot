@@ -197,12 +197,16 @@ namespace {
     std::array< double, nElementDofs >                dQ{};
     std::array< double, nElementDofs >                Pe{};
     std::array< double, nElementDofs * nElementDofs > Ke{};
-    const std::array< double, 2 >                     time   = { 0.0, 0.0 };
-    double                                            pNewDT = 1.0;
+    const std::array< double, 2 >                     time               = { 0.0, 0.0 };
+    bool                                              stressUpdateFailed = false;
+    try {
+      element->computeKernels( QTotal.data(), dQ.data(), Pe.data(), Ke.data(), time[0], 1.0 );
+    }
+    catch ( const Marmot::StressUpdateFailed& ) {
+      stressUpdateFailed = true;
+    }
 
-    element->computeYourself( QTotal.data(), dQ.data(), Pe.data(), Ke.data(), time.data(), 1.0, pNewDT );
-
-    throwExceptionOnFailure( pNewDT == 0.5, "InterfaceFiniteElement did not request a smaller time step." );
+    throwExceptionOnFailure( stressUpdateFailed, "InterfaceFiniteElement did not propagate StressUpdateFailed." );
   }
 
   template < typename QuadraturePointType >
@@ -221,8 +225,7 @@ namespace {
   ExpectedResponse computeExpectedResponseFromGaussPoints( InterfaceFiniteElement< 3, 8 >& element,
                                                            const Eigen::VectorXd&          dU,
                                                            const double*                   time,
-                                                           double                          dT,
-                                                           double&                         pNewDT )
+                                                           double                          dT )
   {
     constexpr int nDim      = 3;
     constexpr int nNodes    = 8;
@@ -441,12 +444,10 @@ void TestSingleInputFileElementMaterialResponseIsFinite()
   std::vector< double > stateVars;
   initializeStateAndMaterial( *element, stateVars );
 
-  const Eigen::VectorXd dU     = makeTopSideXOpeningIncrement();
-  double                time   = 0.0;
-  double                dT     = 0.1;
-  double                pNewDT = 1.0;
-
-  const auto expected = computeExpectedResponseFromGaussPoints( *element, dU, &time, dT, pNewDT );
+  const Eigen::VectorXd dU       = makeTopSideXOpeningIncrement();
+  double                time     = 0.0;
+  double                dT       = 0.1;
+  const auto            expected = computeExpectedResponseFromGaussPoints( *element, dU, &time, dT );
 
   throwExceptionOnFailure( expected.Pe.allFinite(), "Material-only expected residual contains nan or inf." );
   throwExceptionOnFailure( expected.Pe.template lpNorm< Eigen::Infinity >() > 0.0,
@@ -480,16 +481,10 @@ void TestSingleInputFileElementGaussPointStiffnessAndResidual()
   double timeForExpected = 0.0;
   double timeForElement  = 0.0;
   double dT              = 0.1;
-  double pNewDTExpected  = 1.0;
-  double pNewDTElement   = 1.0;
 
-  const auto expected = computeExpectedResponseFromGaussPoints( *expectedElement,
-                                                                dUEigen,
-                                                                &timeForExpected,
-                                                                dT,
-                                                                pNewDTExpected );
+  const auto expected = computeExpectedResponseFromGaussPoints( *expectedElement, dUEigen, &timeForExpected, dT );
 
-  testedElement->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &timeForElement, dT, pNewDTElement );
+  testedElement->computeKernels( U.data(), dU.data(), Pe.data(), Ke.data(), timeForElement, dT );
 
   Eigen::Map< Eigen::Matrix< double, totalNDof, 1 > >                          PeActual( Pe.data() );
   Eigen::Map< Eigen::Matrix< double, totalNDof, totalNDof, Eigen::RowMajor > > KeActual( Ke.data() );
@@ -539,17 +534,10 @@ void TestSingleInputFileElementGaussPointStiffnessAndResidual()
     std::vector< double > Pelocal( totalNDof, 0.0 );
     std::vector< double > Kelocal( totalNDof * totalNDof, 0.0 );
 
-    double timeLocal   = 0.0;
-    double dTLocal     = 0.1;
-    double pNewDTLocal = 1.0;
+    double timeLocal = 0.0;
+    double dTLocal   = 0.1;
 
-    element->computeYourself( Ulocal.data(),
-                              dUlocal.data(),
-                              Pelocal.data(),
-                              Kelocal.data(),
-                              &timeLocal,
-                              dTLocal,
-                              pNewDTLocal );
+    element->computeKernels( Ulocal.data(), dUlocal.data(), Pelocal.data(), Kelocal.data(), timeLocal, dTLocal );
 
     return Eigen::Map< Eigen::Matrix< double, totalNDof, 1 > >( Pelocal.data() ).eval();
   };
@@ -617,11 +605,10 @@ void TestSingleInputFileElementRigidTranslationGivesZeroResidual()
     dU[3 * a + 2] = 0.03;
   }
 
-  double time   = 0.0;
-  double dT     = 0.1;
-  double pNewDT = 1.0;
+  double time = 0.0;
+  double dT   = 0.1;
 
-  element->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &time, dT, pNewDT );
+  element->computeKernels( U.data(), dU.data(), Pe.data(), Ke.data(), time, dT );
 
   Eigen::Map< Eigen::Matrix< double, totalNDof, 1 > > PeActual( Pe.data() );
 
@@ -652,12 +639,11 @@ void TestAssignStateVarsPreservesHistoryAcrossIncrements()
   for ( int i = 0; i < totalNDof; ++i )
     dU[i] = dUEigen[i];
 
-  double time   = 0.0;
-  double dT     = 1.0;
-  double pNewDT = 1.0;
+  double time = 0.0;
+  double dT   = 1.0;
 
   // simulate increment 1: some nonzero deformation drives material state away from zero
-  element->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &time, dT, pNewDT );
+  element->computeKernels( U.data(), dU.data(), Pe.data(), Ke.data(), time, dT );
 
   const Eigen::VectorXd stateAfterInc1 = element->qps[0].managedStateVars->materialStateVars;
 
@@ -824,10 +810,8 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
                   qp.J0xW;
   }
 
-  double pNewDT = 1.0;
-  element->computeYourself( U.data(), dU.data(), Pe.data(), Ke.data(), &time, dT, pNewDT );
+  element->computeKernels( U.data(), dU.data(), Pe.data(), Ke.data(), time, dT );
 
-  throwExceptionOnFailure( pNewDT == 1.0, "2D interface element unexpectedly requested a smaller time step." );
   assertMatrixNear( Pe, expectedPe, 1e-10, "2D interface element residual differs from embedded material response." );
   assertMatrixNear( Ke, expectedKe, 1e-10, "2D interface element tangent differs from embedded material response." );
 
