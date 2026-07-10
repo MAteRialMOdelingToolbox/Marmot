@@ -8,7 +8,6 @@
 
 #include <functional>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -25,21 +24,6 @@ namespace {
     Eigen::VectorXd H             = Eigen::VectorXd::Zero( 27 );
     Eigen::VectorXd Y             = Eigen::VectorXd::Zero( 81 );
   };
-
-  std::unique_ptr< MarmotInterfaceMaterialHypoElastic > createInterfaceMaterial( const std::string& materialName,
-                                                                                 const double*      properties,
-                                                                                 int                nProperties )
-  {
-    auto material = std::unique_ptr< MarmotInterfaceMaterialHypoElastic >(
-      MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( materialName,
-                                                                                properties,
-                                                                                nProperties,
-                                                                                1 ) );
-    if ( !material ) {
-      throw std::runtime_error( "MarmotInterfaceMaterialHypoElastic creation failed." );
-    }
-    return material;
-  }
 
   std::unique_ptr< MarmotMaterialHypoElastic > createBulkMaterial( const std::string& materialName,
                                                                    const double*      properties,
@@ -85,7 +69,10 @@ namespace {
     constexpr double h         = 0.01;
     const double     normal[3] = { 0., 0., 1. };
 
-    auto interfaceMaterial = createInterfaceMaterial( materialName, interfaceProperties, nInterfaceProperties );
+    auto interfaceMaterial = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
+                                                                                     interfaceProperties,
+                                                                                     nInterfaceProperties,
+                                                                                     1 );
     auto bulkMaterial      = createBulkMaterial( materialName, bulkProperties, nBulkProperties );
 
     Eigen::VectorXd interfaceStateVars( interfaceMaterial->getNumberOfRequiredStateVars() );
@@ -212,7 +199,10 @@ namespace {
     const double bulkProperties[8]      = { 1e8, 0.3, 2e7, 0.25, 6., 1e-4, 1., 2400. };
     testGenericInterfaceAgainstBulkMaterial( "LINEARVISCOELASTICWIECHERT", interfaceProperties, 9, bulkProperties, 8 );
 
-    auto interfaceMaterial = createInterfaceMaterial( "LINEARVISCOELASTICWIECHERT", interfaceProperties, 9 );
+    auto interfaceMaterial = std::make_unique< MarmotInterfaceMaterialHypoElastic >( "LINEARVISCOELASTICWIECHERT",
+                                                                                     interfaceProperties,
+                                                                                     9,
+                                                                                     1 );
     throwExceptionOnFailure( checkIfEqual( interfaceMaterial->getDensity(), interfaceProperties[8] ),
                              "Generic Wiechert interface density delegation failed." );
   }
