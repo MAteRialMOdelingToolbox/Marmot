@@ -67,11 +67,19 @@ namespace Marmot {
     using TensorMap9d    = Fastor::TensorMap< double, 9 >;
     using TensorMap18d   = Fastor::TensorMap< double, 18 >;
 
+    using Tensor93d = Fastor::Tensor< double, 9, 3 >;
+    using Tensor39d = Fastor::Tensor< double, 3, 9 >;
     using Tensor99d = Fastor::Tensor< double, 9, 9 >;
 
     template < typename T >
+    using Tensor93t = Fastor::Tensor< T, 9, 3 >;
+    template < typename T >
+    using Tensor39t = Fastor::Tensor< T, 3, 9 >;
+    template < typename T >
     using Tensor99t = Fastor::Tensor< T, 9, 9 >;
 
+    using TensorMap93d = Fastor::TensorMap< double, 9, 3 >;
+    using TensorMap39d = Fastor::TensorMap< double, 3, 9 >;
     using TensorMap99d = Fastor::TensorMap< double, 9, 9 >;
 
     namespace Spatial3D {

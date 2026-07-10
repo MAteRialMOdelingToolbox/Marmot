@@ -144,49 +144,25 @@ namespace Marmot {
       return Eigen::Map< const Matrix99d >( tensorAsFastorMatrix.data() ).transpose();
     }
 
-    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
+    Matrix93d convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
     {
-      Eigen::Matrix< double, 9, 3 > matrix( 9, 3 );
+      const FastorStandardTensors::Tensor93d tensorAsFastorMatrix = Fastor::reshape< 9, 3 >( tensor );
 
-      for ( int i = 0; i < 3; ++i ) {
-        for ( int j = 0; j < 3; ++j ) {
-          for ( int k = 0; k < 3; ++k ) {
-            int row          = 3 * i + j;
-            matrix( row, k ) = tensor( i, j, k );
-          }
-        }
-      }
-
-      return matrix;
+      return Eigen::Map< const Matrix39d >( tensorAsFastorMatrix.data() ).transpose();
     }
 
-    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
+    Matrix39d convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
     {
-      Eigen::Matrix< double, 3, 9 > matrix( 3, 9 );
+      const FastorStandardTensors::Tensor39d tensorAsFastorMatrix = Fastor::reshape< 3, 9 >( tensor );
 
-      for ( int i = 0; i < 3; ++i ) {
-        for ( int j = 0; j < 3; ++j ) {
-          for ( int k = 0; k < 3; ++k ) {
-            int col          = 3 * j + k;
-            matrix( i, col ) = tensor( i, j, k );
-          }
-        }
-      }
-
-      return matrix;
+      return Eigen::Map< const Matrix93d >( tensorAsFastorMatrix.data() ).transpose();
     }
 
-    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor )
+    Matrix3d convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor )
     {
-      Eigen::Matrix< double, 3, 3 > matrix( 3, 3 );
+      const FastorStandardTensors::Tensor33d tensorAsFastorMatrix = Fastor::reshape< 3, 3 >( tensor );
 
-      for ( int i = 0; i < 3; ++i ) {
-        for ( int j = 0; j < 3; ++j ) {
-          matrix( i, j ) = tensor( i, j );
-        }
-      }
-
-      return matrix;
+      return Eigen::Map< const Matrix3d >( tensorAsFastorMatrix.data() ).transpose();
     }
 
   } // namespace ContinuumMechanics::TensorUtility

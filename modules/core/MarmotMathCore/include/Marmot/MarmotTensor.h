@@ -231,11 +231,11 @@ namespace Marmot {
   namespace ContinuumMechanics::TensorUtility {
     Matrix99d convert4thOrderTensorToMatrix_9x9( const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor );
 
-    Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
+    Matrix93d convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
 
-    Eigen::Matrix< double, 3, 9 > convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
+    Matrix39d convert3rdOrderTensorToMatrix_3x9( const Fastor::Tensor< double, 3, 3, 3 >& tensor );
 
-    Eigen::Matrix< double, 3, 3 > convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor );
+    Matrix3d convert2ndOrderTensorToMatrix_3x3( const Fastor::Tensor< double, 3, 3 >& tensor );
 
     /** @brief Kronecker delta function \f$ \delta_{ab} \f$.
      * @return 1 if a == b, otherwise 0.
