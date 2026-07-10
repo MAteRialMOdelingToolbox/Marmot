@@ -1,5 +1,4 @@
 #include "Marmot/MarmotWiechert.h"
-#include "Marmot/MarmotKelvinChain.h"
 
 namespace Marmot::Materials {
 
@@ -7,10 +6,7 @@ namespace Marmot::Materials {
 
     Properties generateRelaxationTimes( int n, double min, double spacing )
     {
-      Properties relaxationTimes( n );
-      for ( int i = 0; i < n; ++i )
-        relaxationTimes( i ) = min * std::pow( spacing, i );
-      return relaxationTimes;
+      return ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes( n, min, spacing );
     }
 
     void evaluateWiechert( const double                 dT,
@@ -26,7 +22,7 @@ namespace Marmot::Materials {
         const double& D   = elasticModuli( i );
         double        lambda, beta;
 
-        KelvinChain::computeLambdaAndBeta( dT, tau, lambda, beta );
+        ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta( dT, tau, lambda, beta );
 
         uniaxialStiffness += lambda * D * factor;
         dStress += ( 1. - beta ) * stateVars.col( i ).eval() * factor;
@@ -48,7 +44,7 @@ namespace Marmot::Materials {
         const double& D   = elasticModuli( i );
         double        lambda, beta;
 
-        KelvinChain::computeLambdaAndBeta( dT, tau, lambda, beta );
+        ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta( dT, tau, lambda, beta );
         stateVars.col( i ) = ( lambda * D ) * unitD_ijkl * dStrain + beta * stateVars.col( i );
       }
     }

@@ -25,10 +25,8 @@
 
 #pragma once
 
-#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-
-#include "autodiff/forward/real.hpp"
+#include "Marmot/MarmotViscoelasticity.h"
 
 #include <cmath>
 #include <functional>
@@ -37,18 +35,18 @@ namespace Marmot::Materials {
 
   namespace Wiechert {
 
-    using Properties        = Eigen::VectorXd;
-    using mapProperties     = Eigen::Map< Properties >;
-    using StateVarMatrix    = Eigen::Matrix< double, 6, Eigen::Dynamic >;
-    using mapStateVarMatrix = Eigen::Map< StateVarMatrix >;
+    using Properties        = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties;
+    using mapProperties     = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties;
+    using StateVarMatrix    = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix;
+    using mapStateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix;
 
     template < int k >
     double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > psi,
                                       double                                                                      tau )
     {
-      autodiff::Real< k, double > evaluationTime( tau * k );
-      const double coefficient = std::pow( -tau * k, k ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
-      return coefficient * autodiff::derivatives( psi, autodiff::along( 1. ), autodiff::at( evaluationTime ) )[k];
+      using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::PostWidderCoefficientSign;
+      return Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula<
+        k >( psi, tau, PostWidderCoefficientSign::Positive );
     }
 
     template < int k >
