@@ -60,8 +60,8 @@ public:
   using TensorMap33d   = Marmot::FastorStandardTensors::TensorMap33d;
   using TensorMap333d  = Marmot::FastorStandardTensors::TensorMap333d;
   using TensorMap3333d = Marmot::FastorStandardTensors::TensorMap3333d;
-  using TensorMap61d   = Marmot::FastorStandardTensors::TensorMap61d;
-  using TensorMap181d  = Marmot::FastorStandardTensors::TensorMap181d;
+  using TensorMap6d    = Marmot::FastorStandardTensors::TensorMap6d;
+  using TensorMap18d   = Marmot::FastorStandardTensors::TensorMap18d;
 
   const int materialNumber;
 
@@ -113,9 +113,9 @@ public:
   };
 
   struct Deformation {
-    TensorMap61d  dU;
-    TensorMap181d dSurfaceStrain;
-    TensorMap3d   normal;
+    TensorMap6d  dU;
+    TensorMap18d dSurfaceStrain;
+    TensorMap3d  normal;
 
     // Fastor's const TensorMap cannot be used with slicing and norm operations.
     // These views are therefore mutable types but are exposed through const Deformation&.

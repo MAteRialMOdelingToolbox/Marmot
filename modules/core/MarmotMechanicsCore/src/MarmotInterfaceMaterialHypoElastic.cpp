@@ -75,10 +75,10 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   auto        dU             = deformation.dU;
   auto        dSurfaceStrain = deformation.dSurfaceStrain;
 
-  const Tensor3d jumpU = dU( Fastor::seq( 0, 3 ), 0 ) - dU( Fastor::seq( 3, Fastor::last ), 0 );
+  const Tensor3d jumpU = dU( Fastor::seq( 0, 3 ) ) - dU( Fastor::seq( 3, Fastor::last ) );
 
-  const Tensor91d averageSurfaceGradientFlat = 0.5 * ( dSurfaceStrain( Fastor::seq( 0, 9 ), 0 ) +
-                                                       dSurfaceStrain( Fastor::seq( 9, Fastor::last ), 0 ) );
+  const Tensor9d  averageSurfaceGradientFlat = 0.5 * ( dSurfaceStrain( Fastor::seq( 0, 9 ) ) +
+                                                      dSurfaceStrain( Fastor::seq( 9, Fastor::last ) ) );
   const Tensor33d averageSurfaceGradient( Fastor::reshape< 3, 3 >( averageSurfaceGradientFlat ) );
   const Tensor33d displacementGradient = ( 1. / h ) * Fastor::einsum< i, j, to_ij >( jumpU, normal ) +
                                          averageSurfaceGradient;
