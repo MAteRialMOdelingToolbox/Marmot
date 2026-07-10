@@ -32,11 +32,8 @@
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotStateHelpers.h"
 
-#include <cassert>
-#include <functional>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 /**
@@ -170,50 +167,3 @@ public:
 
   virtual double getDensity();
 };
-
-namespace MarmotLibrary {
-
-  /**
-   * @class MarmotInterfaceMaterialHypoElasticFactory
-   * @brief Factory class for creating hypoelastic interface-material instances by name.
-   */
-  class MarmotInterfaceMaterialHypoElasticFactory {
-  public:
-    using materialFactoryFunction = std::function<
-      MarmotInterfaceMaterialHypoElastic*( const double* materialProperties,
-                                           int           nMaterialProperties,
-                                           int           materialNumber ) >;
-
-    MarmotInterfaceMaterialHypoElasticFactory() = delete;
-    static MarmotInterfaceMaterialHypoElastic* createMaterial( const std::string& materialName,
-                                                               const double*      materialProperties,
-                                                               int                nMaterialProperties,
-                                                               int                materialNumber );
-
-    template < class T >
-    static bool registerMaterial( const std::string& materialName )
-    {
-      auto& map = materialFactoryFunctionByName();
-
-      assert( map.find( materialName ) == map.end() && "Interface material already registered!" );
-
-      map[materialName] = []( const double* materialProperties,
-                              int           nMaterialProperties,
-                              int           materialNumber ) -> MarmotInterfaceMaterialHypoElastic* {
-        return new T( materialProperties, nMaterialProperties, materialNumber );
-      };
-
-      return true;
-    }
-
-  private:
-    using MaterialFactoryMap = std::unordered_map< std::string, materialFactoryFunction >;
-
-    static MaterialFactoryMap& materialFactoryFunctionByName()
-    {
-      static MaterialFactoryMap map;
-      return map;
-    }
-  };
-
-} // namespace MarmotLibrary

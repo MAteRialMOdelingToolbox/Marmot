@@ -134,24 +134,3 @@ double MarmotInterfaceMaterialHypoElastic::getDensity()
 
   return baseMaterial->getDensity( nullptr );
 }
-
-MarmotInterfaceMaterialHypoElastic* MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial(
-  const std::string& materialName,
-  const double*      materialProperties,
-  int                nMaterialProperties,
-  int                materialNumber )
-{
-  auto& map = materialFactoryFunctionByName();
-  auto  it  = map.find( materialName );
-
-  if ( it != map.end() ) {
-    return it->second( materialProperties, nMaterialProperties, materialNumber );
-  }
-
-  std::string baseMaterialName = materialName;
-
-  return new MarmotInterfaceMaterialHypoElastic( baseMaterialName,
-                                                 materialProperties,
-                                                 nMaterialProperties,
-                                                 materialNumber );
-}

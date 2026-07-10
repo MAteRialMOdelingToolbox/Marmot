@@ -518,17 +518,10 @@ namespace Marmot::Elements {
   void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< Material >( dynamic_cast< Material* >(
-        MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( section.materialName,
-                                                                                  section.materialProperties,
-                                                                                  section.nMaterialProperties,
-                                                                                  elLabel ) ) );
-
-      if ( !qp.material ) {
-        throw std::invalid_argument(
-          MakeString() << __PRETTY_FUNCTION__
-                       << ": invalid material assigned; cannot cast to MarmotInterfaceMaterialHypoElastic!" );
-      }
+      qp.material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( section.materialName,
+                                                                            section.materialProperties,
+                                                                            section.nMaterialProperties,
+                                                                            elLabel );
     }
   }
 
@@ -538,17 +531,10 @@ namespace Marmot::Elements {
                                                                int                nMaterialProperties )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< Material >( dynamic_cast< Material* >(
-        MarmotLibrary::MarmotInterfaceMaterialHypoElasticFactory::createMaterial( materialName,
-                                                                                  materialProperties,
-                                                                                  nMaterialProperties,
-                                                                                  elLabel ) ) );
-
-      if ( !qp.material ) {
-        throw std::invalid_argument(
-          MakeString() << __PRETTY_FUNCTION__
-                       << ": invalid material assigned; cannot cast to MarmotInterfaceMaterialHypoElastic!" );
-      }
+      qp.material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
+                                                                            materialProperties,
+                                                                            nMaterialProperties,
+                                                                            elLabel );
     }
   }
 
