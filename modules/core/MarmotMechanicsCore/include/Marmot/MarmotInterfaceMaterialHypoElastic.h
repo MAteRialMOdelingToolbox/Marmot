@@ -62,16 +62,6 @@ public:
 
   const int materialNumber;
 
-  MarmotInterfaceMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-    : materialProperties( matProperties_ ),
-      nMaterialProperties( nMaterialProperties_ ),
-      h( 0.0 ),
-      baseMaterialProperties(),
-      baseMaterial(),
-      materialNumber( materialNumber_ )
-  {
-  }
-
   MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                       const double*      matProperties_,
                                       int                nMaterialProperties_,

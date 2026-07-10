@@ -41,6 +41,9 @@ MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const st
                                                                      static_cast< int >(
                                                                        baseMaterialProperties.size() ),
                                                                      materialNumber ) );
+  if ( !baseMaterial ) {
+    throw std::invalid_argument( "Unknown base material for MarmotInterfaceMaterialHypoElastic: " + materialName );
+  }
 
   stateLayout.add( "baseMaterialStateVars", baseMaterial->getNumberOfRequiredStateVars() );
   stateLayout.finalize();
@@ -49,9 +52,7 @@ MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const st
 void MarmotInterfaceMaterialHypoElastic::setCharacteristicElementLength( double length )
 {
   characteristicElementLength = length;
-  if ( baseMaterial ) {
-    baseMaterial->setCharacteristicElementLength( length );
-  }
+  baseMaterial->setCharacteristicElementLength( length );
 }
 
 void MarmotInterfaceMaterialHypoElastic::computeStress( State&               state,
@@ -113,24 +114,13 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   force         = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
 }
 
-void MarmotInterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int nStateVars )
+void MarmotInterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int )
 {
-  if ( !baseMaterial ) {
-    for ( int i = 0; i < nStateVars; ++i ) {
-      stateVars[i] = 0.0;
-    }
-    return;
-  }
-
   baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "baseMaterialStateVars" ),
                                     baseMaterial->getNumberOfRequiredStateVars() );
 }
 
 double MarmotInterfaceMaterialHypoElastic::getDensity()
 {
-  if ( !baseMaterial ) {
-    return -1;
-  }
-
   return baseMaterial->getDensity( nullptr );
 }

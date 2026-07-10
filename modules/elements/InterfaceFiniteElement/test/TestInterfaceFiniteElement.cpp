@@ -18,12 +18,17 @@ namespace {
 
   class FailingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
   public:
-    FailingInterfaceMaterial() : MarmotInterfaceMaterialHypoElastic( nullptr, 0, 0 ) {}
+    FailingInterfaceMaterial() : MarmotInterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
+    {
+    }
 
     void computeStress( State&, Tangents&, const Deformation&, const TimeIncrement& ) override
     {
       throw Marmot::StressUpdateFailed( "Deliberate interface-material update failure." );
     }
+
+  private:
+    inline static const std::array< double, 3 > materialProperties = { 1.0, 0.0, 1.0 };
   };
 
   template < typename DerivedA, typename DerivedB >
