@@ -1,4 +1,5 @@
 #include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 
 using namespace Marmot::ContinuumMechanics::TensorUtility;
 
@@ -135,24 +136,12 @@ namespace Marmot {
       return dyade;
     }
 
-    Eigen::Matrix< double, 9, 9 > convert4thOrderTensorToMatrix_9x9(
-      const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor )
+    Matrix99d convert4thOrderTensorToMatrix_9x9( const Fastor::Tensor< double, 3, 3, 3, 3 >& tensor )
     {
-      Eigen::Matrix< double, 9, 9 > matrix( 9, 9 );
+      const FastorStandardTensors::Tensor99d tensorAsFastorMatrix = Fastor::reshape< 9, 9 >( tensor );
 
-      for ( int i = 0; i < 3; ++i ) {
-        for ( int j = 0; j < 3; ++j ) {
-          for ( int k = 0; k < 3; ++k ) {
-            for ( int l = 0; l < 3; ++l ) {
-              int row            = 3 * i + j;
-              int col            = 3 * k + l;
-              matrix( row, col ) = tensor( i, j, k, l );
-            }
-          }
-        }
-      }
-
-      return matrix;
+      // Eigen maps Fastor's row-major storage as column-major, so transpose back to preserve (ij)(kl) ordering.
+      return Eigen::Map< const Matrix99d >( tensorAsFastorMatrix.data() ).transpose();
     }
 
     Eigen::Matrix< double, 9, 3 > convert3rdOrderTensorToMatrix_9x3( const Fastor::Tensor< double, 3, 3, 3 >& tensor )
