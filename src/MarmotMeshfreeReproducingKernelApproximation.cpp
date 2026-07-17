@@ -266,10 +266,12 @@ namespace Marmot::Meshfree {
     //                      InvM_JK                            * H_K    * phi_A,xi )
     Eigen::MatrixXd bGradient = Eigen::MatrixXd::Zero( sizeH, _dim );
     for ( int i = 0; i < _dim; i++ ) {
-      // Column-vector form of -b^T ( M^-1 M_{,i} )^T, keeping the result a sizeH x 1 column.
-      bGradient.col( i ) = -( MHr.solve( MGradients[i] ) * b );
+      // b_{,i} = -M^-1 ( M_{,i} b ). Solve once with a vector right-hand side rather than solving
+      // for the full sizeH x sizeH matrix M^-1 M_{,i} and then multiplying by b.
+      bGradient.col( i ) = -MHr.solve( MGradients[i] * b );
     }
-    const Eigen::MatrixXd bGradientTransposed = bGradient.transpose();
+    // Transpose view (no copy); bGradient outlives the loop below.
+    const auto bGradientTransposed = bGradient.transpose();
 
     for ( size_t k = 0; k < nCovering; k++ ) {
       const int             A           = coveringKernelFunctionIndices[k];
