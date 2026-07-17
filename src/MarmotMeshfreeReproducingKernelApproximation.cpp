@@ -199,9 +199,44 @@ namespace Marmot::Meshfree {
                                                                _dim,
                                                                kernelFunctionCandidates.size() );
 
-    const auto [M, MGradients] = computeMMatrixAndGradient( coordVec,
-                                                            coveringKernelFunctions,
-                                                            correctedCompletenessOrder );
+    // Per-covering-kernel quantities are computed once here and reused for both the moment-matrix
+    // assembly and the final shape-function/gradient evaluation, instead of being recomputed twice.
+    const size_t                   nCovering = coveringKernelFunctionIndices.size();
+    std::vector< Eigen::VectorXd > H_cache( nCovering );
+    std::vector< Eigen::MatrixXd > HGradient_cache( nCovering );
+    std::vector< double >          phi_cache( nCovering );
+    std::vector< Eigen::VectorXd > phiGradient_cache( nCovering );
+
+    Eigen::MatrixXd                M = Eigen::MatrixXd::Zero( sizeH, sizeH );
+    std::vector< Eigen::MatrixXd > MGradients( _dim, Eigen::MatrixXd::Zero( sizeH, sizeH ) );
+
+    for ( size_t k = 0; k < nCovering; k++ ) {
+      const auto* kf = coveringKernelFunctions[k];
+
+      const Eigen::VectorXd x_minus_center = coordVec -
+                                             Eigen::Map< const Eigen::VectorXd >( kf->getCenterCoordinates(), _dim );
+
+      const double phi = kf->computeKernelFunction( coord );
+      Eigen::VectorXd phiGradient = Eigen::VectorXd::Zero( _dim );
+      kf->computeKernelFunctionGradient( coord, phiGradient.data() );
+
+      Eigen::VectorXd H         = computeHVector( x_minus_center, coveringKernelFunctions, correctedCompletenessOrder );
+      Eigen::MatrixXd HGradient = computeHVectorGradient( x_minus_center,
+                                                          coveringKernelFunctions,
+                                                          correctedCompletenessOrder );
+
+      const Eigen::MatrixXd HxHT = H * H.transpose();
+      M += HxHT * phi;
+      for ( int i = 0; i < _dim; i++ ) {
+        const Eigen::MatrixXd HGrad_i_xHT = HGradient.col( i ) * H.transpose();
+        MGradients[i] += ( HGrad_i_xHT + HGrad_i_xHT.transpose() ) * phi + HxHT * phiGradient( i );
+      }
+
+      phi_cache[k]         = phi;
+      phiGradient_cache[k] = std::move( phiGradient );
+      H_cache[k]           = std::move( H );
+      HGradient_cache[k]   = std::move( HGradient );
+    }
 
     // solve for b(x)
     // b = M^-1 * H0
@@ -217,44 +252,40 @@ namespace Marmot::Meshfree {
 
     shapeFunctionValueGradients.setZero();
 
-    for ( const auto& A : coveringKernelFunctionIndices ) {
+    // The gradient of b(x) is independent of the individual kernel function A, so it is
+    // computed once here instead of redundantly inside the loop over covering kernels.
+    //
+    // dPsiA_dxi = H0_J * ( InvM_JK * H_K * phi_A ),xi
+    //
+    // dPsiA_dxi = H0_J * ( InvM_JK,xi * H_K    * phi_A +
+    //                      InvM_JK    * H_K,xi * phi_A +
+    //                      InvM_JK    * H_K    * phi_A,xi )
+    //
+    // dPsiA_dxi = H0_J * ( - [InvM_JA * M_AB,xi * InvM_BK]    * H_K    * phi_A +
+    //                      InvM_JK                            * H_K,xi * phi_A +
+    //                      InvM_JK                            * H_K    * phi_A,xi )
+    Eigen::MatrixXd bGradient = Eigen::MatrixXd::Zero( sizeH, _dim );
+    for ( int i = 0; i < _dim; i++ ) {
+      // b_{,i} = -M^-1 ( M_{,i} b ). Solve once with a vector right-hand side rather than solving
+      // for the full sizeH x sizeH matrix M^-1 M_{,i} and then multiplying by b.
+      bGradient.col( i ) = -MHr.solve( MGradients[i] * b );
+    }
+    // Transpose view (no copy); bGradient outlives the loop below.
+    const auto bGradientTransposed = bGradient.transpose();
 
-      const Eigen::VectorXd x_minus_center = coordVec - Eigen::Map< const Eigen::VectorXd >( kernelFunctionCandidates[A]
-                                                                                               ->getCenterCoordinates(),
-                                                                                             _dim );
-
-      const auto      phi_A         = kernelFunctionCandidates[A]->computeKernelFunction( coord );
-      Eigen::VectorXd phiGradient_A = Eigen::VectorXd::Zero( _dim );
-      kernelFunctionCandidates[A]->computeKernelFunctionGradient( coord, phiGradient_A.data() );
-
-      const auto H         = computeHVector( x_minus_center, coveringKernelFunctions, correctedCompletenessOrder );
-      const auto HGradient = computeHVectorGradient( x_minus_center,
-                                                     coveringKernelFunctions,
-                                                     correctedCompletenessOrder );
+    for ( size_t k = 0; k < nCovering; k++ ) {
+      const int             A           = coveringKernelFunctionIndices[k];
+      const double          phi_A       = phi_cache[k];
+      const Eigen::VectorXd& phiGradient_A = phiGradient_cache[k];
+      const Eigen::VectorXd& H             = H_cache[k];
+      const Eigen::MatrixXd& HGradient     = HGradient_cache[k];
 
       shapeFunctionValues[A] = b.dot( H ) * phi_A;
 
-      // const Eigen::MatrixXd MInv_HGrad = MHr.solve( HGradient );
-      // const Eigen::VectorXd MInv_H     = MHr.solve( H );
-
-      // let's compute the gradient of the shape function
-      // dPsiA_dxi = H0_J * ( InvM_JK * H_K * phi_A ),xi
-      //
-      // dPsiA_dxi = H0_J * ( InvM_JK,xi * H_K    * phi_A +
-      //                      InvM_JK    * H_K,xi * phi_A +
-      //                      InvM_JK    * H_K    * phi_A,xi )
-      //
-      // dPsiA_dxi = H0_J * ( - [InvM_JA * M_AB,xi * InvM_BK]    * H_K    * phi_A +
-      //                      InvM_JK                            * H_K,xi * phi_A +
-      //                      InvM_JK                            * H_K    * phi_A,xi )
-
-      Eigen::MatrixXd bGradient = Eigen::MatrixXd::Zero( sizeH, _dim );
-      for ( int i = 0; i < _dim; i++ ) {
-        bGradient.col( i ) = -b.transpose() * MHr.solve( MGradients[i] ).transpose();
-      }
-      shapeFunctionValueGradients.col( A ) += bGradient.transpose() * H * phi_A;
+      shapeFunctionValueGradients.col( A ) += bGradientTransposed * H * phi_A;
       shapeFunctionValueGradients.col( A ) += b.dot( H ) * phiGradient_A;
-      shapeFunctionValueGradients.col( A ) += ( b.transpose() * HGradient ) * phi_A;
+      // Column-vector form of ( b^T H_{,} ), keeping the result a dim x 1 column.
+      shapeFunctionValueGradients.col( A ) += ( HGradient.transpose() * b ) * phi_A;
     }
   }
 
