@@ -266,7 +266,8 @@ namespace Marmot::Meshfree {
     //                      InvM_JK                            * H_K    * phi_A,xi )
     Eigen::MatrixXd bGradient = Eigen::MatrixXd::Zero( sizeH, _dim );
     for ( int i = 0; i < _dim; i++ ) {
-      bGradient.col( i ) = -b.transpose() * MHr.solve( MGradients[i] ).transpose();
+      // Column-vector form of -b^T ( M^-1 M_{,i} )^T, keeping the result a sizeH x 1 column.
+      bGradient.col( i ) = -( MHr.solve( MGradients[i] ) * b );
     }
     const Eigen::MatrixXd bGradientTransposed = bGradient.transpose();
 
@@ -281,7 +282,8 @@ namespace Marmot::Meshfree {
 
       shapeFunctionValueGradients.col( A ) += bGradientTransposed * H * phi_A;
       shapeFunctionValueGradients.col( A ) += b.dot( H ) * phiGradient_A;
-      shapeFunctionValueGradients.col( A ) += ( b.transpose() * HGradient ) * phi_A;
+      // Column-vector form of ( b^T H_{,} ), keeping the result a dim x 1 column.
+      shapeFunctionValueGradients.col( A ) += ( HGradient.transpose() * b ) * phi_A;
     }
   }
 
