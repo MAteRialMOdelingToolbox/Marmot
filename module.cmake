@@ -1,21 +1,10 @@
-set(MODULE_NAME
-    "DisplacementMaterialPoint")
-
-set(MODULES_DEPENDENCIES
+marmot_module_requires(_deps_ok DisplacementMaterialPoint
     MarmotMechanicsCore
     MarmotMeshfreeCore
-    )
+)
 
-set(DEPENDECIES_FULLFILLED TRUE)
-foreach( DEPENDENCY ${MODULES_DEPENDENCIES} )
-    if (NOT DEPENDENCY IN_LIST INSTALLED_MODULES)
-        message("----> " "module ${MODULE_NAME} dependency not fulfilled: ${DEPENDENCY}")
-        set(DEPENDECIES_FULLFILLED FALSE)
-    endif()
-endforeach()
-
-if ( DEPENDECIES_FULLFILLED )
-    include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
-    file(GLOB sources_material "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
-    list(APPEND sources ${sources_material})
+if(_deps_ok)
+    list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
+    file(GLOB module_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+    list(APPEND sources ${module_sources})
 endif()
