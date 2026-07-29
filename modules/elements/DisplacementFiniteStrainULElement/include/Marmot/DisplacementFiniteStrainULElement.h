@@ -945,7 +945,9 @@ namespace Marmot::Elements {
     Eigen::Map< RhsSized > LMM( M );
     LMM.setZero();
 
-    constexpr int nNodesLinear  = std::pow( 2, nDim );
+    // 2^nDim. std::pow is not constexpr in the standard (libstdc++ offers it as an
+    // extension, libc++ does not), so compute it with a shift to stay portable.
+    constexpr int nNodesLinear  = 1 << nDim;
     auto          linGeometryEl = MarmotGeometryElement< nDim, nNodesLinear >();
     for ( const auto& qp : qps ) {
       const auto N_    = this->N( qp.xi );
