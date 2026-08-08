@@ -28,6 +28,9 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
+#include <string>
+#include <utility>
 #include <vector>
 
 /**
@@ -56,8 +59,10 @@
 class MarmotMaterialHypoElastic {
 
 protected:
-  const double* materialProperties;  ///< Pointer to the array of material properties
-  const int     nMaterialProperties; ///< Number of material properties
+  std::vector< double > materialPropertyStorage; ///< Owned storage of material properties
+  const double*         materialProperties;      ///< Pointer to the array of material properties
+  const int             nMaterialProperties;     ///< Number of material properties
+  std::vector< std::string > materialPropertyNames; ///< Ordered list of valid material property names
 
 public:
   const int materialNumber; ///< Integer identifier for this material instance
@@ -68,14 +73,50 @@ public:
    * @param[in] materialNumber_      Integer identifying this material instance.
    */
   MarmotMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-    : materialProperties( matProperties_ ),
+    : materialPropertyStorage( matProperties_, matProperties_ + nMaterialProperties_ ),
+      materialProperties( materialPropertyStorage.data() ),
       nMaterialProperties( nMaterialProperties_ ),
+      materialPropertyNames(),
       materialNumber( materialNumber_ )
   {
   }
 
   /// Default destructor
   virtual ~MarmotMaterialHypoElastic() = default;
+
+  /**
+   * @brief Get the valid material property names in assignment order.
+   * @return Ordered list of valid material property names.
+   */
+  virtual const std::vector< std::string >& getValidMaterialProperties() const = 0;
+
+  /**
+   * @brief Assign a single material property by name.
+   * @param name Name of the material property.
+   * @param value Value to assign.
+   * @throws std::logic_error If material property names have not been initialized.
+   * @throws std::invalid_argument If the property name is unknown.
+   * @note This method only updates the raw property storage (materialPropertyStorage).
+   *       Derived classes that cache property values into member variables during
+   *       construction will not have those cached values refreshed.  Call this method
+   *       only before the cached values are first consumed (i.e., before computeStress).
+   */
+  virtual void assignMaterialProperty( const std::string& name, double value )
+  {
+    if ( materialPropertyNames.empty() && nMaterialProperties > 0 ) {
+      throw std::logic_error(
+        "Material property names have not been initialized in the derived material." );
+    }
+    const auto it = std::find( materialPropertyNames.begin(), materialPropertyNames.end(), name );
+    if ( it == materialPropertyNames.end() ) {
+      throw std::invalid_argument( "Unknown material property: " + name );
+    }
+
+    const auto idx               = std::distance( materialPropertyNames.begin(), it );
+    materialPropertyStorage[idx] = value;
+  }
+
+public:
 
   /// Layout of the state variables
   MarmotStateLayoutDynamic stateLayout;

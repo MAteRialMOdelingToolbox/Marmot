@@ -22,6 +22,12 @@ namespace Marmot::Materials {
                                                   int           materialLabel )
     : MarmotMaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel )
   {
+    if ( nMaterialProperties > 3 ) {
+      throw std::invalid_argument( "Too many material properties for ADCompressibleNeoHooke." );
+    }
+    const std::vector< std::string > allPropertyNames = { "K", "G", "density" };
+    setValidMaterialProperties(
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     stateLayout.finalize();
   }
 

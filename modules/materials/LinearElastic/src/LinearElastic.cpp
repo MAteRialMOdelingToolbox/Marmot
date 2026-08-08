@@ -34,6 +34,49 @@ namespace Marmot::Materials {
           G13(  anisotropicType == Type::Orthotropic ? materialProperties[8] : G12 )
   // clang-format on
   {
+    std::vector< std::string > propertyNames;
+    if ( anisotropicType == Type::Isotropic ) {
+      propertyNames = { "E", "nu" };
+    }
+    else if ( anisotropicType == Type::TransverseIsotropic ) {
+      propertyNames = { "E1",
+                        "E2",
+                        "nu12",
+                        "nu23",
+                        "G12",
+                        "direction1_x",
+                        "direction1_y",
+                        "direction1_z",
+                        "direction2_x",
+                        "direction2_y",
+                        "direction2_z" };
+    }
+    else {
+      propertyNames = { "E1",
+                        "E2",
+                        "E3",
+                        "nu12",
+                        "nu23",
+                        "nu13",
+                        "G12",
+                        "G23",
+                        "G13",
+                        "direction1_x",
+                        "direction1_y",
+                        "direction1_z",
+                        "direction2_x",
+                        "direction2_y",
+                        "direction2_z" };
+    }
+
+    if ( nMaterialProperties > static_cast< int >( propertyNames.size() ) ) {
+      propertyNames.push_back( "density" );
+    }
+    if ( static_cast< int >( propertyNames.size() ) != nMaterialProperties ) {
+      throw std::invalid_argument( "Unsupported number of material properties for LinearElastic." );
+    }
+    setValidMaterialProperties( std::move( propertyNames ) );
+
     // set global stiffness tensor
     if ( anisotropicType == Type::Isotropic ) {
       globalStiffnessTensor = Isotropic::stiffnessTensor( E1, nu12 );

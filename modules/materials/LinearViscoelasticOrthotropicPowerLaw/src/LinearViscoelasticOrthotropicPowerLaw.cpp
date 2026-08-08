@@ -53,6 +53,36 @@ namespace Marmot::Materials {
       direction2                        ( { materialProperties[20], materialProperties[21], materialProperties[22] } )
   // clang-format on
   {
+    if ( nMaterialProperties > 24 ) {
+      throw std::invalid_argument( "Too many material properties for LinearViscoelasticOrthotropicPowerLaw." );
+    }
+    const std::vector< std::string > allPropertyNames = { "stiffnessScaleFactor",
+                                                           "E1",
+                                                           "E2",
+                                                           "E3",
+                                                           "nu12",
+                                                           "nu23",
+                                                           "nu13",
+                                                           "G12",
+                                                           "G23",
+                                                           "G13",
+                                                           "m",
+                                                           "n",
+                                                           "powerLawApproximationOrder",
+                                                           "nKelvin",
+                                                           "minTau",
+                                                           "spacing",
+                                                           "timeToDays",
+                                                           "direction1_x",
+                                                           "direction1_y",
+                                                           "direction1_z",
+                                                           "direction2_x",
+                                                           "direction2_y",
+                                                           "direction2_z",
+                                                           "density" };
+    setValidMaterialProperties(
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
+
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 

@@ -94,10 +94,35 @@ namespace Marmot::Materials {
       baseMaterial = std::make_unique< BaseMaterialType >( matProperties_ + 1,
                                                            nMaterialProperties_ - 1,
                                                            materialNumber_ );
+      std::vector< std::string > propertyNames = { "nSubsteps" };
+      const auto&                baseNames     = baseMaterial->getValidMaterialProperties();
+      propertyNames.insert( propertyNames.end(), baseNames.begin(), baseNames.end() );
+      materialPropertyNames = std::move( propertyNames );
       initializeStateLayout();
     }
 
     virtual ~MarmotMaterialFiniteStrainSubstepped() = default;
+
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
+    /**
+     * @brief Assign a material property by name, forwarding non-nSubsteps properties to the wrapped base material.
+     * @param name Name of the material property.
+     * @param value Value to assign.
+     * @throws std::invalid_argument If the property name is unknown.
+     */
+    void assignMaterialProperty( const std::string& name, double value ) override
+    {
+      MarmotMaterialFiniteStrain::assignMaterialProperty( name, value );
+      if ( name == "nSubsteps" ) {
+        nSubsteps = static_cast< int >( value );
+        if ( nSubsteps < 1 )
+          nSubsteps = 1;
+      }
+      else {
+        baseMaterial->assignMaterialProperty( name, value );
+      }
+    }
 
     double getDensity( const double* stateVars ) const override { return baseMaterial->getDensity( stateVars ); }
 

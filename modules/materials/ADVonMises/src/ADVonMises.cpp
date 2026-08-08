@@ -40,6 +40,13 @@ namespace Marmot::Materials {
       delta( materialProperties[5] ),
       G( E / ( 2. * ( 1. + nu ) ) )
   {
+    if ( nMaterialProperties > 7 ) {
+      throw std::invalid_argument( "Too many material properties for ADVonMises." );
+    }
+    const std::vector< std::string > allPropertyNames = {
+      "E", "nu", "yieldStress", "HLin", "deltaYieldStress", "delta", "density" };
+    materialPropertyNames =
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();
   }

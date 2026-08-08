@@ -45,6 +45,35 @@ namespace Marmot::Materials {
       solidificationParameters          ( { q1, q2, q3, q4, n, m } )
   // clang-format on
   {
+    if ( nMaterialProperties > 23 ) {
+      throw std::invalid_argument( "Too many material properties for B4." );
+    }
+    const std::vector< std::string > allPropertyNames = { "nu",
+                                                           "q1",
+                                                           "q2",
+                                                           "q3",
+                                                           "q4",
+                                                           "n",
+                                                           "m",
+                                                           "nKelvinBasic",
+                                                           "minTauBasic",
+                                                           "ultimateAutogenousShrinkageStrain",
+                                                           "autogenousShrinkageHalfTime",
+                                                           "alpha",
+                                                           "rt",
+                                                           "ultimateDryingShrinkageStrain",
+                                                           "dryingShrinkageHalfTime",
+                                                           "dryingStart",
+                                                           "hEnv",
+                                                           "q5",
+                                                           "nKelvinDrying",
+                                                           "minTauDrying",
+                                                           "castTime",
+                                                           "timeToDays",
+                                                           "density" };
+    materialPropertyNames =
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
+
     stateLayout.add( "basicCreepStateVars", nKelvinBasic * 6 );
     stateLayout.add( "dryingCreepStateVars", nKelvinDrying * 6 );
     stateLayout.finalize();

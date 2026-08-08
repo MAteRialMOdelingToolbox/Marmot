@@ -3,6 +3,7 @@
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 #include "Marmot/MarmotTesting.h"
+#include <array>
 #include <string>
 
 using namespace Marmot::Testing;
@@ -205,6 +206,28 @@ void testSetup( const std::string& testName,
       }
     }
   }
+}
+
+void testCompileTimeMaterialPropertyNames()
+{
+  std::array< double, 7 > materialPropertiesWithoutDensity = { 175000, 80800, 260, 580, 9, 70, 1 };
+  std::array< double, 8 > materialPropertiesWithDensity    = { 175000, 80800, 260, 580, 9, 70, 1, 7850 };
+
+  const auto matWithoutDensity =
+    FiniteStrainJ2Plasticity( materialPropertiesWithoutDensity.data(), materialPropertiesWithoutDensity.size(), 1 );
+  const auto matWithDensity =
+    FiniteStrainJ2Plasticity( materialPropertiesWithDensity.data(), materialPropertiesWithDensity.size(), 1 );
+
+  const std::vector< std::string > expectedWithoutDensity = { "K", "G", "fy", "fyInf", "eta", "H", "implementationType" };
+  const std::vector< std::string > expectedWithDensity = {
+    "K", "G", "fy", "fyInf", "eta", "H", "implementationType", "density" };
+
+  throwExceptionOnFailure(
+    matWithoutDensity.getValidMaterialProperties() == expectedWithoutDensity,
+    "Compile-time material property names without density do not match expected order in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure(
+    matWithDensity.getValidMaterialProperties() == expectedWithDensity,
+    "Compile-time material property names with density do not match expected order in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // Test I-1: Undeformed configuration
@@ -599,7 +622,8 @@ void testWithMPSolverSubstepped()
 
 int main()
 {
-  auto tests = std::vector< std::function< void() > >{ testUndeformedResponse,
+  auto tests = std::vector< std::function< void() > >{ testCompileTimeMaterialPropertyNames,
+                                                       testUndeformedResponse,
                                                        testDeformationResponse,
                                                        testAlgorithmicTangent,
                                                        testRotation,

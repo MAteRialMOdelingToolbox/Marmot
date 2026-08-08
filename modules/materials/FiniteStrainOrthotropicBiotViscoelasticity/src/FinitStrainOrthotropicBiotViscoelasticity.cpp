@@ -49,6 +49,20 @@ namespace Marmot::Materials {
         ContinuumMechanics::Elasticity::Orthotropic::
           stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
   {
+    std::vector< std::string > propertyNames = {
+      "E1", "E2", "E3", "nu12", "nu13", "nu23", "G12", "G13", "G23", "nMaxwell" };
+    for ( int i = 0; i < maxwellProperties.nMaxwell; ++i ) {
+      propertyNames.push_back( "tau" + std::to_string( i + 1 ) );
+      propertyNames.push_back( "beta" + std::to_string( i + 1 ) );
+    }
+    if ( nMaterialProperties - static_cast< int >( propertyNames.size() ) == 1 ) {
+      propertyNames.push_back( "density" );
+    }
+    if ( static_cast< int >( propertyNames.size() ) != nMaterialProperties ) {
+      throw std::invalid_argument(
+        "Unsupported number of material properties for FiniteStrainOrthotropicBiotViscoelasticity." );
+    }
+    materialPropertyNames = std::move( propertyNames );
 
     initializeStateLayout();
   }

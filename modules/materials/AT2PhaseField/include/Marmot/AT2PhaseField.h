@@ -49,6 +49,8 @@ namespace Marmot::Materials {
   public:
     AT2PhaseField( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     void computeStress( response& res, tangents& tan, const increment& inc ) const override;
 
     void initializeStateLayout()

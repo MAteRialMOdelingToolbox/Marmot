@@ -29,6 +29,13 @@ namespace Marmot::Materials {
       implementationType( materialProperties[6] ),
       density( nMaterialProperties > 7 ? materialProperties[7] : 0.0 ) // TODO: make mandatory material parameter
   {
+    if ( nMaterialProperties > static_cast< int >( compileTimeMaterialPropertyNames.size() ) ) {
+      throw std::invalid_argument( "Too many material properties for FiniteStrainJ2Plasticity." );
+    }
+    materialPropertyNames = std::vector< std::string >(
+      compileTimeMaterialPropertyNames.begin(),
+      compileTimeMaterialPropertyNames.begin() + nMaterialProperties );
+
     stateLayout.add( "Fp", 9 );                                        // plastic deformation gradient
     stateLayout.add( "alphaP", 1 );                                    // strain-like hardening variable
     stateLayout.finalize();

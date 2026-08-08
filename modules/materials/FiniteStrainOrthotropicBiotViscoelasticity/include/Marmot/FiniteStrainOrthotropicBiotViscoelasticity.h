@@ -62,6 +62,8 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialLabel );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     /**
      * @brief Compute Kirchhoff stress using automatic differentiation.
      *

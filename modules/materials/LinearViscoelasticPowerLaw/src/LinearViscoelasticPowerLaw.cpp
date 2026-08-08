@@ -35,6 +35,14 @@ namespace Marmot::Materials {
       timeToDays                        ( materialProperties[6] )
   // clang-format on
   {
+    if ( nMaterialProperties > 8 ) {
+      throw std::invalid_argument( "Too many material properties for LinearViscoelasticPowerLaw." );
+    }
+    const std::vector< std::string > allPropertyNames = {
+      "E", "nu", "m", "n", "nKelvin", "minTau", "timeToDays", "density" };
+    materialPropertyNames =
+      std::vector< std::string >( allPropertyNames.begin(), allPropertyNames.begin() + nMaterialProperties ) );
+
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 

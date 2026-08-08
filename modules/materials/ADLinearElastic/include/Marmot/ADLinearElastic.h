@@ -44,6 +44,8 @@ namespace Marmot::Materials {
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    const std::vector< std::string >& getValidMaterialProperties() const override { return materialPropertyNames; }
+
     double getDensity( const double* stateVars ) const override;
 
   protected:

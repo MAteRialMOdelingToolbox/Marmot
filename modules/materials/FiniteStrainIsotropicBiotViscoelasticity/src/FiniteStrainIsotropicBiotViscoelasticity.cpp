@@ -43,6 +43,20 @@ namespace Marmot::Materials {
                                                                                       G ) ) ) ) )
 
   {
+    std::vector< std::string > propertyNames = { "K", "G", "nMaxwell" };
+    for ( int i = 0; i < maxwellProperties.nMaxwell; ++i ) {
+      propertyNames.push_back( "tau" + std::to_string( i + 1 ) );
+      propertyNames.push_back( "beta" + std::to_string( i + 1 ) );
+    }
+    if ( nMaterialProperties - static_cast< int >( propertyNames.size() ) == 1 ) {
+      propertyNames.push_back( "density" );
+    }
+    if ( static_cast< int >( propertyNames.size() ) != nMaterialProperties ) {
+      throw std::invalid_argument(
+        "Unsupported number of material properties for FiniteStrainIsotropicBiotViscoelasticity." );
+    }
+    materialPropertyNames = std::move( propertyNames );
+
     initializeStateLayout();
   }
 
