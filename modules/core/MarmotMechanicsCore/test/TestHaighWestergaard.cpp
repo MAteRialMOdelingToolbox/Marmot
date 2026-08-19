@@ -208,6 +208,25 @@ void testHaighWestergaardFromStrain()
                            MakeString() << __PRETTY_FUNCTION__ << " failed: error in theta" );
 }
 
+void testHaighWestergaardLargeMagnitudeHydrostatic()
+{
+  // The near-origin guard's threshold is relative to the stress tensor's own squared magnitude
+  // (see HaighWestergaard.h), so a Pa-scale (as opposed to this file's other tests' O(10)-scale)
+  // exactly hydrostatic stress state must still resolve to rho == 0 exactly -- guards against a
+  // relative threshold that scales incorrectly (e.g. inverted, or off by enough orders of
+  // magnitude to stop catching genuinely hydrostatic states at realistic engineering stress
+  // scales).
+  Eigen::Matrix< double, 6, 1 > stress;
+  stress << -1e6, -1e6, -1e6, 0., 0., 0.;
+
+  const auto hw = haighWestergaard( stress );
+
+  throwExceptionOnFailure( checkIfEqual( hw.rho, 0. ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: rho should be exactly zero for a "
+                                           "large-magnitude, exactly hydrostatic stress state" );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -215,6 +234,7 @@ int main()
     testHaighWestergaardDual,
     testHaighWestergaardComplexDouble,
     testHaighWestergaardFromStrain,
+    testHaighWestergaardLargeMagnitudeHydrostatic,
   };
 
   executeTestsAndCollectExceptions( tests );
