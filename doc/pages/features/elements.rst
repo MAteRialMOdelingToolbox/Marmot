@@ -8,4 +8,6 @@ This section contains the ready to use available Finite elements.
 
   displacementfiniteelement
   displacementfinitestrainelement
+  displacementfinitestrainfbarelement
+  displacementpressurefinitestrainelement
   generalgradientenhanceddisplacementfiniteelement

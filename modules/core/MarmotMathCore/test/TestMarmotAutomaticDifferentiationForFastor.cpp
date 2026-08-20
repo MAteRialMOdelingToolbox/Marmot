@@ -25,7 +25,7 @@ void testTensorToScalar()
 
   std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return EnergyDensityFunctions::Compressible::PenceGouPotentialB( Ce_, K, G );
     };
 
   // autodiff solution
@@ -40,7 +40,8 @@ void testTensorToScalar()
   C = DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi_,
+        dPsi_dC_analytical] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT( psi, C );
@@ -54,7 +55,10 @@ void testTensorToScalar()
   C = DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  std::tie( psi_,
+            dPsi_dC_analytical ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C,
+                                                                                                                K,
+                                                                                                                G );
 
   // autodiff solution
   dPsi_dC = df_dT( psi, C );
@@ -84,11 +88,13 @@ void testTensorToScalarWith2ndOrderDuals()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
     [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return EnergyDensityFunctions::Compressible::PenceGouPotentialB( Ce_, K, G );
     };
 
   // analytical solution
-  auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C_dual,
+                                                                                                                 K,
+                                                                                                                 G );
 
   // autodiff solution
   Tensor33t< autodiff::dual > dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
@@ -102,7 +108,10 @@ void testTensorToScalarWith2ndOrderDuals()
   C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  std::tie( psi_,
+            dPsi_dC_analytical ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C_dual,
+                                                                                                                K,
+                                                                                                                G );
 
   // autodiff solution
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
@@ -116,7 +125,10 @@ void testTensorToScalarWith2ndOrderDuals()
   C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  std::tie( psi_,
+            dPsi_dC_analytical ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C_dual,
+                                                                                                                K,
+                                                                                                                G );
 
   // autodiff solution
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
@@ -163,14 +175,14 @@ void testTensorToScalarSecondOrder()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      return EnergyDensityFunctions::Compressible::PenceGouPotentialB( C_, K, G );
     };
 
   auto [psi, dPsi_dC, d2Psi_dC2] = SecondOrder::d2f_dT2( f, C );
 
   auto [psi_,
         dPsi_dC_analytical,
-        d2Psi_dC2_analytical] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
+        d2Psi_dC2_analytical] = EnergyDensityFunctions::Compressible::SecondOrderDerived::PenceGouPotentialB( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, psi_, 1e-12 ),
                            MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
@@ -196,7 +208,7 @@ void testTensorToScalarSecondOrderMixed()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
-      const dual2nd psi = EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd psi = EnergyDensityFunctions::Compressible::PenceGouPotentialB( C_, K, G );
       const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
       return res;
     };
@@ -207,7 +219,8 @@ void testTensorToScalarSecondOrderMixed()
   auto d2Psi_dCdOmega = SecondOrder::d2f_dTensor_dScalar( f, C, omega );
 
   // analytical solution
-  auto [psi, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi,
+        dPsi_dC_analytical] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C, K, G );
 
   Tensor33d d2Psi_dCdOmega_analytical = -2. * omega * dPsi_dC_analytical;
 

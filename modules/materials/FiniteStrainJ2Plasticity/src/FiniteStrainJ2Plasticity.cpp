@@ -127,9 +127,11 @@ namespace Marmot::Materials {
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
+      std::tie( psi_,
+                dPsi_dCe,
+                d2Psi_dCedCe ) = EnergyDensityFunctions::Compressible::SecondOrderDerived::PenceGouPotentialB( Ce,
+                                                                                                               K,
+                                                                                                               G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -167,9 +169,11 @@ namespace Marmot::Materials {
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
+      std::tie( psi_,
+                dPsi_dCe,
+                d2Psi_dCedCe ) = EnergyDensityFunctions::Compressible::SecondOrderDerived::PenceGouPotentialB( Ce,
+                                                                                                               K,
+                                                                                                               G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -278,12 +282,15 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce );
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      d2Psi_dCedCe         = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -325,13 +332,16 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce );
 
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -440,12 +450,15 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::centralDifference( computeS, Ce );
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      d2Psi_dCedCe         = NumericalAlgorithms::Differentiation::TensorToTensor::centralDifference( computeS, Ce );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -487,13 +500,16 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::centralDifference( computeS, Ce );
 
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -604,12 +620,15 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
       func_type computeS = [&]( const Tensor33t< complexDouble >& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS, Ce );
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
@@ -651,13 +670,16 @@ namespace Marmot::Materials {
       // Green deformation
       using func_type    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
       func_type computeS = [&]( const Tensor33t< complexDouble >& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce_,
+                                                                                                                    K,
+                                                                                                                    G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS, Ce );
 
-      std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;

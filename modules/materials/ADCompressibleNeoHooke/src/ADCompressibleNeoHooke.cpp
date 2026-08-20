@@ -39,7 +39,7 @@ namespace Marmot::Materials {
     const auto C = DeformationMeasures::rightCauchyGreen( F_ );
 
     // compute energy density and first derivative w.r.t Cauchy Green deformation
-    const auto [psi_, dPsi_dC] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+    const auto [psi_, dPsi_dC] = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
     Tensor33t< autodiff::dual > PK2 = multiplyFastorTensorWithScalar( dPsi_dC, autodiff::dual( 2.0 ) );

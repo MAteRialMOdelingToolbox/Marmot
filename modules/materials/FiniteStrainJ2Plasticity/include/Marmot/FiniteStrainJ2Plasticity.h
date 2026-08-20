@@ -323,11 +323,13 @@ namespace Marmot::Materials {
       Tensor33d   dPsi_dCe;
       Tensor3333d d2Psi_dCedCe, dMandel_dCe;
 
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
-      Tensor33d       PK2                      = 2.0 * dPsi_dCe;
-      const Tensor33d mandel                   = Ce % PK2;
+      std::tie( psi_,
+                dPsi_dCe,
+                d2Psi_dCedCe ) = EnergyDensityFunctions::Compressible::SecondOrderDerived::PenceGouPotentialB( Ce,
+                                                                                                               K,
+                                                                                                               G );
+      Tensor33d       PK2      = 2.0 * dPsi_dCe;
+      const Tensor33d mandel   = Ce % PK2;
       /* const Tensor33d mandel = einsum< Ii, iJ >( Ce, PK2 ); */
       dMandel_dCe = einsum< Ii, iJKL, to_IJKL >( Ce, 2. * d2Psi_dCedCe ) +
                     einsum< IK, iL, iJ, to_IJKL >( Spatial3D::I, Spatial3D::I, PK2 );
@@ -350,7 +352,8 @@ namespace Marmot::Materials {
       T              psi_;
       Tensor33t< T > dPsi_dCe;
 
-      std::tie( psi_, dPsi_dCe )  = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = EnergyDensityFunctions::Compressible::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       Tensor33t< T >       PK2    = multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
       const Tensor33t< T > mandel = Ce % PK2;
       return mandel;

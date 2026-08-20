@@ -1,7 +1,6 @@
 #include "Marmot/FiniteStrainOrthotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
 #include "Marmot/MarmotDeformationMeasures.h"
-#include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainViscoelasticity.h"
@@ -62,14 +61,12 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     using namespace ContinuumMechanics;
-    // compute Cauchy-Green deformation
-    const Tensor33t< scalar > C = DeformationMeasures::rightCauchyGreen( F );
 
-    // compute principal stretches and directions
-    auto [lam, Q] = Math::computeEigenSystemJacobi( C );
+    // compute principal stretches and eigenvectors of the right Cauchy-Green tensor C
+    auto [lambda, Q] = DeformationMeasures::principalStretches( F );
     Tensor33t< scalar > principalStretch( 0. );
     for ( int i = 0; i < 3; ++i ) {
-      principalStretch( i, i ) = sqrt( lam( i ) );
+      principalStretch( i, i ) = lambda( i );
     }
 
     // compute right stretch tensor in the original configuration
@@ -98,15 +95,7 @@ namespace Marmot::Materials {
                 stateLayout.getPtr( response.stateVars, "creepStateVars" ) );
 
     // transform to PK2 stress
-    Tensor33t< scalar > S_biot_rotated = transpose( Q ) % S_biot % Q;
-    Tensor33t< scalar > PK2_rotated( 0 );
-
-    for ( int i = 0; i < 3; ++i ) {
-      for ( int j = 0; j < 3; ++j ) {
-        PK2_rotated( i, j ) = 2.0 * S_biot_rotated( i, j ) / ( principalStretch( i, i ) + principalStretch( j, j ) );
-      }
-    }
-    Tensor33t< scalar > PK2 = Q % PK2_rotated % transpose( Q );
+    const Tensor33t< scalar > PK2 = StressMeasures::PK2FromRotatedBiotStress( S_biot, lambda, Q );
 
     // transform to Kirchhoff stress
     const Tensor33t< scalar > tau = StressMeasures::KirchhoffStressFromPK2( PK2, F );
