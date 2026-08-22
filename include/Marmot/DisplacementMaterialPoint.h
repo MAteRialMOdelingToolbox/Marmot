@@ -25,6 +25,8 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+
+#include <limits>
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
@@ -61,6 +63,9 @@ namespace Marmot::MaterialPoints {
     using Material = MarmotMaterialFiniteStrain;
 
     std::unique_ptr< Material > material;
+
+    /// Characteristic element length, forwarded to the material. NaN until explicitly assigned.
+    double _characteristicElementLength = std::numeric_limits< double >::quiet_NaN();
 
     class MPStateVarManager : public MarmotStateVarVectorManager {
 
@@ -158,6 +163,17 @@ namespace Marmot::MaterialPoints {
 
     const TensorD& getCoordinatesUndeformed() const { return _x0; };
 
+    /**
+     * @brief Forward the characteristic element length to the assigned material.
+     * @param[in] length Characteristic element length.
+     */
+    void setCharacteristicElementLength( double length ) override
+    {
+      _characteristicElementLength = length;
+      if ( material )
+        material->setCharacteristicElementLength( length );
+    };
+
     virtual void prepareYourself( double timeNew, double dT );
 
     virtual void computeYourself( double timeNew, double dT ) = 0;
@@ -239,6 +255,9 @@ namespace Marmot::MaterialPoints {
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__
                                    << ": invalid finite strain material assigned!" );
+
+    // A length assigned before the material existed must not be silently dropped.
+    material->setCharacteristicElementLength( _characteristicElementLength );
   }
 
   template < int nDim >
