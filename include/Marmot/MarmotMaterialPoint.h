@@ -70,4 +70,15 @@ public:
   virtual double getDensityUndeformed() const = 0;
 
   virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
+
+  /**
+   * @brief Set the characteristic element length to be used by the assigned material.
+   *
+   * Meshfree material points carry no mesh, so no length can be derived from geometry here; it must
+   * be assigned explicitly. The default implementation does nothing, so material points whose
+   * material does not depend on a length are unaffected.
+   *
+   * @param[in] length Characteristic element length.
+   */
+  virtual void setCharacteristicElementLength( double length ){};
 };
