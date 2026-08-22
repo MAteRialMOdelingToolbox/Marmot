@@ -83,6 +83,11 @@ namespace Marmot::Meshfree {
       else if ( propertyName == "newmark-beta gamma" ) {
         _newmark_gamma = property[0];
       }
+      else if ( propertyName == "characteristic element length" ) {
+        // Every subdomain carries its own material point, so each one needs the length.
+        for ( auto& mp : _subdomainMaterialPoints )
+          mp->setCharacteristicElementLength( property[0] );
+      }
       else {
         throw std::runtime_error( "Property " + propertyName + " not supported!" );
       }

@@ -60,6 +60,7 @@ namespace Marmot::Meshfree {
     inline static const std::vector< std::string > _validProperties = {
       "newmark-beta beta",
       "newmark-beta gamma",
+      "characteristic element length",
     };
 
     virtual TensorDD dY_dX() const { return ( this->_mp->dY_dX() ); }
@@ -128,6 +129,11 @@ namespace Marmot::Meshfree {
       }
       else if ( propertyName == "newmark-beta gamma" ) {
         _newmark_gamma = property[0];
+      }
+      else if ( propertyName == "characteristic element length" ) {
+        // Particles carry no mesh, so a regularisation length cannot be derived from geometry and has
+        // to be supplied explicitly, e.g. as volume^(1/nDim) by the generator that created the particle.
+        _mp->setCharacteristicElementLength( property[0] );
       }
       else {
         // If not a DisplacementParticle specific property, try the base class
