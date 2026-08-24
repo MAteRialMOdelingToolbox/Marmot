@@ -84,9 +84,17 @@ namespace Marmot::Meshfree {
         _newmark_gamma = property[0];
       }
       else if ( propertyName == "characteristic element length" ) {
-        // Every subdomain carries its own material point, so each one needs the length.
+        // Every subdomain carries its own material point, so each one needs the length. Note that an
+        // ABSOLUTE length is the same for every subdomain even though subdomains are smaller than the
+        // particle -- use the factor form below unless that is really what is wanted.
         for ( auto& mp : _subdomainMaterialPoints )
           mp->setCharacteristicElementLength( property[0] );
+      }
+      else if ( propertyName == "characteristic element length factor" ) {
+        // Each subdomain resolves the factor against its OWN size, which is what subdomain
+        // integration requires: the subdomains are smaller than the particle.
+        for ( auto& mp : _subdomainMaterialPoints )
+          mp->setCharacteristicElementLengthFactor( property[0] );
       }
       else {
         throw std::runtime_error( "Property " + propertyName + " not supported!" );

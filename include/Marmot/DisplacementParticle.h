@@ -61,6 +61,7 @@ namespace Marmot::Meshfree {
       "newmark-beta beta",
       "newmark-beta gamma",
       "characteristic element length",
+      "characteristic element length factor",
     };
 
     virtual TensorDD dY_dX() const { return ( this->_mp->dY_dX() ); }
@@ -134,6 +135,11 @@ namespace Marmot::Meshfree {
         // Particles carry no mesh, so a regularisation length cannot be derived from geometry and has
         // to be supplied explicitly, e.g. as volume^(1/nDim) by the generator that created the particle.
         _mp->setCharacteristicElementLength( property[0] );
+      }
+      else if ( propertyName == "characteristic element length factor" ) {
+        // Dimensionless: the material point resolves it against its own size. Prefer this wherever a
+        // particle may own several material points of differing size.
+        _mp->setCharacteristicElementLengthFactor( property[0] );
       }
       else {
         // If not a DisplacementParticle specific property, try the base class
