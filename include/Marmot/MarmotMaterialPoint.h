@@ -81,4 +81,17 @@ public:
    * @param[in] length Characteristic element length.
    */
   virtual void setCharacteristicElementLength( double length ){};
+
+  /**
+   * @brief Set the characteristic element length as a dimensionless multiple of this material
+   *        point's own size.
+   *
+   * Preferable to @ref setCharacteristicElementLength wherever one particle owns several
+   * material points: with subdomain integration each subdomain is smaller than the particle, so a
+   * single absolute length would over-estimate the regularisation width for every one of them.
+   * Each material point resolves the factor against its own size instead.
+   *
+   * @param[in] factor Multiple of the material point size.
+   */
+  virtual void setCharacteristicElementLengthFactor( double factor ){};
 };
