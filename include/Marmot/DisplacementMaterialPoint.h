@@ -26,6 +26,7 @@
  */
 #pragma once
 
+#include <cmath>
 #include <limits>
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -66,6 +67,8 @@ namespace Marmot::MaterialPoints {
 
     /// Characteristic element length, forwarded to the material. NaN until explicitly assigned.
     double _characteristicElementLength = std::numeric_limits< double >::quiet_NaN();
+    /// Length as a multiple of this point's own size; NaN until assigned.
+    double _characteristicElementLengthFactor = std::numeric_limits< double >::quiet_NaN();
 
     class MPStateVarManager : public MarmotStateVarVectorManager {
 
@@ -174,6 +177,16 @@ namespace Marmot::MaterialPoints {
         material->setCharacteristicElementLength( length );
     };
 
+    /**
+     * @brief Resolve a characteristic-length factor against this material point's own size.
+     * @param[in] factor Multiple of the material point size, size = vol^(1/nDim).
+     */
+    void setCharacteristicElementLengthFactor( double factor ) override
+    {
+      _characteristicElementLengthFactor = factor;
+      setCharacteristicElementLength( factor * std::pow( _vol0, 1.0 / nDim ) );
+    };
+
     virtual void prepareYourself( double timeNew, double dT );
 
     virtual void computeYourself( double timeNew, double dT ) = 0;
@@ -256,8 +269,13 @@ namespace Marmot::MaterialPoints {
                                    << __PRETTY_FUNCTION__
                                    << ": invalid finite strain material assigned!" );
 
-    // A length assigned before the material existed must not be silently dropped.
-    material->setCharacteristicElementLength( _characteristicElementLength );
+    // A length assigned before the material existed must not be silently dropped. A factor takes
+    // precedence, since it is resolved against this point's own size.
+    if ( !std::isnan( _characteristicElementLengthFactor ) )
+      material->setCharacteristicElementLength( _characteristicElementLengthFactor *
+                                                std::pow( _vol0, 1.0 / nDim ) );
+    else
+      material->setCharacteristicElementLength( _characteristicElementLength );
   }
 
   template < int nDim >
