@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotElement.h"
+#include "Marmot/marmot_export.h"
 #include <cassert>
 #include <string>
 #include <unordered_map>
@@ -36,7 +37,7 @@ namespace MarmotLibrary {
    * This class provides a mechanism to register elements by their code and name,
    * and to create element instances based on their properties.
    */
-  class MarmotElementFactory {
+  class MARMOT_EXPORT MarmotElementFactory {
   public:
     /// @brief Factory function pointer type: takes an element number and returns a new MarmotElement.
     using elementFactoryFunction = MarmotElement* (*)( int elementNumber );

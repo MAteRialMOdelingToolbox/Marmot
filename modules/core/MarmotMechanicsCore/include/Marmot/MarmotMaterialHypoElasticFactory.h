@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/marmot_export.h"
 #include <cassert>
 #include <functional>
 #include <string>
@@ -39,7 +40,7 @@ namespace MarmotLibrary {
    * and to create material instances based on their properties.
    * It allows for dynamic material creation without hardcoding specific material types.
    */
-  class MarmotMaterialHypoElasticFactory {
+  class MARMOT_EXPORT MarmotMaterialHypoElasticFactory {
   public:
     /// Function signature for material factory functions registered in the map.
     using materialFactoryFunction = std::function<

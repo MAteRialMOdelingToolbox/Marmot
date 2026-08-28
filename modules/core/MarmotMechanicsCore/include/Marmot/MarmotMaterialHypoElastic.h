@@ -26,6 +26,7 @@
 #pragma once
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/marmot_export.h"
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -53,7 +54,7 @@
  *
  * This formulation is compatible with an Abaqus interface.
  */
-class MarmotMaterialHypoElastic {
+class MARMOT_EXPORT MarmotMaterialHypoElastic {
 
 protected:
   const double* materialProperties;  ///< Pointer to the array of material properties

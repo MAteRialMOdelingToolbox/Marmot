@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialFiniteStrain.h"
+#include "Marmot/marmot_export.h"
 #include <cassert>
 #include <functional>
 #include <string>
@@ -39,7 +40,7 @@ namespace MarmotLibrary {
    * and to create material instances based on their properties.
    * It allows for dynamic material creation without hardcoding specific material types.
    */
-  class MarmotMaterialFiniteStrainFactory {
+  class MARMOT_EXPORT MarmotMaterialFiniteStrainFactory {
   public:
     /// Factory function type: creates a MarmotMaterialFiniteStrain from properties and a material number.
     using materialFactoryFunction = std::function<

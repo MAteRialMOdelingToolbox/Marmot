@@ -25,7 +25,7 @@
 
 #pragma once
 #include "Marmot/MarmotJournal.h"
-#include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot {
@@ -48,14 +48,47 @@ namespace Marmot {
     } // namespace Strain
 
     namespace VelocityGradient {
+      inline EigenTensors::Tensor3333d initializeDOmega_dVelocityGradient()
+      {
+        EigenTensors::Tensor3333d dwdl;
+
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            for ( int k = 0; k < 3; k++ )
+              for ( int l = 0; l < 3; l++ ) {
+                dwdl( i, j, k, l ) = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) -
+                                             ( k == j ? 1 : 0 ) * ( i == l ? 1 : 0 ) );
+              }
+        return dwdl;
+      }
+
+      inline EigenTensors::Tensor633d initializeDStretchingRate_dVelocityGradient()
+      {
+        EigenTensors::Tensor633d dddl;
+
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            for ( int k = 0; k < 3; k++ )
+              for ( int l = 0; l < 3; l++ ) {
+                dddl( ContinuumMechanics::TensorUtility::IndexNotation::toVoigt< 3 >( i, j ),
+                      k,
+                      l ) = 0.5 *
+                            ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) + ( j == k ? 1 : 0 ) * ( i == l ? 1 : 0 ) ) *
+                            ( i == j ? 1 : 2 ); // strain-engineering-notation correction
+              }
+        return dddl;
+      }
+
       /**
        * @brief A 4th-order tensor representing the derivative of the spin tensor \f$ \Omega \f$
        *        with respect to the velocity gradient tensor.
        */
-      extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > dOmega_dVelocityGradient;
+      static inline const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > >
+        dOmega_dVelocityGradient = initializeDOmega_dVelocityGradient();
 
       /** @brief Tensor representing the derivative of the stretching rate with respect to the velocity gradient.*/
-      extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > dStretchingRate_dVelocityGradient;
+      static inline const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > >
+        dStretchingRate_dVelocityGradient = initializeDStretchingRate_dVelocityGradient();
     } // namespace VelocityGradient
 
     namespace DeformationGradient {

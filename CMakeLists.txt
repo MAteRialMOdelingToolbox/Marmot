@@ -70,10 +70,12 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options($<$<CONFIG:Debug>:-g>)
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-        string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+        string(REGEX REPLACE "/W[0-4]" "/W0" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W0")
     endif()
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+    add_compile_definitions(__PRETTY_FUNCTION__=__FUNCSIG__)
 endif()
 
 # If no build type was specified, Release is default
@@ -114,7 +116,11 @@ enable_testing()
 # (PUBLIC includes), so no explicit target_include_directories call is needed here.
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
+  if(MSVC AND BUILD_TESTING)
+    target_link_libraries(${test_name} PRIVATE -WHOLEARCHIVE:${PROJECT_NAME})
+  else()
+    target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
+  endif()
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endfunction()
 
@@ -203,9 +209,22 @@ endforeach()
 message("+------------------------------------------------------------------------------+")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
-# ── Build the shared library ──────────────────────────────────────────────────
+# Build as STATIC on Windows when testing is enabled to allow tests to link internal symbols
+if(MSVC AND BUILD_TESTING)
+    add_library(${PROJECT_NAME} STATIC ${sources})
+else()
+    add_library(${PROJECT_NAME} SHARED ${sources})
+endif()
 
-add_library(${PROJECT_NAME} SHARED ${sources})
+# Generate Windows Export Header
+include(GenerateExportHeader)
+generate_export_header(${PROJECT_NAME}
+    BASE_NAME MARMOT
+    EXPORT_FILE_NAME "${CMAKE_BINARY_DIR}/include/Marmot/marmot_export.h"
+)
+
+# Append the generated export header to public headers so it gets installed
+list(APPEND publicheaders "${CMAKE_BINARY_DIR}/include/Marmot/marmot_export.h")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION       ${PROJECT_VERSION}
@@ -223,6 +242,7 @@ target_include_directories(${PROJECT_NAME}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
         $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
 )
 foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
     target_include_directories(${PROJECT_NAME}

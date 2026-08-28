@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotStateHelpers.h"
+#include "Marmot/marmot_export.h"
 #include <Fastor/tensor/Tensor.h>
 #include <algorithm>
 #include <cmath>
@@ -36,7 +37,7 @@
  * Derived classes implement computeStress() to provide the constitutive response
  * (Kirchhoff stress, density, elastic energy density) and the algorithmic tangent.
  */
-class MarmotMaterialFiniteStrain {
+class MARMOT_EXPORT MarmotMaterialFiniteStrain {
 
 protected:
   const double* materialProperties;  ///< Pointer to the array of material property values.

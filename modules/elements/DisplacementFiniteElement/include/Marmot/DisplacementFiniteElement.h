@@ -353,6 +353,8 @@ namespace Marmot::Elements {
 
     /** @brief Number of quadrature points of this element. */
     int getNumberOfQuadraturePoints();
+
+    void extrapolateStateToNodes( double* nodalValues, int sizeNodalValues, const std::string& stateName );
   };
 
   template < int nDim, int nNodes >
@@ -927,5 +929,103 @@ namespace Marmot::Elements {
   int DisplacementFiniteElement< nDim, nNodes >::getNumberOfQuadraturePoints()
   {
     return qps.size();
+  }
+
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::extrapolateStateToNodes( double*            nodalValues,
+                                                                           int                sizeNodalValues,
+                                                                           const std::string& stateName )
+  {
+    if ( qps.empty() )
+      return;
+
+    if ( !qps[0].managedStateVars->contains( stateName ) ) {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": state '" << stateName
+                                                << "' not found in quadrature point state variables" );
+    }
+
+    const int stateSize = qps[0].managedStateVars->getStateView( stateName ).stateSize;
+
+    if ( sizeNodalValues < stateSize * nNodes ) {
+      throw std::out_of_range( "Provided nodalValues buffer is too small for the requested state extrapolation." );
+    }
+
+    Eigen::Map< Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > > nodalValuesMap( nodalValues,
+                                                                                          stateSize,
+                                                                                          nNodes );
+    nodalValuesMap.setZero(); // Ensures all nodes (especially mid-side nodes in Hex20) start at exactly zero
+
+    // ====================================================================================
+    // SPECIAL CASE: Hex20 with reduced integration
+    // ====================================================================================
+    if constexpr ( nNodes == 20 && nDim == 3 ) {
+      if ( qps.size() < 20 ) {
+        // The 20x20 mass matrix is rank-deficient. Extrapolate ONLY to the first 8 corner nodes
+        // using an auxiliary trilinear basis.
+        Eigen::Matrix< double, 8, 8 >                           M8 = Eigen::Matrix< double, 8, 8 >::Zero();
+        Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > rhs8( stateSize, 8 );
+        rhs8.setZero();
+
+        // Standard Hex8 parent coordinates for the 8 corner nodes
+        const double c_xi[8]  = { -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0 };
+        const double c_eta[8] = { -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0 };
+        const double c_zet[8] = { -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0 };
+
+        for ( const auto& qp : qps ) {
+          const StateView stateView = qp.managedStateVars->getStateView( stateName );
+          const double    dVol      = qp.J0xW;
+
+          // Evaluate the trilinear shape functions at this QP
+          Eigen::Matrix< double, 8, 1 > N8;
+          for ( int i = 0; i < 8; i++ ) {
+            N8( i ) = 0.125 * ( 1.0 + c_xi[i] * qp.xi( 0 ) ) * ( 1.0 + c_eta[i] * qp.xi( 1 ) ) *
+                      ( 1.0 + c_zet[i] * qp.xi( 2 ) );
+          }
+
+          M8 += ( N8 * N8.transpose() ) * dVol;
+
+          Eigen::Map< const Eigen::VectorXd > stateVec( stateView.stateLocation, stateSize );
+          rhs8 += ( stateVec * N8.transpose() ).matrix() * dVol;
+        }
+
+        Eigen::ColPivHouseholderQR< Eigen::Matrix< double, 8, 8 > > solver8( M8 );
+        if ( solver8.info() == Eigen::Success && M8.norm() > 1e-12 ) {
+          // Map the 8 corner solutions exclusively into the first 8 columns
+          nodalValuesMap.leftCols< 8 >() = solver8.solve( rhs8.transpose() ).transpose();
+        }
+
+        return; // Exit early. The remaining 12 mid-side nodes stay at zero.
+      }
+    }
+
+    // ====================================================================================
+    // GENERAL CASE: Full Rank Elements (Hex8, Tet10, fully integrated Hex20, etc.)
+    // ====================================================================================
+    Eigen::Matrix< double, nNodes, nNodes >                 M = Eigen::Matrix< double, nNodes, nNodes >::Zero();
+    Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > rhs( stateSize, nNodes );
+    rhs.setZero();
+
+    // 1. Assemble the local element system
+    for ( const auto& qp : qps ) {
+      const StateView stateView = qp.managedStateVars->getStateView( stateName );
+
+      const Eigen::Matrix< double, nNodes, 1 > N_   = this->N( qp.xi );
+      const double                             dVol = qp.J0xW;
+
+      M += ( N_ * N_.transpose() ) * dVol;
+
+      Eigen::Map< const Eigen::VectorXd > stateVec( stateView.stateLocation, stateSize );
+      rhs += ( stateVec * N_.transpose() ).matrix() * dVol;
+    }
+
+    // 2. Solve the linear system
+    Eigen::ColPivHouseholderQR< Eigen::Matrix< double, nNodes, nNodes > > solver( M );
+
+    if ( solver.info() == Eigen::Success && M.norm() > 1e-12 ) {
+      nodalValuesMap = solver.solve( rhs.transpose() ).transpose();
+    }
+    else {
+      nodalValuesMap.setZero();
+    }
   }
 } // namespace Marmot::Elements

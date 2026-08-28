@@ -61,27 +61,34 @@ namespace Marmot {
     /** @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
      * @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
      */
-    extern const Marmot::Vector6d P;
+    static inline const Marmot::Vector6d P = ( Marmot::Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
 
     /** @brief Predefined 6D vector with inverse scaling factor (0.5x) for shear components in Voigt notation.
      * @details The vector contains inverse scaling factors: {1, 1, 1, 0.5, 0.5, 0.5}.
      */
-    extern const Marmot::Vector6d PInv;
+    static inline const Marmot::Vector6d PInv = ( Marmot::Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
 
     /** @brief Predefined 6D Vector representing the identity tensor in Voigt notation.
      * @details The vector contains ones in all components: {1, 1, 1, 0, 0, 0}.
      */
-    extern const Marmot::Vector6d I;
+    static inline const Marmot::Vector6d I = ( Marmot::Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
 
     /** @brief Predefined 6D Vector representing the hydrostatic projection tensor in Voigt notation.
      * @details The vector contains: {1/3, 1/3, 1/3, 0, 0, 0}.
      */
-    extern const Marmot::Vector6d IHyd;
+    static inline const Marmot::Vector6d IHyd = ( Marmot::Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
     /** @brief Deviatoric projection tensor in Voigt notation.
      * @details \f$ 6 \times 6 \f$ matrix.
      */
-    extern const Matrix6d IDev;
+    static inline const Matrix6d IDev = ( Matrix6d() <<
+                                            // clang-format off
+        2./3,    -1./3,   -1./3,    0,  0,  0,
+        -1./3,   2./3,    -1./3,    0,  0,  0,
+        -1./3,   -1./3,   2./3,     0,  0,  0,
+        0,          0,      0,      1,  0,  0,
+        0,          0,      0,      0,  1,  0,
+        0,          0,      0,      0,  0,  1).finished();
 
     // Plane Stress handling
 

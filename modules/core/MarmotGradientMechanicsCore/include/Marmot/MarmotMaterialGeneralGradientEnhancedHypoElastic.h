@@ -28,6 +28,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/marmot_export.h"
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -50,7 +51,7 @@
  * tensor.
  */
 template < int nNonlocalVariables >
-class MarmotMaterialGeneralGradientEnhancedHypoElastic {
+class MARMOT_EXPORT MarmotMaterialGeneralGradientEnhancedHypoElastic {
 
 protected:
   /// @brief Pointer to the array of material properties.

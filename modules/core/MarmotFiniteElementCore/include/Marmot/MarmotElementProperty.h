@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/marmot_export.h"
 #include <string>
 
 /** @struct MarmotMaterialSection
@@ -31,7 +32,7 @@
  * This structure is used to define a material section with its code and properties,
  * allowing for flexible material definitions in finite element analysis.
  */
-class MarmotMaterialSection {
+class MARMOT_EXPORT MarmotMaterialSection {
 public:
   const std::string materialName;        ///< Name identifying the material model.
   const double*     materialProperties;  ///< Pointer to the array of material property values.
@@ -55,7 +56,7 @@ public:
  * This structure is used to define properties of a finite element,
  * allowing for flexible element definitions in finite element analysis.
  */
-class ElementProperties {
+class MARMOT_EXPORT ElementProperties {
 public:
   const double* elementProperties;  ///< Pointer to the array of element property values.
   int           nElementProperties; ///< Number of element property values.

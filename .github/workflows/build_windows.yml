@@ -1,0 +1,79 @@
+name: Build Marmot Windows DLL
+
+on: [push, pull_request]
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    strategy:
+      # Use a matrix to run the entire job twice: once for Release, once for Debug
+      matrix:
+        build_type: [Release, Debug]
+
+      # Set to false so if the Debug build fails, the Release build still finishes
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # --- 1. Setup Eigen (Download AND Install to generate Config files) ---
+    - name: Install Eigen
+      shell: powershell
+      run: |
+        Invoke-WebRequest -Uri "https://gitlab.com/libeigen/eigen/-/archive/3.4.1/eigen-3.4.1.zip" -OutFile "eigen.zip"
+        Expand-Archive eigen.zip -DestinationPath .
+
+        Rename-Item -Path "eigen-3.4.1" -NewName "eigen3"
+
+        cmake -S eigen3 -B eigen-build -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/eigen-install
+        cmake --build eigen-build --target install
+
+    # --- 2. Setup Other Header-Only Libs (Simple Download is fine for find_path) ---
+    - name: Download Autodiff 1.1.2
+      shell: powershell
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/autodiff/autodiff/archive/refs/tags/v1.1.2.zip" -OutFile "autodiff.zip"
+        Expand-Archive autodiff.zip -DestinationPath .
+        Rename-Item -Path "autodiff-1.1.2" -NewName "autodiff"
+
+    - name: Download Fastor
+      shell: powershell
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/romeric/Fastor/archive/refs/heads/master.zip" -OutFile "fastor.zip"
+        Expand-Archive fastor.zip -DestinationPath .
+        Rename-Item -Path "Fastor-master" -NewName "fastor"
+
+    # --- 3. Configure CMake ---
+    - name: Configure CMake
+      # We enforce the Dynamic Runtime (/MD and /MDd) using modern CMake policies
+      # The Generator Expression $<$<CONFIG:Debug>:Debug> ensures it uses /MDd for Debug and /MD for Release
+      run: >
+        cmake -S . -B build
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DBUILD_TESTING=OFF
+        -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+        -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+        -DCMAKE_CXX_FLAGS="/bigobj"
+        -DCMAKE_PREFIX_PATH="${{ github.workspace }}/eigen-install"
+        -DAUTODIFF_INCLUDE_DIR="${{ github.workspace }}/autodiff"
+        -DFASTOR_INCLUDE_DIR="${{ github.workspace }}/fastor"
+
+    # --- 4. Build the Project ---
+    - name: Build
+      run: cmake --build build --config ${{ matrix.build_type }}
+
+#    # --- 5. Run Tests ---
+#    - name: Run Tests
+#      working-directory: build
+#      run: ctest -C ${{ matrix.build_type }} --output-on-failure
+#      continue-on-error: true
+
+    # --- 6. Upload the DLL ---
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        # Appends '-Release' or '-Debug' to the downloaded zip file
+        name: Marmot-Windows-DLL-${{ matrix.build_type }}
+        path: |
+          build/bin/${{ matrix.build_type }}/*.dll
+          build/lib/${{ matrix.build_type }}/*.lib

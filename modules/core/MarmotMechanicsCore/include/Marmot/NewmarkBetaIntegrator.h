@@ -54,13 +54,14 @@ namespace Marmot::TimeIntegration {
                                double        newmarkGamma,
                                double*       da_ddu )
   {
+    const double one_over_dT2_safe = std::min( std::pow( dT, -2.0 ), 1e20 );
+
     for ( int i = 0; i < nDim; i++ ) {
-      dT                    = std::max( dT, 1e-16 );
       const double du_tilde = dT * v[i] + 0.5 * dT * dT * ( ( 1 - 2 * newmarkBeta ) * a[i] );
       const double v_tilde  = v[i] + dT * ( 1 - newmarkGamma ) * a[i];
 
-      a[i]                 = newmarkBeta != 0 ? ( du[i] - du_tilde ) / ( newmarkBeta * dT * dT ) : 0;
-      da_ddu[i + i * nDim] = newmarkBeta != 0 ? 1. / ( newmarkBeta * dT * dT ) : 0.0;
+      a[i]                 = ( newmarkBeta != 0 ? ( du[i] - du_tilde ) / newmarkBeta : 0 ) * one_over_dT2_safe;
+      da_ddu[i + i * nDim] = ( newmarkBeta != 0 ? 1. / newmarkBeta : 0.0 ) * one_over_dT2_safe;
       v[i]                 = v_tilde + newmarkGamma * dT * a[i];
     }
   }

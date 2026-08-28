@@ -12,22 +12,6 @@ namespace Marmot {
     using namespace Constants;
     using namespace ContinuumMechanics::HaighWestergaard;
 
-    const Vector6d P    = ( Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
-    const Vector6d PInv = ( Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
-
-    const Vector6d I    = ( Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
-    const Vector6d IHyd = ( Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
-
-    const Matrix6d IDev = ( Matrix6d() <<
-                              // clang-format off
-        2./3,    -1./3,   -1./3,    0,  0,  0,
-        -1./3,   2./3,    -1./3,    0,  0,  0,
-        -1./3,   -1./3,   2./3,     0,  0,  0,
-        0,          0,      0,      1,  0,  0,
-        0,          0,      0,      0,  1,  0,
-        0,          0,      0,      0,  0,  1).finished();
-    // clang-format on
-
     Vector6d strainToVoigt( const Matrix3d& strainTensor )
     {
       Vector6d strain;

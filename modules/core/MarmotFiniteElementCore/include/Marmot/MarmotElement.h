@@ -26,6 +26,7 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotUtils.h"
+#include "Marmot/marmot_export.h"
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -39,7 +40,7 @@
  * initialization, loading, and numerical integration. Concrete element
  * implementations must override the pure virtual functions.
  */
-class MarmotElement {
+class MARMOT_EXPORT MarmotElement {
 
 public:
   /** @brief Types of element state variables used in initialization and output. */
@@ -277,4 +278,10 @@ public:
 
   /** @return Number of quadrature points used by the element. */
   virtual int getNumberOfQuadraturePoints() = 0;
+
+  virtual void extrapolateStateToNodes( double* nodalValues, int sizeNodalValues, const std::string& stateName )
+  {
+    throw std::invalid_argument( MakeString()
+                                 << __PRETTY_FUNCTION__ << " not yet implemented for result: " << stateName );
+  };
 };
