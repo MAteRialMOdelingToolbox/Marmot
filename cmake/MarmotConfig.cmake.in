@@ -10,10 +10,11 @@
 # * The Marmot::Marmot imported target carries the necessary include
 # * directories and link libraries transitively.
 # *
-# * Prerequisites that must be found by the consuming project:
-# *   - Eigen3   (find_package(Eigen3 REQUIRED NO_MODULE))
-# *   - autodiff (find_path(AUTODIFF_INCLUDE_DIR autodiff REQUIRED))
-# *   - Fastor   (find_path(FASTOR_INCLUDE_DIR Fastor REQUIRED))
+# * Prerequisites resolved here on behalf of the consuming project:
+# *   - Eigen3   (Eigen3::Eigen imported target)
+# *   - autodiff (autodiff::autodiff imported target)
+# *   - Fastor   (Fastor::Fastor imported target, with a plain header-search
+# *               fallback for copies installed without CMake package files)
 # *
 # * ---------------------------------------------------------------------
 # */
@@ -22,29 +23,26 @@
 
 include(CMakeFindDependencyMacro)
 
-# Eigen3 is an imported target; ensure it is available before loading
-# MarmotTargets.cmake which references Eigen3::Eigen.
+# MarmotTargets.cmake references these imported targets; ensure they exist
+# before loading it.
 find_dependency(Eigen3 3.3 REQUIRED NO_MODULE)
+find_dependency(autodiff)
 
-find_path(AUTODIFF_INCLUDE_DIR autodiff)
-if(NOT AUTODIFF_INCLUDE_DIR)
-    set(Marmot_FOUND FALSE)
-    set(Marmot_NOT_FOUND_MESSAGE "Marmot requires autodiff headers, but they were not found.")
-    return()
-endif()
-
-find_path(FASTOR_INCLUDE_DIR Fastor)
-if(NOT FASTOR_INCLUDE_DIR)
-    set(Marmot_FOUND FALSE)
-    set(Marmot_NOT_FOUND_MESSAGE "Marmot requires Fastor headers, but they were not found.")
-    return()
+# Fastor: prefer its CMake package; fall back to a plain header search
+# (mirrors the logic in Marmot's top-level CMakeLists.txt).
+find_package(Fastor QUIET)
+if(NOT TARGET Fastor::Fastor)
+    find_path(FASTOR_INCLUDE_DIR Fastor)
+    if(NOT FASTOR_INCLUDE_DIR)
+        set(Marmot_FOUND FALSE)
+        set(Marmot_NOT_FOUND_MESSAGE "Marmot requires Fastor (CMake package or headers), but it was not found.")
+        return()
+    endif()
+    add_library(Fastor::Fastor INTERFACE IMPORTED)
+    set_target_properties(Fastor::Fastor PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${FASTOR_INCLUDE_DIR}")
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/MarmotTargets.cmake")
-set_property(TARGET Marmot::Marmot APPEND PROPERTY
-    INTERFACE_INCLUDE_DIRECTORIES
-        "${AUTODIFF_INCLUDE_DIR}"
-        "${FASTOR_INCLUDE_DIR}"
-)
 
 check_required_components(Marmot)

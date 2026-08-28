@@ -60,14 +60,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set install directories
 include(GNUInstallDirs)
 
-# Compiler-specific settings
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+# Compiler-specific settings.
+# Optimization/debug flags (-O3, -g, ...) come from CMake's per-config defaults.
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
-    # -O3 belongs only in Release builds, not Debug.
-    add_compile_options($<$<CONFIG:Release>:-O3>)
-    # add_compile_options(-mavx)
-    # add_compile_options(-ffast-math)
-    add_compile_options($<$<CONFIG:Debug>:-g>)
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -82,6 +78,19 @@ if(NOT CMAKE_BUILD_TYPE)
     message("--> setting to default CMAKE_BUILD_TYPE Release")
 endif()
 
+# Opt-in tuning for the host CPU. Fastor's SIMD kernels only vectorize beyond
+# the SSE2 baseline when the target architecture allows it (AVX2/FMA), so this
+# can matter a lot for tensor-heavy code paths. OFF by default because the
+# resulting binaries are not portable to older CPUs.
+option(MARMOT_MARCH_NATIVE "Compile with -march=native (non-portable binaries)" OFF)
+if(MARMOT_MARCH_NATIVE)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        add_compile_options(-march=native)
+    else()
+        message(WARNING "MARMOT_MARCH_NATIVE is only supported for GCC/Clang and will be ignored.")
+    endif()
+endif()
+
 # Disable (shared memory) parallelization within Marmot - such a parallelization is usually not desired
 # add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
@@ -93,21 +102,31 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
 
 ## find autodiff library (https://autodiff.github.io/)
-find_path(AUTODIFF_INCLUDE_DIR autodiff)
-if(NOT AUTODIFF_INCLUDE_DIR)
-    message(FATAL_ERROR "autodiff include directory not found")
-endif()
-message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
+## autodiff ships a CMake package providing the autodiff::autodiff imported target.
+find_package(autodiff REQUIRED)
+message("--> found autodiff: ${autodiff_DIR}")
 
 ## find Fastor library (https://github.com/romeric/Fastor)
-find_path(FASTOR_INCLUDE_DIR Fastor)
-if(NOT FASTOR_INCLUDE_DIR)
-    message(FATAL_ERROR "Fastor include directory not found")
+## Prefer Fastor's CMake package (Fastor::Fastor imported target); fall back to a
+## plain header search for copies of Fastor installed without its package files.
+find_package(Fastor QUIET)
+if(TARGET Fastor::Fastor)
+    message("--> found Fastor: ${Fastor_DIR}")
+else()
+    find_path(FASTOR_INCLUDE_DIR Fastor)
+    if(NOT FASTOR_INCLUDE_DIR)
+        message(FATAL_ERROR "Fastor not found (neither as a CMake package nor as plain headers)")
+    endif()
+    add_library(Fastor::Fastor INTERFACE IMPORTED)
+    set_target_properties(Fastor::Fastor PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${FASTOR_INCLUDE_DIR}")
+    message("--> found Fastor headers: ${FASTOR_INCLUDE_DIR}")
 endif()
-message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
 
-# enable testing
-enable_testing()
+# Testing: include(CTest) provides the standard BUILD_TESTING option (default ON)
+# and calls enable_testing() when it is enabled. Configure with -DBUILD_TESTING=OFF
+# to skip building the test executables (e.g. for install-only builds).
+include(CTest)
 
 # Custom function to add a test executable.
 # Include directories are propagated transitively from the Marmot library target
@@ -118,12 +137,32 @@ function(add_marmot_test test_name test_source)
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endfunction()
 
+# marmot_module_requires: check that every listed dependency of <module_name> is
+# among the discovered INSTALLED_MODULES, so a module can skip itself gracefully
+# instead of failing at link time. Emits a warning for each missing dependency
+# and sets <result_var> to TRUE/FALSE in the calling scope.
+#
+# Usage (from a module.cmake):
+#   marmot_module_requires(_deps_ok MyModule MarmotMechanicsCore MarmotCosseratCore)
+#   if(_deps_ok)
+#     # register include dir and sources
+#   endif()
+function(marmot_module_requires result_var module_name)
+  set(_ok TRUE)
+  foreach(_dep IN LISTS ARGN)
+    if(NOT _dep IN_LIST INSTALLED_MODULES)
+      message(WARNING "Module ${module_name} will NOT be built: required module '${_dep}' is not enabled.")
+      set(_ok FALSE)
+    endif()
+  endforeach()
+  set(${result_var} ${_ok} PARENT_SCOPE)
+endfunction()
+
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 set(SHARED_LIBRARIES "")
 
 # Accumulated lists populated by module.cmake files
 set(sources "")
-set(publicheaders "")
 set(INSTALLED_MODULE_INCLUDE_DIRS "")
 
 # ── Module discovery helpers ──────────────────────────────────────────────────
@@ -195,7 +234,7 @@ message("directory, verify that it has a proper module.cmake file.")
 message("+------------------------------------------------------------------------------+")
 
 # Include all discovered module.cmake files.
-# Each file appends to: sources, publicheaders, INSTALLED_MODULE_INCLUDE_DIRS.
+# Each file appends to: sources, INSTALLED_MODULE_INCLUDE_DIRS.
 foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
     include("${MODULEPATH}/module.cmake")
 endforeach()
@@ -208,9 +247,8 @@ message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 add_library(${PROJECT_NAME} SHARED ${sources})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    VERSION       ${PROJECT_VERSION}
-    SOVERSION     ${PROJECT_VERSION_MAJOR}
-    PUBLIC_HEADER "${publicheaders}"
+    VERSION   ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 # Include-directory strategy:
@@ -218,18 +256,19 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 #   INSTALL_INTERFACE – the single installed include root used by find_package consumers.
 # Making these PUBLIC means test executables that link against ${PROJECT_NAME} receive
 # the include paths transitively without any explicit target_include_directories call.
+# Dependency include paths come transitively from the linked imported targets.
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
-        $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
 )
 foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
     target_include_directories(${PROJECT_NAME}
         PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
 endforeach()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+# PUBLIC: the installed Marmot headers include Eigen, autodiff, and Fastor headers,
+# so consumers need these interface targets too (resolved via MarmotConfig.cmake).
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
 
 if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
@@ -242,19 +281,33 @@ if(SHARED_LIBRARIES)
 endif()
 
 # Include test definitions for all installed modules
-foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
-    if(EXISTS "${MODULEPATH}/test.cmake")
-        include("${MODULEPATH}/test.cmake")
-    endif()
-endforeach()
+if(BUILD_TESTING)
+    foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+        if(EXISTS "${MODULEPATH}/test.cmake")
+            include("${MODULEPATH}/test.cmake")
+        endif()
+    endforeach()
+endif()
 
 # ── Install ───────────────────────────────────────────────────────────────────
 
 install(TARGETS ${PROJECT_NAME}
-    EXPORT        MarmotTargets
-    LIBRARY       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Marmot"
+    EXPORT  MarmotTargets
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
+
+# Install every module's include tree (headers are laid out as
+# <module>/include/Marmot/<Header>.h, so the Marmot/ prefix is preserved).
+# This installs all module headers wholesale instead of relying on
+# hand-maintained per-module header lists.
+foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+    if(EXISTS "${MODULEPATH}/include")
+        install(DIRECTORY "${MODULEPATH}/include/"
+            DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            FILES_MATCHING PATTERN "*.h"
+        )
+    endif()
+endforeach()
 
 install(EXPORT MarmotTargets
     FILE        MarmotTargets.cmake

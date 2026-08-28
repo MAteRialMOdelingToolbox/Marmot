@@ -7,3 +7,4 @@ doc/doc_out
 _codeql_detected_source_root
 **/.pre-commit-config.yaml
 .cache
+/install/
