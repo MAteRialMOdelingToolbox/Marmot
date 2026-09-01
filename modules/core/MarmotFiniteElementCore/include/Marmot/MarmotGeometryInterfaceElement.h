@@ -410,9 +410,19 @@ public:
    * @return Matrix mapping side nodal displacements to the projected full surface displacement gradient.
    *
    * @details
-   * The operator stores the full projected displacement gradient in row-major tensor order
+   * The operator stores the surface displacement gradient in row-major tensor order
    * `row = i * nDim + k`, where `i` is the displacement component and `k` is the gradient direction. It is not the
    * symmetric small-strain `B` matrix.
+   *
+   * Only the GRADIENT DIRECTION is projected: `B(i,k),(A,i) = gradN(j,A) T(j,k)`. The displacement component `i`
+   * is left unprojected, so the operator produces the surface gradient of the FULL displacement vector,
+   * `grad_s u = grad(u) . T`, and retains the in-plane derivative of the normal component.
+   *
+   * That is the measure MarmotInterfaceMaterialHypoElastic expects, since it forms the thin-layer gradient as
+   * `grad(u) = (1/h) [u] (x) n + <grad_s u>`, in which the normal displacement varying along the surface is a
+   * genuine layer shear. Projecting the displacement component as well (`T(i,m) gradN(j,A) T(j,k)`) would delete
+   * that term. The same formula is used for every `nDim`, so a plane-strain model and its 3D extrusion produce
+   * the same surface strain.
    */
   BSurfaceSized BSurfaceMatrix( const GradSized& gradN, const TensorDim& T ) const
   {
@@ -420,35 +430,19 @@ public:
     B.setZero();
 
     for ( int A = 0; A < nInterfaceNodes; ++A ) {
-      for ( int i = 0; i < nDim; ++i ) {
-        for ( int k = 0; k < nDim; ++k ) {
+      for ( int k = 0; k < nDim; ++k ) {
 
-          if constexpr ( nDim == 2 ) {
-            double value = 0.0;
+        double value = 0.0;
 
-            for ( int j = 0; j < nDim; ++j ) {
-              value += gradN( j, A ) * T( j, k );
-            }
+        for ( int j = 0; j < nDim; ++j ) {
+          value += gradN( j, A ) * T( j, k );
+        }
 
-            const int row = i * nDim + k;
-            const int col = A * nDim + i;
+        for ( int i = 0; i < nDim; ++i ) {
+          const int row = i * nDim + k;
+          const int col = A * nDim + i;
 
-            B( row, col ) = value;
-          }
-          else if constexpr ( nDim == 3 ) {
-            for ( int m = 0; m < nDim; ++m ) {
-              double value = 0.0;
-
-              for ( int j = 0; j < nDim; ++j ) {
-                value += T( i, m ) * gradN( j, A ) * T( j, k );
-              }
-
-              const int row = i * nDim + k;
-              const int col = A * nDim + m;
-
-              B( row, col ) = value;
-            }
-          }
+          B( row, col ) = value;
         }
       }
     }

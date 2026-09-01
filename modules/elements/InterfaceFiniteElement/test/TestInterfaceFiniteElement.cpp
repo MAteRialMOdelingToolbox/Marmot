@@ -383,60 +383,87 @@ void TestSingleInputFileElementGeometryMatrices()
   }
 }
 
-void TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling()
+void TestSurfaceGradientOperatorProjectsOnlyGradientDirection()
 {
-  std::cout << "\n--- TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling ---\n";
-
-  constexpr int nDim     = 3;
-  constexpr int nNodes   = 8;
-  constexpr int halfNDof = nDim * nNodes / 2;
-  constexpr int nTensor  = nDim * nDim;
-
-  auto element = makeSingleInputFileInterfaceElement();
-  element->initializeYourself();
+  std::cout << "\n--- TestSurfaceGradientOperatorProjectsOnlyGradientDirection ---\n";
 
   const double tol = 1e-12;
 
-  for ( const auto& qp : element->qps ) {
-    Eigen::Matrix< double, nTensor, halfNDof > BExpected;
-    BExpected.setZero();
+  // BSurfaceMatrix must build grad_s u = grad(u) . T: the GRADIENT DIRECTION is projected onto the
+  // tangent plane, the DISPLACEMENT COMPONENT is not. That keeps the in-plane derivative of the normal
+  // displacement, which MarmotInterfaceMaterialHypoElastic needs for the thin-layer gradient
+  // grad(u) = (1/h) [u] (x) n + <grad_s u>. The same formula must hold for every nDim, so that a
+  // plane-strain model and its 3D extrusion see the same surface strain.
+  auto checkOperator = [&]( const auto& element, int nDim, int nInterfaceNodes, const std::string& label ) {
+    for ( const auto& qp : element.qps ) {
 
-    for ( int A = 0; A < nNodes / 2; ++A ) {
-      for ( int i = 0; i < nDim; ++i ) {
+      bool differsFromFullyProjected = false;
+
+      for ( int A = 0; A < nInterfaceNodes; ++A ) {
         for ( int k = 0; k < nDim; ++k ) {
-          for ( int m = 0; m < nDim; ++m ) {
-            double value = 0.0;
 
-            for ( int j = 0; j < nDim; ++j )
-              value += qp.tangentProjection( i, m ) * qp.gradN( j, A ) * qp.tangentProjection( j, k );
+          double expected = 0.0;
+          for ( int j = 0; j < nDim; ++j )
+            expected += qp.gradN( j, A ) * qp.tangentProjection( j, k );
 
-            BExpected( i * nDim + k, A * nDim + m ) = value;
+          for ( int i = 0; i < nDim; ++i ) {
+            for ( int m = 0; m < nDim; ++m ) {
+
+              const double actual = qp.BmatSide( i * nDim + k, A * nDim + m );
+              const double wanted = ( i == m ) ? expected : 0.0;
+
+              throwExceptionOnFailure( std::abs( actual - wanted ) < tol,
+                                       label +
+                                         ": BmatSide must project the gradient direction only. "
+                                         "Entry (" +
+                                         std::to_string( i * nDim + k ) + "," + std::to_string( A * nDim + m ) +
+                                         ") is " + std::to_string( actual ) + ", expected " + std::to_string( wanted ) +
+                                         "." );
+
+              double fullyProjected = 0.0;
+              for ( int j = 0; j < nDim; ++j )
+                fullyProjected += qp.tangentProjection( i, m ) * qp.gradN( j, A ) * qp.tangentProjection( j, k );
+
+              differsFromFullyProjected = differsFromFullyProjected || std::abs( fullyProjected - wanted ) > tol;
+            }
           }
         }
       }
+
+      // Guard the regression: on this geometry the fully projected operator T(i,m) gradN(j,A) T(j,k) is a
+      // genuinely different matrix, so reintroducing it would fail the assertions above rather than pass
+      // vacuously.
+      throwExceptionOnFailure( differsFromFullyProjected,
+                               label + ": test geometry must distinguish the projected-component operator." );
     }
+  };
 
-    assertMatrixNear( qp.BmatSide,
-                      BExpected,
-                      tol,
-                      "Projected 3D BmatSide must retain displacement-component coupling." );
+  {
+    auto element = makeSingleInputFileInterfaceElement();
+    element->initializeYourself();
+    checkOperator( *element, 3, 4, "3D interface" );
+  }
 
-    bool hasOffComponentCoupling = false;
-    for ( int A = 0; A < nNodes / 2; ++A ) {
-      for ( int i = 0; i < nDim; ++i ) {
-        for ( int m = 0; m < nDim; ++m ) {
-          if ( i == m )
-            continue;
+  {
+    // 45 degree interface: the tangent is not axis aligned, so a purely normal nodal displacement has a
+    // nonzero in-plane derivative and the two candidate operators disagree.
+    constexpr int nDim   = 2;
+    constexpr int nNodes = 4;
 
-          for ( int k = 0; k < nDim; ++k )
-            hasOffComponentCoupling = hasOffComponentCoupling ||
-                                      std::abs( BExpected( i * nDim + k, A * nDim + m ) ) > tol;
-        }
-      }
-    }
+    auto element = std::make_unique<
+      InterfaceFiniteElement< nDim, nNodes > >( 1,
+                                                FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
-    throwExceptionOnFailure( hasOffComponentCoupling,
-                             "Test geometry must exercise off-component projected-gradient coupling." );
+    static std::array< double, nDim* nNodes > nodeCoordsVec = { 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0 };
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+    static std::array< double, 1 > elPropsVec = { 1.0 };
+    ElementProperties              elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+    element->assignProperty( elProps );
+
+    element->initializeYourself();
+    checkOperator( *element, 2, 2, "2D angled interface" );
   }
 }
 
@@ -873,7 +900,7 @@ int main()
                                                        TestUnsupportedInertiaThrows,
                                                        TestStressUpdateFailureRequestsSmallerTimeStep,
                                                        TestSingleInputFileElementGeometryMatrices,
-                                                       TestProjectedBSurfaceMatrixKeepsDisplacementComponentCoupling,
+                                                       TestSurfaceGradientOperatorProjectsOnlyGradientDirection,
                                                        TestSingleInputFileElementMaterialResponseIsFinite,
                                                        TestSingleInputFileElementGaussPointStiffnessAndResidual,
                                                        TestSingleInputFileElementRigidTranslationGivesZeroResidual,
