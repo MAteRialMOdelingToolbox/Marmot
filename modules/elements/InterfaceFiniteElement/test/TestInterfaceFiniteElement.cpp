@@ -2,6 +2,7 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotTesting.h"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <functional>
@@ -15,6 +16,33 @@ using namespace Marmot::Testing;
 using namespace Marmot::Elements;
 
 namespace {
+
+  /**
+   * Records the characteristic element length seen at every computeStress call, then delegates.
+   * The element holds ONE material for all quadrature points, so the length of the current point
+   * has to be installed before each evaluation; this material makes that observable.
+   */
+  class LengthRecordingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
+  public:
+    LengthRecordingInterfaceMaterial()
+      : MarmotInterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
+    {
+    }
+
+    mutable std::vector< double > seenLengths;
+
+    void computeStress( State&               state,
+                        Tangents&            tangents,
+                        const Deformation&   deformation,
+                        const TimeIncrement& timeIncrement ) override
+    {
+      seenLengths.push_back( characteristicElementLength );
+      MarmotInterfaceMaterialHypoElastic::computeStress( state, tangents, deformation, timeIncrement );
+    }
+
+  private:
+    inline static const std::array< double, 3 > materialProperties = { 4000.0, 0.3, 0.01 };
+  };
 
   class FailingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
   public:
@@ -193,9 +221,7 @@ namespace {
     element->assignStateVars( stateVars.data(), stateVars.size() );
     element->initializeYourself();
 
-    for ( auto& qp : element->qps ) {
-      qp.material = std::make_unique< FailingInterfaceMaterial >();
-    }
+    element->material = std::make_unique< FailingInterfaceMaterial >();
 
     constexpr int                                     nElementDofs = 3 * 8;
     std::array< double, nElementDofs >                QTotal{};
@@ -273,7 +299,7 @@ namespace {
                                                                    dSurfaceStrainGp.data(),
                                                                    qp.normal.data() };
       MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time[0], dT };
-      qp.material->computeStress( state, tangents, deformation, timeIncrement );
+      element.material->computeStress( state, tangents, deformation, timeIncrement );
 
       const double J0xW = integrationWeight( qp );
 
@@ -786,7 +812,7 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
                                                                          dSurfaceStrain3d.data(),
                                                                          normal3d.data() };
     MarmotInterfaceMaterialHypoElastic::TimeIncrement materialTimeIncrement{ time, dT };
-    qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+    element->material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
     Eigen::Matrix< double, nDim, 1 >                           force2d;
     Eigen::Matrix< double, nTensor, 1 >                        surfaceStress2d;
@@ -894,6 +920,86 @@ void TestAngledInterfaceKinematics()
   }
 }
 
+void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
+{
+  std::cout << "\n--- TestSharedMaterialSeesEachQuadraturePointCharacteristicLength ---\n";
+
+  constexpr int nDim      = 3;
+  constexpr int nNodes    = 8;
+  constexpr int totalNDof = nDim * nNodes;
+
+  // An IRREGULAR quad. A parallelogram has a constant surface Jacobian, so its quadrature points
+  // all share one characteristic length and a shared material could not reveal a missing per-point
+  // update. This trapezoid makes sqrtDetG vary across the points.
+  auto element = std::make_unique<
+    InterfaceFiniteElement< nDim, nNodes > >( 7,
+                                              FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                              InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+
+  static std::array< double, nDim* nNodes > coordinates = {
+    0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+
+    0.0, 0.0, 0.1, 3.0, 0.0, 0.1, 1.0, 1.0, 0.1, 0.0, 1.0, 0.1,
+  };
+  element->assignNodeCoordinates( coordinates.data() );
+
+  static std::array< double, 1 > elPropsVec = { 1.0 };
+  ElementProperties              elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignProperty( elProps );
+
+  static std::array< double, 3 > materialProperties = { 4000.0, 0.3, 0.01 };
+  element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
+
+  std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+  element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element->initializeYourself();
+  element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+
+  std::vector< double > expectedLengths;
+  for ( const auto& qp : element->qps )
+    expectedLengths.push_back( qp.characteristicLength );
+
+  const double spread = *std::max_element( expectedLengths.begin(), expectedLengths.end() ) -
+                        *std::min_element( expectedLengths.begin(), expectedLengths.end() );
+
+  std::cout << "characteristic-length spread across quadrature points = " << spread << "\n";
+
+  throwExceptionOnFailure( spread > 1e-6,
+                           "Test geometry must have quadrature points of differing characteristic length, "
+                           "otherwise a shared material could not reveal a missing per-point update. spread = " +
+                             std::to_string( spread ) );
+
+  // swap in a material that records the length it is given at each evaluation; same base material and
+  // therefore the same state-variable layout
+  auto  recording   = std::make_unique< LengthRecordingInterfaceMaterial >();
+  auto* recorder    = recording.get();
+  element->material = std::move( recording );
+
+  std::vector< double > U( totalNDof, 0.0 );
+  std::vector< double > dU( totalNDof, 0.0 );
+  std::vector< double > Pe( totalNDof, 0.0 );
+  std::vector< double > Ke( totalNDof * totalNDof, 0.0 );
+
+  for ( int a = 4; a < nNodes; ++a )
+    dU[nDim * a + 0] = 1.0e-4;
+
+  double time = 0.0;
+  double dT   = 1.0;
+
+  element->computeKernels( U.data(), dU.data(), Pe.data(), Ke.data(), time, dT );
+
+  throwExceptionOnFailure( recorder->seenLengths.size() == expectedLengths.size(),
+                           "Material was not evaluated once per quadrature point: " +
+                             std::to_string( recorder->seenLengths.size() ) + " calls for " +
+                             std::to_string( expectedLengths.size() ) + " points." );
+
+  for ( size_t q = 0; q < expectedLengths.size(); ++q )
+    throwExceptionOnFailure( std::abs( recorder->seenLengths[q] - expectedLengths[q] ) < 1e-12,
+                             "Shared material saw the wrong characteristic length at quadrature point " +
+                               std::to_string( q ) + ": got " + std::to_string( recorder->seenLengths[q] ) +
+                               ", expected " + std::to_string( expectedLengths[q] ) + "." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
@@ -906,7 +1012,8 @@ int main()
                                                        TestSingleInputFileElementRigidTranslationGivesZeroResidual,
                                                        TestAssignStateVarsPreservesHistoryAcrossIncrements,
                                                        TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial,
-                                                       TestAngledInterfaceKinematics };
+                                                       TestAngledInterfaceKinematics,
+                                                       TestSharedMaterialSeesEachQuadraturePointCharacteristicLength };
 
   executeTestsAndCollectExceptions( tests );
 

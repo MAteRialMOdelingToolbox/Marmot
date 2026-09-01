@@ -224,7 +224,13 @@ namespace Marmot::Elements {
       };
 
       std::unique_ptr< QPStateVarManager > managedStateVars;
-      std::unique_ptr< Material >          material;
+
+      /**
+       * @brief Characteristic length of this quadrature point, forwarded to the material before each
+       * stress evaluation. It varies between quadrature points on a distorted interface, so it cannot
+       * live in the shared material object.
+       */
+      double characteristicLength = 0.0;
 
       /**
        * @brief Number of non-material state variables stored at this quadrature point.
@@ -236,10 +242,13 @@ namespace Marmot::Elements {
 
       /**
        * @brief Total number of state variables including material state.
+       *
+       * @param nMaterialStateVars Number of state variables the element's material requires. The
+       * material is owned by the element, not by the quadrature point, so its size is passed in.
        */
-      int getNumberOfRequiredStateVars()
+      int getNumberOfRequiredStateVars( int nMaterialStateVars )
       {
-        return getNumberOfRequiredStateVarsQuadraturePointOnly() + material->getNumberOfRequiredStateVars();
+        return getNumberOfRequiredStateVarsQuadraturePointOnly() + nMaterialStateVars;
       }
 
       /**
@@ -276,6 +285,17 @@ namespace Marmot::Elements {
     };
 
     std::vector< QuadraturePoint > qps;
+
+    /**
+     * @brief The interface material, constructed once per element.
+     *
+     * All quadrature points of an element share one property set, and the material carries no
+     * per-quadrature-point state: the state variables are passed in by pointer and the characteristic
+     * length is set from QuadraturePoint::characteristicLength before every evaluation. Constructing
+     * one instance per quadrature point would repeat the base material's setup work, which is
+     * expensive for LinearViscoElasticWiechert.
+     */
+    std::unique_ptr< Material > material;
 
     /**
      * @brief Construct an interface finite element.
@@ -421,7 +441,7 @@ namespace Marmot::Elements {
                  static_cast< int >( qp.managedStateVars->materialStateVars.size() ) };
       }
 
-      return qp.material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
+      return material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
 
     /**
@@ -467,7 +487,9 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int InterfaceFiniteElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    const int nMaterialStateVars = material ? material->getNumberOfRequiredStateVars() : 0;
+
+    return qps[0].getNumberOfRequiredStateVars( nMaterialStateVars ) * qps.size();
   }
 
   template < int nDim, int nNodes >
@@ -522,12 +544,10 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
-    for ( auto& qp : qps ) {
-      qp.material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( section.materialName,
-                                                                            section.materialProperties,
-                                                                            section.nMaterialProperties,
-                                                                            elLabel );
-    }
+    material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( section.materialName,
+                                                                       section.materialProperties,
+                                                                       section.nMaterialProperties,
+                                                                       elLabel );
   }
 
   template < int nDim, int nNodes >
@@ -535,12 +555,10 @@ namespace Marmot::Elements {
                                                                const double*      materialProperties,
                                                                int                nMaterialProperties )
   {
-    for ( auto& qp : qps ) {
-      qp.material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
-                                                                            materialProperties,
-                                                                            nMaterialProperties,
-                                                                            elLabel );
-    }
+    material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
+                                                                       materialProperties,
+                                                                       nMaterialProperties,
+                                                                       elLabel );
   }
 
   template < int nDim, int nNodes >
@@ -575,13 +593,11 @@ namespace Marmot::Elements {
 
       qp.J0xW = qp.weight * qp.sqrtDetG * thickness;
 
-      if ( qp.material ) {
-        if constexpr ( nDim == 3 ) {
-          qp.material->setCharacteristicElementLength( std::sqrt( qp.sqrtDetG ) );
-        }
-        else if constexpr ( nDim == 2 ) {
-          qp.material->setCharacteristicElementLength( qp.sqrtDetG );
-        }
+      if constexpr ( nDim == 3 ) {
+        qp.characteristicLength = std::sqrt( qp.sqrtDetG );
+      }
+      else if constexpr ( nDim == 2 ) {
+        qp.characteristicLength = qp.sqrtDetG;
       }
     }
   }
@@ -619,6 +635,10 @@ namespace Marmot::Elements {
       dSurface_strain_GPs.template segment< nTensor >( 0 )       = Bside * dQTop;
       dSurface_strain_GPs.template segment< nTensor >( nTensor ) = Bside * dQBottom;
 
+      // the shared material carries no per-quadrature-point state, so the characteristic length of
+      // THIS point has to be installed before every evaluation
+      material->setCharacteristicElementLength( qp.characteristicLength );
+
       ForceSized         force          = qp.managedStateVars->force;
       SurfaceStressSized surface_stress = qp.managedStateVars->surfaceStress;
 
@@ -640,7 +660,7 @@ namespace Marmot::Elements {
         Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
         Material::TimeIncrement materialTimeIncrement{ time, dT };
 
-        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+        material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
       }
       else if constexpr ( nDim == 2 ) {
         using namespace Marmot;
@@ -684,7 +704,7 @@ namespace Marmot::Elements {
         Material::Deformation   materialDeformation{ dU3d.data(), dSurfaceStrain3d.data(), normal3d.data() };
         Material::TimeIncrement materialTimeIncrement{ time, dT };
 
-        qp.material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+        material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
         const Fastor::Tensor< double, 2 >          force2d         = reduceTo2D< U >( force3d );
         const Fastor::Tensor< double, 2, 2 >       surfaceStress2d = reduceTo2D< U, U >( surfaceStress3d );
@@ -721,8 +741,8 @@ namespace Marmot::Elements {
     switch ( state ) {
     case MarmotElement::MarmotMaterialInitialization: {
       for ( QuadraturePoint& qp : qps ) {
-        qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                         qp.managedStateVars->materialStateVars.size() );
+        material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
+                                      qp.managedStateVars->materialStateVars.size() );
       }
       break;
     }
