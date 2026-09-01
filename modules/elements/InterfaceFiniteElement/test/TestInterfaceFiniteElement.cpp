@@ -292,7 +292,7 @@ namespace {
       throwExceptionOnFailure( Y.allFinite(),
                                "Direct material Y tangent contains nan or inf at qp " + std::to_string( q ) );
 
-      const Eigen::VectorXd Pqp = -Njump.transpose() * force * J0xW - Bavg.transpose() * surfaceStress * J0xW;
+      const Eigen::VectorXd Pqp = Njump.transpose() * force * J0xW + Bavg.transpose() * surfaceStress * J0xW;
 
       expected.qpForce.emplace_back( force );
       expected.qpSurfaceStress.emplace_back( surfaceStress );
@@ -561,7 +561,7 @@ void TestSingleInputFileElementGaussPointStiffnessAndResidual()
                                   ( 2.0 * eps );
   }
 
-  const double err = ( KeActual + KeFiniteDifference ).template lpNorm< Eigen::Infinity >();
+  const double err = ( KeActual - KeFiniteDifference ).template lpNorm< Eigen::Infinity >();
 
   const double fdNorm = KeFiniteDifference.template lpNorm< Eigen::Infinity >();
 
@@ -569,21 +569,21 @@ void TestSingleInputFileElementGaussPointStiffnessAndResidual()
 
   Eigen::Index maxRow         = 0;
   Eigen::Index maxCol         = 0;
-  const double maxAbsMismatch = ( KeActual + KeFiniteDifference ).cwiseAbs().maxCoeff( &maxRow, &maxCol );
+  const double maxAbsMismatch = ( KeActual - KeFiniteDifference ).cwiseAbs().maxCoeff( &maxRow, &maxCol );
 
-  std::cout << "max |Ke + KeFD| = " << maxAbsMismatch << " at (" << maxRow << ", " << maxCol << ")\n";
+  std::cout << "max |Ke - KeFD| = " << maxAbsMismatch << " at (" << maxRow << ", " << maxCol << ")\n";
   std::cout << "KeActual(" << maxRow << "," << maxCol << ") = " << KeActual( maxRow, maxCol ) << "\n";
   std::cout << "KeFiniteDifference(" << maxRow << "," << maxCol << ") = " << KeFiniteDifference( maxRow, maxCol )
             << "\n";
 
   std::cout << "KeActual row " << maxRow << ": " << KeActual.row( maxRow ) << "\n";
   std::cout << "KeFD row " << maxRow << ": " << KeFiniteDifference.row( maxRow ) << "\n";
-  std::cout << "KeActual + KeFD row " << maxRow << ": " << ( KeActual + KeFiniteDifference ).row( maxRow ) << "\n";
+  std::cout << "KeActual - KeFD row " << maxRow << ": " << ( KeActual - KeFiniteDifference ).row( maxRow ) << "\n";
 
   std::cout << "stiffness finite-difference check: "
-            << "relative error for Ke = -dPe/ddU is " << relErr << "\n";
+            << "relative error for Ke = +dPe/ddU is " << relErr << "\n";
 
-  throwExceptionOnFailure( relErr < 1e-5, "Assembled stiffness is not consistent with Ke = -dPe/ddU." );
+  throwExceptionOnFailure( relErr < 1e-5, "Assembled stiffness is not consistent with Ke = +dPe/ddU." );
 }
 
 void TestSingleInputFileElementRigidTranslationGivesZeroResidual()
@@ -807,8 +807,8 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
     expectedForce.emplace_back( force2d );
     expectedSurfaceStress.emplace_back( surfaceStress2d );
 
-    expectedPe -= Njump.transpose() * force2d * qp.J0xW;
-    expectedPe -= Bavg.transpose() * surfaceStress2d * qp.J0xW;
+    expectedPe += Njump.transpose() * force2d * qp.J0xW;
+    expectedPe += Bavg.transpose() * surfaceStress2d * qp.J0xW;
 
     expectedKe += ( Njump.transpose() * Q2d * Njump + Bavg.transpose() * Z2d * Bavg + Bavg.transpose() * Y2d * Bavg +
                     Njump.transpose() * H2d * Bavg + Bavg.transpose() * H2d.transpose() * Njump ) *

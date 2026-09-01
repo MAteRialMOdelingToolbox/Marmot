@@ -385,7 +385,11 @@ namespace Marmot::Elements {
     void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
     /**
-     * @brief Assemble residual and tangent for one increment.
+     * @brief Assemble internal force and tangent for one increment.
+     *
+     * @param Pe Internal force vector (accumulated), same convention as every other element:
+     *           Pe = +Pint, so that Ke = +dPe/dQ. External loads are accumulated separately
+     *           by computeDistributedLoad() and computeBodyForce() into Pext.
      */
     void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
@@ -717,8 +721,8 @@ namespace Marmot::Elements {
       qp.managedStateVars->displacement += dU_GPs;
       qp.managedStateVars->surfaceStrain += dSurface_strain_GPs;
 
-      Pe -= Njump.transpose() * force * qp.J0xW;
-      Pe -= Bavg.transpose() * surface_stress * qp.J0xW;
+      Pe += Njump.transpose() * force * qp.J0xW;
+      Pe += Bavg.transpose() * surface_stress * qp.J0xW;
 
       Ke += ( Njump.transpose() * Q_ij * Njump + Bavg.transpose() * Z_ijkl * Bavg + Bavg.transpose() * Y_ijkl * Bavg +
               Njump.transpose() * H_ijk * Bavg + Bavg.transpose() * H_ijk.transpose() * Njump ) *
