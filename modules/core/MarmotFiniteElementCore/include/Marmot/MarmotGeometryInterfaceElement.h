@@ -242,20 +242,20 @@ public:
   {
     const SideCoordinateVector xSide = getSideCoordinates( side );
 
-    SurfaceJacobianSized J;
-    J.setZero();
+    /*
+     * The shared dynamic Jacobian is documented as "not necessarily square" and is what
+     * BoundaryElement uses for the same nDim x (nDim-1) surface case.
+     *
+     * The arguments must be converted to dynamic types first. FiniteElement::Jacobian is
+     * overloaded, and on fixed-size arguments the templated overload wins: it deduces
+     * nDim and nNodes from dNdXi and returns a SQUARE nDim x nDim Jacobian, which is not
+     * what a surface needs. Passing dynamic types selects the non-square overload, exactly
+     * as BoundaryElement does.
+     */
+    const Eigen::MatrixXd dNdXiDynamic = dN;
+    const Eigen::VectorXd xSideDynamic = xSide;
 
-    for ( int A = 0; A < nInterfaceNodes; ++A ) {
-      for ( int i = 0; i < nDim; ++i ) {
-        const double XAi = xSide( A * nDim + i );
-
-        for ( int alpha = 0; alpha < nXi; ++alpha ) {
-          J( i, alpha ) += XAi * dN( alpha, A );
-        }
-      }
-    }
-
-    return J;
+    return Marmot::FiniteElement::Jacobian( dNdXiDynamic, xSideDynamic );
   }
 
   /**
@@ -364,19 +364,7 @@ public:
    * @param N_ Scalar shape-function row vector.
    * @return Matrix mapping side nodal displacements to interpolated displacement.
    */
-  NMatrixSized NMatrix( const NSized& N_ ) const
-  {
-    NMatrixSized Nmat;
-    Nmat.setZero();
-
-    for ( int A = 0; A < nInterfaceNodes; ++A ) {
-      for ( int i = 0; i < nDim; ++i ) {
-        Nmat( i, A * nDim + i ) = N_( 0, A );
-      }
-    }
-
-    return Nmat;
-  }
+  NMatrixSized NMatrix( const NSized& N_ ) const { return Marmot::FiniteElement::NB< nDim, nInterfaceNodes >( N_ ); }
 
   /**
    * @brief Build the displacement-jump interpolation matrix.
