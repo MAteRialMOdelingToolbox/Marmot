@@ -555,8 +555,7 @@ namespace Marmot::Elements {
     const double thickness = elementProperties.size() > 0 ? elementProperties[0] : 1.0;
 
     for ( QuadraturePoint& qp : qps ) {
-      const bool fullyProjectedB = ( nDim == 3 );
-      const auto geom            = this->evaluateAt( qp.xi, 0, fullyProjectedB );
+      const auto geom = this->evaluateAt( qp.xi, 0 );
 
       qp.N                 = geom.N;
       qp.dNdXi             = geom.dNdXi;

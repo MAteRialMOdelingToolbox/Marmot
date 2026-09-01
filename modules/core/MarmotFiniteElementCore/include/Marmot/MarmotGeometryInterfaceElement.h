@@ -472,21 +472,6 @@ public:
   }
 
   /**
-   * @brief Backward-compatible entry point for the projected surface displacement-gradient matrix.
-   *
-   * @param gradN Physical surface gradients of scalar shape functions.
-   * @param T Tangent projection tensor.
-   * @return Same result as BSurfaceMatrix().
-   *
-   * @details
-   * Kept as a source-compatible alias for call sites that still expose a `fullyProjectedB` option.
-   */
-  BSurfaceSized BSurfaceMatrixFullyProjected( const GradSized& gradN, const TensorDim& T ) const
-  {
-    return BSurfaceMatrix( gradN, T );
-  }
-
-  /**
    * @struct QuadratureGeometry
    * @brief Bundle of geometry quantities evaluated at one interface quadrature point.
    *
@@ -541,16 +526,12 @@ public:
    * @param xi Parametric coordinates of the quadrature point.
    * @param sideForGeometry Interface side used for the surface Jacobian and derived geometry terms. Use `0` for
    * bottom-side geometry and `1` for top-side geometry.
-   * @param fullyProjectedB Legacy flag retained for source compatibility. Both values currently produce the projected
-   * surface displacement-gradient operator.
    * @return Fully populated QuadratureGeometry bundle.
    *
    * @throws std::invalid_argument If `sideForGeometry` is neither `0` nor `1`.
    * @throws std::runtime_error If the selected side is geometrically degenerate.
    */
-  QuadratureGeometry evaluateAt( const XiSized& xi,
-                                 const int      sideForGeometry = 0,
-                                 const bool     fullyProjectedB = false ) const
+  QuadratureGeometry evaluateAt( const XiSized& xi, const int sideForGeometry = 0 ) const
   {
     QuadratureGeometry q;
 
@@ -571,10 +552,7 @@ public:
     q.NmatSide = NMatrix( q.N );
     q.NmatJump = NJumpMatrix( q.N );
 
-    if ( fullyProjectedB )
-      q.BmatSide = BSurfaceMatrixFullyProjected( q.gradN, q.tangentProjection );
-    else
-      q.BmatSide = BSurfaceMatrix( q.gradN, q.tangentProjection );
+    q.BmatSide = BSurfaceMatrix( q.gradN, q.tangentProjection );
 
     q.BmatAverage = BAverageSurfaceMatrix( q.BmatSide );
 
