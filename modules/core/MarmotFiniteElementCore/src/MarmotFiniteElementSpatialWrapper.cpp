@@ -188,7 +188,7 @@ void MarmotElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes l
   MatrixXd Ke_Projected( projectedSize, projectedSize );
 
   childElement
-    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, QTotal, load, time, dT );
+    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, load, QTotal, time, dT );
 
   Map< VectorXd > P_Unprojected( P_, unprojectedSize );
   P_Unprojected = P.transpose() * P_Projected;
