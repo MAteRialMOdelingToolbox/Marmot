@@ -38,6 +38,9 @@ namespace Marmot {
     using Tensor333d    = Fastor::Tensor< double, 3, 3, 3 >;
     using Tensor3333d   = Fastor::Tensor< double, 3, 3, 3, 3 >;
     using Tensor333333d = Fastor::Tensor< double, 3, 3, 3, 3, 3, 3 >;
+    using Tensor6d      = Fastor::Tensor< double, 6 >;
+    using Tensor9d      = Fastor::Tensor< double, 9 >;
+    using Tensor18d     = Fastor::Tensor< double, 18 >;
 
     using TensorMap33d = Fastor::TensorMap< double, 3, 3 >;
 
@@ -49,21 +52,34 @@ namespace Marmot {
     using Tensor333t = Fastor::Tensor< T, 3, 3, 3 >;
     template < typename T >
     using Tensor3333t = Fastor::Tensor< T, 3, 3, 3, 3 >;
+    template < typename T >
+    using Tensor6t = Fastor::Tensor< T, 6 >;
+    template < typename T >
+    using Tensor9t = Fastor::Tensor< T, 9 >;
+    template < typename T >
+    using Tensor18t = Fastor::Tensor< T, 18 >;
 
     using TensorMap3d    = Fastor::TensorMap< double, 3 >;
     using TensorMap33d   = Fastor::TensorMap< double, 3, 3 >;
     using TensorMap333d  = Fastor::TensorMap< double, 3, 3, 3 >;
     using TensorMap3333d = Fastor::TensorMap< double, 3, 3, 3, 3 >;
+    using TensorMap6d    = Fastor::TensorMap< double, 6 >;
+    using TensorMap9d    = Fastor::TensorMap< double, 9 >;
+    using TensorMap18d   = Fastor::TensorMap< double, 18 >;
 
-    using Tensor9d  = Fastor::Tensor< double, 9 >;
+    using Tensor93d = Fastor::Tensor< double, 9, 3 >;
+    using Tensor39d = Fastor::Tensor< double, 3, 9 >;
     using Tensor99d = Fastor::Tensor< double, 9, 9 >;
 
     template < typename T >
-    using Tensor9t = Fastor::Tensor< T, 9 >;
+    using Tensor93t = Fastor::Tensor< T, 9, 3 >;
+    template < typename T >
+    using Tensor39t = Fastor::Tensor< T, 3, 9 >;
     template < typename T >
     using Tensor99t = Fastor::Tensor< T, 9, 9 >;
 
-    using TensorMap9d  = Fastor::TensorMap< double, 9 >;
+    using TensorMap93d = Fastor::TensorMap< double, 9, 3 >;
+    using TensorMap39d = Fastor::TensorMap< double, 3, 9 >;
     using TensorMap99d = Fastor::TensorMap< double, 9, 9 >;
 
     namespace Spatial3D {
@@ -104,8 +120,14 @@ namespace Marmot {
 
     using A      = Fastor::Index< A_ >;
     using Ai     = Fastor::Index< A_, i_ >;
+    using AiBj   = Fastor::Index< A_, i_, B_, j_ >;
+    using AimB   = Fastor::Index< A_, i_, m_, B_ >;
+    using Aimn   = Fastor::Index< A_, i_, m_, n_ >;
     using AB     = Fastor::Index< A_, B_ >;
+    using ABj    = Fastor::Index< A_, B_, j_ >;
+    using Am     = Fastor::Index< A_, m_ >;
     using B      = Fastor::Index< B_ >;
+    using Bij    = Fastor::Index< B_, i_, j_ >;
     using IJ     = Fastor::Index< I_, J_ >;
     using IJKL   = Fastor::Index< I_, J_, K_, L_ >;
     using IJML   = Fastor::Index< I_, J_, M_, L_ >;
@@ -149,6 +171,7 @@ namespace Marmot {
     using Pm     = Fastor::Index< P_, m_ >;
     using i      = Fastor::Index< i_ >;
     using iA     = Fastor::Index< i_, A_ >;
+    using iABj   = Fastor::Index< i_, A_, B_, j_ >;
     using iAkB   = Fastor::Index< i_, A_, k_, B_ >;
     using iB     = Fastor::Index< i_, B_ >;
     using iI     = Fastor::Index< i_, I_ >;
@@ -169,6 +192,7 @@ namespace Marmot {
     using iN     = Fastor::Index< i_, N_ >;
     using iNL    = Fastor::Index< i_, N_, L_ >;
     using ij     = Fastor::Index< i_, j_ >;
+    using ijA    = Fastor::Index< i_, j_, A_ >;
     using ijB    = Fastor::Index< i_, j_, B_ >;
     using ijKJ   = Fastor::Index< i_, j_, K_, J_ >;
     using ijKL   = Fastor::Index< i_, j_, K_, L_ >;
@@ -225,16 +249,21 @@ namespace Marmot {
     using lB     = Fastor::Index< l_, B_ >;
     using lm     = Fastor::Index< l_, m_ >;
     using m      = Fastor::Index< m_ >;
+    using mij    = Fastor::Index< m_, i_, j_ >;
     using mK     = Fastor::Index< m_, K_ >;
     using mLl    = Fastor::Index< m_, L_, l_ >;
     using mj     = Fastor::Index< m_, j_ >;
     using mjL    = Fastor::Index< m_, j_, L_ >;
     using mn     = Fastor::Index< m_, n_ >;
+    using mnBj   = Fastor::Index< m_, n_, B_, j_ >;
     using mnKL   = Fastor::Index< m_, n_, K_, L_ >;
     using mnij   = Fastor::Index< m_, n_, i_, j_ >;
     using mnkB   = Fastor::Index< m_, n_, k_, B_ >;
     using mnkL   = Fastor::Index< m_, n_, k_, L_ >;
     using nB     = Fastor::Index< n_, B_ >;
+    using nkl    = Fastor::Index< n_, k_, l_ >;
+    using mo     = Fastor::Index< m_, o_ >;
+    using okl    = Fastor::Index< o_, k_, l_ >;
 
     using ijklmn = Fastor::Index< i_, j_, k_, l_, m_, n_ >;
 
@@ -248,13 +277,17 @@ namespace Marmot {
     using to_iIKL   = Fastor::OIndex< i_, I_, K_, L_ >;
     using to_iIjJ   = Fastor::OIndex< i_, I_, j_, J_ >;
     using to_iImn   = Fastor::OIndex< i_, I_, m_, n_ >;
+    using to_i      = Fastor::OIndex< i_ >;
+    using to_iBj    = Fastor::OIndex< i_, B_, j_ >;
     using to_ij     = Fastor::OIndex< i_, j_ >;
+    using to_ijB    = Fastor::OIndex< i_, j_, B_ >;
     using to_ijIJ   = Fastor::OIndex< i_, j_, I_, J_ >;
     using to_ijKL   = Fastor::OIndex< i_, j_, K_, L_ >;
     using to_ijL    = Fastor::OIndex< i_, j_, L_ >;
     using to_ijLk   = Fastor::OIndex< i_, j_, L_, k_ >;
     using to_ijLm   = Fastor::OIndex< i_, j_, L_, m_ >;
     using to_ijk    = Fastor::OIndex< i_, j_, k_ >;
+    using to_ikl    = Fastor::OIndex< i_, k_, l_ >;
     using to_ijkK   = Fastor::OIndex< i_, j_, k_, K_ >;
     using to_ijkL   = Fastor::OIndex< i_, j_, k_, L_ >;
     using to_ijKl   = Fastor::OIndex< i_, j_, K_, l_ >;
@@ -264,9 +297,17 @@ namespace Marmot {
     using to_jAB    = Fastor::OIndex< j_, A_, B_ >;
     using to_jAkB   = Fastor::OIndex< j_, A_, k_, B_ >;
     using to_ji     = Fastor::OIndex< j_, i_ >;
+    using to_jk     = Fastor::OIndex< j_, k_ >;
     using to_jikL   = Fastor::OIndex< j_, i_, k_, L_ >;
     using to_jikl   = Fastor::OIndex< j_, i_, k_, l_ >;
     using to_jkiB   = Fastor::OIndex< j_, k_, i_, B_ >;
+    using to_AB     = Fastor::OIndex< A_, B_ >;
+    using to_ABj    = Fastor::OIndex< A_, B_, j_ >;
+    using to_AiBj   = Fastor::OIndex< A_, i_, B_, j_ >;
+    using to_Aij    = Fastor::OIndex< A_, i_, j_ >;
+    using to_AimB   = Fastor::OIndex< A_, i_, m_, B_ >;
+    using to_AnBj   = Fastor::OIndex< A_, n_, B_, j_ >;
+    using to_ik     = Fastor::OIndex< i_, k_ >;
     using to_kK     = Fastor::OIndex< k_, K_ >;
     using to_kL     = Fastor::OIndex< k_, L_ >;
     using to_ijklmn = Fastor::OIndex< i_, j_, k_, l_, m_, n_ >;

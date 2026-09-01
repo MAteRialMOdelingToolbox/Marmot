@@ -24,7 +24,13 @@
  */
 
 #pragma once
+#include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+#include "autodiff/forward/real.hpp"
+
+#include <cmath>
+#include <functional>
 
 namespace Marmot {
 
@@ -82,6 +88,59 @@ namespace Marmot {
           return val;
         }
       } // namespace ComplianceFunctions
+
+      namespace RelaxationFunctions {
+
+        /**
+         * @brief Power-law relaxation function.
+         *
+         * Computes the relaxation function
+         * \f[
+         *   \Psi(\tau) = m \, \tau^{-n}.
+         * \f]
+         *
+         * @tparam T_ Scalar or autodiff type of the argument.
+         * @param[in] tau Relaxation time or evaluation point.
+         * @param[in] m Scaling factor.
+         * @param[in] n Positive exponent controlling the relaxation rate.
+         * @return The relaxation-function value \f$\Psi(\tau)\f$.
+         */
+        template < typename T_ >
+        T_ powerLaw( T_ tau, double m, double n )
+        {
+          return m * pow( tau, -n );
+        }
+
+      } // namespace RelaxationFunctions
+
+      namespace DiscreteSpectrum {
+
+        using Properties        = Eigen::VectorXd;
+        using mapProperties     = Eigen::Map< Properties >;
+        using StateVarMatrix    = Eigen::Matrix< double, 6, Eigen::Dynamic >;
+        using mapStateVarMatrix = Eigen::Map< StateVarMatrix >;
+
+        enum class PostWidderCoefficientSign { Positive, Negative };
+
+        template < int k >
+        double evaluatePostWidderFormula(
+          std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > function,
+          double                                                                      tau,
+          PostWidderCoefficientSign                                                   coefficientSign )
+        {
+          autodiff::Real< k, double > evaluationTime( tau * k );
+          double coefficient = std::pow( -tau * k, k ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
+          if ( coefficientSign == PostWidderCoefficientSign::Negative )
+            coefficient *= -1.;
+          return coefficient *
+                 autodiff::derivatives( function, autodiff::along( 1. ), autodiff::at( evaluationTime ) )[k];
+        }
+
+        Properties generateLogarithmicTimes( int n, double min, double spacing );
+
+        void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta );
+
+      } // namespace DiscreteSpectrum
     }   // namespace Viscoelasticity
   }     // namespace ContinuumMechanics
 } // namespace Marmot

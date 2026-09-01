@@ -147,6 +147,55 @@ auto testDyadicProduct()
                            MakeString() << __PRETTY_FUNCTION__ << " Error in in dyadic product." );
 }
 
+auto testTensorMatrixConversions()
+{
+  Fastor::Tensor< double, 3, 3 >       tensor2D;
+  Fastor::Tensor< double, 3, 3, 3 >    tensor3D;
+  Fastor::Tensor< double, 3, 3, 3, 3 > tensor4D;
+
+  for ( int i = 0; i < 3; ++i )
+    for ( int j = 0; j < 3; ++j ) {
+      tensor2D( i, j ) = 10 * i + j;
+
+      for ( int k = 0; k < 3; ++k ) {
+        tensor3D( i, j, k ) = 100 * i + 10 * j + k;
+
+        for ( int l = 0; l < 3; ++l )
+          tensor4D( i, j, k, l ) = 1000 * i + 100 * j + 10 * k + l;
+      }
+    }
+
+  const auto matrix2D_3x3 = convert2ndOrderTensorToMatrix_3x3( tensor2D );
+  const auto matrix3D_9x3 = convert3rdOrderTensorToMatrix_9x3( tensor3D );
+  const auto matrix3D_3x9 = convert3rdOrderTensorToMatrix_3x9( tensor3D );
+  const auto matrix4D_9x9 = convert4thOrderTensorToMatrix_9x9( tensor4D );
+
+  for ( int i = 0; i < 3; ++i )
+    for ( int j = 0; j < 3; ++j ) {
+      throwExceptionOnFailure( checkIfEqual( tensor2D( i, j ), matrix2D_3x3( i, j ) ),
+                               MakeString() << __PRETTY_FUNCTION__ << " Error in 2nd-order tensor conversion." );
+
+      for ( int k = 0; k < 3; ++k ) {
+        const int row = 3 * i + j;
+        const int col = 3 * j + k;
+
+        throwExceptionOnFailure( checkIfEqual( tensor3D( i, j, k ), matrix3D_9x3( row, k ) ),
+                                 MakeString() << __PRETTY_FUNCTION__ << " Error in 3rd-order (9x3) conversion." );
+
+        throwExceptionOnFailure( checkIfEqual( tensor3D( i, j, k ), matrix3D_3x9( i, col ) ),
+                                 MakeString() << __PRETTY_FUNCTION__ << " Error in 3rd-order (3x9) conversion." );
+
+        for ( int l = 0; l < 3; ++l ) {
+          const int row4 = 3 * i + j;
+          const int col4 = 3 * k + l;
+
+          throwExceptionOnFailure( checkIfEqual( tensor4D( i, j, k, l ), matrix4D_9x9( row4, col4 ) ),
+                                   MakeString() << __PRETTY_FUNCTION__ << " Error in 4th-order (9x9) conversion." );
+        }
+      }
+    }
+}
+
 int main()
 {
 
@@ -158,7 +207,8 @@ int main()
                                                        testInitialize_dDeviatoricStress_dStress,
                                                        testInitialize_LeviCivita3D,
                                                        testInitialize_LeviCivita2D,
-                                                       testDyadicProduct };
+                                                       testDyadicProduct,
+                                                       testTensorMatrixConversions };
 
   executeTestsAndCollectExceptions( tests );
 
