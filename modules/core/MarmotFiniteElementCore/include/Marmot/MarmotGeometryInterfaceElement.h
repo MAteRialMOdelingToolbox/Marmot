@@ -158,18 +158,28 @@ public:
   /**
    * @brief Return the result-file geometry keyword for this interface interpolation.
    *
-   * @return `"iline2"` for 2D line interfaces and `"iquad4"` for 3D quadrilateral interfaces.
+   * @return `"bar2"` for 2D line interfaces and `"hexa8"` for 3D quadrilateral interfaces.
+   *
+   * @details
+   * These are EnSight element names, not the computational interface shape. EnSight and ParaView do not
+   * understand an `"iline2"`/`"iquad4"` keyword, so a result file names the standard cell spanning the
+   * same nodes: a 3D interface writes its eight nodes as `"hexa8"`, a 2D interface as `"bar2"`. The
+   * element itself remains an interface element; only the geometry keyword written to result files is
+   * affected.
+   *
+   * A new interface interpolation is added by extending this map, next to the existing entries. The
+   * lookup uses at(), so an unmapped shape throws rather than writing an empty keyword to the file.
    */
   std::string getElementShape() const
   {
     using namespace Marmot::FiniteElement;
 
-    static std::map< ElementShapes, std::string > shapes = {
-      { Bar2, "iline2" },
-      { Quad4, "iquad4" },
+    static const std::map< ElementShapes, std::string > shapes = {
+      { Bar2, "bar2" },
+      { Quad4, "hexa8" },
     };
 
-    return shapes[this->shape];
+    return shapes.at( this->shape );
   }
 
   /**

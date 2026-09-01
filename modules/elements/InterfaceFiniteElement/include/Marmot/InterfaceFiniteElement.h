@@ -328,30 +328,8 @@ namespace Marmot::Elements {
 
     int getNDofPerElement() { return sizeLoadVector; }
 
-    /*
-     * Important:
-     * ParentGeometryElement::getElementShape() returns the computational
-     * interface shape, e.g. "iquad4".
-     *
-     * EnSight/ParaView do not understand "iquad4" as a geometry keyword.
-     * Therefore, for output/visualization we map interface elements to valid
-     * EnSight element names.
-     *
-     * The computational element remains an interface element. This only affects
-     * the geometry keyword written to result files.
-     */
-    std::string getElementShape()
-    {
-      if constexpr ( nDim == 3 && nNodes == 8 ) {
-        return "hexa8";
-      }
-      else if constexpr ( nDim == 2 && nNodes == 4 ) {
-        return "bar2";
-      }
-      else {
-        return ParentGeometryElement::getElementShape();
-      }
-    }
+    /** @brief Result-file geometry keyword, delegated to the geometry element. */
+    std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
 
     /**
      * @brief Assign element state-variable memory to quadrature points.

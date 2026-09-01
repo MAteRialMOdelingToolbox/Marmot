@@ -1000,6 +1000,35 @@ void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
                                ", expected " + std::to_string( expectedLengths[q] ) + "." );
 }
 
+void TestElementShapeKeywordsAreEnSightNames()
+{
+  std::cout << "\n--- TestElementShapeKeywordsAreEnSightNames ---\n";
+
+  // The result-file keyword is an EnSight cell name spanning the element's nodes, not the
+  // computational interface shape: EnSight and ParaView reject "iquad4"/"iline2". The element
+  // delegates to the geometry class, so the names live in one map there.
+  {
+    auto element = makeSingleInputFileInterfaceElement();
+    throwExceptionOnFailure( element->getElementShape() == "hexa8",
+                             "3D interface element must report the EnSight keyword \"hexa8\", got \"" +
+                               element->getElementShape() + "\"." );
+  }
+
+  {
+    constexpr int nDim   = 2;
+    constexpr int nNodes = 4;
+
+    auto element = std::make_unique<
+      InterfaceFiniteElement< nDim, nNodes > >( 1,
+                                                FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+
+    throwExceptionOnFailure( element->getElementShape() == "bar2",
+                             "2D interface element must report the EnSight keyword \"bar2\", got \"" +
+                               element->getElementShape() + "\"." );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
@@ -1013,7 +1042,8 @@ int main()
                                                        TestAssignStateVarsPreservesHistoryAcrossIncrements,
                                                        TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial,
                                                        TestAngledInterfaceKinematics,
-                                                       TestSharedMaterialSeesEachQuadraturePointCharacteristicLength };
+                                                       TestSharedMaterialSeesEachQuadraturePointCharacteristicLength,
+                                                       TestElementShapeKeywordsAreEnSightNames };
 
   executeTestsAndCollectExceptions( tests );
 
