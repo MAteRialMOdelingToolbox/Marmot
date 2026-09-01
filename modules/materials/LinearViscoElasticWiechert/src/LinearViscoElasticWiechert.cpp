@@ -52,6 +52,8 @@ namespace Marmot::Materials {
     stateLayout.add( "maxwellStateVars", 6 * nMaxwell );
     stateLayout.finalize();
 
+    unitStiffness = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0, nu );
+
     const double spacing = std::sqrt( 10. );
     relaxationTimes      = Wiechert::generateRelaxationTimes( static_cast< int >( nMaxwell ), minTau, spacing );
 
@@ -79,14 +81,12 @@ namespace Marmot::Materials {
     Eigen::Map< const Vector6d > strainIncrement( dStrain.data() );
 
     if ( ( strainIncrement.array() == 0.0 ).all() && timeInfo.dT == 0.0 ) {
-      tangent = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+      tangent = E * unitStiffness;
       return;
     }
 
     Eigen::Map< Wiechert::StateVarMatrix > maxwellStateVars( state.stateVars, 6, nMaxwell );
     const double                           dTimeDays = timeInfo.dT * timeToDays;
-
-    const Matrix6d unitStiffness = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0, nu );
 
     Vector6d maxwellStressIncrement = Vector6d::Zero();
     double   maxwellStiffness       = 0.0;
@@ -101,7 +101,10 @@ namespace Marmot::Materials {
 
     const double effectiveStiffness = E + zerothWiechertStiffness + maxwellStiffness;
 
-    tangent = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( effectiveStiffness, nu );
+    // stiffnessTensor is exactly linear in the modulus: it builds C from nu alone and scales it by
+    // E / ((1+nu)(1-2nu)). Scaling the cached unit tensor is therefore the same quantity, and removes
+    // the last 6x6 assembly from the per-iteration path.
+    tangent                        = effectiveStiffness * unitStiffness;
     const Vector6d stressIncrement = tangent * strainIncrement - maxwellStressIncrement;
     nominalStress += stressIncrement;
 

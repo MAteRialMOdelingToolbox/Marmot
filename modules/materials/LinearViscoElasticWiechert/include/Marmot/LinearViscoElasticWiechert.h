@@ -65,6 +65,14 @@ namespace Marmot::Materials {
     Wiechert::Properties elasticModuli;
     double               zerothWiechertStiffness;
 
+    /**
+     * @brief Isotropic stiffness tensor for a unit Young's modulus, cached for the instance's lifetime.
+     *
+     * It depends only on nu, which is fixed at construction, so it is built once here rather than on
+     * every computeStress call, as relaxationTimes and elasticModuli already are.
+     */
+    Marmot::Matrix6d unitStiffness;
+
     static constexpr int powerLawApproximationOrder = 2;
   };
 
